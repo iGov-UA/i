@@ -70,9 +70,6 @@ angular.module('dashboardJsApp')
         return user.sLogin === login;
       })
     }
-    //$scope.doesNotExist = function (modelValue){
-    //  return true;
-    //};
 
     $scope.loginHasNotBeenUsed = function( $value ) {
       return isLoginTaken($value);

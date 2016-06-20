@@ -2,62 +2,41 @@
   <h3 class="modal-title">Група</h3>
 </div>
 <div class="modal-body group-modal-body">
-  <form class="form-horizontal">
-    <!--<div class="col-md-5 col-xs-5">-->
-      <!--<user-simple-list data="group" funcs="getUsers"></user-simple-list>-->
-    <!--</div>-->
-    <user-simple-list data="data" funcs="getUsers"></user-simple-list>
+  <form name="formName" class="form-horizontal">
+    <div class="col-md-12 col-xs-12">
 
-    <div class="col-md-5 col-xs-5">
-      <div class="form-group">
-        <label for="inputID" class="col-md-4 col-xs-4 control-label">Ід:</label>
-        <div class="col-md-8 col-xs-8">
-          <input class="form-control" id="inputID" ng-model="data.group.id">
+      <div class="form-group"  ng-class="{ 'has-error': formName.inputID.$error.taken && data.editMode !== data.editModes.EDIT }">
+        <!--<div class="form-group">-->
+        <label for="inputID" class="col-md-2 col-xs-2 control-label">Ід:</label>
+        <div class="col-md-10 col-xs-10">
+          <input class="form-control"
+                 id="inputID"
+                 name="inputID"
+                 ng-model="data.group.id"
+                 ui-validate=" {taken : 'idHasNotBeenUsed($value)' } "
+                 ng-disabled="data.editMode === data.editModes.EDIT"
+                 required
+          >
+          <p class="help-block"  ng-show='formName.inputID.$error.taken && data.editMode !== data.editModes.EDIT'>Даний Ід вже використовується.</p>
         </div>
       </div>
-      <div class="form-group">
-        <label for="inputName" class="col-md-4 col-xs-4 control-label">Назва:</label>
-        <div class="col-md-8 col-xs-8">
-          <input class="form-control" id="inputName" ng-model="data.group.name">
+
+        <div class="form-group">
+          <label for="inputName" class="col-md-2 col-xs-2 control-label">Назва:</label>
+          <div class="col-md-10 col-xs-10">
+            <input class="form-control" id="inputName" ng-model="data.group.name">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label" for="type">Тип:</label>
-        <div class="col-md-8 col-xs-8">
-          <p class="form-control-static" id="type">{{data.group.type}}</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label" for="url">Адреса:</label>
-        <div class="col-md-8 col-xs-8">
-          <p class="form-control-static" id="url">{{data.group.url}}</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label" for="revision">Rev:</label>
-        <div class="col-md-8 col-xs-8">
-          <p class="form-control-static" id="revision">{{data.group.revision}}</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label" for="revisionNext">RevNext:</label>
-        <div class="col-md-8 col-xs-8">
-          <p class="form-control-static" id="revisionNext">{{data.group.revisionNext}}</p>
-        </div>
-      </div>
     </div>
 
-    <!--<label for="inputType" class="col-md-3 col-xs-3 control-label">Тип групи</label>-->
-    <!--<div class="col-md-9 col-xs-9">-->
-    <!--<input class="form-control" id="inputType" ng-model="group.type">-->
-    <!--</div>-->
-    <!--<label for="inputUrl" class="col-md-3 col-xs-3 control-label">Адреса групи</label>-->
-    <!--<div class="col-md-9 col-xs-9">-->
-    <!--<input class="form-control" id="inputUrl" ng-model="group.url">-->
-    <!--</div>-->
+    <div class="col-md-12 col-xs-12">
+      <dropdown-user data="data"></dropdown-user>
+    </div>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="submit" class="btn btn-primary" ng-show="showSave()" ng-click="save()">Зберегти</button>
+  <button type="submit" class="btn btn-primary"
+          ng-disabled="formName.inputID.$error.taken && data.editMode === data.editModes.CREATE"
+          ng-click="save()">Зберегти</button>
   <button class="btn btn-warning" type="button" ng-click="cancel()">Відмінити</button>
 </div>

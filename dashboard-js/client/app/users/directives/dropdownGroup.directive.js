@@ -9,14 +9,7 @@ angular.module('dashboardJsApp').directive('dropdownGroup', function () {
     },
     controller: DropdownGroupController,
     controllerAs: 'vm',
-    bindToController: true,
-
-    link: function (scope) {
-      //scope.onSelectGroup = function (item) {
-      //  console.log('item', item);
-      //  scope.selected = item.name;
-      //};
-    }
+    bindToController: true
   };
 });
 
