@@ -76,6 +76,7 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask3" name="Формування шаблонів документів" activiti:candidateGroups="racs_${sID_Public_SubjectOrganJoin}">
@@ -130,6 +131,7 @@
         <activiti:formProperty id="visitDay" name="Дата та час візиту" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kherson/kherson_racs_757_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -203,6 +205,7 @@
         <activiti:formProperty id="sEskalation" name="sEskalation" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kherson/kherson_racs_757_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -262,6 +265,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/kherson/kherson_racs_757_2_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -541,6 +545,7 @@ var per5 = " "
 var per6 = " "
 var res = 'res'
 var per7 = " "
+var per8 = " "
 if(execution.getVariable('sDocMarriage') != null){
 per2 = '&lt;li&gt;Копія свідоцтва про шлюб.&lt;/li&gt;'
 }
@@ -562,9 +567,16 @@ per7 = "що народилася"
 if(execution.getVariable('saSexChild') == 'man'){
 per7 = "що народився"
 }
+if(execution.getVariable('saSexChild') == 'woman'){
+per8 = "її"
+}
+if(execution.getVariable('saSexChild') == 'man'){
+per8 = "його"
+}
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sSexChildPrint', per7)
+execution.setVariable('sSexChildPrint2', per8)
 </script>
     </scriptTask>
     <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
