@@ -1165,4 +1165,36 @@
                              constraintName="ServiceTagRelation_Unique"
                              tableName="ServiceTagRelation"/>
     </changeSet>
+
+    <changeSet id="issue-1289-2" author="brunneng">
+
+        <createTable tableName="ServiceTagType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <dropColumn tableName="ServiceTag" columnName="sName"/>
+        <addColumn tableName="ServiceTag">
+            <column name="sID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_UA" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_RU" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ServiceTagType" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTag_Type"
+                             referencedTableName    ="ServiceTagType"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
