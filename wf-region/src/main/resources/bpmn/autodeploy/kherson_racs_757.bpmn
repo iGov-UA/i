@@ -120,7 +120,7 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові дитини; ;writable=false" type="string"></activiti:formProperty>
@@ -556,7 +556,7 @@ if(execution.getVariable('sDocPassportMother') != null){
 per4 = "&lt;li&gt;Копія паспорту матері.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocMedical') != null){
-per5 = '&lt;li&gt;Медичне свідоцтво про народження (форма № 103\о - видається закладами охорони здоров’я, де приймаються пологи).&lt;/li&gt;'
+per5 = '&lt;li&gt;Медичне свідоцтво про народження.&lt;/li&gt;'
 }
 if(execution.getVariable('sDocPregnancy') != null){
 per6 = "&lt;li&gt;Довідка про вагітність (видається закладами охорони здоров’я).&lt;/li&gt;"
@@ -614,8 +614,8 @@ execution.setVariable('sSexChildPrint2', per8)
     <sequenceFlow id="flow58" name="якщо одружені, але прізвища різні" sourceRef="exclusivegateway4" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saMarriage=='yes' && saSurname == "no"}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow59" name="якщо не одружені, або одружені та мають однакове прізвище" sourceRef="exclusivegateway4" targetRef="exclusivegateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saMarriage=='yes' && saSurname == "yes"|| saMarriage == "no"}]]></conditionExpression>
+    <sequenceFlow id="flow59" name="якщо не одружені" sourceRef="exclusivegateway4" targetRef="exclusivegateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saMarriage == "no"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="servicetask13" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow61" name="якщо дитина ще не народилась" sourceRef="exclusivegateway2" targetRef="servicetask13">
@@ -624,6 +624,9 @@ execution.setVariable('sSexChildPrint2', per8)
     <sequenceFlow id="flow62" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="usertask3" targetRef="servicetask14"></sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="servicetask14" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow65" name="якщо одружені та мають однакове прізвище" sourceRef="exclusivegateway4" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saMarriage=='yes' && saSurname == "yes"}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kherson_racs_757">
     <bpmndi:BPMNPlane bpmnElement="kherson_racs_757" id="BPMNPlane_kherson_racs_757">
@@ -756,14 +759,14 @@ execution.setVariable('sSexChildPrint2', per8)
         <omgdi:waypoint x="450.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="298.0" y="120.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="335.0" y="93.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="321.0" y="80.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="470.0" y="140.0"></omgdi:waypoint>
         <omgdi:waypoint x="470.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="480.0" y="119.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="470.0" y="147.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
@@ -790,6 +793,14 @@ execution.setVariable('sSexChildPrint2', per8)
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
         <omgdi:waypoint x="590.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="470.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="386.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="386.0" y="264.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="56.0" width="100.0" x="355.0" y="130.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
