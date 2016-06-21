@@ -157,7 +157,6 @@
         <activiti:formProperty id="overload_date" name="Дата придбання; наприклад, 18.01.2016" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="имущество свыше 50000 грн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;overload_fio&quot;,&quot;overload_type&quot;,&quot;overload_cost&quot;,&quot;overload_date&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;overload&quot;},&quot;sCondition&quot;:&quot;[sOverload]=='attr1_yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="infoECP1" name="Увага!" type="label" default="Обов'язково заповніть поле &quot;Накласти ЕЦП&quot; нижче, інакше Ви зможете отримати лише повідомлення про правильність/неправильність заповнення Заяви та запрошення до особистого візиту до УПСЗН"></activiti:formProperty>
-        <activiti:formProperty id="infoECP0" name="Увага!" type="label" default="Поле &quot;Накласти ЕЦП&quot; нижче є необов'язковим для розгляду заявки працівниками УПСЗН."></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/UPSZN/subsidy_ecp.html"></activiti:formProperty>
         </extensionElements>
@@ -301,8 +300,10 @@
           <activiti:value id="accept" name="відправлені запити, очікують відповіді"></activiti:value>
           <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название р-на соцзащиты в принтформу с ЕЦП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/UPSZN/subsidy_ecp.html]" type="invisible" default="Заявка з ЕЦП" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${PrintFormAutoSign_1}</activiti:expression>
