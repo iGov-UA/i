@@ -301,8 +301,10 @@
           <activiti:value id="accept" name="відправлені запити, очікують відповіді"></activiti:value>
           <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название р-на соцзащиты в принтформу с ЕЦП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/UPSZN/subsidy_ecp.html]" type="invisible" default="Заявка з ЕЦП" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${PrintFormAutoSign_1}</activiti:expression>
