@@ -2215,6 +2215,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
+            LOG.debug("BPMN file has been deployed to repository service");
             return "SUCCESS";
         } catch (Exception e) {
             throw new IllegalArgumentException("Deployment is broken");
