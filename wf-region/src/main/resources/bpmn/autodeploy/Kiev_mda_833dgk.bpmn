@@ -51,11 +51,12 @@
         <activiti:formProperty id="map1" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://mkk.kga.gov.ua&quot;&gt;Містобудівний кадастр Києва за цим посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="map2" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://map.land.gov.ua/kadastrova-karta&quot;&gt;Публічна Кадастрова мапа за цим посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Витяг з містобудівного кадастру"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта Органів для тесту" type="string" default="akylish88@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sEskalation" name="sEskalation" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаж. файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -71,7 +72,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -368,7 +369,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Нагадуэмо, Ви можете отримати Витяг з містобудівного кадастру.&lt;br /&gt;
+Нагадуємо, Ви можете отримати Витяг з містобудівного кадастру.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документи - собисто під підпис.&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
@@ -387,7 +388,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+          <activiti:expression>Nagaduemo Vashe zvernennya [sID_Order] obrobleno.
 Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
