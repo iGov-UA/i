@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="kiev_mda_826" name="Запит про перейменування вулиць" isExecutable="true">
-    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <serviceTask id="servicetask2" name="Сповіщення співробітника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask1" name="Підготовка та завантаження документу-відповіді- співробітник СММ"></userTask>
-    <serviceTask id="servicetask4" name="Сповіщення начальника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <userTask id="usertask2" name="Перевірка та візування документу-відповіді -начальник СММ"></userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask3" name="Доопрацювання документу-відповіді - співробітник СММ"></userTask>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Сповіщення про зауваження" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Сповіщення про необхідність опрацювання" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <sequenceFlow id="flow13" sourceRef="usertask3" targetRef="servicetask6"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask4" name="Завантаження документа з ЕЦП- Заступник Директора ДМА"></userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow11" name="Є зауваження" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <sequenceFlow id="flow15" name="Зауважень нема" sourceRef="exclusivegateway1" targetRef="usertask4"></sequenceFlow>
     <startEvent id="startevent2" name="Start"></startEvent>
     <sequenceFlow id="flow16" sourceRef="startevent2" targetRef="servicetask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask7" name="Повідомлення громадянину з документом, підписанним ЕЦП" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Сповіщення співробітника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Підготовка та завантаження документу-відповіді- співробітник СММ"></userTask>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Сповіщення начальника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Перевірка та візування документу-відповіді -начальник СММ"></userTask>
+    <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" name="Є зауваження" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Сповіщення про зауваження" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Доопрацювання документу-відповіді - співробітник СММ"></userTask>
+    <sequenceFlow id="flow13" sourceRef="usertask3" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Сповіщення про необхідність опрацювання" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow15" name="Зауважень нема" sourceRef="exclusivegateway1" targetRef="usertask4"></sequenceFlow>
+    <userTask id="usertask4" name="Завантаження документа з ЕЦП- Заступник Директора ДМА"></userTask>
     <sequenceFlow id="flow17" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow21" name="Відповідь на email" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення громадянину про готовність документу-відповіді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <userTask id="usertask5" name="Видача документу-відповіді громадянинові -Співробітник відділу звернень"></userTask>
-    <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask6" name="Віправити відповідь-документ на поштову адресу-співробітник СММ"></userTask>
-    <sequenceFlow id="flow26" name="Відповідь на поштову адресу" sourceRef="exclusivegateway2" targetRef="usertask6"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Сповіщення громадянина про відправлення відповіді-документу" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <sequenceFlow id="flow27" sourceRef="usertask6" targetRef="servicetask9"></sequenceFlow>
-    <userTask id="usertask7" name="Фінальне опрацювання після підтвердження відправлення - співробітник СММ"></userTask>
-    <sequenceFlow id="flow28" sourceRef="servicetask9" targetRef="usertask7"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <serviceTask id="servicetask7" name="Повідомлення громадянину з документом, підписанним ЕЦП" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
     <sequenceFlow id="flow29" sourceRef="usertask7" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="usertask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow32" name="Заявник прийде особисто" sourceRef="exclusivegateway2" targetRef="servicetask8"></sequenceFlow>
-  </process>
+    <serviceTask id="servicetask8" name="Повідомлення громадянину про готовність документу-відповіді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
+    <userTask id="usertask5" name="Видача документу-відповіді громадянинові -Співробітник відділу звернень"></userTask>
+    <sequenceFlow id="flow30" sourceRef="usertask5" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow26" name="Відповідь на поштову адресу" sourceRef="exclusivegateway2" targetRef="usertask6"></sequenceFlow>
+    <userTask id="usertask6" name="Віправити відповідь-документ на поштову адресу-співробітник СММ"></userTask>
+    <sequenceFlow id="flow27" sourceRef="usertask6" targetRef="servicetask9"></sequenceFlow>
+    <serviceTask id="servicetask9" name="Сповіщення громадянина про відправлення відповіді-документу" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow28" sourceRef="servicetask9" targetRef="usertask7"></sequenceFlow>
+    <userTask id="usertask7" name="Фінальне опрацювання після підтвердження відправлення - співробітник СММ"></userTask>
+    <sequenceFlow id="flow31" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+     </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_826">
     <bpmndi:BPMNPlane bpmnElement="kiev_mda_826" id="BPMNPlane_kiev_mda_826">
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
