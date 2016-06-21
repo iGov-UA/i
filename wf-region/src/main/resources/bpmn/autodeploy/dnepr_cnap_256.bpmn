@@ -513,6 +513,22 @@ execution.setVariable('sNameOrgan', per4)
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення пройшло первинну обробку ЦНАП і передано на розгляд до Держветфітослужби України. &lt;br /&gt;
+Про дату проведення інспекції Вас буде проінформовано додатково. &lt;br /&gt;
+Після повідомлення про успішне проходження інспекції Вам слід провести оплату адміністративної послуги згідно до реквізитів, наведених за &lt;a href="goo.gl/oHGB9a"&gt; посиланням.&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
+Реєстраційний номер заяви: ${nReestr};&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow66" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
