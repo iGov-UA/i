@@ -94,6 +94,8 @@ table.zit_v-form2 tr td {border: 1px solid black; padding: 3px 8px;}
 .date_subm .signature > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 .date_subm .inv {width: 240px; height: 20px; float: left; border-bottom: 1px solid black; position: relative;} 
 .date_subm .inv > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .reestr {width: 400px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
+.date_subm .reestr > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 p {font-size: 11px;}
 
@@ -105,34 +107,19 @@ p {font-size: 11px;}
 <body>
 <section class="print_wrap">
     <div class="line_col ta-r">
-        <div class="under_field w350 ta-l"><i>[sShapka]</i><span></span></div><br />
+        <div class="under_field w350 ta-l"><i>[sShapka628]</i><span></span></div><br />
 		<div class="under_field w350 ta-l"><i>[lastName_UA1] [firstName_UA1] [middleName_UA1]</i><span>(Прізвище, ім'я, по батькові матері)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[lastName_UA2] [firstName_UA2] [middleName_UA2]</i><span>(Прізвище, ім'я, по батькові батька)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[sPlaceMother]</i><span>(Місце постійного проживання)</span></div><br />
 	</div>
     <div class="line_col ta-c m-t-25">
         <b>ЗАЯВА<br />
-про визнання батьківства</b><br /><br />
-        <div class="ta-l"> Я, [lastName_UA2] [firstName_UA2] [middleName_UA2] визнаю себе батьком [lastName_UA3] [firstName_UA3] [middleName_UA3], [sSexChildPrint] [sDateChild] у громадянки [lastName_UA1] [firstName_UA1] [middleName_UA1].<br />
-		Я, [lastName_UA1] [firstName_UA1] [middleName_UA1], підтверджую, що громадянин [lastName_UA2] [firstName_UA2] [middleName_UA2] є [sSexChildPrint2] батьком. <br /> <br />
-		Відповідно до статті 126 Сімейного кодексу України просимо внести відомості про батька до актового запису про народження нашої дитини, по батькові дитини просимо вказати за власним іменем батька [middleName_UA3] присвоїти їй прізвище [lastName_UA3]. <br /><br />
-		Про себе повідомляємо:  <br />
+про державну реєстрацію народження <br />
+відповідно до частини першої статті 135 Сімейного кодексу України </b><br /><br />
+        <div class="ta-l"> Відповідно до частини першої статті 135 Сімейного кодексу України прошу внести відомості про батька до актового запису про народження  дитини 
+[sPibNoFather].<br />
+У графі "Відомості про батька" прошу записати прізвище, громадянство батька за прізвищем, громадянством матері і вказати таке його власне  ім’я та по батькові: 
+		[firstName_UA3] [middleName_UA3] <br />
 		
- <table>
-    <tr>
-    <th> </th>
-    <th>&nbsp БАТЬКО</th>
-    <th>&nbsp МАТИ</th>
-   
-   </tr>
-   <tr><td>1. Прізвище &nbsp</td><td>&nbsp [lastName_UA2] &nbsp</td><td>&nbsp [lastName_UA1] </td></tr>
-   <tr><td>2. Власне ім'я &nbsp</td><td>&nbsp [firstName_UA2] &nbsp</td><td>&nbsp [firstName_UA1] </td></tr>
-   <tr><td>3. По батькові &nbsp</td><td>&nbsp [middleName_UA2] &nbsp</td><td>&nbsp [middleName_UA1] </td></tr>
-   <tr><td>4. Дата народження &nbsp</td><td>&nbsp [sDateFather] &nbsp</td><td>&nbsp [sDateMother] </td></tr>
-   <tr><td>5. Громадянство &nbsp</td><td>&nbsp [bankIdsID_Country2] &nbsp</td><td>&nbsp [bankIdsID_Country1] </td></tr>
-   <tr><td>6. Місце  проживання (адреса повна) &nbsp</td><td>&nbsp [sPlaceFather] &nbsp</td><td>&nbsp [sPlaceMother] </td></tr>
-   <tr><td>7. Назва документа, що посвідчує особу &nbsp</td><td>&nbsp [saNameDocFather] [sPassportFather] &nbsp</td><td>&nbsp [saNameDocMother] [sPassportMother] </td></tr>
-   </table>
- <br />
 		Документи, що додаються до заяви:<br />
 [sListDocumentsPrint]
 		<span></span></div><br />
@@ -141,15 +128,23 @@ p {font-size: 11px;}
 	 </div>
 			<div>
 <div class="date_subm m-t-85">
-        <div class="inv"> <span>(підпис батька)</span></div>
+        <div class="inv">[sDateCreateProcess]<span>(дата подання звернення)</span></div>
         <div class="signature"> <span>(підпис матері)</span></div>
 		<div class="clear"></div>
     </div>
+	<br /><br />
 <div class="date_subm m-t-85">
-        <div class="inv">[sDateCreateProcess]<span>(дата подання звернення)</span></div>
-     
-		<div class="clear"></div>
-    </div>  
+        <div class="reestr">Заяву прийнято<span></span></div>
+			<div class="clear"></div>
+      </div>  
+	  <div class="date_subm m-t-85">
+        <div class="reestr">та зареєстровано в журналі за №<span></span></div>
+			<div class="clear"></div>
+      </div>  
+	  <div class="date_subm m-t-85">
+        <div class="reestr">Зареєстровано в Реєстрі за №<span></span></div>
+			<div class="clear"></div>
+      </div>  
 	</div>
 	<br />
 	
