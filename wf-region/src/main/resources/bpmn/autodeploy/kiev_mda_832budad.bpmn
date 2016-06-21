@@ -493,7 +493,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sKadastrNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="commentSMK" name="Будівельна адреса яка присвоюється" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" writable="false">
-          <activiti:value id="accept" name="Підготувати наказ про присвоєння будівельної адреси"></activiti:value>
+          <activiti:value id="accept" name="Наказ про присвоєння будівельної адреси Готовий"></activiti:value>
           <activiti:value id="reject" name="Відмовити у присвоєнні будівельної адреси"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -607,7 +607,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
-          <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
@@ -617,9 +617,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="sObject" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAdress" name="Місцезнаходження(адреса) об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="commentSMK" name="Будівельна адреса яка присвоюється" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Видача документа" type="enum" required="true">
-          <activiti:value id="accept" name="Наказ про присвоєння будівельної адреси видано"></activiti:value>
-          <activiti:value id="reject" name="Заявник не з'явився, надіслати лист з нагадуванням"></activiti:value>
+        <activiti:formProperty id="asVudacha" name="Видача документа" type="enum" required="true">
+          <activiti:value id="sEnamaccept" name="Наказ про присвоєння будівельної адреси видано"></activiti:value>
+          <activiti:value id="sEnamreject" name="Заявник не з'явився, закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -636,31 +636,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask16" name="Нагадування з оцінкою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-${sPhoneOrgan}.&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow32" sourceRef="escalationTimer" targetRef="servicetask16"></sequenceFlow>
-    <serviceTask id="servicetask17" name="Лист з оцінкою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -697,6 +672,31 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow32" sourceRef="escalationTimer" targetRef="servicetask16"></sequenceFlow>
+    <serviceTask id="servicetask17" name="Лист з оцінкою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
