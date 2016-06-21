@@ -595,7 +595,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
  		executor.schedule(task, 10, TimeUnit.SECONDS);
  		executor.shutdown();
 		 		
- 		LOG.debug("Configured thread to run in 10 seconds with params: (params={})", params);
+ 		LOG.info("Configured thread to run in 10 seconds with params: (params={})", params);
     }
 
 }
