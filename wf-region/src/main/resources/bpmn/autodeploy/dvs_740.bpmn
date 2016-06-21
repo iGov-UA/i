@@ -167,8 +167,17 @@ execution.setVariable('sEskalation', timer);
         <timeDate>${sEskalation}</timeDate>
       </timerEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Service Task"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] ne obroblene i vydalene</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
