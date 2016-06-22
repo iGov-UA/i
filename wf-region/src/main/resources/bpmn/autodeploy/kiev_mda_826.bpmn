@@ -1,7 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="kiev_mda_826" name="Запит про перейменування вулиць" isExecutable="true">
-    <startEvent id="startevent2" name="Start"></startEvent>
+    <startEvent id="startevent2" name="Start">
+          <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон;;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Суб'єкт підприємницької діяльності" type="enum" required="true">
+          <activiti:value id="FOP" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Внесіть, будь ласка, у давальному відмінку повне найменовання юридичної особи;;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРОПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника або уповноваженної особи;;writable=false" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="erenameType" name="Запит про" type="enum" required="true">
+          <activiti:value id="erenameType_1" name="Перейменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_2" name="Найменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_3" name="Уточнення найменування вулиці"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="edistrict" name="Оберіть район міста" type="enum" required="true">
+          <activiti:value id="edistrictGol" name="Голосіївський район‎ "></activiti:value>
+          <activiti:value id="edistrictDar" name="Дарницький район‎"></activiti:value>
+          <activiti:value id="edistrictDes" name="Деснянський район"></activiti:value>
+          <activiti:value id="edistrictDnip" name="Дніпровський район"></activiti:value>
+          <activiti:value id="edistrictOb" name="Оболонський район‎"></activiti:value>
+          <activiti:value id="edistrictPech" name="Печерський район‎"></activiti:value>
+          <activiti:value id="edistrictPod" name="Подільський район"></activiti:value>
+          <activiti:value id="edistrictSvyat" name="Святошинський район‎"></activiti:value>
+          <activiti:value id="edistrictSolom" name="Солом'янський район‎"></activiti:value>
+          <activiti:value id="edistrictShev" name="Шевченківський район"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="Вулиця" type="string" required="true" ></activiti:formProperty>
+        
+        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum" required="true">
+          <activiti:value id="sgetDocType_email" name="Електронну адресу"></activiti:value>
+          <activiti:value id="sgetDocType_mail" name="Поштову адресу"></activiti:value>
+          <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('kiev_mda_826.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Департамент містобудівного кадастру"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_ccmm" name="Пошта співробітника СММ;для тестування введіть власну пошту" type="string" default="klimkovichy@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk2_ncmm" name="Пошта начальника СММ;для тестування введіть власну пошту" type="string" default="klimkovichy@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="string" default="м. Київ, вул. Хрещатик, 32"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="string" default="м. Київ, вул. Хрещатик, 32"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="string" default="(044) 1551 (зі стаціонарного)"></activiti:formProperty>
+          </extensionElements>
+    </startEvent>
     <sequenceFlow id="flow16" sourceRef="startevent2" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
      <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">

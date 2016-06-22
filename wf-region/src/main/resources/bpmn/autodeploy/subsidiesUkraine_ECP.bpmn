@@ -15,7 +15,7 @@
         <activiti:formProperty id="place_of_living" name="Місце реєстрації; вкажіть область, місто, вулицю, будинок, квартиру" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="subsidy" name="Тип субсидії" type="enum" default="1" required="true">
+        <activiti:formProperty id="subsidy" name="Тип субсидії" type="enum" required="true">
           <activiti:value id="1" name="Оплата житлово-комунальних послуг"></activiti:value>
           <activiti:value id="2" name="Оплата зрідженого газу, твердого та рідкого палива"></activiti:value>
         </activiti:formProperty>
@@ -159,7 +159,8 @@
         <activiti:formProperty id="infoECP1" name="Увага!" type="label" default="Обов'язково заповніть поле &quot;Накласти ЕЦП&quot; нижче, інакше Ви зможете отримати лише повідомлення про правильність/неправильність заповнення Заяви та запрошення до особистого візиту до УПСЗН"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/UPSZN/subsidy_ecp.html"></activiti:formProperty>
-        </extensionElements>
+        <activiti:formProperty id="marker5" name="ЕЦП " type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;,&quot;PrintFormAutoSign_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's322'&quot;},&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;infoECP1&quot;,&quot;infoECP&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] != 's322'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="${group}">
       <extensionElements>
