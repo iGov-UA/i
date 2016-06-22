@@ -9,6 +9,7 @@ package org.igov.service.business.action.task.systemtask;
  *
  * @author olya
  */
+import java.security.AccessControlException;
 import java.util.List;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -44,7 +45,10 @@ public class DeleteProccess implements JavaDelegate {
         if (processDefinitionKeyValue != null) {
             LOG.info("Delete all active proccess with processDefinitionKeyValue: " + processDefinitionKeyValue);
             processInstanceQuery.processDefinitionKey(processDefinitionKeyValue);
+        } else if (!generalConfig.isSelfTest()) {
+            throw new AccessControlException("У Вас нет на данную операцию!");
         }
+
         List<ProcessInstance> processInstances = processInstanceQuery.list();
         for (ProcessInstance processInstance : processInstances) {
             runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
