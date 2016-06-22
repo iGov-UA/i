@@ -22,28 +22,28 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
       onCompleted: function(file, response) {
         scope.$apply(function() {
           try {
-            deferred.resolve({
-              file: file,
-              response: JSON.parse(response)
-            });
-            debugger;
+            if(response === "SUCCESS"){
+              deferred.resolve({
+                file: file,
+                response: response
+              });
+            } else {
+              deferred.resolve({
+                file: file,
+                response: JSON.parse(response)
+              });
+            }
+            Modal.inform.success()("Завантаження файлу завершено");
           } catch (e) {
             deferred.reject({
               err: response
             });
-            if (response === "SUCCESS"){
-              Modal.inform.warning()("Відповідь сервера: " + response);
-            } else {
-              Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
-            }
+            Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
           } finally {
             $rootScope.$broadcast("end-deploy-bp-file");
           }
         });
       },
-      onCompletedAll: function () {
-        Modal.inform.success()("Завантаження файлу завершено");
-      }
     });
     return deferred.promise;
   };
