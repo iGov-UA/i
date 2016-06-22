@@ -31,7 +31,11 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
             deferred.reject({
               err: response
             });
-            Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
+            if (response === "SUCCESS"){
+              Modal.inform.warning()("Відповідь сервера: " + response);
+            } else {
+              Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
+            }
           } finally {
             $rootScope.$broadcast("end-deploy-bp-file");
           }
