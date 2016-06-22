@@ -647,6 +647,38 @@
           sp.previousElementSibling.className = 'u b';
         }
       }
+      
+      function ShowElements(sCondition, aElement_ID) 
+      {
+        var masEl = aElement_ID.split(',');
+
+        for(var i=0; i<masEl.length; i++)
+        {    
+          var idEl = masEl[i].trim();
+          if(eval(sCondition)){
+            document.getElementById(idEl).style.visibility = 'visible';
+          } else{
+            document.getElementById(idEl).style.visibility = 'hidden';
+          }
+        }
+      }     
+      
+      function ShowElementsOnTrue(sCondition, aElement_ID) 
+      {
+        var masEl = aElement_ID.split(',');
+
+        for(var i=0; i<masEl.length; i++)
+        {    
+          var idEl = masEl[i].trim();
+          if(eval(sCondition)){
+            document.getElementById(idEl).style.display = 'inline';
+          } else{
+            document.getElementById(idEl).style.display = 'none';
+          }
+        }        
+      }     
+      
+      
     </script>
   </head>
   <body>
@@ -691,11 +723,13 @@
         </div>        
         <div class="ta-J">
           звернення:
-          первинне<span class="check_box">&#160;<span id="spanFirst">&#10004;</span></span>
-          вторинне<span class="check_box">&#160;<span id="spanSecond">&#10004;</span></span>
+          первинне<span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
+          вторинне<span class="check_box"><span id="spanSecond" style="visibility:hidden">&#10004;</span></span>
           номер основної особової справи <span class="text_box w150">&#160;</span>
         </div>
-      </div> 
+      </div>
+      
+
       <div>
         <div class="numBusines w200">
           <div class="m-b-5"><i style="font-size: 22px;">№</i></div>
@@ -995,6 +1029,9 @@
       </div>
       <br>
 
+      
+      
+      
       <div class="layout b">
         <div class="w50">&#160;</div>
         <div class="w30p">
@@ -1204,11 +1241,21 @@
           </div>
         </div>
       </div>
-
-      <script type="text/javascript">
-        ChangeParagrath();
-        ParsePassport();
-      </script>
     </div>
+    <script>
+        ShowElements("'[asNumberApplication]' == 'sFirst'", "spanFirst");
+        ShowElements("'[asNumberApplication]' == 'sSecond'", "spanSecond");
+      
+        ShowElementsOnTrue("'[transfer_type]' == 'post'", "spanTransferPost, spanTransferHouse_2, spanTransferHouse_3");      
+        ShowElementsOnTrue("'[transfer_type]' == 'bank'", "spanTransferBank, spanTransferBank_2, spanTransferHouse_2");     
+        ShowElementsOnTrue("'[transfer_type]' == 'childhouse'", "spanTransferHouse, spanTransferBank_3, spanTransferHouse_3");      
+      
+        ShowElementsOnTrue("'[asAdress]' == 'yes'", "spanAdressRegistr");      
+        ShowElementsOnTrue("'[asAdress]' == 'no'", "spanAdressFactual");
+      
+        ChangeParagrath();
+      
+        ParsePassport();
+    </script>
   </body>
 </html>
