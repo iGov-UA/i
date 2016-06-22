@@ -42,7 +42,7 @@ public class DeleteProccess implements JavaDelegate {
         //if (generalConfig.isSelfTest()) {
         //List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
         ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
-        if (processDefinitionKeyValue != null) {
+        if (processDefinitionKeyValue != null && !"".equals(processDefinitionKeyValue.trim())) {
             LOG.info("Delete all active proccess with processDefinitionKeyValue: " + processDefinitionKeyValue);
             processInstanceQuery.processDefinitionKey(processDefinitionKeyValue);
         } else if (!generalConfig.isSelfTest()) {
