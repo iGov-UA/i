@@ -46,7 +46,8 @@ public class DeleteProccess implements JavaDelegate {
             LOG.info("Delete all active proccess with processDefinitionKeyValue: " + processDefinitionKeyValue);
             processInstanceQuery.processDefinitionKey(processDefinitionKeyValue);
         } else if (!generalConfig.isSelfTest()) {
-            throw new AccessControlException("У Вас нет на данную операцию!");
+            LOG.info("You don't have access for this operation! processDefinitionKeyValue: " + processDefinitionKeyValue);
+            throw new AccessControlException("У Вас нет прав на данную операцию!");
         }
 
         List<ProcessInstance> processInstances = processInstanceQuery.list();
