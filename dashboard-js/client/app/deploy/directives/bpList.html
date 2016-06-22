@@ -3,7 +3,8 @@
     <button class="btn btn-primary col-sm-2" ng-click="openViewFilter()" style="margin: 2px"><span class="glyphicon glyphicon-eye-open"></span> Показати фільтр</button>
     <button class="btn btn-danger col-sm-2" ng-click="openRemoveFilter()" style="margin: 2px"><span class="glyphicon glyphicon-remove"></span> Видалити</button>
     <button id="uploader" class="btn btn-primary pull-right col-sm-2" style="margin: 2px">
-      <span class="glyphicon glyphicon-cloud-upload"></span>
+      <span class="glyphicon glyphicon-cloud-upload" ng-if="!isBPfileUploading"></span>
+      <span class="glyphicon glyphicon-time" ng-if="isBPfileUploading"></span>
       <span> Додати</span>
       <input id="file-field" type="file" style="display:none">
     </button>
@@ -53,11 +54,11 @@
   <h4>Зачекайте...</h4>
 </div>
 <div ng-if="!inProgress">
-  <div class="row center-block" ng-if="get().length == 0" ng-hide="bViewFilterSetting">
+  <div class="row center-block" ng-if="aBPs.length == 0" ng-hide="bViewFilterSetting">
     <p class="text-center control-label">Інформація для відображення відсутня. Будь ласка, змініть налаштування фільтру</p>
   </div>
-  <div ng-if="get().length > 0">
-    <table st-table="get()" class="table table-striped">
+  <div ng-if="aBPs.length > 0">
+    <table st-table="displayedCollection" st-safe-src="aBPs" class="table table-striped">
       <thead>
       <tr>
         <th class="col-md-3 col-xs-3 text-center" st-sort="key" style="cursor:pointer">Код</th>
@@ -65,13 +66,13 @@
         <th class="col-md-1 col-xs-1 text-center" st-sort="deploymentId" style="cursor:pointer">Номер викладення</th>
         <th class="col-md-5 col-xs-5 text-center" st-sort="name" style="cursor:pointer">Найменування</th>
       </tr>
-      <tr>
+      <tr ng-if="aBPs.length > 1">
         <th colspan="3"><input st-search="id" class="form-control" placeholder="Пошук за ідентифікатором ..." type="search"/></th>
         <th><input st-search="name" class="form-control" placeholder="Пошук за назвою ..." type="search"/></th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="oBP in get() | orderBy:'id'">
+      <tr ng-repeat="oBP in displayedCollection | orderBy:'id'">
         <td class="col-md-3 col-xs-3" style="word-break: break-all">{{oBP.key}}</td>
         <td class="col-md-1 col-xs-1 text-center">{{oBP.version}}</td>
         <td class="col-md-1 col-xs-1 text-center">{{oBP.deploymentId}}</td>
@@ -90,6 +91,13 @@
         </td>
       </tr>
       </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5" class="text-center">
+          <div st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+        </td>
+      </tr>
+      </tfoot>
     </table>
   </div>
 </div>

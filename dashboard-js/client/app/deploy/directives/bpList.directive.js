@@ -5,7 +5,8 @@ angular.module('dashboardJsApp')
   .directive('bpList', function () {
     var controller = function ($scope, Modal) {
       $scope.inProgress = false;
-      var aBPs = [];
+      $scope.isBPfileUploading = false;
+      $scope.aBPs = [];
 
       var uploadFunc = $scope.funcs.setBP;
       var downloadFunc = $scope.funcs.getBP;
@@ -25,7 +26,7 @@ angular.module('dashboardJsApp')
         $scope.inProgress = true;
         getFunc(filter)
           .then(function (list) {
-            aBPs = list;
+            $scope.aBPs = list;
           })
           .finally(function () {
             $scope.inProgress = false;
@@ -60,10 +61,6 @@ angular.module('dashboardJsApp')
         $scope.bSettingDeleteFilter = false;
       };
 
-      $scope.get = function () {
-        return aBPs;
-      };
-
       $scope.delete = function (filter) {
         Modal.confirm.delete(function (event) {
           deleteFunc(filter)
@@ -75,26 +72,16 @@ angular.module('dashboardJsApp')
         fillData(filter);
       };
 
-      $scope.add = function () {
-
-      };
-
       var fileUploadField = $("#file-field");
 
       fileUploadField.bind('change', function(event) {
-        /*
-        scope.$apply(function() {
-          debugger;
-          scope.upload(event.target.files, attrs.name);
-        });
-        */
         var targetFiles = event.target.files;
         var sFileExt = targetFiles[0].name.split('.').pop().toLowerCase();
         if (sFileExt === "bpmn"){
-          debugger;
+          $scope.isBPfileUploading = true;
           uploadFunc(targetFiles, targetFiles[0].name);
         } else {
-          alert("Не підтримуємий формат файлу");
+          Modal.inform.error()('Не підтримуємий формат файлу');
         }
 
       });
@@ -108,18 +95,28 @@ angular.module('dashboardJsApp')
         fileUploadField[0].click();
       });
 
+      $scope.$on("end-deploy-bp-file", function(){
+        $scope.isBPfileUploading = false;
+      });
+
       $scope.downloadItem = function(oBPinTable){
         downloadFunc(oBPinTable.id);
       };
 
       $scope.removeItem = function(oBPinTable){
-        var remObj = {
-          sID_BP: oBPinTable.id
+        var index = $scope.aBPs.indexOf(oBPinTable);
+        if (index !== -1) {
+          $scope.aBPs.splice(index, 1);
+          var remObj = {
+            sID_BP: oBPinTable.id
           };
-        Modal.confirm.delete(function (event) {
-          deleteFunc(remObj)
-            .then(fillData($scope.oFilter));
-        })('бізнес-процес "' + oBPinTable.name + '" (ID ' + oBPinTable.id + ')');
+          Modal.confirm.delete(function (event) {
+            deleteFunc(remObj)
+              .then(fillData($scope.oFilter));
+          })('бізнес-процес "' + oBPinTable.name + '" (ID ' + oBPinTable.id + ')');
+        } else {
+          Modal.inform.warning()('Цей бізнес-процес вже видалений. Будь ласка, перезавантажте фільтр для оновлення відображаємої інформації.');
+        }
       }
 
     };

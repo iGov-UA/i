@@ -3,12 +3,11 @@
  */
 'use strict';
 
-angular.module('dashboardJsApp').factory('deployService', function deployService($http, $q, $rootScope, uiUploader) {
+angular.module('dashboardJsApp').factory('deployService', function deployService($http, $q, $rootScope, uiUploader, Modal) {
 
   var setBP = function (url, files){
     var deferred = $q.defer();
 
-    var self = this;
     var scope = $rootScope.$new(true, $rootScope);
     uiUploader.removeAll();
     uiUploader.addFiles(files);
@@ -27,16 +26,21 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
               file: file,
               response: JSON.parse(response)
             });
+            debugger;
           } catch (e) {
             deferred.reject({
               err: response
             });
+            Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
+          } finally {
+            $rootScope.$broadcast("end-deploy-bp-file");
           }
         });
-        //alert("load complete");
+      },
+      onCompletedAll: function () {
+        Modal.inform.success()("Завантаження файлу завершено");
       }
     });
-
     return deferred.promise;
   };
 
