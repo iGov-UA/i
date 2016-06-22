@@ -115,10 +115,10 @@ public class BpServiceHandler {
             LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
-            if (!(escalationId == null || "null".equals(escalationId.toString()))) {
+            if (!(escalationId == null || "null".equalsIgnoreCase(String.valueOf(escalationId).trim()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                //return;  для тестировани закоменчено
+                return;
             }
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
