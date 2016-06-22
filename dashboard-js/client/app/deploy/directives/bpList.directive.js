@@ -76,14 +76,15 @@ angular.module('dashboardJsApp')
 
       fileUploadField.bind('change', function(event) {
         var targetFiles = event.target.files;
-        var sFileExt = targetFiles[0].name.split('.').pop().toLowerCase();
-        if (sFileExt === "bpmn"){
-          $scope.isBPfileUploading = true;
-          uploadFunc(targetFiles, targetFiles[0].name);
-        } else {
-          Modal.inform.error()('Не підтримуємий формат файлу');
+        if(targetFiles[0].name){
+          var sFileExt = targetFiles[0].name.split('.').pop().toLowerCase();
+          if (sFileExt === "bpmn"){
+            $scope.isBPfileUploading = true;
+            uploadFunc(targetFiles, targetFiles[0].name);
+          } else {
+            Modal.inform.error()('Не підтримуємий формат файлу');
+          }
         }
-
       });
 
       fileUploadField.bind('click', function(e) {
@@ -97,6 +98,9 @@ angular.module('dashboardJsApp')
 
       $scope.$on("end-deploy-bp-file", function(){
         $scope.isBPfileUploading = false;
+        if($scope.aBPs > 0){
+          fillData($scope.oFilter);
+        }
       });
 
       $scope.downloadItem = function(oBPinTable){
