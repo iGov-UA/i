@@ -311,9 +311,21 @@
     </style>
 
     <script type="text/javascript">
+	
+    //  ****************    переменные   ****************
+    var asNumberApplication = "[asNumberApplication]";
+    var transfer_type = "[transfer_type]";
+    var asAdress = "[asAdress]";
+    var bankIdPassport = "[bankIdPassport]";
+    
+    
 
       function ParsePassport() {
         //   ****************    парсим паспортные данные   **************** 
+        
+        var str0 = bankIdPassport;
+        
+        
         // константные переменные для регулярных выражений
         var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
         var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
@@ -328,7 +340,6 @@
 
         var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
 
-        var str0 = "[bankIdPassport]";
 
         var strSerial = "";
         var strNumber = "";
@@ -650,12 +661,12 @@
       
       function ShowElements(sCondition, aElement_ID) 
       {
-        var masEl = aElement_ID.split(',');
+        var masEl = aElement_ID.split(',');        
 
         for(var i=0; i<masEl.length; i++)
         {    
           var idEl = masEl[i].trim();
-          if(eval(sCondition)){
+          if(sCondition){
             document.getElementById(idEl).style.visibility = 'visible';
           } else{
             document.getElementById(idEl).style.visibility = 'hidden';
@@ -670,14 +681,13 @@
         for(var i=0; i<masEl.length; i++)
         {    
           var idEl = masEl[i].trim();
-          if(eval(sCondition)){
+          if(sCondition){
             document.getElementById(idEl).style.display = 'inline';
           } else{
             document.getElementById(idEl).style.display = 'none';
           }
         }        
-      }     
-      
+      }           
       
     </script>
   </head>
@@ -1243,15 +1253,15 @@
       </div>
     </div>
     <script>
-        ShowElements("'[asNumberApplication]' == 'sFirst'", "spanFirst");
-        ShowElements("'[asNumberApplication]' == 'sSecond'", "spanSecond");
+        ShowElements(asNumberApplication == 'sFirst', "spanFirst");
+        ShowElements(asNumberApplication == 'sSecond', "spanSecond");
       
-        ShowElementsOnTrue("'[transfer_type]' == 'post'", "spanTransferPost, spanTransferHouse_2, spanTransferHouse_3");      
-        ShowElementsOnTrue("'[transfer_type]' == 'bank'", "spanTransferBank, spanTransferBank_2, spanTransferHouse_2");     
-        ShowElementsOnTrue("'[transfer_type]' == 'childhouse'", "spanTransferHouse, spanTransferBank_3, spanTransferHouse_3");      
+        ShowElementsOnTrue(transfer_type == 'post', "spanTransferPost, spanTransferHouse_2, spanTransferHouse_3");      
+        ShowElementsOnTrue(transfer_type == 'bank', "spanTransferBank, spanTransferBank_2, spanTransferHouse_2");     
+        ShowElementsOnTrue(transfer_type == 'childhouse', "spanTransferHouse, spanTransferBank_3, spanTransferHouse_3");      
       
-        ShowElementsOnTrue("'[asAdress]' == 'yes'", "spanAdressRegistr");      
-        ShowElementsOnTrue("'[asAdress]' == 'no'", "spanAdressFactual");
+        ShowElementsOnTrue(asAdress == 'yes', "spanAdressRegistr");      
+        ShowElementsOnTrue(asAdress == 'no', "spanAdressFactual");
       
         ChangeParagrath();
       
