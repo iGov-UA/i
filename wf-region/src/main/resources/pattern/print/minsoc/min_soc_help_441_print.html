@@ -650,7 +650,8 @@
       
       function ShowElements(sCondition, aElement_ID) 
       {
-        var masEl = aElement_ID.split(',');
+        var masEl = aElement_ID.split(',');        
+        var flag = new Function ('a', 'return a;');
 
         for(var i=0; i<masEl.length; i++)
         {    
@@ -666,11 +667,12 @@
       function ShowElementsOnTrue(sCondition, aElement_ID) 
       {
         var masEl = aElement_ID.split(',');
+        var flag = new Function ('a', 'return a;');
 
         for(var i=0; i<masEl.length; i++)
         {    
           var idEl = masEl[i].trim();
-          if(eval(sCondition)){
+          if(flag(sCondition)){
             document.getElementById(idEl).style.display = 'inline';
           } else{
             document.getElementById(idEl).style.display = 'none';
