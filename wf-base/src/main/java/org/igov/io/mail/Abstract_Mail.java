@@ -50,7 +50,7 @@ public abstract class Abstract_Mail {
         String[] adress = saTo.split("\\,");
         if (adress.length == 1 && sToName != null && !"null".equalsIgnoreCase(sToName)) {
 //            return String.format("<%s <%s>>", sToName, saTo); // "John Dow <email@adress.com>"
-            return sToName + " \\<" + saTo + "\\>";
+            return sToName + "<" + saTo + ">";
         }
         return saTo;
     }
