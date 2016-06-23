@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -376,9 +377,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
-        //Long nID_Subject = null;
-        //SubjectMessage oSubjectMessage = null;
-        List<SubjectMessage> aSubjectMessage;
+        List<SubjectMessage> aSubjectMessage = new ArrayList();
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -386,45 +385,12 @@ public class SubjectMessageController {
             if(bAuth){
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-            
-            /*if(sToken!=null){
-                if(sToken.equals(oHistoryEvent_Service.getsToken())){
-                    nID_Subject = oHistoryEvent_Service.getnID_Subject();
-                }
-            }
-            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                if(sToken!=null){
-                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
-                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
-                }else{
-                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                    throw new Exception("nID_Subject is not Equal!");
-                }
-            }*/
-            
-            /*//nID_Subject = oHistoryEvent_Service.getnID_Subject();
-            if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                throw new Exception("nID_Subject is not Equal!");
-            }*/
-            
-//            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-
-            /*String sHead = "";
-             if (nID_SubjectMessageType == 4l){
-             sHead = "Введений коментар клієнта по заяві " + sID_Order;
-             }*/
-
-            /*oSubjectMessage
-             = createSubjectMessage(sHead,sBody, nID_Subject, "", "", "", nID_SubjectMessageType);
-             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-             subjectMessagesDao.setMessage(oSubjectMessage);*/
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
 
         } catch (Exception e) {
-            LOG.error("FAIL: {}", e.getMessage());
-            LOG.trace("FAIL:", e);
-            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            LOG.error("FAIL: {}", e);
+            //LOG.trace("FAIL:", e);
+            //throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
     }
