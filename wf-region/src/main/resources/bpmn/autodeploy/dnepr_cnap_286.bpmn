@@ -144,7 +144,8 @@
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний колего!</b><br /><br />
 У черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -154,7 +155,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -166,7 +167,8 @@
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Ваше звернення щодо державної реєстрації земельної ділянки з видачею витягу з Державного земельного кадастру передано на розгляд в управління Держземагентства Вашого населеного пункту і буде опрацьовано протягом 14 календарних днів.<br /><br />
 Реєстраційний номер заяви: ${reestr_numb};<br />
@@ -178,9 +180,18 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -192,7 +203,8 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Ваше звернення щодо державної реєстрації земельної ділянки з видачею витягу з Державного земельного кадастру відхилено через недостатню або неправильну інформацію.<br />
 ${comment_1}<br />
@@ -203,9 +215,18 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="повідомлення про + рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="повідомлення про + рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -220,7 +241,8 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA["${rishen}",${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Земельну ділянку (місцезнаходження ${layout}) зареєстровано та відкрито Поземельну книгу.
 Копія витягу знаходиться у додатку до листа. <br />  
@@ -236,9 +258,15 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-      </extensionElements>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		</extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="повідомлення про - рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask10" name="повідомлення про - рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -253,7 +281,8 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA["${rishen}",${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль Вам відмовлено у здійсненні державної реєстрації земельної ділянки <br />
 Копія відповідного документу знаходиться у додатку до листа.<br />
@@ -268,7 +297,13 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-      </extensionElements>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		</extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
@@ -398,7 +433,8 @@ execution.setVariable('sListDocumentsPrint', res2)
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний колего!</b><br /><br />
 У черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -425,7 +461,8 @@ execution.setVariable('sListDocumentsPrint', res2)
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний колего!</b><br /><br />
 У черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -477,7 +514,7 @@ execution.setVariable('sListDocumentsPrint', res2)
         </extensionElements>
     </userTask>
     <sequenceFlow id="flow67" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
-    <serviceTask id="servicetask13" name="Повідомлення громадянила" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask13" name="Повідомлення громадянила" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -489,7 +526,8 @@ execution.setVariable('sListDocumentsPrint', res2)
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Запит на реєстрацію земельної ділянки (місцезнаходження ${layout}) розглянуто.
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис у ЦНАПі.<br /><br />
@@ -507,7 +545,13 @@ ${sNameOrgan}<br />
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen}</activiti:expression>
         </activiti:field>
-      </extensionElements>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+     </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow68" sourceRef="usertask4" targetRef="servicetask13"></sequenceFlow>
     <sequenceFlow id="flow69" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
