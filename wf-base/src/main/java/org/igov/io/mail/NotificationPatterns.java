@@ -177,8 +177,7 @@ public class NotificationPatterns {
 
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
-//                    ._ToName(sClientFIO)
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,
