@@ -313,13 +313,20 @@
     <script type="text/javascript">
 	
     //  ****************    переменные   ****************
+    //*
     var asNumberApplication = "[asNumberApplication]";
     var transfer_type = "[transfer_type]";
     var asAdress = "[asAdress]";
     var bankIdPassport = "[bankIdPassport]";
+    // */
+    /*
+    var asNumberApplication = "первинне";
+    var transfer_type = "через національного оператора поштового зв'язку";
+    var asAdress = "Так";
+    var bankIdPassport = "АО295227 БАБУШКИНСКИМ РО В Г ДНЕПРОПЕТРОВСКЕ ГУ ГМС УКРАИНЫ В ДНЕПРОПЕТРОВСКОЙ ОБЛ 17.08.2015";
+    //  */
     
-    
-
+    //*
       function ParsePassport() {
         //   ****************    парсим паспортные данные   **************** 
         
@@ -383,9 +390,9 @@
           document.getElementById('spanDetailPassport').style.display = 'inline';
           document.getElementById('spanTotalPassport').style.display = 'none';
         }
-      }
+      } // */
 
-
+//*
       function ChangeParagrath() {
         //подчеркиваем
         if("[cc_1_1]" == "true"){
@@ -657,37 +664,27 @@
           sp.innerHTML = "&#10004;";
           sp.previousElementSibling.className = 'u b';
         }
-      }
+      }      // */
       
-      function ShowElements(sCondition, aElement_ID) 
-      {
-        var masEl = aElement_ID.split(',');        
-
-        for(var i=0; i<masEl.length; i++)
-        {    
-          var idEl = masEl[i].trim();
+      function ShowElements(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
           if(sCondition){
-            document.getElementById(idEl).style.visibility = 'visible';
+            document.getElementById(arguments[i]).style.visibility = 'visible';
           } else{
-            document.getElementById(idEl).style.visibility = 'hidden';
+            document.getElementById(arguments[i]).style.visibility = 'hidden';
           }
         }
       }     
       
-      function ShowElementsOnTrue(sCondition, aElement_ID) 
-      {
-        var masEl = aElement_ID.split(',');
-
-        for(var i=0; i<masEl.length; i++)
-        {    
-          var idEl = masEl[i].trim();
-          if(sCondition){
-            document.getElementById(idEl).style.display = 'inline';
-          } else{
-            document.getElementById(idEl).style.display = 'none';
+      function ShowElementsOnTrue(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
+          if(sCondition){            
+            document.getElementById(arguments[i]).style.display = 'inline';            
+          } else {
+            document.getElementById(arguments[i]).style.display = 'none';
           }
         }        
-      }           
+      }          
       
     </script>
   </head>
@@ -979,18 +976,21 @@
       </div>
       <div class="ta-j">
         <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
-        через національного оператора поштового зв'язку №<div class="under_field w200 ta-c"><u>[post_office]</u></div>;
+        через національного оператора поштового зв'язку №
+        <div class="under_field w200 ta-c"><u>
+        	<span id="spanTransferPostVal">[post_office]</span>
+        </u></div>;
       </div>
       <div class="ta-j b">
         <span class="check_box"><span id="spanTransferBank">&#10004;</span></span>
         на рахунок у банку №
-        <span id="spanTransferBank_3">
+        <span id="spanTransferBankNotVal">
           <span class="pg-75 ub">&#160;</span> 
           МФО<span class="pg-50 ub">&#160;</span> 
           код<span class="pg-50 ub">&#160;</span> 
           банк<span class="pg-75 ub">&#160;</span>
         </span>
-        <span id="spanTransferHouse_2">   
+        <span id="spanTransferBankVal">   
           <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
@@ -1002,13 +1002,13 @@
         на особовий рахунок будинку-інтернату, установи (закладу), 
         де інвалід з дитинства або дитина-інвалід
         перебуває на повному державному утриманні №
-        <span id="spanTransferBank_2">  
+        <span id="spanTransferHouseNotVal">  
           <span class="pg-75 ub">&#160;</span> 
           МФО<span class="pg-50 ub">&#160;</span> 
           код<span class="pg-50 ub">&#160;</span> 
           банк<span class="pg-75 ub">&#160;</span>
         </span>
-        <span id="spanTransferHouse_3">   
+        <span id="spanTransferHouseVal">   
           <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
@@ -1251,19 +1251,34 @@
         </div>
       </div>
     </div>
-    <script>
-        ShowElements(asNumberApplication == 'первинне', "spanFirst");
-        ShowElements(asNumberApplication == 'повторне звернення', "spanSecond");
-      
-        ShowElementsOnTrue(transfer_type == "через національного оператора поштового зв'язку", "spanTransferPost, spanTransferHouse_2, spanTransferHouse_3");      
-        ShowElementsOnTrue(transfer_type == 'на рахунок у банку', "spanTransferBank, spanTransferBank_2, spanTransferHouse_2");     
-        ShowElementsOnTrue(transfer_type == 'childhouse', "spanTransferHouse, spanTransferBank_3, spanTransferHouse_3");      
-      
-        ShowElementsOnTrue(asAdress == 'Так', "spanAdressRegistr");      
-        ShowElementsOnTrue(asAdress == 'Ні', "spanAdressFactual");
-      
-        ChangeParagrath();
-      
+    <script>    
+    	ChangeParagrath();
+        
+        ShowElements(asNumberApplication == "первинне", "spanFirst");
+        ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
+        
+        ShowElementsOnTrue(asAdress == "Так", "spanAdressRegistr");      
+        ShowElementsOnTrue(asAdress == "Ні", "spanAdressFactual");
+    	
+        switch(transfer_type) {
+        case "через національного оператора поштового зв'язку":          
+          ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal"); 
+          break;
+        case "на рахунок у банку":    
+          ShowElementsOnTrue(true, "spanTransferBank", "spanTransferBankVal", "spanTransferHouseNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferHouse", "spanTransferPost", "spanTransferPostVal", "spanTransferHouseVal", "spanTransferBankNotVal"); 
+          break;
+        case "House":    
+          ShowElementsOnTrue(true, "spanTransferHouse", "spanTransferHouseVal", "spanTransferBankNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouseNotVal"); 
+          break;
+        default:
+          ShowElementsOnTrue(true, "spanTransferBankNotVal", "spanTransferHouseNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
+          break;
+        }
+      //*/
         ParsePassport();
     </script>
   </body>
