@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -376,7 +377,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
-        List<SubjectMessage> aSubjectMessage;
+        List<SubjectMessage> aSubjectMessage = new ArrayList();
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -387,9 +388,9 @@ public class SubjectMessageController {
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
 
         } catch (Exception e) {
-            LOG.error("FAIL: {}", e.getMessage());
-            LOG.trace("FAIL:", e);
-            throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
+            LOG.error("FAIL: {}", e);
+            //LOG.trace("FAIL:", e);
+            //throw new CommonServiceException(500, "[setServiceMessage]{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
     }
