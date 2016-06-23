@@ -178,9 +178,9 @@ public class Mail extends Abstract_Mail {
                 LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
                 LOG.trace("FAIL:", oException);
                 try {
-//TODO:MSG                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", sbBody.toString(), oException.getMessage(), null);
+                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", sbBody.toString(), oException.getMessage(), null);
                 } catch (Exception e) {
-                    LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
+                    LOG.warn("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
                 }
                 sendAlternativeWay(sbBody.toString());
             }
@@ -455,9 +455,9 @@ public class Mail extends Abstract_Mail {
         } catch (Exception oException1) {
             LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
             try {
-//TODO:MSG                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
+                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
             } catch (Exception e) {
-                LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
+                LOG.warn("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
             }
         }
     }
