@@ -265,7 +265,7 @@ public class Mail extends Abstract_Mail {
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
-            throw new EmailException("Error happened when sending email (" + getTo() + ")", oException);
+            throw new EmailException("Error happened when sending email (" + getTo() + ")"+ oException.getMessage(), oException);
         }
         LOG.info("SUCCESS: Sent!");
     }
