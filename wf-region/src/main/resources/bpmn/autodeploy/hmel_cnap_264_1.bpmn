@@ -78,7 +78,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -90,7 +90,8 @@
           <activiti:string><![CDATA[Звернення на тему: Отримання дублікату посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї у разі його втрати]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Вам відмовено у видачі дублікату посвідчення багатодітної сім'ї.&lt;br /&gt;
 Коментар держслужбовця: ${comment_2}&lt;br /&gt;
@@ -99,9 +100,18 @@ ${sPhoneOrgan}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -113,7 +123,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Отримання дублікату посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї у разі його втрати]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо отримання дублікату посвідчення багатодітної сім'ї опрацьовано.&lt;br /&gt;
 Вам призначено дату і час візиту для отримання дублікату - ${sDateVisit2}.&lt;br /&gt;
@@ -130,6 +141,12 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1}</activiti:expression>
+        </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

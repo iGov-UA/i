@@ -284,7 +284,8 @@ exports.getTask = function (req, res) {
   var options = {
     path: 'runtime/tasks/' + req.params.taskId
   };
-  activiti.put(options, function (error, statusCode, result) {
+  //activiti.put(options, function (error, statusCode, result) {
+  activiti.get(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
   }, req.body);
