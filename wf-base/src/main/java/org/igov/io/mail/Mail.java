@@ -169,6 +169,7 @@ public class Mail extends Abstract_Mail {
         sbBody.append("\nhead:");
         sbBody.append(getHead());
 
+        bUniSender = false;
         if (bUniSender) {
             try {
                 if (!sendWithUniSender()) {
