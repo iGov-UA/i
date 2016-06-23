@@ -46,7 +46,7 @@
         <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('kiev_mda_826.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Департамент містобудівного кадастру"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Департамент містобудівного кадастру м. Київа"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_ccmm" name="Пошта співробітника СММ;для тестування введіть власну пошту" type="string" default="klimkovichy@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk2_ncmm" name="Пошта начальника СММ;для тестування введіть власну пошту" type="string" default="klimkovichy@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="string" default="м. Київ, вул. Хрещатик, 32"></activiti:formProperty>
@@ -56,16 +56,65 @@
     </startEvent>
     <sequenceFlow id="flow16" sourceRef="startevent2" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+     <boundaryEvent id="boundaryerror1" name="Помилка при завантаженні файлу" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
      <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Сповіщення співробітника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask2" name="Сповіщення співробітника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${sMailClerk_ccmm}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Запит про перейменування вулиць]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+          <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>
+[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt; Ваш запит про перейменування вулиць було зареєстровано у системі.&lt;br&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+${sPhoneOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+             </extensionElements>    
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1" ></sequenceFlow>
     <userTask id="usertask1" name="Підготовка та завантаження документу-відповіді- співробітник СММ"></userTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask4" name="Сповіщення начальника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
