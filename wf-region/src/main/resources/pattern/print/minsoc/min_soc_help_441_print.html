@@ -313,13 +313,20 @@
     <script type="text/javascript">
 	
     //  ****************    переменные   ****************
+    //*
     var asNumberApplication = "[asNumberApplication]";
     var transfer_type = "[transfer_type]";
     var asAdress = "[asAdress]";
     var bankIdPassport = "[bankIdPassport]";
+    // */
+    /*
+    var asNumberApplication = "первинне";
+    var transfer_type = "через національного оператора поштового зв'язку";
+    var asAdress = "Так";
+    var bankIdPassport = "АО295227 БАБУШКИНСКИМ РО В Г ДНЕПРОПЕТРОВСКЕ ГУ ГМС УКРАИНЫ В ДНЕПРОПЕТРОВСКОЙ ОБЛ 17.08.2015";
+    //  */
     
-    
-
+    //*
       function ParsePassport() {
         //   ****************    парсим паспортные данные   **************** 
         
@@ -383,9 +390,9 @@
           document.getElementById('spanDetailPassport').style.display = 'inline';
           document.getElementById('spanTotalPassport').style.display = 'none';
         }
-      }
+      } // */
 
-
+//*
       function ChangeParagrath() {
         //подчеркиваем
         if("[cc_1_1]" == "true"){
@@ -657,10 +664,10 @@
           sp.innerHTML = "&#10004;";
           sp.previousElementSibling.className = 'u b';
         }
-      }      
+      }      // */
       
       function ShowElements(sCondition) {
-        for(var i=1; i =< arguments.length; i++) {    
+        for(var i=1; i < arguments.length; i++) {    
           if(sCondition){
             document.getElementById(arguments[i]).style.visibility = 'visible';
           } else{
@@ -670,7 +677,7 @@
       }     
       
       function ShowElementsOnTrue(sCondition) {
-        for(var i=1; i =< arguments.length; i++) {    
+        for(var i=1; i < arguments.length; i++) {    
           if(sCondition){            
             document.getElementById(arguments[i]).style.display = 'inline';            
           } else {
@@ -1247,16 +1254,12 @@
     <script>    
     	ChangeParagrath();
         
-        ShowElements(asNumberApplication == 'первинне', "spanFirst");
-        ShowElements(asNumberApplication == 'повторне звернення', "spanSecond");
+        ShowElements(asNumberApplication == "первинне", "spanFirst");
+        ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
         
         ShowElementsOnTrue(asAdress == "Так", "spanAdressRegistr");      
         ShowElementsOnTrue(asAdress == "Ні", "spanAdressFactual");
     	
-        ShowElementsOnTrue(transfer_type == "через національного оператора поштового зв'язку", "spanTransferPost, spanTransferPostVal, spanTransferBank_3, spanTransferBank_2");      
-        ShowElementsOnTrue(transfer_type == 'на рахунок у банку', "spanTransferBank, spanTransferBankVal, spanTransferHouseNotVal");     
-        ShowElementsOnTrue(transfer_type == 'childhouse', "spanTransferHouse, spanTransferHouseVal, spanTransferBankNotVal");      
-      
         switch(transfer_type) {
         case "через національного оператора поштового зв'язку":          
           ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal"); 
@@ -1275,7 +1278,7 @@
           ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
           break;
         }
-      
+      //*/
         ParsePassport();
     </script>
   </body>
