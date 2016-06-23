@@ -143,9 +143,9 @@ public class Log {
 	}
 	
         try {
-//TODO:MSG            MsgService.setEventSystemWithParam(msgType.name(), null, null, oClass == null ? "NULL_CLASS_NAME" : oClass.getName(), sHead, sBody, sStack, mParam);
+            MsgService.setEventSystemWithParam(msgType.name(), null, null, oClass == null ? "NULL_CLASS_NAME" : oClass.getName(), sHead, sBody, sStack, mParam);
 	} catch (Exception e) {
-	    oLog_Error.error("Cann't send an error message to service MSG\n", e);
+	    oLog_Error.warn("Cann't send an error message to service MSG\n", e);
 	}
         
     }
