@@ -74,8 +74,8 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo = getTo();
         String sToNew = sTo;
-//        sToNew = sToNew.replace("\\<","<");
-//        sToNew = sToNew.replace("\\>",">");
+        sToNew = sToNew.replace("\\<","<");
+        sToNew = sToNew.replace("\\>",">");
         sToNew = sToNew.replace("\"", "");
         sToNew = sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
