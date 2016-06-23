@@ -234,12 +234,15 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-
+            String sReceiverName = "receiver";
+            if (asTo.length == 1){
+                sReceiverName = getToName();
+            }
             for (String s : asTo) {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
+                        new InternetAddress(s, sReceiverName, DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,
