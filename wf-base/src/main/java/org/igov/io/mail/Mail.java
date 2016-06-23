@@ -197,12 +197,16 @@ public class Mail extends Abstract_Mail {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
-            String[] asTo = getTo().split("\\,");//sTo
-            for (String s : asTo) {
-                LOG.info("oMultiPartEmail.addTo (s={})", s);
-                oMultiPartEmail.addTo(s, "receiver");
+
+            String[] asTo = {sMailOnly(getTo())};
+            if (getTo().contains("\\,")) {
+                asTo = getTo().split("\\,");//sTo
+                for (String s : asTo) {
+                    LOG.info("oMultiPartEmail.addTo (s={})", s);
+                    oMultiPartEmail.addTo(s, "receiver");
+                }
             }
-            //oMultiPartEmail.addTo(sTo, "receiver");
+
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
 //            _From("noreply@mail.igov.org.ua");
@@ -351,9 +355,9 @@ public class Mail extends Abstract_Mail {
         String sMailNew = sMail;
         try {
             if (sMailNew.contains("<")) {
-                String[] asMail = sMailNew.split("<");
+                String[] asMail = sMailNew.split("\\<");
                 sMailNew = asMail[1];
-                asMail = sMailNew.split(">");
+                asMail = sMailNew.split("\\>");
                 sMailNew = asMail[0];
             }
         } catch (Exception oException) {
