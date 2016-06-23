@@ -4,7 +4,7 @@
     <documentation>Смоктій К.В. Последние правки: 23.06.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="kiev_reg_post" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="kiev_reg_post" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -26,8 +26,7 @@
         <activiti:formProperty id="ObjectLocation" name="Місцезнаходження (адреса) об'єкта, на який видається документ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="ObjectArea" name="Площа об'єкта, на який видається документ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="FunctionalPurpose" name="Функціональне призначення" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_RegNumberTopo" name=" " type="label" default="Перед присвоєнням поштової адреси необхідно отримати реєстраційний номер топомоніторингу (інформація є &lt;b&gt; обов'язковою для отримання послуги &lt;/b&gt;), який видається Департаментом архітектури та містобудування м.Києва"></activiti:formProperty>
-        <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу;Перед присвоєнням поштової адреси необхідно отримати реєстраційний номер топомоніторингу (інформація є обов'язковою для отримання послуги), який видається Департаментом архітектури та містобудування м.Києва" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки;Кадастровий номер земельної ділянки з документа, що посвідчує право власноcті на земельну ділянку чи право користування земельною ділянкою" type="string"></activiti:formProperty>
         <activiti:formProperty id="Document1" name="Копія технічного паспорта об'єкта нерухомого майна, виготовленого відповідним суб'єктом господарювання" type="file" default=" " required="true"></activiti:formProperty>
@@ -42,6 +41,9 @@
         <activiti:formProperty id="sMailClerk_MinUst" name="Пошта ДП -Інформаційний центр- Мінюсту України" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_UkrPost" name="Пошта Укрпошти" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації-" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_Pravo_Chief" name="Пошта керівника Відділу правового забезпечення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_MistoBudivel_Chief" name="Пошта керівника Служби містобудівного кадастру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_Deputy_Director_DMA" name="Пошта заступника директора ДМА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan_Proccess" name="назва органу, що опрацьовує заявку" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
@@ -1568,10 +1570,10 @@ execution.setVariable('Activity', per3)
     <serviceTask id="servicetask15" name="Повідомлення керівника Відділу правового забезпечення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>${sMailClerk_Pravo_Chief}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Необхідно підписати документ щодо присвоєння поштових адрес об'єктам нерухомості (нежитлові приміщення)]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1584,10 +1586,10 @@ execution.setVariable('Activity', per3)
     <serviceTask id="servicetask16" name="Повідомлення керівника Служби містобудівного кадастру" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>${sMailClerk_MistoBudivel_Chief}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Необхідно підписати документ щодо присвоєння поштових адрес об'єктам нерухомості (нежитлові приміщення)]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1605,10 +1607,10 @@ execution.setVariable('Activity', per3)
     <serviceTask id="servicetask17" name="Повідомлення заступника директора ДМА" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>${sMailClerk_Deputy_Director_DMA}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Необхідно підписати документ щодо присвоєння поштових адрес об'єктам нерухомості (нежитлові приміщення)]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
