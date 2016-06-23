@@ -979,18 +979,21 @@
       </div>
       <div class="ta-j">
         <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
-        через національного оператора поштового зв'язку №<div class="under_field w200 ta-c"><u>[post_office]</u></div>;
+        через національного оператора поштового зв'язку №
+        <div class="under_field w200 ta-c"><u>
+        	<span id="spanTransferPostVal">[post_office]</span>
+        </u></div>;
       </div>
       <div class="ta-j b">
         <span class="check_box"><span id="spanTransferBank">&#10004;</span></span>
         на рахунок у банку №
-        <span id="spanTransferBank_3">
+        <span id="spanTransferBankNotVal">
           <span class="pg-75 ub">&#160;</span> 
           МФО<span class="pg-50 ub">&#160;</span> 
           код<span class="pg-50 ub">&#160;</span> 
           банк<span class="pg-75 ub">&#160;</span>
         </span>
-        <span id="spanTransferHouse_2">   
+        <span id="spanTransferBankVal">   
           <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
@@ -1002,13 +1005,13 @@
         на особовий рахунок будинку-інтернату, установи (закладу), 
         де інвалід з дитинства або дитина-інвалід
         перебуває на повному державному утриманні №
-        <span id="spanTransferBank_2">  
+        <span id="spanTransferHouseNotVal">  
           <span class="pg-75 ub">&#160;</span> 
           МФО<span class="pg-50 ub">&#160;</span> 
           код<span class="pg-50 ub">&#160;</span> 
           банк<span class="pg-75 ub">&#160;</span>
         </span>
-        <span id="spanTransferHouse_3">   
+        <span id="spanTransferHouseVal">   
           <em>[bank_account]</em>	
           МФО <em>[mfo]</em> 
           код <em>[edrpou]</em> 
@@ -1255,9 +1258,9 @@
         ShowElements(asNumberApplication == 'первинне', "spanFirst");
         ShowElements(asNumberApplication == 'повторне звернення', "spanSecond");
       
-        ShowElementsOnTrue(transfer_type == "через національного оператора поштового зв'язку", "spanTransferPost, spanTransferHouse_2, spanTransferHouse_3");      
-        ShowElementsOnTrue(transfer_type == 'на рахунок у банку', "spanTransferBank, spanTransferBank_2, spanTransferHouse_2");     
-        ShowElementsOnTrue(transfer_type == 'childhouse', "spanTransferHouse, spanTransferBank_3, spanTransferHouse_3");      
+        ShowElementsOnTrue(transfer_type == "через національного оператора поштового зв'язку", "spanTransferPost, spanTransferPostVal, spanTransferBank_3, spanTransferBank_2");      
+        ShowElementsOnTrue(transfer_type == 'на рахунок у банку', "spanTransferBank, spanTransferBankVal, spanTransferHouseNotVal");     
+        ShowElementsOnTrue(transfer_type == 'childhouse', "spanTransferHouse, spanTransferHouseVal, spanTransferBankNotVal");      
       
         ShowElementsOnTrue(asAdress == 'Так', "spanAdressRegistr");      
         ShowElementsOnTrue(asAdress == 'Ні', "spanAdressFactual");
