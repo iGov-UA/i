@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця (з заповненням заяви онлайн)" isExecutable="true">
+  <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
@@ -455,15 +455,18 @@
         <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default=" " required="true">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
+          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
           <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
           <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
+          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
           <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
+          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
           <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
           <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
           <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
+          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
+          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
+          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default=" "></activiti:formProperty>
@@ -626,6 +629,42 @@
 				execution.setVariable('sVarPayGetSchet','31414501700174')          			
 				execution.setVariable('sVarSumPay','140.00')          			
           	}
+          if (sVarCNAP=='nikopolT')
+          	{
+          		execution.setVariable('sID_Merchant','i65350712368')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38033121')          			
+				execution.setVariable('sVarWhoPayGet','УК у м. Нікополі/ м. Нікополь/')          			
+				execution.setVariable('sVarPayGetSchet','31417501700029')          			
+				execution.setVariable('sVarSumPay','140.00')          			
+          	}
+          if (sVarCNAP=='dndz')
+          	{
+          		execution.setVariable('sID_Merchant','i53978776110')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','38028588')          			
+				execution.setVariable('sVarWhoPayGet','УДКСУ у м. Дніпродзержинську')          			
+				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+				execution.setVariable('sVarSumPay','140.00')          			
+          	}
+          if (sVarCNAP=='persotravT')
+          	{
+          		execution.setVariable('sID_Merchant','i24795480631')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
+				execution.setVariable('sVarBankMFO','805012')          			
+				execution.setVariable('sVarPayCode','22010300')          			
+				execution.setVariable('sVarWhoPayGetCode','37804890')          			
+				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
+				execution.setVariable('sVarPayGetSchet','31412501700013')          			
+				execution.setVariable('sVarSumPay','140.00')          			
+          	}
 		</script>
     </scriptTask>
     <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="jur_${asChoiceCNAP}">
@@ -634,16 +673,18 @@
         <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
+          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
           <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
           <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
+          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
           <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
-          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
+          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
           <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
           <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
           <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
+          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
+          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
+          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
