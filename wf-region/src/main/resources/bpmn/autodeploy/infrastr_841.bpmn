@@ -25,7 +25,7 @@
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;посиланням&lt;/a&gt; та заповнити обґрунтування і розрахунок мінімального складу екіпажу судна."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
@@ -96,7 +96,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
             						Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна успішно зареєстрована [sID_Order].<br>
-									Спеціалісти Регістра судноплавства України повинні дати відповідь найближчим часом.
+									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
                                 </p>
                                 [pattern/mail/_common_signature_start.html]
 								Державна служба України з безпеки на транспорті,<br>
@@ -195,7 +195,14 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна прийнята в роботу.<br>
-			В додатках до листа ви знайдете рахунок для сплати послуг Державної служби України з безпеки на транспорті,<br>
+			В додатках до листа ви знайдете рахунок для сплати послуг Державної служби України з безпеки на транспорті
+			</p> 
+			<p>
+			Для того щоб закінчити процедуру видачі свідоцтва про мінімальний склад екіпажу судна необхідно:<br>
+			<ul>
+			<li>Протягом сплатити держмито (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
+			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: <b>адреса</b> та отримати посвідчення.</li>
+			</ul>
 			${comment}
 			</p> 
 			<p>
