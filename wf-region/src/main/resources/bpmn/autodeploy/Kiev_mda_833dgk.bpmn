@@ -368,6 +368,12 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="parallelgateway1" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>     
+      execution.setVariable('sDate_today', new Date().format("dd.MM.yyyy").toString())
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow18" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var per1 = execution.getVariable(asResalt)
       var per2 =' '
@@ -380,12 +386,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       {
       per2='Передача підписаного витягу до канцелярії'
       }
-      execution.setVariable('sUsertask_name', per2)
-      
-      execution.setVariable('sDate_today', new Date().format("dd.MM.yyyy").toString())
-      </script>
+      execution.setVariable('sUsertask_name', per2)</script>
     </scriptTask>
-    <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Kiev_mda_833dgk">
     <bpmndi:BPMNPlane bpmnElement="Kiev_mda_833dgk" id="BPMNPlane_Kiev_mda_833dgk">
@@ -438,7 +441,10 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdc:Bounds height="40.0" width="40.0" x="610.0" y="590.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="53.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="53.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="154.0" y="167.0"></omgdi:waypoint>
@@ -450,7 +456,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="222.0" y="140.0"></omgdi:waypoint>
-        <omgdi:waypoint x="292.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="405.0" y="167.0"></omgdi:waypoint>
@@ -508,8 +514,12 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdi:waypoint x="630.0" y="660.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="292.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="352.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="275.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="80.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
