@@ -105,13 +105,11 @@ angular.module('dashboardJsApp')
               }
             }, 'modal-success');
 
-            warningModal.result.then(function (event) {
-              callBack.apply(event, args);
-            }, function () {
-              callBack.apply(event, args);
+            warningModal.result.then(function(event) {
+              if (callBack) {
+                callBack.apply(event, args);
+              }
             });
-
-
           };
         },
 

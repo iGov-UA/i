@@ -33,6 +33,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -573,15 +576,26 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		key = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
 		params.put("sID_DataLink", key);
         
-        LOG.info("try to save service message with params: (params={})", params);
-        String jsonServiceMessage;
-		try {
-			jsonServiceMessage = historyEventService.addServiceMessage(params);
-			LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
-		} catch (Exception e) {
-			LOG.error("(saveServiceMessage error={})", e.getMessage());
-		}
-        
+		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+ 		Runnable task = new Runnable() {
+ 			
+ 			@Override
+ 			public void run() {
+ 				LOG.info("try to save service message with params with a delay: (params={})", params);
+ 		        String jsonServiceMessage;
+ 				try {
+ 					jsonServiceMessage = historyEventService.addServiceMessage(params);
+ 					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
+ 				} catch (Exception e) {
+ 					LOG.error("(saveServiceMessage error={})", e.getMessage());
+ 				}
+ 			}
+ 		};
+ 		// run saving message in 10 seconds so history event will be in the database already by that time
+ 		executor.schedule(task, 10, TimeUnit.SECONDS);
+ 		executor.shutdown();
+		 		
+ 		LOG.info("Configured thread to run in 10 seconds with params: (params={})", params);
     }
 
 }

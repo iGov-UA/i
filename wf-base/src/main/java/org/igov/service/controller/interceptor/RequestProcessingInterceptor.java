@@ -301,7 +301,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
         }
 
         if (sMailTo != null || sPhone != null) {
