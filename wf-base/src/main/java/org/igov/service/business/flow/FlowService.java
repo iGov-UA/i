@@ -231,7 +231,7 @@ public class FlowService implements ApplicationContextAware {
                     throw new Exception(sError);
                 }
             } else{
-                oFlowSlotTicketDao.delete(oFlowSlotTicket);
+                //oFlowSlotTicketDao.delete(oFlowSlotTicket);
             }
         }
 
