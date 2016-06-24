@@ -2213,16 +2213,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             HttpServletRequest req) throws IOException {
 
         try {
-            if (file.isEmpty()) {
-                throw new IllegalArgumentException("The uploaded file is empty, that is, either no file has\n" +
-                        "\t * been chosen in the multipart form or the chosen file has no content");
-            }
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
             LOG.debug("BPMN file has been deployed to repository service");
             return "SUCCESS";
         } catch (Exception e) {
-            throw new IllegalArgumentException("Deployment is broken");
+            throw new IllegalArgumentException("\"The uploaded file is wrong, that is, either no file has been chosen in the multipart form or the chosen file has no content or it is broken.\"");
         }
 
     }
