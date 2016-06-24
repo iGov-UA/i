@@ -249,10 +249,10 @@ public class FlowService implements ApplicationContextAware {
 
         oFlowSlotTicket.setsDateEdit(DateTime.now());
 
-        if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
-                && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
+        //if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
+        //        && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
             oFlowSlotTicketDao.delete(oFlowSlotTicket);
-        }
+        //}
         oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
         oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
      
