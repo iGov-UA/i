@@ -230,14 +230,13 @@ public class FlowService implements ApplicationContextAware {
                     LOG.error(sError);
                     throw new Exception(sError);
                 }
+            } else{
+                oFlowSlotTicketDao.delete(oFlowSlotTicket);
             }
         }
 
         oFlowSlotTicket.setnID_Subject(nID_Subject);
         
-
-        
-
         oFlowSlotTicket.setsDateStart(flowSlots.get(0).getsDate());
 
         DateTime endDate = oFlowSlotTicket.getsDateStart();
@@ -246,22 +245,15 @@ public class FlowService implements ApplicationContextAware {
             endDate.plusMinutes(duration.getMinutes());
         }
         oFlowSlotTicket.setsDateFinish(endDate);
-
         oFlowSlotTicket.setsDateEdit(DateTime.now());
 
-        if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
-                && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
-            oFlowSlotTicketDao.delete(oFlowSlotTicket);
-        }
+        //if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
+        //        && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
+            //oFlowSlotTicketDao.delete(oFlowSlotTicket);
+        //}
         oFlowSlotTicket.getaFlowSlot().addAll(flowSlots);
         oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-        try{
-            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-        }catch(Exception ex){
-            LOG.error("oFlowSlotTicket: " + oFlowSlotTicket.getId() + " " + oFlowSlotTicket.getaFlowSlot().size() + flowSlots.get(0).getId() , ex);
-        }
-        
-     
+        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
         return oFlowSlotTicket;
     }
 
