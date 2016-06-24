@@ -249,13 +249,18 @@ public class FlowService implements ApplicationContextAware {
 
         oFlowSlotTicket.setsDateEdit(DateTime.now());
 
-        //if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
-        //        && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
+        if(oFlowSlotTicket.getId() != null && oFlowSlotTicket.getnID_Task_Activiti() == null 
+                && !FlowSlotVO.bBusyTemp(oFlowSlotTicket)){
             oFlowSlotTicketDao.delete(oFlowSlotTicket);
-        //}
+        }
         oFlowSlotTicket.getaFlowSlot().addAll(flowSlots);
         oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+        try{
+            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+        }catch(Exception ex){
+            LOG.error("oFlowSlotTicket: " + oFlowSlotTicket.getId() + " " + oFlowSlotTicket.getaFlowSlot().size() + flowSlots.get(0).getId() , ex);
+        }
+        
      
         return oFlowSlotTicket;
     }
