@@ -2210,7 +2210,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
             @ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException {
+            HttpServletRequest req) throws CommonServiceException {
         try {
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
@@ -2219,7 +2219,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } catch (Exception e) {
             String message = "The uploaded file is wrong, that is, either no file has been chosen in the multipart form or the chosen file has no content or it is broken.";
             LOG.debug(message);
-            throw new IllegalArgumentException(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN
+            );
         }
 
     }
