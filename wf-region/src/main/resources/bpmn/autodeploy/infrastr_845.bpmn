@@ -1,68 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="infrastr_841" name="Видача свідоцтва про мінімальний склад екіпажу судна" isExecutable="true">
+  <process id="infrastr_845" name="Оформлення посвідчення члена екіпажу" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asOwnerType" name="Власник судна" type="enum" required="true">
-          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sMan" name="фізична особа або ФОП"></activiti:value>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище члена екіпажу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я учлена екіпажу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові члена екіпажу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBirth1" name="Дата народження члена екіпажу; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="№, серія паспорта члена екіпажу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAppointment" name="Посада члена екіпажу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має посвідчення члена екіпажу?" type="enum" required="true">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;посиланням&lt;/a&gt; та заповнити обґрунтування і розрахунок мінімального складу екіпажу судна."></activiti:formProperty>
-        <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nDocComp" name="Подання щодо оформлення посвідчення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManPassport" name="Копія паспорта громадянина України" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocAir" name="Копія свідоцтва авіаційного персоналу" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Значення прінтформи" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var gal = 'V'
-      var param1 = '&lt;del&gt;щорічний&lt;/del&gt; / проміжний'
-      var param2 = 'щорічний / &lt;del&gt;проміжний&lt;/del&gt;'
-if(execution.getVariable('asOglyad') == 'sNew'){execution.setVariable('og1', gal)}
-if(execution.getVariable('asOglyad') == 'sReg'){execution.setVariable('og2', gal)}
-if(execution.getVariable('asOglyad') == 'sYear'){execution.setVariable('og3', gal);execution.setVariable('param', param2)}
-if(execution.getVariable('asOglyad') == 'sMiddle'){execution.setVariable('og3', gal);execution.setVariable('param', param1)}
-if(execution.getVariable('asOglyad') == 'sUnWat'){execution.setVariable('og4', gal)}
-if(execution.getVariable('asOglyad') == 'sUnReg'){execution.setVariable('og5', gal)}
-if(execution.getVariable('asOglyad') == 'sOther'){execution.setVariable('og6', gal)}
-if(execution.getVariable('asTypePay') == 'sShipOwner'){execution.setVariable('pay1', gal)}
-if(execution.getVariable('asTypePay') == 'sOwner'){execution.setVariable('pay2', gal)}
-if(execution.getVariable('asTypePay') == 'sManPay'){execution.setVariable('pay3', gal)}
-if(execution.getVariable('asTypePay') == 'sOtherPay'){execution.setVariable('pay4', gal)}
-if(execution.getVariable('asType') == 'sShipOwner'){execution.setVariable('zay1', gal)}
-if(execution.getVariable('asType') == 'sOwner'){execution.setVariable('zay2', gal)}
-if(execution.getVariable('asType') == 'sManPay'){execution.setVariable('zay3', gal)}
-if(execution.getVariable('asType') == 'sOtherPay'){execution.setVariable('zay4', gal)}
-if(execution.getVariable('asChange') == 'sYes1'){execution.setVariable('yes3', gal)}else{execution.setVariable('no3', gal)}
-if(execution.getVariable('asBrakeCorp') == 'sYes2'){execution.setVariable('yes4', gal)}else{execution.setVariable('no4', gal)}
-if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5', gal)}else{execution.setVariable('no5', gal)}
-
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow45" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -89,55 +50,48 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:expression>
+          <activiti:expression><![CDATA[Оформлення посвідчення члена екіпажу]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
-            						Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна успішно зареєстрована [sID_Order].<br>
-									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
+            						Ваша заявка на видачу посвідчення члена екіпажу успішно зареєстрована [sID_Order].<br>
+									Спеціалісти Державної авіаційної служби України повинні дати відповідь найближчим часом.
                                 </p>
                                 [pattern/mail/_common_signature_start.html]
-								Державна служба України з безпеки на транспорті,<br>
+								Державна авіаційна служби України,<br>
 								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="infr_rechmor_1">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="infr_air_1">
       <extensionElements>
         <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asOwnerType" name="Власник судна" type="enum" writable="false">
-          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sMan" name="фізична особа"></activiti:value>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище члена екіпажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я учлена екіпажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові члена екіпажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth1" name="Дата народження члена екіпажу; Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Doc1" name="№, серія паспорта члена екіпажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAppointment" name="Посада члена екіпажу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Наявність посвідчення члена екіпажу" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVlasnPIB" name="ПІБ власника / судновласника" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="E-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocComp},${nManPassport},${nDocAir}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -156,7 +110,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:string>
+          <activiti:string><![CDATA[Оформлення посвідчення члена екіпажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -170,7 +124,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/_common_signature_start.html]
-			Державна служба України з безпеки на транспорті.</p>
+			Державна авіаційна служби України.</p>
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -189,19 +143,19 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:string>
+          <activiti:string><![CDATA[Оформлення посвідчення члена екіпажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна прийнята в роботу.<br>
-			В додатках до листа ви знайдете рахунок для сплати послуг Державної служби України з безпеки на транспорті
+			<p>Ваша заявка на видачу посвідчення члена екіпажу прийнята в роботу.<br>
+			В додатках до листа ви знайдете рахунок для сплати державного мита
 			</p> 
 			<p>
-			Для того щоб закінчити процедуру видачі свідоцтва про мінімальний склад екіпажу судна необхідно:<br>
+			Для того щоб закінчити процедуру подання документів для оформлення посвідчення члена екіпажу необхідно:<br>
 			<ul>
-			<li>Протягом сплатити держмито (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
-			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: <b>адреса</b> та отримати посвідчення.</li>
+			<li>Сплатити держмито (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
+			<li>Відвідати Державіаслужбу за адресою: <b>адреса</b>, сфотографуватись та подати документи.</li>
 			</ul>
 			${comment}
 			</p> 
@@ -209,7 +163,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
 			Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
             </p>
             [pattern/mail/_common_signature_start.html]
-			Державна служба України з безпеки на транспорті,<br>
+			Державна авіаційна служби України,<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -222,13 +176,10 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
     <sequenceFlow id="flow44" sourceRef="servicetask4" targetRef="endevent6"></sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_841">
-    <bpmndi:BPMNPlane bpmnElement="infrastr_841" id="BPMNPlane_infrastr_841">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_845">
+    <bpmndi:BPMNPlane bpmnElement="infrastr_845" id="BPMNPlane_infrastr_845">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="55.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="70.0" y="122.0"></omgdc:Bounds>
@@ -257,10 +208,6 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="45.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="70.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="107.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="122.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="175.0" y="157.0"></omgdi:waypoint>
