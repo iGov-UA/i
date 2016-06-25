@@ -233,7 +233,8 @@ module.exports.signForm = function (req, res) {
         request(reqParams, function (error, response, body) {
           for (var key in formData.params) {
             if (formData.params.hasOwnProperty(key)) {
-              body = body.replace('[' + key + ']', formData.params[key]);
+              var keyValue = '[' + key + ']';
+              body = body.split(keyValue).join(formData.params[key]);
             }
           }
           callback(body);
