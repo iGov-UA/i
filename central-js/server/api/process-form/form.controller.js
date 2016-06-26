@@ -237,6 +237,9 @@ module.exports.signForm = function (req, res) {
               body = body.split(keyValue).join(formData.params[key]);
             }
           }
+          var dateCreate = new Date();
+          var formatedDateCreate = dateCreate.getFullYear() + '-' + ('0' + (dateCreate.getMonth() + 1)).slice(-2) + '-' + ('0' + dateCreate.getDate()).slice(-2);
+          body = body.split('[sDateCreateProcess]').join(formatedDateCreate);
           callback(body);
         });
       } else {
