@@ -49,12 +49,12 @@ public class ActionFlowControllerScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void shouldSuccessfullyGetFlowSlotsAndSaveTicket() throws Exception {
 
         String getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1").param("nDays", "1000000")).
+                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -63,7 +63,7 @@ public class ActionFlowControllerScenario {
         Assert.assertFalse(days.getaDay().isEmpty());
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_Service", "1").param("nDays", "1000000")).
+                param("nID_Service", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -72,7 +72,7 @@ public class ActionFlowControllerScenario {
         Assert.assertFalse(days.getaDay().isEmpty());
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1").param("nDays", "1000000").param("nFreeDays", "1")).
+                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000").param("nFreeDays", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -105,7 +105,7 @@ public class ActionFlowControllerScenario {
         Assert.assertTrue(ticketId != null);
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1")).
+                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
