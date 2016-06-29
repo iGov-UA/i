@@ -3,7 +3,6 @@
   <process id="kiev_arch_827" name="Отримання витягу з топографо-геодезичної основи міста та топографо-геодезичних вихідних даних" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" required="true"></activiti:formProperty>
@@ -180,10 +179,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask3_first"></sequenceFlow>
-    <userTask id="usertask3_first" name="3. Перевірка пакету надісланих даних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
+    <userTask id="usertask3_first" name="3. Перевірка пакету надісланих даних" activiti:candidateGroups="kiev_mda_architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -267,7 +265,7 @@
         <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Результат опрацювання" type="enum" required="true">
-          <activiti:value id="accept" name="документи відповідають законодавству"></activiti:value>
+          <activiti:value id="accept" name="Вкладений пакет документів повний, заява направлена в роботу"></activiti:value>
           <activiti:value id="reject1" name="неповний пакет документів"></activiti:value>
           <activiti:value id="reject2" name="неправильні правоустановчі документи"></activiti:value>
         </activiti:formProperty>
@@ -309,10 +307,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="5. Підписання листа відмови ЕЦП" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}arch_nach">
+    <userTask id="usertask5" name="5. Підписання листа відмови ЕЦП" activiti:candidateGroups="kiev_mda_arch_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -503,10 +500,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="usertask6_red"></sequenceFlow>
-    <userTask id="usertask6_red" name="6. Перевірка на карті МКК геоприв'язки" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
+    <userTask id="usertask6_red" name="6. Перевірка на карті МКК геоприв'язки" activiti:candidateGroups="kiev_mda_architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -681,10 +677,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask8" targetRef="usertask9"></sequenceFlow>
-    <userTask id="usertask9" name="9. Підписання Витягу ЕЦП" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}arch_zam_nach">
+    <userTask id="usertask9" name="9. Підписання Витягу ЕЦП" activiti:candidateGroups="kiev_mda_arch_zam_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -787,10 +782,9 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask9" targetRef="usertask10_green"></sequenceFlow>
-    <userTask id="usertask10_green" name="10. Підтвердження перенесення файлів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
+    <userTask id="usertask10_green" name="10. Підтвердження перенесення файлів" activiti:candidateGroups="kiev_mda_architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
