@@ -17,7 +17,7 @@
           <activiti:value id="Bud" name="житлову будівлю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBudAdress" name="Адреса об'єкта нерухомості" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sJEKname" name="Назва житлово-експлуатаційної контори" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJEKname" name="Назва органу з балансу якого знімається квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_1" name="Сканкопія технічного паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_2" name="Сканкопія правовстановлюючого документу на квартиру чи будівлю" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_3" name="Сканкопія довідки з БТІ про розмір частки квартири до всього домоволодіння." type="file" required="true"></activiti:formProperty>
@@ -113,7 +113,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="Bud" name="житлову будівлю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBudAdress" name="Адреса об'єкта нерухомості" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sJEKname" name="Назва житлово-експлуатаційної контори" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sJEKname" name="Назва органу з балансу якого знімається квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVlasn_kilk" name="Скільки власників на об'єкт нерухомості" type="enum" writable="false">
           <activiti:value id="sEnam1" name="1"></activiti:value>
           <activiti:value id="sEnam2" name="2"></activiti:value>
@@ -128,13 +128,14 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sVlasn4" name="ФІО власника №5;(вкажіть повністю)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sVlasn5" name="ФІО власника №6;(вкажіть повністю)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-		  <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
-		  <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
+          <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/khmelnitsky/cnap_khmeln_544_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка оформлена вірно заявнику прийде лист про можливість отримати документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="Printmarker" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam1'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam2&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam2'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam3'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam4'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam5&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam5'&quot;},&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam6&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam6'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -169,32 +170,20 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Документи оформлені вірно.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документи - собисто під підпис у ЦНАП.&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Оригінали документів сканкопії яких були прикріплені до заяви.&lt;br /&gt;
-3. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-&lt;/p&gt;	
-&lt;p&gt;						
-Зверніть увагу, що заяву, яку Ви подавали в електронному вигляді, треба буде засвідчити особистим підписом.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -328,8 +317,8 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow18" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_khmeln_545">
-    <bpmndi:BPMNPlane bpmnElement="cnap_khmeln_545" id="BPMNPlane_cnap_khmeln_545">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_khmeln_544">
+    <bpmndi:BPMNPlane bpmnElement="cnap_khmeln_544" id="BPMNPlane_cnap_khmeln_544">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -387,18 +376,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="355.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="475.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="220.0" y="184.0"></omgdi:waypoint>
-        <omgdi:waypoint x="219.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="595.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="640.0" y="138.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="680.0" y="138.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="138.0"></omgdi:waypoint>
@@ -413,6 +390,18 @@ ${sNameOrgan}.&lt;br /&gt;
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="558.0" y="249.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="475.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="220.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="219.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="595.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="520.0" y="214.0"></omgdi:waypoint>
