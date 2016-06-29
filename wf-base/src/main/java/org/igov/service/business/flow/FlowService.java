@@ -238,7 +238,7 @@ public class FlowService implements ApplicationContextAware {
                 }
             } else{
                 LOG.info("(oFlowSlotTicket={} was deleted!)", oFlowSlotTicket.getId());
-                oFlowSlotTicketDao.delete(oFlowSlotTicket);
+                oFlowSlotTicketDao.unbindFromTask(oFlowSlotTicket.getId());
             }
         }
 
