@@ -7,8 +7,8 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" default="fiz" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -19,18 +19,11 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name=" " type="label" default="Адреса приміщення"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocTehVisnovok" name="Копія матеріалів технічного обстеження житлового приміщення (квартири, житлового будинку), які переводяться в нежитлові; підготовлені відповідно до вимог чинного законодавства" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -48,8 +41,8 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -60,16 +53,10 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -88,8 +75,8 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -100,16 +87,10 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні, підготувати дозвіл на переведення житлового приміщення в нежитлове"></activiti:value>
           <activiti:value id="reject" name="Відмовлено в наданні послуги, підготувати лист-відмову"></activiti:value>
@@ -139,8 +120,8 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -151,16 +132,10 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Документ підписаний"></activiti:value>
         </activiti:formProperty>
@@ -182,8 +157,8 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -194,16 +169,10 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="документ від МДА отримано - запросити заявника"></activiti:value>
         </activiti:formProperty>
@@ -226,8 +195,8 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -238,16 +207,10 @@
         <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameDogovor" name="Назва правовстановлюючого документа на право власності об’єкта нерухомого майна; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObeject" name="Назва об’єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocality" name="Найменування населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="Вулиця; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberHouse" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFunction" name="Цільове призначення приміщення; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_5" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заявник отримав оригінал документу"></activiti:value>
           <activiti:value id="reject" name="Заявник більш ніж 30 днів не з'явився за оригіналом документу"></activiti:value>
