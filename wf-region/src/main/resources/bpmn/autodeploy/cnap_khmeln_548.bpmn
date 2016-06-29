@@ -26,15 +26,16 @@
         <activiti:formProperty id="skved" name="Діяльність згідно КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_1" name="Дозвіл на виконання робіт підвищеної небезпеки та на експлуатацію машин, механізмів, устаткування підвищеної небезпеки." type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_2" name="Викопіювання з ситуаційного плану міста складене під розміщення об'єктів пересувної мережі в масштабі М 1:2000, М 1:500." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_3" name="Договір на вивезення твердих побутових відходів та вторинної сировини." type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_3" name="Копія ветеринарного паспорту на тварин; (при наданні послуг з тваринами)" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_4" name="Довіреність (у разі звернення уповноваженого представника)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Text" name="В процесі обробки звернення погоджується з" type="label" default="1. землекористувачем та балансоутримувачем.&lt;br /&gt; 2. управлінням держсанепідемслужби.&lt;br /&gt; 3. управлінням ветеринарної медицини.&lt;br /&gt; 4. аварійно-рятувальною службою на водних об'єктах."></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Зняття одноповерхових приватизованих житлових будинків та квартир з балансу житлово-експлуатаційних контор"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Погодження на розміщення обєктів пересувної та дрібної стаціонарної мережі з надання послуг у сфері відпочинку та розваг"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -112,7 +113,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sOb_period" name="Період розміщення;(вкажіть у форматі ДД.ММ.РРРР - ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="skved" name="Діяльність згідно КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-		  <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
+		  <activiti:value id="accept" name="Заяву прийнято, заява зареєстрована, перейти на етап опрацювання"></activiti:value>
 		  <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
@@ -154,32 +155,20 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Документи оформлені вірно.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документи - собисто під підпис у ЦНАП.&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Оригінали документів сканкопії яких були прикріплені до заяви.&lt;br /&gt;
-3. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-&lt;/p&gt;	
-&lt;p&gt;						
-Зверніть увагу, що заяву, яку Ви подавали в електронному вигляді, треба буде засвідчити особистим підписом.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
