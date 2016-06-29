@@ -197,12 +197,16 @@ public class Mail extends Abstract_Mail {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
-            String[] asTo = getTo().split("\\,");//sTo
-            for (String s : asTo) {
-                LOG.info("oMultiPartEmail.addTo (s={})", s);
-                oMultiPartEmail.addTo(s, "receiver");
+
+            String[] asTo = {sMailOnly(getTo())};
+            if (getTo().contains("\\,")) {
+                asTo = getTo().split("\\,");//sTo
+                for (String s : asTo) {
+                    LOG.info("oMultiPartEmail.addTo (s={})", s);
+                    oMultiPartEmail.addTo(s, "receiver");
+                }
             }
-            //oMultiPartEmail.addTo(sTo, "receiver");
+
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
 //            _From("noreply@mail.igov.org.ua");
@@ -234,12 +238,15 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-
+            String sReceiverName = "receiver";
+            if (asTo.length == 1){
+                sReceiverName = getToName();
+            }
             for (String s : asTo) {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
+                        new InternetAddress(s, sReceiverName, DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,
@@ -258,7 +265,8 @@ public class Mail extends Abstract_Mail {
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
-            throw new EmailException("Error happened when sending email (" + getTo() + ")", oException);
+            throw new EmailException("Error happened when sending email (" + getTo() + ")"
+                    +"Exception message: "+ oException.getMessage(), oException);
         }
         LOG.info("SUCCESS: Sent!");
     }

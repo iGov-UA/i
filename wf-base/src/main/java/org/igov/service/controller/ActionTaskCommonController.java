@@ -2210,15 +2210,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
             @ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException {
-
+            HttpServletRequest req) throws CommonServiceException {
         try {
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
             LOG.debug("BPMN file has been deployed to repository service");
             return "SUCCESS";
         } catch (Exception e) {
-            throw new IllegalArgumentException("Deployment is broken");
+            String message = "The uploaded file is wrong, that is, either no file has been chosen in the multipart form or the chosen file has no content or it is broken.";
+            LOG.debug(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN
+            );
         }
 
     }
