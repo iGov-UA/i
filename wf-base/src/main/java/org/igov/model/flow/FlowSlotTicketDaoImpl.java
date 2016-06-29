@@ -29,10 +29,10 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<Long, FlowSlotTicket
         LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
         FlowSlotTicket flowSlotTicket = findByIdExpected(nID_FlowSlotTicket);
 
-        //if (flowSlotTicket.getnID_Task_Activiti() == null) {
-        //    LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.getId());
-        //    return false;
-        //}
+        if (flowSlotTicket.getnID_Task_Activiti() == null) {
+            LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.getId());
+            return false;
+        }
 
         LOG.info("Ticket is unbound from Task. (id={}, nID_Task_Activiti={}, dateStart={}, dateFinish={})", flowSlotTicket.getId(),
                 flowSlotTicket.getnID_Task_Activiti(), flowSlotTicket.getsDateStart(), flowSlotTicket.getsDateFinish());

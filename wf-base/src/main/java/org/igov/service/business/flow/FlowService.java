@@ -237,8 +237,10 @@ public class FlowService implements ApplicationContextAware {
                     throw new Exception(sError);
                 }
             } else{
-                LOG.info("(oFlowSlotTicket={} was deleted!)", oFlowSlotTicket.getId());
-                oFlowSlotTicketDao.unbindFromTask(oFlowSlotTicket.getId());
+                LOG.info("(delete oFlowSlotTicket={}...)", oFlowSlotTicket.getId());
+                FlowSlotTicket flowSlotTicket = oFlowSlotTicketDao.findByIdExpected(oFlowSlotTicket.getId());
+                oFlowSlotTicketDao.delete(flowSlotTicket);
+                LOG.info("(delete oFlowSlotTicket={} ok!)", oFlowSlotTicket.getId());
             }
         }
 
