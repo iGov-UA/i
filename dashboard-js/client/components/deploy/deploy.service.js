@@ -5,7 +5,7 @@
 
 angular.module('dashboardJsApp').factory('deployService', function deployService($http, $q, $rootScope, uiUploader, Modal) {
 
-  var setBP = function (url, files){
+  var setBP = function (url, files) {
     var deferred = $q.defer();
 
     var scope = $rootScope.$new(true, $rootScope);
@@ -14,15 +14,15 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     uiUploader.startUpload({
       url: url,
       concurrency: 1,
-      onProgress: function(file) {
-        scope.$apply(function() {
+      onProgress: function (file) {
+        scope.$apply(function () {
 
         });
       },
-      onCompleted: function(file, response) {
-        scope.$apply(function() {
+      onCompleted: function (file, response) {
+        scope.$apply(function () {
           try {
-            if(response === "SUCCESS"){
+            if (response === "SUCCESS") {
               deferred.resolve({
                 file: file,
                 response: response
@@ -33,13 +33,22 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
                 response: JSON.parse(response)
               });
             }
-            Modal.inform.success()("Завантаження файлу завершено");
           } catch (e) {
             deferred.reject({
               err: response
             });
             Modal.inform.error()("При завантаженні файлу виникла помилка: " + e.message + " (response body: " + response + ")");
           } finally {
+            if (response === "SUCCESS") {
+              Modal.inform.success()("Завантаження файлу завершено");
+            } else {
+              var uploadResult = JSON.parse(response);
+              if (uploadResult.code === "BUSINESS_ERR"){
+                Modal.inform.error()("При завантаженні файлу виникла помилка: " + uploadResult.message);
+              } else {
+                Modal.inform.warning()(uploadResult.message);
+              }
+            }
             $rootScope.$broadcast("end-deploy-bp-file");
           }
         });
@@ -61,11 +70,11 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     };
 
     $http(req).then(
-      function(response) {
+      function (response) {
         deferred.resolve(response.data);
         return cb();
       },
-      function(response) {
+      function (response) {
         deferred.reject(response);
         return cb(response);
       }.bind(this));
@@ -76,7 +85,7 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     var cb = callback || angular.noop;
     var deferred = $q.defer();
 
-    if(!oFilter){
+    if (!oFilter) {
       oFilter = {};
     }
 
@@ -92,7 +101,7 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     };
 
     $http(request)
-      .success(function(response){
+      .success(function (response) {
         var data = angular.fromJson(response);
         deferred.resolve(data);
         return cb();
@@ -105,11 +114,11 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     return deferred.promise;
   };
 
-  var removeListBP = function(url, oFilter, callback){
+  var removeListBP = function (url, oFilter, callback) {
     var cb = callback || angular.noop;
     var deferred = $q.defer();
 
-    if(!oFilter){
+    if (!oFilter) {
       oFilter = {};
     }
 
@@ -125,12 +134,12 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
     };
 
     $http(request)
-      .success(function(response){
+      .success(function (response) {
         var data = angular.fromJson(response);
         deferred.resolve(data);
         return cb();
       })
-      .error(function(err){
+      .error(function (err) {
         deferred.reject(err);
         return cb(err);
       }.bind(this));
@@ -143,7 +152,7 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
       return setBP('/api/deploy/setBP/' + sFileName, files);
     },
 
-    getBP: function(sID, callback) {
+    getBP: function (sID, callback) {
       return getBP('/api/deploy/getBP', sID, callback);
     },
 
