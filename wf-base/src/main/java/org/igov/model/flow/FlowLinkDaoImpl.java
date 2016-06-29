@@ -31,6 +31,10 @@ public class FlowLinkDaoImpl extends GenericEntityDao<Long, FlowLink> implements
         }
 
         List<FlowLink> links = criteria.list();
+        if(links != null && links.size() > 1){
+             throw new IllegalArgumentException("findLinkByService service return more than one result! nID_Service = " 
+                     + nID_Service + " nID_SubjectOrganDepartment = " + nID_SubjectOrganDepartment);
+        }
         return links.isEmpty() ? null : links.get(0);
     }
 }
