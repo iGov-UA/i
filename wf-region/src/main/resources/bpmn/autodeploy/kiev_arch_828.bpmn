@@ -97,9 +97,6 @@
 			<p>
 				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> відправлена на реєстрацію та перевірку пакету документів.
 			</p>
-			<p>
-				Ви отримаєте відповідь протягом 30 календарних днів. 
-			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
@@ -328,7 +325,7 @@
 				<b><i>${sCommentreject}</i></b>
 		    </p>
 		    <p>
-		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/1508/general">iGov.org.ua</a>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/1509/general">iGov.org.ua</a>.
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -632,7 +629,7 @@
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport},${nFileAppr}]]></activiti:expression>
+            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -691,7 +688,7 @@
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${fsurveyScheme1},${bankId_scan_passport},${nFileAppr},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -714,16 +711,15 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання «Витяга» виконана.<br>
+				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>
 				Номер вихідного документу ${outdocNum} від ${outdocDate}<br>
-				У вкладенні знаходиться електронний документ «Витяг» та  посилання на сховище зі схемами вихідних даних з топоснови міста Києва . 
-				Ви повинні авторизуватись у сховищі за посиланням <u>${sreposLinks}</u> 
-				за допомогою логіна <u>${Логін}</u>  
-				та пароля <u>${Пароль}</u> 
-				та скачати файли на протязі 5-х днів від отримання листа, після цього терміну файли будуть видалені.
+				Для отримання 
+				У вкладенні до цього листа знаходиться підписаний начальником управління ІТІМ ДМА, заступник начальника управління ЕЦП файл топографо-геодезичного вишукування. <br>
+				
+				Вам треба підписати цей файл своїм ЕЦП.
 			</p>
 			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			Для отримання пакету документів підпишить прикладеній файл своїм ЕЦП та зверніться за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
