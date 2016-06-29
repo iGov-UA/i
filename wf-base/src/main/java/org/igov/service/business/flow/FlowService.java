@@ -230,6 +230,9 @@ public class FlowService implements ApplicationContextAware {
                     LOG.error(sError);
                     throw new Exception(sError);
                 }
+            } else{
+                LOG.info("(oFlowSlotTicket={} was deleted!)", oFlowSlotTicket.getId());
+                oFlowSlotTicketDao.delete(oFlowSlotTicket);
             }
         }
 
