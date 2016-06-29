@@ -241,9 +241,10 @@ public class FlowService implements ApplicationContextAware {
                 FlowSlotTicket flowSlotTicket = oFlowSlotTicketDao.findByIdExpected(oFlowSlotTicket.getId());
                 oFlowSlotTicketDao.delete(flowSlotTicket);
                 LOG.info("(delete oFlowSlotTicket={} ok!)", oFlowSlotTicket.getId());
+                oFlowSlotTicket = new FlowSlotTicket();
             }
         }
-
+        
         oFlowSlotTicket.setnID_Subject(nID_Subject);
         oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
 
@@ -259,9 +260,9 @@ public class FlowService implements ApplicationContextAware {
         oFlowSlotTicket.setsDateFinish(endDate);
 
         oFlowSlotTicket.setsDateEdit(DateTime.now());
-
+        LOG.info("(saveOrUpdate oFlowSlotTicket={}...)", oFlowSlotTicket.getId());
         oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-
+        LOG.info("(saveOrUpdate oFlowSlotTicket={} ok!)", oFlowSlotTicket.getId());
         return oFlowSlotTicket;
     }
 
