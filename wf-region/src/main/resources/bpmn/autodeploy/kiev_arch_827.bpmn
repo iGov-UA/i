@@ -3,7 +3,7 @@
   <process id="kiev_arch_827" name="Отримання витягу з топографо-геодезичної основи міста та топографо-геодезичних вихідних даних" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" required="true"></activiti:formProperty>
@@ -97,7 +97,6 @@
         <activiti:formProperty id="splanshets" name="Планшети" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('architecture/kiev_arch_827.json')}"></activiti:formProperty>
-
         <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible" default="normal"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -106,8 +105,7 @@
         <activiti:formProperty id="sMailNachClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default="Канцелярія Департаменту містобудування та архітектури, м. Київ"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-		<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="Іванов Іван Іванович"></activiti:formProperty>
-
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="Іванов Іван Іванович"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -134,8 +132,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Отримання витягу з топографо-геодезичної основи міста та топографо-геодезичних вихідних даних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
+          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
           	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -183,10 +180,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask3_first"></sequenceFlow>
-    <userTask id="usertask3_first" name="3. Перевірка пакету надісланих даних" activiti:candidateGroups="arch_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_first" name="3. Перевірка пакету надісланих даних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -197,7 +194,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date" name="Дата заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
@@ -306,17 +303,16 @@
           <activiti:string><![CDATA[Нове звернення на тему: Отримання витягу з топографо-геодезичної основи міста та топографо-геодезичних вихідних даних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
+          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
           	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="5. Підписання листа відмови ЕЦП" activiti:candidateGroups="arch_nach_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask5" name="5. Підписання листа відмови ЕЦП" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}arch_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -327,7 +323,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date" name="Дата заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
@@ -404,13 +400,9 @@
           <activiti:value id="reject1" name="неповний пакет документів"></activiti:value>
           <activiti:value id="reject2" name="неправильні правоустановчі документи"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sComment4" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-
         <activiti:formProperty id="nFileReject" name="Лист відмови ЕЦП" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -461,7 +453,7 @@
           <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileReject}"]]></activiti:expression> 
+          <activiti:expression><![CDATA["${nFileReject}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -511,10 +503,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="usertask6_red"></sequenceFlow>
-    <userTask id="usertask6_red" name="6. Перевірка на карті МКК геоприв'язки" activiti:candidateGroups="arch_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask6_red" name="6. Перевірка на карті МКК геоприв'язки" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -525,7 +517,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date" name="Дата заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
@@ -595,25 +587,20 @@
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети" type="invisible"></activiti:formProperty>
-
-		<activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="decide_2" name="Результат опрацювання" type="enum" required="true">
-			<activiti:value id="accept" name="документи відповідають законодавству"></activiti:value>
-			<activiti:value id="reject" name="неповний пакет документів"></activiti:value>
-		</activiti:formProperty>
-		<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-
+        <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decide_2" name="Результат опрацювання" type="enum" required="true">
+          <activiti:value id="accept" name="документи відповідають законодавству"></activiti:value>
+          <activiti:value id="reject" name="неповний пакет документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="nFileTopograf" name="Топографо-геодезичні вихідні дані (якщо файлів декілька - запакуйте в архів)" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4},${fedrpou},${bankId_scan_passport}]]></activiti:expression>
@@ -688,17 +675,16 @@
           <activiti:string><![CDATA[Нове звернення на тему: Отримання витягу з топографо-геодезичної основи міста та топографо-геодезичних вихідних даних]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
+          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
           	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask8" targetRef="usertask9"></sequenceFlow>
-    <userTask id="usertask9" name="9. Підписання Витягу ЕЦП" activiti:candidateGroups="arch_zam_nach_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask9" name="9. Підписання Витягу ЕЦП" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}arch_zam_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -709,7 +695,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date" name="Дата заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
@@ -779,28 +765,20 @@
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети" type="invisible"></activiti:formProperty>
-
-
-
-
-		<activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="decide_2" name="Результат опрацювання" type="enum" required="true">
-			<activiti:value id="accept" name="документи відповідають законодавству"></activiti:value>
-			<activiti:value id="reject" name="неповний пакет документів"></activiti:value>
-		</activiti:formProperty>
-		<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-
+        <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decide_2" name="Результат опрацювання" type="enum" required="true">
+          <activiti:value id="accept" name="документи відповідають законодавству"></activiti:value>
+          <activiti:value id="reject" name="неповний пакет документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="nFileVutjag" name="Витяг підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Витяг" writable="false"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4},${fedrpou},${bankId_scan_passport},${nFileTopograf}]]></activiti:expression>
@@ -809,10 +787,10 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask9" targetRef="usertask10_green"></sequenceFlow>
-    <userTask id="usertask10_green" name="10. Підтвердження перенесення файлів" activiti:candidateGroups="arch_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask10_green" name="10. Підтвердження перенесення файлів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}architect1">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -823,7 +801,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date" name="Дата заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
@@ -893,18 +871,14 @@
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети" type="invisible"></activiti:formProperty>
-
-		<activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
-
-		<activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-
+        <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposLog" name="Логін" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string" required="true"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4},${fedrpou},${bankId_scan_passport},${nFileTopograf},${nFileVutjag}]]></activiti:expression>
