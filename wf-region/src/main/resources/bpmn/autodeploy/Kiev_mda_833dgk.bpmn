@@ -132,8 +132,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="AddressRegistration" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Aдреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="LocationLand" name="Місце розташування земельної ділянки, на яку запитується витяг" type="string" writable="false"></activiti:formProperty>
@@ -165,10 +165,10 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamPap_tak" name="ТАК"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат опрацювання, оберіть дію" type="enum" required="true">
-          <activiti:value id="accept" name="Надіслати витяг в електронному вигляді"></activiti:value>
-          <activiti:value id="accept_papir" name="Надіслати лист з запрошенням до канцелярії"></activiti:value>
+          <activiti:value id="reject" name="Надіслати витяг в електронному вигляді"></activiti:value>
+          <activiti:value id="accept" name="Надіслати лист з запрошенням до канцелярії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_vutjag_ECP" name="Завантажте витяг з ЄЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Завантажте витяг з ЄЦП" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -212,12 +212,12 @@ ${sNameOrgan}.&lt;br /&gt;
 Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file_vutjag_ECP}</activiti:expression>
+          <activiti:expression>${comment}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Лист про забрати витяг" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -260,7 +260,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" name="${decide=='accept_papir'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept_papir'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask2" name="Видача документа заявнику на руки" activiti:candidateGroups="kiev_mda_833">
       <extensionElements>
@@ -274,8 +274,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="AddressRegistration" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Aдреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Чи видано документ на руки" type="enum" required="true">

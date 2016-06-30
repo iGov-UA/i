@@ -3,9 +3,8 @@
   <process id="kiev_mda_273" name="Надання дозволу на переведення житлових приміщень (житлових будинків) у нежитлові" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
@@ -21,19 +20,18 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocTehVisnovok" name="Копія матеріалів технічного обстеження житлового приміщення (квартири, житлового будинку), які переводяться в нежитлові; підготовлені відповідно до вимог чинного законодавства" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible" default="Департамент містобудування та архітектури м.Києва"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default="&lt;b&gt;Графік роботи:&lt;/b&gt; &lt;br&gt;з 8.00 до 17.15 понеділок-четвер&lt;br&gt;з 8.00 до 16.00 п'ятниця&lt;br&gt;субота, неділя – вихідні дні&lt;br&gt;Обід з 12.00 до 13.00&lt;br&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible" default="&lt;b&gt;Телефон:&lt;/b&gt; (01234) 5-67-89"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible" default="&lt;b&gt;Адреса:&lt;/b&gt; м.Київ, вул. Хрещатик, 32"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible" default="Керівнику департамента містобудування та архітектури м.Києва"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;bankIdPassport&quot;,&quot;sAdress&quot;,&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;bankIdPassport&quot;,&quot;sAdress&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sNumberReestration&quot;,&quot;sAdressUr&quot;,&quot;sPibUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -54,7 +52,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
@@ -66,7 +63,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${sDocTehVisnovok}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -88,7 +85,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат обробки звернення" type="enum" required="true">
@@ -111,7 +107,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${sDocTehVisnovok}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -133,7 +129,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Результат обробки звернення" type="enum" required="true">
@@ -148,7 +143,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${sDocTehVisnovok}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -170,7 +165,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Результат обробки звернення" type="enum" required="true">
@@ -186,7 +180,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${sDocTehVisnovok}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -208,7 +202,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;writable=false" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_5" name="Результат обробки звернення" type="enum" required="true">
@@ -224,7 +217,79 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${sDocTehVisnovok}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask6" name="Підготування листа-відмови" activiti:candidateGroups="kiev_mda_architect1">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberReestration" name="Ідентифікаційний код  згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decision_6" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Лист-відмова підготовлений та переданий на підписання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka_ur&quot;,&quot;telo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka_fiz&quot;,&quot;telo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/kiev_mda_273_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask7" name="Підготування дозволу на переведення житлового приміщення в нежитлове" activiti:candidateGroups="kiev_mda_architect1">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubekt" name="Суб’єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberReestration" name="Ідентифікаційний код  згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibUr" name="ПІБ керівника юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decision_7" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Дозвіл на переведення житлового приміщення в нежитлове підготовлений"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka_ur&quot;,&quot;telo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka_fiz&quot;,&quot;telo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/kiev_mda_273_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${sDocTehVisnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -540,8 +605,8 @@ execution.setVariable('sListDocumentsPrint', res2)
     <sequenceFlow id="flow42" name="+" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow44" sourceRef="servicetask6" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="usertask7"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="servicetask6" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="usertask3" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="usertask4" targetRef="servicetask9"></sequenceFlow>
@@ -558,6 +623,8 @@ execution.setVariable('sListDocumentsPrint', res2)
     <sequenceFlow id="flow64" sourceRef="servicetask9" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow65" sourceRef="servicetask12" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow66" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow67" sourceRef="usertask7" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="usertask6" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_273">
     <bpmndi:BPMNPlane bpmnElement="kiev_mda_273" id="BPMNPlane_kiev_mda_273">
@@ -571,13 +638,19 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdc:Bounds height="55.0" width="180.0" x="150.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="270.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="182.0" x="581.0" y="432.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="182.0" x="581.0" y="523.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="349.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="55.0" width="175.0" x="364.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="56.0" width="182.0" x="581.0" y="32.0"></omgdc:Bounds>
@@ -595,16 +668,16 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="349.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="432.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="523.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="67.0" width="171.0" x="154.0" y="260.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="171.0" x="154.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="55.0" width="179.0" x="150.0" y="432.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="179.0" x="150.0" y="523.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="32.0"></omgdc:Bounds>
@@ -622,10 +695,10 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdc:Bounds height="40.0" width="40.0" x="431.0" y="197.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="219.0" y="356.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="219.0" y="447.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="89.0" y="375.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="89.0" y="466.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="124.0" y="59.0"></omgdi:waypoint>
@@ -670,64 +743,72 @@ execution.setVariable('sListDocumentsPrint', res2)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="543.0" y="297.0"></omgdi:waypoint>
-        <omgdi:waypoint x="584.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="451.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="671.0" y="244.0"></omgdi:waypoint>
         <omgdi:waypoint x="671.0" y="270.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="671.0" y="325.0"></omgdi:waypoint>
-        <omgdi:waypoint x="671.0" y="349.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="671.0" y="404.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="432.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="523.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="581.0" y="459.0"></omgdi:waypoint>
-        <omgdi:waypoint x="543.0" y="459.0"></omgdi:waypoint>
+        <omgdi:waypoint x="581.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="361.0" y="376.0"></omgdi:waypoint>
-        <omgdi:waypoint x="259.0" y="376.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="259.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="239.0" y="356.0"></omgdi:waypoint>
-        <omgdi:waypoint x="239.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="239.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="239.0" y="415.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="6.0" x="218.0" y="344.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="6.0" x="218.0" y="435.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="239.0" y="396.0"></omgdi:waypoint>
-        <omgdi:waypoint x="239.0" y="432.0"></omgdi:waypoint>
+        <omgdi:waypoint x="239.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="239.0" y="523.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="4.0" x="219.0" y="398.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="4.0" x="219.0" y="489.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="154.0" y="293.0"></omgdi:waypoint>
-        <omgdi:waypoint x="106.0" y="294.0"></omgdi:waypoint>
-        <omgdi:waypoint x="106.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="154.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="386.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="466.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="672.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="672.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="452.0" y="432.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="404.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="523.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="495.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="150.0" y="459.0"></omgdi:waypoint>
-        <omgdi:waypoint x="106.0" y="458.0"></omgdi:waypoint>
-        <omgdi:waypoint x="106.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="549.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="501.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="582.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="543.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="539.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="387.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="671.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
