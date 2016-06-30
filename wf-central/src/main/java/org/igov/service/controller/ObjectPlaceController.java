@@ -969,9 +969,10 @@ public class ObjectPlaceController {
         	
             try {
             	HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
-            	
+            	LOG.info("Found history event by process ID {}", nID_Process);
             	Optional<Place> place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
                 if (place.isPresent()) {
+                	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
                 	Map<String, String> resMap = new HashMap<String, String>();
                 	resMap.put("place", place.get().getName());
                 	result = JsonRestUtils.toJsonResponse(resMap);
