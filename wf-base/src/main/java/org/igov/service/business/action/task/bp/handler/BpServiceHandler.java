@@ -11,15 +11,19 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
 import org.igov.model.escalation.EscalationHistory;
 import org.igov.util.ToolLuna;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
 import javax.security.auth.Subject;
+
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
@@ -58,6 +62,8 @@ public class BpServiceHandler {
     private TaskService taskService;
     @Autowired
     SubjectCover subjectCover;
+    @Autowired
+    private HttpRequester httpRequester;
 
     public String startFeedbackProcess(String sID_task, String snID_Process, String processName) {
         Map<String, Object> variables = new HashMap<>();
@@ -161,6 +167,7 @@ public class BpServiceHandler {
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
+        mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
@@ -174,7 +181,24 @@ public class BpServiceHandler {
         return snID_ProcessEscalation;
     }
 
-    private Set<String> getCurrentCadidateGroup(final String sProcessName) {
+    private String getPlaceForProcess(String sID_Process) {
+    	Map<String, String> param = new HashMap<String, String>();
+        param.put("nID_Process", sID_Process);
+    	String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
+        LOG.info("(sURL={},mParam={})", sURL, param);
+        String soResponse = null;
+        try {
+            soResponse = httpRequester.getInside(sURL, param);
+            Map res = JsonRestUtils.readObject(soResponse, Map.class); 
+            soResponse = (String) res.get("place");
+        } catch (Exception ex) {
+            LOG.error("[doRemoteRequest]: ", ex);
+        }
+        LOG.info("(soResponse={})", soResponse);
+        return soResponse;
+	}
+
+	private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
         BpmnModel oBpmnModel = repositoryService.getBpmnModel(sProcessName);
         for (FlowElement oFlowElement : oBpmnModel.getMainProcess().getFlowElements()) {
