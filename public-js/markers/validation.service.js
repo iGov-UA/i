@@ -100,15 +100,21 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     });
   };
 
-  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+  self.trimMarkerName = function(markerName){
     if (markerName.indexOf('CustomFormat_') == 0)
       markerName = 'CustomFormat'; //in order to use different format rules at the same time
     if (markerName.indexOf('FileExtensions_') == 0) {
       markerName = 'FileExtensions';
     }
-    /*if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
+    if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
-    }*/
+    }
+    return markerName;
+  };
+
+  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+
+    self.trimMarkerName(markerName);
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
@@ -916,5 +922,114 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       resultMessage = resultMessage + aSubstrings[arrInd];
     }
     return resultMessage;
+  };
+
+
+  self.preinitMarkerValidate = function(marker, formFields, aResult){
+    if(!aResult || !angular.isArray(aResult)){
+      aResult = [];
+    }
+
+    var oResultMessage = {
+        sMessage: ''
+    };    
+    
+    var oMarker = {};
+    for (prop in marker) if (marker.hasOwnProperty(prop)) {
+        oResultMessage.sMarkerName = prop;
+      oMarker[self.trimMarkerName(prop)] = angular.copy(marker[prop]);
+    }
+    var oBaseMarkers = {};
+    for (prop in this.markers.validate) if (this.markers.validate.hasOwnProperty(prop)) {
+        oBaseMarkers[self.trimMarkerName(prop)] = angular.copy(this.markers.validate[prop]);
+    }
+
+    for (sMarkerName in oMarker) if (oMarker.hasOwnProperty(sMarkerName)) {
+        oResultMessage.isValidMarkerName = false;
+        oResultMessage.isValidMarkerStrukture = false;
+        oResultMessage.isValidFields = false;
+        oResultMessage.isValidFieldsID = {};
+
+        // виконуємо перевірку імені маркера        
+        for (baseProp in oBaseMarkers) if (oBaseMarkers.hasOwnProperty(baseProp)) {
+            if (sMarkerName === baseProp) {
+                oResultMessage.isValidMarkerName = true;
+                break;
+            }
+        }
+        if (!oResultMessage.isValidMarkerName) {
+            oResultMessage.sMessage = "Не корректне ім'я маркера " + oResultMessage.sMarkerName + ". ";
+            console.error('Marker name ' + oResultMessage.sMarkerName + ' is not valid');
+            aResult.push(oResultMessage);
+            return false;
+        }
+
+        // виконуємо перевірку відповідності тіла маркера
+        var oFocusMarker = oMarker[sMarkerName];
+        var oFocusBaseMarker = oBaseMarkers[sMarkerName];
+        for (key in oFocusMarker) if (oFocusMarker.hasOwnProperty(key)) {
+            if (oFocusBaseMarker[key]) {
+                if (typeof oFocusBaseMarker[key] === typeof oFocusMarker[key] && angular.isArray(oFocusBaseMarker[key]) == angular.isArray(oFocusMarker[key])) {
+                    oResultMessage.isValidMarkerStrukture = true;
+                } else {
+                    oResultMessage.sMessage = oResultMessage.sMessage + "В маркері " + oResultMessage.sMarkerName + " значення параметру " + key + " не відповідного типу. ";
+                    console.error('Marker ' + oResultMessage.sMarkerName + ' is not valid: incorrect type value in marker property name ' + key);
+                    aResult.push(oResultMessage);
+                    return false;
+                }
+            } else {
+                oResultMessage.sMessage = oResultMessage.sMessage + "В маркері " + oResultMessage.sMarkerName + " виявлено не корректний параметр " + key + ". ";
+                console.error('Marker ' + oResultMessage.sMarkerName + ' is not valid: incorrect marker property name ' + key);
+                aResult.push(oResultMessage);
+                return false;
+            }
+        }
+
+        // перевіряємо наявність поля, до якого має прив'язатись маркер
+        var ind = 0;
+        if (oFocusMarker.aField_ID) {
+            for (ind = 0; ind < oFocusMarker.aField_ID.length; ind++) {                
+                for (fieldKey in formFields) if (formFields.hasOwnProperty(fieldKey)) {                    
+                    if (fieldKey === oFocusMarker.aField_ID[ind]) {
+                        oResultMessage.isValidFieldsID[fieldKey] = true;                        
+                        if (oFocusMarker.aField_ID.length == 1 || oResultMessage.isValidFields) {
+                            oResultMessage.isValidFields = true;                            
+                        }
+                        break;
+                    }
+                }
+                if (!oResultMessage.isValidFieldsID[oFocusMarker.aField_ID[ind]]) {                    
+                    oResultMessage.isValidFields = false;
+                    oResultMessage.sMessage = oResultMessage.sMessage + "В маркері " + oResultMessage.sMarkerName + " виявлено не корректний ідентифікатор поля форми " + oFocusMarker.aField_ID[ind] + ". ";
+                    console.error('Marker ' + oResultMessage.sMarkerName + ' is not valid: incorrect form fiels ID ' + oFocusMarker.aField_ID[ind]);
+                    aResult.push(oResultMessage);
+                }
+            }
+        } else {
+            var bFoundField = function () {
+                for (ind = 0; ind < oFocusBaseMarker.aField_ID.length; ind++) {
+                    for (fieldKey in formFields) if (formFields.hasOwnProperty(fieldKey)) {
+                        if (fieldKey === oFocusBaseMarker.aField_ID[ind]) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            if (bFoundField) {
+                oResultMessage.isValidFields = true;
+                oResultMessage.isValidFieldsID['BaseMarkerFieldsID'] = true;
+            } else {
+                oResultMessage.isValidFieldsID['BaseMarkerFieldsID'] = false;
+                oResultMessage.sMessage = oResultMessage.sMessage + "В формі відсутні поля, які передбачено для активації маркеру " + oResultMessage.sMarkerName + ". ";
+                console.error('Not found form fields for activate marker ' + oResultMessage.sMarkerName);
+                aResult.push(oResultMessage);
+            }
+
+        }
+        
+    }
+    
+    return true;
   };
 }
