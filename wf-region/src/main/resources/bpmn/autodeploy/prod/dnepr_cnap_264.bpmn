@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_264" name="Встановлення статусу батьків та дитини з багатодітної сім’ї" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
@@ -60,22 +60,23 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask4" name="повідомлення громадянина про готовність посвідчення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="повідомлення громадянина про готовність посвідчення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>test_noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї</activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${PrintForm_1}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ви подавали звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї - статус встановлено.&lt;br /&gt;
 Вам призначено дату і час візиту для отримання оригіналів посвідчень - ${date_visit}.&lt;br /&gt;
@@ -92,6 +93,12 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent3" name="End"></endEvent>
@@ -100,16 +107,17 @@
     <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${remail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Нове  звернення. Встановлення статусу батьків та дитини з багатодітної сім’ї</activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 Шановний(-а) колего!&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -119,19 +127,20 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>test_noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї</activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 Причина в наступному: ${comment_2}&lt;br /&gt;
@@ -143,9 +152,18 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
@@ -156,15 +174,20 @@ per2 = '20'
 per4 = 'Царичанскьий район (Дніпропетровська область)'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'upszn577'){
-per1 = 'mupszn@kah.hs.ukrtel.net'
+per1 = 'darja.grek@gmail.com'
 per2 = '633'
 per4 = 'м.Каховка'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
+per1 = 'darja.grek@gmail.com'
+per2 = '533'
+per4 = 'ЦНАП Хмельницької міськради'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)
 execution.setVariable('rName', per4)
 	  </script>
-    </scriptTask>
+      </scriptTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
@@ -180,6 +203,7 @@ execution.setVariable('rName', per4)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
+  
     <sequenceFlow id="flow44" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
   </process>
