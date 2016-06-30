@@ -23,12 +23,12 @@
         <activiti:formProperty id="sNameDogovor" name="Дані по документу на право власності (назва,реєстраційний номер,дата реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObeject" name="Місцезнаходження (адреса) об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocTehVisnovok" name="Копія матеріалів технічного обстеження житлового приміщення (квартири, житлового будинку), які переводяться в нежитлові; підготовлені відповідно до вимог чинного законодавства" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible" default="Департамент містобудування та архітектури м.Києва"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default="&lt;b&gt;Графік роботи:&lt;/b&gt; &lt;br&gt;з 8.00 до 17.15 понеділок-четвер&lt;br&gt;з 8.00 до 16.00 п'ятниця&lt;br&gt;субота, неділя – вихідні дні&lt;br&gt;Обід з 12.00 до 13.00&lt;br&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible" default="&lt;b&gt;Телефон:&lt;/b&gt; (01234) 5-67-89"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible" default="&lt;b&gt;Адреса:&lt;/b&gt; м.Київ, вул. Хрещатик, 32"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible" default="Керівнику департамента містобудування та архітектури м.Києва"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;bankIdPassport&quot;,&quot;sAdress&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
@@ -646,6 +646,12 @@ execution.setVariable('sListDocumentsPrint', res2)
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="55.0" width="175.0" x="364.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="56.0" width="182.0" x="581.0" y="32.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -693,12 +699,6 @@ execution.setVariable('sListDocumentsPrint', res2)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="89.0" y="466.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="270.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
-        <omgdc:Bounds height="55.0" width="175.0" x="364.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="124.0" y="59.0"></omgdi:waypoint>
