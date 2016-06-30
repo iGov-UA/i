@@ -13,15 +13,16 @@
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('mvk/mda_833.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_kerivnika" name="ПІБ керівника юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканкопія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Місце знаходження юридичної особи;(Для ФОП адреса реєстрації)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Aдреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocationLand" name="Місце розташування земельної ділянки, на яку запитується витяг" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRaion" name="Район м.Києва, в якому розташована земельна ділянка, на яку запитується витяг" type="enum" required="true">
+        <activiti:formProperty id="LocationLand" name="Місце розташування земельної ділянки, на яку запитується витяг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="RegionLocationLand" name="Район м.Києва, в якому розташована земельна ділянка, на яку запитується витяг" type="enum" required="true">
           <activiti:value id="sRay1" name="Голосіївський"></activiti:value>
           <activiti:value id="sRay2" name="Дарницький"></activiti:value>
           <activiti:value id="sRay3" name="Деснянський"></activiti:value>
@@ -33,7 +34,7 @@
           <activiti:value id="sRay9" name="Солом'янський"></activiti:value>
           <activiti:value id="sRay10" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asMeta_vut" name="Мета, з якою запитується витяг" type="enum" required="true">
+        <activiti:formProperty id="IntentionName" name="Мета, з якою запитується витяг" type="enum" required="true">
           <activiti:value id="sEnamMeta1" name="Підготовка клопотання  про надання дозволу на розроблення документації із землеустрою для земельної ділянки"></activiti:value>
           <activiti:value id="sEnamMeta2" name="Отримання висновку про відповідність намірів забудови і наявні обмеження у використанні земельної ділянки"></activiti:value>
           <activiti:value id="sEnamMeta3" name="Розробка документації із землеустрою (проект або технічна документація) для земельної ділянки"></activiti:value>
@@ -41,22 +42,21 @@
           <activiti:value id="sEnamMeta5" name="З необхідністю отримання будівельного паспорту забудови земельної ділянкиь"></activiti:value>
           <activiti:value id="sEnamMetaInse" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChil_prizn" name="Яке цільове призначенням земельної ділянки?" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInventoryNumber" name="Кадастровий номер" type="string" default="8000000000:" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMetaInse" name="Зазначте для чого потрібен витяг" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asResalt" name="Надати результат на паперовому носії?" type="enum" default="sEnamPap_ni" required="true">
+        <activiti:formProperty id="Intention" name="Яке цільове призначенням земельної ділянки?" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="InventoryNumber" name="Кадастровий номер" type="string" default="8000000000:" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Other" name="Зазначте для чого потрібен витяг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PaperDoc" name="Надати результат на паперовому носії?" type="enum" default="sEnamPap_ni" required="true">
           <activiti:value id="sEnamPap_ni" name="НІ"></activiti:value>
           <activiti:value id="sEnamPap_tak" name="ТАК"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_diljanka" name="Завантажте зображення з позначенням меж ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="map1" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://mkk.kga.gov.ua&quot;&gt;Містобудівний кадастр Києва за цим посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="map2" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://map.land.gov.ua/kadastrova-karta&quot;&gt;Публічна Кадастрова мапа за цим посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="Date" name="Date" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Витяг з містобудівного кадастру"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта Органів для тесту" type="string" default="akylish88@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта Органів для тесту;(можете ввести свою)" type="string" default="akylish88@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sUsertask_name" name="sUsertask_name" type="invisible" default="1111111111111"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -119,12 +119,9 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка зверненя, формування витягу ${sUsertask_name} ${sNameOrgan}" activiti:candidateGroups="kiev_mda_833">
+    <userTask id="usertask1" name="Обробка зверненя, формування витягу, ${sUsertask_name}" activiti:candidateGroups="kiev_mda_833">
       <extensionElements>
-        <activiti:formProperty id="asResalt" name="Що зробити" type="enum" writable="false">
-          <activiti:value id="sEnamPap_ni" name="Відправити документ з ЕЦП електронною поштою"></activiti:value>
-          <activiti:value id="sEnamPap_tak" name="Переданий документи до канцелярії"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="Date" name="Дата заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -132,14 +129,15 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_kerivnika" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="LocationLand" name="Місце розташування земельної ділянки, на яку запитується витяг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRaion" name="Оберіть район Києва де розташована ділянка" type="enum" writable="false">
+        <activiti:formProperty id="RegionLocationLand" name="Оберіть район Києва де розташована ділянка" type="enum" writable="false">
           <activiti:value id="sRay1" name="Голосіївський"></activiti:value>
           <activiti:value id="sRay2" name="Дарницький"></activiti:value>
           <activiti:value id="sRay3" name="Деснянський"></activiti:value>
@@ -151,7 +149,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sRay9" name="Солом'янський"></activiti:value>
           <activiti:value id="sRay10" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asMeta_vut" name="Мета, з якою запитується витяг" type="enum" writable="false">
+        <activiti:formProperty id="IntentionName" name="Мета, з якою запитується витяг" type="enum" writable="false">
           <activiti:value id="sEnamMeta1" name="Підготовка клопотання  про надання дозволу на розроблення документації із землеустрою для земельної ділянки"></activiti:value>
           <activiti:value id="sEnamMeta2" name="Отримання висновку про відповідність намірів забудови і наявні обмеження у використанні земельної ділянки"></activiti:value>
           <activiti:value id="sEnamMeta3" name="Розробка документації із землеустрою (проект або технічна документація) для земельної ділянки"></activiti:value>
@@ -159,10 +157,10 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamMeta5" name="З необхідністю отримання будівельного паспорту забудови земельної ділянкиь"></activiti:value>
           <activiti:value id="sEnamMetaInse" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChil_prizn" name="Яке цільове призначенням земельної ділянки?" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sInventoryNumber" name="Кадастровий номер" type="string" default="8000000000:" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMetaInse" name="Зазначте для чого потрібен витяг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asResalt" name="Надати результат на паперовому носії?" type="enum" writable="false">
+        <activiti:formProperty id="Intention" name="Яке цільове призначенням земельної ділянки?" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="InventoryNumber" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Other" name="Зазначте для чого потрібен витяг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PaperDoc" name="Надати результат на паперовому носії?" type="enum" writable="false">
           <activiti:value id="sEnamPap_ni" name="НІ"></activiti:value>
           <activiti:value id="sEnamPap_tak" name="ТАК"></activiti:value>
         </activiti:formProperty>
@@ -174,7 +172,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file_diljanka}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -273,15 +271,13 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місце знаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asResalt" name="Як направити заявнику результат:" type="enum" writable="false">
-          <activiti:value id="sEnamPap_ni" name="Електронний документ"></activiti:value>
-          <activiti:value id="sEnamPap_tak" name="Паперовий документ"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Чи видано документ на руки" type="enum" required="true">
           <activiti:value id="accept" name="ТАК, видано"></activiti:value>
           <activiti:value id="reject" name="НІ, не видано"></activiti:value>
@@ -369,22 +365,22 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow17" sourceRef="parallelgateway1" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>     
-      execution.setVariable('sDate_today', new Date().format("dd.MM.yyyy").toString())
+      execution.setVariable('Date', new Date().format("dd.MM.yyyy").toString())
       </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var per1 = execution.getVariable(asResalt)
+      var per1 = execution.getVariable(PaperDoc)
       var per2 =' '
       
-      if (execution.getVariable('asResalt')=='sEnamPap_ni')
+      if (execution.getVariable('PaperDoc')=='sEnamPap_ni')
       {
-      per2='Витяг з містобудівного кадастру підписаний ЕЦП'
+      per2='НАДІСЛАТИ ВИТЯГ З КАДАСТРУ ПІДПИСАНИЙ ЕЦП'
       }
       else
       {
-      per2='Передача підписаного витягу до канцелярії'
+      per2='ПЕРЕДАТИ ПІДПИСАНИЙ НА ПАПЕРОВОМУ НОСІЇ ВИТЯГ ДО КАНЦЕЛЯРІЇ'
       }
       execution.setVariable('sUsertask_name', per2)</script>
     </scriptTask>
