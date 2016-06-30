@@ -34,6 +34,7 @@
           <activiti:value id="ten" name="Десять"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="Показуємо стільки форм для дітей, скільки обрано в полі вище" type="markers" default="${markerService.loadFromFile('zhytomyr/zhytomyr_mvk_families-8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Зміни для Чернігова" type="markers" default="${markerService.loadFromFile('zhytomyr/zhytomyr_mvk_families-8_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="child_1_pib" name="Повне ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="child_1_year" name="Рік народження дитини" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="child_1_school" name="Школа, де навчається дитина" type="string"></activiti:formProperty>
@@ -182,12 +183,12 @@
           <activiti:value id="no_father_care" name="Дитина, що позбавлена батьківського піклування"></activiti:value>
           <activiti:value id="ato_child" name="Дитина учасника АТО"></activiti:value>
           <activiti:value id="migrant_child" name="Дитина із сім'ї внутрішньо переміщених осіб"></activiti:value>
+         </activiti:formProperty>
           <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
           <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
           <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
           <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
           <activiti:formProperty id="sShapka" name="шапка" type="invisible"></activiti:formProperty>
-        </activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -435,6 +436,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі успішного прийняття заяви АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_8.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
