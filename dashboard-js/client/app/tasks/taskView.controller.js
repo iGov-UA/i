@@ -89,6 +89,7 @@
         $scope.taskForm.taskData = taskData;
 
         if (!oTask.endTime) {
+          var aInitMarkerMessages = []; // масссие результатов инициализации маркеров валидации
           $scope.taskForm.forEach(function (field) {
             if (field.type === 'markers' && $.trim(field.value)) {
               var sourceObj = null;
@@ -98,6 +99,9 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
+                if(sourceObj.validate){
+                  ValidationService.preinitMarkerValidate(sourceObj.validate, $scope.taskData.aFieldStartForm, aInitMarkerMessages);
+                }
                 _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
@@ -106,6 +110,13 @@
               }
             }
           });
+          if(aInitMarkerMessages.length > 0){
+            var sResultMarkerInitErrors = '';
+            for(var ind = 0; ind < aInitMarkerMessages.length; ind++){
+              sResultMarkerInitErrors = sResultMarkerInitErrors + aInitMarkerMessages[ind].sMessage + ' ';
+            }
+            alert(sResultMarkerInitErrors);
+          }
         }
 
         $scope.isRequired = function (item) {
