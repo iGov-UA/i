@@ -1443,7 +1443,13 @@ public class ActionTaskService {
 
         String sName = processDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
-
+        
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
+        		processInstanceId(historicTaskInstance.getProcessInstanceId()).
+        		includeProcessVariables().singleResult();
+        String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") : "";
+        LOG.info("Found process instance with variables. sPlace {}", sPlace);
+        
         Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
                 nID_Task.toString())).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
@@ -1453,7 +1459,7 @@ public class ActionTaskService {
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
 
-        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
+        ProcessDTOCover oProcess = new ProcessDTOCover(sPlace + " " + sName, sBP, nID, sDateCreate);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
 
         return oProcess;
