@@ -3,7 +3,7 @@
   <process id="kiev_mda_826" name="Запит про перейменування вулиць" isExecutable="true">
     <startEvent id="startevent2" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible" default="kiev_mda_"></activiti:formProperty> 
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible" default="kiev_mda_"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -60,7 +60,7 @@
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
@@ -117,8 +117,8 @@ ${sNameOrgan}<br>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Підготовка та завантаження документу-відповіді- співробітник СММ" activiti:candidateGroups="cmm_${sID_Public_SubjectOrganJoin}">
-       <extensionElements>
-        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string"></activiti:formProperty> 
+      <extensionElements>
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -152,41 +152,36 @@ ${sNameOrgan}<br>
           <activiti:value id="edistrictShev" name="Шевченківський район"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sStreet" name="Вулиця;;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum"  writable="false">
+        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum" writable="false">
           <activiti:value id="sgetDocType_email" name="Електронну адресу"></activiti:value>
           <activiti:value id="sgetDocType_mail" name="Поштову адресу"></activiti:value>
           <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" required="true">
-        <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
-        <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
-        <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" required="true"></activiti:formProperty>
-               
         <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea"></activiti:formProperty>  
-        
-        <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" required="true" default="ApplyECP_1" >
-            <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
-        </activiti:formProperty>  
-        
-       </extensionElements>
+        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" default="ApplyECP_1" required="true">
+          <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask4" name="Сповіщення начальника СММ про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-         <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -199,12 +194,12 @@ ${sNameOrgan}<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
-         </extensionElements>
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Перевірка та візування документу-відповіді - начальник СММ" activiti:candidateGroups="ncmm_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty> 
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -225,7 +220,7 @@ ${sNameOrgan}<br>
           <activiti:value id="erenameType_2" name="Найменування вулиці"></activiti:value>
           <activiti:value id="erenameType_3" name="Уточнення найменування вулиці"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum" >
+        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum">
           <activiti:value id="edistrictGol" name="Голосіївський район‎ "></activiti:value>
           <activiti:value id="edistrictDar" name="Дарницький район‎"></activiti:value>
           <activiti:value id="edistrictDes" name="Деснянський район"></activiti:value>
@@ -244,46 +239,40 @@ ${sNameOrgan}<br>
           <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" writable="false">
-        <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
-        <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
-        <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
-                        
         <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea" writable="false"></activiti:formProperty> 
+        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" writable="false">
-            <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
+          <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="ApplyECP_ncmm" name="Результат опрацювання" type="enum" required="true">
-            <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
-            <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea"></activiti:formProperty> 
-        <activiti:formProperty id="file1" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" "></activiti:formProperty>  
-       </extensionElements>  
+        <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" "></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    
     <sequenceFlow id="flow11" name="Є зауваження" sourceRef="exclusivegateway1" targetRef="servicetask5">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP_ncmm == 'ApplyECP_ncmm_bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP_ncmm == 'ApplyECP_ncmm_bad'}]]></conditionExpression>
     </sequenceFlow>
-    
     <serviceTask id="servicetask5" name="Сповіщення про зауваження" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-        <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -294,20 +283,19 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Доопрацювання. Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-            <activiti:expression> По зверненню [sID_Order] винесено зауваження:  ${sComment5}</activiti:expression>
+          <activiti:expression><![CDATA[По зверненню [sID_Order] винесено зауваження:  ${sComment5}]]></activiti:expression>
         </activiti:field>
-        </extensionElements>
+      </extensionElements>
     </serviceTask>
-    
     <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <userTask id="usertask3" name="Доопрацювання документу-відповіді - співробітник СММ" activiti:candidateGroups="cmm_${sID_Public_SubjectOrganJoin}">
-       <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP_ncmm" name="Результат опрацювання" type="enum" writable="false">
-            <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
-            <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty> 
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -341,39 +329,36 @@ ${sNameOrgan}<br>
           <activiti:value id="edistrictShev" name="Шевченківський район"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sStreet" name="Вулиця;;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum"  writable="false">
+        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum" writable="false">
           <activiti:value id="sgetDocType_email" name="Електронну адресу"></activiti:value>
           <activiti:value id="sgetDocType_mail" name="Поштову адресу"></activiti:value>
           <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" required="true">
-        <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
-        <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
-        <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" required="true"></activiti:formProperty>
-                     
-        <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea"></activiti:formProperty>   
-        <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" required="true" default="ApplyECP_1">
-            <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
+        <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" default="ApplyECP_1" required="true">
+          <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
         </activiti:formProperty>
-       </extensionElements>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="usertask3" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask6" name="Сповіщення про усунення зауваження для начальника СММ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-                <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -384,19 +369,17 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Сповіщення про усунення зауваження. Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-            <activiti:expression> По зверненню [sID_Order] усунено зауваження ${sComment4}</activiti:expression>
+          <activiti:expression><![CDATA[По зверненню [sID_Order] усунено зауваження ${sComment4}]]></activiti:expression>
         </activiti:field>
-                 </extensionElements>
+      </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="usertask2">
-    </sequenceFlow>
-    
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow15" name="Зауважень нема" sourceRef="exclusivegateway1" targetRef="usertask4">
-         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP_ncmm == 'ApplyECP_ncmm_ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP_ncmm == 'ApplyECP_ncmm_ok'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Завантаження документа з ЕЦП- Заступник Директора ДМА" activiti:candidateGroups="zamd_${sID_Public_SubjectOrganJoin}">
-         <extensionElements>
-        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty> 
+      <extensionElements>
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -417,7 +400,7 @@ ${sNameOrgan}<br>
           <activiti:value id="erenameType_2" name="Найменування вулиці"></activiti:value>
           <activiti:value id="erenameType_3" name="Уточнення найменування вулиці"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum" >
+        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum">
           <activiti:value id="edistrictGol" name="Голосіївський район‎ "></activiti:value>
           <activiti:value id="edistrictDar" name="Дарницький район‎"></activiti:value>
           <activiti:value id="edistrictDes" name="Деснянський район"></activiti:value>
@@ -436,54 +419,47 @@ ${sNameOrgan}<br>
           <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" writable="false">
-        <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
-        <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
-        <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
-                        
         <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="ApplyECP" name="Результат опрацювання" type="enum" writable="false">
-            <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
+          <activiti:value id="ApplyECP_1" name="Документ сформовано та надруковано"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="ApplyECP_ncmm" name="Результат опрацювання" type="enum" writable="false">
-            <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
-            <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_ok" name="перевірено та завізовано ЕЦП"></activiti:value>
+          <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
         </activiti:formProperty>
-        
-        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea" writable="false"></activiti:formProperty> 
-        <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea" writable="false" ></activiti:formProperty> 
+        <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment6" name="Коментар директора ДМА" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" " required="true"></activiti:formProperty>  
+        <activiti:formProperty id="file2" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
+            <activiti:expression><![CDATA[${file1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-       </extensionElements>  
+      </extensionElements>
     </userTask>
-
     <sequenceFlow id="flow17" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow21" name="Відповідь на email" sourceRef="exclusivegateway2" targetRef="servicetask7">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sgetDocType == 'sgetDocType_email'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sgetDocType == 'sgetDocType_email'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення громадянину з документом, підписанним ЕЦП" activiti:delegateExpression="#{MailTaskWithAttachments}">
-        <extensionElements>
+    <serviceTask id="servicetask7" name="Повідомлення громадянину з документом, підписанним ЕЦП" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -494,8 +470,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-<![CDATA[[sID_Order]<br>
+          <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p> Ваш запит про перейменування вулиць оброблено.<br>
@@ -508,31 +483,228 @@ ${sNameOrgan}<br>
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}></activiti:expression>
+          <activiti:expression><![CDATA[${phone}>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file2}</activiti:expression>
+          <activiti:expression><![CDATA[${file2}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow29" sourceRef="usertask7" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow32" name="Заявник прийде особисто" sourceRef="exclusivegateway2" targetRef="servicetask8"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення громадянину про готовність документу-відповіді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow32" name="Заявник прийде особисто" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sgetDocType == 'sgetDocType_personally'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення громадянину про готовність документу-відповіді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br>
+[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p> Ваш запит про перейменування вулиць оброблено.<br>
+Результат надання послуги Ви можете отримати у Відділі звернень громадян Департаменту містобудування та архітектури м.Києва.
+При собі необхідно мати оригінал документу, який підтверджує особу.</p>
+${sPhoneOrgan}<br>
+${sWorkTime} <br>
+${sAddress} <br>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]              
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}>]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow23" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="Видача документу-відповіді громадянинові -Співробітник відділу звернень"></userTask>
+    <userTask id="usertask5" name="Видача документу-відповіді громадянинові -Співробітник відділу звернень" activiti:candidateGroups="vidzv_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Внесіть, будь ласка, у давальному відмінку повне найменовання юридичної особи;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРОПОУ;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника або уповноваженної особи;;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="erenameType" name="Запит про" type="enum" writable="false">
+          <activiti:value id="erenameType_1" name="Перейменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_2" name="Найменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_3" name="Уточнення найменування вулиці"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum">
+          <activiti:value id="edistrictGol" name="Голосіївський район‎ "></activiti:value>
+          <activiti:value id="edistrictDar" name="Дарницький район‎"></activiti:value>
+          <activiti:value id="edistrictDes" name="Деснянський район"></activiti:value>
+          <activiti:value id="edistrictDnip" name="Дніпровський район"></activiti:value>
+          <activiti:value id="edistrictOb" name="Оболонський район‎"></activiti:value>
+          <activiti:value id="edistrictPech" name="Печерський район‎"></activiti:value>
+          <activiti:value id="edistrictPod" name="Подільський район"></activiti:value>
+          <activiti:value id="edistrictSvyat" name="Святошинський район‎"></activiti:value>
+          <activiti:value id="edistrictSolom" name="Солом'янський район‎"></activiti:value>
+          <activiti:value id="edistrictShev" name="Шевченківський район"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="Вулиця;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum" writable="false">
+          <activiti:value id="sgetDocType_email" name="Електронну адресу"></activiti:value>
+          <activiti:value id="sgetDocType_mail" name="Поштову адресу"></activiti:value>
+          <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" writable="false">
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sgetDocType_personally_1" name="Результат опрацювання" type="enum" required="true">
+          <activiti:value id="sgetDocType_personally_ok" name="Громадянин отримав документ-відповідь особисто"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment11" name="Коментар співробітника Відділу звернень громадян" type="textArea"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow30" sourceRef="usertask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow26" name="Відповідь на поштову адресу" sourceRef="exclusivegateway2" targetRef="usertask6"></sequenceFlow>
-    <userTask id="usertask6" name="Віправити відповідь-документ на поштову адресу-співробітник СММ"></userTask>
+    <sequenceFlow id="flow26" name="Відповідь на поштову адресу" sourceRef="exclusivegateway2" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sgetDocType == 'sgetDocType_mail'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask6" name="Віправити відповідь-документ на поштову адресу-співробітник СММ" activiti:candidateGroups="cmm_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Внесіть, будь ласка, у давальному відмінку повне найменовання юридичної особи;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРОПОУ;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника або уповноваженної особи;;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="erenameType" name="Запит про" type="enum" writable="false">
+          <activiti:value id="erenameType_1" name="Перейменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_2" name="Найменування вулиці"></activiti:value>
+          <activiti:value id="erenameType_3" name="Уточнення найменування вулиці"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="edistrict" name="Оберіть район міста;;writable=false" type="enum">
+          <activiti:value id="edistrictGol" name="Голосіївський район‎ "></activiti:value>
+          <activiti:value id="edistrictDar" name="Дарницький район‎"></activiti:value>
+          <activiti:value id="edistrictDes" name="Деснянський район"></activiti:value>
+          <activiti:value id="edistrictDnip" name="Дніпровський район"></activiti:value>
+          <activiti:value id="edistrictOb" name="Оболонський район‎"></activiti:value>
+          <activiti:value id="edistrictPech" name="Печерський район‎"></activiti:value>
+          <activiti:value id="edistrictPod" name="Подільський район"></activiti:value>
+          <activiti:value id="edistrictSvyat" name="Святошинський район‎"></activiti:value>
+          <activiti:value id="edistrictSolom" name="Солом'янський район‎"></activiti:value>
+          <activiti:value id="edistrictShev" name="Шевченківський район"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="Вулиця;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sgetDocType" name="Відповідь надати на" type="enum" writable="false">
+          <activiti:value id="sgetDocType_email" name="Електронну адресу"></activiti:value>
+          <activiti:value id="sgetDocType_mail" name="Поштову адресу"></activiti:value>
+          <activiti:value id="sgetDocType_personally" name="Відділ звернень громадян ДМА"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="address" name="Поштова адреса для зворотнього зв'язку;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sstreetnumberNow" name="Унікальний код об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStreetOld" name="Стара назва об’єкту ВДМ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sstreetNow" name="Нова назва об’єкту ВДМ " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sstreetNowDovidn" name="Назва об’єкту ВДМ згідно із офіційним довідником «Вулиці м. Києва»" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="erenamedocType" name="Тип документа підстави перейменування" type="enum" writable="false">
+          <activiti:value id="erenamedocTypeRish" name="рішення КМР"></activiti:value>
+          <activiti:value id="erenamedocTypeRozp" name="розпорядження КМР"></activiti:value>
+          <activiti:value id="erenamedocTypePost" name="постанова КМР"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ddateRename" name="Дата документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="srenamedocNumber" name="Номер документа-підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="srenamedocName" name="Назва документа підстави перейменування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocNum" name="Номер вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sgetDocType_mail_1" name="Результат опрацювання" type="enum" required="true">
+          <activiti:value id="sgetDocType_mail_ok" name="Документ-відповідь відправлена громадянину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment7" name="Коментар співробітника СММ" type="textArea"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow27" sourceRef="usertask6" targetRef="servicetask9"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Сповіщення громадянина про відправлення відповіді-документу" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
-    <sequenceFlow id="flow28" sourceRef="servicetask9" targetRef="usertask7"></sequenceFlow>
-    <userTask id="usertask7" name="Фінальне опрацювання після підтвердження відправлення - співробітник СММ"></userTask>
+    <serviceTask id="servicetask9" name="Сповіщення громадянина про відправлення відповіді-документу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br>
+[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p> Ваш запит про перейменування вулиць оброблено.<br>
+Результат надання послуги Ви отримаєте на поштову адресу ${address}.</p>
+${sPhoneOrgan}<br>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]              
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}>]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow31" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-         </process>
+    <sequenceFlow id="flow34" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
+  </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_826">
     <bpmndi:BPMNPlane bpmnElement="kiev_mda_826" id="BPMNPlane_kiev_mda_826">
       <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
@@ -546,6 +718,9 @@ ${sNameOrgan}<br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="82.0" y="231.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="121.0" x="340.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="84.0" width="141.0" x="443.0" y="106.0"></omgdc:Bounds>
@@ -595,14 +770,8 @@ ${sNameOrgan}<br>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="81.0" width="144.0" x="902.0" y="871.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
-        <omgdc:Bounds height="90.0" width="143.0" x="905.0" y="1000.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="491.0" y="1000.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="121.0" x="340.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="55.0" y="143.0"></omgdi:waypoint>
@@ -616,6 +785,11 @@ ${sNameOrgan}<br>
         <omgdi:waypoint x="273.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="273.0" y="28.0"></omgdi:waypoint>
         <omgdi:waypoint x="340.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="461.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="106.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="584.0" y="148.0"></omgdi:waypoint>
@@ -682,12 +856,6 @@ ${sNameOrgan}<br>
           <omgdc:Bounds height="14.0" width="90.0" x="531.0" y="542.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="905.0" y="1045.0"></omgdi:waypoint>
-        <omgdi:waypoint x="702.0" y="1047.0"></omgdi:waypoint>
-        <omgdi:waypoint x="508.0" y="1047.0"></omgdi:waypoint>
-        <omgdi:waypoint x="508.0" y="1035.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="731.0" y="581.0"></omgdi:waypoint>
         <omgdi:waypoint x="731.0" y="694.0"></omgdi:waypoint>
@@ -716,18 +884,15 @@ ${sNameOrgan}<br>
         <omgdi:waypoint x="973.0" y="772.0"></omgdi:waypoint>
         <omgdi:waypoint x="974.0" y="871.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="974.0" y="952.0"></omgdi:waypoint>
-        <omgdi:waypoint x="976.0" y="1000.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="509.0" y="773.0"></omgdi:waypoint>
         <omgdi:waypoint x="508.0" y="1000.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="461.0" y="28.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="28.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="106.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="974.0" y="952.0"></omgdi:waypoint>
+        <omgdi:waypoint x="973.0" y="1038.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="1038.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="1017.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
