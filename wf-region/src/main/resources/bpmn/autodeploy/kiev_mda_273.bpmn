@@ -375,42 +375,6 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="Повідомлення громадянина про підготовку листа-відмови" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання дозволу на переведення житлових приміщень у нежитлові]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
-[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-По Вашому зверненню готується лист-відмова.&lt;br /&gt;
-Причина:enum{[reject_2]}&lt;br /&gt;
-Коментар співробітника відділу правового забезпечення ДМА: ${comment_2}&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами підготовки листа-відмови.&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;	   
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Otrimano povidomlenya pro vidmovu. Zvernennya [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask7" name="Повідомлення громадянина про підготовку листа-відповіді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -599,14 +563,13 @@ execution.setVariable('sListDocumentsPrint', res2)
     <sequenceFlow id="flow37" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow41" name="-" sourceRef="exclusivegateway2" targetRef="servicetask6">
+    <sequenceFlow id="flow41" name="-" sourceRef="exclusivegateway2" targetRef="usertask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow42" name="+" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="usertask7"></sequenceFlow>
-    <sequenceFlow id="flow44" sourceRef="servicetask6" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="usertask3" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="usertask4" targetRef="servicetask9"></sequenceFlow>
@@ -660,9 +623,6 @@ execution.setVariable('sListDocumentsPrint', res2)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="183.0" x="148.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="175.0" x="584.0" y="189.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="182.0" x="361.0" y="270.0"></omgdc:Bounds>
@@ -730,7 +690,8 @@ execution.setVariable('sListDocumentsPrint', res2)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="471.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="584.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="270.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="4.0" x="504.0" y="218.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -745,10 +706,6 @@ execution.setVariable('sListDocumentsPrint', res2)
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="452.0" y="325.0"></omgdi:waypoint>
         <omgdi:waypoint x="451.0" y="360.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="671.0" y="244.0"></omgdi:waypoint>
-        <omgdi:waypoint x="671.0" y="270.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="671.0" y="415.0"></omgdi:waypoint>
