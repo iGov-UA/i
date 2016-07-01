@@ -1938,6 +1938,15 @@ p {font-size: 14px;}
           <activiti:field name="sAddress">
             <activiti:expression><![CDATA[${sAdress}]]></activiti:expression>
           </activiti:field>
+          <activiti:field name="sDateAppeal">
+            <activiti:expression><![CDATA[${sDateAppeal}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sZipCode">
+            <activiti:expression><![CDATA[${sZipCode}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sCity">
+            <activiti:expression><![CDATA[${sCity}]]></activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
@@ -4822,10 +4831,6 @@ execution.setVariable('sChannelApp', per1)</script>
     <sequenceFlow id="flow79" name="asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'" sourceRef="exclusivegateway10" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'}]]></conditionExpression>
     </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow80" sourceRef="exclusivegateway11" targetRef="exclusivegateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal3'||asChannelAppeals=='sEnumAppeal4'||asChannelAppeals=='sEnumAppeal5'}]]></conditionExpression>
-    </sequenceFlow>
     <serviceTask id="servicetask9" name="Письмо ОДА с ответом" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -4857,14 +4862,18 @@ execution.setVariable('sChannelApp', per1)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow81" sourceRef="exclusivegateway11" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal1'||asChannelAppeals=='sEnumAppeal2'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow82" sourceRef="servicetask9" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent11" name="End"></endEvent>
     <sequenceFlow id="flow83" name="sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="endevent11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
     </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow84" sourceRef="exclusivegateway11" targetRef="exclusivegateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal3'||asChannelAppeals=='sEnumAppeal4'||asChannelAppeals=='sEnumAppeal5'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow85" sourceRef="exclusivegateway11" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal1'||asChannelAppeals=='sEnumAppeal2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow86" sourceRef="servicetask9" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="_test_dnepr_mvk_291_common" id="BPMNPlane__test_dnepr_mvk_291_common">
@@ -4985,14 +4994,14 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
         <omgdc:Bounds height="69.0" width="105.0" x="800.0" y="302.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
-        <omgdc:Bounds height="40.0" width="40.0" x="1418.0" y="677.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="1459.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
         <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="742.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
+        <omgdc:Bounds height="40.0" width="40.0" x="1401.0" y="677.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="160.0"></omgdi:waypoint>
@@ -5214,7 +5223,7 @@ execution.setVariable('sChannelApp', per1)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
         <omgdi:waypoint x="1358.0" y="696.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1418.0" y="697.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1401.0" y="697.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
         <omgdi:waypoint x="1338.0" y="676.0"></omgdi:waypoint>
@@ -5283,26 +5292,26 @@ execution.setVariable('sChannelApp', per1)</script>
           <omgdc:Bounds height="84.0" width="100.0" x="621.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
-        <omgdi:waypoint x="1458.0" y="697.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1613.0" y="697.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow81" id="BPMNEdge_flow81">
-        <omgdi:waypoint x="1438.0" y="677.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1438.0" y="637.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1459.0" y="637.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
-        <omgdi:waypoint x="1564.0" y="637.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1633.0" y="637.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1633.0" y="677.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
         <omgdi:waypoint x="540.0" y="818.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="777.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="70.0" width="100.0" x="434.0" y="744.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
+        <omgdi:waypoint x="1441.0" y="697.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1613.0" y="697.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
+        <omgdi:waypoint x="1421.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1421.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1459.0" y="637.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
+        <omgdi:waypoint x="1564.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1633.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1633.0" y="677.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
