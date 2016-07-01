@@ -1,5 +1,5 @@
 <form name="form" novalidate>
-  <div ng-repeat="item in taskForm" class="task-form-property">
+  <div ng-repeat="item in taskForm" class="task-form-property" ng-if="isFieldVisible(item)">
 
           <span ng-if="['string', 'long'].indexOf(item.type) > -1">
             <field-title></field-title>
@@ -17,6 +17,8 @@
     <enum-field></enum-field>
 
     <file-formfield></file-formfield>
+
+    <marker-field></marker-field>
 
           <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
             <field-title></field-title>
