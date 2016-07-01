@@ -11,6 +11,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -335,6 +337,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            
+            closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
@@ -421,6 +425,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //String sID_Process = historicTaskInstance.getProcessInstanceId();
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         //LOG.info("(snID_Process={})", snID_Process);
+        
+        closeEscalationProcessIfExists(snID_Process);
         Long nID_Process = Long.valueOf(snID_Process);
         String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
         LOG.info("(sID_Order={})", sID_Order);
@@ -473,6 +479,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.trace("FAIL: ", oException);
         }
         return sReturn;
+    }
+    
+    protected void closeEscalationProcessIfExists(String sID_Process){
+    	LOG.info("Looking for escalation processes for process {}", sID_Process);
+    	List<ProcessInstance> escalationProceses = runtimeService.createProcessInstanceQuery().active().variableValueEquals("processID", sID_Process).list();
+    	
+    	if (escalationProceses != null){
+	    	LOG.info("Found {} escalation processes", escalationProceses.size());
+	    	for (ProcessInstance process : escalationProceses){
+	    		LOG.info("Removing process with ID:Key {}:{} ", process.getProcessInstanceId(), process.getProcessDefinitionKey());
+	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
+	    	}
+    	}
     }
 
 }
