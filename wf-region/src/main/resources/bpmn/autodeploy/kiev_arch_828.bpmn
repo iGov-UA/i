@@ -26,7 +26,7 @@
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="GKANum" name="№ Витягу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GKANum" name="№ Витягу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="aScheme" name="Кількість cхем для завантаження" type="enum" default="s1" required="true">
           <activiti:value id="s1" name="1"></activiti:value>
@@ -135,29 +135,29 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Зареєстрована"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP3" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="заява направлена в роботу"></activiti:value>
           <activiti:value id="reject" name="заява відхилена через невідповідність вихідних даних та полігонів робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment3" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -187,33 +187,34 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Зареєстрована"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP4" name="Результат опрацювання" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="електронний документ «Лист-відмова» сформовано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="erejectReason" name="Причина відмови" type="enum" required="true">
+        <activiti:formProperty id="erejectReason" name="Причина відмови" type="enum" default="erejectReason1" required="true">
           <activiti:value id="erejectReason1" name="невідповідність полігонів топографо-геодезичних досліджень та вихідних даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Ввести коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -237,7 +238,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="Крок 5 – Підписання листа-відмови ЕЦП директора ДМА" activiti:candidateGroups="kiev_mda_arch_nach">
+    <userTask id="usertask5" name="Крок 5/12 – Підписання листа-відмови ЕЦП директора ДМА" activiti:candidateGroups="kiev_mda_arch_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
@@ -253,36 +254,42 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Відмова"></activiti:formProperty>
-        <activiti:formProperty id="ApplyECP5" name="Результат опрацювання*" type="enum" default="accept" writable="false">
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
+
+        <activiti:formProperty id="ApplyECP5" name="Результат опрацювання*" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="електронний документ «Лист–відмова» затверджено"></activiti:value>
         </activiti:formProperty>
+        
+        
         <activiti:formProperty id="erejectReason" name="Причина відмови*" type="enum" writable="false">
           <activiti:value id="erejectReason1" name="невідповідність полігонів топографо-геодезичних досліджень та вихідних даних"></activiti:value>
           <activiti:value id="erejectReason2" name="зауваження, помилки до схеми"></activiti:value>
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sCommentreject" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${nFileReject4},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport},${nFileReject10}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileReject4},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -324,7 +331,7 @@
           <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileReject}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileReject5}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -390,28 +397,30 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="В роботі"></activiti:formProperty>
-        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання*" type="enum" default="accept" writable="false">
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі"></activiti:formProperty>
+        
+        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання" type="enum" default="accept" required="true">        
           <activiti:value id="accept" name="відправити  керівнику для затвердження або відмови"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -451,12 +460,12 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
@@ -464,19 +473,19 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="В роботі-Перевірка"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі-Перевірка"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP9" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="Немає  зауважень, затверджено"></activiti:value>
           <activiti:value id="reject" name="Є зауваження, відмова через лист-відмову"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -497,12 +506,12 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
@@ -510,7 +519,7 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Відмова"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP11" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="Лист–відмова сформований"></activiti:value>
@@ -523,13 +532,13 @@
         
         <activiti:formProperty id="sComment11" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="nFileReject10" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="ПІБ спеціаліста, який сформував та підписав лист-відмову. Формується автоматично" type="invisible"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -554,19 +563,19 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="На затвердженні"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні"></activiti:formProperty>
 
 
 
@@ -610,20 +619,23 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+        	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
-				була оброблена і зараз знаходиться на затвердженні.
+				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>
+				Номер вихідного документу ${outdocNum} від ${outdocDate}<br>
+				Для отримання 
+				У вкладенні до цього листа знаходиться підписаний начальником управління ІТІМ ДМА, заступник начальника управління ЕЦП файл топографо-геодезичного вишукування. <br>
+				
+				Вам треба підписати цей файл своїм ЕЦП.
 			</p>
 			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			Для отримання пакету документів підпишить прикладеній файл своїм ЕЦП та зверніться за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -633,8 +645,8 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zminulo status "Na zatverdzhenni". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileTopograf},${nFileVutjag}]]></activiti:expression>
-        </activiti:field>
+          <activiti:expression><![CDATA[${nFileApprNach}]]></activiti:expression>
+        </activiti:field>        
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -659,12 +671,12 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
@@ -672,19 +684,19 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="На затвердженні ЕЦП"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні ЕЦП"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP15" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="топооснову  затверджено"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment15" name="Коментар співробітника Відділу моніторингу та розвитку інженерно-транспортної інфраструктури міста" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},{nFileAppr},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -724,19 +736,19 @@
         <activiti:formProperty id="date" name="Дата заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="surosobaPhone" name="Телефон юрособи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="epurpose" name="Мета звернення" type="enum" writable="false">
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Виконано"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Виконано"></activiti:formProperty>
 
 
         <activiti:formProperty id="ApplyECP16" name="Результат опрацювання" type="enum" default="accept" required="true">
@@ -747,7 +759,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${bankId_scan_passport},${nFileAppr},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${nFileApprNach},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -770,18 +782,9 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>
-				Номер вихідного документу ${outdocNum} від ${outdocDate}<br>
-				Для отримання 
-				У вкладенні до цього листа знаходиться підписаний начальником управління ІТІМ ДМА, заступник начальника управління ЕЦП файл топографо-геодезичного вишукування. <br>
-				
-				Вам треба підписати цей файл своїм ЕЦП.
+				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>				
 			</p>
 			<br>
-			Для отримання пакету документів підпишить прикладеній файл своїм ЕЦП та зверніться за наступними контактами<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -795,7 +798,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileApprNach}]]></activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
