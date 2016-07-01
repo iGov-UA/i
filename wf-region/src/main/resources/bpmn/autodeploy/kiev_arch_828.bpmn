@@ -26,7 +26,7 @@
           <activiti:value id="vutjag" name="Витяг з топографо-геодезичної основи міста"></activiti:value>
           <activiti:value id="zdacha" name="Здача топографо-геодезичних вишукувань"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="GKANum" name="№ Витягу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="GKANum" name="№ Витягу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="aScheme" name="Кількість cхем для завантаження" type="enum" default="s1" required="true">
           <activiti:value id="s1" name="1"></activiti:value>
@@ -147,13 +147,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Зареєстрована"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP3" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="заява направлена в роботу"></activiti:value>
           <activiti:value id="reject" name="заява відхилена через невідповідність вихідних даних та полігонів робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment3" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -199,17 +199,18 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Зареєстрована"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP4" name="Результат опрацювання" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="електронний документ «Лист-відмова» сформовано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="erejectReason" name="Причина відмови" type="enum" required="true">
+        <activiti:formProperty id="erejectReason" name="Причина відмови" type="enum" default="erejectReason1" required="true">
           <activiti:value id="erejectReason1" name="невідповідність полігонів топографо-геодезичних досліджень та вихідних даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Ввести коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -265,7 +266,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Відмова"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
+
         <activiti:formProperty id="ApplyECP5" name="Результат опрацювання*" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="електронний документ «Лист–відмова» затверджено"></activiti:value>
         </activiti:formProperty>
@@ -275,14 +277,16 @@
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentreject" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${nFileReject4},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport},${nFileReject10}]]></activiti:expression>
+            <activiti:expression><![CDATA[${fsurveyScheme1},${fsurveyScheme2},${nFileReject4},${nFileReject10},${fsurveyScheme3},${fsurveyScheme4},${bankId_scan_passport},${nFileReject10}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -324,7 +328,7 @@
           <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFileReject}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileReject5}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -402,7 +406,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="В роботі"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP8" name="Результат опрацювання*" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="відправити  керівнику для затвердження або відмови"></activiti:value>
         </activiti:formProperty>
@@ -464,7 +468,7 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="В роботі-Перевірка"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі-Перевірка"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP9" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="Немає  зауважень, затверджено"></activiti:value>
@@ -510,7 +514,7 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Відмова"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP11" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="Лист–відмова сформований"></activiti:value>
@@ -566,7 +570,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="На затвердженні"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні"></activiti:formProperty>
 
 
 
@@ -672,7 +676,7 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="Status" name="Статус" type="label" default="На затвердженні ЕЦП"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні ЕЦП"></activiti:formProperty>
 
         <activiti:formProperty id="ApplyECP15" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="топооснову  затверджено"></activiti:value>
@@ -736,7 +740,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Status" name="Статус" type="label" default="Виконано"></activiti:formProperty>
+        <activiti:formProperty id="Status" name="Статус: " type="label" default="Виконано"></activiti:formProperty>
 
 
         <activiti:formProperty id="ApplyECP16" name="Результат опрацювання" type="enum" default="accept" required="true">
