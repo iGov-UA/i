@@ -410,10 +410,12 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі"></activiti:formProperty>
-        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання*" type="enum" default="accept" writable="false">
+        
+        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання" type="enum" default="accept" required="true">        
           <activiti:value id="accept" name="відправити  керівнику для затвердження або відмови"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -478,7 +480,7 @@
           <activiti:value id="reject" name="Є зауваження, відмова через лист-відмову"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -685,7 +687,7 @@
           <activiti:value id="accept" name="топооснову  затверджено"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sComment15" name="Коментар співробітника Відділу моніторингу та розвитку інженерно-транспортної інфраструктури міста" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
