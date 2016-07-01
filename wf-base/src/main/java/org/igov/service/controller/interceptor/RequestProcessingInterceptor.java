@@ -201,6 +201,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         try {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
+            	LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
                 return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
@@ -210,6 +211,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
+            	LOG.info("saveUpdatedTaskInfo block");
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
             }
         } catch (Exception ex) {
