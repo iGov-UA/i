@@ -48,6 +48,7 @@
           <activiti:value id="no_father_care" name="Дитина, що позбавлена батьківського піклування"></activiti:value>
           <activiti:value id="ato_child" name="Дитина учасника АТО"></activiti:value>
           <activiti:value id="migrant_child" name="Дитина із сім'ї внутрішньо переміщених осіб"></activiti:value>
+          <activiti:value id="other" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="child_2_pib" name="Повне ім'я другої дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="child_2_year" name="Рік народження другої дитини" type="long"></activiti:formProperty>
@@ -430,19 +431,20 @@
           <activiti:value id="migrant_child" name="Дитина із сім'ї внутрішньо переміщених осіб"></activiti:value>
           <activiti:value id="other" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decision" name="прийняте рішення" type="enum" required="true">
+        <activiti:formProperty id="decide" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="Заяву прийнято, дитину (дітей) поставлено в чергу на отримання путівки"></activiti:value>
           <activiti:value id="reject" name="Відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Додаткова інформація громадянину у разі успішного прийняття заяви АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_8.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Принтформа" type="markers" default="${markerService.loadFromFile('zhytomyr/zhytomyr_mvk_families-8_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="повідомлення громадянина про успішне опрацювання заявки"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -489,7 +491,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="повідомлення громадянина про відхилення звернення"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
