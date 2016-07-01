@@ -619,20 +619,23 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+        	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
-				була оброблена і зараз знаходиться на затвердженні.
+				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>
+				Номер вихідного документу ${outdocNum} від ${outdocDate}<br>
+				Для отримання 
+				У вкладенні до цього листа знаходиться підписаний начальником управління ІТІМ ДМА, заступник начальника управління ЕЦП файл топографо-геодезичного вишукування. <br>
+				
+				Вам треба підписати цей файл своїм ЕЦП.
 			</p>
 			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			Для отримання пакету документів підпишить прикладеній файл своїм ЕЦП та зверніться за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -642,8 +645,8 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zminulo status "Na zatverdzhenni". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileTopograf},${nFileVutjag}]]></activiti:expression>
-        </activiti:field>
+          <activiti:expression><![CDATA[${nFileApprNach}]]></activiti:expression>
+        </activiti:field>        
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -693,7 +696,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},{nFileAppr},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -756,7 +759,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${nFileAppr},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${nFileApprNach},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -779,18 +782,9 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>
-				Номер вихідного документу ${outdocNum} від ${outdocDate}<br>
-				Для отримання 
-				У вкладенні до цього листа знаходиться підписаний начальником управління ІТІМ ДМА, заступник начальника управління ЕЦП файл топографо-геодезичного вишукування. <br>
-				
-				Вам треба підписати цей файл своїм ЕЦП.
+				Ваша заявка № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> для здачі топографо-геодезичних вишукувань виконана.<br>				
 			</p>
 			<br>
-			Для отримання пакету документів підпишить прикладеній файл своїм ЕЦП та зверніться за наступними контактами<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -804,7 +798,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileApprNach}]]></activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
