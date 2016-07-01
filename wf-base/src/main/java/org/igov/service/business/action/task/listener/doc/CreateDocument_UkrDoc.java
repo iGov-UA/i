@@ -25,6 +25,7 @@ import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -51,7 +52,10 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression sDepartNameFull;
     private Expression sSex;
     private Expression sAddress;
+    private Expression sZipCode;
+    private Expression sCity;
     private Expression sID_Document;
+    private Expression sDateAppeal;
 
     @Autowired
     GeneralConfig generalConfig;
@@ -82,9 +86,12 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
                 String sSexValue = getStringFromFieldExpression(this.sSex, execution);
                 String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
+                String sZipCodeValue = getStringFromFieldExpression(this.sZipCode, execution);
+                String sCityValue = getStringFromFieldExpression(this.sCity, execution);
                 String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
                 String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
                 String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+                String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);;
                 String shortFIO = "_", fullIO = "_";
                 LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
@@ -139,7 +146,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
                 Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
                         attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
-                        sDepartNameFullValue, sSexValue, sAddressValue);
+                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue);
 
                 JSONObject json = new JSONObject();
                 json.putAll(urkDocRequest);
