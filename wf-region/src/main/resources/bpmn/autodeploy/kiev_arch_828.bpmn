@@ -610,6 +610,7 @@
         <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>        
         
         <activiti:formProperty id="nFileAppr" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -679,7 +680,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},{nFileAppr},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileAppr},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
