@@ -4808,16 +4808,16 @@ execution.setVariable('sChannelApp', per1)</script>
     <sequenceFlow id="flow80" sourceRef="exclusivegateway11" targetRef="exclusivegateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal3'||asChannelAppeals=='sEnumAppeal4'||asChannelAppeals=='sEnumAppeal5'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask9" name="Письмо ОДА с ответом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask9" name="Письмо в ОДА с ответом" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[zvernennya2@dniprorada.gov.ua]]></activiti:string>
+          <activiti:string><![CDATA[zvernennya1@dniprorada.gov.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відповідь на звернення громадян]]></activiti:string>
+          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]

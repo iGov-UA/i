@@ -15,38 +15,54 @@
           <activiti:value id="edit" name="зміна реєстарційних данних у Державному реєстрі"></activiti:value>
         </activiti:formProperty>        
 
+
+        <activiti:formProperty id="asAdult" name="Повнолітній" type="enum" default="yes" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty> 
+
         <activiti:formProperty id="asReligion" name="Чи маєте ви релігійні переконання, щодо отримання ідентифікаційного номеру" type="enum" default="no" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>          
         
-        <activiti:formProperty id="asAdult" name="Повнолітній" type="enum" default="yes" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>  
+ 
         
 
                   
          
-         
+		<activiti:formProperty id="Info_Lang" name="&lt;b&gt;Зверніть увагу&lt;/b&gt;" type="label" default="&lt;b&gt;Всі дані повинні вноситися виключно українсьою мовою&lt;/b&gt;"></activiti:formProperty>         
          
         <activiti:formProperty id="Info1_0" name="______________________________________" type="label" default="______________________________________"></activiti:formProperty>
         
 
 
-        <activiti:formProperty id="Info_Data_Parent" name="Дані законного представника чи уповноваженої особи" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="Info_Data_Applicant" name="Дані заявника" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_Data_Parent" name=" " type="label" default="&lt;b&gt;Дані законного представника чи уповноваженої особи&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="Info_Data_Applicant" name=" " type="label" default="&lt;b&gt;Дані заявника&lt;/b&gt;"></activiti:formProperty>
         
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>         
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+      	<activiti:formProperty id="bankIdbirthDay" name="Дата народження;у форматі ДД.ММ.РРРР" type="string" required="false"></activiti:formProperty>
+      	
+      	
+      	<activiti:formProperty id="Info_Place_Live" name="Місце проживання заявника" type="label" default=" "></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна" type="string" required="true" ></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_city" name="Населений пункт" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер квартири" type="string" required="true"></activiti:formProperty>
+      	
+      	                 
         
-<!-- дані непонолітнього -->
+<!-- дані не повнолітнього -->
 
+        <activiti:formProperty id="Info1_1" name="______________________________________" type="label" default="______________________________________"></activiti:formProperty>
 
-        <activiti:formProperty id="Info_Data_Teenager" name="Дані неповнолітньої осіби" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_Data_Teenager" name=" " type="label" default="&lt;b&gt;Дані неповнолітньої осіби&lt;/b&gt;"></activiti:formProperty>
         
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -70,7 +86,7 @@
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
         
-      	<activiti:formProperty id="bankIdbirthDay" name="Дата народження;у форматі ДД.ММ.РРРР" type="string" required="false"></activiti:formProperty>
+
         
 
 <!-- дані для змін -->
@@ -88,50 +104,69 @@
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-      	<activiti:formProperty id="date_of_birth" name="Дата народження;у форматі ДД/ММ/РРРР" type="date" required="true"></activiti:formProperty>   
+<!-- ******************* -->  
+        
+      	<activiti:formProperty id="dBirthDay" name="Дата народження;у форматі ДД/ММ/РРРР" type="date" required="true"></activiti:formProperty>   
         
         
-       	<activiti:formProperty id="Info_Birth_Place" name="Місце народження" type="label" default=" "></activiti:formProperty>
-        
+       	<activiti:formProperty id="Info_Birth_Place" name=" " type="label" default="&lt;b&gt;Місце народження&lt;/b&gt;"></activiti:formProperty>        
         
         <activiti:formProperty id="sBirthDayCountry" name="Країна" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBirthDayState" name="Область" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBirthDayArea" name="Район" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBirthDayCity" name="Населений пункт" type="string" required="true"></activiti:formProperty>
+        
+        
+		<activiti:formProperty id="asAdressNew" name="Міняли адресу проживання" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asAdressEqual" name="Проживає з Вами" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
 
-       	<activiti:formProperty id="Info_Place_Live" name="Місце проживання" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна" type="string" required="true" ></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLiveArea" name="Район" type="string"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_city" name="Населений пункт" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Номер будинку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sVarKvNum" name="Корпус" type="string"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер квартири" type="string" required="true"></activiti:formProperty>
+       	<activiti:formProperty id="Info_Place_LiveNew" name=" " type="label" default="&lt;b&gt;Місце проживання&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sNewVarPostIndex" name="Поштовий індекс" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_country" name="Країна" type="string" required="true" ></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_state" name="Область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewLiveArea" name="Район" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_city" name="Населений пункт" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_houseNo" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewVarKvNum" name="Корпус" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_flatNo" name="Номер квартири" type="string" required="true"></activiti:formProperty>
+<!-- ******************* -->  
 
+<!-- дані для іноземців -->
         <activiti:formProperty id="asUkrainian" name="Громадянин України" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>  
 
-       	<activiti:formProperty id="Info_Foregion" name="Для іноземців" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTaxNumberHomeCountry" name="Податковий номер у країні громадянства" type="string" required="true"></activiti:formProperty>
+<!-- ******************* --> 
 
+
+<!-- дані для працюючих -->
         <activiti:formProperty id="asWork" name="Працює" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>  
         <activiti:formProperty id="sWork" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+<!-- ******************* -->         
+        
+        
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_787.json')}"></activiti:formProperty>        
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -206,30 +241,172 @@
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="dfs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+      
+		<activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Info1_0" name="______________________________________" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_Data_Applicant" name="Дані заявника" type="label" default=" "></activiti:formProperty>
+
+
         <activiti:formProperty id="sFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" writable="false">
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
+
+		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна" type="string" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="string" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_city" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер квартири" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="Info1_1" name="______________________________________" type="label" default=" "></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" default="yes" writable="false">
+          <activiti:value id="register" name="реєстрація фізичної осіби у Державному реєстрі"></activiti:value>
+          <activiti:value id="edit" name="зміна реєстарційних данних у Державному реєстрі"></activiti:value>
+        </activiti:formProperty>        
+
+        <activiti:formProperty id="asReligion" name="Чи маєте ви релігійні переконання, щодо отримання ідентифікаційного номеру" type="enum" default="no" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>          
+        
+        <activiti:formProperty id="asAdult" name="Повнолітній" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>  
+        
+		
+		<activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
+          <activiti:value id="man" name="Чоловіча"></activiti:value>
+          <activiti:value id="woman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
+        
+      	<activiti:formProperty id="bankIdbirthDay" name="Дата народження;у форматі ДД.ММ.РРРР" type="string" required="false"></activiti:formProperty>
+      	
+      	
+
+        <activiti:formProperty id="Info1_1" name="______________________________________" type="label" default=" "></activiti:formProperty>
+
+<!-- дані не повнолітнього -->
+
+
+        <activiti:formProperty id="Info_Data_Teenager" name="Дані неповнолітньої осіби" type="label" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="lastName_UA1" name="Прізвище; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові; ;required=true" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="asTypeDocument" name="Тип документу" type="enum" default="yes" writable="false">
+          <activiti:value id="passport" name="паспорт громадянина України"></activiti:value>
+          <activiti:value id="birthCertificate" name="свідоцтво про народження дитини"></activiti:value>
+          <activiti:value id="temporaryCertificate" name="тимчасове посвідчення громадянина України"></activiti:value>
+        </activiti:formProperty> 
+        
+        <activiti:formProperty id="sPassportSeriaNumber" name="Серія та номер документу; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassportNumber" name="Номер паспорту; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassportIssuedBy" name="Ким виданий документ; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dPassportDate" name="Дата видачі документу" type="date" writable="false"></activiti:formProperty>  
+<!-- ******************* -->    
+
+        <activiti:formProperty id="Info1_2" name="______________________________________" type="label" default=" "></activiti:formProperty>
+
+
+      
+        
+
+        
+
+<!-- дані для змін -->
+		<activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="asEditFIO" name="Міняли Прізвище Ім'я По батькові" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>          
+        <activiti:formProperty id="lastName_UA2" name="Прізвище; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові; ;required=true" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asEditDate" name="Міняли дату народження" type="enum" default="no" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dStart1" name="Період, за який Ви хочете отримати довідку, з" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dStop1" name="Період, за який Ви хочете отримати довідку, по" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAim" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, для оформлення субсидій, інше" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+        
+        
+        
+      	<activiti:formProperty id="dBirthDay" name="Дата народження;у форматі ДД/ММ/РРРР" type="date" writable="false"></activiti:formProperty>   
+        
+        
+       	<activiti:formProperty id="Info_Birth_Place" name="Місце народження" type="label" default=" "></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sBirthDayCountry" name="Країна; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDayState" name="Область; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDayArea" name="Район; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDayCity" name="Населений пункт; ;required=true" type="string"></activiti:formProperty>
+
+
+
+
+
+		<activiti:formProperty id="asAdressNew" name="Міняли адресу проживання" type="enum" default="no" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asAdressEqual" name="Проживає з Вами" type="enum" default="no" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+       	<activiti:formProperty id="Info_Place_LiveNew" name="Місце проживання" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNewVarPostIndex" name="Поштовий індекс; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_country" name="Країна; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_state" name="Область; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNewLiveArea" name="Район; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_city" name="Населений пункт; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_houseNo" name="Номер будинку; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNewVarKvNum" name="Корпус; ;required=true" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sNewAddressFactual_flatNo" name="Номер квартири; ;required=true" type="string"></activiti:formProperty>
+
+
+        <activiti:formProperty id="asUkrainian" name="Громадянин України" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="sNationality" name="Громадянство; ;required=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTaxNumberHomeCountry" name="Податковий номер у країні громадянства; ;required=true" type="string"></activiti:formProperty>
+
+
+        <activiti:formProperty id="asWork" name="Працює" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>  
+        <activiti:formProperty id="sWork" name="Місце роботи; ;required=true" type="string"></activiti:formProperty>
+      
+      
+
+
+        <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" writable="false">
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="aComment" name="Результат обробки" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFIOGolova736" name="ПІП голови органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_673_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Результат обробки" type="textArea"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_787_form_1DR_print.html]" type="invisible" default="заява громадянина 1ДР - для внесення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_787_form_5DR_print.html]" type="invisible" default="заява громадянина 5ДР - для змін" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -269,7 +446,7 @@
 			<p>
 				Вам відмовлено у наданні довідки про про доходи фізичних осіб.<br/>
 				Підстава:<br>
-				<b>${aComment}</b>
+				<b>${sComment}</b>
 			</p>
 			<br><br>
 			Якщо у Вас виникли якісь запитання Ви можете звернутись за наступними контактами<br>
