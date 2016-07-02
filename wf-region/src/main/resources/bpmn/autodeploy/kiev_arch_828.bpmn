@@ -48,6 +48,10 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default="Канцелярія Департаменту містобудування та архітектури, м. Київ"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="Іванов Іван Іванович"></activiti:formProperty>
+        
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
+                
+		<activiti:formProperty id="dArrival" name="Дата прихода гражданина" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -148,7 +152,6 @@
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
 
-		<activiti:formProperty id="dArrival" name="Дата прихода гражданина" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP3" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="заява направлена в роботу"></activiti:value>
@@ -174,10 +177,12 @@
 		
 		def addDay = 2
 		if(dayWeek == 5 || dayWeek == 6){ addDay +=2 } else if(dayWeek == 7) { addDay +=1 }
-		date.add(Calendar.DATE, addDay)
+		date.add(Calendar.DATE, addDay)		
 		
+		def result = date.getTime().format("dd.MM.yyyy").toString()
 		
-		execution.setVariable('dArrival', date.getTime().format("dd.MM.yyyy"))​
+		execution.setVariable('dArrival', result)​
+      	execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())		
       </script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -299,7 +304,7 @@
 
         <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
 
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
