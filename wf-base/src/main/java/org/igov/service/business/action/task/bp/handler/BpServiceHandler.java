@@ -184,6 +184,7 @@ public class BpServiceHandler {
     private String getPlaceForProcess(String sID_Process) {
     	Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
+        param.put("nID_Server", generalConfig.getSelfServerId().toString());
     	String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
@@ -192,7 +193,7 @@ public class BpServiceHandler {
             Map res = JsonRestUtils.readObject(soResponse, Map.class); 
             soResponse = (String) res.get("place");
         } catch (Exception ex) {
-            LOG.error("[doRemoteRequest]: ", ex);
+        	 LOG.error("[getPlaceForProcess]: ", ex);
         }
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
