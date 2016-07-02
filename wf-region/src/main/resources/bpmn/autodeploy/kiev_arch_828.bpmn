@@ -179,9 +179,8 @@ if(dayWeek == 5 || dayWeek == 6){
 	addDay +=1 
 }
 dateArr.add(Calendar.DATE, addDay)		
-def result = dateArr.getTime().format("dd.MM.yyyy").toString()
-
-execution.setVariable('dArrival', result)
+execution.setVariable('dArrival', dateArr.getTime().format("dd.MM.yyyy").toString())
+execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       ]]></script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -609,12 +608,12 @@ execution.setVariable('dArrival', result)
 
 
 
-        <activiti:formProperty id="eAppr_NachUpravl" name="Мета звернення" type="enum" required="true">
+        <activiti:formProperty id="eAppr_NachUpravl" name="Затвердження топооснови  ЕЦП Начальника Управління ІТІМ ДМА" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="eAppr_GolSpet" name="Мета звернення" type="enum" required="true">
+        <activiti:formProperty id="eAppr_GolSpet" name="Затвердження топооснови  ЕЦП Головного спеціаліста" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
