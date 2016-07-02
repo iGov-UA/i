@@ -359,9 +359,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				ПО вашій заявці № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> документи перевірені і
-				 передані на опрацювання відповідним спеціалістам.<br>
-				Ви отримаєте відповідь у визначений законом термін. 
+				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> зареєстрована, пакет документів перевірено, 
+				Ви повинні надати паперовий пакет документів до Управління ІТІМ ДМА до ___, Id=. 
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -592,12 +591,12 @@
 
 
 
-        <activiti:formProperty id="eAppr_NachUpravl" name="Мета звернення" type="enum" writable="false">
+        <activiti:formProperty id="eAppr_NachUpravl" name="Мета звернення" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="eAppr_GolSpet" name="Мета звернення" type="enum" writable="false">
+        <activiti:formProperty id="eAppr_GolSpet" name="Мета звернення" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -639,7 +638,7 @@
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask10" targetRef="usertask15_green"></sequenceFlow>
 
-    <userTask id="usertask15_green" name="Крок 15 – Підтвердження топооснови ЕЦП, начальнико" activiti:candidateGroups="kiev_mda_arch_zam_nach">
+    <userTask id="usertask15_green" name="Крок 15 – Підтвердження топооснови ЕЦП" activiti:candidateGroups="kiev_mda_arch_zam_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
