@@ -80,21 +80,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         this.mode = 'dfs';
       } else {
         var matches = findModeRegexp.exec(domen);
-        // проверка на старые домены test & test-version устарела, со временем их нужно будет убрать. добавлена проверка на новые домена.
         if (matches[1] === 'test') {// || matches[1] === 'test-version'
           if (matches[2] === 'version') {
             this.mode = matches[3];
           } else {
             this.mode = matches[2];
           }
-        } else if (matches[1] === 'delta'
-          || matches[1] === 'alpha'
-          || matches[1] === 'beta'
-          || matches[1] === 'omega') {
-          this.mode = matches[3];
-        } else if ( (matches[1] === 'alpha' && matches[2] === 'old')
-          || (matches[1] === 'beta' && matches[2] === 'old')) {
-          this.mode = matches[4];
         } else {
           this.mode = matches[1];
         }
