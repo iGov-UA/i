@@ -417,6 +417,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
+        LOG.info("Looking for a task with ID {}", snID_Task);
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
 
