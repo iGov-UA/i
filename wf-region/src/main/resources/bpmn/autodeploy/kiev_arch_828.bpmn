@@ -170,7 +170,8 @@
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script><![CDATA[
-execution.setVariable('dArrival', new Date().format("dd.MM.yyyy").toString())
+def date11 = new Date().format("dd.MM.yyyy").toString()
+execution.setVariable('dArrival', date11)
       ]]></script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
