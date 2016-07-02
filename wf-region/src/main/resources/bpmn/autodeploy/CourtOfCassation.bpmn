@@ -15,12 +15,12 @@
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Юрідична адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Адреса місцезнаходження або місця проживання;з обов'язковим зазначенням поштового індексу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи;у разі відсутності ідентифікаційного номеру - серія та номер паспорта громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresUr" name="Юрідична адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання учасника судового процесу;з обов'язковим зазначенням поштового індексу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи;у разі відсутності ідентифікаційного номеру - серія та номер паспорта громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номери телефонів (факсів)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
@@ -164,9 +164,8 @@
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc10" name="Завантажте документ №10 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;]}}}"></activiti:formProperty> <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdres&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;]}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'&quot;}}}"></activiti:formProperty>
@@ -192,12 +191,12 @@
           <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ;" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Адреса місцезнаходження або місця проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номери телефонів (факсів); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" writable="false">
@@ -332,11 +331,9 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення" type="enum" required="true">
-          <activiti:value id="accept" name="документ зарєєстровано"></activiti:value>
+          <activiti:value id="accept" name="документи зарєєстровано"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="reject_1" name="У разі відхилення звернення, оберіть причниу" type="enum">

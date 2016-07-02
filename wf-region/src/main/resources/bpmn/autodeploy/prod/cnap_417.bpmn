@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="cnap_417" name="Рішення місцевої ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок" isExecutable="true">
+  <process id="cnap_417" name="Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -26,6 +26,8 @@
         <activiti:formProperty id="nFile1" name="Правовстановлюючий документ на об’єкт нерухомого майна;(при наявності об’єкту нерухомого майна)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Викопіювання з кадастрової карти (плану)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Письмова згода землекористувача (землевласника) у разі ії вилучення (викуп) земельної ділянки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -45,7 +47,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -61,7 +63,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
@@ -106,7 +108,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sPurpose" name="Мета поділу або об’єднання земельних ділянок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
@@ -144,7 +146,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
@@ -171,12 +173,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відхилине.&lt;/p&gt;
+На жаль, Ваше [sID_Order] звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -207,7 +209,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
@@ -281,13 +283,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - опрацьовано. &lt;br /&gt;
+Ваше звернення [sID_Order] щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - опрацьовано. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.&lt;br/&gt; 
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
@@ -328,13 +330,13 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
+          <activiti:string><![CDATA[Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відхилено.&lt;br /&gt;
+На жаль, Ваше [sID_Order] звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відхилено.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
