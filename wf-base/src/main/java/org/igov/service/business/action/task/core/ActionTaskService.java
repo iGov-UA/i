@@ -2336,7 +2336,7 @@ public class ActionTaskService {
         		processInstanceId(task.getProcessInstanceId()).
         		includeProcessVariables().singleResult();
         String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " ": "";
-        LOG.info("Found process instance with variables. sPlace {}", sPlace);
+        LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		Map<String, Object> taskInfo = new HashMap<String, Object>();
