@@ -89,8 +89,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
-  var aInitMarkerMessages = []; // масссие результатов инициализации маркеров валидации
-
   angular.forEach($scope.activitiForm.formProperties, function(field) {
 
     var sFieldName = field.name || '';
@@ -124,9 +122,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
       }
       if (sourceObj !== null) {
-        if(sourceObj.validate){
-          ValidationService.preinitMarkerValidate(sourceObj.validate, formData.params, aInitMarkerMessages);
-        }
         _.merge(iGovMarkers.getMarkers(), sourceObj, function(destVal, sourceVal) {
           if (_.isArray(sourceVal)) {
             return sourceVal;
@@ -143,13 +138,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     }
   });
-  if(aInitMarkerMessages.length > 0){
-    var sResultMarkerInitErrors = '';
-    for(var ind = 0; ind < aInitMarkerMessages.length; ind++){
-      sResultMarkerInitErrors = sResultMarkerInitErrors + aInitMarkerMessages[ind].sMessage + ' ';
-    }
-    alert(sResultMarkerInitErrors);
-  }
+
   iGovMarkers.validateMarkers();
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
