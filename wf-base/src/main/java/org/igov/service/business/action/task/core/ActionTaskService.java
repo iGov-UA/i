@@ -2332,6 +2332,12 @@ public class ActionTaskService {
 	}
 
 	public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
+        		processInstanceId(task.getProcessInstanceId()).
+        		includeProcessVariables().singleResult();
+        String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") : "";
+        LOG.info("Found process instance with variables. sPlace {}", sPlace);
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		Map<String, Object> taskInfo = new HashMap<String, Object>();
 		taskInfo.put("id", task.getId());
@@ -2339,7 +2345,7 @@ public class ActionTaskService {
 		taskInfo.put("owner", task.getOwner());
 		taskInfo.put("assignee", task.getAssignee());
 		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
-		taskInfo.put("name", task.getName());
+		taskInfo.put("name", sPlace + " " + task.getName());
 		taskInfo.put("description", task.getDescription());
 		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
 		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
