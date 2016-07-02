@@ -48,6 +48,10 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default="Канцелярія Департаменту містобудування та архітектури, м. Київ"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible" default="Іванов Іван Іванович"></activiti:formProperty>
+        
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
+                
+		<activiti:formProperty id="dArrival" name="Дата прихода гражданина" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -147,6 +151,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP3" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="заява направлена в роботу"></activiti:value>
@@ -164,7 +169,21 @@
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())</script>
+      <script>
+      	
+      	def date = new GregorianCalendar()
+		//def dayWeek = date.get(Calendar.DAY_OF_WEEK)
+		execution.setVariable('dArrival', date)​
+		
+		//def addDay = 2
+		//if(dayWeek == 5 || dayWeek == 6){ addDay +=2 } else if(dayWeek == 7) { addDay +=1 }
+		//date.add(Calendar.DATE, addDay)		
+		
+		//def result = date.getTime().format("dd.MM.yyyy").toString()
+		
+		
+      	//execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())		
+      </script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -285,7 +304,7 @@
 
         <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="outdocDate" name="Дата вихідного документу" type="invisible"></activiti:formProperty>
 
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -360,7 +379,7 @@
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваша заява № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> зареєстрована, пакет документів перевірено, 
-				Ви повинні надати паперовий пакет документів до Управління ІТІМ ДМА до ___, Id=. 
+				Ви повинні надати паперовий пакет документів до Управління ІТІМ ДМА до ${dArrival}р. 
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
