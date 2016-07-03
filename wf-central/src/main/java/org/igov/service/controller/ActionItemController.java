@@ -30,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import org.igov.model.action.item.ServiceTag;
+import org.igov.model.action.item.ServiceTagRelation;
 
 import static org.igov.util.Tool.bFoundText;
 
@@ -963,28 +965,83 @@ public class ActionItemController {
                         GET_CATALOG_TREE_TAG_SERVICE, sFind, asID_Place_UA, bTest, nID_Category, nID_ServiceTag, bRoot) {
                     @Override
                     public SerializableResponseEntity<String> execute() {
-                        List<Category> aCategory = new ArrayList<>(baseEntityDao.findAll(Category.class));
+                        List<Map> aReturn = new LinkedList();
+                        
+                        List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
+                        List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
+//                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
 
-                        if (!bTest) {
-                            filterOutServicesByServiceNamePrefix(aCategory, SERVICE_NAME_TEST_PREFIX);
+                        //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
+                        //for(ServiceTag oServiceTag : aServiceTag){
+                        List<ServiceTag> aServiceTagAll = new ArrayList();
+                        for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
+                            
+                            if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
+                                Map<String, Object> mReturn = new HashMap();
+                                
+                                Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
+                                //oServiceTagRelationChild.getServiceTag_Parent().getId()
+                                //aServiceTagRelationRoot.add(oServiceTagRelation);
+                                //for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
+                                
+                                                            //oServiceTagRelation
+                                mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
+                                List<ServiceTag> aServiceTagChild = new ArrayList();
+                                for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
+                                    if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
+                                        aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
+                                        aServiceTagAll.add(oServiceTagRelationChild.getServiceTag_Child());
+                                    }
+                                    
+                                }
+                                mReturn.put("aServiceTag_Child", aServiceTagChild);
+
+                                List<Service> aService = new ArrayList();
+                                for(ServiceTag oServiceTag : aServiceTagAll){
+                                    
+                                    if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
+                                        //aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
+                                        //Service oService=
+                                        aService.add(oService);
+                                    }
+                                    
+                                }
+                                mReturn.put("aService", aService);
+                                
+                                aReturn.add(mReturn);
+
+                            }
+                        }
+                        
+                        /*for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
+                            if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
+                                aServiceTagRelationRoot.add(oServiceTagRelation);
+                            }
+                        }
+                        
+                        aServiceTagRelationRoot*/
+                        
+                        /*if (!bTest) {
+                            filterOutServicesByServiceNamePrefix(aServiceTag, SERVICE_NAME_TEST_PREFIX);
                         }
 
                         if (sFind != null) {
-                            filterServicesByServiceName(aCategory, sFind);
+                            filterServicesByServiceName(aServiceTag, sFind);
                         }
 
                         if (asID_Place_UA != null) {
                             //TODO: Зачем это было добавлено?                    asID_Place_UA.retainAll(SUPPORTED_PLACE_IDS);
                             if (!asID_Place_UA.isEmpty()) {
-                                filterServicesByPlaceIds(aCategory, asID_Place_UA);
+                                filterServicesByPlaceIds(aServiceTag, asID_Place_UA);
                             }
                         }
 
                         if (!bShowEmptyFolders) {
-                            hideEmptyFolders(aCategory);
+                            hideEmptyFolders(aServiceTag);
                         }
 
-                        return categoriesToJsonResponse(aCategory);
+                        return categoriesToJsonResponse(aServiceTag);*/
+                        return categoriesToJsonResponse(aServiceTag);
                     }
                 });
 
