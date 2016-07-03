@@ -969,7 +969,7 @@ public class ActionItemController {
                         //List<Service> aServiceAll = new ArrayList<>(baseEntityDao.findAll(Service.class));
                         //List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
                         List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
-                        //List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
+                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
 
                         //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
                         //for(ServiceTag oServiceTag : aServiceTag){
@@ -993,18 +993,22 @@ public class ActionItemController {
                                 }
                                 mReturn.put("aServiceTag_Child", aServiceTagChild);
 
-                                /*List<Service> aService_Selected = new ArrayList();
+                                List<Service> aService_Selected = new ArrayList();
                                 for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                     for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
-                                        if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())){
+                                        if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
+                                            && Objects.equals(nID_Category, oServiceTagLink.getService().getSubcategory().getCategory().getId())
+                                                ){
                                             aService_Selected.add(oServiceTagLink.getService());
                                             break;
                                         }
                                     }
                                 }
-                                mReturn.put("aService", aService_Selected);*/
+                                //mReturn.put("aService", aService_Selected);
 
-                                aReturn.add(mReturn);
+                                if(aService_Selected.size()>0){
+                                    aReturn.add(mReturn);                            
+                                }
                             }
                         }                            
 
@@ -1030,7 +1034,7 @@ public class ActionItemController {
 					"массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
 							+ "Если указан другой ID, фильтр не применяется.", required = false) @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
 			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
-			,@ApiParam(value = "ID категории", required = true) @RequestParam(value = "nID_Category", required = true) final Integer nID_Category
+			,@ApiParam(value = "ID категории", required = true) @RequestParam(value = "nID_Category", required = true) final Long nID_Category
 			,@ApiParam(value = "ID тэга", required = true) @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag
 			,@ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true) @RequestParam(value = "bRoot ", required = true) final boolean bRoot 
         ) {
@@ -1071,7 +1075,9 @@ public class ActionItemController {
                             List<Service> aService_Selected = new ArrayList();
                             for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                 for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
-                                    if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())){
+                                    if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
+                                            && Objects.equals(nID_Category, oServiceTagLink.getService().getSubcategory().getCategory().getId())
+                                            ){
                                         aService_Selected.add(oServiceTagLink.getService());
                                         break;
                                     }
@@ -1079,7 +1085,9 @@ public class ActionItemController {
                             }
                             mReturn.put("aService", aService_Selected);
 
-                            aReturn.add(mReturn);
+                            if(aService_Selected.size()>0){
+                                aReturn.add(mReturn);                            
+                            }
                         }else{
                             Map<String, Object> mReturn = new HashMap();
                             ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
@@ -1096,13 +1104,17 @@ public class ActionItemController {
 
                             List<Service> aService_Selected = new ArrayList();
                             for(ServiceTagLink oServiceTagLink : aServiceTagLink){
-                                if(Objects.equals(oServiceTagLink.getServiceTag().getId(), nID_ServiceTag)){
+                                if(Objects.equals(nID_ServiceTag, oServiceTagLink.getServiceTag().getId())
+                                        && Objects.equals(nID_Category, oServiceTagLink.getService().getSubcategory().getCategory().getId())
+                                        ){
                                     aService_Selected.add(oServiceTagLink.getService());
                                 }
                             }
                             mReturn.put("aService", aService_Selected);
 
-                            aReturn.add(mReturn);                            
+                            if(aService_Selected.size()>0){
+                                aReturn.add(mReturn);                            
+                            }
                         }
                         
                         /*for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
