@@ -974,10 +974,12 @@ public class ActionItemController {
                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
                         LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
+                        //System.out.println("aServiceTagRelation.size: " + aServiceTagRelation.size());
                         for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
                             Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
                             if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
                                 LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
+                                //System.out.println("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
                                 Map<String, Object> mReturn = new HashMap();
                                 mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
                                 List<ServiceTag> aServiceTagChild = new ArrayList();
