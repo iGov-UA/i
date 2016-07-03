@@ -1218,7 +1218,13 @@
         </addColumn>
     </changeSet>
     
-    <changeSet id="issue-1298-PK" author="olga"  dbms="h2">
+    <changeSet id="issue-1298-PK" author="olga">
+        <addColumn tableName="ServiceTagLink">
+    		<column name="nID" type="bigint"><constraints nullable="true"/></column>
+    	</addColumn>
+        <addColumn tableName="ServiceTagRelation">
+    		<column name="nID" type="bigint"><constraints nullable="true"/></column>
+    	</addColumn>
         <addAutoIncrement tableName="ServiceTagLink" columnName="nID" startWith="1000" columnDataType="bigint"/>
         <addAutoIncrement tableName="ServiceTagRelation" columnName="nID" startWith="1000" columnDataType="bigint"/>
     </changeSet>
