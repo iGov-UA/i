@@ -1041,7 +1041,11 @@ public class ActionItemController {
                         }
 
                         return categoriesToJsonResponse(aServiceTag);*/
-                        return categoriesToJsonResponse(aServiceTag);
+                        //return categoriesToJsonResponse(aServiceTag);
+                        //return categoriesToJsonResponse(aReturn);
+                        return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(aReturn));
+                        
+                        
                     }
                 });
 
