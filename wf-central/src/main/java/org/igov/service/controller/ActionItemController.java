@@ -968,8 +968,10 @@ public class ActionItemController {
                         
                         //List<Service> aServiceAll = new ArrayList<>(baseEntityDao.findAll(Service.class));
                         //List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
-                        List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class, "oServiceTag_Parent.id"));
-                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class, "oServiceTag.id"));
+                        //List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class, "oServiceTag_Parent.id"));
+                        //List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class, "oServiceTag.id"));
+                        List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
+                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
 
                         //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
                         //for(ServiceTag oServiceTag : aServiceTag){
