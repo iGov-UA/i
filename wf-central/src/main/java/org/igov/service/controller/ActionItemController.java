@@ -934,4 +934,59 @@ public class ActionItemController {
         return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(categories));
     }
 
+    
+    
+	@ApiOperation(value = "Получение дерева тегов и услуг", notes = "Дополнительно:\n"
+		+ "" )
+    @RequestMapping(value = "/getCatalogTreeTagService", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity<String> getCatalogTreeTagService(
+			@ApiParam(value =
+					"строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
+							+ "в имени которых встречается значение этого параметра, без учета регистра.", required = false) @RequestParam(value = "sFind", required = false) final String sFind
+			,@ApiParam(value =
+					"массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
+							+ "Если указан другой ID, фильтр не применяется.", required = false) @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
+			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
+			,@ApiParam(value = "ID категории", required = true) @RequestParam(value = "nID_Category", required = true) final Integer nID_Category
+			,@ApiParam(value = "ID тэга", required = true) @RequestParam(value = "nID_ServiceTag", required = true) final Integer nID_ServiceTag
+			,@ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true) @RequestParam(value = "bRoot ", required = true) final boolean bRoot 
+        ) {
+
+        final boolean bTest = generalConfig.isSelfTest();
+
+        SerializableResponseEntity<String> entity = cachedInvocationBean
+                .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<String>>(
+                        GET_SERVICES_TREE, sFind, asID_Place_UA, bTest) {
+                    @Override
+                    public SerializableResponseEntity<String> execute() {
+                        List<Category> aCategory = new ArrayList<>(baseEntityDao.findAll(Category.class));
+
+                        if (!bTest) {
+                            filterOutServicesByServiceNamePrefix(aCategory, SERVICE_NAME_TEST_PREFIX);
+                        }
+
+                        if (sFind != null) {
+                            filterServicesByServiceName(aCategory, sFind);
+                        }
+
+                        if (asID_Place_UA != null) {
+                            //TODO: Зачем это было добавлено?                    asID_Place_UA.retainAll(SUPPORTED_PLACE_IDS);
+                            if (!asID_Place_UA.isEmpty()) {
+                                filterServicesByPlaceIds(aCategory, asID_Place_UA);
+                            }
+                        }
+
+                        if (!bShowEmptyFolders) {
+                            hideEmptyFolders(aCategory);
+                        }
+
+                        return categoriesToJsonResponse(aCategory);
+                    }
+                });
+
+        return entity.toResponseEntity();
+    }    
+    
 }
