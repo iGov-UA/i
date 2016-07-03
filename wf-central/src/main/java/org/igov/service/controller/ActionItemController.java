@@ -40,6 +40,8 @@ public class ActionItemController {
     public static final String SERVICE_NAME_TEST_PREFIX = "_";
     public static final List<String> SUPPORTED_PLACE_IDS = new ArrayList<>();
     private static final String GET_SERVICES_TREE = "getServicesTree";
+    private static final String GET_CATALOG_TREE_TAG_SERVICE = "getCatalogTreeTagService";
+
 
     static {
         SUPPORTED_PLACE_IDS.add(String.valueOf(KOATUU.KYIVSKA_OBLAST.getId()));
@@ -958,7 +960,7 @@ public class ActionItemController {
 
         SerializableResponseEntity<String> entity = cachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<String>>(
-                        GET_SERVICES_TREE, sFind, asID_Place_UA, bTest) {
+                        GET_CATALOG_TREE_TAG_SERVICE, sFind, asID_Place_UA, bTest, nID_Category, nID_ServiceTag, bRoot) {
                     @Override
                     public SerializableResponseEntity<String> execute() {
                         List<Category> aCategory = new ArrayList<>(baseEntityDao.findAll(Category.class));
