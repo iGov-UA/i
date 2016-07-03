@@ -25,6 +25,15 @@ public class ServiceTag extends AbstractEntity {
 
     @Column
     private String sName_RU;
+    
+    @Column
+    private Long nOrder;
+            
+    @Column
+    private String sLinkImage;
+    
+    @Column
+    private String sNote;
 
     @ManyToOne(targetEntity = ServiceTagType.class)
     @JoinColumn(name="nID_ServiceTagType", nullable = false, updatable = false)
@@ -57,4 +66,29 @@ public class ServiceTag extends AbstractEntity {
     public void setServiceTagType(ServiceTagType serviceTagType) {
         this.serviceTagType = serviceTagType;
     }
+
+    public Long getnOrder() {
+        return nOrder;
+    }
+
+    public void setnOrder(Long nOrder) {
+        this.nOrder = nOrder;
+    }
+
+    public String getsLinkImage() {
+        return sLinkImage;
+    }
+
+    public void setsLinkImage(String sLinkImage) {
+        this.sLinkImage = sLinkImage;
+    }
+
+    public String getsNote() {
+        return sNote;
+    }
+
+    public void setsNote(String sNote) {
+        this.sNote = sNote;
+    }
+    
 }
