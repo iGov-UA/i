@@ -35,6 +35,8 @@ import org.igov.model.action.item.ServiceTagLink;
 import org.igov.model.action.item.ServiceTagRelation;
 
 import static org.igov.util.Tool.bFoundText;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @Api(tags = { "ActionItemController - Предметы действий (каталог сервисов)" })
@@ -45,6 +47,8 @@ public class ActionItemController {
     private static final String GET_SERVICES_TREE = "getServicesTree";
     private static final String GET_CATALOG_TREE_TAG_SERVICE = "getCatalogTreeTagService";
     private static final String GET_CATALOG_TREE_TAG = "getCatalogTreeTag";
+    private static final Logger LOG = LoggerFactory.getLogger(ActionItemController.class);
+
 
 
     static {
@@ -964,26 +968,17 @@ public class ActionItemController {
                         GET_CATALOG_TREE_TAG, sFind, asID_Place_UA, bTest, nID_Category) {
                     @Override
                     public SerializableResponseEntity<String> execute() {
-                        List<Map> aReturn = new LinkedList();
                         
-                        //List<Service> aServiceAll = new ArrayList<>(baseEntityDao.findAll(Service.class));
-                        //List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
-                        //List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class, "oServiceTag_Parent.id"));
-                        //List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class, "oServiceTag.id"));
+                        List<Map> aReturn = new LinkedList();
                         List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
-
-                        //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
-                        //for(ServiceTag oServiceTag : aServiceTag){
                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
-                        
+                        LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
                         for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
                             Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
-                            if(oServiceTagRelation.getServiceTag_Parent().getId()!=0
-                                    //&& Objects.equals(nID_ServiceTag_Root, nID_ServiceTag)
-                                    ){
+                            if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
+                                LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
                                 Map<String, Object> mReturn = new HashMap();
-
                                 mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
                                 List<ServiceTag> aServiceTagChild = new ArrayList();
                                 for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
