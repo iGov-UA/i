@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import org.igov.model.action.item.ServiceTag;
+import org.igov.model.action.item.ServiceTagLink;
 import org.igov.model.action.item.ServiceTagRelation;
 
 import static org.igov.util.Tool.bFoundText;
@@ -967,13 +968,14 @@ public class ActionItemController {
                     public SerializableResponseEntity<String> execute() {
                         List<Map> aReturn = new LinkedList();
                         
+                        List<Service> aServiceAll = new ArrayList<>(baseEntityDao.findAll(Service.class));
                         List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
                         List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
-//                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
+                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
 
                         //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
                         //for(ServiceTag oServiceTag : aServiceTag){
-                        List<ServiceTag> aServiceTagAll = new ArrayList();
+                        List<ServiceTag> aServiceTag_Selected = new ArrayList();
                         for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
                             
                             if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
@@ -990,26 +992,30 @@ public class ActionItemController {
                                 for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
                                     if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
                                         aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
-                                        aServiceTagAll.add(oServiceTagRelationChild.getServiceTag_Child());
+                                        aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
                                     }
                                     
                                 }
                                 mReturn.put("aServiceTag_Child", aServiceTagChild);
 
-                                List<Service> aService = new ArrayList();
-                                for(ServiceTag oServiceTag : aServiceTagAll){
-                                    
-                                    if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
-                                        //aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
-                                        //Service oService=
-                                        aService.add(oService);
+                                List<Service> aService_Selected = new ArrayList();
+                                for(ServiceTagLink oServiceTagLink : aServiceTagLink){
+                                    //oServiceTagLink
+                                    for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
+                                        if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())){
+                                            //aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
+                                            //Service oService=
+                                            aService_Selected.add(oServiceTagLink.getService());
+                                            break;
+                                        }
                                     }
-                                    
                                 }
-                                mReturn.put("aService", aService);
+                                mReturn.put("aService", aService_Selected);
+                                /*for(Service oService : aServiceAll){
+                                    //oServiceTagLink
+                                }*/
                                 
                                 aReturn.add(mReturn);
-
                             }
                         }
                         
