@@ -169,21 +169,19 @@
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-      	
-      	def date = new GregorianCalendar()
-		def dayWeek = date.get(Calendar.DAY_OF_WEEK)
-		execution.setVariable('dArrival', dayWeek)​
-		
-		//def addDay = 2
-		//if(dayWeek == 5 || dayWeek == 6){ addDay +=2 } else if(dayWeek == 7) { addDay +=1 }
-		//date.add(Calendar.DATE, addDay)		
-		
-		//def result = date.getTime().format("dd.MM.yyyy").toString()
-		
-		
-      	//execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())		
-      </script>
+      <script><![CDATA[
+def dateArr = new GregorianCalendar()
+def dayWeek = dateArr.get(Calendar.DAY_OF_WEEK)
+def addDay = 2
+if(dayWeek == 5 || dayWeek == 6){ 
+	addDay +=2 
+} else if(dayWeek == 7) { 
+	addDay +=1 
+}
+dateArr.add(Calendar.DATE, addDay)		
+execution.setVariable('dArrival', dateArr.getTime().format("dd.MM.yyyy").toString())
+execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
+      ]]></script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -610,12 +608,12 @@
 
 
 
-        <activiti:formProperty id="eAppr_NachUpravl" name="Мета звернення" type="enum" required="true">
+        <activiti:formProperty id="eAppr_NachUpravl" name="Затвердження топооснови  ЕЦП Начальника Управління ІТІМ ДМА" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="eAppr_GolSpet" name="Мета звернення" type="enum" required="true">
+        <activiti:formProperty id="eAppr_GolSpet" name="Затвердження топооснови  ЕЦП Головного спеціаліста" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
