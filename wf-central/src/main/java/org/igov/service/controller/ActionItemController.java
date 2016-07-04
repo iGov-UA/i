@@ -991,16 +991,9 @@ public class ActionItemController {
                                 List<Service> aService_Selected = new ArrayList();
                                 for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                     for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
-                                        if(oServiceTag_Selected.getId() == 57 && oServiceTagLink.getServiceTag().getId() == 57){
-                                           System.out.println("nID_Category: " + nID_Category + " = " + oServiceTagLink.getService().getSubcategory().getCategory().getId()
-                                        + " ; " + oServiceTagLink.getServiceTag().getId() + " = " + oServiceTag_Selected.getId()
-                                           + (oServiceTagLink.getServiceTag().getId() == oServiceTag_Selected.getId()) 
-                                                   + (new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())));
-                                        }
                                         if(oServiceTagLink.getServiceTag().getId() == oServiceTag_Selected.getId()
                                             && (new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId()))){
                                             aService_Selected.add(oServiceTagLink.getService());
-                                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
                                             break;
                                         }
                                     }
