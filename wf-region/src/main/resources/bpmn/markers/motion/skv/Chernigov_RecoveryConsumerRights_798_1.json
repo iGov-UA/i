@@ -4,7 +4,7 @@
  		"ShowFieldsOnCondition_0":
 		{
 			"sNote":		["For Hide Invisible"],
-			"aField_ID":	["sNameOrgan", "sPhoneOrgan","sAddress","sWorkTime","sShapkaGolova","date_today"],
+			"aField_ID":	["sNameOrgan", "sPhoneOrgan","sAddress","sWorkTime","sShapkaGolova","date_today","sMeasureTerm_Warranty","sAdd_Apps"],
 			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
 			"sCondition":	"[sClient] == 'Not_Correct'"
 		},
@@ -37,28 +37,41 @@
  		"ShowFieldsOnCondition_3":
 		{
 			"sNote":		["Show Fiz-lic"],
-			"aField_ID":	["sPib_fiz","sfiz_FopInn"],
+			"aField_ID":	["sPib_fiz"],
 			"asID_Field":	{"sClient":"asTypeSubect"},
 			"sCondition":	"[sClient] == 'fiz'"
 		},
 		"RequiredFieldsOnCondition_3": 
 		{
-			"aField_ID":	["sPib_fiz","sfiz_FopInn"],
+			"aField_ID":	["sPib_fiz"],
 			"asID_Field":	{"sClient":"asTypeSubect"},
 			"sCondition":	"[sClient] == 'fiz'"
 		},
  		"ShowFieldsOnCondition_4":
 		{
 			"sNote":		["Show ur-lica"],
-			"aField_ID":	["sName_ur","edrpou","sPib_ur"],
+			"aField_ID":	["sName_ur"],
 			"asID_Field":	{"sClient":"asTypeSubect"},
 			"sCondition":	"[sClient] == 'ur'"
 		},
 		"RequiredFieldsOnCondition_4": 
 		{
-			"aField_ID":	["sName_ur","edrpou","sPib_ur"],
+			"aField_ID":	["sName_ur"],
 			"asID_Field":	{"sClient":"asTypeSubect"},
 			"sCondition":	"[sClient] == 'ur'"
+		},
+ 		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Show Type_Defect"],
+			"aField_ID":	["sType_Defect"],
+			"asID_Field":	{"sClient":"asEnumWhat_Happened"},
+			"sCondition":	"[sClient] == 'sEnumElement_Bad_quality'"
+		},
+		"RequiredFieldsOnCondition_6": 
+		{
+			"aField_ID":	["sType_Defect"],
+			"asID_Field":	{"sClient":"asEnumWhat_Happened"},
+			"sCondition":	"[sClient] == 'sEnumElement_Bad_quality'"
 		}
    	}
 }
