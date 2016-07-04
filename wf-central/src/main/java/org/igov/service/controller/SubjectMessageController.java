@@ -504,13 +504,13 @@ public class SubjectMessageController {
     @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackExternal(
-            @ApiParam(value = "TODO", required = true) @RequestParam(value = "sID_Source") String sID_Source,
+            @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source") String sID_Source,
             @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO") String sAuthorFIO,
             @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "Заголовок отзыва", required = true) @RequestParam(value = "sHead") String sHead,
             @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody") String sBody,
-            @ApiParam(value = "TODO", required = true) @RequestParam(value = "nID_Rate") Long nID_Rate,
-            @ApiParam(value = "TODO", required = true) @RequestParam(value = "nID_Service") Long nID_Service
+            @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate") Long nID_Rate,
+            @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service") Long nID_Service
     ) throws CommonServiceException {
 
         LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
