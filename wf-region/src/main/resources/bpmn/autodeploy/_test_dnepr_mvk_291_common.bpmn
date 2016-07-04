@@ -532,12 +532,23 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" required="true">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" required="true">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
@@ -1108,6 +1119,15 @@
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -1126,6 +1146,8 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
@@ -1739,6 +1761,15 @@
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
@@ -1757,6 +1788,8 @@
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
@@ -2530,6 +2563,15 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -2543,6 +2585,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
@@ -3096,6 +3140,15 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -3116,6 +3169,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
           <activiti:value id="sEnumDep1" name=" "></activiti:value>
@@ -4048,6 +4103,15 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -4133,6 +4197,8 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="exclusivegateway10"></sequenceFlow>
     <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'channel'
+          var per2 = 'channel RGA'
+          var per3 = 'status RGA'
 if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal1'){
 per1 = 'Гаряча лінія губернатора'
 }
@@ -4148,7 +4214,24 @@ per1 = 'Фронт-офіс'
 if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal5'){
 per1 = 'Портал'
 }
-execution.setVariable('sChannelApp', per1)</script>
+          if (execution.getVariable('asChannelAppealsRGA') == 'sEnumAppealRGA1'){
+per2 = 'ТЕЛЕФОН'
+}
+          if (execution.getVariable('asChannelAppealsRGA') == 'sEnumAppealRGA2'){
+per2 = 'ВЕБ-САЙТ'
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA1'){
+per3 = ' '
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA2'){
+per3 = 'доопрацювання'
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA3'){
+per3 = 'контроль'
+}
+execution.setVariable('sChannelApp', per1)
+execution.setVariable('sChannelAppRGA', per2)
+execution.setVariable('sStatusAppRGA', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
@@ -4763,6 +4846,15 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -4781,6 +4873,8 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
@@ -4838,7 +4932,7 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:string><![CDATA[ms@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal}]]></activiti:expression>
+          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal} (${sChannelAppRGA}) ${sStatusAppRGA}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
