@@ -502,9 +502,8 @@ public class SubjectMessageController {
     }
 
     @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.GET)
-    public void setFeedbackExternal(
+    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
+    public ResponseEntity<String> setFeedbackExternal(
             @ApiParam(value = "TODO", required = true) @RequestParam(value = "sID_Source") String sID_Source,
             @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO") String sAuthorFIO,
             @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail") String sMail,
@@ -521,7 +520,7 @@ public class SubjectMessageController {
             SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
             subjectMessageFeedbackDao.saveOrUpdate(feedback);
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
-//            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, sUrl);
+            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, sUrl);
 
         } catch (Exception e) {
             LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
