@@ -106,9 +106,11 @@ exports.index = function (req, res) {
     var path = 'runtime/tasks';
     if (req.query.filterType === 'selfAssigned') {
       query.assignee = user.id;
+      query.includeProcessVariables = true;
     } else if (req.query.filterType === 'unassigned') {
       query.candidateUser = user.id;
       query.unassigned = true;
+      query.includeProcessVariables = true;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;
