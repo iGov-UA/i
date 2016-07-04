@@ -8,6 +8,7 @@ package org.igov.service.business.subject;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageType;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -219,6 +220,20 @@ public class SubjectMessageService {
         }
 
         return message;
+    }
+
+    public SubjectMessageFeedback createSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
+                                                               String sHead, String sBody, Long nID_Rate, Long nID_Service) {
+        SubjectMessageFeedback messageFeedback = new SubjectMessageFeedback();
+
+        messageFeedback.setsID_Source(sID_Source);
+        messageFeedback.setsAuthorFIO(sAuthorFIO);
+        messageFeedback.setsMail(sMail);
+        messageFeedback.setsHead(sHead);
+        messageFeedback.setsBody(sBody);
+        messageFeedback.setnID_Rate(nID_Rate);
+        messageFeedback.setnID_Service(nID_Service);
+        return messageFeedback;
     }
 
     //при параметре nID_Subject == null
