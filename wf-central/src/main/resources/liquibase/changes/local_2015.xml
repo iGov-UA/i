@@ -1197,4 +1197,47 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="issue-1298" author="olga">
+        <addColumn tableName="ServiceTag">
+            <column name="nOrder" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="ServiceTag">
+            <column name="sLinkImage" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="ServiceTag">
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1298-PK" author="olga">
+        <addColumn tableName="ServiceTagLink">
+    		<column name="nID" type="bigint"><constraints nullable="true"/></column>
+    	</addColumn>
+        <addColumn tableName="ServiceTagRelation">
+    		<column name="nID" type="bigint"><constraints nullable="true"/></column>
+    	</addColumn>
+        <addAutoIncrement tableName="ServiceTagLink" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ServiceTagRelation" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
+    
+    <changeSet id="issue-1298-PK_" author="olga">
+        <addPrimaryKey
+            columnNames="nID"
+            constraintName="pk_ServiceTagLink"
+            tableName="ServiceTagLink"/>
+        <addPrimaryKey
+            columnNames="nID"
+            constraintName="pk_ServiceTagRelation"
+            tableName="ServiceTagRelation"/>
+    </changeSet>    
+
 </databaseChangeLog>

@@ -3,7 +3,7 @@
   <process id="subsidiesUkraine_ECP" name="Отримання субсидії на оплату житлово-комунальних послуг (з використанням ЕЦП)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="infoECP" name="Зверніть увагу!" type="label" default="Для отримання рішення щодо призначення Субсидії Вам буде необхідно підписати заявку Електронно-цифровим підписом. У разі відсутності ЕЦП на заяві, Ви зможете отримати лише повідомлення про правильність/неправильність заповнення Заяви та запрошення до особистого візиту до УПСЗН. Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="infoECP" name="Зверніть увагу" type="label" default="Для отримання рішення щодо призначення Субсидії Вам буде необхідно підписати заяву Електронно-цифровим підписом. &lt;br&gt;&lt;br&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки даних і особисто підписати Заяву і Декларацію для подальшого розгляду.&lt;br&gt;&lt;br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -11,6 +11,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ScanPassport" name="Завантажте скан-копію паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="chapter1" name="Деталі" type="label" default="--------------------"></activiti:formProperty>
         <activiti:formProperty id="place_of_living" name="Місце реєстрації; вкажіть область, місто, вулицю, будинок, квартиру" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -157,18 +158,21 @@
         <activiti:formProperty id="overload_date" name="Дата придбання; наприклад, 18.01.2016" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="имущество свыше 50000 грн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;overload_fio&quot;,&quot;overload_type&quot;,&quot;overload_cost&quot;,&quot;overload_date&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;overload&quot;},&quot;sCondition&quot;:&quot;[sOverload]=='attr1_yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="ECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
-          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання електронної послуги про призначення субсидії)"></activiti:value>
           <activiti:value id="ecp_no" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="infoECP1" name="Увага!" type="label" default="Обов'язково заповніть поле &quot;Накласти ЕЦП&quot; нижче, інакше Ви зможете отримати лише повідомлення про правильність/неправильність заповнення Заяви та запрошення до особистого візиту до УПСЗН"></activiti:formProperty>
+        <activiti:formProperty id="infoECP1" name="Увага!" type="label" default="Обов'язково заповніть поле &quot;Накласти ЕЦП&quot; нижче для отримання електронної послуги, інакше Ви будете змушені відвідати УПСЗН для особистого підписання Заяви і Декларації після перевірки наданих відомостей."></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/UPSZN/subsidy_ecp.html"></activiti:formProperty>
-        <activiti:formProperty id="marker5" name="ЕЦП " type="string" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;,&quot;PrintFormAutoSign_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;ECP&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ecp_yes'&quot;},&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;infoECP1&quot;,&quot;infoECP&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's322'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="label1" name="На цьому етапі Ви можете ознайомитись з відомостями, наданими громадянином при заповненні заяви, роздрукувати документи (за потреби), та прийняти рішення щодо подальшої обробки заяви, або відмови громадянину (через відсутність усіх необхідних відомостей для надання адміністративної послуги або через наявність в особовій справі неправильно оформлених  довідок  тощо)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -176,10 +180,6 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
-          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
-          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="chapter1" name="Деталі" type="label" default="--------------------" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_living" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
@@ -304,6 +304,10 @@
         <activiti:formProperty id="overload_type" name="Вид придбаного майна, товарів або оплачених послуг; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="overload_cost" name="Вартість, гривень; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="overload_date" name="Дата придбання (наприклад, 18.01.2016); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Стан" type="enum" required="true">
           <activiti:value id="accept" name="відправлені запити, очікують відповіді"></activiti:value>
@@ -311,12 +315,13 @@
           <activiti:value id="sign" name="запросити громадянина до підписання (якщо заявка без ЕЦП)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="название р-на соцзащиты в принтформу с ЕЦП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_zayava.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/UPSZN/subsidy_declaration.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/UPSZN/subsidy_ecp.html]" type="invisible" default="Заявка з ЕЦП" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${PrintFormAutoSign_1}</activiti:expression>
+            <activiti:expression>${ScanPassport},${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -361,6 +366,10 @@
     <userTask id="usertask2" name="Рішення про призначення субсидії" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="label2" name="На цьому етапі необхідно вказати, яке рішення прийнято по заяві громадянина, та завантажити відповідний документ для відправки його громадянину електронною поштою" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -492,6 +501,10 @@
         <activiti:formProperty id="overload_type" name="Вид придбаного майна, товарів або оплачених послуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_cost" name="Вартість, гривень" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_date" name="Дата придбання; наприклад, 18.01.2016" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Стан" type="enum" required="true">
           <activiti:value id="attr3" name="відмовлено у субсидії"></activiti:value>
@@ -503,7 +516,7 @@
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${PrintFormAutoSign_1}</activiti:expression>
+            <activiti:expression>${ScanPassport},${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -755,7 +768,7 @@ execution.setVariable('area', per3)</script>
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг розглянуте, правильність заповнення документів перевірена.&lt;/p&gt;
 &lt;p&gt;Оскільки при заповненні заяви на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt; 
-Ви не підписали заявку електронно-цифровим підписом, Вам необхідно навідатись до УПСЗН і підписати документи особисто.&lt;/p&gt;
+Ви не підписали заявку електронно-цифровим підписом, Вам необхідно навідатись до УПСЗН і надати підписані особисто Заяву і Декларацію (можна зберегти локально і потім роздрукувати додатки до цього електронного листа) не пізніше ніж у 30-денний термін від дати, вказаної на заяві.&lt;/p&gt;
 &lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
 &lt;p&gt;
 &lt;br /&gt;
@@ -773,7 +786,7 @@ execution.setVariable('area', per3)</script>
           <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -794,7 +807,7 @@ execution.setVariable('area', per3)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="3.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="3.0"></omgdc:Bounds>
+        <omgdc:Bounds height="79.0" width="105.0" x="480.0" y="-9.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="620.0" y="10.0"></omgdc:Bounds>
@@ -921,7 +934,7 @@ execution.setVariable('area', per3)</script>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="455.0" y="110.0"></omgdi:waypoint>
         <omgdi:waypoint x="532.0" y="110.0"></omgdi:waypoint>
-        <omgdi:waypoint x="532.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="532.0" y="70.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

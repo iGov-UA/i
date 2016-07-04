@@ -21,16 +21,16 @@
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Вкажіть причину видалення;(реконструкція, реставрація, будівельні роботи тощо)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта фізичної особи (заявника)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія документа, що підтверджує повноваження особи щодо подання заяви" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія виписки з єдиного державного реєстру юридичної особи або фізичної особи – підприємця" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="План земельної ділянки М 1:500, на якій  зазначені зелені насадження що підлягають видаленню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Документ, про сплату відновної вартості зелених насаджень (після отримання копії рішення про видалення зелених насаджень), або договір на компенсаційні висадки зелених насаджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;file3&quot;,&quot;file4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;subekt&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;subekt&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія документа, що підтверджує повноваження особи щодо подання заяви" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія виписки з єдиного державного реєстру юридичної особи або фізичної особи – підприємця" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="План земельної ділянки М 1:500, на якій  зазначені зелені насадження що підлягають видаленню" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Документ, про сплату відновної вартості зелених насаджень (після отримання копії рішення про видалення зелених насаджень), або договір на компенсаційні висадки зелених насаджень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;nFile3&quot;,&quot;nFile4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;subekt&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;nFile1&quot;,&quot;nFile2&quot;,&quot;nFile3&quot;,&quot;nFile4&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;subekt&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Обробка ЦНАП Вільногірськ (1-й крок)" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask1" name="Обробка ЦНАП Вільногірськ (1-й крок)" activiti:candidateGroups="cnap_vilnogirskT">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -60,7 +60,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file1},${file2},${file3},${file4}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile1},${nFile2},${nFile3},${nFile4}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -79,7 +79,7 @@
     <sequenceFlow id="flow8" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка після повернення документів від Управління архітектури, капітального будівництва та житлово-комунального господарства (2-й крок)" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
+    <userTask id="usertask2" name="Обробка після повернення документів від Управління архітектури, капітального будівництва та житлово-комунального господарства (2-й крок)" activiti:candidateGroups="cnap_vilnogirskT">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -114,7 +114,7 @@
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Отправка e-mail о готовності ордеру" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Отправка e-mail о готовності ордеру" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -126,7 +126,8 @@
           <activiti:string><![CDATA[Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо отримання ордера на видалення зелених насаджень - опрацьовано. &lt;br /&gt;
@@ -157,12 +158,18 @@
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${reference},${PrintForm_1}"</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" name="status2=='attr3_finish'" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr3_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Отправка e-mail в разі відмови департаментом комунального господарства" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Отправка e-mail в разі відмови департаментом комунального господарства" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -174,7 +181,8 @@
           <activiti:string><![CDATA[Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 На жаль, Ваше звернення щодо отримання ордеру на видалення зелених насаджень - відхилено Управлінням архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради.&lt;br /&gt;
@@ -189,6 +197,12 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${reference}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -210,7 +224,8 @@
           <activiti:string><![CDATA[Нове звернення. Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення щодо отримання ордера на видалення зелених насаджень.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -221,7 +236,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про прийом документів ЦНАПом" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про прийом документів ЦНАПом" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -233,7 +248,8 @@
           <activiti:string><![CDATA[Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо отримання ордера на видалення зелених насаджень зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -244,9 +260,18 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="Відмова громадянину в разі неповного комплекту документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Відмова громадянину в разі неповного комплекту документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -258,7 +283,8 @@
           <activiti:string><![CDATA[Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо отримання ордера на видалення зелених насаджень - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
@@ -271,9 +297,18 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="E-mail про передачу документів в департамент комунального господарства та капітального будівництва" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="E-mail про передачу документів в департамент комунального господарства та капітального будівництва" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreplay@igov.org.ua]]></activiti:string>
@@ -285,7 +320,8 @@
           <activiti:string><![CDATA[Отримання ордеру на видалення зелених насаджень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення про отримання ордера на видалення зелених насаджень - відправлене в Управління архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради.&lt;br /&gt;
 Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
@@ -297,6 +333,15 @@
 Центр надання адміністративних послуг «Муніципальний центр послуг м.Вільногірськ»,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidpravleno u vidpovidnyi viddil. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -37,13 +37,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
             });
           }, function() {
-            resetData();
-            scope.loadList();
+            scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
+            scope.selected.slot = null;
             dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
           });
         }
-        else
-          scope.ngModel = null;
       });
 
       scope.slotsData = {};

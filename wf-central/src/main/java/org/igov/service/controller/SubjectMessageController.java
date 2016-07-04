@@ -17,6 +17,8 @@ import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.action.ActionEventService;
@@ -65,6 +67,8 @@ public class SubjectMessageController {
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
+    @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
@@ -498,6 +502,34 @@ public class SubjectMessageController {
             throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
+    }
+
+    @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
+    @ResponseBody
+    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
+    public String setFeedbackExternal(
+            @ApiParam(value = "TODO", required = true) @RequestParam(value = "sID_Source") String sID_Source,
+            @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO") String sAuthorFIO,
+            @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail") String sMail,
+            @ApiParam(value = "Заголовок отзыва", required = true) @RequestParam(value = "sHead") String sHead,
+            @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody") String sBody,
+            @ApiParam(value = "TODO", required = true) @RequestParam(value = "nID_Rate") Long nID_Rate,
+            @ApiParam(value = "TODO", required = true) @RequestParam(value = "nID_Service") Long nID_Service
+    ) throws CommonServiceException {
+
+        LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
+        String sUrl= ""; // this "magic number" String described here: https://github.com/e-government-ua/i/issues/1290
+
+        try {
+            SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
+            subjectMessageFeedbackDao.saveOrUpdate(feedback);
+            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
+            return JsonRestUtils.toJson(sUrl);
+
+        } catch (Exception e) {
+            LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
+            throw new CommonServiceException(e.getMessage(),e);
+        }
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
