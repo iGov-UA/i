@@ -27,6 +27,10 @@
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_bud_dok" name="Копія проектної документації об'єкта будівництва;(Якщо файлів багато завантажте Zip архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь?" type="enum" default="sEnamECP" required="true">
+          <activiti:value id="sEnamECP" name="Електронний документ з ЕЦП"></activiti:value>
+          <activiti:value id="sEnamPapir" name="Паперовий документ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
@@ -175,8 +179,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sacceptSMK" name="Зауваження відсутні, підготувати наказ про присвоєння будівельної адреси"></activiti:value>
           <activiti:value id="srejectSMK" name="Відмовлено в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marker_dla_vidmoviSMK" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_dla vidmoviSMK.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asvidmovaSMK" name="Результат опрацювання" type="enum" required="true">
+        <activiti:formProperty id="marker_dla_vidmoviSMK" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_dla_vidmoviSMK.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asvidmovaSMK" name="Причини відмови" type="enum" required="true">
           <activiti:value id="sEnam_Ne_vci_dok" name="Подання неповного пакету документів, необхідних для присвоєння будівельної  адреси"></activiti:value>
           <activiti:value id="sEnam_Ne_vidostovirn_dok" name="Виявлення в документах недостовірних відомостей "></activiti:value>
           <activiti:value id="sEnam_Ne_virni_dok" name="Невідповідність поданих документів встановленим вимогам (неможливість та відсутність підстав для присвоєння будівельної адреси)"></activiti:value>
@@ -215,7 +219,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </serviceTask>
     <userTask id="usertask3" name="(3 етап) ${s3Etap}" activiti:candidateGroups="kiev_vpz_832">
       <extensionElements>
-        <activiti:formProperty id="sDate_today" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -223,26 +227,41 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Місце знаходження;(Для ФОП адреса реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="LocationEntity" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AddressRegistration" name="Aдреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObject" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectAdress" name="Місцезнаходження(адреса) об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTopomonitoring" name="Реєстраційний номер топомоніторингу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKadastrNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Object" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ObjectLocation" name="Місцезнаходження(адреса) об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asdecideSMK" name="Рішення Містобудівного Кадастру" type="enum" writable="false">
-          <activiti:value id="sacceptSMK" name="Інформація про будинок вснесена до реєстру адрес"></activiti:value>
-          <activiti:value id="srejectSMK" name="Відмовити в присвоєнні будівельної адреси"></activiti:value>
+          <activiti:value id="sacceptSMK" name="Зауваження від кадастру відсутні"></activiti:value>
+          <activiti:value id="srejectSMK" name="Відмовлено в присвоєнні будівельної адреси"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="commentSMK" name="Коментар Містобудівного кадастру (будівельна адреса або причина відмови)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" required="true">
-          <activiti:value id="accept" name="Підготувати наказ про присвоєння будівельної адреси"></activiti:value>
-          <activiti:value id="reject" name="Відмовити у присвоєнні будівельної адреси"></activiti:value>
+        <activiti:formProperty id="marker_dla_vidmoviSMK" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_dla_vidmoviSMK.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asvidmovaSMK" name="Причини відмови кадастром" type="enum" writable="false">
+          <activiti:value id="sEnam_Ne_vci_dok" name="Подання неповного пакету документів, необхідних для присвоєння будівельної  адреси"></activiti:value>
+          <activiti:value id="sEnam_Ne_vidostovirn_dok" name="Виявлення в документах недостовірних відомостей "></activiti:value>
+          <activiti:value id="sEnam_Ne_virni_dok" name="Невідповідність поданих документів встановленим вимогам (неможливість та відсутність підстав для присвоєння будівельної адреси)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="У разі відмови, вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="commentSMK" name="Коментар Містобудівного кадастру" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="В якому форматі надати відповідь?" type="enum" writable="false">
+          <activiti:value id="sEnamECP" name="Електронний документ з ЕЦП"></activiti:value>
+          <activiti:value id="sEnamPapir" name="Паперовий документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asdecideUr" name="Рішення щодо видачі наказу про присвоєння будівельної адреси" type="enum" required="true">
+          <activiti:value id="sEnamAcceptUr" name="Підготувати Наказ про присвоєння будівельної адреси"></activiti:value>
+          <activiti:value id="sEnamRejectUr" name="Не можливо присвоїти адресу, підготувати лист Відмову "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUr" name="У разі відмови, вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file_Nakaz" name="Наказ про присвоєння будівельної адреси" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Vidmova" name="Лист-відмова" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_Prav_zab_3etap" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_Prav_zab_3etap.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
