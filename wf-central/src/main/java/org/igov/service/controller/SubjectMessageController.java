@@ -506,7 +506,7 @@ public class SubjectMessageController {
 
     @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
     @ResponseBody
-    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
+    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> setFeedbackExternal(
             @ApiParam(value = "TODO", required = true) @RequestParam(value = "sID_Source") String sID_Source,
             @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO") String sAuthorFIO,
