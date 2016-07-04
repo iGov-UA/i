@@ -974,31 +974,33 @@ public class ActionItemController {
                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
                         LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
-                        //System.out.println("aServiceTagRelation.size: " + aServiceTagRelation.size());
                         for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
                             Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
                             if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
                                 LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
-                                //System.out.println("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
                                 Map<String, Object> mReturn = new HashMap();
                                 mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
                                 List<ServiceTag> aServiceTagChild = new ArrayList();
                                 for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
-                                    if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
+                                    if(oServiceTagRelationChild.getServiceTag_Parent().getId() == nID_ServiceTag_Root){
                                         aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
                                         aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
                                     }
-
                                 }
                                 mReturn.put("aServiceTag_Child", aServiceTagChild);
-
                                 List<Service> aService_Selected = new ArrayList();
                                 for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                     for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
-                                        if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
-                                            && Objects.equals(nID_Category, oServiceTagLink.getService().getSubcategory().getCategory().getId())
-                                                ){
+                                        if(oServiceTag_Selected.getId() == 57 && oServiceTagLink.getServiceTag().getId() == 57){
+                                           System.out.println("nID_Category: " + nID_Category + " = " + oServiceTagLink.getService().getSubcategory().getCategory().getId()
+                                        + " ; " + oServiceTagLink.getServiceTag().getId() + " = " + oServiceTag_Selected.getId()
+                                           + (oServiceTagLink.getServiceTag().getId() == oServiceTag_Selected.getId()) 
+                                                   + (new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())));
+                                        }
+                                        if(oServiceTagLink.getServiceTag().getId() == oServiceTag_Selected.getId()
+                                            && (new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId()))){
                                             aService_Selected.add(oServiceTagLink.getService());
+                                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
                                             break;
                                         }
                                     }
