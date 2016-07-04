@@ -177,12 +177,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="srejectSMK" name="Відмовлено в наданні послуги."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_dla_vidmoviSMK" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_dla_vidmoviSMK.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asvidmovaSMK" name="Причини відмови" type="enum" required="true">
+        <activiti:formProperty id="asvidmovaSMK" name="Причини відмови" type="enum">
           <activiti:value id="sEnam_Ne_vci_dok" name="Подання неповного пакету документів, необхідних для присвоєння будівельної  адреси"></activiti:value>
           <activiti:value id="sEnam_Ne_vidostovirn_dok" name="Виявлення в документах недостовірних відомостей "></activiti:value>
           <activiti:value id="sEnam_Ne_virni_dok" name="Невідповідність поданих документів встановленим вимогам (неможливість та відсутність підстав для присвоєння будівельної адреси)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="commentSMK" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="commentSMK" name="Коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -468,7 +468,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="marker_ECP1" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_ECP1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sComentVidmova" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file_Dok_z_ECP" name="Документ з накладеною ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP2" name="Документ з накладеною ЕЦП" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -547,7 +547,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Dok_z_ECP},${file_bud_dok}</activiti:expression>
+            <activiti:expression>${file_Dok_z_ECP2},${file_bud_dok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
