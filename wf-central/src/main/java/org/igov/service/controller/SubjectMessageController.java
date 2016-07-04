@@ -522,7 +522,7 @@ public class SubjectMessageController {
             SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
             subjectMessageFeedbackDao.saveOrUpdate(feedback);
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
-            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject);
+            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
 
         } catch (Exception e) {
             LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
