@@ -275,18 +275,18 @@
         <activiti:formProperty id="Document3" name="Черговий кадастровий план" type="string"  default="http://mkk.kga.gov.ua/"></activiti:formProperty>
         <activiti:formProperty id="Map1" name="Витяг з містобудівного кадастру" type="string" default="http://mkk.kga.gov.ua/"></activiti:formProperty>
         <activiti:formProperty id="Decision5" name="Результат опрацювання" type="enum" required="true" default=" ">
-          <activiti:value id="s_001" name="Зауваження відсутні, підготувати проект містобудівних умов та обмежень"></activiti:value>
-          <activiti:value id="s_002" name="Є зауваження, підготувати лист-відмову"></activiti:value>
+          <activiti:value id="s_101" name="Зауваження відсутні, підготувати проект містобудівних умов та обмежень"></activiti:value>
+          <activiti:value id="s_102" name="Є зауваження, підготувати лист-відмову"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Causes" name="Причини відмови" type="enum" default=" ">
-          <activiti:value id="s_001" name="подання неповного пакету документів"></activiti:value>
-          <activiti:value id="s_002" name="виявлення в документах недостовірних відомостей"></activiti:value>
-          <activiti:value id="s_003" name="невідповідність поданих документів встановленим вимогам"></activiti:value>
+          <activiti:value id="s_201" name="подання неповного пакету документів"></activiti:value>
+          <activiti:value id="s_202" name="виявлення в документах недостовірних відомостей"></activiti:value>
+          <activiti:value id="s_203" name="невідповідність поданих документів встановленим вимогам"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Comment" name="Коментар" type="textArea"></activiti:formProperty>
-<!--        <activiti:formProperty id="markers_Hide_05_01" name="показать строки если отказ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_002'&quot;}}}"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="markers_Hide_05_02" name="показать строки если отказ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_05_02&quot;:{&quot;aField_ID&quot;:[&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_002'&quot;}}}"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="markers_Req_05_01" name="показать строки если отказ " type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;,&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Є зауваження, підготувати лист-відмову'&quot;}}}"></activiti:formProperty> -->
+<!--        <activiti:formProperty id="markers_Hide_05_01" name="показать строки если отказ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_102'&quot;}}}"></activiti:formProperty> -->
+<!--        <activiti:formProperty id="markers_Hide_05_02" name="показать строки если отказ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_05_02&quot;:{&quot;aField_ID&quot;:[&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_102'&quot;}}}"></activiti:formProperty> -->
+<!--        <activiti:formProperty id="markers_Req_05_01" name="показать строки если отказ " type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;,&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_102'&quot;}}}"></activiti:formProperty> -->
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -300,7 +300,7 @@
     <sequenceFlow id="flow13" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" name="Зауваження відсутні, підготувати проект містобудівних умов та обмежень" sourceRef="exclusivegateway2" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Decision5=='s_001'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Decision5=='s_101'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Крок 11 – Підготовка проекту містобудівних умов та обмежень (відділ підготовки документів щодо містобудівних ініціатив ДМА)" activiti:candidateGroups="kiev_834_pdoc">
       <extensionElements>
@@ -402,7 +402,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow15" name="Є зауваження, підготувати лист-відмову" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Decision5=='s_002'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Decision5=='s_102'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask6" name="Крок 7 – Підписання листа-відмови у начальника відділу ЕЦП (начальник відділу підготовки документів щодо містобудівних ініціатив ДМА)" activiti:candidateGroups="kiev_834_nach_pdoc">
       <extensionElements>
