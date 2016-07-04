@@ -1281,6 +1281,37 @@
         <addAutoIncrement tableName="ServiceTagRelation" columnName="nID" startWith="1000" columnDataType="bigint"/>
         <addAutoIncrement tableName="ServiceTagLink" columnName="nID" startWith="1000" columnDataType="bigint"/> 
     </changeSet>
-   
+
+    <changeSet id="issue-1290" author="IgorMaksymov">
+        <createTable tableName="SubjectMessageFeedback">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_Source" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sAuthorFIO" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sMail" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sHead" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sBody" type="varchar(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Rate" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Service" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            DROP TABLE SubjectMessageFeedback;
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>
