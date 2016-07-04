@@ -5,8 +5,10 @@ import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "SubjectMessageFeedback")
 public class SubjectMessageFeedback extends AbstractEntity {
     @JsonProperty(value = "sID_Source")
     @Column(name = "sID_Source", nullable = false)
