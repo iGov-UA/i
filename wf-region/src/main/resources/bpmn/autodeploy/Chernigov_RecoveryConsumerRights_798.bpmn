@@ -43,6 +43,7 @@
           <activiti:value id="sEnumElement_Bad_Specification" name="товар належної якості не задовольнив за формою, габаритами, фасоном, кольором, розміром або з інших причин не може бути використаний за призначенням. Збережено його товарний вигляд, споживчі властивості, пломби, ярлики."></activiti:value>
           <activiti:value id="sEnumElement_Bad_quality" name="в товарі почали проявлятися недоліки"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sLabel03" name="Що сталося з продукцією (товаром)?" type="label" default="товар належної якості не задовольнив за формою, габаритами, фасоном, кольором, розміром або з інших причин не може бути використаний за призначенням. Збережено його товарний вигляд, споживчі властивості, пломби, ярлики."></activiti:formProperty>
         <activiti:formProperty id="sType_Defect" name="Додатковий коментар щодо виниклих проблем (які характеристики не підійшли або які виникли недоліки/що втратило якість)" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="asEnumWho_Present" name="Вимоги споживача пред'являлись:" type="enum" required="true">
           <activiti:value id="sEnumElement_Seller" name="продавцю за місцем купівлі"></activiti:value>
@@ -115,8 +116,8 @@
         <activiti:formProperty id="sTerm_Warranty" name="Встановлений строк гарантії (в обраних одиницях); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLabel02" name=" " type="label" default=" Інформація щодо порушення права споживача "></activiti:formProperty>
         <activiti:formProperty id="asEnumWhat_Happened" name="Що сталося з продукцією (товаром)?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Bad_Specification" name="належної якості, але продукція (товар) не підійшла за характеристиками (кольором, розміром, фасоном та інше)"></activiti:value>
-          <activiti:value id="sEnumElement_Bad_quality" name="втратила якість (виникли недоліки)"></activiti:value>
+          <activiti:value id="sEnumElement_Bad_Specification" name="товар належної якості не задовольнив за формою, габаритами, фасоном, кольором, розміром або з інших причин не може бути використаний за призначенням. Збережено його товарний вигляд, споживчі властивості, пломби, ярлики."></activiti:value>
+          <activiti:value id="sEnumElement_Bad_quality" name="в товарі почали проявлятися недоліки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sType_Defect" name="Додатковий коментар щодо виниклих проблем (які характеристики не підійшли або які виникли недоліки/що втратило якість); ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asEnumWho_Present" name="Вимоги споживача пред'являлись:" type="enum" writable="false">
@@ -202,8 +203,8 @@
         <activiti:formProperty id="sTerm_Warranty" name="Встановлений строк гарантії (в обраних одиницях); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLabel02" name=" " type="label" default=" Інформація щодо порушення права споживача "></activiti:formProperty>
         <activiti:formProperty id="asEnumWhat_Happened" name="Що сталося з продукцією (товаром)?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Bad_Specification" name="належної якості, але продукція (товар) не підійшла за характеристиками (кольором, розміром, фасоном та інше)"></activiti:value>
-          <activiti:value id="sEnumElement_Bad_quality" name="втратила якість (виникли недоліки)"></activiti:value>
+          <activiti:value id="sEnumElement_Bad_Specification" name="товар належної якості не задовольнив за формою, габаритами, фасоном, кольором, розміром або з інших причин не може бути використаний за призначенням. Збережено його товарний вигляд, споживчі властивості, пломби, ярлики."></activiti:value>
+          <activiti:value id="sEnumElement_Bad_quality" name="в товарі почали проявлятися недоліки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sType_Defect" name="Додатковий коментар щодо виниклих проблем (які характеристики не підійшли або які виникли недоліки/що втратило якість); ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asEnumWho_Present" name="Вимоги споживача пред'являлись:" type="enum" writable="false">
@@ -500,10 +501,10 @@ ${sNameOrgan}&lt;br /&gt;
       <script>
 var per1 = '1. Копія документу, що підтверджує факт придбання продукції.&lt;br&gt;'
 var per2 = ' '
-if (execution.getVariable('nFile_OtherDoc') != '')
+if (execution.getVariable('nFile_OtherDoc') != null)
 	if (execution.getVariable('nFile_OtherDoc') != ' ')
 	{
-		per1 = per1 + '2. Інші документи.&lt;br&gt;' + execution.getVariable('nFile_OtherDoc').toString()
+		per1 = per1 + '2. Інші документи.&lt;br&gt;'
 	}
 	
 if (execution.getVariable('asEnumUnits_Term_Warranty') == 'sEnumElement_Day')
