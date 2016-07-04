@@ -438,8 +438,8 @@ public class MsgSendImpl implements MsgSend {
 
 	LOG.debug("filter:\n{}", filter);
 
-	//return Msg.getMsg(filter);
-        return null;
+	return Msg.getMsg(filter);
+        //return null;
     }
 
 }
