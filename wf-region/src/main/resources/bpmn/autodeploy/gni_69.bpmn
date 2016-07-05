@@ -34,7 +34,7 @@
         
 
 <!--  Вставка автоподписания ЭЦП начало -->
-	    <activiti:formProperty id="fAppWithECP" name="Заявление на регистрацию" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заявление на регистрацию" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/gni_69_print.html"></activiti:formProperty>
 <!--  Вставка автоподписания ЭЦП конец  -->
 
@@ -133,7 +133,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${zapit},${fAppWithECP}</activiti:expression>
+            <activiti:expression>${zapit},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
