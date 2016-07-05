@@ -530,7 +530,8 @@ public class SubjectMessageController {
         }
     }
 
-    public ResponseEntity<String> getFeedbackExternal(Long nId) throws CommonServiceException {
+    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.GET)
+    public ResponseEntity<String> getFeedbackExternal(@RequestParam(value = "nID") Long nId) throws CommonServiceException {
         LOG.info("getFeedbackExternal started for the nID: {}", nId);
             SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
             if (feedback == null){
