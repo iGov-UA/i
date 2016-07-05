@@ -611,8 +611,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decidedok" name="Повідомлення від ЦНАП в разі неотримання документів" type="enum" writable="false">
-          <activiti:value id="acceptdok" name="Так документи надійшли"></activiti:value>
+        <activiti:formProperty id="decidedok" name="Повідомлення від ЦНАП в разі неотримання документів" type="enum" default="acceptdok" writable="false">
+          <activiti:value id="acceptdok" name=" "></activiti:value>
           <activiti:value id="rejectdok" name="Документи не надійшли, перевірте чи були вони відправлені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asPZ_Vutajg" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" required="true">
@@ -633,7 +633,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPZ_Vutajg=='sEnamNe_Pidpusano'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow74" name="${asPZ_Vutajg=='sEnamPidpusano' і decidedok!='rejectdok'}" sourceRef="exclusivegateway9" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPZ_Vutajg=='sEnamPidpusano'&& decidedok!='rejectdok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPZ_Vutajg=='sEnamPidpusano'&& decidedok=='acceptdok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow76" name="${asPZ_Vutajg=='sEnamPidpusano' і decidedok=='rejectdok'}" sourceRef="exclusivegateway9" targetRef="servicetask13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPZ_Vutajg=='sEnamPidpusano'&& decidedok=='rejectdok'}]]></conditionExpression>
