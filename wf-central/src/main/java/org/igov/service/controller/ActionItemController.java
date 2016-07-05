@@ -953,12 +953,16 @@ public class ActionItemController {
     ResponseEntity<String> getCatalogTreeTag(
 			@ApiParam(value =
 					"строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
-							+ "в имени которых встречается значение этого параметра, без учета регистра.", required = false) @RequestParam(value = "sFind", required = false) final String sFind
+							+ "в имени которых встречается значение этого параметра, без учета регистра.", required = false) 
+                        @RequestParam(value = "sFind", required = false) final String sFind
 			,@ApiParam(value =
 					"массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
-							+ "Если указан другой ID, фильтр не применяется.", required = false) @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
-			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
-			,@ApiParam(value = "ID категории", required = true) @RequestParam(value = "nID_Category", required = true) final Integer nID_Category
+							+ "Если указан другой ID, фильтр не применяется.", required = false) 
+                        @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
+			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) 
+                        @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
+			,@ApiParam(value = "ID категории", required = true) 
+                        @RequestParam(value = "nID_Category", required = true) final Integer nID_Category
         ) {
 
         final boolean bTest = generalConfig.isSelfTest();
@@ -974,15 +978,18 @@ public class ActionItemController {
                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
                         LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
+                        
                         for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
+                            
                             Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
+                            //???????????????
                             if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
                                 LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
                                 Map<String, Object> mReturn = new HashMap();
                                 mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
                                 List<ServiceTag> aServiceTagChild = new ArrayList();
                                 for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
-                                    if(oServiceTagRelationChild.getServiceTag_Parent().getId() == nID_ServiceTag_Root){
+                                    if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)){
                                         aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
                                         aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
                                     }
@@ -992,14 +999,12 @@ public class ActionItemController {
                                 for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                     for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
                                         if(oServiceTagLink.getServiceTag().getId() == oServiceTag_Selected.getId()
-                                            && (new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId()))){
+                                            && new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())){
                                             aService_Selected.add(oServiceTagLink.getService());
                                             break;
                                         }
                                     }
                                 }
-                                //mReturn.put("aService", aService_Selected);
-
                                 if(aService_Selected.size()>0){
                                     aReturn.add(mReturn);                            
                                 }
@@ -1015,22 +1020,27 @@ public class ActionItemController {
     }    
     
     
-	@ApiOperation(value = "Получение дерева тегов и услуг", notes = "Дополнительно:\n"
-		+ "" )
+    @ApiOperation(value = "Получение дерева тегов и услуг", notes = "Дополнительно:\n" + "" )
     @RequestMapping(value = "/getCatalogTreeTagService", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<String> getCatalogTreeTagService(
 			@ApiParam(value =
 					"строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
-							+ "в имени которых встречается значение этого параметра, без учета регистра.", required = false) @RequestParam(value = "sFind", required = false) final String sFind
+							+ "в имени которых встречается значение этого параметра, без учета регистра.", required = false) 
+                        @RequestParam(value = "sFind", required = false) final String sFind
 			,@ApiParam(value =
 					"массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
-							+ "Если указан другой ID, фильтр не применяется.", required = false) @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
-			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
-			,@ApiParam(value = "ID категории", required = true) @RequestParam(value = "nID_Category", required = true) final Long nID_Category
-			,@ApiParam(value = "ID тэга", required = true) @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag
-			,@ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true) @RequestParam(value = "bRoot ", required = true) final boolean bRoot 
+							+ "Если указан другой ID, фильтр не применяется.", required = false) 
+                        @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA
+			,@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) 
+                        @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders
+			,@ApiParam(value = "ID категории", required = true) 
+                        @RequestParam(value = "nID_Category", required = true) final Long nID_Category
+			,@ApiParam(value = "ID тэга", required = true) 
+                        @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag
+			,@ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true) 
+                        @RequestParam(value = "bRoot ", required = true, defaultValue = "false") final boolean bRoot 
         ) {
 
         final boolean bTest = generalConfig.isSelfTest();
@@ -1040,29 +1050,23 @@ public class ActionItemController {
                         GET_CATALOG_TREE_TAG_SERVICE, sFind, asID_Place_UA, bTest, nID_Category, nID_ServiceTag, bRoot) {
                     @Override
                     public SerializableResponseEntity<String> execute() {
-                        List<Map> aReturn = new LinkedList();
                         
-                        //List<Service> aServiceAll = new ArrayList<>(baseEntityDao.findAll(Service.class));
-                        //List<ServiceTag> aServiceTag = new ArrayList<>(baseEntityDao.findAll(ServiceTag.class));
+                        List<Map> aReturn = new LinkedList();
                         List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
-
-                        //List<ServiceTagRelation> aServiceTagRelationRoot = new ArrayList();
-                        //for(ServiceTag oServiceTag : aServiceTag){
                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
                         
-                        if(bRoot){
-                            Map<String, Object> mReturn = new HashMap();
-                            ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
-                            mReturn.put("oServiceTag_Root", oServiceTag);
+                        Map<String, Object> mReturn = new HashMap();
+                        ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
                             
+                        if(bRoot){
+                            mReturn.put("oServiceTag_Root", oServiceTag);
                             List<ServiceTag> aServiceTagChild = new ArrayList();
                             for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
                                 if(Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag)){
                                     aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
                                     aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
                                 }
-
                             }
                             mReturn.put("aServiceTag_Child", aServiceTagChild);
 
@@ -1070,8 +1074,7 @@ public class ActionItemController {
                             for(ServiceTagLink oServiceTagLink : aServiceTagLink){
                                 for(ServiceTag oServiceTag_Selected : aServiceTag_Selected){
                                     if(Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
-                                            && Objects.equals(nID_Category, oServiceTagLink.getService().getSubcategory().getCategory().getId())
-                                            ){
+                                            && new Long(nID_Category).equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())){
                                         aService_Selected.add(oServiceTagLink.getService());
                                         break;
                                     }
@@ -1083,8 +1086,7 @@ public class ActionItemController {
                                 aReturn.add(mReturn);                            
                             }
                         }else{
-                            Map<String, Object> mReturn = new HashMap();
-                            ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
+                            //??????????????????
                             for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
                                 if(Objects.equals(oServiceTagRelationChild.getServiceTag_Child().getId(), nID_ServiceTag)){
                                     mReturn.put("oServiceTag_Root", oServiceTagRelationChild.getServiceTag_Child());
@@ -1111,38 +1113,7 @@ public class ActionItemController {
                             }
                         }
                         
-                        /*for(ServiceTagRelation oServiceTagRelation : aServiceTagRelation){
-                            if(oServiceTagRelation.getServiceTag_Parent().getId()!=0){
-                                aServiceTagRelationRoot.add(oServiceTagRelation);
-                            }
-                        }
-                        
-                        aServiceTagRelationRoot*/
-                        
-                        /*if (!bTest) {
-                            filterOutServicesByServiceNamePrefix(aServiceTag, SERVICE_NAME_TEST_PREFIX);
-                        }
-
-                        if (sFind != null) {
-                            filterServicesByServiceName(aServiceTag, sFind);
-                        }
-
-                        if (asID_Place_UA != null) {
-                            //TODO: Зачем это было добавлено?                    asID_Place_UA.retainAll(SUPPORTED_PLACE_IDS);
-                            if (!asID_Place_UA.isEmpty()) {
-                                filterServicesByPlaceIds(aServiceTag, asID_Place_UA);
-                            }
-                        }
-
-                        if (!bShowEmptyFolders) {
-                            hideEmptyFolders(aServiceTag);
-                        }
-
-                        return categoriesToJsonResponse(aServiceTag);*/
-                        //return categoriesToJsonResponse(aServiceTag);
-                        //return categoriesToJsonResponse(aReturn);
                         return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(aReturn));
-                        
                         
                     }
                 });
