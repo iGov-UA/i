@@ -530,7 +530,7 @@ public class SubjectMessageController {
         }
     }
 
-    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(@RequestParam(value = "nID") Long nId) throws CommonServiceException {
         LOG.info("getFeedbackExternal started for the nID: {}", nId);
             SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
@@ -538,6 +538,7 @@ public class SubjectMessageController {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
             }
+        LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}", nId);
         return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
     }
 
