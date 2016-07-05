@@ -397,7 +397,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamVidmova" name="Відмова в підписанні, повернути в Правове забезпечення"></activiti:value>
           <activiti:value id="sEnamKer_SMK_nazad" name="Нема ЕЦП керівника Правового забезпечення, повернути для підпису"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Dok_z_ECP" name="Документ з накладеною ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP1" name="Документ з накладеною ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -472,7 +472,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Dok_z_ECP},${file_bud_dok}</activiti:expression>
+            <activiti:expression>${file_Dok_z_ECP1},${file_bud_dok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -542,7 +542,14 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamKer_DMA_nazad" name="Нема ЕЦП керівника Служби містобудівного кадастру, повернути для підпису"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_ECP2" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_ECP2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP3" name="Документ з накладеною ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="sComentVidmova" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file_Dok_z_ECP2},${file_bud_dok}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow70" name="${asZam_Dma_rish=='sEnamVidmova'}" sourceRef="exclusivegateway8" targetRef="scripttask2">
@@ -608,15 +615,16 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="acceptdok" name="Так документи надійшли"></activiti:value>
           <activiti:value id="rejectdok" name="Документи не надійшли, перевірте чи були вони відправлені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asPZ_Vutajg" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" writable="false">
-          <activiti:value id="sEnamPidpusano" name="Направити витяг до ЦНАП"></activiti:value>
+        <activiti:formProperty id="asPZ_Vutajg" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" required="true">
+          <activiti:value id="sEnamPidpusano" name="Наказ підписано, направити витяг до ЦНАП"></activiti:value>
           <activiti:value id="sEnamNe_Pidpusano" name="Документ не підписано, надіслати назад на підпис"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Vutajg" name="Завантажте сканкопію Витягу про присвоєння будівельної адреси або лист-відмову" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_Vutag" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_Vutag.json')}"></activiti:formProperty>
+        <activiti:formProperty id="file_Vutajg" name="Завантажте сканкопію Витягу про присвоєння будівельної адреси або лист-відмову" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Dok_z_ECP},${file_bud_dok}</activiti:expression>
+            <activiti:expression>${file_Dok_z_ECP3},${file_bud_dok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
