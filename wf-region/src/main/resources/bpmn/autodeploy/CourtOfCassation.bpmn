@@ -10,7 +10,7 @@
         <activiti:formProperty id="email" name="Адреса особистої електронної пошти (e-mail)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ;процесуальний статус" type="enum" required="true">
+        <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
@@ -165,6 +165,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDoc10" name="Завантажте документ №10 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;]}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;],&quot;saExtension&quot;:&quot;pdf,p7s&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf або p7s&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'&quot;}}}"></activiti:formProperty>
