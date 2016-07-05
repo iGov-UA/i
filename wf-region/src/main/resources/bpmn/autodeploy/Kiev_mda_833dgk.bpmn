@@ -128,6 +128,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('mvk/mda_833.json')}"></activiti:formProperty>
         <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -163,11 +164,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamPap_ni" name="НІ"></activiti:value>
           <activiti:value id="sEnamPap_tak" name="ТАК"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decide" name="Результат опрацювання, оберіть дію" type="enum" required="true">
-          <activiti:value id="reject" name="Надіслати витяг в електронному вигляді"></activiti:value>
-          <activiti:value id="accept" name="Надіслати лист з запрошенням до канцелярії"></activiti:value>
+        <activiti:formProperty id="asDecide" name="Результат опрацювання, оберіть дію" type="enum" required="true">
+          <activiti:value id="sEnamReject" name="Надіслати витяг в електронному вигляді"></activiti:value>
+          <activiti:value id="sEnamAccept" name="Надіслати лист з запрошенням до канцелярії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Завантажте витяг з ЄЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file_ECP" name="Завантажте витяг з ЄЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="marker_Rishenia" name="marker_Rishenia" type="markers" default="${markerService.loadFromFile('mvk/mda_833_Rish.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -211,7 +213,7 @@ ${sNameOrgan}.&lt;br /&gt;
 Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${comment}</activiti:expression>
+          <activiti:expression>${file_ECP}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -268,6 +270,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('mvk/mda_833.json')}"></activiti:formProperty>
         <activiti:formProperty id="EntityName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
