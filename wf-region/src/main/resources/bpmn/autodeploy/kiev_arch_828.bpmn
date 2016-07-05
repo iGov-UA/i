@@ -787,7 +787,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask16_green" targetRef="servicetask11"></sequenceFlow>
-    <serviceTask id="servicetask11" name="ФідБек від громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask11" name="ФідБек від громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -810,15 +810,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

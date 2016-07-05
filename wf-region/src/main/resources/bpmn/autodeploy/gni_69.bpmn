@@ -24,7 +24,7 @@
         <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://docs.google.com/document/d/1op393ACpXsaPwewbuvn4yir-8oskEXy83RcSXOuUnco/edit&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkGni69" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
@@ -50,7 +50,7 @@
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerkGni69}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -133,7 +133,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${zapit}  ${fAppWithECP}</activiti:expression>
+            <activiti:expression>${zapit},${fAppWithECP}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
