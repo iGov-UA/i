@@ -29,7 +29,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import org.igov.io.sms.SMS;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -367,6 +366,21 @@ public class Mail extends Abstract_Mail {
         return sMailNew;
     }
 
+    /*
+        "John Dow <email@adress.com>"  -> "John Dow"
+     */
+    public static String sToNameOnly(String sMail) {
+        try {
+            if (sMail.contains("<")) {
+                String[] asMail = sMail.split("\\<");
+                return ("".equals(asMail[0])) ? null : asMail[0].trim();
+            }
+        } catch (Exception oException) {
+            LOG.warn("FAIL: {} (sMail={})", oException.getMessage(), sMail);
+        }
+        return null;
+    }
+
     //public void sendWithUniSender() throws EmailException {
     public boolean sendWithUniSender() {
         LOG.info("Init...");
@@ -388,14 +402,19 @@ public class Mail extends Abstract_Mail {
 
             if (getTo().contains(",")) {
                 String[] asMail = getTo().split("\\,");
+                String sToName;
                 for (String sMail : asMail) {
+                    sToName = sToNameOnly(sMail);
                     sMail = sMailOnly(sMail);
-                    UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
+                    UniResponse oUniResponse_Subscribe = oUniSender
+                            .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, sToName);
                     LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
                 }
             } else {
                 String sMail = sMailOnly(getTo());
-                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
+                String sToName = sToNameOnly(sMail);
+                UniResponse oUniResponse_Subscribe = oUniSender
+                        .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, sToName);
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
 

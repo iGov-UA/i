@@ -1,21 +1,6 @@
 package org.igov.io.mail.unisender;
 
-import static org.igov.util.Tool.sCut;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import com.mongodb.util.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -30,8 +15,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.mongodb.util.JSON;
+import javax.annotation.PostConstruct;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import static org.igov.io.mail.Mail.sMailOnly;
+import static org.igov.util.Tool.sCut;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
@@ -117,6 +108,8 @@ public class UniSender {
             mParam.add("fields[email]", oSubscribeRequest.getEmail());
         if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
             mParam.add("fields[phone]", oSubscribeRequest.getPhone());
+        if (!StringUtils.isBlank(oSubscribeRequest.getName()))
+            mParam.add("fields[ToName]", oSubscribeRequest.getName());
         //optional
         if (oSubscribeRequest.getTags() != null && !oSubscribeRequest.getTags().isEmpty())
             mParam.add("tags", StringUtils.join(
@@ -159,10 +152,11 @@ public class UniSender {
      * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> asID, String sMail) throws Exception {
+    public UniResponse subscribe(List<String> asID, String sMail, String sToName) throws Exception {
         SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
                 .setListIds(asID)
                 .setEmail(sMail)
+                .setName(sToName)
                 .setDoubleOptin(3)
                 .setOverwrite(1).build();
 
