@@ -449,6 +449,10 @@ public class ActionItemController {
     }
 
     private ResponseEntity regionsToJsonResponse(Service oService) {
+        return JsonRestUtils.toJsonResponse(getService(oService));
+    }
+
+    private Service getService(Service oService) {
         oService.setSubcategory(null);
 
         List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.isSelfTest());
@@ -457,15 +461,8 @@ public class ActionItemController {
 
             Place place = oServiceData.getoPlace();
             if (place != null) {
-                // emulate for client that oPlace contain city and oPlaceRoot contain oblast
-
                 Place root = placeDao.getRoot(place);
                 oServiceData.setoPlaceRoot(root);
-                /* убрано чтоб не создавать нестандартност
-                 if (PlaceTypeCode.OBLAST == place.getPlaceTypeCode()) {
-                 oServiceData.setoPlace(null);   // oblast can't has a place
-                 }
-                 }*/
             }
 
             // TODO remove if below after migration to new approach (via Place)
@@ -477,7 +474,7 @@ public class ActionItemController {
         }
 
         oService.setServiceDataList(aServiceData);
-        return JsonRestUtils.toJsonResponse(oService);
+        return oService;
     }
 
     @ApiOperation(value = "Получение дерева сервисов", notes = "Дополнительно:\n"
@@ -958,32 +955,40 @@ public class ActionItemController {
                                     public SerializableResponseEntity<String> execute() {
 
                                         List<Map> aReturn = new LinkedList();
-                                        List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
-                                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
-                                        List<ServiceTag> aServiceTag_Selected = new ArrayList();
-                                        LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
 
-                                        for (ServiceTagRelation oServiceTagRelation : aServiceTagRelation) {
+                                        try {
+                                            System.out.println("!!!!!!!!!!");
+                                            List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
+                                            List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
+                                            List<ServiceTag> aServiceTag_Selected = new ArrayList();
+                                            LOG.info("aServiceTagRelation.size: " + aServiceTagRelation.size());
 
-                                            Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
-                                            //???????????????
-                                            if (oServiceTagRelation.getServiceTag_Parent().getId() != 0) {
-                                                LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " + oServiceTagRelation.getServiceTag_Parent().getId());
-                                                Map<String, Object> mReturn = new HashMap();
-                                                mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
-                                                List<ServiceTag> aServiceTagChild = new ArrayList();
-                                                for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
-                                                    if (Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)) {
-                                                        aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
-                                                        aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
+                                            for (ServiceTagRelation oServiceTagRelation : aServiceTagRelation) {
+
+                                                Long nID_ServiceTag_Root = oServiceTagRelation.getServiceTag_Child().getId();
+                                                if (oServiceTagRelation.getServiceTag_Parent().getId() == 0) {
+                                                    LOG.info("oServiceTagRelation.getServiceTag_Parent().getId(): " 
+                                                            + oServiceTagRelation.getServiceTag_Parent().getId());
+                                                    Map<String, Object> mReturn = new LinkedHashMap();
+                                                    mReturn.put("oServiceTag_Root", oServiceTagRelation.getServiceTag_Child());
+                                                    List<ServiceTag> aServiceTagChild = new ArrayList();
+                                                    for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
+                                                        if (Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag_Root)) {
+                                                            aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
+                                                            aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
+                                                        }
+                                                    }
+                                                    mReturn.put("aServiceTag_Child", aServiceTagChild);
+                                                    List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
+                                                    if (aService_Selected.size() > 0) {
+                                                        aReturn.add(mReturn);
                                                     }
                                                 }
-                                                mReturn.put("aServiceTag_Child", aServiceTagChild);
-                                                List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                                if (aService_Selected.size() > 0) {
-                                                    aReturn.add(mReturn);
-                                                }
                                             }
+
+                                        } catch (Exception ex) {
+                                            System.err.println(ex);
+                                            ex.printStackTrace();
                                         }
 
                                         return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(aReturn));
@@ -1024,12 +1029,12 @@ public class ActionItemController {
                                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
                                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
 
-                                        Map<String, Object> mReturn = new HashMap();
+                                        Map<String, Object> mReturn = new LinkedHashMap();
                                         ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
-                                        mReturn.put("oServiceTag_Root", oServiceTag);
+
                                         List<ServiceTag> aServiceTagChild = new ArrayList();
                                         if (bRoot) {
-                                            //mReturn.put("oServiceTag_Root", oServiceTag);
+                                            mReturn.put("oServiceTag_Root", oServiceTag);
                                             for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
                                                 if (Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag)) {
                                                     aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
@@ -1037,13 +1042,12 @@ public class ActionItemController {
                                                 }
                                             }
                                         } else {
-                                            //??????????????????
-                            /*for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
-                                             if(Objects.equals(oServiceTagRelationChild.getServiceTag_Child().getId(), nID_ServiceTag)){
-                                             mReturn.put("oServiceTag_Root", oServiceTagRelationChild.getServiceTag_Child());
-                                             break;
-                                             }
-                                             }*/
+                                            for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
+                                                if (Objects.equals(oServiceTagRelationChild.getServiceTag_Child().getId(), nID_ServiceTag)) {
+                                                    mReturn.put("oServiceTag_Root", oServiceTagRelationChild.getServiceTag_Parent());
+                                                    break;
+                                                }
+                                            }
                                             aServiceTagChild.add(oServiceTag);
                                             aServiceTag_Selected.add(oServiceTag);
                                         }
@@ -1067,7 +1071,7 @@ public class ActionItemController {
             for (ServiceTag oServiceTag_Selected : aServiceTag_Selected) {
                 if (Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
                         && nID_Category.equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())) {
-                    aService_Selected.add(oServiceTagLink.getService());
+                    aService_Selected.add(getService(oServiceTagLink.getService()));
                     break;
                 }
             }
