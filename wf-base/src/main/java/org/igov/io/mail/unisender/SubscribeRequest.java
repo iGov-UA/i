@@ -15,6 +15,7 @@ public class SubscribeRequest {
     private List<String> listIds;
     private String email;
     private String phone;
+    private String name;
     private List<String> tags;
     private String requestIp;
     private Date requestTime;
@@ -33,6 +34,10 @@ public class SubscribeRequest {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<String> getTags() {
@@ -89,6 +94,11 @@ public class SubscribeRequest {
             return this;
         }
 
+        public Builder setName(String name) {
+            SubscribeRequest.this.name = name;
+            return this;
+        }
+
         public Builder setTags(List<String> tags) {
             SubscribeRequest.this.tags = tags;
             return this;
@@ -128,7 +138,7 @@ public class SubscribeRequest {
 
             if(getListIds() == null || getListIds().isEmpty())
                 throw new IllegalArgumentException("Mailing List ID can't be empty");
-            if(StringUtils.isBlank(getEmail()) && StringUtils.isBlank(getPhone()))
+            if (StringUtils.isBlank(getEmail()) && StringUtils.isBlank(getPhone()))
                 throw new IllegalArgumentException("Email and Phone are empty. At least one argument can't be empty.");
             if (getDoubleOptin() < 0 || getDoubleOptin() > 3)
                 throw new IllegalArgumentException("doubleOptin must be in range [0-3]");
