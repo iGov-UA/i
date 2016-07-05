@@ -1,6 +1,8 @@
 package org.igov.model.subject.message;
 
+import com.google.common.base.Optional;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,6 +19,10 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
 
     @Override
     public SubjectMessageFeedback getFeedbackExternalById(Long nId) {
-        return findById(nId).get();
+        Optional<SubjectMessageFeedback> feedback = findById(nId);
+        if (feedback.isPresent()) {
+          return feedback.get();
+        }
+        return null;
     }
 }
