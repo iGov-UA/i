@@ -6,4 +6,5 @@ public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessag
 
     void setMessage(SubjectMessageFeedback subjectMessageFeedback);
 
+    SubjectMessageFeedback getFeedbackExternalById(Long nId);
 }
