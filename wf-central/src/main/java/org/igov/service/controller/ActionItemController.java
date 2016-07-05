@@ -1053,7 +1053,7 @@ public class ActionItemController {
                                         }
                                         mReturn.put("aServiceTag_Child", aServiceTagChild);
                                         List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                        mReturn.put("aService", aService_Selected);
+                                        //mReturn.put("aService", aService_Selected);
                                         if (aService_Selected.size() > 0) {
                                             aReturn.add(mReturn);
                                         }
