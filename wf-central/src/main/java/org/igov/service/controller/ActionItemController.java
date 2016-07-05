@@ -979,10 +979,10 @@ public class ActionItemController {
                                                         }
                                                     }
                                                     mReturn.put("aServiceTag_Child", aServiceTagChild);
-                                                    List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                                    if (aService_Selected.size() > 0) {
+                                                    //List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
+                                                    //if (aService_Selected.size() > 0) {
                                                         aReturn.add(mReturn);
-                                                    }
+                                                    //}
                                                 }
                                             }
 
@@ -1027,6 +1027,12 @@ public class ActionItemController {
                                         List<Map> aReturn = new LinkedList();
                                         List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
                                         List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
+                                        
+                                        //List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
+                                        for(ServiceTagLink oServiceTagLink : aServiceTagLink){
+                                            oServiceTagLink.getService().setServiceDataList(new LinkedList());
+                                        }
+                                        
                                         List<ServiceTag> aServiceTag_Selected = new ArrayList();
 
                                         Map<String, Object> mReturn = new LinkedHashMap();
@@ -1052,11 +1058,15 @@ public class ActionItemController {
                                             aServiceTag_Selected.add(oServiceTag);
                                         }
                                         mReturn.put("aServiceTag_Child", aServiceTagChild);
+                                        
                                         List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                        //mReturn.put("aService", aService_Selected);
-                                        if (aService_Selected.size() > 0) {
+                                        /*for(Service oService : aService_Selected){
+                                            oService.setServiceDataList(new LinkedList());
+                                        }*/
+                                        mReturn.put("aService", aService_Selected);
+                                        //if (aService_Selected.size() > 0) {
                                             aReturn.add(mReturn);
-                                        }
+                                        //}
                                         return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(aReturn));
                                     }
                                 });
