@@ -530,8 +530,10 @@ public class SubjectMessageController {
         }
     }
 
+    @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
-    public ResponseEntity<String> getFeedbackExternal(@RequestParam(value = "nID") Long nId) throws CommonServiceException {
+    public ResponseEntity<String> getFeedbackExternal(@ApiParam(value = "ID отзыва", required = true)@RequestParam(value = "nID") Long nId)
+            throws CommonServiceException {
         LOG.info("getFeedbackExternal started for the nID: {}", nId);
             SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
             if (feedback == null){
@@ -542,11 +544,14 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
     }
 
+    @ApiOperation(value = "Получить все отзывы по конкретной услуге от сторонних организаций")
     @RequestMapping(value = "/getAllFeedbackExternal", method = RequestMethod.GET)
-    public ResponseEntity<String> getAllFeedbackExternal() {
-        LOG.info("getAllFeedbackExternal started");
-        List<SubjectMessageFeedback> feedbackList = subjectMessageFeedbackDao.getAllSubjectMessageFeedback();
-        LOG.info(" returned getAllFeedbackExternal list size: " + feedbackList.size());
+    public ResponseEntity<String> getAllFeedbackExternalBynID_Service(
+            @ApiParam(value = "ID услуги, по которой возвращаем отзывы", required = true) @RequestParam(value = "nID_Service") Long nID_Service) {
+
+        LOG.info("getAllFeedbackExternal for nID_Service: {} started", nID_Service);
+        List<SubjectMessageFeedback> feedbackList = subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_Service);
+        LOG.info(" returned getAllFeedbackExternal for nID_Service: {} returned list size: {}", nID_Service, feedbackList.size());
         return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
     }
 

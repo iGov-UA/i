@@ -10,5 +10,5 @@ public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessag
 
     SubjectMessageFeedback getFeedbackExternalById(Long nId);
 
-    List<SubjectMessageFeedback> getAllSubjectMessageFeedback();
+    List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service);
 }

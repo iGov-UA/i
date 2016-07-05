@@ -29,7 +29,7 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
     }
 
     @Override
-    public List<SubjectMessageFeedback> getAllSubjectMessageFeedback() {
-        return findAll();
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service) {
+        return findAllBy("nID_Service", nID_service);
     }
 }
