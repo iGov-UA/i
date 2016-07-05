@@ -542,6 +542,14 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
     }
 
+    @RequestMapping(value = "/getAllFeedbackExternal", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFeedbackExternal() {
+        LOG.info("getAllFeedbackExternal started");
+        List<SubjectMessageFeedback> feedbackList = subjectMessageFeedbackDao.getAllSubjectMessageFeedback();
+        LOG.info(" returned getAllFeedbackExternal list size: " + feedbackList.size());
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
+    }
+
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
             + "Если объект не найден по sID_Order, то возвращается код 404 и сообщение \"Record Not Found\"\n"
             + "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"\n"

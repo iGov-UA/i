@@ -5,6 +5,8 @@ import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, SubjectMessageFeedback> implements SubjectMessageFeedbackDao {
 
@@ -24,5 +26,10 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
           return feedback.get();
         }
         return null;
+    }
+
+    @Override
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedback() {
+        return findAll();
     }
 }
