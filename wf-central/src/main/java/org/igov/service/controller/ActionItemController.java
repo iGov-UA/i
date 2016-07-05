@@ -1027,16 +1027,15 @@ public class ActionItemController {
                                         Map<String, Object> mReturn = new HashMap();
                                         ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
                                         mReturn.put("oServiceTag_Root", oServiceTag);
+                                        List<ServiceTag> aServiceTagChild = new ArrayList();
                                         if (bRoot) {
                                             //mReturn.put("oServiceTag_Root", oServiceTag);
-                                            List<ServiceTag> aServiceTagChild = new ArrayList();
                                             for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
                                                 if (Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag)) {
                                                     aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
                                                     aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
                                                 }
                                             }
-                                            mReturn.put("aServiceTag_Child", aServiceTagChild);
                                         } else {
                                             //??????????????????
                             /*for(ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation){
@@ -1045,15 +1044,12 @@ public class ActionItemController {
                                              break;
                                              }
                                              }*/
-
-                                            List<ServiceTag> aServiceTagChild = new ArrayList();
                                             aServiceTagChild.add(oServiceTag);
-                                            mReturn.put("aServiceTag_Child", aServiceTagChild);
+                                            aServiceTag_Selected.add(oServiceTag);
                                         }
-
+                                        mReturn.put("aServiceTag_Child", aServiceTagChild);
                                         List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
                                         mReturn.put("aService", aService_Selected);
-
                                         if (aService_Selected.size() > 0) {
                                             aReturn.add(mReturn);
                                         }
