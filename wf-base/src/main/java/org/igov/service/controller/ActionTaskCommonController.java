@@ -2002,9 +2002,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             if (processes.size() > 0) {
                 processInstance = processes.get(0);
-                LOG.info("ActionTaskLink is not found. Creating a new one");
-
-                actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
+                actionTaskLink = actionTaskLinkDao.getByCriteria(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
+                if(actionTaskLink == null){
+                    LOG.info("ActionTaskLink is not found. Creating a new one");
+                    actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
+                }  
             }
         } else {
             LOG.info("Found ActionTaskLink. Process Id is {}", actionTaskLink.getnIdProcess());

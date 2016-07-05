@@ -451,11 +451,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
         //LOG.info("(sProcessName={})", sProcessName);
         try {
+            LOG.info("Update escalation history... (sProcessName={})", sProcessName);
             if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {//issue 981
                 //LOG.info("begin update escalation history");
-                LOG.info("Update escalation history... (sProcessName={})", sProcessName);
                 escalationHistoryService
                         .updateStatus(nID_Process, EscalationHistoryService.STATUS_IN_WORK);//Long.valueOf(sID_Process)
+            } else { //issue 1297
+                LOG.trace("BpServiceHandler.PROCESS_ESCALATION = {}", BpServiceHandler.PROCESS_ESCALATION);
             }
         } catch (Exception e) {
             LOG.error("Error: {}", e.getMessage());
