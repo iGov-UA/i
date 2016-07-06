@@ -611,10 +611,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decidedok" name="Повідомлення від ЦНАП в разі неотримання документів" type="enum" default="acceptdok" writable="false">
-          <activiti:value id="acceptdok" name=" "></activiti:value>
-          <activiti:value id="rejectdok" name="Документи не надійшли, перевірте чи були вони відправлені"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asPZ_Vutajg" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" required="true">
           <activiti:value id="sEnamPidpusano" name="Документ підписано, направити витяг до ЦНАП"></activiti:value>
           <activiti:value id="sEnamNe_Pidpusano" name="Документ не підписано, надіслати назад на підпис"></activiti:value>
@@ -653,7 +649,7 @@ ${sNameOrgan}.&lt;br /&gt;
 Опрацьване звернення №[sID_Order] щодо ${sPosluga_name}.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Підтвердьте отримання документу для видачі по заявці про ${sPosluga_name}.&lt;br /&gt;
-Опрацюйте цю заявку на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+Опрацюйте цю задачу на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -682,7 +678,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decidedok" name="Чи надійшли документи в паперовому вигляді для видачі?" type="enum" required="true">
           <activiti:value id="acceptdok" name="Так документи надійшли, направити лист заявнику про можливість їх отримання"></activiti:value>
-          <activiti:value id="rejectdok" name="Документи не надійшли"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
