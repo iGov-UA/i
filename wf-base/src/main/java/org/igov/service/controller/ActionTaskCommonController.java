@@ -303,14 +303,30 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
-            @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo
-    ) throws CommonServiceException, TaskAlreadyUnboundException {
+            @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
+            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple
+    ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
 
         String sMessage = null;
 
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
-            oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
+            if(bSimple){
+                //@Autowired
+                //private ActionTaskService oActionTaskService;
+                String sLogin = "volont_escalation";
+                String sReason = "Closed by user (/cancelTask)";
+                String snID_Order = nID_Order+"";
+                LOG.info("snID_Order={}", snID_Order);
+                String snID_Process = snID_Order.substring(0, snID_Order.length()-1);
+                LOG.info("snID_Process={}", snID_Process);
+                oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+            }else{
+                oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
+            }
+            
+
+            
             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n<br>"
                     + "З повагою, команда порталу  iGov.org.ua";
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
