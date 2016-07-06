@@ -521,13 +521,38 @@ public class SubjectMessageController {
         try {
             SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
             subjectMessageFeedbackDao.saveOrUpdate(feedback);
-            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
+            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {} ", sID_Source, nID_Service, feedback.getId());
             return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
 
         } catch (Exception e) {
             LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
             throw new CommonServiceException(e.getMessage(),e);
         }
+    }
+
+    @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва")
+    @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
+    public ResponseEntity<String> getFeedbackExternal(@ApiParam(value = "ID отзыва", required = true)@RequestParam(value = "nID") Long nId)
+            throws CommonServiceException {
+        LOG.info("getFeedbackExternal started for the nID: {}", nId);
+            SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
+            if (feedback == null){
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
+            }
+        LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}", nId);
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
+    }
+
+    @ApiOperation(value = "Получить все отзывы по конкретной услуге от сторонних организаций")
+    @RequestMapping(value = "/getAllFeedbackExternal", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFeedbackExternalBynID_Service(
+            @ApiParam(value = "ID услуги, по которой возвращаем отзывы", required = true) @RequestParam(value = "nID_Service") Long nID_Service) {
+
+        LOG.info("getAllFeedbackExternal for nID_Service: {} started", nID_Service);
+        List<SubjectMessageFeedback> feedbackList = subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_Service);
+        LOG.info(" returned getAllFeedbackExternal for nID_Service: {} returned list size: {}", nID_Service, feedbackList.size());
+        return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
