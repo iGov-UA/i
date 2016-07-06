@@ -184,7 +184,7 @@ public class BpServiceHandler {
     private String getPlaceForProcess(String sID_Process) {
     	Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
-        param.put("nID_Server", generalConfig.getSnID_Server());
+        param.put("nID_Server", generalConfig.getSelfServerId().toString());
     	String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
