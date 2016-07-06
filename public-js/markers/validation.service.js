@@ -761,7 +761,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
         var bCharValid = true;
         for(var chInd = 0; chInd < aExtensions[checkingItem].length; chInd++){
-          if(bCharValid == true && sReversFileName.charAt(chInd) === aExtensions[checkingItem].charAt((aExtensions[checkingItem].length - 1) - chInd)){
+          if(bCharValid == true && sReversFileName.charAt(chInd).toLowerCase() === aExtensions[checkingItem].charAt((aExtensions[checkingItem].length - 1) - chInd).toLowerCase()){
             bCharValid = true;
           } else {
             bCharValid = false;
