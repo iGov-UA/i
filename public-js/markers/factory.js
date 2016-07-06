@@ -15,7 +15,6 @@ angular.module('iGovMarkers')
                         var data = response.data;
                         if (!data.valid){
                             console.error('markers validation failed', data.errors);
-                            debugger;
                         } else {
                             console.info('markers are valid');
                         }
