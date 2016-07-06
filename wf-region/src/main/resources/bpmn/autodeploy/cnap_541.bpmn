@@ -31,8 +31,8 @@
         <activiti:formProperty id="sName" name="У давальному відмінку повне найменування особи – отримувача адміністративної послуги" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Місце знаходження (адреса) об’єкта; вкажіть повну адресу: місто, вулицю, будинок, приміщення тощо" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; цифри, розділені крапкою, згідно до національного класифікатора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFio" name="Прізвище, ім’я, по батькові керівника юридичної особи/фізичної особи – підприємця/уповноваженої особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="sEmployeeNumber" name="Кількість працюючих" type="string" required="true"  default=" "></activiti:formProperty>
         <activiti:formProperty id="sSeatNumber" name="Кількість посадочних місць" type="string" required="true"  default=" "></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, м2" type="string" required="true" default=" "></activiti:formProperty>
@@ -50,6 +50,7 @@
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="documents" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="markers1" type="markers" default="${markerService.loadFromFile('cnap_541.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -136,7 +137,7 @@
         <activiti:formProperty id="sName" name="У давальному відмінку повне найменування особи – отримувача адміністративної послуги; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Місце знаходження (адреса) об’єкта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFio" name="ПІБ керівника юридичної особи/фізичної особи – підприємця/уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeNumber" name="Кількість працюючих; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSeatNumber" name="Кількість посадочних місць; ;writable=false" type="string"></activiti:formProperty>
@@ -150,8 +151,8 @@
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_8.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/cnap_541_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_541_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Принтформа" type="markers" default="${markerService.loadFromFile('zhytomyr/zhytomyr_mvk_families-8_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
