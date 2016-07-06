@@ -199,6 +199,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         try {
+        	LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
             	LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
