@@ -3,6 +3,10 @@
   <head lang="ua">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Надання довідки про доходи фізичних осіб</title>
+
+  </head>
+  <body>
+  
     <style type="text/css">
 
       body div.PrintFormClaim {
@@ -330,44 +334,9 @@
       .test{ border: 1px solid red;}
 
     </style>
-
-    <script>
-      function ShowElements(sCondition) {
-        for(var i=1; i < arguments.length; i++) {    
-          if(sCondition){
-            document.getElementById(arguments[i]).style.visibility = 'visible';
-          } else{
-            document.getElementById(arguments[i]).style.visibility = 'hidden';
-          }
-        }
-      }     
-
-      function ShowElementsOnTrue(sCondition) {
-        for(var i=1; i < arguments.length; i++) {    
-          if(sCondition){            
-            document.getElementById(arguments[i]).style.display = 'inline';            
-          } else {
-            document.getElementById(arguments[i]).style.display = 'none';
-          }
-        }        
-      }    
-
-
-      function FillFildsOneChar(id, str, num, addClass){  
-        var cells = document.getElementById(id).children; 
-
-        for(var i=0;  i<num; ++i){
-          if(str.length>i){
-            cells[i].innerHTML = str[i];
-            cells[i].className += ' ' + addClass;      
-          } else {      
-            cells[i].innerHTML = "&#160;&#160;";
-          }
-        }
-      }
-    </script>
-  </head>
-  <body>
+  
+  
+  
     <div class="PrintFormClaim">
       <div class="whoBlock ml-11">
         До органу доходів і зборів
@@ -489,8 +458,43 @@
         відмовляються від прийняття реєстраційного номера облікової картки платника податків
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
-    </div>
-    <script>
+      
+     <script>
+      function ShowElements(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
+          if(sCondition){
+            document.getElementById(arguments[i]).style.visibility = 'visible';
+          } else{
+            document.getElementById(arguments[i]).style.visibility = 'hidden';
+          }
+        }
+      }     
+
+      function ShowElementsOnTrue(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
+          if(sCondition){            
+            document.getElementById(arguments[i]).style.display = 'inline';            
+          } else {
+            document.getElementById(arguments[i]).style.display = 'none';
+          }
+        }        
+      }    
+
+
+      function FillFildsOneChar(id, str, num, addClass){  
+        var cells = document.getElementById(id).children; 
+
+        for(var i=0;  i<num; ++i){
+          if(str.length>i){
+            cells[i].innerHTML = str[i];
+            cells[i].className += ' ' + addClass;      
+          } else {      
+            cells[i].innerHTML = "&#160;&#160;";
+          }
+        }
+      }
+
+      
       var asAdress = "[asAdress]";
       var subekt = "[subekt]";
       var asLawCourt =  "[asLawCourt]";
@@ -511,5 +515,6 @@
         FillFildsOneChar("trINN", edrpou, 10, "ta-c");  
       }
     </script>
+    </div>
   </body>
 </html>
