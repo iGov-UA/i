@@ -84,7 +84,9 @@ public class Mail extends Abstract_Mail {
         }
         LOG.info("(getHead()={})", getHead());
 
-        Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        // For test
+        //Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        Boolean bUniSender = true;
         LOG.info("(bUniSender={})", bUniSender);
         //LOG.debug("(getFrom()={})", getFrom());
         //LOG.debug("(getTo()={})", getTo());
@@ -404,17 +406,15 @@ public class Mail extends Abstract_Mail {
                 String[] asMail = getTo().split("\\,");
                 String sToName;
                 for (String sMail : asMail) {
-                    sToName = sToNameOnly(sMail);
                     sMail = sMailOnly(sMail);
                     UniResponse oUniResponse_Subscribe = oUniSender
-                            .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, sToName);
+                            .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, this.getToName());
                     LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
                 }
             } else {
                 String sMail = sMailOnly(getTo());
-                String sToName = sToNameOnly(sMail);
                 UniResponse oUniResponse_Subscribe = oUniSender
-                        .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, sToName);
+                        .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, this.getToName());
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
 
