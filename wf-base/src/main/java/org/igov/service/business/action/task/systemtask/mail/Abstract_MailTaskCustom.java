@@ -66,6 +66,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
     private static final Pattern TAG_PATTERN_DOUBLE_BRACKET = Pattern.compile("\\{\\[(.*?)\\]\\}");
     private static final String TAG_CANCEL_TASK = "[cancelTask]";
+    private static final String TAG_CANCEL_TASK_SIMPLE = "[cancelTaskSimple]";
     private static final String TAG_nID_Protected = "[nID_Protected]";
     private static final String TAG_sID_Order = "[sID_Order]";
     private static final String TAG_nID_SUBJECT = "[nID_Subject]";
@@ -176,9 +177,16 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
             LOG.info("TAG_CANCEL_TASK:(nID_Protected={})", nID_Order);
-            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order);
+            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, false);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
         }
+        
+        if (sTextReturn.contains(TAG_CANCEL_TASK_SIMPLE)) {
+            LOG.info("TAG_CANCEL_TASK_SIMPLE:(nID_Protected={})", nID_Order);
+            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, true);
+            sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK_SIMPLE, sHTML_CancelTaskButton);
+        }
+
 
         if (sTextReturn.contains(TAG_nID_SUBJECT)) {
             LOG.info("TAG_nID_SUBJECT: (nID_Subject={})", nID_Subject);

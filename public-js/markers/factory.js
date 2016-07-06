@@ -1,7 +1,7 @@
 angular.module('iGovMarkers')
     .factory('iGovMarkers', function ($http, iGovMarkersDefaults, iGovMarkersSchema) {
         var markers = iGovMarkersDefaults;
-        var schema = iGovMarkersSchema;
+        var definitions = iGovMarkersSchema;
         return {
             getMarkers: function () {
                 return markers;
@@ -9,14 +9,15 @@ angular.module('iGovMarkers')
             validateMarkers: function () {
                 $http.post('/api/markers/validate', {
                     markers: markers,
-                    schema: schema
+                    definitions: definitions
                 })
                     .then(function (response) {
                         var data = response.data;
-                        if (!data.valid)
+                        if (!data.valid){
                             console.error('markers validation failed', data.errors);
-                        else
-                            console.log('markers are valid');
+                        } else {
+                            console.info('markers are valid');
+                        }
                     });
             },
             grepByPrefix: function (section, prefix) {
