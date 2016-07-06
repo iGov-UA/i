@@ -4,13 +4,15 @@
 angular.module('iGovMarkers')
     .constant('iGovMarkersSchema', {
         options: {
-            allErrors: true
+            allErrors: true,
+            useDefaults: true
         },
         schema: {
             title: "Markers Schema",
             type: "object",
             definitions: {
                 aField_IDType: {
+                    type: "object",
                     properties: {
                         aField_ID: {
                             type: "array",
@@ -25,17 +27,17 @@ angular.module('iGovMarkers')
                     type: "object",
                     allOf: [{"$ref": "#/definitions/aField_IDType"}],
                     properties: {
-                        asID_Field: {},
+                        asID_Field: {
+                            type: "object"
+                        },
                         sCondition: {
+                            type: "string"
+                        },
+                        sNote: {
                             type: "string"
                         }
                     },
                     required: ["aField_ID", "asID_Field", "sCondition"]
-                },
-                validatorWith_aField_IDType: {
-                    type: "object",
-                    allOf: [{"$ref": "#/definitions/aField_IDType"}],
-                    required: ["aField_ID"]
                 },
                 stringArray: {
                     type: "array",
@@ -47,7 +49,31 @@ angular.module('iGovMarkers')
                 motion: {
                     type: "object",
                     patternProperties: {
+                        "^ReplaceTextSymbols_": {
+                            type: "object",
+                            properties: {
+                                sID_Field: {type: "string"},
+                                nSymbols: {type: "integer"},
+                                sValueNew: {type: "string"},
+                                sID_Element_sValue: {type: "string"}
+                            },
+                            required: ["sID_Field", "nSymbols", "sValueNew", "sID_Element_sValue"],
+                            additionalProperties: false
+                        },
+                        "^ShowFieldsOnNotEmpty_": {
+                            allOf: [{"$ref": "#/definitions/aField_IDType"}],
+                            properties: {
+                                sField_ID_s: {type: "string"}
+                            },
+                            required: ["aField_ID", "sField_ID_s"]
+                        },
                         "^ShowFieldsOnCondition_": {
+                            "$ref": "#/definitions/fieldsOnConditionType"
+                        },
+                        "^RequiredFieldsOnCondition_": {
+                            "$ref": "#/definitions/fieldsOnConditionType"
+                        },
+                        "^WritableFieldsOnCondition_": {
                             "$ref": "#/definitions/fieldsOnConditionType"
                         },
                         "^ValuesFieldsOnCondition_": {
@@ -57,10 +83,7 @@ angular.module('iGovMarkers')
                             properties: {
                                 asID_Field_sValue: {"$ref": "#/definitions/stringArray"}
                             },
-                            required: ["asID_Field_sValue"]
-                        },
-                        "^RequiredFieldsOnCondition_": {
-                            "$ref": "#/definitions/fieldsOnConditionType"
+                            required: ["aField_ID", "asID_Field", "sCondition", "asID_Field_sValue"]
                         }
                     },
                     additionalProperties: false
@@ -81,24 +104,24 @@ angular.module('iGovMarkers')
                 },
                 validate: {
                     type: "object",
-                    properties: {
-                        PhoneUA: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , Mail: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , AutoVIN: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , TextUA: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , TextRU: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , FileSign: {"$ref": "#/definitions/validatorWith_aField_IDType"}
-                        , DateFormat: {
+                    patternProperties: {
+                        "PhoneUA": {"$ref": "#/definitions/aField_IDType"},
+                        "Mail": {"$ref": "#/definitions/aField_IDType"},
+                        "AutoVIN": {"$ref": "#/definitions/aField_IDType"},
+                        "TextUA": {"$ref": "#/definitions/aField_IDType"},
+                        "TextRU": {"$ref": "#/definitions/aField_IDType"},
+                        "FileSign": {"$ref": "#/definitions/aField_IDType"},
+                        "DateFormat": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/validatorWith_aField_IDType"}],
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
                                 sFormat: {type: "string"}
                             },
                             required: ['sFormat']
-                        }
-                        , DateElapsed: {
+                        },
+                        "DateElapsed": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/validatorWith_aField_IDType"}],
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
                                 bFuture: {type: "boolean"},
                                 bLess: {type: "boolean"},
