@@ -105,19 +105,36 @@ angular.module('iGovMarkers')
                 validate: {
                     type: "object",
                     patternProperties: {
-                        "PhoneUA": {"$ref": "#/definitions/aField_IDType"},
-                        "Mail": {"$ref": "#/definitions/aField_IDType"},
-                        "AutoVIN": {"$ref": "#/definitions/aField_IDType"},
-                        "TextUA": {"$ref": "#/definitions/aField_IDType"},
-                        "TextRU": {"$ref": "#/definitions/aField_IDType"},
-                        "FileSign": {"$ref": "#/definitions/aField_IDType"},
+                        "PhoneUA": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "Mail": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "AutoVIN": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "TextUA": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "TextRU": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
                         "DateFormat": {
                             type: "object",
                             allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
                                 sFormat: {type: "string"}
                             },
-                            required: ['sFormat']
+                            required: ["aField_ID", 'sFormat']
+                        },
+                        "DocumentDate": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                sFormat: {type: "string"}
+                            },
+                            required: ["aField_ID", 'sFormat']
                         },
                         "DateElapsed": {
                             type: "object",
@@ -129,9 +146,82 @@ angular.module('iGovMarkers')
                                 nMonths: {type: "integer"},
                                 nYears: {type: "integer"},
                                 sFormat: {type: "string"}
+                            },
+                            required: ["aField_ID", 'sFormat']
+                        },
+                        "^DateElapsed_": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                inheritedValidator: {type: "string"},
+                                sFormat: {type: "string"},
+                                bFuture: {type: "boolean"},
+                                sMessage: {type: "string"}
+                            },
+                            required: ["aField_ID", 'sFormat']
+                        },
+                        "CodeKVED": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "CodeEDRPOU": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "CodeMFO": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "NumberBetween": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                nMin: {type: "integer"},
+                                nMax: {type: "integer"},
+                                sMessage: {type: "string"}
+                            },
+                            required: ["aField_ID", 'nMin', "nMax"]
+                        },
+                        "NumberFractionalBetween": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                nMin: {type: "number"},
+                                nMax: {type: "number"},
+                                sMessage: {type: "string"}
+                            },
+                            required: ["aField_ID", 'nMin', "nMax"]
+                        },
+                        "Numbers_Accounts": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                sMessage: {type: "string"}
                             }
+                        },
+                        "^CustomFormat_": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                sFormat: {type: "string"},
+                                sMessage: {type: "string"}
+                            },
+                            required: ["aField_ID", 'sFormat']
+                        },
+                        "FileSign": {
+                            "$ref": "#/definitions/aField_IDType"
+                        },
+                        "^FileExtensions_": {
+                            type: "object",
+                            allOf: [{$ref: "#/definitions/aField_IDType"}],
+                            properties: {
+                                saExtension: {type: "string"},
+                                sMessage: {type: "string"}
+                            },
+                            required: ["aField_ID", 'saExtension']
+                        },
+                        "FieldNotEmptyAndNonZero": {
+                            "$ref": "#/definitions/aField_IDType"
                         }
-                    }
+                    },
+                    additionalProperties: false
                 }
             },
             additionalProperties: false
