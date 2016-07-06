@@ -4,11 +4,11 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати" type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1y0vCs37mAahhAsvUzRNFC_yP0KtjIoSf0ujiXqmARW8/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" required="true"></activiti:formProperty>
@@ -39,6 +39,7 @@
         <activiti:formProperty id="sProtocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
@@ -516,7 +517,7 @@ execution.setVariable('sNameOrgan', per4)
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення пройшло первинну обробку ЦНАП і передано на розгляд до Держветфітослужби України. &lt;br /&gt;
+Ваше звернення пройшло первинну обробку ЦНАП і передано на розгляд до Держпродспоживслужби України. &lt;br /&gt;
 Про дату проведення інспекції Вас буде проінформовано додатково. &lt;br /&gt;
 Після повідомлення про успішне проходження інспекції Вам слід провести оплату адміністративної послуги згідно до реквізитів, наведених за &lt;a href="goo.gl/oHGB9a"&gt; посиланням.&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${nReestr};&lt;br /&gt;

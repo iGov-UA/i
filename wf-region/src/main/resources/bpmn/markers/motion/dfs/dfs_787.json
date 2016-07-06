@@ -1,0 +1,64 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["asAdult", "Info_Data_Parent", "Info_Data_Teenager", "lastName_UA1", "firstName_UA1", "middleName_UA1", "asTypeDocument", "sPassportSeriaNumber", "sPassportNumber", "sPassportIssuedBy", "dPassportDate", "date_of_birth", "asAdressEqual"], 
+			"asID_Field" : {
+				"sClient" : "asPurpose"
+			}, 
+			"sCondition" : "[sClient] == 'register'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["bankIdinn", "asEditFIO", "asEditDate", "asAdressNew"], 
+			"asID_Field" : {
+				"sClient" : "asPurpose"
+			}, 
+			"sCondition" : "[sClient] == 'edit'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2"], 
+			"asID_Field" : {
+				"sClient" : "asPurpose", 
+				"sClient1" : "asEditFIO"
+			}, 
+			"sCondition" : "[sClient1] == 'yes' && [sClient] == 'edit'"
+		}, 
+		"ShowFieldsOnCondition_4" : {
+			"aField_ID" : ["date_of_birth"], 
+			"asID_Field" : {
+				"sClient" : "asEditDate", 
+				"sClient1" : "asEditFIO"
+			}, 
+			"sCondition" : "[sClient1] == 'yes' && [sClient] == 'edit'"
+		}, 
+		"ShowFieldsOnCondition_5" : {
+			"aField_ID" : ["Info_Place_LiveNew", "sNewVarPostIndex", "sNewAddressFactual_country", "sNewAddressFactual_state", "sNewLiveArea", "sNewAddressFactual_city", "sNewAddressFactual_street", "sNewAddressFactual_houseNo", "sNewVarKvNum", "sNewAddressFactual_flatNo"], 
+			"asID_Field" : {
+				"sClient" : "asEditDate", 
+				"sClient1" : "asAdressNew"
+			}, 
+			"sCondition" : "[sClient1] == 'yes' && [sClient] == 'edit'"
+		}, 
+		"ShowFieldsOnCondition_6" : {
+			"aField_ID" : ["Info_Place_LiveNew", "sNewVarPostIndex", "sNewAddressFactual_country", "sNewAddressFactual_state", "sNewLiveArea", "sNewAddressFactual_city", "sNewAddressFactual_street", "sNewAddressFactual_houseNo", "sNewVarKvNum", "sNewAddressFactual_flatNo"], 
+			"asID_Field" : {
+				"sClient" : "asEditDate", 
+				"sClient1" : "asAdressEqual"
+			}, 
+			"sCondition" : "[sClient1] == 'yes' && [sClient] == 'register'"
+		}, 
+		"ShowFieldsOnCondition_7" : {
+			"aField_ID" : ["sNationality", "sTaxNumberHomeCountry"], 
+			"asID_Field" : {
+				"sClient" : "asUkrainian"
+			}, 
+			"sCondition" : "[sClient] == 'yes'"
+		}, 
+		"ShowFieldsOnCondition_8" : {
+			"aField_ID" : ["sWork"], 
+			"asID_Field" : {
+				"sClient" : "asWork"
+			}, 
+			"sCondition" : "[sClient] == 'yes'"
+		}
+	}
+}
