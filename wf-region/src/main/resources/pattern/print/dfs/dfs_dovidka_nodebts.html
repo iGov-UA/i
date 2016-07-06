@@ -331,41 +331,7 @@
 
     </style>
 
-    <script>
-      function ShowElements(sCondition) {
-        for(var i=1; i < arguments.length; i++) {    
-          if(sCondition){
-            document.getElementById(arguments[i]).style.visibility = 'visible';
-          } else{
-            document.getElementById(arguments[i]).style.visibility = 'hidden';
-          }
-        }
-      }     
 
-      function ShowElementsOnTrue(sCondition) {
-        for(var i=1; i < arguments.length; i++) {    
-          if(sCondition){            
-            document.getElementById(arguments[i]).style.display = 'inline';            
-          } else {
-            document.getElementById(arguments[i]).style.display = 'none';
-          }
-        }        
-      }    
-
-
-      function FillFildsOneChar(id, str, num, addClass){  
-        var cells = document.getElementById(id).children; 
-
-        for(var i=0;  i<num; ++i){
-          if(str.length>i){
-            cells[i].innerHTML = str[i];
-            cells[i].className += ' ' + addClass;      
-          } else {      
-            cells[i].innerHTML = "&#160;&#160;";
-          }
-        }
-      }
-    </script>
   </head>
   <body>
     <div class="PrintFormClaim">
@@ -490,26 +456,5 @@
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
     </div>
-    <script>
-      var asAdress = "[asAdress]";
-      var subekt = "[subekt]";
-      var asLawCourt =  "[asLawCourt]";
-      var bankIdinn = "[bankIdinn]";
-      var edrpou = "[edrpou]";
-
-      ShowElementsOnTrue(subekt == "по собі", "spanFisName");   
-      ShowElementsOnTrue(subekt == "по іншому підприємству", "spanUrName");
-      ShowElementsOnTrue(asAdress == "Так" && subekt == "по собі", "spanAdressRegistr");      
-      ShowElementsOnTrue(asAdress == "Ні" && subekt == "по собі", "spanAdressFactual");    
-      ShowElementsOnTrue(subekt == "по іншому підприємству", "spanAdressFactualUr");
-
-      ShowElements(asLawCourt == "Так", "spanLawCourt");
-
-      if(subekt == "по собі"){
-        FillFildsOneChar("trINN", bankIdinn, 10, "ta-c");
-      } else if (subekt == "по іншому підприємству") {
-        FillFildsOneChar("trINN", edrpou, 10, "ta-c");  
-      }
-    </script>
   </body>
 </html>
