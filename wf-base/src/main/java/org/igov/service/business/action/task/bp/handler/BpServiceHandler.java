@@ -193,7 +193,7 @@ public class BpServiceHandler {
             Map res = JsonRestUtils.readObject(soResponse, Map.class); 
             soResponse = (String) res.get("place");
         } catch (Exception ex) {
-            LOG.error("[doRemoteRequest]: ", ex);
+            LOG.error("[getPlaceForProcess]: ", ex);
         }
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
