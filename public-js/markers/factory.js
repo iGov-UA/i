@@ -13,10 +13,18 @@ angular.module('iGovMarkers')
                 })
                     .then(function (response) {
                         var data = response.data;
-                        if (!data.valid){
-                            console.error('markers validation failed', data.errors);
-                        } else {
+                        if (data.valid) {
                             console.info('markers are valid');
+                        } else {
+                            console.error('markers validation failed', data.errors);
+                            var errMessages = "Виникла помилка під час валідації маркерів: ";
+                            for (var ind = 0; ind < data.errors.length; ind++) {
+                                if (ind > 0) {
+                                    errMessages = errMessages + "; ";
+                                }
+                                errMessages = errMessages + data.errors[ind].message;
+                            }
+                            alert(errMessages);
                         }
                     });
             },
