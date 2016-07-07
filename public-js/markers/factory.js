@@ -25,6 +25,7 @@ angular.module('iGovMarkers')
                                 errMessages = errMessages + data.errors[ind].message;
                             }
                             alert(errMessages);
+
                         }
                     });
             },
