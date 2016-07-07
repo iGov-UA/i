@@ -64,7 +64,8 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="common_mvd_4_insurance_${sID_UA}">
+<!--     <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="common_mvd_4_insurance_${sID_UA}"> -->
+    <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="weapon_insurance">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -91,7 +92,8 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asInsurance=='sEnum2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask3" name="Отримання довідки  про правила експлуатації зброї" activiti:candidateGroups="common_mvd_4_exam_${sID_UA}">
+<!--     <userTask id="usertask3" name="Отримання довідки  про правила експлуатації зброї" activiti:candidateGroups="common_mvd_4_exam_${sID_UA}"> -->
+    <userTask id="usertask3" name="Отримання довідки  про правила експлуатації зброї" activiti:candidateGroups="weapon_exam">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -117,7 +119,8 @@
     <sequenceFlow id="flow15" name="Отримано раніше" sourceRef="exclusivegateway2" targetRef="parallelgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asExam=='sEnum2'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="Отримання мед.довідки ф.127" activiti:candidateGroups="common_mvd_4_medical_${sID_UA}">
+<!--     <userTask id="usertask4" name="Отримання мед.довідки ф.127" activiti:candidateGroups="common_mvd_4_medical_${sID_UA}"> -->
+    <userTask id="usertask4" name="Отримання мед.довідки ф.127" activiti:candidateGroups="weapon_medical">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -178,7 +181,7 @@ ${sNameOrgan}&lt;br/&gt;
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask5" name="Перевірка документів інспектором" activiti:candidateGroups="sales"></userTask>
+    <userTask id="usertask5" name="Перевірка документів інспектором" activiti:candidateGroups="weapon"></userTask>
     <sequenceFlow id="flow23" sourceRef="usertask5" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
@@ -342,7 +345,8 @@ execution.setVariable('sDescription_1',descript)</script>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow35" sourceRef="parallelgateway4" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask6" name="Огляд психіатра" activiti:candidateGroups="common_mvd_4_medical_ps_${sID_UA}">
+<!--     <userTask id="usertask6" name="Огляд психіатра" activiti:candidateGroups="common_mvd_4_medical_ps_${sID_UA}"> -->
+    <userTask id="usertask6" name="Огляд психіатра" activiti:candidateGroups="weapon_medical_ps">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -359,7 +363,8 @@ execution.setVariable('sDescription_1',descript)</script>
         <activiti:formProperty id="sMedicalInfo" name="sMedicalInfo" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask7" name="Огляд нарколога" activiti:candidateGroups="common_mvd_4_medical_drug_${sID_UA}">
+<!--     <userTask id="usertask7" name="Огляд нарколога" activiti:candidateGroups="common_mvd_4_medical_drug_${sID_UA}"> -->
+    <userTask id="usertask7" name="Огляд нарколога" activiti:candidateGroups="weapon_medical_drug">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
