@@ -64,7 +64,40 @@ public class Log {
     public Log(Class o){
         _Class(o);
     };
+    
+    
+    static Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
+        int n=0;
+        for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            String sClass = oStackTraceElement.getClass().getName();
+            String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
+            String sClassSimple = oStackTraceElement.getClass().getSimpleName();
+            String sMethod = oStackTraceElement.getMethodName();
+            String sFile = oStackTraceElement.getFileName();
+            LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=oException.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = oException.getStackTrace()[n].getClass();
+        String sClass = oException.getStackTrace()[n].getClassName();
+        String sFileName = oException.getStackTrace()[n].getFileName();
+        String sMethod = oException.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.info("(sClass={},sMethod={},sFileName={})",sClass,sMethod,sFileName);
+        //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
+        return oClass; //0//this.getClass()//!=null?oClass:ExceptionCommonController.class
+    }
+    
     public Log(Class oClass, Exception oException){
+        if(oClass==null){
+            oClass = oClassByTrace(oException);
+        }
         _Class(oClass);
         _Exception(oException);
     };
@@ -136,7 +169,7 @@ public class Log {
     }
     
     private void sendToMSG(MsgType msgType){
-	MsgService.setEventSystemWithParam(msgType.name(), null, null, oClass == null ? "NULL_CLASS_NAME" : oClass.getName(), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
+	MsgService.setEventSystemWithParam(msgType.name(), null, null, sHead + "_" + (oClass == null ? "NULL_CLASS_NAME" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
     }
 
     public Log send(){
