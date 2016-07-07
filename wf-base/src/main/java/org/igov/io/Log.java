@@ -42,6 +42,8 @@ public class Log {
         ,DEBUG()
         ;
     }
+
+    private MsgType oMsgType = null;
     
     private Logger oLog = null;
     private Exception oException = null;
@@ -174,12 +176,17 @@ public class Log {
     private void sendToMSG(MsgType msgType){
 	MsgService.setEventSystemWithParam(msgType.name(), null, null, sCase!=null ? sCase : (oClass == null ? "NULL" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
     }
-
+    
+    public Log _MsgType(MsgType o){
+         this.oMsgType = o;
+         return this;
+    }
+    
     public Log send(){
         try{
             String sText = sText();
             if(oStatus==LogStatus.ERROR){
-        	sendToMSG(MsgType.INTERNAL_ERROR);
+        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.INTERNAL_ERROR);
                 oLog_Alert.error(sText);
                 if(oException!=null){
                     oLog_Error.error(sText,oException);
@@ -195,7 +202,8 @@ public class Log {
                     }
                 }
             }else if(oStatus==LogStatus.WARN){
-        	sendToMSG(MsgType.WARNING);
+        	//sendToMSG(MsgType.WARNING);
+        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.WARNING);
                 oLog_Alert.warn(sText);
                 if(oException!=null){
                     oLog_Debug.warn(sText,oException);

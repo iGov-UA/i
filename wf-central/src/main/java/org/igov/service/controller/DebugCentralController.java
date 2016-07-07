@@ -31,6 +31,8 @@ import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import org.igov.io.Log;
+import org.igov.service.business.msg.MsgType;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -253,57 +255,70 @@ public class DebugCentralController {
 //            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
 //        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
             try {
-                IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+                //IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+                new Log()//this.getClass()
+                        ._MsgType("danger".equals(sType) ? MsgType.EXTERNAL_ERROR : "warning".equals(sType) ? MsgType.WARNING : MsgType.INF_MESSAGE)
+                        ._Case("Client_"+sFunction)
+                        ._Status("danger".equals(sType) ? Log.LogStatus.ERROR : "warning".equals(sType) ? Log.LogStatus.WARN : Log.LogStatus.INFO)
+                        ._Head(sHead)
+                        ._Body(sBody)
+                        ._Param("sError", sError)
+                        ._Param("smData", smData)
+                        ._Param("nID_Subject", nID_Subject)
+                        ._Param("nID_Server", nID_Server)
+                        //._Param("sExcetion", oException.getMessage())
+                        ._Send()
+                    ;
 	    } catch (Exception e) {
         	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
 	    }
             
-//            //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
-//            //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
-//            List<String> asParam = new LinkedList();
-//            Map<String,Object> moResponse = new HashMap();
-//            String sResponseMessage=null;
-//            String sResponseCode=null;
-//            String soResponseData=null;
-//            String sDate=null;
-//            List<String> mParamResponse = new LinkedList();
-//            if(smData!=null){
-//                Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
-//                //Map<String, Object> mAttributeReturn = new HashMap();
-//                //List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
-//                //var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
-//                    //this.add({oResponse:{sMessage: oResponse.message}});
-//                    //this.add({oResponse:{sCode: oResponse.code}});
-//                    //this.add({oResponse:{soData: JSON.stringify(oResponse)}});
-//                if (moData != null) {
-//                    //aSubjectOrganJoinAttribute = new LinkedList();
-//                    if(moData.containsKey("asParam")){
-//                        asParam = (List<String>) moData.get("asParam");
-//                    }
-//                    if(moData.containsKey("oResponse")){
-//                        moResponse = (Map<String,Object>) moData.get("oResponse");
-//                        if (moResponse != null) {
-//                            if(moResponse.containsKey("sMessage")){
-//                                sResponseMessage=(String) moResponse.get("sMessage");
-//                            }
-//                            if(moResponse.containsKey("sCode")){
-//                                sResponseCode=(String) moResponse.get("sCode");
-//                            }
-//                            if(moResponse.containsKey("soData")){
-//                                soResponseData=(String) moResponse.get("soData");
-//                            }
-//                        }
-//                    }
-//                    if(moData.containsKey("sDate")){
-//                        sDate = (String) moData.get("sDate");
-//                    }
-//                }
-//            }
-//            LOG_MIN.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData);
-//            LOG_MID.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam);
-//            //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
-//            LOG_MAX.debug("sType={}|nID_Subject={}|nID_Server={}|sFunction={}|sHead={}|sBody={}|sError={}|smData={}|sResponseMessage={}|sResponseCode={}|soResponseData={}|asParam={}|sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam,sDate);
-//            //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+            //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
+            //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
+            List<String> asParam = new LinkedList();
+            Map<String,Object> moResponse = new HashMap();
+            String sResponseMessage=null;
+            String sResponseCode=null;
+            String soResponseData=null;
+            String sDate=null;
+            List<String> mParamResponse = new LinkedList();
+            if(smData!=null){
+                Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
+                //Map<String, Object> mAttributeReturn = new HashMap();
+                //List<SubjectOrganJoinAttribute> aSubjectOrganJoinAttribute = subjectOrganJoinAttributeDao.getSubjectOrganJoinAttributesByParent(nID);
+                //var oBody={oResponse:oMessage.oData.oResponse,asParam:oMessage.oData.asParam,sDate:oMessage.sDate};
+                    //this.add({oResponse:{sMessage: oResponse.message}});
+                    //this.add({oResponse:{sCode: oResponse.code}});
+                    //this.add({oResponse:{soData: JSON.stringify(oResponse)}});
+                if (moData != null) {
+                    //aSubjectOrganJoinAttribute = new LinkedList();
+                    if(moData.containsKey("asParam")){
+                        asParam = (List<String>) moData.get("asParam");
+                    }
+                    if(moData.containsKey("oResponse")){
+                        moResponse = (Map<String,Object>) moData.get("oResponse");
+                        if (moResponse != null) {
+                            if(moResponse.containsKey("sMessage")){
+                                sResponseMessage=(String) moResponse.get("sMessage");
+                            }
+                            if(moResponse.containsKey("sCode")){
+                                sResponseCode=(String) moResponse.get("sCode");
+                            }
+                            if(moResponse.containsKey("soData")){
+                                soResponseData=(String) moResponse.get("soData");
+                            }
+                        }
+                    }
+                    if(moData.containsKey("sDate")){
+                        sDate = (String) moData.get("sDate");
+                    }
+                }
+            }
+            LOG_MIN.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData);
+            LOG_MID.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|",sType,nID_Subject,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam);
+            //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
+            LOG_MAX.debug("sType={}|nID_Subject={}|nID_Server={}|sFunction={}|sHead={}|sBody={}|sError={}|smData={}|sResponseMessage={}|sResponseCode={}|soResponseData={}|asParam={}|sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam,sDate);
+            //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
         } catch (Exception e) {
         	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
