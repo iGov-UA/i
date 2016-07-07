@@ -735,15 +735,42 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         aExtensions[convertedItem].toLowerCase();
       }
 
-      var ext = sFileName.split('.').pop().toLowerCase();
+      /* old validate algorithm
+       var ext = sFileName.split('.').pop().toLowerCase();
+       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
+       if (ext === aExtensions[checkingItem]){
+       bValid = true;
+       break;
+       } else {
+       bValid = false;
+       }
+       }
+       */
+
+      // start new validate algorithm
+      var sReversFileName = "";
+      for (var charInd = sFileName.length - 1; charInd >= 0; charInd--){
+        sReversFileName = sReversFileName + sFileName.charAt(charInd);
+      }
       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
-        if (ext === aExtensions[checkingItem]){
+        var bCharValid = true;
+        for(var chInd = 0; chInd < aExtensions[checkingItem].length; chInd++){
+          if(bCharValid == true && sReversFileName.charAt(chInd).toLowerCase() === aExtensions[checkingItem].charAt((aExtensions[checkingItem].length - 1) - chInd).toLowerCase()){
+            bCharValid = true;
+          } else {
+            bCharValid = false;
+            break;
+          }
+        }
+        if (bCharValid){
           bValid = true;
           break;
         } else {
           bValid = false;
         }
       }
+      // end new validate algorithm
+
       console.log("bValid=" + bValid);
 
       if (!bValid) {
