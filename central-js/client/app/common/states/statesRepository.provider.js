@@ -61,6 +61,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     //test.kiev.igov.org.ua
 
     this.domain = domen;
+    domen = 'alpha-old.test.igov.org.ua'
 
     if (domen.split(':')[0] !== 'localhost') {
       if (domen.indexOf('kievcity') >= 0) {
@@ -90,7 +91,11 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           || matches[1] === 'alpha'
           || matches[1] === 'beta'
           || matches[1] === 'omega') {
-          this.mode = matches[3];
+          if(matches[2] === 'old') {
+            this.mode = matches[4].split('.')[1];
+          }else{
+            this.mode = matches[3];
+          }
         } else if ( (matches[1] === 'alpha' && matches[2] === 'old')
           || (matches[1] === 'beta' && matches[2] === 'old')) {
           this.mode = matches[4];
