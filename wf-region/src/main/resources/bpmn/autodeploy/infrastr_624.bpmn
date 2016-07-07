@@ -110,7 +110,15 @@
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+    	<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
+    	<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
+    	<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+    	<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
+    
+    	<activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -264,6 +272,18 @@ if (place=='sChernT'){
 place1='ЧЕРНІГІВ / CHERNIHIV'}
 }
 execution.setVariable('sPlace_of_birth', place1)
+var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
+          if (sVarCNAP=='port_Izmail')
+          	{
+          		execution.setVariable('sID_Merchant','i65205142682')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728402')          			
+				execution.setVariable('sVarWhoPayGet','Ізмаїльська філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26006030033419')          			
+				execution.setVariable('sVarSumPay','1.00')          			
+          	}
 	</script>
     </scriptTask>
     <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -413,7 +433,7 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                                         Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.<br>
@@ -427,10 +447,12 @@ execution.setVariable('sPlace_of_birth', place1)
 									<p>
 										Реквізити для сплати<br>
 										${sPortRekv}
-										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]
+										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										або Ви можете сплатити онлайн<br>
+										[paymentButton_LiqPay]
 									</p>
 									<p>
-										<b>Проведення оплати послугу, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b>
 									</p>
 									<p>
 										<b><i>${sDecisionComment}</i></b>
@@ -441,7 +463,7 @@ execution.setVariable('sPlace_of_birth', place1)
                                     [pattern/mail/_common_signature_start.html]
 									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -451,12 +473,8 @@ execution.setVariable('sPlace_of_birth', place1)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPayment" name="Ознака сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPayment" name="Рішення про надходження сплати" type="enum" required="true">
-          <activiti:value id="sPaymentOK" name="Cплата надійшла"></activiti:value>
-          <activiti:value id="sPaymentNO" name="Громадянин не сплатив за послугу"></activiti:value>
-        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow36" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
@@ -504,17 +522,29 @@ execution.setVariable('sDate_of_issue', new Date().format("dd.MM.yyyy").toString
     <scriptTask id="scripttask3" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1=""
+var per2=""
 var src=execution.getVariable('lastName')
 for (var i = 0; i&lt;50; i++){
-var day=src.substr(i,1)
-if(day != "null" || day != ""){
-if(day != "-" || day != "`" || day != " " || day != "'"){
-per1 = per1+day}
+var lname=src.substr(i,1)
+if(lname != "null" || lname != ""){
+if(lname != "-" || lname != "`" || lname != " " || lname != "'"){
+per1 = per1+lname}
 else {
 per1 = per1+"&lt;"}}
 else{
 break}}
-execution.setVariable('sMoz1', per1)
+var src=execution.getVariable('firstName')
+for (var i = 0; i&lt;50; i++){
+var name=src.substr(i,1)
+if(fname != "null" || fname != ""){
+if(fname != "-" || fname != "`" || fname != " " || fname != "'"){
+per2 = per2+fname}
+else {
+per2 = per2+"&lt;"}}
+else{
+break}}
+var moz1=P+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+execution.setVariable('sMoz1', Moz1)
 var numb=execution.getVariable('sNumber')
 var ser=numb.substr(0,2)
 var num=numb.substr(2,6)
