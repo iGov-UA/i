@@ -20,7 +20,6 @@
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон;(у форматі +380ХХХХХХХХХ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
@@ -85,8 +84,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum" required="true">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -155,29 +152,6 @@
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -404,7 +378,7 @@
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -532,12 +506,23 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" required="true">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" required="true">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
@@ -588,7 +573,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum">
@@ -668,8 +652,6 @@
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -738,29 +720,6 @@
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -987,7 +946,7 @@
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -1105,9 +1064,18 @@
           <activiti:value id="sEnumTop246" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -1126,6 +1094,8 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
@@ -1163,8 +1133,6 @@
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
-          <activiti:value id="sEnumSendInDniprogaz" name="Відправити до Дніпрогазу"></activiti:value>
-          <activiti:value id="sEnumSendInDniprooblenergo" name="Відправити до Дніпрообленерго"></activiti:value>
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
@@ -1219,7 +1187,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" writable="false">
@@ -1299,8 +1266,6 @@
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -1369,29 +1334,6 @@
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -1618,7 +1560,7 @@
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -1739,6 +1681,15 @@
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
@@ -1757,6 +1708,8 @@
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
@@ -2015,7 +1968,6 @@ execution.setVariable('sAnswerEmail', res)</script>
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
           <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
@@ -2090,8 +2042,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -2160,29 +2110,6 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -2409,7 +2336,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -2530,6 +2457,15 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -2543,6 +2479,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
@@ -2576,7 +2514,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum">
@@ -2656,8 +2593,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -2726,29 +2661,6 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -2975,7 +2887,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -3096,6 +3008,15 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -3116,6 +3037,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
           <activiti:value id="sEnumDep1" name=" "></activiti:value>
@@ -3175,7 +3098,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileAnswer}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3528,7 +3451,6 @@ execution.setVariable('sNameDepartment', per2)</script>
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" writable="false">
@@ -3608,8 +3530,6 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -3678,29 +3598,6 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -3927,7 +3824,7 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -4048,6 +3945,15 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -4095,7 +4001,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileAnswer},${anID_Attach_UkrDoc}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -4133,6 +4039,8 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="exclusivegateway10"></sequenceFlow>
     <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'channel'
+          var per2 = 'channel RGA'
+          var per3 = 'status RGA'
 if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal1'){
 per1 = 'Гаряча лінія губернатора'
 }
@@ -4148,7 +4056,24 @@ per1 = 'Фронт-офіс'
 if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal5'){
 per1 = 'Портал'
 }
-execution.setVariable('sChannelApp', per1)</script>
+          if (execution.getVariable('asChannelAppealsRGA') == 'sEnumAppealRGA1'){
+per2 = 'ТЕЛЕФОН'
+}
+          if (execution.getVariable('asChannelAppealsRGA') == 'sEnumAppealRGA2'){
+per2 = 'ВЕБ-САЙТ'
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA1'){
+per3 = ' '
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA2'){
+per3 = 'доопрацювання'
+}
+          if (execution.getVariable('asStatusRGA') == 'sEnumStatusRGA3'){
+per3 = 'контроль'
+}
+execution.setVariable('sChannelApp', per1)
+execution.setVariable('sChannelAppRGA', per2)
+execution.setVariable('sStatusAppRGA', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
@@ -4243,7 +4168,6 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" writable="false">
@@ -4323,8 +4247,6 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum" writable="false">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Комунальне господарство. Дніпрогаз"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Комунальне господарство. Електропостачання"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Благоустрій та інфраструктура"></activiti:value>
           <activiti:value id="sEnumTopHead5" name="Питання стосовно селища міського типу Таромське ДМР"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Транспорт та екологія"></activiti:value>
@@ -4393,29 +4315,6 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:value id="sEnumTop141" name="УТРИМАННЯ: Утримання сміттєпроводу у будинку"></activiti:value>
           <activiti:value id="sEnumTop142" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop143" name="Інші питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Підтематика. Комунальне господарство. Дніпрогаз" type="enum" writable="false">
-          <activiti:value id="sEnumTop20" name=" "></activiti:value>
-          <activiti:value id="sEnumTop21" name="Оплата за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop22" name="Відсутність газифікації"></activiti:value>
-          <activiti:value id="sEnumTop23" name="Газифікація будинку"></activiti:value>
-          <activiti:value id="sEnumTop24" name="Тарифи за газопостачання"></activiti:value>
-          <activiti:value id="sEnumTop25" name="Підключення газу"></activiti:value>
-          <activiti:value id="sEnumTop26" name="Ремонт (заміни) газової колоки"></activiti:value>
-          <activiti:value id="sEnumTop27" name="Ремонт газового обладнення"></activiti:value>
-          <activiti:value id="sEnumTop28" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop29" name="Фінансування робіт"></activiti:value>
-          <activiti:value id="sEnumTop210" name="Інши питання"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Підтематика. Комунальне господарство. Електропостачання" type="enum" writable="false">
-          <activiti:value id="sEnumTop30" name=" "></activiti:value>
-          <activiti:value id="sEnumTop31" name="Оплата за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop32" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop33" name="Тарифи за електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop34" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop35" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop36" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop37" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop4" name="Підтематика. Благоустрій та інфраструктура" type="enum" writable="false">
           <activiti:value id="sEnumTop40" name=" "></activiti:value>
@@ -4642,7 +4541,7 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:value id="sEnumTop168" name="ІЗ: Інформаційні запити про порушення прав сусідів"></activiti:value>
           <activiti:value id="sEnumTop169" name="ІЗ: Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1610" name="ІЗ: Інформація щодо найменування (перейменування) проїздів"></activiti:value>
-          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація, щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="ІЗ: Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
           <activiti:value id="sEnumTop1612" name="ІЗ: Надання інформації про об'єкт будівництва"></activiti:value>
           <activiti:value id="sEnumTop1613" name="ІЗ: Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
           <activiti:value id="sEnumTop1614" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
@@ -4763,6 +4662,15 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppealsRGA" name="Канал звернення ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumAppealRGA1" name="ТЕЛЕФОН"></activiti:value>
+          <activiti:value id="sEnumAppealRGA2" name="ВЕБ-САЙТ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatusRGA" name="Статус вхідного звернення від ОДА" type="enum" writable="false">
+          <activiti:value id="sEnumStatusRGA1" name="ДОРУЧЕННЯ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
+          <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
@@ -4781,6 +4689,8 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
@@ -4838,7 +4748,7 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:string><![CDATA[ms@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal}]]></activiti:expression>
+          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal} (${sChannelAppRGA}) ${sStatusAppRGA}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
