@@ -497,6 +497,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 	    		LOG.info("Removing process with ID:Key {}:{} ", process.getProcessInstanceId(), process.getProcessDefinitionKey());
 	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
 	    	}
+	    	
+	    	Map<String, String> params = new HashMap<>();
+	        params.put("nID_Proccess_Escalation", "");
+	        LOG.info(" >>Clearing nID_Proccess_Escalation field for the process . (sID_Process={})", sID_Process);
+            try {
+            	LOG.info(" updateHistoryEvent: " + sID_Process + " params: " + params);
+				historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(sID_Process)), null, false, HistoryEvent_Service_StatusType.UNKNOWN, params);
+			} catch (NumberFormatException e) {
+				LOG.error("{} (sID_Process={})", e.getMessage(), sID_Process);
+	            LOG.trace("FAIL: ", e);
+			} catch (Exception e) {
+				LOG.error("{} (sID_Process={})", e.getMessage(), sID_Process);
+	            LOG.trace("FAIL: ", e);
+			}
     	}
     }
 
