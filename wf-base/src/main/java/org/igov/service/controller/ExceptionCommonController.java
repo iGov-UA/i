@@ -44,12 +44,26 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchCommonServiceException(CommonServiceException exception) {
-        String sClass = exception.getStackTrace()[0].getClassName();
-        String sFileName = exception.getStackTrace()[0].getFileName();
-        String sMethod = exception.getStackTrace()[0].getMethodName();
-        LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        int n=0;
+        for(StackTraceElement oStackTraceElement : exception.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            LOG.info("sPackage={}", sPackage);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=exception.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = exception.getStackTrace()[n].getClass();
+        String sClass = exception.getStackTrace()[n].getClassName();
+        String sFileName = exception.getStackTrace()[n].getFileName();
+        String sMethod = exception.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.error("Error:{}. REST API Exception (sClass={},sMethod={},sFileName={})", exception.getMessage(),sClass,sMethod,sFileName);
         LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+        new Log(oClass!=null?oClass:this.getClass(), exception)//this.getClass()
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(exception.getHttpStatus().value())
@@ -64,9 +78,29 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
-        LOG.error("Error:{}. REST System Exception", exception.getMessage());
+        int n=0;
+        for(StackTraceElement oStackTraceElement : exception.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            LOG.info("sPackage={}", sPackage);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=exception.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = exception.getStackTrace()[n].getClass();
+        String sClass = exception.getStackTrace()[n].getClassName();
+        String sFileName = exception.getStackTrace()[n].getFileName();
+        String sMethod = exception.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.error("Error:{}. REST System Exception (sClass={},sMethod={},sFileName={})", exception.getMessage(),sClass,sMethod,sFileName);
         LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+        new Log(oClass!=null?oClass:this.getClass(), exception)//this.getClass()
+        //LOG.error("Error:{}. REST System Exception", exception.getMessage());
+        //LOG.trace("FAIL:", exception);
+        //new Log(this.getClass(), exception)
                 ._Head("REST System Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -84,9 +118,29 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchException(Exception exception) {
-        LOG.error("Error:{}. REST Exception", exception.getMessage());
+        int n=0;
+        for(StackTraceElement oStackTraceElement : exception.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            LOG.info("sPackage={}", sPackage);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=exception.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = exception.getStackTrace()[n].getClass();
+        String sClass = exception.getStackTrace()[n].getClassName();
+        String sFileName = exception.getStackTrace()[n].getFileName();
+        String sMethod = exception.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.error("Error:{}. REST Exception (sClass={},sMethod={},sFileName={})", exception.getMessage(),sClass,sMethod,sFileName);
         LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+        new Log(oClass!=null?oClass:this.getClass(), exception)//this.getClass()
+        //LOG.error("Error:{}. REST Exception", exception.getMessage());
+        //LOG.trace("FAIL:", exception);
+        //new Log(this.getClass(), exception)
                 ._Head("REST Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -102,9 +156,29 @@ public class ExceptionCommonController {
     @ResponseBody
     ResponseEntity<String> catchMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
-        LOG.error("Error:{}. REST Wrong Input Parameters Exception", exception.getMessage());
+        int n=0;
+        for(StackTraceElement oStackTraceElement : exception.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            LOG.info("sPackage={}", sPackage);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=exception.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = exception.getStackTrace()[n].getClass();
+        String sClass = exception.getStackTrace()[n].getClassName();
+        String sFileName = exception.getStackTrace()[n].getFileName();
+        String sMethod = exception.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.error("Error:{}. REST Wrong Input Parameters Exception (sClass={},sMethod={},sFileName={})", exception.getMessage(),sClass,sMethod,sFileName);
         LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+        new Log(oClass!=null?oClass:this.getClass(), exception)//this.getClass()
+        //LOG.error("Error:{}. REST Wrong Input Parameters Exception", exception.getMessage());
+        //LOG.trace("FAIL:", exception);
+        //new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Parameters Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
@@ -119,9 +193,29 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        LOG.error("Error:{}. REST Wrong Input Body Exception", exception.getMessage());
+        int n=0;
+        for(StackTraceElement oStackTraceElement : exception.getStackTrace()){
+            String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            LOG.info("sPackage={}", sPackage);
+            if(sPackage!=null && sPackage.startsWith("org.igov")){
+                break;
+            }
+            n++;
+        }
+        if(n>=exception.getStackTrace().length){
+            n=0;
+        }
+        Class oClass = exception.getStackTrace()[n].getClass();
+        String sClass = exception.getStackTrace()[n].getClassName();
+        String sFileName = exception.getStackTrace()[n].getFileName();
+        String sMethod = exception.getStackTrace()[n].getMethodName();
+        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+        LOG.error("Error:{}. REST Wrong Input Body Exception (sClass={},sMethod={},sFileName={})", exception.getMessage(),sClass,sMethod,sFileName);
         LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+        new Log(oClass!=null?oClass:this.getClass(), exception)//this.getClass()
+        //LOG.error("Error:{}. REST Wrong Input Body Exception", exception.getMessage());
+        //LOG.trace("FAIL:", exception);
+        //new Log(this.getClass(), exception)
                 ._Head("REST Wrong Input Body Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
