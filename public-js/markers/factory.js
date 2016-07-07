@@ -6,6 +6,7 @@ angular.module('iGovMarkers')
             isPresent: {},
             sFieldNotFaundMessages: "",
             isFieldNotFound: false,
+            nValidateFields: 0,
             nFieldTurnOn: 0
         };
         return {
@@ -26,6 +27,7 @@ angular.module('iGovMarkers')
                 fieldIDs.sFieldNotFaundMessages =  "";
                 fieldIDs.isFieldNotFound =  false;
                 fieldIDs.nFieldTurnOn =  0;
+                fieldIDs.nValidateFields = 0;
 
                 for (var i = 0; i < fieldIDs.inMarkers.length; i++){
                     var feldID = fieldIDs.inMarkers[i];
@@ -44,6 +46,7 @@ angular.module('iGovMarkers')
                         console.warn("Field " + i + " NOT found. Markers for this field is not working");
                         fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + "Поле " + i + " - відсутнє на формі. ";
                         fieldIDs.isFieldNotFound = true;
+                    } else {
                         fieldIDs.nFieldTurnOn++;
                     }
                 }
