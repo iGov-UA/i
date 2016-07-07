@@ -279,8 +279,28 @@
       }
     };
 
-    $scope.getProcessName = function (processDefinitionId) {
-      return processes.getProcessName(processDefinitionId);
+    $scope.getProcessName = function (task) {
+      var result = processes.getProcessName(task.processDefinitionId);
+      if (angular.isDefined(task.variables)) {
+        for (var i = 0; i < task.variables.length; i++) {
+          var v = task.variables[i];
+          if (v.name == 'sPlace' && v.type == 'string')
+            result = v.value + ' - ' + result;
+        }
+      }
+      return result;
+    };
+
+    $scope.getTaskTitle = function (task) {
+      return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
+        + $scope.getProcessName(task) + ' | ' + task.name;
+    };
+
+    $scope.getTaskDateTimeTitle = function (task) {
+      var result = task.createTime ? $scope.sDateShort(task.createTime) : $scope.sDateShort(task.startTime);
+      if (task.endTime)
+        result += ' - ' + $scope.sDateShort(task.endTime);
+      return result;
     };
 
     $scope.ticketsFilter = {
