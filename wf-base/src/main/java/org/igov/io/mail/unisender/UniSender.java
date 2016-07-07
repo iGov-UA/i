@@ -108,6 +108,9 @@ public class UniSender {
             mParam.add("fields[email]", oSubscribeRequest.getEmail());
         if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
             mParam.add("fields[phone]", oSubscribeRequest.getPhone());
+
+        //For test
+        LOG.info("sToName={}",oSubscribeRequest.getName());
         if (!StringUtils.isBlank(oSubscribeRequest.getName()))
             mParam.add("fields[ToName]", oSubscribeRequest.getName());
         //optional
@@ -127,8 +130,8 @@ public class UniSender {
                     oSubscribeRequest.getConfirmTime()));
         mParam.add("overwrite", Integer.toString(oSubscribeRequest.getOverwrite()));
 
-        //LOG.info("RESULT osURL: {}", osURL.toString());
-        //LOG.info("RESULT mParam: {}", mParam);
+        LOG.info("RESULT osURL: {}", osURL.toString());
+        LOG.info("RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
        /* UniResponse oUniResponse = null;

@@ -85,8 +85,9 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getHead()={})", getHead());
 
         // For test
-        //Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        // Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         Boolean bUniSender = true;
+
         LOG.info("(bUniSender={})", bUniSender);
         //LOG.debug("(getFrom()={})", getFrom());
         //LOG.debug("(getTo()={})", getTo());
@@ -394,9 +395,9 @@ public class Mail extends Abstract_Mail {
             if (StringUtils.isBlank(sKey_Sender)) {
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }
-            if (StringUtils.isBlank(sKey_Sender)) {
-                throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-            }
+//            if (StringUtils.isBlank(sKey_Sender)) {
+//                throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+//            }
 
             LOG.info("oUniSender - {}", oUniSender);
             LOG.info("methodCallRunner - {}", methodCallRunner);
