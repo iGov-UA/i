@@ -125,6 +125,7 @@ public class HttpEntityCover {
             
             if(nStatus()!=200){
                 new Log(this.getClass())
+                        ._Case("Web_PostNo200")
                         ._Head("[_Send]:nStatus!=200")
                         ._Status(Log.LogStatus.ERROR)
                         //._StatusHTTP(nReturn())
@@ -139,6 +140,7 @@ public class HttpEntityCover {
             //return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException, null)
+                    ._Case("Web_Post")
                     ._Head("[_Send]:BREAKED!")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)

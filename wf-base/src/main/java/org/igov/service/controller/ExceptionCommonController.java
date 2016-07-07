@@ -47,6 +47,7 @@ public class ExceptionCommonController {
                 LOG.error("Error:{}. REST API Exception", oException.getMessage());
                 LOG.trace("FAIL:", oException);
                 new Log(null, oException)
+                ._Case("REST_API")
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(oException.getHttpStatus().value())
@@ -64,6 +65,7 @@ public class ExceptionCommonController {
                 LOG.error("Error:{}. REST System Exception", oException.getMessage());
                 LOG.trace("FAIL:", oException);
                 new Log(null, oException)
+                ._Case("REST_System")
                 ._Head("REST System Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -84,6 +86,7 @@ public class ExceptionCommonController {
                 LOG.error("Error:{}. REST Exception", oException.getMessage());
                 LOG.trace("FAIL:", oException);
                 new Log(null, oException)
+                ._Case("REST_Unknown")
                 ._Head("REST Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -102,6 +105,7 @@ public class ExceptionCommonController {
                 LOG.error("Error:{}. REST Wrong Input Parameters Exception", oException.getMessage());
                 LOG.trace("FAIL:", oException);
                 new Log(null, oException)
+                ._Case("REST_FailArgs")
                 ._Head("REST Wrong Input Parameters Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
@@ -119,6 +123,7 @@ public class ExceptionCommonController {
                 LOG.error("Error:{}. REST Wrong Input Body Exception", oException.getMessage());
                 LOG.trace("FAIL:", oException);
                 new Log(null, oException)
+                ._Case("REST_FailBody")
                 ._Head("REST Wrong Input Body Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())

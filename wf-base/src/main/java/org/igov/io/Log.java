@@ -69,14 +69,17 @@ public class Log {
     static Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
         int n=0;
         for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
-            String sPackage = oStackTraceElement.getClass().getPackage().getName();
-            String sClass = oStackTraceElement.getClass().getName();
-            String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
-            String sClassSimple = oStackTraceElement.getClass().getSimpleName();
+            //String sPackage = oStackTraceElement.getClass().getPackage().getName();
+            String sClass = oStackTraceElement.getClassName();
+            String s = oStackTraceElement.toString();
+            //String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
+            //String sClassSimple = oStackTraceElement.getClass().getSimpleName();
             String sMethod = oStackTraceElement.getMethodName();
             String sFile = oStackTraceElement.getFileName();
-            LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
-            if(sPackage!=null && sPackage.startsWith("org.igov")){
+            //LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
+            LOG.info("sClass={},s={},sMethod={},sFile={}", sClass, s, sMethod, sFile);
+            //if(sPackage!=null && sPackage.startsWith("org.igov")){
+            if(s!=null && s.contains("org.igov.")){
                 break;
             }
             n++;
@@ -169,7 +172,7 @@ public class Log {
     }
     
     private void sendToMSG(MsgType msgType){
-	MsgService.setEventSystemWithParam(msgType.name(), null, null, sHead + "_" + (oClass == null ? "NULL_CLASS_NAME" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
+	MsgService.setEventSystemWithParam(msgType.name(), null, null, sCase!=null ? sCase : (oClass == null ? "NULL" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
     }
 
     public Log send(){
