@@ -84,10 +84,7 @@ public class Mail extends Abstract_Mail {
         }
         LOG.info("(getHead()={})", getHead());
 
-        // For test
-        // Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
-        Boolean bUniSender = true;
-
+        Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         LOG.info("(bUniSender={})", bUniSender);
         //LOG.debug("(getFrom()={})", getFrom());
         //LOG.debug("(getTo()={})", getTo());
