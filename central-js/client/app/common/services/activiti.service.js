@@ -192,9 +192,6 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         nID_Server : oServiceData.nID_Server
       }
     }).then(function (oResponse) {
-        if(oResponse.data) {
-          return oResponse.data;
-        }
         if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }
