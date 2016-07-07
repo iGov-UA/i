@@ -51,7 +51,7 @@ angular.module('iGovMarkers')
                 if(fieldIDs.nFieldTurnOn < fieldIDs.nValidateFields){
                     console.error("Markers connected to " +fieldIDs.nFieldTurnOn + " fields of the " + fieldIDs.nValidateFields + " announced..");
                 } else {
-                    console.info("Markers connected to ALL fields");
+                    if (fieldIDs.nValidateFields > 0) console.info("Markers connected to ALL fields");
                 }
 
                 $http.post('/api/markers/validate', {
