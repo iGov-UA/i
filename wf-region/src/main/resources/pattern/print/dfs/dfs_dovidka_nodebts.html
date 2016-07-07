@@ -3,6 +3,10 @@
   <head lang="ua">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Надання довідки про доходи фізичних осіб</title>
+
+  </head>
+  <body>
+
     <style type="text/css">
 
       body div.PrintFormClaim {
@@ -278,8 +282,8 @@
       .pl-paragraph>div,
       .pl-paragraph>span  
       { text-indent: initial;} 
-      
-      
+
+
       .pl-25 { padding-left: 25px;}
       .pl-50 { padding-left: 50px;}
       .pl-75 { padding-left: 75px;}
@@ -330,25 +334,29 @@
       .test{ border: 1px solid red;}
 
     </style>
-  </head>
-  <body>
+    
+    
+      
+  
     <div class="PrintFormClaim">
+
+
       <div class="whoBlock ml-11">
         До органу доходів і зборів
 
         <div class="under_multifield w100p ta-l">
           <u>[sNameOrgan]</u>
         </div> 
-      
+
         <br> <br>
-        
+
         <div class="layout">
           <div class="pg-25">
             від 
           </div>
           <div class="pg-25">
             <table class="w200">
-              <tr>
+              <tr id="trINN">
                 <td>&#160;</td>
                 <td>&#160;</td>
                 <td>&#160;</td>
@@ -368,19 +376,25 @@
           номер облікової картки платника податків*)
         </div>
 
-
+        <br/>
         <div class="under_multifield w100p ta-l">
-          <u>[sFIO]</u> 
+          <u>
+            <span id="spanFisName">[bankIdlastName] [bankIdlastName] [bankIdlastName]</span>            
+            <span id="spanUrName">[sNameUr]</span>
+          </u> 
         </div>
         <div class="ta-c smalltext line1">(найменування платника податків/прізвище, <br>          
           ім’я, по батькові фізичної особи)
         </div>
         <br>
         <div class="under_multifield w100p ta-l">
-          <u>Поштова адреса: <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
-            <span id="spanAdressFactual">[sAddressFactual]</span></u>
+          <u>Поштова адреса:
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
+            <span id="spanAdressFactual">[sAddressFactual]</span>
+            <span id="spanAdressFactualUr">[sAddressFactualUr]</span>            
+          </u>
         </div>
-        
+
         <div class="under_multifield w100p ta-l">
           <u>Електронна адреса: [email]</u>
         </div>        
@@ -396,31 +410,31 @@
       <div class="ta-j pl-paragraph">Прошу видати довідку про відсутність 
         заборгованості з податків, зборів, платежів відповідно до вимог
       </div>
-      <div class="under_multifield w100p ta-c">
-        <u>[email]</u>
+      <div class="under_multifield w100p ta-j">
+        <u>[sNameDoc] № [sNumDoc] від [dDoc] року</u>
       </div>  
-      
-      
+
+
       <div class="ta-j">
         для надання до
       </div>
       <div class="under_field ta-j w100p">
-        <u>[sAim]</u> 
+        <u>[sNameCompany]</u> 
         <span>(найменування підприємства (установи, організації), 
           до якого (якої) буде подано довідку)</span>
       </div>
       <div class="ta-j pl-paragraph">Довідку прошу видати в 
         <div class="under_field notb">
-          <u><span>електронному</span>/<span>паперовому</span> </u>
+          <u><span id="spanTypeEl">електронному</span>/<span id="spanTypePaper">паперовому</span> </u>
           <span>(необхідне позначити)</span>
         </div>
         вигляді.
       </div>
-            <div class="ta-j  pl-paragraph">
-        <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
+      <div class="ta-j  pl-paragraph">
+        <span class="check_box"><span id="spanLawCourt">&#10004;</span></span>        
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
-      
+
       <br/><br/>
       <div>
         <div class="under_field notb w20p">
@@ -447,6 +461,9 @@
         відмовляються від прийняття реєстраційного номера облікової картки платника податків
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
+      
+
+
     </div>
   </body>
 </html>
