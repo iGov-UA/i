@@ -4014,9 +4014,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'&amp;&amp;asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
-    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway6" targetRef="servicetask1">
@@ -4081,9 +4078,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
     <sequenceFlow id="flow68" sourceRef="exclusivegateway7" targetRef="exclusivegateway11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc=='Исполнен'&&nID_DocumentTemplate_UkrDoc=='11401'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow69" sourceRef="exclusivegateway7" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow69" sourceRef="exclusivegateway7" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask7" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -4834,7 +4829,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdc:Bounds height="92.0" width="105.0" x="639.0" y="793.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="877.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="954.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="520.0" y="818.0"></omgdc:Bounds>
@@ -4906,7 +4901,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="1459.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="742.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="821.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
         <omgdc:Bounds height="40.0" width="40.0" x="1401.0" y="677.0"></omgdc:Bounds>
@@ -4978,9 +4973,9 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
-        <omgdi:waypoint x="377.0" y="877.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="954.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="434.0" y="859.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="491.0" y="863.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -5070,16 +5065,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdi:waypoint x="1112.0" y="839.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1335.0" y="823.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
-        <omgdi:waypoint x="539.0" y="924.0"></omgdi:waypoint>
-        <omgdi:waypoint x="959.0" y="924.0"></omgdi:waypoint>
-        <omgdi:waypoint x="959.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1007.0" y="839.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="812.0" y="891.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -5201,10 +5186,10 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="540.0" y="818.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="777.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="838.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="838.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="434.0" y="744.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="414.0" y="804.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
