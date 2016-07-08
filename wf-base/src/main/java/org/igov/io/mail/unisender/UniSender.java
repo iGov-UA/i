@@ -16,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -112,7 +113,7 @@ public class UniSender {
         if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
             mParam.add("fields[phone]", oSubscribeRequest.getPhone());
         if (!StringUtils.isBlank(oSubscribeRequest.getName()))
-            mParam.add("fields[ToName]", oSubscribeRequest.getName());
+            mParam.add("fields[ToName]", URLEncoder.encode(oSubscribeRequest.getName(), "UTF-8"));
         //optional
         if (oSubscribeRequest.getTags() != null && !oSubscribeRequest.getTags().isEmpty())
             mParam.add("tags", StringUtils.join(
