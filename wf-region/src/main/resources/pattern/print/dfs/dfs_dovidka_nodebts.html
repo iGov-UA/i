@@ -334,8 +334,23 @@
     
     
     <script type="text/javascript">
-	    var str = "123456";
- 
+    function FillFildsOneChar(id, str, addClass){  
+        var cells = document.getElementById(id).children; 
+
+        for(var i=0;  i<cells.length; ++i){
+          if(str.length>i){
+            cells[i].innerHTML = str[i];
+            cells[i].className += ' ' + addClass;      
+          } else {      
+            cells[i].innerHTML = "&#160;&#160;";
+          }
+        }
+      }
+    
+    window.onload = function() {
+    	FillFildsOneChar("trINN", "123456", "ta-c");
+      };
+	    
     </script>
   </head>
   <body>
