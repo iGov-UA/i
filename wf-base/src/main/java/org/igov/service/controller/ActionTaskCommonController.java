@@ -2019,7 +2019,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
                 String assignee = null;
                 for (Task task : tasks) {
-                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey())){
+                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){
                     assignee = task.getAssignee();
                     LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
                     taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
