@@ -541,10 +541,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     	
     	if (escalationProceses != null){
 	    	LOG.info("Found {} escalation processes", escalationProceses.size());
-	    	for (ProcessInstance process : escalationProceses){
-	    		LOG.info("Removing process with ID:Key {}:{} ", process.getProcessInstanceId(), process.getProcessDefinitionKey());
-	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
-	    	}
 	    	
 	    	Map<String, String> mParam = new HashMap<>();
 	        mParam.put("nID_Proccess_Escalation", "");
@@ -565,6 +561,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         ._Send()
                     ;
             }
+            
+	    	for (ProcessInstance process : escalationProceses){
+	    		LOG.info("Removing process with ID:Key {}:{} ", process.getProcessInstanceId(), process.getProcessDefinitionKey());
+	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
+	    	}
     	}
     }
 
