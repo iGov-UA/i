@@ -14,6 +14,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -490,24 +491,32 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     	
     	if (escalationProceses != null){
 	    	LOG.info("Found {} escalation processes", escalationProceses.size());
+	    	
+	    	Map<String, String> mParam = new HashMap<>();
+	    	mParam.put("nID_Proccess_Escalation", "");
+	        LOG.info(" >>Clearing nID_Proccess_Escalation field for the process . (sID_Process={})", sID_Process);
+            try {
+
+            	LOG.info(" updateHistoryEvent: " + sID_Process + " mParam: " + mParam);
+                historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(sID_Process)), null, false, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
+            } catch (Exception oException) {
+                    LOG.error("{} (sID_Process={})", oException.getMessage(), sID_Process);
+                    LOG.trace("FAIL: ", oException);
+                    new Log(null, oException)//this.getClass()
+                        ._Case("IC_CloseEscalation")
+                        ._Status(Log.LogStatus.ERROR)
+                        ._Head("Can't close escalation for task")
+                        ._Body(oException.getMessage())
+                        ._Param("sID_Process", sID_Process)
+                        ._Param("mParam", mParam)
+                        ._Send()
+                    ;
+            }
+            
 	    	for (ProcessInstance process : escalationProceses){
 	    		LOG.info("Removing process with ID:Key {}:{} ", process.getProcessInstanceId(), process.getProcessDefinitionKey());
 	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
 	    	}
-	    	
-	    	Map<String, String> params = new HashMap<>();
-	        params.put("nID_Proccess_Escalation", "");
-	        LOG.info(" >>Clearing nID_Proccess_Escalation field for the process . (sID_Process={})", sID_Process);
-            try {
-            	LOG.info(" updateHistoryEvent: " + sID_Process + " params: " + params);
-				historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(sID_Process)), null, false, HistoryEvent_Service_StatusType.UNKNOWN, params);
-			} catch (NumberFormatException e) {
-				LOG.error("{} (sID_Process={})", e.getMessage(), sID_Process);
-	            LOG.trace("FAIL: ", e);
-			} catch (Exception e) {
-				LOG.error("{} (sID_Process={})", e.getMessage(), sID_Process);
-	            LOG.trace("FAIL: ", e);
-			}
     	}
     }
 
