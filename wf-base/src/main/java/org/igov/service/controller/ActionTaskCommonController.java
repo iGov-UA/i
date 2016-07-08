@@ -2019,6 +2019,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
                 String assignee = null;
                 for (Task task : tasks) {
+                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey())){
                     assignee = task.getAssignee();
                     LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
                     taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
@@ -2032,6 +2033,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
                     taskService.complete(task.getId());
                     LOG.info("Completed task {}", task.getId());
+                  }
                 }
 
                 LOG.info("Looking for a new task to set form properties and claim it to the user {}", assignee);
