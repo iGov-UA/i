@@ -69,34 +69,42 @@ public class Log {
     
     
     static Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
-        int n=0;
-        for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
-            //String sPackage = oStackTraceElement.getClass().getPackage().getName();
-            String sClass = oStackTraceElement.getClassName();
-            String s = oStackTraceElement.toString();
-            //String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
-            //String sClassSimple = oStackTraceElement.getClass().getSimpleName();
-            String sMethod = oStackTraceElement.getMethodName();
-            String sFile = oStackTraceElement.getFileName();
-            //LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
-            LOG.info("sClass={},s={},sMethod={},sFile={}", sClass, s, sMethod, sFile);
-            //if(sPackage!=null && sPackage.startsWith("org.igov")){
-            if(s!=null && s.contains("org.igov.")){
-                break;
+        Class oClassReturn = null;
+        if(oException!=null){
+            int n=0;
+            for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
+                //String sPackage = oStackTraceElement.getClass().getPackage().getName();
+                String sClass = oStackTraceElement.getClassName();
+                String s = oStackTraceElement.toString();
+                //String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
+                //String sClassSimple = oStackTraceElement.getClass().getSimpleName();
+                String sMethod = oStackTraceElement.getMethodName();
+                String sFile = oStackTraceElement.getFileName();
+                //LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
+                LOG.info("sClass={},s={},sMethod={},sFile={}", sClass, s, sMethod, sFile);
+                //if(sPackage!=null && sPackage.startsWith("org.igov")){
+                if(s!=null && s.contains("org.igov.")){
+                    break;
+                }
+                n++;
             }
-            n++;
+            if(n>=oException.getStackTrace().length){
+                n=0;
+            }
+            StackTraceElement oStackTrace = oException.getStackTrace()[n];
+            if(oStackTrace!=null){
+                oClassReturn = oStackTrace.getClass();
+                String sClass = oStackTrace.getClassName();
+                String sFileName = oStackTrace.getFileName();
+                String sMethod = oStackTrace.getMethodName();
+                //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+                LOG.info("(sClass={},sMethod={},sFileName={}):{}",sClass,sMethod,sFileName, oException.getMessage());
+                //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
+            }else{
+                LOG.warn("oStackTrace!=null");
+            }
         }
-        if(n>=oException.getStackTrace().length){
-            n=0;
-        }
-        Class oClass = oException.getStackTrace()[n].getClass();
-        String sClass = oException.getStackTrace()[n].getClassName();
-        String sFileName = oException.getStackTrace()[n].getFileName();
-        String sMethod = oException.getStackTrace()[n].getMethodName();
-        //LOG.error("Error:{}. REST API Exception", exception.getMessage());
-        LOG.info("(sClass={},sMethod={},sFileName={})",sClass,sMethod,sFileName);
-        //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
-        return oClass; //0//this.getClass()//!=null?oClass:ExceptionCommonController.class
+        return oClassReturn; //0//this.getClass()//!=null?oClass:ExceptionCommonController.class
     }
     
     public Log(Class oClass, Exception oException){
