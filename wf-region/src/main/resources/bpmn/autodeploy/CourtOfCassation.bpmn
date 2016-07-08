@@ -16,10 +16,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Юрідична адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresUr" name="Адреса місцезнаходження;з обов'язковим зазначенням поштового індексу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання учасника судового процесу;з обов'язковим зазначенням поштового індексу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresFiz" name="Адреса місця проживання учасника судового процесу;з обов'язковим зазначенням поштового індексу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи;у разі відсутності ідентифікаційного номеру - серія та номер паспорта громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номери телефонів (факсів)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountDocs" name="Кількість документів, що подаються" type="enum" required="true">
@@ -37,6 +37,7 @@
         <activiti:formProperty id="sCategoryDoc1" name="Категорія процесуального документу №1" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -46,10 +47,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Документ №1 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileA" name="Документ №1 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc2" name="Категорія процесуального документу №2" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -59,10 +61,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc2" name="Документ №2 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileB" name="Документ №2 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc3" name="Категорія процесуального документу №3" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -72,10 +75,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc3" name="Документ №3 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileC" name="Документ №3 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc4" name="Категорія процесуального документу №4" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -85,10 +89,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc4" name="Документ №4 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileD" name="Документ №4 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc5" name="Категорія процесуального документу №5" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -98,10 +103,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc5" name="Документ №5 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileE" name="Документ №5 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc6" name="Категорія процесуального документу №6" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -111,10 +117,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc6" name="Документ №6 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileF" name="Документ №6 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc7" name="Категорія процесуального документу №7" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -124,10 +131,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc7" name="Документ №7 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileG" name="Документ №7 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc8" name="Категорія процесуального документу №8" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -137,10 +145,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc8" name="Документ №8 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileH" name="Документ №8 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc9" name="Категорія процесуального документу №9" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -150,10 +159,11 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc9" name="Документ №9 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileI" name="Документ №9 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc10" name="Категорія процесуального документу №10" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -163,20 +173,48 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc10" name="Документ №10 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;]}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="3 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="4 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="5 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="6 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'six'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="7 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'seven'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="8 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'eight'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="9 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nine'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;,&quot;sCategoryDoc10&quot;,&quot;sDoc10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFileJ" name="Документ №10 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNeedAttach" name="Чи потрібно долучіти до звернення інші додаткові документи?; наприклад: довіренність, накладні, акти тощо" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountAttach" name="Кількість додаткових документів" type="enum" required="true">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc11" name="Найменування додаткового документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileK" name="Додатковий документ №1 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc12" name="Найменування додаткового документу №2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileL" name="Додатковий документ №2 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc13" name="Найменування додаткового документу №3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileM" name="Додатковий документ №3 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc14" name="Найменування додаткового документу №4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileN" name="Додатковий документ №4 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc15" name="Найменування додаткового документу №5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileO" name="Додатковий документ №5 засвідчений ЄЦП;обов'язково тільки у форматі pdf або p7s" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers0" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;nFileA&quot;,&quot;nFileB&quot;,&quot;nFileC&quot;,&quot;nFileD&quot;,&quot;nFileE&quot;,&quot;nFileF&quot;,&quot;nFileG&quot;,&quot;nFileH&quot;,&quot;nFileI&quot;,&quot;nFileJ&quot;,&quot;nFileK&quot;,&quot;nFileL&quot;,&quot;nFileM&quot;,&quot;nFileN&quot;,&quot;nFileO&quot;]}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="тільки пдф або p7s" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;nFileA&quot;,&quot;nFileB&quot;,&quot;nFileC&quot;,&quot;nFileD&quot;,&quot;nFileE&quot;,&quot;nFileF&quot;,&quot;nFileG&quot;,&quot;nFileH&quot;,&quot;nFileI&quot;,&quot;nFileJ&quot;,&quot;nFileK&quot;,&quot;nFileL&quot;,&quot;nFileM&quot;,&quot;nFileN&quot;,&quot;nFileO&quot;],&quot;saExtension&quot;:&quot;pdf,p7s&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf або p7s&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'||[sReason] == 'юрідична особа'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'||[sReason] == '1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'||[sReason] == '2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="3 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'||[sReason] == '3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="4 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="5 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="6 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'six'||[sReason] == '6'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="7 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'seven'||[sReason] == '7'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="8 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'eight'||[sReason] == '8'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="9 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;,&quot;sCategoryDoc9&quot;,&quot;nFileI&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nine'||[sReason] == '9'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;,&quot;sCategoryDoc9&quot;,&quot;nFileI&quot;,&quot;sCategoryDoc10&quot;,&quot;nFileJ&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'||[sReason] == '10'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="якщо треба додаткові документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sCountAttach&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sNeedAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'так'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="якщо 1 додатковий документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'||[sReason] == '1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="якщо 2 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'||[sReason] == '2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="якщо 3 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'||[sReason] == '3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="якщо 4 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;,&quot;sCategoryDoc14&quot;,&quot;nFileN&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="якщо 5 додаткових документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;,&quot;sCategoryDoc14&quot;,&quot;nFileN&quot;,&quot;sCategoryDoc15&quot;,&quot;nFileO&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty> 
         <activiti:formProperty id="form_signed" name="Загальний ЕЦП, що було накладено при поданні звернення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -193,13 +231,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdresUr" name="Адреса місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdresFiz" name="Адреса місця проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номери телефонів (факсів); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" writable="false">
+        <activiti:formProperty id="sCountDocs" name="Кількість документів, які були подані завником" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
@@ -214,6 +252,7 @@
         <activiti:formProperty id="sCategoryDoc1" name="Категорія процесуального документу №1" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -226,6 +265,7 @@
         <activiti:formProperty id="sCategoryDoc2" name="Категорія процесуального документу №2" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -238,6 +278,7 @@
         <activiti:formProperty id="sCategoryDoc3" name="Категорія процесуального документу №3" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -250,6 +291,7 @@
         <activiti:formProperty id="sCategoryDoc4" name="Категорія процесуального документу №4" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -262,6 +304,7 @@
         <activiti:formProperty id="sCategoryDoc5" name="Категорія процесуального документу №5" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -274,6 +317,7 @@
         <activiti:formProperty id="sCategoryDoc6" name="Категорія процесуального документу №6" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -286,6 +330,7 @@
         <activiti:formProperty id="sCategoryDoc7" name="Категорія процесуального документу №7" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -298,6 +343,7 @@
         <activiti:formProperty id="sCategoryDoc8" name="Категорія процесуального документу №8" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -310,6 +356,7 @@
         <activiti:formProperty id="sCategoryDoc9" name="Категорія процесуального документу №9" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -322,6 +369,7 @@
         <activiti:formProperty id="sCategoryDoc10" name="Категорія процесуального документу №10" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition11" name="заява про зняття копій матеріалів справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
           <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
           <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
@@ -331,23 +379,62 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNeedAttach" name="Чи потрібно долучіти до звернення інші додаткові документи?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountAttach" name="Кількість додаткових документів" type="enum" writable="false">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc11" name="Найменування додаткового документу №1" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc12" name="Найменування додаткового документу №2" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc13" name="Найменування додаткового документу №3" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc14" name="Найменування додаткового документу №4" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc15" name="Найменування додаткового документу №5" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення" type="enum" required="true">
           <activiti:value id="accept" name="документи зарєєстровано"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="reject_1" name="У разі відхилення звернення, оберіть причниу" type="enum">
+        <activiti:formProperty id="reject_1" name="Оберіть причину відхилення звернення" type="enum">
           <activiti:value id="accept" name="документи отримані судом не доступні для прочитання"></activiti:value>
           <activiti:value id="reject" name="документи отримані судом адресовані не суду"></activiti:value>
+          <activiti:value id="other" name="інша причина"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sComment" name="укажіть причину" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;nFileA&quot;,&quot;nFileB&quot;,&quot;nFileC&quot;,&quot;nFileD&quot;,&quot;nFileE&quot;,&quot;nFileF&quot;,&quot;nFileG&quot;,&quot;nFileH&quot;,&quot;nFileI&quot;,&quot;nFileJ&quot;],&quot;saExtension&quot;:&quot;pdf,p7s&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf або p7s&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'||[sReason] == 'юрідична особа'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'||[sReason] == '1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'||[sReason] == '2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="3 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'||[sReason] == '3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="4 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="5 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="6 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'six'||[sReason] == '6'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="7 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'seven'||[sReason] == '7'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="8 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'eight'||[sReason] == '8'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="9 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;,&quot;sCategoryDoc9&quot;,&quot;nFileI&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nine'||[sReason] == '9'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;nFileA&quot;,&quot;sCategoryDoc2&quot;,&quot;nFileB&quot;,&quot;sCategoryDoc3&quot;,&quot;nFileC&quot;,&quot;sCategoryDoc4&quot;,&quot;nFileD&quot;,&quot;sCategoryDoc5&quot;,&quot;nFileE&quot;,&quot;sCategoryDoc6&quot;,&quot;nFileF&quot;,&quot;sCategoryDoc7&quot;,&quot;nFileG&quot;,&quot;sCategoryDoc8&quot;,&quot;nFileH&quot;,&quot;sCategoryDoc9&quot;,&quot;nFileI&quot;,&quot;sCategoryDoc10&quot;,&quot;nFileJ&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'||[sReason] == '10'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="якщо треба додаткові документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sCountAttach&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sNeedAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'так'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="якщо 1 додатковий документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'||[sReason] == '1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="якщо 2 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'||[sReason] == '2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="якщо 3 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'||[sReason] == '3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="якщо 4 додаткових документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;,&quot;sCategoryDoc14&quot;,&quot;nFileN&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'||[sReason] == '4'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="якщо 5 додаткових документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc11&quot;,&quot;nFileK&quot;,&quot;sCategoryDoc12&quot;,&quot;nFileL&quot;,&quot;sCategoryDoc13&quot;,&quot;nFileM&quot;,&quot;sCategoryDoc14&quot;,&quot;nFileN&quot;,&quot;sCategoryDoc15&quot;,&quot;nFileO&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountAttach&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'||[sReason] == '5'&quot;}}}"></activiti:formProperty> 
+        <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;reject_1&quot;,&quot;sAkt&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="якщо інша причина" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;reject_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'||[sReason] == 'інша причина'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7},${sDoc8},${sDoc9},${sDoc10}</activiti:expression>
+            <activiti:expression>${nFileA},${nFileB},${nFileC},${nFileD},${nFileE},${nFileF},${nFileG},${nFileH},${nFileI},${nFileJ},${nFileK},${nFileL},${nFileM},${nFileN},${nFileO}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -430,7 +517,7 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у реєстрації процесуальних документів:
 ${sListDocumentsLetter}
-Причина: enum{[reject_1]}&lt;br/&gt;
+Причина: enum{[reject_1]} ${sComment}&lt;br/&gt;
 Cканкопія відповідного акту Суду знаходиться у додатку до листа.&lt;br/&gt;
 Номер справи ${sNumberCase}.&lt;br/&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
@@ -463,7 +550,12 @@ var per7 = " "
 var per8 = " "
 var per9 = " "
 var per10 = " "
-var per11 = "res"
+var per11 = " "
+var per12 = " "
+var per13 = " "
+var per14 = " "
+var per15 = " "
+var per16 = "res"
 if(execution.getVariable('sCategoryDoc1') == 'petition1'){
 per1 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
@@ -493,6 +585,9 @@ per1 = "&lt;li&gt;Клопотання про видачу копії техні
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition10'){
 per1 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc1') == 'petition11'){
+per1 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc2') == 'petition1'){
 per2 = "&lt;li&gt;Відзив.&lt;/li&gt;"
@@ -524,6 +619,9 @@ per2 = "&lt;li&gt;Клопотання про видачу копії техні
 if(execution.getVariable('sCategoryDoc2') == 'petition10'){
 per2 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
+if(execution.getVariable('sCategoryDoc2') == 'petition11'){
+per2 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
+}
 if(execution.getVariable('sCategoryDoc3') == 'petition1'){
 per3 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
@@ -553,6 +651,9 @@ per3 = "&lt;li&gt;Клопотання про видачу копії техні
 }
 if(execution.getVariable('sCategoryDoc3') == 'petition10'){
 per3 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition11'){
+per3 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc4') == 'petition1'){
 per4 = "&lt;li&gt;Відзив.&lt;/li&gt;"
@@ -584,6 +685,9 @@ per4 = "&lt;li&gt;Клопотання про видачу копії техні
 if(execution.getVariable('sCategoryDoc4') == 'petition10'){
 per4 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
+if(execution.getVariable('sCategoryDoc4') == 'petition11'){
+per4 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
+}
 if(execution.getVariable('sCategoryDoc5') == 'petition1'){
 per5 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
@@ -613,6 +717,9 @@ per5 = "&lt;li&gt;Клопотання про видачу копії техні
 }
 if(execution.getVariable('sCategoryDoc5') == 'petition10'){
 per5 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition11'){
+per5 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc6') == 'petition1'){
 per6 = "&lt;li&gt;Відзив.&lt;/li&gt;"
@@ -644,6 +751,9 @@ per6 = "&lt;li&gt;Клопотання про видачу копії техні
 if(execution.getVariable('sCategoryDoc6') == 'petition10'){
 per6 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
+if(execution.getVariable('sCategoryDoc6') == 'petition11'){
+per6 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
+}
 if(execution.getVariable('sCategoryDoc7') == 'petition1'){
 per7 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
@@ -673,6 +783,9 @@ per7 = "&lt;li&gt;Клопотання про видачу копії техні
 }
 if(execution.getVariable('sCategoryDoc7') == 'petition10'){
 per7 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition11'){
+per7 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc8') == 'petition1'){
 per8 = "&lt;li&gt;Відзив.&lt;/li&gt;"
@@ -704,6 +817,9 @@ per8 = "&lt;li&gt;Клопотання про видачу копії техні
 if(execution.getVariable('sCategoryDoc8') == 'petition10'){
 per8 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
+if(execution.getVariable('sCategoryDoc8') == 'petition11'){
+per8 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
+}
 if(execution.getVariable('sCategoryDoc9') == 'petition1'){
 per9 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
@@ -733,6 +849,9 @@ per9 = "&lt;li&gt;Клопотання про видачу копії техні
 }
 if(execution.getVariable('sCategoryDoc9') == 'petition10'){
 per9 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition11'){
+per9 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc10') == 'petition1'){
 per10 = "&lt;li&gt;Відзив.&lt;/li&gt;"
@@ -764,7 +883,25 @@ per10 = "&lt;li&gt;Клопотання про видачу копії техн�
 if(execution.getVariable('sCategoryDoc10') == 'petition10'){
 per10 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+'&lt;/ol&gt;'
+if(execution.getVariable('sCategoryDoc10') == 'petition11'){
+per10 = "&lt;li&gt;Заява про зняття копій матеріалів справи.&lt;/li&gt;"
+}
+if(execution.getVariable('nFileK') != null){
+per11 = "&lt;li&gt;execution.getVariable('sCategoryDoc11').&lt;/li&gt;"
+}
+if(execution.getVariable('nFileL') != null){
+per12 = "&lt;li&gt;execution.getVariable('sCategoryDoc12').&lt;/li&gt;"
+}
+if(execution.getVariable('nFileM') != null){
+per13 = "&lt;li&gt;execution.getVariable('sCategoryDoc13').&lt;/li&gt;"
+}
+if(execution.getVariable('nFileN') != null){
+per14 = "&lt;li&gt;execution.getVariable('sCategoryDoc14').&lt;/li&gt;"
+}
+if(execution.getVariable('nFileO') != null){
+per15 = "&lt;li&gt;execution.getVariable('sCategoryDoc15').&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 </script>
     </scriptTask>
