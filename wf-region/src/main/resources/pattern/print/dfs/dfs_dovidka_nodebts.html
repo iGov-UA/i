@@ -334,22 +334,15 @@
     
     
     <script type="text/javascript">
-    function FillFildsOneChar(id, str, addClass){  
-        var cells = document.getElementById(id).children; 
-
-        for(var i=0;  i<cells.length; ++i){
-          if(str.length>i){
-            cells[i].innerHTML = str[i];
-            cells[i].className += ' ' + addClass;      
-          } else {      
-            cells[i].innerHTML = "&#160;&#160;";
-          }
-        }
-      }
-    
-    window.onload = function() {
-    	FillFildsOneChar("trINN", "123456", "ta-c");
-      };
+	    var str = "123456";
+	    var cells = []; 
+	
+	    for(var i=0;  i<10; ++i){
+	      if(str.length>i){
+	        cells[i] = str[i];
+		    document.write(" "+cells[i]);
+	      }
+	    }	  
 	    
     </script>
   </head>
