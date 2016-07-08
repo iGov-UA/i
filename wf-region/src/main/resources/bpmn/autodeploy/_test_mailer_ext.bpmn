@@ -51,7 +51,7 @@
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="оповещение сотрудника" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -160,7 +160,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
@@ -185,7 +184,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="162.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="360.0" y="31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="330.0"></omgdc:Bounds>
@@ -202,10 +201,6 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="285.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="368.0" y="201.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="473.0" y="201.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
