@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.io.mail.unisender.CreateCampaignRequest;
 import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 import org.igov.io.mail.unisender.UniResponse;
@@ -29,13 +30,13 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import org.igov.io.Log;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
@@ -74,23 +75,18 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo = getTo();
         String sToNew = sTo;
-//        sToNew = sToNew.replace("\\<","<");
-//        sToNew = sToNew.replace("\\>",">");
         sToNew = sToNew.replace("\"", "");
         sToNew = sToNew.replace("\"", "");
-        //sTo=sTo.replaceAll("\"", "");
         if (!sToNew.equals(sTo)) {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
         LOG.info("(getHead()={})", getHead());
 
-        Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        //        For test
+        //        Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        Boolean bUniSender = true;
         LOG.info("(bUniSender={})", bUniSender);
-        //LOG.debug("(getFrom()={})", getFrom());
-        //LOG.debug("(getTo()={})", getTo());
-        //LOG.debug("(getHead()={})", getHead());
-        //LOG.debug("(getBody={})", getBody());
         LOG_BIG.info("(bUniSender={})", bUniSender);
         LOG_BIG.debug("(getFrom()={})", getFrom());
         LOG_BIG.debug("(getTo()={})", getTo());
@@ -129,7 +125,7 @@ public class Mail extends Abstract_Mail {
         } else {
             sendAlternativeWay(sbBody.toString());
         }
-//        }
+        //        }
 
     }
 
@@ -140,7 +136,7 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
 
-            String[] asTo = {sMailOnly(getTo())};
+            String[] asTo = { sMailOnly(getTo()) };
             if (getTo().contains("\\,")) {
                 asTo = getTo().split("\\,");//sTo
                 for (String s : asTo) {
@@ -149,9 +145,6 @@ public class Mail extends Abstract_Mail {
                 }
             }
 
-            //oMultiPartEmail.addTo(getTo(), "receiver");
-            //log.info("getTo()=" + getTo());
-//            _From("noreply@mail.igov.org.ua");
             LOG.info("(getFrom()={})", getFrom());
             LOG_BIG.debug("(getFrom()={})", getFrom());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
@@ -181,7 +174,7 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
             String sReceiverName = "receiver";
-            if (asTo.length == 1){
+            if (asTo.length == 1) {
                 sReceiverName = getToName();
             }
             for (String s : asTo) {
@@ -208,7 +201,7 @@ public class Mail extends Abstract_Mail {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
             throw new EmailException("Error happened when sending email (" + getTo() + ")"
-                    +"Exception message: "+ oException.getMessage(), oException);
+                    + "Exception message: " + oException.getMessage(), oException);
         }
         LOG.info("SUCCESS: Sent!");
     }
@@ -309,21 +302,6 @@ public class Mail extends Abstract_Mail {
         return sMailNew;
     }
 
-    /*
-        "John Dow <email@adress.com>"  -> "John Dow"
-     */
-    public static String sToNameOnly(String sMail) {
-        try {
-            if (sMail.contains("<")) {
-                String[] asMail = sMail.split("\\<");
-                return ("".equals(asMail[0])) ? null : asMail[0].trim();
-            }
-        } catch (Exception oException) {
-            LOG.warn("FAIL: {} (sMail={})", oException.getMessage(), sMail);
-        }
-        return null;
-    }
-
     //public void sendWithUniSender() throws EmailException {
     public boolean sendWithUniSender() {
         LOG.info("Init...");
@@ -331,8 +309,6 @@ public class Mail extends Abstract_Mail {
         Object oID_Message = null;
         StringBuilder sbBody = new StringBuilder();
         try {
-            
-
             sbBody.append("host: ");
             sbBody.append(getHost());
             sbBody.append(":");
@@ -345,15 +321,12 @@ public class Mail extends Abstract_Mail {
             sbBody.append(getTo());
             sbBody.append("\nhead:");
             sbBody.append(getHead());
-            
+
             String sKey_Sender = generalConfig.getKey_UniSender_Mail();
             long nID_Sender = generalConfig.getSendListId_UniSender_Mail();
             if (StringUtils.isBlank(sKey_Sender)) {
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }
-//            if (StringUtils.isBlank(sKey_Sender)) {
-//                throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-//            }
 
             LOG.info("oUniSender - {}", oUniSender);
             LOG.info("methodCallRunner - {}", methodCallRunner);
@@ -361,17 +334,16 @@ public class Mail extends Abstract_Mail {
 
             if (getTo().contains(",")) {
                 String[] asMail = getTo().split("\\,");
-                String sToName;
                 for (String sMail : asMail) {
                     sMail = sMailOnly(sMail);
                     UniResponse oUniResponse_Subscribe = oUniSender
-                            .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, this.getToName());
+                            .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, getToName());
                     LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
                 }
             } else {
                 String sMail = sMailOnly(getTo());
                 UniResponse oUniResponse_Subscribe = oUniSender
-                        .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, this.getToName());
+                        .subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail, getToName());
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
 
@@ -415,7 +387,8 @@ public class Mail extends Abstract_Mail {
                             .setMessageId(oID_Message.toString())
                             .build();
 
-                    UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(oCreateCampaignRequest, getTo());
+                    UniResponse oUniResponse_CreateCampaign = oUniSender
+                            .createCampaign(oCreateCampaignRequest, getTo());
                     LOG.info("(oUniResponse_CreateCampaign={})", oUniResponse_CreateCampaign);
                 } else {
                     result = false;
@@ -438,7 +411,7 @@ public class Mail extends Abstract_Mail {
                     ._Param("oID_Message", oID_Message)
                     //._Param("sExcetion", oException.getMessage())
                     ._Send()
-                ;
+            ;
             //msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
         }
         LOG.info("SUCCESS: sent!");
@@ -459,7 +432,7 @@ public class Mail extends Abstract_Mail {
                         ._Param("getTo", getTo())
                         ._Param("sbBody", sbBody)
                         ._Send()
-                    ;
+                ;
                 //msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
             } catch (Exception e) {
                 LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
