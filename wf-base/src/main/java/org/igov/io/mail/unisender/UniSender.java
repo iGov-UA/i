@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -313,7 +312,10 @@ public class UniSender {
         //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
-        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // Не указывает кодировку(ломается кирилица)
+        //        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.add("Content-Type","multipart/form-data; charset=UTF-8");
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         /*
