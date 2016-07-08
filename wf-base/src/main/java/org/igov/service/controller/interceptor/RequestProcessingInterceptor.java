@@ -543,7 +543,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 	    	LOG.info("Found {} escalation processes", escalationProceses.size());
 	    	
 	    	Map<String, String> mParam = new HashMap<>();
-	        mParam.put("nID_Proccess_Escalation", "");
+	        mParam.put("nID_Proccess_Escalation", "-1");
 	        LOG.info(" >>Clearing nID_Proccess_Escalation field for the process . (sID_Process={})", sID_Process);
             try {
             	LOG.info(" updateHistoryEvent: " + sID_Process + " mParam: " + mParam);

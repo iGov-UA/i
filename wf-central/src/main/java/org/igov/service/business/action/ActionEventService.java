@@ -414,6 +414,10 @@ public class ActionEventService {
             oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
             isChanged = true;
         }
+        if (nID_Proccess_Escalation == -1){
+        	oHistoryEvent_Service.setnID_Proccess_Escalation(null);
+            isChanged = true;
+        }
         if (nID_StatusType != null && !nID_StatusType.equals(oHistoryEvent_Service.getnID_StatusType())) {
             oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
         }
