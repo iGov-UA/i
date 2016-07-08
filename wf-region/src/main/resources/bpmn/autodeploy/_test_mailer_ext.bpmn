@@ -3,12 +3,12 @@
   <process id="_test_mailer_ext" name="test_mailer_ext" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="mail" name="mail + sms" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="email + sms" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="filetosend" name="file" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mail2" name="mail2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email2" name="email2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="sNameOrgan - название органа"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="sPhoneOrgan - телефон органа"></activiti:formProperty>
         <activiti:formProperty id="phone" name="телефон для смс" type="string" required="true"></activiti:formProperty>
@@ -31,7 +31,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2}</activiti:expression>
+          <activiti:expression>${email},${email2}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>subject</activiti:expression>
@@ -58,7 +58,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2}</activiti:expression>
+          <activiti:expression>${email},${email2}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )</activiti:expression>
@@ -79,7 +79,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
@@ -110,7 +110,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
@@ -141,7 +141,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Ваша заявка ще не взята в роботу</activiti:expression>
@@ -172,13 +172,10 @@
         <omgdc:Bounds height="78.0" width="105.0" x="180.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="78.0" width="105.0" x="180.0" y="163.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="243.0" y="163.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="105.0" x="560.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="632.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="105.0" x="750.0" y="160.0"></omgdc:Bounds>
@@ -193,17 +190,17 @@
         <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="78.0" width="105.0" x="660.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="560.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="78.0" width="191.0" x="560.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
         <omgdi:waypoint x="105.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="285.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="348.0" y="202.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
