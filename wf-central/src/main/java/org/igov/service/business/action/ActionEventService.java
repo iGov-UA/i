@@ -509,7 +509,7 @@ public class ActionEventService {
             
         }
         if (isChanged) {
-            LOG.info("updating");
+            LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
         }
         LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
