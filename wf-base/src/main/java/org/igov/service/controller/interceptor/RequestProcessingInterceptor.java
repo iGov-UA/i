@@ -539,7 +539,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     	LOG.info("Looking for escalation processes for process {}", sID_Process);
     	List<ProcessInstance> escalationProceses = runtimeService.createProcessInstanceQuery().active().variableValueEquals("processID", sID_Process).list();
     	
-    	if (escalationProceses != null){
+    	if (escalationProceses != null && escalationProceses.size() > 0){
 	    	LOG.info("Found {} escalation processes", escalationProceses.size());
 	    	
 	    	Map<String, String> mParam = new HashMap<>();
