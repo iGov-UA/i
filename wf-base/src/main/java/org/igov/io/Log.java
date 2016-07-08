@@ -42,6 +42,8 @@ public class Log {
         ,DEBUG()
         ;
     }
+
+    private MsgType oMsgType = null;
     
     private Logger oLog = null;
     private Exception oException = null;
@@ -64,7 +66,51 @@ public class Log {
     public Log(Class o){
         _Class(o);
     };
+    
+    
+    static Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
+        Class oClassReturn = null;
+        if(oException!=null){
+            int n=0;
+            for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
+                //String sPackage = oStackTraceElement.getClass().getPackage().getName();
+                String sClass = oStackTraceElement.getClassName();
+                String s = oStackTraceElement.toString();
+                //String sClassCanonical = oStackTraceElement.getClass().getCanonicalName();
+                //String sClassSimple = oStackTraceElement.getClass().getSimpleName();
+                String sMethod = oStackTraceElement.getMethodName();
+                String sFile = oStackTraceElement.getFileName();
+                //LOG.info("sPackage={},sClass={},sClassCanonical={}, sClassSimple={},sMethod={},sFile={}", sPackage, sClass, sClassCanonical, sClassSimple, sMethod, sFile);
+                LOG.info("sClass={},s={},sMethod={},sFile={}", sClass, s, sMethod, sFile);
+                //if(sPackage!=null && sPackage.startsWith("org.igov")){
+                if(s!=null && s.contains("org.igov.")){
+                    break;
+                }
+                n++;
+            }
+            if(n>=oException.getStackTrace().length){
+                n=0;
+            }
+            StackTraceElement oStackTrace = oException.getStackTrace()[n];
+            if(oStackTrace!=null){
+                oClassReturn = oStackTrace.getClass();
+                String sClass = oStackTrace.getClassName();
+                String sFileName = oStackTrace.getFileName();
+                String sMethod = oStackTrace.getMethodName();
+                //LOG.error("Error:{}. REST API Exception", exception.getMessage());
+                LOG.info("(sClass={},sMethod={},sFileName={}):{}",sClass,sMethod,sFileName, oException.getMessage());
+                //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
+            }else{
+                LOG.warn("oStackTrace!=null");
+            }
+        }
+        return oClassReturn; //0//this.getClass()//!=null?oClass:ExceptionCommonController.class
+    }
+    
     public Log(Class oClass, Exception oException){
+        if(oClass==null){
+            oClass = oClassByTrace(oException);
+        }
         _Class(oClass);
         _Exception(oException);
     };
@@ -136,14 +182,19 @@ public class Log {
     }
     
     private void sendToMSG(MsgType msgType){
-	MsgService.setEventSystemWithParam(msgType.name(), null, null, oClass == null ? "NULL_CLASS_NAME" : oClass.getName(), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
+	MsgService.setEventSystemWithParam(msgType.name(), null, null, sCase!=null ? sCase : (oClass == null ? "NULL" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
     }
-
+    
+    public Log _MsgType(MsgType o){
+         this.oMsgType = o;
+         return this;
+    }
+    
     public Log send(){
         try{
             String sText = sText();
             if(oStatus==LogStatus.ERROR){
-        	sendToMSG(MsgType.INTERNAL_ERROR);
+        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.INTERNAL_ERROR);
                 oLog_Alert.error(sText);
                 if(oException!=null){
                     oLog_Error.error(sText,oException);
@@ -159,7 +210,8 @@ public class Log {
                     }
                 }
             }else if(oStatus==LogStatus.WARN){
-        	sendToMSG(MsgType.WARNING);
+        	//sendToMSG(MsgType.WARNING);
+        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.WARNING);
                 oLog_Alert.warn(sText);
                 if(oException!=null){
                     oLog_Debug.warn(sText,oException);

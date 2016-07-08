@@ -76,6 +76,10 @@ public class MsgService {
 
     public static <T> IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
 	    String sBody, String sError, HashMap<String, T> mParam) {
+        
+        /*if(nID_Server==null){
+            nID_Server = generalConfig.getSelfServerId();
+        }*/
 	if (!isReadySendMSG) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return null;

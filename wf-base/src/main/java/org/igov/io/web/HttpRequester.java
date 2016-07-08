@@ -103,7 +103,9 @@ public class HttpRequester {
             LOG_BIG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})", nStatus, sURL, saParam, osReturn);
         } catch (Exception oException) {
             new Log(this.getClass(), oException)
+                    ._Case("Web_PostSelf")
                     ._Head("[post]:BREAKED!")
+                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
@@ -117,6 +119,7 @@ public class HttpRequester {
         }
         if (nStatus != 200) {
             new Log(this.getClass(), null, LOG)
+                    ._Case("Web_PostSelfNo200")
                     ._Head("[post]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     ._StatusHTTP(nStatus)
@@ -216,7 +219,9 @@ public class HttpRequester {
 
         } catch (Exception oException) {
             new Log(this.getClass(), oException)
+                    ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
+                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
@@ -230,6 +235,7 @@ public class HttpRequester {
         }
         if (nStatus != 200) {
             new Log(this.getClass())
+                    ._Case("Web_GetSelfNo200")
                     ._Head("[get]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
@@ -378,7 +384,9 @@ public class HttpRequester {
 
         } catch (Exception oException) {
             new Log(this.getClass(), oException)
+                    ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
+                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
@@ -392,6 +400,7 @@ public class HttpRequester {
         }
         if (nStatus != 200) {
             new Log(this.getClass())
+                    ._Case("Web_GetSelfNo200")
                     ._Head("[get]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
