@@ -1180,7 +1180,7 @@
     <sequenceFlow id="flow7" name="asStatusOperator=='sEnumSendEmail'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="dnepr_dmr_common">
+    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="group_UkrDoc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -1964,7 +1964,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow28" name="sAnswerEmail=='noSendEmail'" sourceRef="exclusivegateway3" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="dnepr_dmr_common">
+    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="group_Corezoid">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
