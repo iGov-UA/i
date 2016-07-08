@@ -15,7 +15,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -112,7 +111,7 @@ public class UniSender {
         if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
             mParam.add("fields[phone]", oSubscribeRequest.getPhone());
         if (!StringUtils.isBlank(oSubscribeRequest.getName()))
-            mParam.add("fields[ToName]", URLEncoder.encode(oSubscribeRequest.getName(), "UTF-8"));
+            mParam.add("fields[ToName]", oSubscribeRequest.getName());
         //optional
         if (oSubscribeRequest.getTags() != null && !oSubscribeRequest.getTags().isEmpty())
             mParam.add("tags", StringUtils.join(
@@ -313,9 +312,11 @@ public class UniSender {
         //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
+
+        // Не указывает кодировку(ломается кирилица)
         //        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         oHttpHeaders.add("Content-Type","multipart/form-data; charset=UTF-8");
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         /*
         //Let's construct attachemnts HTTP entities
