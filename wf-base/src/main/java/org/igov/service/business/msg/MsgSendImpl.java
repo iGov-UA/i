@@ -269,11 +269,10 @@ public class MsgSendImpl implements MsgSend {
 	if ( mParam != null ) {
 	    this.asParam = new LinkedList<String>();
 
-	    for (Map.Entry<String, ?> o : mParam.entrySet())//keySet()
-	    //for ( String key : mParam.keySet())
-	    {
+	    for (Map.Entry<String, ?> o : mParam.entrySet()){//keySet()
+	    //for ( String key : mParam.keySet()){
 		//this.asParam.add(key + ": " + mParam.get(key).toString());
-		this.asParam.add(o.getKey() + ": " + o.getValue()+"");
+		this.asParam.add(o.getKey() + ": " + (o.getValue()==null?"NULL":o.getValue())+"");
 	    }
 	}
 	LOG.debug("set asParam={}", this.asParam);
