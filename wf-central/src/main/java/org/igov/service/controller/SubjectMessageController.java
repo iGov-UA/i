@@ -544,7 +544,7 @@ public class SubjectMessageController {
 
         LOG.info("getFeedbackExternal started for the nID: {}", nId);
         SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
-        if (bAuthorAuthenticated(nId, sID_Token, feedback)) {
+        if (feedback != null || sID_Token.equals(feedback.getsID_Token())) {
             if (nID_Service == null) { // return one feedback by nId and sID_Token
                 feedback.setsID_Token(null);
                 LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
@@ -560,16 +560,9 @@ public class SubjectMessageController {
             LOG.info("getFeedbackExternal returned list size: {} nID_Service: {} ", feedbackList.size(), nId, nID_Service);
             return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    private boolean bAuthorAuthenticated(Long nId, String sID_Token, SubjectMessageFeedback feedback) throws CommonServiceException {
-        if (feedback == null || !sID_Token.equals(feedback.getsID_Token())) {
-            LOG.info("bAuthorAuthenticated failed for the nID: {}, sID_Token: {}", nId, sID_Token);
-            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
-        }
-        return true;
+        LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
+        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
