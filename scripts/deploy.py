@@ -15,7 +15,7 @@ parser.add_argument('-ju', '--jenkins-user', help='Jenkins username', dest='jenk
 parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', dest='jenkins-api', required=True)
 parser.add_argument('-d', '--docker', help='Build with docker', default='false')
 parser.add_argument('-do', '--dockerOnly', help='Only build with docker', default='false')
-parser.add_argument('-dt', '--dockerTmpl', help='Use config templates', default='false')
+parser.add_argument('-dtmpl', '--dockerTmpl', help='Use config templates', default='false')
 parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
 args = parser.parse_args()
 
