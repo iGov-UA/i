@@ -12,7 +12,6 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.task.bp.BpService;
-import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -35,6 +34,7 @@ import org.igov.io.Log;
 import org.igov.service.business.msg.MsgType;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.service.business.msg.IMsgSend;
 
 /**
  * @author BW
@@ -262,12 +262,16 @@ public class DebugCentralController {
                         ._Status("danger".equals(sType) ? Log.LogStatus.ERROR : "warning".equals(sType) ? Log.LogStatus.WARN : Log.LogStatus.INFO)
                         ._Head(sHead)
                         ._Body(sBody)
+                        ._SubjectID(nID_Subject)
+                        ._ServerID_Custom(nID_Server)
                         ._Param("sError", sError)
                         ._Param("smData", smData)
                         ._Param("nID_Subject", nID_Subject)
                         ._Param("nID_Server", nID_Server)
                         //._Param("sExcetion", oException.getMessage())
-                        ._Send()
+                        .save()
+                        
+                        
                     ;
 	    } catch (Exception e) {
         	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);

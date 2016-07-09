@@ -54,8 +54,13 @@ public class Log {
     private String sHead = null;
     private String sBody = null;
     private HashMap<String, Object> mParam = new HashMap();
-    private Boolean bLogOnly = false;
-    private Boolean bThrow = false;
+    private Boolean bLogOnly = null;
+    private Boolean bLogTransit = false;
+    private Boolean bLogTrace = false;
+    private String sTextException=null;
+    
+    private Long nID_Subject = null;
+    private Long nID_Server_Custom = null;
     
     public Log(){};
 
@@ -67,9 +72,63 @@ public class Log {
         _Class(o);
     };
     
+    public Log(Class oClass, Exception oException){
+        _Exception(oException);
+        _Class(oClass);
+    };
+    public Log(Class oClass, Exception oException, Logger oLog){
+        this(oClass, oException);
+        _Log(oLog);
+    };
+
+    public Log(Exception o, Logger oLog){
+        _Exception(o);
+        _Log(oLog);
+    };
+
+    public Log(Class oClass, Logger oLog){
+        _Class(oClass);
+        _Log(oLog);
+    };
     
-    static Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
+    public Log _Reset(){
+        oLog = null;
+        oException = null;
+        oStatus = null;
+        nStatusHTTP = null;
+        oClass = null;
+        sCase = null;
+        sHead = null;
+        sBody = null;
+        mParam = new HashMap();
+        bLogOnly = null;
+        bLogTransit = false;
+        bLogTrace = false;
+        sTextException="";
+        nID_Subject = null;
+        nID_Server_Custom = null;
+        return this;
+    }
+    
+    /*public Log _SaveThrow(){
+        //saveThrow();
+        _LogTransit();
+        save();
+        return this;
+    }*/
+    /*public Log _Save(){
+        save();
+        return this;
+    }*/
+
+    /*public void sendTransit(){
+        _SendTransit();
+    }*/
+    
+    public Class oClassByTrace(Exception oException){//StackTraceElement[] oStackTraceElement
         Class oClassReturn = null;
+        String sTextLineFirst="";
+        String sTextLine="";
         if(oException!=null){
             int n=0;
             for(StackTraceElement oStackTraceElement : oException.getStackTrace()){
@@ -91,79 +150,62 @@ public class Log {
             if(n>=oException.getStackTrace().length){
                 n=0;
             }
-            StackTraceElement oStackTrace = oException.getStackTrace()[n];
-            if(oStackTrace!=null){
-                oClassReturn = oStackTrace.getClass();
-                String sClass = oStackTrace.getClassName();
-                String sFileName = oStackTrace.getFileName();
-                String sMethod = oStackTrace.getMethodName();
-                //LOG.error("Error:{}. REST API Exception", exception.getMessage());
-                LOG.info("(sClass={},sMethod={},sFileName={}):{}",sClass,sMethod,sFileName, oException.getMessage());
-                //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
+            if(oException.getStackTrace().length>0){
+                StackTraceElement oStackTrace = oException.getStackTrace()[n];
+                if(oStackTrace!=null){
+                    oClassReturn = oStackTrace.getClass();
+                    int nLine = oStackTrace.getLineNumber();
+                    String sClass = oStackTrace.getClassName();
+                    String sFileName = oStackTrace.getFileName();
+                    String sMethod = oStackTrace.getMethodName();
+                    //LOG.error("Error:{}. REST API Exception", exception.getMessage());//
+                    if(n>0){
+                        StackTraceElement oStackTraceFirst = oException.getStackTrace()[0];
+                        String sClassFirst = oStackTraceFirst.getClassName();
+                        String sMethodFirst = oStackTraceFirst.getMethodName();
+                        sTextLineFirst=new StringBuilder().append(sClassFirst).append(".").append(sMethodFirst).toString();
+                    }
+                    sTextLine=new StringBuilder(sTextLineFirst).append("/").append(n).append(")").append(sClass).append(".").append(sMethod).append("(").append(nLine).append("):").toString();
+                    sTextException=new StringBuilder(sTextLine).append(oException.getMessage()).toString();
+                    LOG.info("(sClass={},sMethod={},sFileName={}):{}",sClass,sMethod,sFileName, oException.getMessage());
+                    LOG.info(sTextException);
+                    //return oClass!=null?oClass:ExceptionCommonController.class; //0//this.getClass()
+                }else{
+                    sTextException="oStackTrace=null";
+                    LOG.warn("oStackTrace!=null");
+                }
             }else{
-                LOG.warn("oStackTrace!=null");
+                sTextException="getStackTrace().length=0";
             }
         }
         return oClassReturn; //0//this.getClass()//!=null?oClass:ExceptionCommonController.class
     }
-    
-    public Log(Class oClass, Exception oException){
-        if(oClass==null){
-            oClass = oClassByTrace(oException);
-        }
-        _Class(oClass);
-        _Exception(oException);
-    };
-    public Log(Class oClass, Exception oException, Logger oLog){
-        this(oClass, oException);
-        _Log(oLog);
-    };
 
-    
-    public Log _Reset(){
-        oLog = null;
-        oException = null;
-        oStatus = null;
-        nStatusHTTP = null;
-        oClass = null;
-        sCase = null;
-        sHead = null;
-        sBody = null;
-        mParam = new HashMap();
-        bLogOnly = false;
-        bThrow = false;
-        return this;
-    }
-    
-    public Log _SendThrow(){
-        sendThrow();
-        return this;
-    }
-    public Log _Send(){
-        send();
-        return this;
-    }
-
-    /*public void sendTransit(){
-        _SendTransit();
-    }*/
-    
     
     public String sText(){
         StringBuilder osText = new StringBuilder();
-        osText.append(" | ").append(oStatus == null ? "" : oStatus.name()).append(" |");
-        osText.append(" | ").append(oClass == null ? "" : oClass.getName()).append(" |");
+        osText.append(" ").append(oStatus == null ? "" : oStatus.name()).append("");
+        osText.append(" ").append(oClass == null || sTextException != null  ? "" : "_" + oClass.getName()).append(" ");
         osText.append(" [").append(sCase == null ? "" : sCase).append("]");
         osText.append("{").append(nStatusHTTP == null ? "" : nStatusHTTP).append("}");
         //TODO: do params for standart slf4j: "Object[] os" and (param1={}, param1={})
         osText.append("(").append(mParam == null ? "" : mParam).append(")");
-        osText.append(":").append(sHead != null ? sHead + (oException!=null ? " " + oException.getMessage() : "") : oException!=null ? oException.getMessage() : "");
+        //osText.append(":").append(sHead != null ? sHead + (oException!=null ? " " + oException.getMessage() : "") : oException!=null ? oException.getMessage() : "");
+        if(sTextException!=null){
+            osText.append(":").append((sHead != null ? sHead + " " : "") + sTextException);
+        }
         if(sBody!=null){
             osText.append("\n").append(sBody);
         }
         return osText.toString();
     }
 
+    /*public String sTextException(){
+        if(oException!=null){
+            oClass = oClassByTrace(oException);
+        }
+    }*/
+    
     public Exception oException(){
         if(oException!=null){
             return new Exception(sText(),oException);
@@ -176,13 +218,30 @@ public class Log {
         return nStatusHTTP;
     }
     
-    private void sendThrow(){
-        _Transit();
-        send();
-    }
+    /*private void saveThrow(){
+        _LogTransit();
+        save();
+    }*/
     
     private void sendToMSG(MsgType msgType){
-	MsgService.setEventSystemWithParam(msgType.name(), null, null, sCase!=null ? sCase : (oClass == null ? "NULL" : oClass.getName()), sHead, sBody, CommonUtils.getStringStackTrace(oException), mParam);
+        HashMap<String, Object> m = new HashMap(mParam);
+        //m.put("sNote", sTextSend());
+        if(sTextException!=null){
+            m.put("sException", sTextException);
+        }
+        if(nStatusHTTP!=null){
+            m.put("nStatusHTTP", nStatusHTTP);
+        }
+
+	MsgService.send(oMsgType!=null ? oMsgType.name() : msgType.name()
+                , nID_Subject
+                , nID_Server_Custom
+                , sCase!=null ? sCase : (oClass == null ? "NULL" : oClass.getName())
+                , sHead
+                , sBody
+                , CommonUtils.getStringStackTrace(oException)
+                , m //mParam
+        );
     }
     
     public Log _MsgType(MsgType o){
@@ -190,17 +249,17 @@ public class Log {
          return this;
     }
     
-    public Log send(){
+    public Log save(){
         try{
             String sText = sText();
             if(oStatus==LogStatus.ERROR){
-        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.INTERNAL_ERROR);
                 oLog_Alert.error(sText);
-                if(oException!=null){
+                if(oException!=null && bLogTrace){
                     oLog_Error.error(sText,oException);
                     oLog_Debug.error(sText,oException);
                     if(oLog!=null){
-                        oLog.error(sText,oException);
+                        //oLog.error("FAIL:", oException);
+                        oLog.error(sText, oException);
                     }
                 }else{
                     oLog_Error.error(sText);
@@ -209,11 +268,15 @@ public class Log {
                         oLog.error(sText);
                     }
                 }
-            }else if(oStatus==LogStatus.WARN){
-        	//sendToMSG(MsgType.WARNING);
-        	sendToMSG(oMsgType!=null ? oMsgType : MsgType.WARNING);
+                if(bLogOnly==null){
+                    bLogOnly=false;
+                }
+                if(!bLogOnly){
+                    sendToMSG(MsgType.INTERNAL_ERROR);
+                }
+            }else if(oStatus==LogStatus.WARN && bLogTrace){
                 oLog_Alert.warn(sText);
-                if(oException!=null){
+                if(oException!=null && bLogTrace){
                     oLog_Debug.warn(sText,oException);
                     if(oLog!=null){
                         oLog.warn(sText,oException);
@@ -224,9 +287,16 @@ public class Log {
                         oLog.warn(sText);
                     }
                 }
+                if(bLogOnly==null){
+                    bLogOnly=false;
+                }
+        	//sendToMSG(MsgType.WARNING);
+                if(!bLogOnly){
+                    sendToMSG(MsgType.WARNING);
+                }
             }else if(oStatus==LogStatus.INFO){
                 oLog_Info.info(sText);
-                if(oException!=null){
+                if(oException!=null && bLogTrace){
                     oLog_Debug.info(sText,oException);
                     if(oLog!=null){
                         oLog.info(sText,oException);
@@ -237,8 +307,14 @@ public class Log {
                         oLog.info(sText);
                     }
                 }
+                if(bLogOnly==null){
+                    bLogOnly=true;
+                }
+                if(!bLogOnly){
+                    sendToMSG(MsgType.INF_MESSAGE);
+                }
             }else{
-                if(oException!=null){
+                if(oException!=null && bLogTrace){
                     oLog_Debug.debug(sText,oException);
                     if(oLog!=null){
                         oLog.debug(sText,oException);
@@ -250,12 +326,12 @@ public class Log {
                     }
                 }
             }
-            if(!bLogOnly){
+            //if(!bLogOnly){
                 //TODO: Include bTransit
                 //TODO: SEND TO ERROR-LOGGING-SYSTEM
-            }
+            //}
         }catch(Exception oException0){
-            LOG.error("",oException0);
+            LOG.error("Ошибка логирования ошибки!!!",oException0);
         }
         //_Reset();
         return this;
@@ -274,6 +350,10 @@ public class Log {
             
     final public Log _Exception(Exception o){
         oException = o;
+        Class oClassNew = oClassByTrace(oException);
+        if(oClass==null){
+            oClass = oClassNew;
+        }
         return this;
     }
 
@@ -312,10 +392,23 @@ public class Log {
         return this;
     }
     
-    private Log _Transit(){
-        bThrow = true;
+    public Log _LogTransit(){
+        bLogTransit = true;
         return this;
     }
-
+    
+    public Log _LogTrace(){
+        bLogTrace = true;
+        return this;
+    }
+    
+    public Log _SubjectID(Long n){
+        nID_Subject = n;
+        return this;
+    }
+    public Log _ServerID_Custom(Long n){
+        nID_Server_Custom = n;
+        return this;
+    }
     
 }
