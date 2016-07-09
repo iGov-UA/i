@@ -522,11 +522,12 @@ public class SubjectMessageController {
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
 
-            String responseMessage = String.format("https://%s/service/%d/feedback?nID=%d",
-                    generalConfig.getSelfHost(), nID_Service, feedback.getId());
+            String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
+                    generalConfig.getSelfHost(), nID_Service, feedback.getId(), feedback.getsID_Token());
 
             responseObject.put("sURL", responseMessage);
-            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
+//            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
+            return new ResponseEntity<>(responseObject.toString(), HttpStatus.CREATED);
 
         } catch (Exception e) {
             LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
