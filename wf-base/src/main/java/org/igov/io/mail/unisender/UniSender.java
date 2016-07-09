@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -313,9 +314,10 @@ public class UniSender {
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
 
-        // Не указывает кодировку(ломается кирилица)
-        //        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        oHttpHeaders.add("Content-Type","multipart/form-data; charset=UTF-8");
+        // unisender не всегда корректно поддерживает multipart/form_data (с) Техподдержка Unisender
+        // https://support.unisender.com/index.php?/Knowledgebase/Article/View/51/0/szhatie-zaprosov-k-api
+        oHttpHeaders.setContentType(mParamByteArray != null ? MediaType.MULTIPART_FORM_DATA 
+                : MediaType.APPLICATION_FORM_URLENCODED);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         /*

@@ -4,6 +4,8 @@ import os, argparse, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
+parser.add_argument('-ti', '--tier', help='Project tier', required=False, default='none')
+parser.add_argument('-ty', '--type', help='Project type', required=False, default='none')
 parser.add_argument('-p', '--project', help='Project name', default=argparse.SUPPRESS)
 parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', dest='skip-deploy', default='false')
 parser.add_argument('-sb', '--skip-build', help='Skip build', dest='skip-build', default='false')
@@ -15,6 +17,7 @@ parser.add_argument('-ju', '--jenkins-user', help='Jenkins username', dest='jenk
 parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', dest='jenkins-api', required=True)
 parser.add_argument('-d', '--docker', help='Build with docker', default='false')
 parser.add_argument('-do', '--dockerOnly', help='Only build with docker', default='false')
+parser.add_argument('-dtmpl', '--dockerTmpl', help='Use config templates', default='false')
 parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
 args = parser.parse_args()
 
