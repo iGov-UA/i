@@ -314,9 +314,10 @@ public class UniSender {
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
 
-        // unisender корректно поддерживает этот тип.
+        // unisender не всегда корректно поддерживает multipart/form_data (с) Техподдержка Unisender
         // https://support.unisender.com/index.php?/Knowledgebase/Article/View/51/0/szhatie-zaprosov-k-api
-        oHttpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        oHttpHeaders.setContentType(mParamByteArray != null ? MediaType.MULTIPART_FORM_DATA 
+                : MediaType.APPLICATION_FORM_URLENCODED);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         /*
