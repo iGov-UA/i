@@ -3,16 +3,12 @@
   <process id="_test_mailer_ext" name="test_mailer_ext" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="mail" name="mail + sms" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="email + sms" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="filetosend" name="file" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Мареры1" type="markers" default="{attributes: {Editable_Test: {aField_ID:[&quot;bankIdlastName&quot;], bValue : false}, Editable_Test2: {aField_ID:[&quot;bankIdmiddleName&quot;,&quot;bankIdfirstName&quot;], bValue : true}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Мареры2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnNotEmpty_1&quot;:{&quot;aField_ID&quot;:[&quot;email&quot;],&quot;sField_ID_s&quot;:&quot;client&quot;},&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info1&quot;,&quot;file1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;info2&quot;,&quot;file2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="скан паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="тест скан инн" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mail2" name="mail2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email2" name="email2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="sNameOrgan - название органа"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="sPhoneOrgan - телефон органа"></activiti:formProperty>
         <activiti:formProperty id="phone" name="телефон для смс" type="string" required="true"></activiti:formProperty>
@@ -25,7 +21,6 @@
     <userTask id="usertask1" name="рассмотрение и загрузка" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="file" name="file" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dms/dnepr_dms_print.html]" type="invisible" default="принт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -36,7 +31,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2}</activiti:expression>
+          <activiti:expression>${email},${email2}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>subject</activiti:expression>
@@ -56,14 +51,14 @@
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="оповещение сотрудника" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2}</activiti:expression>
+          <activiti:expression>${email},${email2}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )</activiti:expression>
@@ -74,7 +69,6 @@
   тестовый емейл - оповещение сотрудника
 
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -85,7 +79,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
@@ -116,7 +110,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
@@ -147,7 +141,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Ваша заявка ще не взята в роботу</activiti:expression>
@@ -159,14 +153,13 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] ne obrobleno.Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] ne obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
@@ -176,10 +169,10 @@
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="184.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
-        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="180.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="78.0" width="105.0" x="180.0" y="163.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="243.0" y="163.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="105.0" x="560.0" y="160.0"></omgdc:Bounds>
@@ -191,27 +184,23 @@
         <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="162.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="360.0" y="31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="328.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="368.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="78.0" width="105.0" x="660.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="560.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="78.0" width="191.0" x="560.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
         <omgdi:waypoint x="105.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="285.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="368.0" y="201.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="473.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="348.0" y="202.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">

@@ -1,4 +1,11 @@
 /**
+ * JSON-схема для валидации маркеров
+ *
+ * Имя маркера проверяется на соответствие заданному через регулярные выражения
+ * Перечень допустимых полей для маркера - находятся в свойстве properties
+ * Перечень обязательных полей для маркера - перечислены в массиве свойства required
+ *
+ * Более подробная документация:
  * http://epoberezkin.github.io/ajv/
  */
 angular.module('iGovMarkers')
@@ -11,38 +18,11 @@ angular.module('iGovMarkers')
             title: "Markers Schema",
             type: "object",
             definitions: {
-                aField_IDType: {
-                    type: "object",
-                    properties: {
-                        aField_ID: {
-                            type: "array",
-                            minItems: 1,
-                            items: {type: "string"},
-                            uniqueItems: true
-                        }
-                    },
-                    required: ["aField_ID"]
-                },
-                fieldsOnConditionType: {
-                    type: "object",
-                    allOf: [{"$ref": "#/definitions/aField_IDType"}],
-                    properties: {
-                        asID_Field: {
-                            type: "object"
-                        },
-                        sCondition: {
-                            type: "string"
-                        },
-                        sNote: {
-                            type: "string"
-                        }
-                    },
-                    required: ["aField_ID", "asID_Field", "sCondition"]
-                },
                 stringArray: {
                     type: "array",
+                    minItems: 1,
                     items: {type: "string"},
-                    minItems: 1
+                    uniqueItems: true
                 }
             },
             properties: {
@@ -60,30 +40,92 @@ angular.module('iGovMarkers')
                             required: ["sID_Field", "nSymbols", "sValueNew", "sID_Element_sValue"],
                             additionalProperties: false
                         },
-                        "^ShowFieldsOnNotEmpty_": {
-                            allOf: [{"$ref": "#/definitions/aField_IDType"}],
+                        "^ReplaceTextLastSymbols_": {
+                            type: "object",
                             properties: {
-                                sField_ID_s: {type: "string"}
+                                sID_Field: {type: "string"},
+                                nSymbols: {type: "integer"},
+                                sValueNew: {type: "string"},
+                                sID_Element_sValue: {type: "string"}
                             },
-                            required: ["aField_ID", "sField_ID_s"]
-                        },
-                        "^ShowFieldsOnCondition_": {
-                            "$ref": "#/definitions/fieldsOnConditionType"
+                            required: ["sID_Field", "nSymbols", "sValueNew", "sID_Element_sValue"],
+                            additionalProperties: false
                         },
                         "^RequiredFieldsOnCondition_": {
-                            "$ref": "#/definitions/fieldsOnConditionType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
+                                asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
+                                sCondition: {type: "string"},
+                                sNote: {type: "string"}
+                            },
+                            required: ["aField_ID", "asID_Field", "sCondition"],
+                            additionalProperties: false
                         },
                         "^WritableFieldsOnCondition_": {
-                            "$ref": "#/definitions/fieldsOnConditionType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
+                                asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
+                                sCondition: {type: "string"},
+                                sNote: {type: "string"}
+                            },
+                            required: ["aField_ID", "asID_Field", "sCondition"],
+                            additionalProperties: false
                         },
                         "^ValuesFieldsOnCondition_": {
-                            allOf: [
-                                {"$ref": "#/definitions/fieldsOnConditionType"}
-                            ],
+                            type: "object",
                             properties: {
-                                asID_Field_sValue: {"$ref": "#/definitions/stringArray"}
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
+                                asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
+                                sCondition: {type: "string"},
+                                asID_Field_sValue: {"$ref": "#/definitions/stringArray"},
+                                sNote: {type: "string"}
                             },
-                            required: ["aField_ID", "asID_Field", "sCondition", "asID_Field_sValue"]
+                            required: ["aField_ID", "asID_Field", "sCondition", "asID_Field_sValue"],
+                            additionalProperties: false
+                        },
+                        "^ShowElementsOnTrue_": {
+                            type: "object",
+                            properties: {
+                                aElement_ID: {"$ref": "#/definitions/stringArray"},
+                                asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
+                                sCondition: {type: "string"},
+                                sNote: {type: "string"}
+                            },
+                            required: ["aElement_ID", "asID_Field", "sCondition"],
+                            additionalProperties: false
+                        },
+                        "^ShowFieldsOnNotEmpty_": {
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
+                                sField_ID_s: {type: "string"}
+                            },
+                            required: ["aField_ID", "sField_ID_s"],
+                            additionalProperties: false
+                        },
+                        "^ShowFieldsOnCondition_": {
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
+                                asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
+                                sCondition: {type: "string"},
+                                sNote: {type: "string"}
+                            },
+                            required: ["aField_ID", "asID_Field", "sCondition"],
+                            additionalProperties: false
+                        },
+                        "^SplitTextHalf_": {
+                            type: "object",
+                            properties: {
+                                sID_Field: {type: "string"},
+                                sSpliter: {type: "string"},
+                                sID_Element_sValue1: {type: "string"},
+                                sID_Element_sValue2: {type: "string"}
+                            },
+                            required: ["sID_Field", "sSpliter", "sID_Element_sValue1", "sID_Element_sValue2"],
+                            additionalProperties: false
                         }
                     },
                     additionalProperties: false
@@ -93,11 +135,12 @@ angular.module('iGovMarkers')
                     patternProperties: {
                         "^Editable_": {
                             type: "object",
-                            allOf: [{"$ref": "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 bValue: {type: "boolean"}
                             },
-                            required: ["bValue"]
+                            required: ["aField_ID", "bValue"],
+                            additionalProperties: false
                         }
                     },
                     additionalProperties: false
@@ -106,119 +149,169 @@ angular.module('iGovMarkers')
                     type: "object",
                     patternProperties: {
                         "PhoneUA": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "Mail": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "AutoVIN": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "TextUA": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "TextRU": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "DateFormat": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 sFormat: {type: "string"}
                             },
-                            required: ["aField_ID", 'sFormat']
+                            required: ["aField_ID", 'sFormat'],
+                            additionalProperties: false
                         },
                         "DocumentDate": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 sFormat: {type: "string"}
                             },
-                            required: ["aField_ID", 'sFormat']
+                            required: ["aField_ID", 'sFormat'],
+                            additionalProperties: false
                         },
-                        "DateElapsed": {
+                        "^DateElapsed": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 bFuture: {type: "boolean"},
                                 bLess: {type: "boolean"},
                                 nDays: {type: "integer"},
                                 nMonths: {type: "integer"},
                                 nYears: {type: "integer"},
-                                sFormat: {type: "string"}
-                            },
-                            required: ["aField_ID", 'sFormat']
-                        },
-                        "^DateElapsed_": {
-                            type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
-                            properties: {
-                                inheritedValidator: {type: "string"},
                                 sFormat: {type: "string"},
-                                bFuture: {type: "boolean"},
+                                inheritedValidator: {type: "string"},
                                 sMessage: {type: "string"}
                             },
-                            required: ["aField_ID", 'sFormat']
+                            required: ["aField_ID", 'sFormat'],
+                            additionalProperties: false
                         },
                         "CodeKVED": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "CodeEDRPOU": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "CodeMFO": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "NumberBetween": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 nMin: {type: "integer"},
                                 nMax: {type: "integer"},
                                 sMessage: {type: "string"}
                             },
-                            required: ["aField_ID", 'nMin', "nMax"]
+                            required: ["aField_ID", 'nMin', "nMax"],
+                            additionalProperties: false
                         },
                         "NumberFractionalBetween": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 nMin: {type: "number"},
                                 nMax: {type: "number"},
                                 sMessage: {type: "string"}
                             },
-                            required: ["aField_ID", 'nMin', "nMax"]
+                            required: ["aField_ID", 'nMin', "nMax"],
+                            additionalProperties: false
                         },
                         "Numbers_Accounts": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 sMessage: {type: "string"}
-                            }
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "^CustomFormat_": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 sFormat: {type: "string"},
                                 sMessage: {type: "string"}
                             },
-                            required: ["aField_ID", 'sFormat']
+                            required: ["aField_ID", 'sFormat'],
+                            additionalProperties: false
                         },
                         "FileSign": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         },
                         "^FileExtensions_": {
                             type: "object",
-                            allOf: [{$ref: "#/definitions/aField_IDType"}],
                             properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"},
                                 saExtension: {type: "string"},
                                 sMessage: {type: "string"}
                             },
-                            required: ["aField_ID", 'saExtension']
+                            required: ["aField_ID", 'saExtension'],
+                            additionalProperties: false
                         },
                         "FieldNotEmptyAndNonZero": {
-                            "$ref": "#/definitions/aField_IDType"
+                            type: "object",
+                            properties: {
+                                aField_ID: {"$ref": "#/definitions/stringArray"}
+                            },
+                            required: ["aField_ID"],
+                            additionalProperties: false
                         }
                     },
                     additionalProperties: false
