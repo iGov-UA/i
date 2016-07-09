@@ -4,6 +4,8 @@ import os, argparse, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
+parser.add_argument('-ti', '--tier', help='Project tier', required=True)
+parser.add_argument('-ty', '--type', help='Project type', required=True)
 parser.add_argument('-p', '--project', help='Project name', default=argparse.SUPPRESS)
 parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', dest='skip-deploy', default='false')
 parser.add_argument('-sb', '--skip-build', help='Skip build', dest='skip-build', default='false')
