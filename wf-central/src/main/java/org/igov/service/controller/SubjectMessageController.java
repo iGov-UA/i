@@ -515,13 +515,17 @@ public class SubjectMessageController {
 
         LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
         JSONObject responseObject = new JSONObject();
-        String sUrl= ""; // this "magic number" String described here: https://github.com/e-government-ua/i/issues/1290
-        responseObject.put("sURL", sUrl);
-
         try {
             SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
             subjectMessageFeedbackDao.saveOrUpdate(feedback);
-            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {} ", sID_Source, nID_Service, feedback.getId());
+
+            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
+                    sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
+
+            String responseMessage = String.format("https://%s/service/%d/feedback?nID=%d",
+                    generalConfig.getSelfHost(), nID_Service, feedback.getId());
+
+            responseObject.put("sURL", responseMessage);
             return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
 
         } catch (Exception e) {

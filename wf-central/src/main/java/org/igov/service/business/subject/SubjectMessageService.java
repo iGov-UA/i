@@ -5,6 +5,8 @@
  */
 package org.igov.service.business.subject;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessage;
@@ -233,6 +235,7 @@ public class SubjectMessageService {
         messageFeedback.setsBody(sBody);
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
+        messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(15));
         return messageFeedback;
     }
 
