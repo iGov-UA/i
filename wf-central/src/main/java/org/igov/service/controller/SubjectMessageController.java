@@ -542,22 +542,23 @@ public class SubjectMessageController {
             @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service)
             throws CommonServiceException {
 
-        LOG.info("getFeedbackExternal started for the nID: {}", nId);
+        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
         SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
         if (feedback != null || sID_Token.equals(feedback.getsID_Token())) {
+            LOG.info("authentication passed");
             if (nID_Service == null) { // return one feedback by nId and sID_Token
                 feedback.setsID_Token(null);
                 LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
                 return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
             } else
-                LOG.info("getFeedbackExternal started for the nID: {}, nID_Service: {} ", nId, nID_Service);
+                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nId, nID_Service);
             List<SubjectMessageFeedback> feedbackList =
                     subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
 
             for (SubjectMessageFeedback messageFeedback : feedbackList) {
                 messageFeedback.setsID_Token(null);
             }
-            LOG.info("getFeedbackExternal returned list size: {} nID_Service: {} ", feedbackList.size(), nId, nID_Service);
+            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nId, nID_Service);
             return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
         }
         LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
