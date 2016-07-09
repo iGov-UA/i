@@ -522,7 +522,7 @@ public class SubjectMessageController {
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
 
-            String responseMessage = String.format("https://%s/service/%d/feedback?nID=%d",
+            String responseMessage = String.format("%s/service/%d/feedback?nID=%d",
                     generalConfig.getSelfHost(), nID_Service, feedback.getId());
 
             responseObject.put("sURL", responseMessage);
