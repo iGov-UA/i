@@ -526,7 +526,8 @@ public class SubjectMessageController {
                     generalConfig.getSelfHost(), nID_Service, feedback.getId());
 
             responseObject.put("sURL", responseMessage);
-            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
+//            return JsonRestUtils.toJsonResponse(HttpStatus.CREATED, responseObject.toString());
+            return new ResponseEntity<>(responseObject.toString(), HttpStatus.CREATED);
 
         } catch (Exception e) {
             LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
