@@ -235,7 +235,7 @@ public class SubjectMessageService {
         messageFeedback.setsBody(sBody);
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
-        messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(15));
+        messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
         return messageFeedback;
     }
 
