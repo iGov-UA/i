@@ -551,7 +551,7 @@ public class SubjectMessageController {
                 LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
                 return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
             } else
-                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nId, nID_Service);
+                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
             List<SubjectMessageFeedback> feedbackList =
                     subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
 
