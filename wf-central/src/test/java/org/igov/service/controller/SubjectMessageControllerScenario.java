@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -370,35 +371,79 @@ public class SubjectMessageControllerScenario {
 
     @Test
     public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
-        SubjectMessageFeedback feedbackToReturn = new SubjectMessageFeedback();
-        feedbackToReturn.setId(1L);
-        feedbackToReturn.setsID_Source("-1");
-        feedbackToReturn.setsAuthorFIO("FIO");
-        feedbackToReturn.setsMail("sMail");
-        feedbackToReturn.setsHead("sHead");
-        feedbackToReturn.setsBody("sBody");
-        feedbackToReturn.setnID_Rate(-1L);
-        feedbackToReturn.setnID_Service(-1L);
-        feedbackToReturn.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+        SubjectMessageFeedback feedback = new SubjectMessageFeedback();
+        feedback.setId(1L);
+        feedback.setsID_Source("-1");
+        feedback.setsAuthorFIO("FIO");
+        feedback.setsMail("sMail");
+        feedback.setsHead("sHead");
+        feedback.setsBody("sBody");
+        feedback.setnID_Rate(-1L);
+        feedback.setnID_Service(-1L);
+        feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
 
-        JSONObject responseObject = new JSONObject();
-        responseObject.put("sID_Source", feedbackToReturn.getsID_Source());
-        responseObject.put("sAuthorFIO", feedbackToReturn.getsAuthorFIO());
-        responseObject.put("sMail", feedbackToReturn.getsMail());
-        responseObject.put("sHead", feedbackToReturn.getsHead());
-        responseObject.put("sBody", feedbackToReturn.getsBody());
-        responseObject.put("nID_Rate", feedbackToReturn.getnID_Rate());
-        responseObject.put("nID_Service", feedbackToReturn.getnID_Service());
-        responseObject.put("nID", feedbackToReturn.getId());
+        SubjectMessageFeedback feedbackWithNullToken = new SubjectMessageFeedback();
+        feedbackWithNullToken.setId(1L);
+        feedbackWithNullToken.setsID_Source("-1");
+        feedbackWithNullToken.setsAuthorFIO("FIO");
+        feedbackWithNullToken.setsMail("sMail");
+        feedbackWithNullToken.setsHead("sHead");
+        feedbackWithNullToken.setsBody("sBody");
+        feedbackWithNullToken.setnID_Rate(-1L);
+        feedbackWithNullToken.setnID_Service(-1L);
 
-        when(subjectMessageService.getSubjectMessageFeedbackById(feedbackToReturn.getId())).thenReturn(feedbackToReturn);
+        String response = JsonRestUtils.toJson(feedbackWithNullToken);
+
+        when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
 
         mockMvc.perform(get("/subject/message/getFeedbackExternal").
                 contentType(MediaType.APPLICATION_JSON)
-                .param("nID", feedbackToReturn.getId().toString())
-                .param("sID_Token", feedbackToReturn.getsID_Token()))
+                .param("nID", feedback.getId().toString())
+                .param("sID_Token", feedback.getsID_Token()))
 
                 .andExpect(status().isOk())
-                .andExpect(content().json(responseObject.toString()));
+                .andExpect(content().json(response));
+    }
+
+    @Test
+    public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
+        SubjectMessageFeedback feedback = new SubjectMessageFeedback();
+        feedback.setId(1L);
+        feedback.setsID_Source("-1");
+        feedback.setsAuthorFIO("FIO");
+        feedback.setsMail("sMail");
+        feedback.setsHead("sHead");
+        feedback.setsBody("sBody");
+        feedback.setnID_Rate(-1L);
+        feedback.setnID_Service(-1L);
+        feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+
+        SubjectMessageFeedback feedbackWithNullToken = new SubjectMessageFeedback();
+        feedbackWithNullToken.setId(1L);
+        feedbackWithNullToken.setsID_Source("-1");
+        feedbackWithNullToken.setsAuthorFIO("FIO");
+        feedbackWithNullToken.setsMail("sMail");
+        feedbackWithNullToken.setsHead("sHead");
+        feedbackWithNullToken.setsBody("sBody");
+        feedbackWithNullToken.setnID_Rate(-1L);
+        feedbackWithNullToken.setnID_Service(-1L);
+
+        List<SubjectMessageFeedback> feedbackList = new ArrayList<>();
+        feedbackList.add(feedbackWithNullToken);
+        feedbackList.add(feedbackWithNullToken);
+
+        String response = JsonRestUtils.toJson(feedbackList);
+
+        when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+        when(subjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service())).thenReturn(feedbackList);
+
+        mockMvc.perform(get("/subject/message/getFeedbackExternal").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("nID", feedback.getId().toString())
+                .param("sID_Token", feedback.getsID_Token())
+                .param("nID_Service", feedback.getnID_Service().toString()))
+
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
     }
 }
