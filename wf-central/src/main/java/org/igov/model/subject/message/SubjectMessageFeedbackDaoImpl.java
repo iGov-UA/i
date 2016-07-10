@@ -16,7 +16,7 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
 
     @Override
     public void setMessage(SubjectMessageFeedback subjectMessageFeedback) {
-        saveOrUpdate(subjectMessageFeedback);
+        getSession().save(subjectMessageFeedback);
     }
 
     @Override

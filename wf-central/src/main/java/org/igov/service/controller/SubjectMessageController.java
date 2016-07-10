@@ -517,7 +517,7 @@ public class SubjectMessageController {
         JSONObject responseObject = new JSONObject();
         try {
             SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
-            subjectMessageFeedbackDao.saveOrUpdate(feedback);
+            subjectMessageFeedbackDao.setMessage(feedback);
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
