@@ -4,6 +4,8 @@ import os, argparse, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
+parser.add_argument('-ti', '--tier', help='Project tier', required=False, default='none')
+parser.add_argument('-ty', '--type', help='Project type', required=False, default='none')
 parser.add_argument('-p', '--project', help='Project name', default=argparse.SUPPRESS)
 parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', dest='skip-deploy', default='false')
 parser.add_argument('-sb', '--skip-build', help='Skip build', dest='skip-build', default='false')
@@ -30,8 +32,8 @@ if os.path.exists("iSystem"):
 
 #subprocess.call("ssh-agent bash -c 'ssh-add /sybase/.secret/id_rsa_iSystem; git clone git@github.com:e-government-ua/iSystem.git'", shell=True)
 subprocess.call("git clone git@github.com:e-government-ua/iSystem.git", shell=True)
-if 'project' in args:
-    subprocess.call(["rsync","-rt","iSystem/config/" + args.version + "/" + args.project + "/", "./" + args.project + "/"])
+#if 'project' in args:
+#    subprocess.call(["rsync","-rt","iSystem/config/" + args.version + "/" + args.project + "/", "./" + args.project + "/"])
 
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
