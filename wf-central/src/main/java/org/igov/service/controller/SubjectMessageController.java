@@ -544,7 +544,7 @@ public class SubjectMessageController {
 
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
         SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
-        if (feedback != null || sID_Token.equals(feedback.getsID_Token())) {
+        if (feedback != null && sID_Token.equals(feedback.getsID_Token())) {
             LOG.info("authentication passed");
             if (nID_Service == null) { // return one feedback by nId and sID_Token
                 feedback.setsID_Token(null);
