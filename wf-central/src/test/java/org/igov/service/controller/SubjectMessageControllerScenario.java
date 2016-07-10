@@ -346,7 +346,7 @@ public class SubjectMessageControllerScenario {
                 generalConfig.getSelfHost(), feedback.getnID_Service(), feedback.getId(), feedback.getsID_Token());
         responseObject.put("sURL", responseMessage);
 
-        when(subjectMessageService.createSubjectMessageFeedback(feedback.getsID_Source(),
+        when(subjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(),
                 feedback.getsAuthorFIO(),
                 feedback.getsMail(),
                 feedback.getsHead(),
@@ -365,6 +365,40 @@ public class SubjectMessageControllerScenario {
                 .param("nID_Rate", feedback.getnID_Rate().toString())
                 .param("nID_Service", feedback.getnID_Service().toString()))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(responseObject.toString()));
+    }
+
+    @Test
+    public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
+        SubjectMessageFeedback feedbackToReturn = new SubjectMessageFeedback();
+        feedbackToReturn.setId(1L);
+        feedbackToReturn.setsID_Source("-1");
+        feedbackToReturn.setsAuthorFIO("FIO");
+        feedbackToReturn.setsMail("sMail");
+        feedbackToReturn.setsHead("sHead");
+        feedbackToReturn.setsBody("sBody");
+        feedbackToReturn.setnID_Rate(-1L);
+        feedbackToReturn.setnID_Service(-1L);
+        feedbackToReturn.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+
+        JSONObject responseObject = new JSONObject();
+        responseObject.put("sID_Source", feedbackToReturn.getsID_Source());
+        responseObject.put("sAuthorFIO", feedbackToReturn.getsAuthorFIO());
+        responseObject.put("sMail", feedbackToReturn.getsMail());
+        responseObject.put("sHead", feedbackToReturn.getsHead());
+        responseObject.put("sBody", feedbackToReturn.getsBody());
+        responseObject.put("nID_Rate", feedbackToReturn.getnID_Rate());
+        responseObject.put("nID_Service", feedbackToReturn.getnID_Service());
+        responseObject.put("nID", feedbackToReturn.getId());
+
+        when(subjectMessageService.getSubjectMessageFeedbackById(feedbackToReturn.getId())).thenReturn(feedbackToReturn);
+
+        mockMvc.perform(get("/subject/message/getFeedbackExternal").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("nID", feedbackToReturn.getId().toString())
+                .param("sID_Token", feedbackToReturn.getsID_Token()))
+
+                .andExpect(status().isOk())
                 .andExpect(content().json(responseObject.toString()));
     }
 }

@@ -6,11 +6,11 @@
 package org.igov.service.business.subject;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.igov.io.GeneralConfig;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.model.subject.message.SubjectMessageType;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import org.igov.service.controller.ExceptionCommonController;
+
 import org.igov.service.exception.CommonServiceException;
 
 /**
@@ -40,6 +40,8 @@ public class SubjectMessageService {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
+    @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
@@ -224,8 +226,8 @@ public class SubjectMessageService {
         return message;
     }
 
-    public SubjectMessageFeedback createSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
-                                                               String sHead, String sBody, Long nID_Rate, Long nID_Service) {
+    public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
+                                                            String sHead, String sBody, Long nID_Rate, Long nID_Service) {
         SubjectMessageFeedback messageFeedback = new SubjectMessageFeedback();
 
         messageFeedback.setsID_Source(sID_Source);
@@ -236,7 +238,15 @@ public class SubjectMessageService {
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
         messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
-        return messageFeedback;
+        return subjectMessageFeedbackDao.setMessage(messageFeedback);
+    }
+
+    public SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId) {
+        return subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
+    }
+
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service){
+        return subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_service);
     }
 
     //при параметре nID_Subject == null
