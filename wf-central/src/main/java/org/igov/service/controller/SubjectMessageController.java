@@ -558,7 +558,7 @@ public class SubjectMessageController {
             for (SubjectMessageFeedback messageFeedback : feedbackList) {
                 messageFeedback.setsID_Token(null);
             }
-            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nId, nID_Service);
+            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nID_Service);
             return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
         }
         LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
