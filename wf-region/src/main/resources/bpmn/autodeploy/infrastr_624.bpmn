@@ -344,7 +344,6 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirthNotUkr" name="Місце народження, не для України" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
@@ -444,8 +443,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 										</ul>
 									</p>
 									<p>
-										Реквізити для сплати<br>
-										${sPortRekv}
+										Реквізити для сплати:<br>
+										${sPortRekv}<br>
 										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
 										або Ви можете сплатити онлайн<br>
 										[paymentButton_LiqPay]
@@ -475,11 +474,11 @@ execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString
     <sequenceFlow id="flow42" sourceRef="scripttask4" targetRef="scripttask5"></sequenceFlow>
     <scriptTask id="scripttask5" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sDate_of_print')
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
+var day1=src.substr(0,2)
+var month1=src.substr(3,2)
+var year1=src.substr(6,2)
+var hour='09'
+var minutes='00'
 var seconds='00'
 var delta=10
 if (day&lt;'21')
