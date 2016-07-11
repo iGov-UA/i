@@ -377,10 +377,10 @@ public class MsgSendImpl implements IMsgSend {
 	oMFilter.setLevelFilter(oMsgLevel.name());
 	oMFilter.setMsgId(oMFilter.getMsgId());
 
-	LOG.debug("filter:\n{}", oMFilter);
+	LOG.debug("oMFilter:\n{}", oMFilter);
 
-	//return Msg.getMsg(filter);
-        return null;
+	return Msg.getMsg(oMFilter);
+        //return null;
     }
 
 }
