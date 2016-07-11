@@ -293,7 +293,7 @@
 
     $scope.getTaskTitle = function (task) {
       return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
-        + $scope.getProcessName(task) + ' | ' + task.name;
+        + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
     };
 
     $scope.getTaskDateTimeTitle = function (task) {

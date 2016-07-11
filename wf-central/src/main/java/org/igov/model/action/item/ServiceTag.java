@@ -7,6 +7,7 @@ import org.igov.model.core.Entity;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import static org.igov.io.fs.FileSystemData.getSmartPathFileContent_ActionItem;
 
 /**
  * Tag of Service
@@ -84,9 +85,10 @@ public class ServiceTag extends AbstractEntity {
     }
 
     public String getsNote() {
-        return sNote;
+        //return sNote;
+        return getSmartPathFileContent_ActionItem(sNote, "Tag", getId());
     }
-
+    
     public void setsNote(String sNote) {
         this.sNote = sNote;
     }

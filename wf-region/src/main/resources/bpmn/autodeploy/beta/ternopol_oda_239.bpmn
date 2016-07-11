@@ -9,7 +9,7 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_reg" name="Ваша адреса реєстрації;індекс, місто, вулиця, номер будинку та номер квартири" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого подається звернення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого подається звернення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="До кого саме Ви подаєте звернення" type="enum"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме Ви подаєте звернення11" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sGolova" name="ПІБ голови ОДА" type="label" default=" "></activiti:formProperty>
@@ -246,7 +246,7 @@
           <activiti:value id="accept" name="Взяти до розгляду"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо звернення відхилене, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо звернення відхилено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sGolova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
@@ -290,7 +290,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			&lt;p&gt;Ваше звернення до ${sPosadaVid} відхилене.
+			&lt;p&gt;Ваше звернення до ${sPosadaVid} було відхилено.
 			&lt;/p&gt;
 			&lt;p&gt;
 				Причина у наступному:&lt;br&gt;
