@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.igov.model.action.item.Category;
 import org.igov.model.action.item.Service;
 import org.igov.model.action.item.ServiceData;
@@ -9,6 +10,7 @@ import org.igov.service.business.action.item.ServiceTagTreeNodeVO;
 import org.igov.service.business.core.TableData;
 import org.igov.service.business.core.TableDataService;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.db.DbManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ActionItemControllerScenario {
     public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
     @Autowired
@@ -48,6 +49,9 @@ public class ActionItemControllerScenario {
 
     @Autowired
     private PlaceDao placeDao;
+
+    @Autowired
+    private DbManager dbManager;
 
     @Before
     public void setUp() {
@@ -356,9 +360,9 @@ public class ActionItemControllerScenario {
     }
 
 
-    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
+        dbManager.recreateDb();
         String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
                 param("nID_Category", "1")).
                 andExpect(status().isOk()).
@@ -370,9 +374,9 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(tableDataList.length > 0);
     }
 
-    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTagService() throws Exception {
+        dbManager.recreateDb();
         String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
                 param("nID_Category", "1").
                 param("bRoot", "true").

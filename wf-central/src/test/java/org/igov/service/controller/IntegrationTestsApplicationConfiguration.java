@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Import(ApplicationConfiguration.class)
 @ComponentScan(basePackages = { "org.igov.model",
                                 "org.igov.io"}) //.place
-@ImportResource("classpath:mock-beans.xml")
+@ImportResource({"classpath:mock-beans.xml", "classpath:liquibase-test-context.xml"})
 public class IntegrationTestsApplicationConfiguration {
 
 }
