@@ -68,7 +68,7 @@
           <activiti:value id="sChern" name="Чернігівська обл"></activiti:value>
           <activiti:value id="sChernT" name="Чернігів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAreabirthNotUkr" name="Місце народження; Країна, область, район і населений пункт" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirthNotUkr" name="Країна народження українською" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirthEng" name="Країна народження англійською" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
@@ -167,7 +167,7 @@ execution.setVariable('sSex', sex1)
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
 if (place=='sNull'){
-    place1=execution.getVariable('sAreabirthEng')}
+    place1=execution.getVariable('sAreabirthNotUkr')+" / "+execution.getVariable('sAreabirthEng')}
 else {
 if (place=='sSimf'){
 place1='CІМФЕРОПІЛЬ / SIMFEROPOL'}
@@ -488,17 +488,17 @@ if (day&lt;'21')
     }
 else
     {
-        if ((month!='01')&amp;&amp;(month!='03'))
+        if ((month!='02'))
           {
-              month=month-1
-              day=30
+              month=month+1
+              day=day-(-delta)-30
           }
         else
           {
-            if (month=='03')
+            if (month=='02')
             {
-              month='02'
-              day='28'
+              month='03'
+              day=day-(-delta)-30
             }            
           }
      }
