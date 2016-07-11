@@ -474,34 +474,34 @@ execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString
     <sequenceFlow id="flow42" sourceRef="scripttask4" targetRef="scripttask5"></sequenceFlow>
     <scriptTask id="scripttask5" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sDate_of_print')
-var day1=src.substr(0,2)
-var month1=src.substr(3,2)
-var year1=src.substr(6,2)
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,2)
 var hour='09'
 var minutes='00'
 var seconds='00'
 var delta=10
-if (day1&lt;'21')
+if (day&lt;'21')
     {
-        day1=day1-(-delta)
+        day=day-(-delta)
     }
 else
     {
         if ((month!='02'))
           {
               month=month+1
-              day1=day1-(-delta)-30
+              day=day-(-delta)-30
           }
         else
           {
             if (month=='02')
             {
               month='03'
-              day1=day1-(-delta)-28
+              day=day-(-delta)-28
             }            
           }
      }
-var timer=year+'-'+month+'-'+day1+'T'+hour+':'+minutes+':'+seconds
+var timer=year+'-'+month+'-'+day'+'T'+hour+':'+minutes+':'+seconds
 execution.setVariable('sDate_of_print', timer)</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="scripttask5" targetRef="timerintermediatecatchevent1"></sequenceFlow>
