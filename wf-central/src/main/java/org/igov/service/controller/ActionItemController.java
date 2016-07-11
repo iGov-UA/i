@@ -968,7 +968,7 @@ public class ActionItemController {
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
             @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "ID тэга", required = true)
             @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag, @ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true)
-            @RequestParam(value = "bRoot ", required = true, defaultValue = "false") final boolean bRoot
+            @RequestParam(value = "bRoot", required = true) final boolean bRoot
     ) {
 
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
