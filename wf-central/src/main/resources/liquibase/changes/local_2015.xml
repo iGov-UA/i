@@ -1314,17 +1314,21 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="issue-1290-sID_Token" author="IgorMaksymov">
-        <addColumn tableName="SubjectMessageFeedback">
-            <column name="sID_Token" type="varchar" defaultValue="null" />
-        </addColumn>
-    </changeSet>
+    <!--<changeSet id="issue-1290-sID_Token" author="IgorMaksymov">-->
+        <!--<addColumn tableName="SubjectMessageFeedback">-->
+            <!--<column name="sID_Token" type="varchar" defaultValue="null" />-->
+        <!--</addColumn>-->
+    <!--</changeSet>-->
 
     <changeSet id="issue-1290-sID_Token-notNull" author="IgorMaksymov">
         <addNotNullConstraint columnDataType="varchar"
                               columnName="sID_Token"
                               defaultNullValue="empty"
                               tableName="SubjectMessageFeedback" />
+    </changeSet>
+
+    <changeSet id="issue-1290-autoIncrement" author="IgorMaksymov">
+        <addAutoIncrement tableName="SubjectMessageFeedback" columnName="nID" columnDataType="bigint"/>
     </changeSet>
 
 </databaseChangeLog>

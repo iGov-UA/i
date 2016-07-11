@@ -18,7 +18,6 @@ import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.action.ActionEventService;
@@ -64,8 +63,6 @@ public class SubjectMessageController {
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
-    @Autowired
-    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private GeneralConfig generalConfig;
     @Autowired
@@ -516,8 +513,7 @@ public class SubjectMessageController {
         LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
         JSONObject responseObject = new JSONObject();
         try {
-            SubjectMessageFeedback feedback = oSubjectMessageService.createSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
-            subjectMessageFeedbackDao.saveOrUpdate(feedback);
+            SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
@@ -543,7 +539,7 @@ public class SubjectMessageController {
             throws CommonServiceException {
 
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
-        SubjectMessageFeedback feedback = subjectMessageFeedbackDao.getFeedbackExternalById(nId);
+        SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
         if (feedback != null && sID_Token.equals(feedback.getsID_Token())) {
             LOG.info("authentication passed");
             if (nID_Service == null) { // return one feedback by nId and sID_Token
@@ -553,7 +549,7 @@ public class SubjectMessageController {
             } else
                 LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
             List<SubjectMessageFeedback> feedbackList =
-                    subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
+                    oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
 
             for (SubjectMessageFeedback messageFeedback : feedbackList) {
                 messageFeedback.setsID_Token(null);

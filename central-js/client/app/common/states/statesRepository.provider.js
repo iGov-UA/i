@@ -104,11 +104,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           || matches[1] === 'alpha'
           || matches[1] === 'beta'
           || matches[1] === 'omega') {
-          if(matches[2] === 'old') {
-            this.mode = matches[4].split('.')[1];
-          }else{
-            this.mode = matches[3];
-          }
+          this.mode = matches[3];
         } else if ( (matches[1] === 'alpha' && matches[2] === 'old')
           || (matches[1] === 'beta' && matches[2] === 'old')) {
           this.mode = matches[4];

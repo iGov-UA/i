@@ -1,18 +1,26 @@
 package org.igov.service.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.activiti.engine.impl.util.json.JSONObject;
+import org.apache.commons.lang.RandomStringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,8 +36,10 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebAppConfiguration
@@ -43,7 +53,6 @@ public class SubjectMessageControllerScenario {
     
     @Autowired
     private WebApplicationContext webApplicationContext;
-
     private MockMvc mockMvc;
     @Autowired
     SubjectContactDao subjectContactDao;
@@ -51,6 +60,11 @@ public class SubjectMessageControllerScenario {
     SubjectHumanDao subjectHumanDao;
     @Autowired
     SubjectDao subjectDao;
+    @Autowired
+    GeneralConfig generalConfig;
+
+    @Autowired
+    private SubjectMessageService subjectMessageService;
 
     @Before
     public void setUp() {
@@ -314,5 +328,122 @@ public class SubjectMessageControllerScenario {
               andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
        
     }
-   
+
+    @Test
+    public void shouldAddFeedbackToServiceAndReturnLink() throws Exception {
+        SubjectMessageFeedback feedback = new SubjectMessageFeedback();
+        feedback.setId(1L);
+        feedback.setsID_Source("-1");
+        feedback.setsAuthorFIO("FIO");
+        feedback.setsMail("sMail");
+        feedback.setsHead("sHead");
+        feedback.setsBody("sBody");
+        feedback.setnID_Rate(-1L);
+        feedback.setnID_Service(-1L);
+        feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+
+        JSONObject responseObject = new JSONObject();
+        String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
+                generalConfig.getSelfHost(), feedback.getnID_Service(), feedback.getId(), feedback.getsID_Token());
+        responseObject.put("sURL", responseMessage);
+
+        when(subjectMessageService.setSubjectMessageFeedback(feedback.getsID_Source(),
+                feedback.getsAuthorFIO(),
+                feedback.getsMail(),
+                feedback.getsHead(),
+                feedback.getsBody(),
+                feedback.getnID_Rate(),
+                feedback.getnID_Service()))
+                .thenReturn(feedback);
+
+        mockMvc.perform(post("/subject/message/setFeedbackExternal").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("sID_Source", feedback.getsID_Source())
+                .param("sAuthorFIO", feedback.getsAuthorFIO())
+                .param("sMail", feedback.getsMail())
+                .param("sHead", feedback.getsHead())
+                .param("sBody", feedback.getsBody())
+                .param("nID_Rate", feedback.getnID_Rate().toString())
+                .param("nID_Service", feedback.getnID_Service().toString()))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(responseObject.toString()));
+    }
+
+    @Test
+    public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
+        SubjectMessageFeedback feedback = new SubjectMessageFeedback();
+        feedback.setId(1L);
+        feedback.setsID_Source("-1");
+        feedback.setsAuthorFIO("FIO");
+        feedback.setsMail("sMail");
+        feedback.setsHead("sHead");
+        feedback.setsBody("sBody");
+        feedback.setnID_Rate(-1L);
+        feedback.setnID_Service(-1L);
+        feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+
+        SubjectMessageFeedback feedbackWithNullToken = new SubjectMessageFeedback();
+        feedbackWithNullToken.setId(1L);
+        feedbackWithNullToken.setsID_Source("-1");
+        feedbackWithNullToken.setsAuthorFIO("FIO");
+        feedbackWithNullToken.setsMail("sMail");
+        feedbackWithNullToken.setsHead("sHead");
+        feedbackWithNullToken.setsBody("sBody");
+        feedbackWithNullToken.setnID_Rate(-1L);
+        feedbackWithNullToken.setnID_Service(-1L);
+
+        String response = JsonRestUtils.toJson(feedbackWithNullToken);
+
+        when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+
+        mockMvc.perform(get("/subject/message/getFeedbackExternal").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("nID", feedback.getId().toString())
+                .param("sID_Token", feedback.getsID_Token()))
+
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
+
+    @Test
+    public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
+        SubjectMessageFeedback feedback = new SubjectMessageFeedback();
+        feedback.setId(1L);
+        feedback.setsID_Source("-1");
+        feedback.setsAuthorFIO("FIO");
+        feedback.setsMail("sMail");
+        feedback.setsHead("sHead");
+        feedback.setsBody("sBody");
+        feedback.setnID_Rate(-1L);
+        feedback.setnID_Service(-1L);
+        feedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+
+        SubjectMessageFeedback feedbackWithNullToken = new SubjectMessageFeedback();
+        feedbackWithNullToken.setId(1L);
+        feedbackWithNullToken.setsID_Source("-1");
+        feedbackWithNullToken.setsAuthorFIO("FIO");
+        feedbackWithNullToken.setsMail("sMail");
+        feedbackWithNullToken.setsHead("sHead");
+        feedbackWithNullToken.setsBody("sBody");
+        feedbackWithNullToken.setnID_Rate(-1L);
+        feedbackWithNullToken.setnID_Service(-1L);
+
+        List<SubjectMessageFeedback> feedbackList = new ArrayList<>();
+        feedbackList.add(feedbackWithNullToken);
+        feedbackList.add(feedbackWithNullToken);
+
+        String response = JsonRestUtils.toJson(feedbackList);
+
+        when(subjectMessageService.getSubjectMessageFeedbackById(feedback.getId())).thenReturn(feedback);
+        when(subjectMessageService.getAllSubjectMessageFeedbackBynID_Service(feedback.getnID_Service())).thenReturn(feedbackList);
+
+        mockMvc.perform(get("/subject/message/getFeedbackExternal").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("nID", feedback.getId().toString())
+                .param("sID_Token", feedback.getsID_Token())
+                .param("nID_Service", feedback.getnID_Service().toString()))
+
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
 }
