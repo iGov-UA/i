@@ -17,12 +17,6 @@ import javax.persistence.ManyToOne;
 @javax.persistence.Entity
 public class ServiceTagRelation extends AbstractEntity {
 
-    /*@Column
-    private Integer nID_ServiceTag_Parent;
-    
-    @Column
-    private Integer nID_ServiceTag_Child;*/
-
     @ManyToOne(targetEntity = ServiceTag.class)
     @JoinColumn(name="nID_ServiceTag_Parent", nullable = false, updatable = false)
     private ServiceTag oServiceTag_Parent;
@@ -30,7 +24,6 @@ public class ServiceTagRelation extends AbstractEntity {
     @ManyToOne(targetEntity = ServiceTag.class)
     @JoinColumn(name="nID_ServiceTag_Child", nullable = false, updatable = false)
     private ServiceTag oServiceTag_Child;
-    
     
 
     public ServiceTag getServiceTag_Parent() {

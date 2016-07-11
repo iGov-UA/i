@@ -4,6 +4,7 @@ import org.igov.model.action.item.ServiceData;
 import org.igov.model.action.item.Category;
 import org.igov.model.action.item.Subcategory;
 import org.igov.model.action.item.Service;
+import org.igov.service.business.action.item.ServiceTagTreeNodeVO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -349,6 +350,19 @@ public class ActionItemControllerScenario {
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         Assert.assertTrue(jsonData.contains("success"));
+    }
+
+    @Test
+    public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
+        String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
+                param("nID_Category", "1")).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andExpect(jsonPath("$", not(empty()))).
+                andReturn().getResponse().getContentAsString();
+        ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
+
+        Assert.assertTrue(tableDataList.length > 0);
     }
 
     // region Helpers
