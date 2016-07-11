@@ -1314,26 +1314,20 @@
         </rollback>
     </changeSet>
 
-    <!--<changeSet id="issue-1290-sID_Token" author="IgorMaksymov">-->
-        <!--<addColumn tableName="SubjectMessageFeedback">-->
-            <!--<column name="sID_Token" type="varchar" defaultValue="null" />-->
-        <!--</addColumn>-->
-    <!--</changeSet>-->
-
-    <changeSet id="issue-1290-sID_Token-new" author="IgorMaksymov">
-    <addColumn tableName="SubjectMessageFeedback">
-    <column name="sID_Token" type="varchar" defaultValue="null" />
-    </addColumn>
+    <changeSet id="issue-1290-sID_Token" author="IgorMaksymov" failOnError="false">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="sID_Token" type="varchar" defaultValue="null" />
+        </addColumn>
     </changeSet>
 
-    <changeSet id="issue-1290-sID_Token-notNull" author="IgorMaksymov">
+    <changeSet id="issue-1290-sID_Token-notNull" author="IgorMaksymov" failOnError="false">
         <addNotNullConstraint columnDataType="varchar"
                               columnName="sID_Token"
                               defaultNullValue="empty"
                               tableName="SubjectMessageFeedback" />
     </changeSet>
 
-    <changeSet id="issue-1290-autoIncrement" author="IgorMaksymov">
+    <changeSet id="issue-1290-autoIncrement" author="IgorMaksymov" failOnError="false">
         <addAutoIncrement tableName="SubjectMessageFeedback" columnName="nID" columnDataType="bigint"/>
     </changeSet>
 
