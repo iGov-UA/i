@@ -2,17 +2,17 @@ package org.igov.service.business.action.item;
 
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.collections.CollectionUtils;
-import org.igov.model.action.item.Service;
-import org.igov.model.action.item.ServiceTag;
-import org.igov.model.action.item.ServiceTagLink;
-import org.igov.model.action.item.ServiceTagRelation;
+import org.apache.commons.lang.BooleanUtils;
+import org.igov.model.action.item.*;
 import org.igov.model.core.BaseEntityDao;
+import org.igov.model.object.place.Place;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * User: goodg_000
@@ -42,18 +42,44 @@ public class ServiceTagService {
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
             final ServiceTag parentTag = rootTagNode.getTag();
-            if (isSuitable(tagIdToServices.get(parentTag.getId()), nID_Category, sFind, asID_Place_UA)) {
-                ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
-                nodeVO.setoServiceTag_Root(parentTag);
-                for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
-                    final ServiceTag childTag = childNode.getTag();
-                    if (isSuitable(tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA)) {
-                        nodeVO.addChild(childTag);
-                    }
+
+            final Long rootTagId = rootTagNode.getTag().getId();
+            if (BooleanUtils.isTrue(bRoot) && !rootTagId.equals(nID_ServiceTag)) {
+                continue;
+            }
+
+            if (!isSuitable(tagIdToServices.get(parentTag.getId()), nID_Category, sFind, asID_Place_UA)) {
+                continue;
+            }
+
+            ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
+            nodeVO.setoServiceTag_Root(parentTag);
+            for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
+                final ServiceTag childTag = childNode.getTag();
+
+                if (BooleanUtils.isFalse(bRoot) && !childNode.getTag().getId().equals(nID_ServiceTag)) {
+                    continue;
                 }
 
-                if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
-                    res.add(nodeVO);
+                if (isSuitable(tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA)) {
+                    continue;
+                }
+
+                nodeVO.addChild(childTag);
+            }
+
+            if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
+                res.add(nodeVO);
+
+                if (includeServices) {
+                    final List<Service> selectedServices = Stream.concat(
+                            rootTagNode.getChildren().stream().flatMap(
+                                    c -> tagIdToServices.get(c.getTag().getId()).stream()),
+                            tagIdToServices.get(rootTagId).stream())
+                            .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
+                            .collect(Collectors.toList());
+
+                    nodeVO.setServices(selectedServices);
                 }
             }
         }
@@ -86,7 +112,20 @@ public class ServiceTagService {
             res = service.getName().toLowerCase().contains(sFind.toLowerCase());
         }
         if (res && CollectionUtils.isNotEmpty(asID_Place_UA)) {
-            // TODO implement check
+            Set<String> placesSet = new HashSet<>(asID_Place_UA);
+
+            boolean placeFound = false;
+            for (ServiceData serviceData : service.getServiceDataList()) {
+                final Place place = serviceData.getoPlace();
+                if (place == null) {
+                    continue;
+                }
+                if (placesSet.contains(place.getOriginalName()) || placesSet.contains(place.getName())) {
+                    placeFound = true;
+                    break;
+                }
+            }
+            res = placeFound;
         }
         return res;
     }

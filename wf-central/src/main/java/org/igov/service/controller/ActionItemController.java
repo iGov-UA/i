@@ -971,65 +971,11 @@ public class ActionItemController {
             @RequestParam(value = "bRoot ", required = true, defaultValue = "false") final boolean bRoot
     ) {
 
-        final boolean bTest = generalConfig.isSelfTest();
-
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag, bRoot);
+        res.forEach(n -> n.getServices().forEach(this::prepareServiceToView));
 
-        SerializableResponseEntity<String> entity = cachedInvocationBean
-                .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<String>>(
-                                GET_CATALOG_TREE_TAG_SERVICE, sFind, asID_Place_UA, bTest, nID_Category, nID_ServiceTag, bRoot) {
-                                    @Override
-                                    public SerializableResponseEntity<String> execute() {
-
-                                        List<Map> aReturn = new LinkedList();
-                                        List<ServiceTagRelation> aServiceTagRelation = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
-                                        List<ServiceTagLink> aServiceTagLink = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
-                                        
-                                        //List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                        for(ServiceTagLink oServiceTagLink : aServiceTagLink){
-                                            oServiceTagLink.getService().setServiceDataList(new LinkedList());
-                                        }
-                                        
-                                        List<ServiceTag> aServiceTag_Selected = new ArrayList();
-
-                                        Map<String, Object> mReturn = new LinkedHashMap();
-                                        ServiceTag oServiceTag = baseEntityDao.findById(ServiceTag.class, nID_ServiceTag);
-
-                                        List<ServiceTag> aServiceTagChild = new ArrayList();
-                                        if (bRoot) {
-                                            mReturn.put("oServiceTag_Root", oServiceTag);
-                                            for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
-                                                if (Objects.equals(oServiceTagRelationChild.getServiceTag_Parent().getId(), nID_ServiceTag)) {
-                                                    aServiceTagChild.add(oServiceTagRelationChild.getServiceTag_Child());
-                                                    aServiceTag_Selected.add(oServiceTagRelationChild.getServiceTag_Child());
-                                                }
-                                            }
-                                        } else {
-                                            for (ServiceTagRelation oServiceTagRelationChild : aServiceTagRelation) {
-                                                if (Objects.equals(oServiceTagRelationChild.getServiceTag_Child().getId(), nID_ServiceTag)) {
-                                                    mReturn.put("oServiceTag_Root", oServiceTagRelationChild.getServiceTag_Parent());
-                                                    break;
-                                                }
-                                            }
-                                            aServiceTagChild.add(oServiceTag);
-                                            aServiceTag_Selected.add(oServiceTag);
-                                        }
-                                        mReturn.put("aServiceTag_Child", aServiceTagChild);
-                                        
-                                        List<Service> aService_Selected = filterCategory(aServiceTagLink, aServiceTag_Selected, nID_Category);
-                                        /*for(Service oService : aService_Selected){
-                                            oService.setServiceDataList(new LinkedList());
-                                        }*/
-                                        mReturn.put("aService", aService_Selected);
-                                        //if (aService_Selected.size() > 0) {
-                                            aReturn.add(mReturn);
-                                        //}
-                                        return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(aReturn));
-                                    }
-                                });
-
-        return entity.toResponseEntity();
+        return JsonRestUtils.toJsonResponse(res);
     }
 
     private List<Service> filterCategory(List<ServiceTagLink> aServiceTagLink, List<ServiceTag> aServiceTag_Selected,
