@@ -15,7 +15,7 @@ public class ServiceTagTreeNodeVO {
 
     private ServiceTag oServiceTag_Root;
     private List<ServiceTag> aServiceTag_Child = new ArrayList<>();
-    private List<Service> services;
+    private List<Service> aService;
 
     public ServiceTag getoServiceTag_Root() {
         return oServiceTag_Root;
@@ -37,11 +37,11 @@ public class ServiceTagTreeNodeVO {
         aServiceTag_Child.add(child);
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Service> getaService() {
+        return aService;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setaService(List<Service> aService) {
+        this.aService = aService;
     }
 }

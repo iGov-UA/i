@@ -1,6 +1,5 @@
 package org.igov.service.business.action.item;
 
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.igov.model.action.item.*;
@@ -8,7 +7,6 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.Place;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,7 +77,7 @@ public class ServiceTagService {
                             .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
                             .collect(Collectors.toList());
 
-                    nodeVO.setServices(selectedServices);
+                    nodeVO.setaService(selectedServices);
                 }
             }
         }

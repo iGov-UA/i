@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.*;
 import org.igov.model.action.item.ServiceTag;
 import org.igov.model.action.item.ServiceTagLink;
-import org.igov.model.action.item.ServiceTagRelation;
 
 import static org.igov.util.Tool.bFoundText;
 import org.slf4j.Logger;
@@ -973,7 +972,7 @@ public class ActionItemController {
 
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag, bRoot);
-        res.forEach(n -> n.getServices().forEach(this::prepareServiceToView));
+        res.forEach(n -> n.getaService().forEach(this::prepareServiceToView));
 
         return JsonRestUtils.toJsonResponse(res);
     }
