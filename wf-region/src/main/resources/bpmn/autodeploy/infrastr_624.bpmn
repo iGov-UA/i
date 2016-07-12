@@ -131,35 +131,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sDate_of_birth1')
-var day=src.substr(0,2)
-var month=src.substr(3,2)
-var year=src.substr(6,4)
-var month1='СІЧ / JAN'
-if (month=='02'){
-    month1='ЛЮТ / FEB'}
-if (month=='03'){
-    month1='БЕР / MAR'}
-if (month=='04'){
-    month1='КВІ / APR'}
-if (month=='05'){
-    month1='ТРА / MAY'}
-if (month=='06'){
-    month1='ЧЕР / JUN'}
-if (month=='07'){
-    month1='ЛИП / JUL'}
-if (month=='08'){
-    month1='СЕР / AUG'}
-if (month=='09'){
-    month1='ВЕР / SEP'}
-if (month=='10'){
-    month1='ЖОВ / OCT'}
-if (month=='11'){
-    month1='ЛИС / NOV'}
-if (month=='12'){
-    month1='ГРУ / DEC'}
-var birth=day+' '+month1+' '+year
-execution.setVariable('sDate_of_birth', birth)
+      <script>
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
 if (place=='sNull'){
@@ -338,7 +310,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth1" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
@@ -362,7 +334,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:value id="sAccept" name="Документи в порядку, надіслати рахунок для сплати"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити у прийнятті особової справи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDeclineReason" name="У разі відмови оберіть підставу" type="enum">
+        <activiti:formProperty id="asDeclineReason" name="Підстава для відмови у прийнятті особової справи" type="enum">
           <activiti:value id="sNoDoc" name="Заявником не надано усіх документів та інформації, необхідних для оформлення і видачі посвідчення"></activiti:value>
           <activiti:value id="sAlready" name="Заявник вже отримав посвідчення, яке є дійсним на день звернення"></activiti:value>
           <activiti:value id="sBaseError" name="Дані, отримані з бази даних, не підтверджують інформацію, надану заявником"></activiti:value>
@@ -445,7 +417,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 										</ul>
 									</p>
 									<p>
-										<b style="font-color:red">Увага!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
+										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
 									</p>
 									<p>
 										Реквізити для сплати:<br>
@@ -455,7 +427,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 										[paymentButton_LiqPay]
 									</p>
 									<p>
-										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.
 									</p>
 									<p>
 										<b><i>${sDecisionComment}</i></b>
@@ -632,6 +605,35 @@ var c6=Number(day2.substr(1,1))
 k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
 var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month1+day1+k2+sex+year4+month2+day2+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz2', moz2)
+var src=execution.getVariable('sDate_of_birth1')
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,4)
+var month1='СІЧ / JAN'
+if (month=='02'){
+    month1='ЛЮТ / FEB'}
+if (month=='03'){
+    month1='БЕР / MAR'}
+if (month=='04'){
+    month1='КВІ / APR'}
+if (month=='05'){
+    month1='ТРА / MAY'}
+if (month=='06'){
+    month1='ЧЕР / JUN'}
+if (month=='07'){
+    month1='ЛИП / JUL'}
+if (month=='08'){
+    month1='СЕР / AUG'}
+if (month=='09'){
+    month1='ВЕР / SEP'}
+if (month=='10'){
+    month1='ЖОВ / OCT'}
+if (month=='11'){
+    month1='ЛИС / NOV'}
+if (month=='12'){
+    month1='ГРУ / DEC'}
+var birth=day+' '+month1+' '+year
+execution.setVariable('sDate_of_birth', birth)
 var src=execution.getVariable('sDate_of_issue')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
