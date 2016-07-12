@@ -2,17 +2,20 @@ angular.module('app')
   .service('CatalogService', ['$http', '$q', function ($http, $q) {
 
   var servicesCache = {};
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders) {
+
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
+    var nID_Category = catalogTab;
 
     var data = {
       asIDPlaceUA: asIDPlaceUA,
       sFind: sFind || null,
-      bShowEmptyFolders: bShowEmptyFolders
+      bShowEmptyFolders: bShowEmptyFolders,
+      nID_Category: nID_Category
     };
-    return $http.get('./api/catalog', {
+    return $http.get('./api/catalog/getCatalogTree', {
       params: data,
       data: data
     }).then(function (response) {
@@ -31,6 +34,35 @@ angular.module('app')
     }).then(function (response) {
       servicesCache = response.data;
       return response.data;
+    });
+  };
+
+  this.getCatalogTreeTag = function (nID_Category, sFind) {
+    var data = {
+      nID_Category: nID_Category,
+      sFind: sFind || null
+    };
+    return $http.get('./api/catalog/getCatalogTree', {
+      params: data,
+      data: data
+    }).then(function (response) {
+      servicesCache = response.data;
+      return response.data;
+    });
+  };
+
+  this.getCatalogTreeTagService = function (category, serviceTag, bRoot) {
+    var data = {
+      nID_Category: category, // TODO fix it
+      nID_ServiceTag: serviceTag,
+      bRoot: bRoot
+    };
+    return $http.get('./api/catalog/getCatalogTreeTagService', {
+      params: data,
+      data: data
+    }).then(function (response) {
+      servicesCache = response.data;
+      return response.data[0];
     });
   };
 

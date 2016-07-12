@@ -87,9 +87,125 @@ module.exports.getServicesTree = function (req, res) {
         },
         json: true,
         'qs': {
-          'sFind': options.params.sFind,
-          'asID_Place_UA': options.params.asIDPlaceUA,
-          'bShowEmptyFolders': options.params.bShowEmptyFolders
+          'nID_Category': options.params.sFind
+        }
+      }, callback);
+    }
+  });
+};
+
+// каталог услуг в главном меню
+
+module.exports.getCatalogTreeTag = function (req, res) {
+  var options = {
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password,
+    params: {
+      sFind: req.query.sFind || null,
+      asIDPlaceUA: req.query.asIDPlaceUA || null,
+      bShowEmptyFolders: req.query.bShowEmptyFolders || false,
+      nID_Category: req.query.nID_Category || 1
+    }
+  };
+  
+
+  cache.get(buildKey(options.params), function (error, value) {
+    if (value) {
+      res.json(value);
+    } else {
+      var callback = function (error, response, body) {
+        // set cache key for this particular request
+        if (!error) {
+          cache.set(buildKey(options.params), body, cacheTtl);
+          res.json(body);
+        } else {
+          res.json(errors.createExternalServiceError('Something went wrong', error));
+        }
+      };
+
+      var url = buildUrl('/action/item/getCatalogTreeTag');
+
+      if(options.params.sFind !== null) {
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_Category': options.params.nID_Category,
+            'sFind': options.params.sFind,
+            'asID_Place_UA': options.params.asIDPlaceUA,
+            'bShowEmptyFolders': options.params.bShowEmptyFolders
+          }
+        }, callback);
+      }else{
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_Category': options.params.nID_Category,
+            'asID_Place_UA': options.params.asIDPlaceUA,
+            'bShowEmptyFolders': options.params.bShowEmptyFolders
+          }
+        }, callback);
+      }
+    }
+  });
+};
+
+// при нажатии в главном меню на родителя категории открываем его:
+
+module.exports.getCatalogTreeTagService = function (req, res) {
+  var options = {
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password,
+    params: {
+      nID_ServiceTag: req.query.nID_ServiceTag,
+      nID_Category: req.query.nID_Category,
+      bRoot: req.query.bRoot
+    }
+  };
+
+  cache.get(buildKey(options.params), function (error, value) {
+    if (value) {
+      res.json(value);
+    } else {
+      var callback = function (error, response, body) {
+        if (!error) {
+          cache.set(buildKey(options.params), body, cacheTtl);
+          res.json(body);
+        } else {
+          res.json(errors.createExternalServiceError('Something went wrong', error));
+        }
+      };
+
+      var url = buildUrl('/action/item/getCatalogTreeTagService');
+
+      return request.get({
+        'url': url,
+        'auth': {
+          'username': options.username,
+          'password': options.password
+        },
+        json: true,
+        'qs': {
+          'nID_ServiceTag': options.params.nID_ServiceTag,
+          'nID_Category': options.params.nID_Category,
+          'bRoot': options.params.bRoot
         }
       }, callback);
     }

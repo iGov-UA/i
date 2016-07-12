@@ -3,7 +3,7 @@
  */
 angular.module('dashboardJsApp')
   .directive('userList', function () {
-    var controller = function ($scope, $modal, $q) {
+    var controller = function ($scope, $modal, $q, Profile, Modal) {
       var inProgress = false;
       var users = [];
       var groupsToUser = [];
@@ -58,13 +58,13 @@ angular.module('dashboardJsApp')
             allGroups: function () {
               return angular.copy(allGroups);
             },
-            allUsers: function(){
+            allUsers: function () {
               return angular.copy(users);
             },
-            editModes: function(){
+            editModes: function () {
               return angular.copy(editModes);
             },
-            editMode: function(){
+            editMode: function () {
               return angular.copy(editMode);
             }
           },
@@ -80,53 +80,82 @@ angular.module('dashboardJsApp')
 
             var userToAdd = {
               sLogin: createdUser.sLogin,
-              sPassword: createdUser.sPassword,
+              sPassword: editedData.userToSave.sPassword || (editedData.userToSave.changePassword ? editedData.userToSave.password : user.sPassword),
               sName: createdUser.sName,
               sDescription: createdUser.sDescription,
               sEmail: createdUser.sEmail,
-              FirstName: createdUser.sName || users[i].FirstName,
-              LastName: createdUser.sDescription || users[i].LastName,
-              Email: createdUser.sEmail || users[i].Email,
+              FirstName: createdUser.sName,
+              LastName: createdUser.sDescription,
+              Email: createdUser.sEmail
             };
 
-            //AddUserTo Group
-            if (editedData.groupsToAdd.length) {
-              for (var i = 0; i < editedData.groupsToAdd.length; i++) {
-                addToGroupFunc(editedData.groupsToAdd[i].id, userToAdd.sLogin).then(
-                  function (addedUser) {
 
-                  }, function (err) {
-                    console.log('Add User To group Error');
-                  }
-                );
-              }
-            }
+            addUserToGroup(editedData, userToAdd);
 
-            if (editedData.groupsToRemove.length) {
-              for (var i = 0; i < editedData.groupsToRemove.length; i++) {
-                removeFromGroup(editedData.groupsToRemove[i].id, userToAdd.sLogin).then(
-                  function (removedUser) {
+            removeUserFromGropup(editedData, userToAdd);
 
-                  }, function (err) {
-                    console.log('Remove User From group Error');
-                  }
-                );
-              }
-            }
+            changePassword(editedData, user);
 
-            for (var i = 0; i < users.length; i++) {
-              if (users[i].sLogin === userToAdd.sLogin) {
-                users[i] = userToAdd;
-                return;
-              }
-            }
-            userToAdd ? users.unshift(userToAdd) : null;
+            updateUserList(userToAdd);
 
           }, function (err) {
-            console.log('Create/Edit User Error ', err)
+            Modal.inform.error()(JSON.parse(err).message);
           });
         });
       };
+
+      function updateUserList(user) {
+        for (var i = 0; i < users.length; i++) {
+          if (users[i].sLogin === user.sLogin) {
+            users[i] = user;
+            return;
+          }
+        }
+        user ? users.unshift(user) : null;
+      }
+
+      function removeUserFromGropup(data, user) {
+        if (data.groupsToRemove.length) {
+          for (var i = 0; i < data.groupsToRemove.length; i++) {
+            removeFromGroup(data.groupsToRemove[i].id, user.sLogin).then(
+              function (removedUser) {
+                //Modal.inform.info()();
+              }, function (err) {
+                Modal.inform.error()(JSON.parse(err).message);
+              }
+            );
+          }
+        }
+      }
+
+      function addUserToGroup(data, user) {
+        if (data.groupsToAdd.length) {
+          for (var i = 0; i < data.groupsToAdd.length; i++) {
+            addToGroupFunc(data.groupsToAdd[i].id, user.sLogin).then(
+              function (addedUser) {
+                //Modal.inform.info()(addedUser.sID_Group);
+              }, function (err) {
+                Modal.inform.error()(JSON.parse(err).message);
+              }
+            );
+          }
+        }
+      }
+
+      function changePassword(data, currUser){
+        if (data.userToSave.changePassword) {
+          Profile.changePassword(
+            data.userToSave.sLogin,
+            data.userToSave.oldPassword,
+            data.userToSave.password)
+            .then(function (outData) {
+              Modal.inform.info()("Пароль змінено");
+            }, function (err) {
+              Modal.inform.error()(JSON.parse(err).message);
+            });
+        }
+      }
+
 
       $scope.get = function () {
         return users;

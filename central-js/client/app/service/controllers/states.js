@@ -4,6 +4,25 @@ angular.module('app').controller('ServiceFormController', function($scope, servi
   $scope.bAdmin = AdminService.isAdmin();
 });
 
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent) {
+  $scope.catalog = catalogContent;
+});
+
+angular.module('app').controller('SituationController', function ($scope, service, AdminService, ServiceService, chosenCategory) {
+  $scope.spinner = true;
+  $scope.service = service;
+  $scope.category = chosenCategory;
+  $scope.bAdmin = AdminService.isAdmin();
+  // $scope.situation = "";
+  // angular.forEach($scope.category.aService, function (service) {
+  //   if(service.nID === service.nID) {
+  //     $scope.situation = service
+  //     console.log(chosenCategory)
+  //   }
+  // });
+  $scope.spinner = false;
+});
+
 angular.module('app').controller('ServiceGeneralController', function($state, $scope, ServiceService, PlacesService) {
   PlacesService.resetPlaceData();
 

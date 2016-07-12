@@ -37,6 +37,14 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
     },
+    "alpha_mvd": {
+      "header": "mvd.header.html",
+      "footer": "mvd.footer.html",
+      "placesID": []
+      ,"asOrgan": []
+      ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
+    },
     "dfs": {
       "header": "dfs.header.html",
       "footer": "dfs.footer.html",
@@ -55,6 +63,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     ,"kharkiv": modeModel.kharkiv
     ,"kharkov": modeModel.kharkiv
     ,"mvd": modeModel.mvd
+    ,"alpha_mvd": modeModel.alpha_mvd
     ,"dfs": modeModel.dfs
   };
   this.init = function (domen) {
@@ -62,12 +71,17 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
     this.domain = domen;
 
+
     if (domen.split(':')[0] !== 'localhost') {
       if (domen.indexOf('kievcity') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
-      } else if (domen.indexOf('mvd') >= 0) {
+      }else if (domen.indexOf('alpha-mvd') >= 0) {
+        //alpha-mvd.test.igov.org.ua
+        this.mode = 'alpha_mvd';
+        //this.mode = modes.kyiv;
+      }else if (domen.indexOf('mvd') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'mvd';
         //this.mode = modes.kyiv;
@@ -90,11 +104,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           || matches[1] === 'alpha'
           || matches[1] === 'beta'
           || matches[1] === 'omega') {
-          if(matches[2] === 'old') {
-            this.mode = matches[4].split('.')[1];
-          }else{
-            this.mode = matches[3];
-          }
+          this.mode = matches[3];
         } else if ( (matches[1] === 'alpha' && matches[2] === 'old')
           || (matches[1] === 'beta' && matches[2] === 'old')) {
           this.mode = matches[4];
@@ -118,7 +128,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[mode]) {
       hdr = modes[mode].header;
     } else {
-      hdr = 'header.html';
+      hdr = 'new.header.html';
     }
     return 'app/header/' + hdr;
   };
@@ -143,7 +153,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'IndexController'
         },
         'main@': {
-          templateUrl: 'app/service/index/services.html',
+          templateUrl: 'app/service/index/new.services.html',
           controller: 'ServiceController'
         },
         footer: {

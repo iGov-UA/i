@@ -1,0 +1,19 @@
+
+<div class="row" ng-if="!spinner">
+  {{help}}
+  <div class="container tab1" >
+    <div class="col-sm-4" ng-repeat="category in catalog">
+      <div class="col-sm-12 block">
+        <div class="col-sm-3">
+          <img ng-hide="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
+        </div>
+        <div class="col-sm-9 text">
+          <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
+          <ul>
+            <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': subcategory.nID })">{{subcategory.sName_UA | capitalize}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessageFeedback> {
 
-    void setMessage(SubjectMessageFeedback subjectMessageFeedback);
+    SubjectMessageFeedback setMessage(SubjectMessageFeedback subjectMessageFeedback);
 
-    SubjectMessageFeedback getFeedbackExternalById(Long nId);
+    SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId);
 
     List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service);
 }

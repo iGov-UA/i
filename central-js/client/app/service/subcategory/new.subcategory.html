@@ -1,0 +1,90 @@
+<style>
+  .subcategory-tmpl {
+    width: 78%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .common-hr {
+    background: #dddddd;
+    border: none;
+    height: 1px;
+  }
+  .vertical-divider {
+    background: #449dcd;
+    height: 26px;
+    width: 6px;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+  }
+  .situation-list a{
+    font-family: "Open Sans";
+    font-size: 22px;
+    font-weight: bold;
+  }
+  .situation-list {
+    padding-left: 16px;
+    list-style-type: square;
+    color: #dddddd;
+    margin-top: 30px;
+  }
+
+  @media (min-width: 992px) {
+    .col-md-4:nth-child(3n+1) {
+      clear: left;
+    }
+  }
+</style>
+
+<div class="row">
+  <div class="container subcategory-tmpl">
+    <div class="row" ng-show="spinner">
+      <div class="text-center">
+        <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="container">
+        <a href="/" ng-if="catalogTab === 1">Головна</a>
+        <a href="/2" ng-if="catalogTab === 2">Головна</a>
+        >
+        <a href="#">{{subcategoryName}}</a>
+        <hr class="common-hr">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="container">
+        <div class="vertical-divider"></div>
+        <span ng-if="catalogTab === 1" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Вашу життєву ситуацію...</span>
+        <span ng-if="catalogTab === 2" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Ваш розділ:</span>
+        <br>
+        <ul class="situation-list">
+          <li ng-repeat="situation in subcategory.aServiceTag_Child">
+            <a ui-sref="index.situation({'catID': catalogTab, 'scatID': situation.nID })">{{situation.sName_UA | capitalize}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px">
+      <div class="container">
+        <span style="font-size: 24px; font-family: 'Open Sans'; display: inline-block;">... або знайдіть послугу, яка Вас цікавить</span>
+        <hr class="common-hr" style="width: 57%; display:inline-block; margin-bottom: 6px">
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 50px; margin-bottom: 40px">
+      <div class="container">
+        <div class="col-md-4 col-xs-12" ng-repeat="service in subcategory.aService">
+          <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+          <hr class="common-hr" width="30px">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
