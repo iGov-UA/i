@@ -3,7 +3,7 @@
   <process id="infrastr_624" name="Видача/обмін посвідчення особи моряка" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Форма заявки заповнюється українською. Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище/Last name" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName" name="Прізвище англійською/Last name in english" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я/Name" type="string" required="true"></activiti:formProperty>
@@ -96,6 +96,7 @@
         <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYSlh2LWhpVzBlTlVrU1pvQVFfYy1mVWZkbDlR/view?usp=sharing&quot;&gt;посиланням&lt;/a&gt; та заповнити анкету для видачі/обміну посвідчення особи моряка."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте коректність усих внесених даних&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -313,7 +314,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         <activiti:formProperty id="sDate_of_birth1" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
           <activiti:value id="sMan" name="Чоловіча"></activiti:value>
           <activiti:value id="sWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
@@ -457,7 +458,7 @@ execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString
       <script>var src=execution.getVariable('sDate_of_print')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
-var year=src.substr(6,2)
+var year=src.substr(6,4)
 var hour='09'
 var minutes='00'
 var seconds='00'
@@ -530,7 +531,6 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_print" name="Дата видачі до друку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -588,6 +588,11 @@ var b4=Number(month1.substr(1,1))
 var b5=Number(day1.substr(0,1))
 var b6=Number(day1.substr(1,1))
 var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
 var src=execution.getVariable('sSex')
 var sex=src.substr(4,1)
 var src=execution.getVariable('sDate_of_issue')
@@ -666,11 +671,6 @@ var year1= year-(-5)
 var expiry=day+' '+month1+' '+year1
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
-var sex=execution.getVariable('asSex')
-var sex1='Ч / M'
-if (sex=='sWoman'){
-    sex1='Ж / W'}
-execution.setVariable('sSex', sex1)
        </script>
     </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
