@@ -252,11 +252,9 @@ public class DebugCentralController {
             
 //            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
 //        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
-            try {
-                IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
-	    } catch (Exception e) {
-        	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
-	    }
+
+            
+//////////            
             
             //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
@@ -304,6 +302,15 @@ public class DebugCentralController {
             //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             LOG_MAX.debug("sType={}|nID_Subject={}|nID_Server={}|sFunction={}|sHead={}|sBody={}|sError={}|smData={}|sResponseMessage={}|sResponseCode={}|soResponseData={}|asParam={}|sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam,sDate);
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+            
+            
+            try {
+                IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+	    } catch (Exception e) {
+        	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
+	    }
+            
+            
         } catch (Exception e) {
         	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
