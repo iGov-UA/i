@@ -2,32 +2,33 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="loda_invest_1" name="Подача greenfields та brownfields" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
-    </scriptTask>
-    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <serviceTask id="servicetask2" name="Сповіщення співробітника про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+      <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <userTask id="usertask1" name="Обробка звернення"></userTask>
-    <serviceTask id="servicetask5" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Сповіщення співробітника про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка звернення"></userTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask6" name="Негативна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <serviceTask id="servicetask5" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Негативна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_loda_invest_1">
     <bpmndi:BPMNPlane bpmnElement="loda_invest_1" id="BPMNPlane_loda_invest_1">
