@@ -377,16 +377,20 @@ public class ActionItemControllerScenario {
     @Test
     public void shouldSuccessfullyGetCatalogTreeTagService() throws Exception {
         dbManager.recreateDb();
-        String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
-                param("nID_Category", "1").
-                param("bRoot", "true").
-                param("nID_ServiceTag", "60").
-                param("sFind", "Розгляд")).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$", not(empty()))).
-                andReturn().getResponse().getContentAsString();
-        ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
+        ServiceTagTreeNodeVO[] tableDataList = null;
+
+        for (int i = 0; i < 2; ++i) {
+            String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
+                    param("nID_Category", "1").
+                    param("bRoot", "true").
+                    param("nID_ServiceTag", "60").
+                    param("sFind", "Розгляд")).
+                    andExpect(status().isOk()).
+                    andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                    andExpect(jsonPath("$", not(empty()))).
+                    andReturn().getResponse().getContentAsString();
+            tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
+        }
 
         Assert.assertTrue(tableDataList.length == 1);
     }
