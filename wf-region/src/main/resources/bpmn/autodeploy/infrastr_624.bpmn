@@ -18,7 +18,7 @@
           <activiti:value id="sNull" name=" "></activiti:value>
           <activiti:value id="sARK" name="Автономна Республіка Крим"></activiti:value>
           <activiti:value id="sSimf" name="Cімферопіль"></activiti:value>
-          <activiti:value id="sSevas" name="Cевастопіль"></activiti:value>
+          <activiti:value id="sSevas" name="Cевастополь"></activiti:value>
           <activiti:value id="sVinic" name="Вінницька обл"></activiti:value>
           <activiti:value id="sVinicT" name="Вінниця"></activiti:value>
           <activiti:value id="sVolin" name="Волинська обл"></activiti:value>
@@ -159,11 +159,6 @@ if (month=='12'){
     month1='ГРУ / DEC'}
 var birth=day+' '+month1+' '+year
 execution.setVariable('sDate_of_birth', birth)
-var sex=execution.getVariable('asSex')
-var sex1='Ч / M'
-if (sex=='sWoman'){
-    sex1='Ж / W'}
-execution.setVariable('sSex', sex1)
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
 if (place=='sNull'){
@@ -172,7 +167,7 @@ else {
 if (place=='sSimf'){
 place1='CІМФЕРОПІЛЬ / SIMFEROPOL'}
 if (place=='sSevas'){
-place1='CЕВАСТОПІЛЬ / SEVASTOPOL'}
+place1='CЕВАСТОПОЛЬ / SEVASTOPOL'}
 if (place=='sVinic'){
 place1='ВІННИЦЬКА ОБЛ / UKRAINE'}
 if (place=='sVinicT'){
@@ -345,7 +340,10 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+          <activiti:value id="sMan" name="Чоловіча"></activiti:value>
+          <activiti:value id="sWoman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
           <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
@@ -370,6 +368,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:value id="sFakeDoc" name="Один або декілька документів не пройшли процедуру перевірки легітимності в Єдиному державному реєстрі документів моряків"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Додатковий коментар до рішення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/data_seaman.html]" type="invisible" default="Дані громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -419,7 +419,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
     <sequenceFlow id="flow10" name="${asWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -443,6 +443,9 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 										</ul>
 									</p>
 									<p>
+										<b style="font-color:red">Увага!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
+									</p>
+									<p>
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
@@ -462,6 +465,9 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -533,9 +539,6 @@ execution.setVariable('sDate_of_print', timer)</script>
 										На жаль, Ви не сплатили за оформлення посвідчення особи моряка і Вам відмовлено у наданні послуги.<br>
                                         При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p>
-									<p>
-										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									</p>
 									[pattern/mail/_common_signature_start.html]
                                     Міністерство інфраструктури України.</p>
                                     [pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -552,6 +555,7 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_print" name="Дата видачі до друку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -578,7 +582,7 @@ else{
 break}}
 var src=execution.getVariable('firstName')
 for (var i = 0; i&lt;50; i++){
-var name=src.substr(i,1)
+var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
 if((fname != "-") || (fname != "`") || (fname != " ") || (fname != "'")){
 per2 = per2+fname}
@@ -586,8 +590,8 @@ else {
 per2 = per2+"&lt;"}}
 else{
 break}}
-var moz1=P+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
-execution.setVariable('sMoz1', Moz1)
+var moz1="P"+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+execution.setVariable('sMoz1', moz1)
 var numb=execution.getVariable('sNumber')
 var ser=numb.substr(0,2)
 var num=numb.substr(2,6)
@@ -658,6 +662,11 @@ var year1= year-(-5)
 var expiry=day+' '+month1+' '+year1
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
        </script>
     </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
@@ -740,8 +749,8 @@ execution.setVariable('sDate_of_expiry', expiry)
 									<p>
 									  <b>Необхідні документи, які треба принести до ${sNameOrgan} при видачі/обміні посвідчення особи моряка:</b><br>
 										<ul>
-										<li>заява-анкета;</li>
-										<li>паспорт громадянина України та його копія;</li>
+										<li>заява-анкета, яку ви заповнювали і сканували при поданні заявки;</li>
+										<li>паспорт громадянина України та його копія (усі заповнені сторінки);</li>
 										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
 										<li>дві фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
 										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
