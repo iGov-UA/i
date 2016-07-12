@@ -90,13 +90,13 @@
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати документ" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="slabelSum" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nDocEdu" name="Копія документу, що підтверджує отримання морської освіти або копія довідки з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYSlh2LWhpVzBlTlVrU1pvQVFfYy1mVWZkbDlR/view?usp=sharing&quot;&gt;посиланням&lt;/a&gt; та заповнити анкету для видачі/обміну посвідчення особи моряка."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте коректність усих внесених даних&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте коректність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -300,8 +300,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1_yellow"></sequenceFlow>
+    <userTask id="usertask1_yellow" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянину надсилається лист із реквізитами для сплати"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
@@ -341,10 +341,11 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:value id="sBaseError" name="Дані, отримані з бази даних, не підтверджують інформацію, надану заявником"></activiti:value>
           <activiti:value id="sFakeDoc" name="Один або декілька документів не пройшли процедуру перевірки легітимності в Єдиному державному реєстрі документів моряків"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Додатковий коментар до рішення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Додатковий коментар до рішення" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/data_seaman.html]" type="invisible" default="Дані громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -353,7 +354,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask1_yellow" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" name="${asWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sDecline'}]]></conditionExpression>
@@ -373,7 +374,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-										На жаль, Вам відмовлено у прийнятті особової справи.<br>
+										На жаль, Вам відмовлено у прийнятті особової справи по заявці №[sID_Order].<br>
                                         При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p>
 									<p>
@@ -392,7 +393,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
     <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="endevent5"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${asWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment==' '}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -409,10 +410,10 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.<br>
-										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:<br>
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заявку №[sID_Order].<br>
+										Для видачі/обміну посвідчення особи моряка необхідно:<br>
 										<ul>
-										<li>Перевірити достовірність даних заявника внесених в заявку на замовлення послуги, у заявці що додається.</li>
+										<li>Перевірити достовірність Ваших даних внесених в заявку на замовлення послуги, у формі, що додається.</li>
 										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
 										<li>Після отримання листа-запрошення від ${sNameOrgan} відвідати його з оригіналами документів та отримати посвідчення.</li>
 										</ul>
@@ -432,6 +433,60 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 										Ви можете перевірити їх у файлі, що додається.
 									</p>
 									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow35" sourceRef="servicetask6" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway1" targetRef="servicetask10">
+    	<conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment!=' '}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask10" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заявку №[sID_Order].<br>
+										Для видачі/обміну посвідчення особи моряка необхідно:<br>
+										<ul>
+										<li>Перевірити достовірність Ваших даних внесених в заявку на замовлення послуги, у формі, що додається.</li>
+										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
+										<li>Після отримання листа-запрошення від ${sNameOrgan} відвідати його з оригіналами документів та отримати посвідчення.</li>
+										</ul>
+									</p>
+									<p>
+										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
+									</p>
+									<p>
+										Реквізити для сплати:<br>
+										${sPortRekv}<br>
+										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										або Ви можете сплатити онлайн<br>
+										[paymentButton_LiqPay]
+									</p>
+									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.
+									</p>
+									<p>Коментар держслужбовця:<br>
 										<b><i>${sDecisionComment}</i></b>
 									</p>
 									<p>
@@ -447,7 +502,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow35" sourceRef="servicetask6" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow49" sourceRef="servicetask10" targetRef="scripttask4"></sequenceFlow>
     <scriptTask id="scripttask4" name="Дата печати" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>
 execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString())
@@ -532,6 +587,7 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow43" sourceRef="usertask2_green" targetRef="scripttask2"></sequenceFlow>
@@ -676,7 +732,7 @@ execution.setVariable('sDate_of_expiry', expiry)
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -702,22 +758,15 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат друку" type="enum" required="true">
-          <activiti:value id="sReestr" name="Документ роздруковано коректно"></activiti:value>
+          <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment1" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
@@ -743,29 +792,24 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Сплата за посвідчення особи моряка була зарахована  .<br>
-										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:<br>
+                                        Сплата за посвідчення особи моряка була зарахована.<br>
+										Для отримання видачі/обміну посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
 										<ul>
 										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Підписати необхідні документи та отримати посвідчення особи моряка.</li>
 										</ul>
 									</p>
 									<p>
-									  <b>Необхідні документи, які треба принести до ${sNameOrgan} при видачі/обміні посвідчення особи моряка:</b><br>
+									  <b>Необхідні документи, які треба пред'явити в ${sNameOrgan} при отриманні посвідчення особи моряка:</b><br>
 										<ul>
-										<li>заява-анкета, яку ви заповнювали і сканували при поданні заявки;</li>
+										<li>заява-анкета, яку Ви заповнювали і сканували при поданні заявки;</li>
 										<li>паспорт громадянина України та його копія (усі заповнені сторінки);</li>
 										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
 										<li>дві фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
 										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
-										<li>документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;</li>
-										<li>морський диплом та підтвердження до нього або свідоцтво та, за наявності, підтвердження до нього;</li>
-										<li>оригінал посвідчення особи моряка, що обмінюється (за наявності);</li>
-										<li>громадянам інших держав:
-										<ul>
-											<li>документ, що посвідчує громадянство іншої держави та зазначає місце народження, в якому українською або англійською мовами зазначено викладену вище інформацію та його копія;</li>
-											<li>документ, що підтверджує несення служби на борту судна, яке зареєстроване на території України, або документ, що підтверджує реєстрацію заявника в Україні у службі зайнятості</li> 
-										</ul>
+										<li>документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах (який Ви сканували при поданні заявки);</li>
+										<li>морський диплом та підтвердження до нього або свідоцтво та, за наявності, підтвердження до нього (який Ви сканували при поданні заявки);</li>
+										<li>посвідчення особи моряка, що обмінюється (за наявності);</li>
 										</ul>
 									</p>
 									<p>
@@ -773,6 +817,7 @@ execution.setVariable('sDate_of_expiry', expiry)
 									</p>
                                     [pattern/mail/_common_signature_start.html]
 									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -780,9 +825,9 @@ execution.setVariable('sDate_of_expiry', expiry)
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask8" targetRef="usertask3"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <userTask id="usertask3" name="Візит громадянина" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Очікування візиту громадянина" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -807,10 +852,10 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
-          <activiti:value id="sReestr" name="Громадянин отримав документ"></activiti:value>
+        <activiti:formProperty id="asResult1" name="Результат візиту" type="enum" required="true">
+          <activiti:value id="sTake" name="Громадянин отримав документ"></activiti:value>
+          <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment1" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -818,8 +863,15 @@ execution.setVariable('sDate_of_expiry', expiry)
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
-      </userTask>
-    <sequenceFlow id="flow45" sourceRef="usertask3" targetRef="endevent4"></sequenceFlow>
+    </userTask>
+    <sequenceFlow id="flow45" sourceRef="usertask3" targetRef="parallelgateway1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow46" sourceRef="parallelgateway1" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult1=='sTake'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="parallelgateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult1=='sMistake'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_624">
     <bpmndi:BPMNPlane bpmnElement="infrastr_624" id="BPMNPlane_infrastr_624">
@@ -844,7 +896,7 @@ execution.setVariable('sDate_of_expiry', expiry)
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+      <bpmndi:BPMNShape bpmnElement="usertask1_yellow" id="BPMNShape_usertask1_yellow">
         <omgdc:Bounds height="81.0" width="119.0" x="509.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
@@ -854,49 +906,55 @@ execution.setVariable('sDate_of_expiry', expiry)
         <omgdc:Bounds height="71.0" width="105.0" x="761.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="912.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="58.0" width="131.0" x="607.0" y="229.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="620.0" y="300.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="620.0" y="301.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="756.0" y="244.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="761.0" y="299.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="761.0" y="310.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="791.0" y="366.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="758.0" y="391.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="788.0" y="447.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="384.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="885.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
-        <omgdc:Bounds height="55.0" width="105.0" x="620.0" y="384.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="718.0" y="460.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="748.0" y="516.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="864.0" y="460.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="894.0" y="516.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
-        <omgdc:Bounds height="55.0" width="131.0" x="851.0" y="536.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="881.0" y="592.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="652.0" y="543.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="599.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="536.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="592.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="240.0" y="546.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="601.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="536.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="335.0" y="591.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="598.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="752.0" y="228.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
@@ -937,7 +995,7 @@ execution.setVariable('sDate_of_expiry', expiry)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="866.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="890.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="912.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="672.0" y="166.0"></omgdi:waypoint>
@@ -948,66 +1006,84 @@ execution.setVariable('sDate_of_expiry', expiry)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="672.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="301.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="725.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="808.0" y="299.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="761.0" y="326.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="861.0" y="271.0"></omgdi:waypoint>
-        <omgdi:waypoint x="778.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="813.0" y="354.0"></omgdi:waypoint>
+        <omgdi:waypoint x="808.0" y="366.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="778.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="778.0" y="391.0"></omgdi:waypoint>
+        <omgdi:waypoint x="808.0" y="401.0"></omgdi:waypoint>
+        <omgdi:waypoint x="808.0" y="447.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="798.0" y="411.0"></omgdi:waypoint>
-        <omgdi:waypoint x="855.0" y="411.0"></omgdi:waypoint>
+        <omgdi:waypoint x="828.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="885.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="907.0" y="384.0"></omgdi:waypoint>
-        <omgdi:waypoint x="907.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="929.0" y="164.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="758.0" y="411.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="411.0"></omgdi:waypoint>
+        <omgdi:waypoint x="788.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="672.0" y="439.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="460.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="516.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="823.0" y="487.0"></omgdi:waypoint>
-        <omgdi:waypoint x="864.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="853.0" y="543.0"></omgdi:waypoint>
+        <omgdi:waypoint x="894.0" y="543.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="916.0" y="515.0"></omgdi:waypoint>
-        <omgdi:waypoint x="916.0" y="536.0"></omgdi:waypoint>
+        <omgdi:waypoint x="946.0" y="571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="946.0" y="592.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="851.0" y="563.0"></omgdi:waypoint>
-        <omgdi:waypoint x="692.0" y="563.0"></omgdi:waypoint>
+        <omgdi:waypoint x="881.0" y="619.0"></omgdi:waypoint>
+        <omgdi:waypoint x="722.0" y="619.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="672.0" y="543.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="599.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="495.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="83.0" x="588.0" y="457.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="618.0" y="513.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="652.0" y="563.0"></omgdi:waypoint>
-        <omgdi:waypoint x="585.0" y="563.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="619.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="619.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="480.0" y="563.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="563.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="619.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="618.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="330.0" y="563.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="563.0"></omgdi:waypoint>
+        <omgdi:waypoint x="335.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="220.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="240.0" y="598.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="387.0" y="546.0"></omgdi:waypoint>
+        <omgdi:waypoint x="387.0" y="591.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="672.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="804.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="804.0" y="283.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="301.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
