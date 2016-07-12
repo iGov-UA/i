@@ -1,14 +1,44 @@
-angular.module('app').factory('UserService', function ($http, $q, AdminService, ErrorsFactory) {
+angular.module('app').factory('UserService', function ($http, $q, $interval, $rootScope, AdminService, ErrorsFactory) {
   var bankIDLogin;
   var bankIDAccount;
+  var isAuthenticated;
+
+  // Рассылка событий входа/выхода пользователя.
+  // подписаться на событие можно в любом контроллере:
+  // $scope.$on('userService:loggedIn', function(event) {
+  //   .....
+  // });
+  // $scope.$on('userService:loggedOut', function(event) {
+  //   .....
+  // });
+  var authUpdater = $interval(function() {
+    $http.get('./auth/isAuthenticated')
+      .success(function (data, status) {
+        if (isAuthenticated !== true) {
+          isAuthenticated = true;
+          $rootScope.$broadcast('userService:loggedIn');
+        }
+      })
+      .error(function (data, status) {
+        if (isAuthenticated !== false) {
+          isAuthenticated = false;
+          $rootScope.$broadcast('userService:loggedOut');
+        }
+      });
+  }, 1000*60);        // 60 sec
+
 
   return {
     isLoggedIn: function () {
-        var oFuncNote = {sHead:"Перевірка авторизованості", sFunc:"isLoggedIn"};
+      var oFuncNote = {sHead:"Перевірка авторизованості", sFunc:"isLoggedIn"};
       var deferred = $q.defer();
 
       $http.get('./auth/isAuthenticated').success(function (data, status) {
         deferred.resolve(true);
+        if (isAuthenticated !== true) {
+          isAuthenticated = true;
+          $rootScope.$broadcast('userService:loggedIn');
+        }
       }).error(function (data, status) {
         bankIDLogin = undefined;
         bankIDAccount = undefined;
@@ -45,6 +75,10 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
 
     logout: function (){
       $http.post('./auth/logout');
+      if (isAuthenticated !== false) {
+        isAuthenticated = false;
+        $rootScope.$broadcast('userService:loggedOut');
+      }
     },
 
     fio: function(){
