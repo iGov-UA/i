@@ -35,8 +35,8 @@ public class ServiceTagService {
                                                         Long nID_ServiceTag, Boolean bRoot) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
 
-        ServiceTagTree tree = getServiceTagTreeCached();
-        //ServiceTagTree tree = getServiceTagTree();
+        //ServiceTagTree tree = getServiceTagTreeCached();
+        ServiceTagTree tree = getServiceTagTree();
         //Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
         Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMap();
 
