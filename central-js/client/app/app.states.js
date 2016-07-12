@@ -22,17 +22,51 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         }
       }
     })
-    .state('index.subcategory', {
-      url: 'subcategory/:catID/:scatID',
+    // .state('index.subcategory', {
+    //   url: 'subcategory/:catID/:scatID',
+    //   resolve: {
+    //     catalog: function(CatalogService) {
+    //       return CatalogService.getServices();
+    //     }
+    //   },
+    //   views: {
+    //     'main@': {
+    //       templateUrl: 'app/service/subcategory/subcategory.html',
+    //       controller: 'SubcategoryController'
+    //     }
+    //   }
+    // })
+    .state('index.situation', {
+      url: 'situation/:catID/:scatID',
       resolve: {
-        catalog: function(CatalogService) {
-          return CatalogService.getServices();
+        service: function($stateParams, ServiceService) {
+          // console.log('App.states: calling get service, $stateParams.id =', $stateParams.id);
+          return ServiceService.get($stateParams.id);
+        },
+        chosenCategory: function(CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, false);
         }
       },
       views: {
-        'main@': {
-          templateUrl: 'app/service/subcategory/subcategory.html',
-          controller: 'SubcategoryController'
+        'contentIn': {
+          templateUrl: 'app/service/new.situation.html',
+          controller: 'SituationController'
+        }
+      }
+    })
+
+    // поправить когда заработает сервис ,не нужно передавать 2 сервиса
+    .state('index.newsubcategory', {
+      url: 'subcategory/:catID/:scatID',
+      resolve: {
+        chosenCategory: function(CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, true);
+        }
+      },
+      views: {
+        'contentIn': {
+          templateUrl: 'app/service/subcategory/new.subcategory.html',
+          controller: 'NewSubcategoryController'
         }
       }
     })
@@ -88,5 +122,19 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
           controller: 'ServiceStatisticsController'
         }
       }
+    })
+    .state('index.catalog', {
+      url: ':catID',
+      resolve : {
+        catalogContent : function (CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTag($stateParams.catID)
+        }
+      },
+        views: {
+          'contentIn' : {
+            templateUrl: 'app/service/template.services.html',
+            controller: 'NewIndexController'
+          }
+        }
     });
 });

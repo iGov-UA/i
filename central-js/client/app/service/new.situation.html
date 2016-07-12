@@ -1,0 +1,62 @@
+<style>
+  .subcategory-tmpl {
+    width: 78%;
+    margin-top: 20px;
+  }
+  .common-hr {
+    background: #dddddd;
+    border: none;
+    height: 1px;
+  }
+  .vertical-divider {
+    background: #449dcd;
+    height: 26px;
+    width: 6px;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+  }
+  .situation-list a{
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .situation-list {
+    padding-left: 16px;
+    list-style-type: square;
+    color: #dddddd;
+    margin-top: 30px;
+  }
+</style>
+
+<div class="container subcategory-tmpl" ng-if="!spinner">
+  <div class="row">
+    <div class="container">
+      <a href="/">Головна</a>
+      >
+      <a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a>
+      >
+      <a href="#">{{category.aServiceTag_Child[0].sName_UA}}</a>
+      <hr class="common-hr">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="container">
+      <div class="col-md-9" style="padding-left: 0">
+        <span data-ng-bind-html="category.aServiceTag_Child[0].sNote"></span>
+      </div>
+      <div class="col-md-3">
+            <div class="vertical-divider"></div>
+            <span style="font-size: 24px; font-family: 'Open Sans'">Пов'язані послуги</span>
+            <br>
+            <ul class="situation-list">
+              <li ng-repeat="relatedServices in category.aService">
+                <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+

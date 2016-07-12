@@ -1,0 +1,121 @@
+<style>
+  .active-tab {
+    background: white;
+    color: #4b5053;
+    position: relative;
+    top: 1px;
+  }
+  .nav-tabs li a:hover {
+    background: white;
+  }
+  .nav-tabs li a:focus {
+    background: white;
+    border-bottom: 2px solid white;
+    color: #4b5053;
+  }
+  .nav-tabs li a.selected {
+    position: relative;
+    top: 1px;
+  }
+  .nav-tabs li {
+    margin-left: 3px;
+  }
+  .nav-tabs li a {
+    font-weight: bold;
+    font-family: "Open Sans";
+    background: white;
+    padding-top: 5px;
+    height: 50px;
+    border: none;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  .subcategory {
+    background: white;
+    border-top: 1px solid #9cc9e1;
+    border-bottom: 2px solid #9cc9e1;
+  }
+  .text ul li {
+    margin-top: 0;
+    list-style: none;
+  }
+  .text ul li a{
+    font-family: "Open Sans";
+    list-style: none;
+    font-size: 14px;
+  }
+  .text ul {
+    padding-left: 0;
+  }
+  .text a h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+  .block {
+    margin-top: 40px;
+  }
+  .container-fluid {
+    overflow-x: hidden;
+  }
+
+  @media (min-width: 992px) {
+    .col-sm-4:nth-child(3n+1) {
+      clear: left;
+    }
+  }
+
+</style>
+
+<div class="container-fluid" ng-class="{'sfs-container':isSfs()}" >
+  <div class="row" ng-hide="isSfs()" >
+    <div class="container">
+      <div class="col-md-11" style="padding-left: 0">
+        <div class="col-md-10 col-md-offset-2" style="padding-left: 0">
+          <igov-search></igov-search>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-if="!spinner">
+    <div class="container">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs " ng-init="catalogTab = 1">
+          <li>
+            <a ui-sref="index" ng-click="catalogTab = 1" ng-class="{'active-tab': catalogTab === 1}">Послуги громадянам</a>
+          </li>
+          <li>
+            <a ui-sref="index.catalog({'catID': 2})" ng-click="catalogTab = 2" ng-class="{'active-tab': catalogTab === 2}">Послуги бізнесу</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row subcategory">
+      <div ui-view="contentIn">
+        <div class="row">
+          <div class="container" style="margin-bottom: 40px" >
+            <div class="col-sm-4 col-xs-12" ng-repeat="category in catalog">
+              <div class="col-sm-12 block">
+                <div class="col-sm-3">
+                  <img ng-hide="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
+                </div>
+                <div class="col-sm-9 text">
+                  <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
+                  <ul>
+                    <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': subcategory.nID })">{{subcategory.sName_UA | capitalize}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row" ng-show="spinner">
+  <div class="text-center">
+    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+  </div>
+</div>

@@ -114,7 +114,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[mode]) {
       hdr = modes[mode].header;
     } else {
-      hdr = 'header.html';
+      hdr = 'new.header.html';
     }
     return 'app/header/' + hdr;
   };
@@ -139,7 +139,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'IndexController'
         },
         'main@': {
-          templateUrl: 'app/service/index/services.html',
+          templateUrl: 'app/service/index/new.services.html',
           controller: 'ServiceController'
         },
         footer: {

@@ -68,5 +68,8 @@ angular.module('app')
         return false
       }
     };
-    
+    $scope.changeCategory = function (category) {
+      $scope.catalogTab = category;
+     };
+
   }]);
