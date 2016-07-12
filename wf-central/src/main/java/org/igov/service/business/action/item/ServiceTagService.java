@@ -35,10 +35,10 @@ public class ServiceTagService {
                                                         Long nID_ServiceTag, Boolean bRoot) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
 
-        //ServiceTagTree tree = getServiceTagTreeCached();
-        ServiceTagTree tree = getServiceTagTree();
-        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
-        //Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMap();
+        ServiceTagTree tree = getServiceTagTreeCached();
+        //ServiceTagTree tree = getServiceTagTree();
+        //Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
+        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMap();
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
             final ServiceTag parentTag = rootTagNode.getTag();
