@@ -13,6 +13,7 @@ angular.module('dashboardJsApp')
             return {
               isNew: false,
               sLogin: userToEdit.sLogin,
+              oldPassword: userToEdit.sPassword,
               sName: userToEdit.sName,
               sDescription: userToEdit.sDescription,
               sEmail: userToEdit.sEmail,
@@ -49,7 +50,6 @@ angular.module('dashboardJsApp')
         groupsToAdd: $scope.data.groupsToAdd,
         groupsToRemove: $scope.data.groupsToRemove
       };
-
       $modalInstance.close(dataToSave);
     };
 
@@ -66,13 +66,13 @@ angular.module('dashboardJsApp')
     };
 
     function isLoginTaken(login) {
-      return !allUsers.some(function (user) {
+      return allUsers.some(function (user) {
         return user.sLogin === login;
-      })
+      });
     }
 
     $scope.loginHasNotBeenUsed = function( $value ) {
-      return isLoginTaken($value);
+      return $scope.data.editMode !== $scope.data.editModes.EDIT ? !isLoginTaken($value) : true;
     };
 
     //  Init

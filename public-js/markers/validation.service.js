@@ -726,8 +726,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       var sFileName = "";
 
       var params = self.oFormDataParams;
-      for(var paramObj in params){
-        if(params[paramObj].value.id && params[paramObj].fileName){
+      for(var paramObj in params) if (params.hasOwnProperty(paramObj)){
+        if(params[paramObj].value && params[paramObj].value.id && params[paramObj].fileName){
           if(modelValue.id === params[paramObj].value.id){
             sFileName = params[paramObj].fileName;
             break;
@@ -741,6 +741,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         aExtensions[convertedItem].toLowerCase();
       }
 
+      /* old validate algorithm
       var ext = sFileName.split('.').pop().toLowerCase();
       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
         if (ext === aExtensions[checkingItem]){
@@ -750,6 +751,32 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           bValid = false;
         }
       }
+      */
+
+      // start new validate algorithm
+      var sReversFileName = "";
+      for (var charInd = sFileName.length - 1; charInd >= 0; charInd--){
+        sReversFileName = sReversFileName + sFileName.charAt(charInd);
+      }
+      for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
+        var bCharValid = true;
+        for(var chInd = 0; chInd < aExtensions[checkingItem].length; chInd++){
+          if(bCharValid == true && sReversFileName.charAt(chInd).toLowerCase() === aExtensions[checkingItem].charAt((aExtensions[checkingItem].length - 1) - chInd).toLowerCase()){
+            bCharValid = true;
+          } else {
+            bCharValid = false;
+            break;
+          }
+        }
+        if (bCharValid){
+          bValid = true;
+          break;
+        } else {
+          bValid = false;
+        }
+      }
+      // end new validate algorithm
+
       console.log("bValid=" + bValid);
 
       if (!bValid) {

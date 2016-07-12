@@ -11,8 +11,8 @@
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка прийде на прийом"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до посадовців якого Ви бажаєте записатись на прийом" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до посадовців якого Ви бажаєте записатись на прийом" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="До кого саме Ви маєте намір записатись на прийом" type="enum"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме Ви маєте намір записатись на прийом" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRozkladPriyom" name="Розклад прийому" type="label" default=" "></activiti:formProperty>
@@ -126,7 +126,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 	    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
             &lt;p&gt;
-            &lt;p&gt;Ваше звернення, щодо запису на прийом до ${sPosadaVid} відхилене.
+            &lt;p&gt;Ваше звернення щодо запису на прийом до ${sPosadaVid} було відхилено.
             &lt;/p&gt;
             &lt;p&gt;
             Причина у наступному:&lt;br&gt;
@@ -166,7 +166,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
             &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-            &lt;p&gt;Ваше звернення, щодо запису на прийом до ${sPosadaVid} розглянуте.&lt;br&gt;
+            &lt;p&gt;Ваше звернення щодо запису на прийом до ${sPosadaVid} розглянуте.&lt;br&gt;
             День прийому:&lt;br&gt;
             ${visitDay1}&lt;br&gt;
             Місце в черзі - ${NumbPers}

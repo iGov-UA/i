@@ -38,6 +38,10 @@ public class SubjectMessageFeedback extends AbstractEntity {
     @Column(name = "nID_Service", nullable = false)
     private Long nID_Service;
 
+    @JsonProperty(value = "sID_Token")
+    @Column(name = "sID_Token", nullable = false)
+    private String sID_Token;
+
     public String getsID_Source() {
         return sID_Source;
     }
@@ -92,5 +96,13 @@ public class SubjectMessageFeedback extends AbstractEntity {
 
     public void setnID_Service(Long nID_Service) {
         this.nID_Service = nID_Service;
+    }
+
+    public String getsID_Token() {
+        return sID_Token;
+    }
+
+    public void setsID_Token(String sID_Token) {
+        this.sID_Token = sID_Token;
     }
 }
