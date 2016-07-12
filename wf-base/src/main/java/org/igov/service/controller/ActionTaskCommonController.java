@@ -2036,7 +2036,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 String assignee = null;
                 for (Task task : tasks) {
 
-                    String sLogin = task.getOwner();
+                    String sLogin ="user_UkrDoc"; // тех-логин УкрДок-а
                     Long nID_Task = Long.parseLong(task.getId());
                     if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
                         LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
