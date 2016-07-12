@@ -60,8 +60,9 @@
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
             <constructor-arg ref="mongoDbFactory"/>
             <constructor-arg ref="converter"/>
+            <constructor-arg name="bucket" value="${mongodb.bucket}" />
         </bean>
-	
+        
         <bean id="durableAnalyticBytesDataStorage" class="org.igov.io.db.kv.analytic.impl.BytesDataStorage">
         </bean>
         <bean id="durableAnalyticFileStorage" class="org.igov.io.db.kv.analytic.impl.FileStorage">
