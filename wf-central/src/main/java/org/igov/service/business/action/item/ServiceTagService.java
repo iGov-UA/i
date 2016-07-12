@@ -36,9 +36,7 @@ public class ServiceTagService {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
 
         ServiceTagTree tree = getServiceTagTreeCached();
-        //ServiceTagTree tree = getServiceTagTree();
-        //Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
-        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMap();
+        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
             final ServiceTag parentTag = rootTagNode.getTag();

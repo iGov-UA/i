@@ -32,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.igov.model.action.item.ServiceTag;
 import org.igov.model.action.item.ServiceTagLink;
 
@@ -456,28 +458,52 @@ public class ActionItemController {
     }
 
     private Service prepareServiceToView(Service oService) {
-        oService.setSubcategory(null);
+        Service preparedService = new Service();
+        preparedService.setId(oService.getId());
+        preparedService.setName(oService.getName());
+        preparedService.setFaq(oService.getFaq());
+        preparedService.setInfo(oService.getInfo());
+        preparedService.setLaw(oService.getLaw());
+        preparedService.setOpenedLimit(oService.getOpenedLimit());
+        preparedService.setOrder(oService.getOrder());
+        preparedService.setSub(oService.getSub());
+        preparedService.setStatusID(oService.getStatusID());
+        preparedService.setSubjectOperatorName(oService.getSubjectOperatorName());
 
-        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.isSelfTest());
-        for (ServiceData oServiceData : aServiceData) {
-            oServiceData.setService(null);
+        List<ServiceData> dataList = new ArrayList<>();
+        for (ServiceData serviceData : oService.getServiceDataList()) {
+            ServiceData preparedData = new ServiceData();
+            preparedData.setId(serviceData.getId());
+            preparedData.setData(serviceData.getData());
+            preparedData.setAsAuth(serviceData.getAsAuth());
 
-            Place place = oServiceData.getoPlace();
+            final Place place = serviceData.getoPlace();
+            preparedData.setoPlace(place);
             if (place != null) {
                 Place root = placeDao.getRoot(place);
-                oServiceData.setoPlaceRoot(root);
+                preparedData.setoPlaceRoot(root);
             }
+
+            preparedData.setCity(serviceData.getCity());
+            preparedData.setRegion(serviceData.getRegion());
+            preparedData.setHidden(serviceData.isHidden());
+            preparedData.setNote(serviceData.getNote());
+            preparedData.setnID_Server(serviceData.getnID_Server());
+            preparedData.setTest(serviceData.isTest());
+            preparedData.setServiceType(serviceData.getServiceType());
+            preparedData.setUrl(serviceData.getUrl());
 
             // TODO remove if below after migration to new approach (via Place)
-            if (oServiceData.getCity() != null) {
-                oServiceData.getCity().getRegion().setCities(null);
-            } else if (oServiceData.getRegion() != null) {
-                oServiceData.getRegion().setCities(null);
+            if (preparedData.getCity() != null) {
+                preparedData.getCity().getRegion().setCities(null);
+            } else if (preparedData.getRegion() != null) {
+                preparedData.getRegion().setCities(null);
             }
+            dataList.add(preparedData);
         }
+        preparedService.setServiceDataList(dataList);
 
-        oService.setServiceDataList(aServiceData);
-        return oService;
+        return preparedService;
     }
 
     @ApiOperation(value = "Получение дерева сервисов", notes = "Дополнительно:\n"
@@ -969,27 +995,12 @@ public class ActionItemController {
             @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag, @ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true)
             @RequestParam(value = "bRoot", required = true) final boolean bRoot
     ) {
-
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag, bRoot);
-        res.forEach(n -> n.getaService().forEach(this::prepareServiceToView));
+        res.forEach(n -> n.setaService(n.getaService().stream().map(
+                this::prepareServiceToView).collect(Collectors.toList())));
 
         return JsonRestUtils.toJsonResponse(res);
-    }
-
-    private List<Service> filterCategory(List<ServiceTagLink> aServiceTagLink, List<ServiceTag> aServiceTag_Selected,
-            Long nID_Category) {
-        List<Service> aService_Selected = new ArrayList();
-        for (ServiceTagLink oServiceTagLink : aServiceTagLink) {
-            for (ServiceTag oServiceTag_Selected : aServiceTag_Selected) {
-                if (Objects.equals(oServiceTagLink.getServiceTag().getId(), oServiceTag_Selected.getId())
-                        && nID_Category.equals(oServiceTagLink.getService().getSubcategory().getCategory().getId())) {
-                    aService_Selected.add(prepareServiceToView(oServiceTagLink.getService()));
-                    break;
-                }
-            }
-        }
-        return aService_Selected;
     }
 
 }
