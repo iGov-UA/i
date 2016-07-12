@@ -106,7 +106,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamDok_ok" name="Прийняти заяву"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Документи не вірні, Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку відмови" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Cherkas_Obl/cnap_455.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="${markerService.loadFromFile('Cherkas_obl/korsun_shevch_455_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Cherkas_Obl/cnap_455.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
@@ -211,7 +211,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка в містобудуванні">
+    <userTask id="usertask2" name="Обробка в містобудуванні" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ Заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -229,17 +229,11 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamMistobud_ok" name="Висновок про можливість забудови надано"></activiti:value>
           <activiti:value id="sEnamMistobud_bad" name="Не можливо надати висновок"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку не надання витягу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку не надання витягу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file_Vusnovok" name="Завантажде Висновок про можливість забудови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Cherkas_Obl/cnap_455.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="${markerService.loadFromFile('Cherkas_obl/korsun_shevch_455_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Cherkas_Obl/cnap_455.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${file_statut},${file_vlasn},${file_vukopiuvania_2000}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
