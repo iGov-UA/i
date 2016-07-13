@@ -46,10 +46,6 @@ public class ServiceTagService {
                 continue;
             }
 
-            if (!isSuitable(tagIdToServices.get(parentTag.getId()), nID_Category, sFind, asID_Place_UA)) {
-                continue;
-            }
-
             ServiceTagTreeNodeVO nodeVO = new ServiceTagTreeNodeVO();
             nodeVO.setoServiceTag_Root(parentTag);
             for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
@@ -59,11 +55,17 @@ public class ServiceTagService {
                     continue;
                 }
 
-                if (isSuitable(tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA)) {
+                if (!isSuitable(parentTag, tagIdToServices.get(childTag.getId()), nID_Category, sFind, asID_Place_UA)) {
                     continue;
                 }
 
                 nodeVO.addChild(childTag);
+            }
+
+            if (nodeVO.getaServiceTag_Child().isEmpty() &&
+                    !isSuitable(parentTag, tagIdToServices.get(parentTag.getId()), nID_Category, sFind,
+                            asID_Place_UA)) {
+                continue;
             }
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
@@ -72,9 +74,7 @@ public class ServiceTagService {
                 if (includeServices) {
                     final List<Service> selectedServices = Stream.concat(
                             rootTagNode.getChildren().stream().flatMap(
-                                    //c -> tagIdToServices.get(c.getTag().getId()).stream()),
                                     c -> aService(tagIdToServices, c.getTag().getId()).stream()),
-                            //tagIdToServices.get(rootTagId).stream())
                             aService(tagIdToServices, rootTagId).stream())
                             .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
                             .collect(Collectors.toList());
@@ -95,15 +95,25 @@ public class ServiceTagService {
         return aService;
     }
     
-    private boolean isSuitable(List<Service> services,
+    private boolean isSuitable(ServiceTag serviceTag, List<Service> services,
                                Long nID_Category, String sFind, List<String> asID_Place_UA) {
         if (CollectionUtils.isEmpty(services)) {
             return false;
         }
 
+        String sFindForServices = sFind;
+        if (sFind != null) {
+            if (containsWithoutCase(serviceTag.getsID(), sFind) ||
+                    containsWithoutCase(serviceTag.getsName_UA(), sFind) ||
+                    containsWithoutCase(serviceTag.getsName_RU(), sFind)) {
+
+                sFindForServices = null;
+            }
+        }
+
         boolean res = false;
         for (Service service : services) {
-            if (isSuitable(service, nID_Category, sFind, asID_Place_UA)) {
+            if (isSuitable(service, nID_Category, sFindForServices, asID_Place_UA)) {
                 res = true;
                 break;
             }
@@ -117,7 +127,7 @@ public class ServiceTagService {
         boolean res = true;
         res = nID_Category.equals(service.getSubcategory().getCategory().getId());
         if (res && sFind != null) {
-            res = service.getName().toLowerCase().contains(sFind.toLowerCase());
+            res = containsWithoutCase(service.getName(), sFind.toLowerCase());
         }
         if (res && CollectionUtils.isNotEmpty(asID_Place_UA)) {
             Set<String> placesSet = new HashSet<>(asID_Place_UA);
@@ -136,6 +146,10 @@ public class ServiceTagService {
             res = placeFound;
         }
         return res;
+    }
+
+    private boolean containsWithoutCase(String source, String target) {
+        return source != null && source.toLowerCase().contains(target.toLowerCase());
     }
 
     private ServiceTagTree getServiceTagTreeCached() {

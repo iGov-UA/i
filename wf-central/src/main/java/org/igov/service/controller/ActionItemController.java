@@ -454,10 +454,10 @@ public class ActionItemController {
     }
 
     private ResponseEntity regionsToJsonResponse(Service oService) {
-        return JsonRestUtils.toJsonResponse(prepareServiceToView(oService));
+        return JsonRestUtils.toJsonResponse(prepareServiceToView(oService, true));
     }
 
-    private Service prepareServiceToView(Service oService) {
+    private Service prepareServiceToView(Service oService, boolean withServiceData) {
         Service preparedService = new Service();
         preparedService.setId(oService.getId());
         preparedService.setName(oService.getName());
@@ -470,38 +470,40 @@ public class ActionItemController {
         preparedService.setStatusID(oService.getStatusID());
         preparedService.setSubjectOperatorName(oService.getSubjectOperatorName());
 
-        List<ServiceData> dataList = new ArrayList<>();
-        for (ServiceData serviceData : oService.getServiceDataList()) {
-            ServiceData preparedData = new ServiceData();
-            preparedData.setId(serviceData.getId());
-            preparedData.setData(serviceData.getData());
-            preparedData.setAsAuth(serviceData.getAsAuth());
+        if (withServiceData) {
+            List<ServiceData> dataList = new ArrayList<>();
+            for (ServiceData serviceData : oService.getServiceDataList()) {
+                ServiceData preparedData = new ServiceData();
+                preparedData.setId(serviceData.getId());
+                preparedData.setData(serviceData.getData());
+                preparedData.setAsAuth(serviceData.getAsAuth());
 
-            final Place place = serviceData.getoPlace();
-            preparedData.setoPlace(place);
-            if (place != null) {
-                Place root = placeDao.getRoot(place);
-                preparedData.setoPlaceRoot(root);
+                final Place place = serviceData.getoPlace();
+                preparedData.setoPlace(place);
+                if (place != null) {
+                    Place root = placeDao.getRoot(place);
+                    preparedData.setoPlaceRoot(root);
+                }
+
+                preparedData.setCity(serviceData.getCity());
+                preparedData.setRegion(serviceData.getRegion());
+                preparedData.setHidden(serviceData.isHidden());
+                preparedData.setNote(serviceData.getNote());
+                preparedData.setnID_Server(serviceData.getnID_Server());
+                preparedData.setTest(serviceData.isTest());
+                preparedData.setServiceType(serviceData.getServiceType());
+                preparedData.setUrl(serviceData.getUrl());
+
+                // TODO remove if below after migration to new approach (via Place)
+                if (preparedData.getCity() != null) {
+                    preparedData.getCity().getRegion().setCities(null);
+                } else if (preparedData.getRegion() != null) {
+                    preparedData.getRegion().setCities(null);
+                }
+                dataList.add(preparedData);
             }
-
-            preparedData.setCity(serviceData.getCity());
-            preparedData.setRegion(serviceData.getRegion());
-            preparedData.setHidden(serviceData.isHidden());
-            preparedData.setNote(serviceData.getNote());
-            preparedData.setnID_Server(serviceData.getnID_Server());
-            preparedData.setTest(serviceData.isTest());
-            preparedData.setServiceType(serviceData.getServiceType());
-            preparedData.setUrl(serviceData.getUrl());
-
-            // TODO remove if below after migration to new approach (via Place)
-            if (preparedData.getCity() != null) {
-                preparedData.getCity().getRegion().setCities(null);
-            } else if (preparedData.getRegion() != null) {
-                preparedData.getRegion().setCities(null);
-            }
-            dataList.add(preparedData);
+            preparedService.setServiceDataList(dataList);
         }
-        preparedService.setServiceDataList(dataList);
 
         return preparedService;
     }
@@ -998,7 +1000,7 @@ public class ActionItemController {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag, bRoot);
         res.forEach(n -> n.setaService(n.getaService().stream().map(
-                this::prepareServiceToView).collect(Collectors.toList())));
+                s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
 
         return JsonRestUtils.toJsonResponse(res);
     }
