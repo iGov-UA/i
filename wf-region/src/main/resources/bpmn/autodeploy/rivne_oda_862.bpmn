@@ -3,13 +3,14 @@
   <process id="rivne_oda_862" name="Видача Акта обстеження місцевими державними адміністраціями спеціалізованих підприємств, їх приймальних пунктів та приймальних пунктів спеціалізованих металургійних переробних підприємств" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати акт" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва суб’єкта гоподарської діяльності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypeCompany" name="Оберіть тип підприємства" type="enum" required="true">
           <activiti:value id="sEnumType1" name="спеціалізоване підприємство"></activiti:value>
@@ -20,18 +21,19 @@
           <activiti:value id="sEnumTypeAct2" name="Акт обстеження приймального пункту брухту кольорових металів"></activiti:value>
           <activiti:value id="sEnumTypeAct3" name="Оба акта"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sKind" name="Вид господарської діяльності з металобрухтом;(який передбачається здійснювати суб'єктом господарської діяльності за місцезнаходженням, що обстежується)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLandOwner" name="Орендодавець земельної ділянки, на якій розташовано об’єкт, що обстежується" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberContract" name="Номер, дата укладання та термін дії договору оренди (суборенди) земельної ділянки, який укладено суб’єктом господарської діяльності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nLandArea1" name="Площа земельної ділянки, кв.м." type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="nLandArea2" name="Площа земельної ділянки з твердим покриттям, на якій безпосередньо буде зберігатись та перероблятись металобрухт, кв.м." type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCoating" name="Характер покриття земельної ділянки, на якій безпосередньо буде зберігатись та перероблятись металобрухт" type="string" required="true"></activiti:formProperty>
+    <!-- Обладнання з переробки брухту -->
         <activiti:formProperty id="asProcessingEquipment" name="Кількість наявного обладнання з переробки брухту" type="enum" required="true">
           <activiti:value id="sEnumProcessingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumProcessingEquipment2" name="2"></activiti:value>
           <activiti:value id="sEnumProcessingEquipment3" name="3"></activiti:value>
-          <activiti:value id="sEnumProcessingEquipment4" name="5"></activiti:value>
+          <activiti:value id="sEnumProcessingEquipment4" name="4"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="labelProcess1" name="======================================" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameProcessEquipment1" name="Найменування обладнання" type="string" required="true"></activiti:formProperty>
@@ -69,6 +71,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumberProcessContract4" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameProcessOwner4" name="Орендодавець" type="string" required="true"></activiti:formProperty>
+    <!-- вантажопідйомне устаткування -->
         <activiti:formProperty id="asLiftingEquipment" name="Кількість наявного вантажопідйомного устаткування" type="enum" required="true">
           <activiti:value id="sEnumLiftingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumLiftingEquipment2" name="2"></activiti:value>
@@ -95,6 +98,7 @@
         <activiti:formProperty id="sNumberLifting2" name="Заводський номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberLiftingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameLiftingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
+    <!-- обладнання для різки -->   
         <activiti:formProperty id="asCuttingEquipment" name="Кількість наявного обладнання для різки" type="enum" required="true">
           <activiti:value id="sEnumCuttingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumCuttingEquipment2" name="2"></activiti:value>
@@ -117,6 +121,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumberCuttingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCuttingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
+    <!-- вагове обладнання -->
         <activiti:formProperty id="asWeighingEquipment" name="Кількість наявного вагового обладнання" type="enum" required="true">
           <activiti:value id="sEnumWeighingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumWeighingEquipment2" name="2"></activiti:value>
@@ -145,6 +150,7 @@
         <activiti:formProperty id="sNumberWeighing2" name="Заводський номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberWeighingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameWeighingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
+    <!-- обладнання для проведення радіаційного контролю -->    
         <activiti:formProperty id="asRadiationEquipment" name="Кількість наявного обладнання для проведення радіаційного контролю" type="enum" required="true">
           <activiti:value id="sEnumRadiationEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumRadiationEquipment2" name="2"></activiti:value>
@@ -179,10 +185,19 @@
           <activiti:value id="sEnumYesUsed" name="використовується"></activiti:value>
           <activiti:value id="sEnumNoUsed" name="не використовується"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="msvidran@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Копії документів, що підтверджують право власності суб’єктом господарювання або оренди ним земельної ділянки (виробничої площі), де буде впроваджуватись відповідний вид господарської діяльності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Копії установчих документів суб’єкта господарської діяльності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Дозволи на право здійснення даного виду діяльності;(держгірпромнагляду, державної санітарно-епідеміологічної служби, державного нагляду з питань пожежної безпеки та управління екології та природних ресурсів)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile4" name="Повірені в метрологічній службі паспорти на вагове, брухтопереробне, вантажопідйомне обладнення та на прилад, який здійснює радіаційний контроль металобрухту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -198,7 +213,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Видача Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств]]></activiti:string>
@@ -228,17 +243,20 @@
           <activiti:string><![CDATA[Видача Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств зареєстровано у системі.<br/>
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
-<br />
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+			</p>
+                        Повідомлення про результат послуги буде спрямоване на Ваш e-mail.<br>
+			За наявності питань можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -252,13 +270,13 @@ ${sNameOrgan}.<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення (1-й крок)">
+    <userTask id="usertask1" name="Обробка звернення (1-й крок)" activiti:candidateGroups="act_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeCompany" name="Тип підприємства" type="enum" writable="false">
           <activiti:value id="sEnumType1" name="спеціалізоване підприємство"></activiti:value>
@@ -269,7 +287,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnumTypeAct2" name="Акт обстеження приймального пункту брухту кольорових металів"></activiti:value>
           <activiti:value id="sEnumTypeAct3" name="Оба акта"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKind" name="Вид господарської діяльності з металобрухтом;(який передбачається здійснювати суб'єктом господарської діяльності за місцезнаходженням, що обстежується)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLandOwner" name="Орендодавець земельної ділянки, на якій розташовано об’єкт, що обстежується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberContract" name="Номер, дата укладання та термін дії договору оренди (суборенди) земельної ділянки, який укладено суб’єктом господарської діяльності" type="string" writable="false"></activiti:formProperty>
@@ -461,15 +479,14 @@ ${sNameOrgan}.<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 На жаль, Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств було відхилено.</p>
 <p>Причина в наступному:</p>
 <p>${comment}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-<br />
-${sPhoneOrgan}.<br />
+${sPhoneOrgan}.<br>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
+${sNameOrgan}.<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -501,13 +518,13 @@ ${sNameOrgan}.<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств зареєстровано.<br />
-Робоча група призначена на ${sDateCommitteeOut}.<br /> 
-<p>З Вами додатково зв'яжуться спеціалісти з департаменту економічного розвитку і торгівлі.</p><br /> 
-${sPhoneOrgan}.<br />
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств зареєстровано.<br>
+Робоча група призначена на ${sDateCommitteeOut}.<br> 
+<p>З Вами додатково зв'яжуться спеціалісти з департаменту економічного розвитку і торгівлі.</p>
+${sPhoneOrgan}.<br>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
+${sNameOrgan}.<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -523,13 +540,13 @@ ${sNameOrgan}.<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка звернення (2-й крок)">
+    <userTask id="usertask2" name="Обробка звернення (2-й крок)" activiti:candidateGroups="act_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress1" name="Адреса, місцезнаходження суб’єкта гоподарської діяльності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeCompany" name="Тип підприємства" type="enum" writable="false">
           <activiti:value id="sEnumType1" name="спеціалізоване підприємство"></activiti:value>
@@ -540,7 +557,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnumTypeAct2" name="Акт обстеження приймального пункту брухту кольорових металів"></activiti:value>
           <activiti:value id="sEnumTypeAct3" name="Оба акта"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress2" name="Місцезнаходження об’єкта, шо обстежується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKind" name="Вид господарської діяльності з металобрухтом;(який передбачається здійснювати суб'єктом господарської діяльності за місцезнаходженням, що обстежується)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLandOwner" name="Орендодавець земельної ділянки, на якій розташовано об’єкт, що обстежується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberContract" name="Номер, дата укладання та термін дії договору оренди (суборенди) земельної ділянки, який укладено суб’єктом господарської діяльності" type="string" writable="false"></activiti:formProperty>
@@ -721,8 +738,8 @@ ${sNameOrgan}.<br />
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p>
-Ваше звернення щодовидачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств опрацьовано. <br>
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт за адресою:.<br> 
+Ваше звернення щодовидачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств опрацьовано.<br>
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт за адресою:<br> 
 ${sAddress}.<br>
 ${sWorkTime}.<br>
 При собі треба мати:<br> 
