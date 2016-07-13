@@ -1,7 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="loda_invest_1" name="Подача greenfields та brownfields" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
+    <startEvent id="startevent1" name="Start">
+        <extensionElements>
+       <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="position" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sObject" name="Назва об'єкту" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sEnumType" name="Тип об'єкта інвестицій" type="enum" required="true">
+          <activiti:value id="sEnumType_1" name="Земельна ділянка"></activiti:value>
+          <activiti:value id="sEnumType_2" name="Працююче підприємтсво"></activiti:value>
+          <activiti:value id="sEnumType_3" name="Непрацююче підприємтсво"></activiti:value>
+          <activiti:value id="sEnumType_4" name="Виробниче приміщення"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sEnumOwnership" name="Форма власності" type="enum" required="true">
+          <activiti:value id="sEnumOwnership_1" name="Державна"></activiti:value>
+          <activiti:value id="sEnumOwnership_2" name="Комунальна"></activiti:value>
+          <activiti:value id="sEnumOwnership_3" name="Приватна"></activiti:value>
+        </activiti:formProperty>
+        
+         <activiti:formProperty id="sEnumCondition" name="Умови використання" type="enum" required="true">
+          <activiti:value id="sEnumCondition_1" name="Оренда"></activiti:value>
+          <activiti:value id="sEnumCondition_2" name="Продаж"></activiti:value>
+          <activiti:value id="sEnumCondition_3" name="Спільна діяльність"></activiti:value>
+          <activiti:value id="sEnumCondition_4" name="Оренда/Продаж"></activiti:value>
+        </activiti:formProperty>
+               
+        <activiti:formProperty id="sPreviousUse" name="Попереднє використання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCharacteristics" name="Характеристика підприємства" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб;Вкажіть кількість працюючих осіб на підприємстві на даний момент" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); вкажіть наявні трудові ресурси (16-60р) в місці, де знаходиться об'єкт" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" required="true">
+                <activiti:value id="sEnumDistrict_1" name="Бродівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_2" name="Буський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_3" name="Городоцький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_4" name="Дрогобицький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_5" name="Жидачівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_6" name="Жовківський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_7" name="Золочівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_8" name="Кам'янка-Бузький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_9" name="Миколаївський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_10" name="Мостиський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_11" name="Перемишлянський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_12" name="Пустомитівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_13" name="Радехівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_14" name="Самбірський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_15" name="Сколівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_16" name="Сокальський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_17" name="Старосамбірський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_18" name="Стрийський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_19" name="Турківський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_20" name="Яворівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_21" name="м. Борислав"></activiti:value>
+                <activiti:value id="sEnumDistrict_22" name="м. Дрогобич"></activiti:value>
+                <activiti:value id="sEnumDistrict_23" name="м. Львів"></activiti:value>
+                <activiti:value id="sEnumDistrict_24" name="м. Моршин"></activiti:value>
+                <activiti:value id="sEnumDistrict_25" name="м. Новий Розділ"></activiti:value>
+                <activiti:value id="sEnumDistrict_26" name="м. Самбір"></activiti:value>
+                <activiti:value id="sEnumDistrict_27" name="м. Стрий"></activiti:value>
+                <activiti:value id="sEnumDistrict_28" name="м. Трускавець"></activiti:value>
+                <activiti:value id="sEnumDistrict_29" name="м. Червоноград"></activiti:value>
+        </activiti:formProperty>
+       
+         <activiti:formProperty id="sSettlement" name="Населений пункт" type="string" required="true"></activiti:formProperty>
+         <activiti:formProperty id="sStreet" name="Вулиця (проспект, провулок тощо)" type="string" required="true"></activiti:formProperty> 
+         
+         <activiti:formProperty id="nNumber" name="Номер будинку" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nZIPCode" name="Поштовий індекс" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sLabel1"  name="GPS Координати" type="label" default="Координати можна знайти: &lt;a href=&quot;http://www.gps-coordinates.net/&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+         <activiti:formProperty id="sLatitude" name="Широта" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sLongitude" name="Довгота" type="string" required="true"></activiti:formProperty> 
+         
+         
+         <activiti:formProperty id="sQuadrature" name="Площа земельної ділянки, га" type="string" required="true"></activiti:formProperty> 
+         
+         <activiti:formProperty id="asAppointment" name="Категорія земель за цільовим призначенням" type="enum" required="true">
+                <activiti:value id="sEnumAppointment_1" name="землі сільськогосподарського призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_2" name="землі житлової та громадської забудови"></activiti:value>
+                <activiti:value id="sEnumAppointment_3" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_4" name="землі оздоровчого призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_5" name="землі рекреаційного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_6" name="землі історико-культурного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_7" name="землі лісового фонду"></activiti:value>
+                <activiti:value id="sEnumAppointment_8" name="землі водного фонду"></activiti:value>
+                <activiti:value id="sEnumAppointment_9" name="землі промислового, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>  
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="asRealty" name="Нерухоме майно" type="enum" required="true">
+                <activiti:value id="sEnumRealtyYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nNumberRealty" name="Кількість об'єктів" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна" type="textArea" required="true"></activiti:formProperty> 
+         
+         <activiti:formProperty id="sQuadratured" name="Площа земельної ділянки, га" type="string" required="true"></activiti:formProperty> 
+         
+       </extensionElements>
+
+    </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
       <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
@@ -28,8 +134,7 @@
     <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    
-  </process>
+      </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_loda_invest_1">
     <bpmndi:BPMNPlane bpmnElement="loda_invest_1" id="BPMNPlane_loda_invest_1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
