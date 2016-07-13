@@ -73,7 +73,7 @@ public class ServiceTagService {
                     final List<Service> selectedServices = Stream.concat(
                             rootTagNode.getChildren().stream().flatMap(
                                     //c -> tagIdToServices.get(c.getTag().getId()).stream()),
-                                    c -> aService(tagIdToServices, c.getTag().getId())).stream()),
+                                    c -> aService(tagIdToServices, c.getTag().getId()).stream()),
                             //tagIdToServices.get(rootTagId).stream())
                             aService(tagIdToServices, rootTagId).stream())
                             .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
