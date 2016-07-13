@@ -69,6 +69,8 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія свідоцтва про спадщину; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"  ></activiti:formProperty>
+<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"  ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -411,6 +413,70 @@ ${sMail_Signature}
     <sequenceFlow id="flow42" name="${decide2 == 'reject2'}" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>P7DT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>P7DT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask11" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Заявка довгий час не обробляється]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_client_notify.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] ne obrobleno.Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow43" sourceRef="escalationTimer1" targetRef="servicetask11"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask12" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Заявка довгий час не обробляється]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_client_notify.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] ne obrobleno.Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow45" sourceRef="escalationTimer2" targetRef="servicetask12"></sequenceFlow>
+    <sequenceFlow id="flow46" sourceRef="servicetask12" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_10">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_10" id="BPMNPlane_common_mreo_10">
@@ -429,6 +495,9 @@ ${sMail_Signature}
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="546.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="448.0" y="339.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -437,6 +506,9 @@ ${sMail_Signature}
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="510.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="243.0" y="560.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="325.0" y="740.0"></omgdc:Bounds>
@@ -459,6 +531,12 @@ ${sMail_Signature}
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="322.0" y="590.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="85.0" width="185.0" x="623.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="85.0" width="185.0" x="10.0" y="495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="180.0" y="137.0"></omgdi:waypoint>
@@ -476,7 +554,7 @@ ${sMail_Signature}
         <omgdi:waypoint x="641.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="641.0" y="430.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="609.0" y="305.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="528.0" y="339.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -529,6 +607,22 @@ ${sMail_Signature}
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="487.0" y="566.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="576.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="623.0" y="262.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="623.0" y="262.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="243.0" y="575.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="537.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="195.0" y="537.0"></omgdi:waypoint>
+        <omgdi:waypoint x="233.0" y="537.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
