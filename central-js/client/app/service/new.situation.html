@@ -32,11 +32,12 @@
 <div class="container subcategory-tmpl" ng-if="!spinner">
   <div class="row">
     <div class="container">
-      <a href="/">Головна</a>
+      <a href="/" ng-if="catalogTab === 1">Головна</a>
+      <a href="/2" ng-if="catalogTab === 2">Головна</a>
       >
       <a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a>
       >
-      <a href="#">{{category.aServiceTag_Child[0].sName_UA}}</a>
+      <span>{{category.aServiceTag_Child[0].sName_UA | capitalize}}</span>
       <hr class="common-hr">
     </div>
   </div>
