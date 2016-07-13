@@ -70,8 +70,8 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Копія доручення;додається  за наявності" type="file"></activiti:formProperty>
-		<activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"  ></activiti:formProperty>
-<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"  ></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -414,7 +414,7 @@ ${sMail_Signature}
     <sequenceFlow id="flow42" name="${decide2 == 'reject2'}" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="false">
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
@@ -446,11 +446,6 @@ ${sMail_Signature}
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="escalationTimer1" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>P7DT1H</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
     <serviceTask id="servicetask12" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -476,8 +471,13 @@ ${sMail_Signature}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow45" sourceRef="boundarytimer2" targetRef="servicetask12"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="servicetask12" targetRef="usertask2"></sequenceFlow>
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>P7DT1H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow47" sourceRef="escalationTimer2" targetRef="servicetask12"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_6">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_6" id="BPMNPlane_common_mreo_6">
@@ -497,7 +497,7 @@ ${sMail_Signature}
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="526.0" y="280.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="540.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="448.0" y="339.0"></omgdc:Bounds>
@@ -508,8 +508,8 @@ ${sMail_Signature}
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="220.0" x="233.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="240.0" y="550.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="263.0" y="560.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="325.0" y="740.0"></omgdc:Bounds>
@@ -536,7 +536,7 @@ ${sMail_Signature}
         <omgdc:Bounds height="66.0" width="191.0" x="610.0" y="245.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="510.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="135.0" x="20.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
@@ -610,20 +610,20 @@ ${sMail_Signature}
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="556.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="610.0" y="278.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="610.0" y="278.0"></omgdi:waypoint>
         <omgdi:waypoint x="561.0" y="277.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="240.0" y="565.0"></omgdi:waypoint>
-        <omgdi:waypoint x="155.0" y="537.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="155.0" y="537.0"></omgdi:waypoint>
         <omgdi:waypoint x="233.0" y="537.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="263.0" y="575.0"></omgdi:waypoint>
+        <omgdi:waypoint x="155.0" y="537.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
