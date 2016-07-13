@@ -95,17 +95,59 @@
          
          <activiti:formProperty id="asRealty" name="Нерухоме майно" type="enum" required="true">
                 <activiti:value id="sEnumRealtyYes" name="Так"></activiti:value>
-                <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+                <activiti:value id="sEnumRealtyNo" name="Ні"></activiti:value>
          </activiti:formProperty> 
          
-         <activiti:formProperty id="nNumberRealty" name="Кількість об'єктів" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nAmountRealty" name="Кількість об'єктів" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів" type="string" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна" type="string" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна" type="textArea" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна; будь ласка, вкажіть, чи потрібен ремонт" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна;дата прийняття в експлуатацію, короткий опис приміщень, їхня площа тощо" type="textArea" required="true"></activiti:formProperty> 
          
-         <activiti:formProperty id="sQuadratured" name="Площа земельної ділянки, га" type="string" required="true"></activiti:formProperty> 
+         <!-- електропостачання на об'єкті -->
+         <activiti:formProperty id="asPower" name="Наявність електропостачання на об'єкті" type="enum" required="true">
+                <activiti:value id="sEnumPowerYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumPowerNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
          
-       </extensionElements>
+         <activiti:formProperty id="nDistancePower" name="Електропостачання: відстань (км); вкажіть відстань до найближчого джерела електропостачання" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nCapacityPower" name="Електропостачання: потужність (кВт·г); вкажіть потужність найближчого джерела електропостачання" type="string" required="true"></activiti:formProperty> 
+         <!-- електропостачання на об'єкті -->
+         
+         <!-- газопостачання на об'єкті -->
+        <activiti:formProperty id="asGas" name="Наявність газопостачання на об'єкті" type="enum" required="true">
+                <activiti:value id="sEnumGasYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumGasNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceGas" name="Газопостачання: відстань (км); вкажіть відстань до найближчого джерела газопостачання" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nCapacityGas" name="Газопостачання: потужність ( ); вкажіть потужність найближчого джерела газопостачання" type="string" required="true"></activiti:formProperty>  
+         <!-- газопостачання на об'єкті -->
+
+         <!-- водопостачання на об'єкті -->
+        <activiti:formProperty id="asWaterSupply" name="Наявність водопостачання на об'єкті" type="enum" required="true">
+                <activiti:value id="sEnumWaterSupplyYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumWaterSupplyNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceWaterSupply" name="Водопостачання: відстань (км); вкажіть відстань до найближчого джерела водопостачання" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sTypeWaterSupply" name="Водопостачання: тип; вкажіть тип найближчого джерела водопостачання" type="string" required="true"></activiti:formProperty>  
+         <!-- водопостачання на об'єкті -->
+
+        <!-- водовідведення на об'єкті -->
+        <activiti:formProperty id="asDrainage" name="Наявність водовідведення на об'єкті" type="enum" required="true">
+                <activiti:value id="sEnumDrainageYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumDrainageNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceDrainage" name="Водовідведення: відстань (км); вкажіть відстань до найближчого джерела водовідведення" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sTypeDrainage" name="Водовідведення: тип; вкажіть тип найближчого водовідведення" type="string" required="true"></activiti:formProperty>  
+         <!-- водовідведення на об'єкті -->
+       
+
+
+
+        </extensionElements>
+
 
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
