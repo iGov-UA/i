@@ -2021,10 +2021,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (Task task : tasks) {
                     String sLogin ="user_UkrDoc"; // тех-логин УкрДок-а
                     Long nID_Task = Long.parseLong(task.getId());
-//                    if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
-//                        LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
-
-                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
+                    if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
+                        LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
+//
+//                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
                         assignee = task.getAssignee();
                         LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
                         taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
@@ -2039,9 +2039,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         taskService.complete(task.getId());
                         LOG.info("Completed task {}", task.getId());
 //                  }
-//                    } else {
-//                        throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR,
-//                                String.format("user '%s' not included in group 'group_UkrDoc' ot this usertask", sLogin));
+                    } else {
+                        throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR,
+                                String.format("user '%s' not included in group 'group_UkrDoc' ot this usertask", sLogin));
                     }
                 }
 
