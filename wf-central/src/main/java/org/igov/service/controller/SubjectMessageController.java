@@ -501,19 +501,24 @@ public class SubjectMessageController {
     @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackExternal(
-            @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source") String sID_Source,
-            @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO") String sAuthorFIO,
-            @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail") String sMail,
-            @ApiParam(value = "Заголовок отзыва", required = true) @RequestParam(value = "sHead") String sHead,
-            @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody") String sBody,
-            @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate") Long nID_Rate,
-            @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service") Long nID_Service
+            @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source", required = true) String sID_Source,
+            @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO", required = true) String sAuthorFIO,
+            @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail", required = true) String sMail,
+            @ApiParam(value = "Заголовок отзыва", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+            @ApiParam(value = "Заголовок отзыва", required = false) @RequestParam(value = "sPlace", required = false) String sPlace,
+            @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
+            @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
+            @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
+            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nId", required = false) Long nId
     ) throws CommonServiceException {
 
         LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
         JSONObject responseObject = new JSONObject();
         try {
-            SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source, sAuthorFIO, sMail, sHead, sBody, nID_Rate, nID_Service);
+            SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
+                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nId);
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());

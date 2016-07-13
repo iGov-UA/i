@@ -15,7 +15,7 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
     }
 
     @Override
-    public SubjectMessageFeedback setMessage(SubjectMessageFeedback subjectMessageFeedback) {
+    public SubjectMessageFeedback save(SubjectMessageFeedback subjectMessageFeedback) {
         getSession().save(subjectMessageFeedback);
         return subjectMessageFeedback;
     }
@@ -26,11 +26,17 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
         if (feedback.isPresent()) {
           return feedback.get();
         }
-        return null;
+        throw new EntityNotFoundException("SubjectMessageFeedback withnot found id:" + nId);
     }
 
     @Override
     public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service) {
         return findAllBy("nID_Service", nID_service);
+    }
+
+    @Override
+    public SubjectMessageFeedback update(SubjectMessageFeedback subjectMessageFeedback) {
+        getSession().update(subjectMessageFeedback);
+        return subjectMessageFeedback;
     }
 }
