@@ -398,7 +398,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           <activiti:value id="sAccept" name="Документи в порядку, надіслати рахунок для сплати"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити у прийнятті особової справи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDeclineReason" name="Підстава для відмови у прийнятті особової справи" type="enum" required="true">
+        <activiti:formProperty id="asDeclineReason" name="Підстава для відмови у прийнятті особової справи" type="enum">
           <activiti:value id="sNoDoc" name="Заявником не надано усіх документів та інформації, необхідних для оформлення і видачі посвідчення"></activiti:value>
           <activiti:value id="sAlready" name="Заявник вже отримав посвідчення, яке є дійсним на день звернення"></activiti:value>
           <activiti:value id="sBaseError" name="Дані, отримані з бази даних, не підтверджують інформацію, надану заявником"></activiti:value>
@@ -617,7 +617,7 @@ execution.setVariable('sDate_of_print', timer)</script>
     <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow39" sourceRef="exclusivegateway3" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment==''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
