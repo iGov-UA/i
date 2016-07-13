@@ -416,7 +416,7 @@ ${sMail_Signature}
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="false">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask11" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -446,9 +446,9 @@ ${sMail_Signature}
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="escalationTimer1" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask12" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
