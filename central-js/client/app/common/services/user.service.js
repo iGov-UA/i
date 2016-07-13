@@ -1,4 +1,4 @@
-angular.module('app').factory('UserService', function ($http, $q, $interval, $rootScope, AdminService, ErrorsFactory) {
+angular.module('app').factory('UserService', function ($http, $q, $interval, $rootScope, $location, AdminService, ErrorsFactory) {
   var bankIDLogin;
   var bankIDAccount;
   var isAuthenticated;
@@ -23,6 +23,7 @@ angular.module('app').factory('UserService', function ($http, $q, $interval, $ro
         if (isAuthenticated !== false) {
           isAuthenticated = false;
           $rootScope.$broadcast('userService:loggedOut');
+          $location.path('/');
         }
       });
   }, 1000*60);        // 60 sec
@@ -43,6 +44,11 @@ angular.module('app').factory('UserService', function ($http, $q, $interval, $ro
         bankIDLogin = undefined;
         bankIDAccount = undefined;
         deferred.reject(true);
+        if (isAuthenticated !== false) {
+          isAuthenticated = false;
+          $rootScope.$broadcast('userService:loggedOut');
+          $location.path('/');
+        }
         ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
         ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
       });
@@ -78,6 +84,7 @@ angular.module('app').factory('UserService', function ($http, $q, $interval, $ro
       if (isAuthenticated !== false) {
         isAuthenticated = false;
         $rootScope.$broadcast('userService:loggedOut');
+        $location.path('/');
       }
     },
 
