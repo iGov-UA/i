@@ -72,8 +72,10 @@ public class ServiceTagService {
                 if (includeServices) {
                     final List<Service> selectedServices = Stream.concat(
                             rootTagNode.getChildren().stream().flatMap(
-                                    c -> tagIdToServices.get(c.getTag().getId()).stream()),
-                            tagIdToServices.get(rootTagId).stream())
+                                    //c -> tagIdToServices.get(c.getTag().getId()).stream()),
+                                    c -> aService(tagIdToServices, c.getTag().getId())).stream()),
+                            //tagIdToServices.get(rootTagId).stream())
+                            aService(tagIdToServices, rootTagId).stream())
                             .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
                             .collect(Collectors.toList());
 
@@ -85,6 +87,14 @@ public class ServiceTagService {
         return res;
     }
 
+    private List<Service> aService(Map<Long, List<Service>> tagIdToServicesMap, Long tagId) {
+        List<Service> aService = tagIdToServicesMap.get(tagId);
+        if (aService == null) {
+            aService = new ArrayList<>();
+        }
+        return aService;
+    }
+    
     private boolean isSuitable(List<Service> services,
                                Long nID_Category, String sFind, List<String> asID_Place_UA) {
         if (CollectionUtils.isEmpty(services)) {
