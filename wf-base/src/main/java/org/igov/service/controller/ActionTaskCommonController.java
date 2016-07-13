@@ -1990,7 +1990,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
     public @ResponseBody
-    ResponseEntity processUkrDocCallBack(@RequestBody String event) {
+    ResponseEntity processUkrDocCallBack(@RequestBody String event) throws AccessServiceException {
 
         UkrDocEventHandler eventHandler = new UkrDocEventHandler();
         eventHandler.processEvent(event);
@@ -2035,7 +2035,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
                 String assignee = null;
                 for (Task task : tasks) {
-                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
+
+                    String sLogin ="user_UkrDoc"; // тех-логин УкрДок-а
+                    Long nID_Task = Long.parseLong(task.getId());
+                    if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
+                        LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
+
+//                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
                     assignee = task.getAssignee();
                     LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
                     taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
@@ -2049,7 +2055,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
                     taskService.complete(task.getId());
                     LOG.info("Completed task {}", task.getId());
-                  }
+//                  }
+                } else {
+                        throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR,
+                                String.format("user '%s' not included in group 'group_UkrDoc' ot this usertask", sLogin));
+                    }
                 }
 
                 LOG.info("Looking for a new task to set form properties and claim it to the user {}", assignee);

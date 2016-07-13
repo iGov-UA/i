@@ -19,17 +19,14 @@ angular.module('app').controller('IndexController', function ($scope, $interval,
     $scope.navBarStatusVisible = false;
   });
 
-  $scope.isLoggedInUpdater = $interval(function() {
-    UserService.isLoggedIn().then(function (result) {
-      $scope.navBarStatusVisible = result;
-    }, function () {
+  $scope.$on('userService:loggedIn', function(event) {
+    if($scope.navBarStatusVisible !== true) {
+      $scope.navBarStatusVisible = true;
+    }
+  });
+  $scope.$on('userService:loggedOut', function(event) {
+    if($scope.navBarStatusVisible !== false) {
       $scope.navBarStatusVisible = false;
-    });
-  }, 1000*60);        // 60 sec
-
-  $scope.$on("$destroy", function() {
-    if ($scope.isLoggedInUpdater) {
-      $interval.cancel($scope.isLoggedInUpdater);
     }
   });
 
@@ -39,9 +36,5 @@ angular.module('app').controller('IndexController', function ($scope, $interval,
 
   $scope.logout = function () {
     UserService.logout();
-    $scope.navBarStatusVisible = false;
-    if ($scope.isLoggedInUpdater) {
-      $interval.cancel($scope.isLoggedInUpdater);
-    }
   };
 });
