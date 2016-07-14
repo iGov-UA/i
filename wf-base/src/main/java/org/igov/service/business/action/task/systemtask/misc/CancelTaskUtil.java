@@ -29,6 +29,19 @@ public class CancelTaskUtil {
             .append("value=\"Скасувати заявку!\"/>")
             .append("</form>")
             .toString();
+    private static final String cancelTaskSimpleButtonHTML = new StringBuilder()
+            .append("<form method=\"POST\" action=\"")
+            .append(TAG_action)
+            .append("\" ")
+            .append("accept-charset=\"utf-8\">")
+            //.append("Ви можете скасувати свою заявку, вказавши причину в цьому полі: <br/>\n")
+            //.append("<input type=\"text\" name=\"sInfo\"/><br/>\n")
+                    //.append("<input type=\"hidden\" name=\"nID_Protected\" value=\"")
+                    //.append(TAG_nID_Protected + "\"/><br/>\n")
+            .append("<input type=\"submit\" name=\"submit\" ")
+            .append("value=\"Вже не актуально, закрити заявку\"/>")
+            .append("</form>")
+            .toString();
     //private static String TAG_nID_Protected = "[nID_Protected]";
     @Autowired
     AccessKeyService accessCover;
@@ -37,10 +50,11 @@ public class CancelTaskUtil {
     @Autowired
     private GeneralConfig generalConfig;
 
-    public String getCancelFormHTML(Long nID_Order) throws Exception {
+    public String getCancelFormHTML(Long nID_Order, boolean bSimple) throws Exception {
 
         String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
                 .append("?nID_Order=").append(nID_Order)
+                .append("&bSimple=").append(bSimple)
                 //TODO: Need remove in future!!!
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
                 .append(AccessContract.RequestAndLoginUnlimited.name())//.append("&sAccessContract=Request")
@@ -53,7 +67,7 @@ public class CancelTaskUtil {
                 .toString();
         LOG.info("total URL for action ={}", sURL_CancelTaskAction);
 
-        String cancelBtn = cancelButtonHTML
+        String cancelBtn = (bSimple ? cancelTaskSimpleButtonHTML : cancelButtonHTML)
                 .replace(TAG_action, sURL_CancelTaskAction)
                 //.replace(TAG_nID_Protected, "" + nID_Order)
                 ;
