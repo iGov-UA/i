@@ -5,13 +5,13 @@
  */
 package org.igov.service.business.subject;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessageFeedbackDao;
-import org.igov.model.subject.message.SubjectMessageType;
+import org.igov.model.subject.message.*;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.igov.service.exception.CommonServiceException;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 
 /**
  *
@@ -227,18 +232,65 @@ public class SubjectMessageService {
     }
 
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
-                                                            String sHead, String sBody, Long nID_Rate, Long nID_Service) {
-        SubjectMessageFeedback messageFeedback = new SubjectMessageFeedback();
+                                                            String sHead, String sBody, String sPlace, String sEmployeeFIO,
+                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId) {
+
+        SubjectMessageFeedback messageFeedback;
+        if (nId == null){
+            messageFeedback = new SubjectMessageFeedback();
+            messageFeedback.setsID_Source(sID_Source);
+            messageFeedback.setsAuthorFIO(sAuthorFIO);
+            messageFeedback.setsMail(sMail);
+            messageFeedback.setsHead(sHead);
+            messageFeedback.setsBody(sBody);
+            messageFeedback.setsPlace(sPlace);
+            messageFeedback.setsEmployeeFIO(sEmployeeFIO);
+            messageFeedback.setnID_Rate(nID_Rate);
+            messageFeedback.setnID_Service(nID_Service);
+            messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+            addNewAnswerToFeedback(sAnswer, messageFeedback);
+
+            return subjectMessageFeedbackDao.save(messageFeedback);
+        }
+        messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
 
         messageFeedback.setsID_Source(sID_Source);
         messageFeedback.setsAuthorFIO(sAuthorFIO);
         messageFeedback.setsMail(sMail);
         messageFeedback.setsHead(sHead);
         messageFeedback.setsBody(sBody);
+        messageFeedback.setsPlace(sPlace);
+        messageFeedback.setsEmployeeFIO(sEmployeeFIO);
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
-        messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
-        return subjectMessageFeedbackDao.setMessage(messageFeedback);
+        addNewAnswerToFeedback(sAnswer, messageFeedback);
+
+       return subjectMessageFeedbackDao.update(messageFeedback);
+    }
+
+//    TODO:
+//    КОСТЫЛЬ! не удалось запустить, но с Set работает ОК:
+// @JsonProperty(value = "saAnswer")
+// @Column(name = "saAnswer", nullable = true)
+// @ElementCollection(targetClass = String.class)private String saAnswer;
+//    По возможности исправить!
+//    Или перевести на JSON
+    private void addNewAnswerToFeedback(String sAnswer, SubjectMessageFeedback feedback) {
+        List<String> comments = new ArrayList<>();
+        try {
+            if (sAnswer != null) {
+                if (feedback.getsAnswer() != null)
+                comments = JsonRestUtils.readObject(feedback.getsAnswer(), ArrayList.class);
+                comments.add(sAnswer);
+                feedback.setsAnswer(JsonRestUtils.toJson(comments));
+            } else {
+                comments.add(sAnswer);
+                String newSanswer = JsonRestUtils.toJson(comments);
+                feedback.setsAnswer(newSanswer);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        }
     }
 
     public SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId) {

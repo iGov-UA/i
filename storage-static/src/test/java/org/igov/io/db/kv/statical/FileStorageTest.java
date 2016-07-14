@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.io.db.kv.statical.model.UploadedFile;
  
-//@Ignore
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 		"/META-INF/spring/org-igov-io-db-kv-statical-context.xml"})

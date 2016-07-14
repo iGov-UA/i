@@ -1337,4 +1337,22 @@
         <addAutoIncrement tableName="SubjectMessageFeedback" columnName="nID" columnDataType="bigint"/>
     </changeSet>
 
+    <changeSet id="issue-1290-addColumns-sEmployeeFIO-sPlace-saAnswer" author="IgorMaksymov">
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sEmployeeFIO" type="varchar(200)" defaultValue="null" />
+    </addColumn>
+
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sPlace" type="varchar(200)" defaultValue="null" />
+    </addColumn>
+
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sAnswer" type="varchar" defaultValue="null" />
+    </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1290-dropNotNull-sHead" author="IgorMaksymov">
+    <dropNotNullConstraint tableName="SubjectMessageFeedback" columnName="sHead" columnDataType="varchar(500)" />
+    </changeSet>
+
 </databaseChangeLog>
