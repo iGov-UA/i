@@ -36,6 +36,13 @@
 
         <activiti:formProperty id="sNameCompany" name="Найменування підприємства (установи, організації), до якого (якої) буде подано довідку" type="string" required="true"></activiti:formProperty>
 
+        <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище керівника підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я керівника підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові керівника підприємства" type="string" required="true"></activiti:formProperty>
+
+
+
         <activiti:formProperty id="edrpou" name="ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" required="true"></activiti:formProperty>
 		<activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="string" required="true"></activiti:formProperty>
@@ -120,6 +127,8 @@
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
 
+        <activiti:formProperty id="sNameServise" name="Назва послуги" type="invisible" default="Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії"></activiti:formProperty>
+
 
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>
         
@@ -142,7 +151,7 @@
           <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове повідомлення: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[Нове повідомлення: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Звернення № [sID_Order]<br> [pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -159,7 +168,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -281,6 +290,7 @@
         
         
 <!-- Атрибуты -->
+	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>       
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_860_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -307,7 +317,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -351,7 +361,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -471,6 +481,7 @@
         </activiti:formProperty>      
         <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
 <!-- Атрибуты -->
+	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>       
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_860_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -496,7 +507,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -540,7 +551,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -655,6 +666,7 @@
 
         <activiti:formProperty id="comment" name="Коментар для громадянина" type="textArea"></activiti:formProperty>
 <!-- Атрибуты -->
+	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>       
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_860_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -675,7 +687,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача ліцензії на провадження господарської діяльності з виробництва теплової енергії]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
