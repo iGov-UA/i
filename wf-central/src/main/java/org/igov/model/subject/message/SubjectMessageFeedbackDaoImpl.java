@@ -26,7 +26,7 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
         if (feedback.isPresent()) {
           return feedback.get();
         }
-        throw new EntityNotFoundException("SubjectMessageFeedback withnot found id:" + nId);
+        return null;
     }
 
     @Override
