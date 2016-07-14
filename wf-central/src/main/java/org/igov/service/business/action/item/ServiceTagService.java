@@ -138,7 +138,8 @@ public class ServiceTagService {
                 if (place == null) {
                     continue;
                 }
-                if (placesSet.contains(place.getOriginalName()) || placesSet.contains(place.getName())) {
+                if (placesSet.contains(place.getsID_UA()) ||
+                        placesSet.contains(place.getName()) || placesSet.contains(place.getOriginalName())) {
                     placeFound = true;
                     break;
                 }

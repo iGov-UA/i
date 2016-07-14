@@ -384,8 +384,9 @@ public class ActionItemControllerScenario {
                     param("nID_Category", "1").
                     param("bRoot", "true").
                     param("nID_ServiceTag", "60").
-                    param("sFind", "видача").
-                    param("bShowEmptyFolders", "false")).
+                    param("sFind", "реєстр").
+                    param("bShowEmptyFolders", "false").
+                    param("asID_Place_UA", "1200000000,1220300000,1220310100")).
                     andExpect(status().isOk()).
                     andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                     andExpect(jsonPath("$", not(empty()))).
