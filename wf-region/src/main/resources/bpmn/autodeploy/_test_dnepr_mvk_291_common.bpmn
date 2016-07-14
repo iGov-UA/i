@@ -2501,12 +2501,8 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow30" name="asStatusOperator=='sEnumSendInCallCenter'" sourceRef="exclusivegateway1" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInCallCenter'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfu&amp;&amp;'asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
@@ -4766,8 +4762,8 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent11" name="End"></endEvent>
-    <sequenceFlow id="flow83" name="sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="endevent11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
+    <sequenceFlow id="flow83" name="sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'||sAnswerStatus=='Successfull'" sourceRef="exclusivegateway4" targetRef="endevent11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'||sAnswerStatus=='Successfull'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow84" sourceRef="exclusivegateway11" targetRef="exclusivegateway2">
@@ -4827,9 +4823,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="92.0" width="105.0" x="639.0" y="793.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="954.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="520.0" y="818.0"></omgdc:Bounds>
@@ -4901,7 +4894,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="1459.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="821.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="954.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
         <omgdc:Bounds height="40.0" width="40.0" x="1401.0" y="677.0"></omgdc:Bounds>
@@ -4970,13 +4963,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="639.0" y="839.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="838.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="954.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="491.0" y="863.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="852.0" y="677.0"></omgdi:waypoint>
@@ -5186,10 +5172,10 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="520.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="395.0" y="838.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="954.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="414.0" y="804.0"></omgdc:Bounds>
+          <omgdc:Bounds height="98.0" width="100.0" x="437.0" y="855.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
