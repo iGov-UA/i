@@ -16,7 +16,7 @@
 
     <div class="row">
       <div class="container">
-        <a href="/" ng-if="catalogTab === 1">Головна</a>
+        <a href="/1" ng-if="catalogTab === 1">Головна</a>
         <a href="/2" ng-if="catalogTab === 2">Головна</a>
         >
         <span>{{subcategory.oServiceTag_Root.sName_UA}}</span>
@@ -27,8 +27,8 @@
     <div class="row" ng-if="subcategory">
       <div class="container">
         <div class="vertical-divider"></div>
-        <span ng-if="catalogTab === 1" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Вашу життєву ситуацію...</span>
-        <span ng-if="catalogTab === 2" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Ваш розділ:</span>
+        <span ng-if="stateCheck == 1" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Вашу життєву ситуацію...</span>
+        <span ng-if="stateCheck == 2" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Ваш розділ:</span>
         <br>
         <ul class="situation-list">
           <li ng-repeat="situation in subcategory.aServiceTag_Child">

@@ -111,7 +111,6 @@ module.exports.getCatalogTreeTag = function (req, res) {
       nID_Category: req.query.nID_Category || 1
     }
   };
-  
 
   cache.get(buildKey(options.params), function (error, value) {
     if (value) {
@@ -129,6 +128,7 @@ module.exports.getCatalogTreeTag = function (req, res) {
 
       var url = buildUrl('/action/item/getCatalogTreeTag');
 
+      // пока sFind с null и пустой строкой не передаеться - используем эту проверку.
       if(options.params.sFind !== null) {
         return request.get({
           'url': url,
@@ -176,7 +176,9 @@ module.exports.getCatalogTreeTagService = function (req, res) {
     params: {
       nID_ServiceTag: req.query.nID_ServiceTag,
       nID_Category: req.query.nID_Category,
-      bRoot: req.query.bRoot
+      bRoot: req.query.bRoot,
+      sFind: req.query.sFind,
+      asIDPlaceUA: req.query.asIDPlaceUA || ""
     }
   };
 
@@ -195,19 +197,39 @@ module.exports.getCatalogTreeTagService = function (req, res) {
 
       var url = buildUrl('/action/item/getCatalogTreeTagService');
 
-      return request.get({
-        'url': url,
-        'auth': {
-          'username': options.username,
-          'password': options.password
-        },
-        json: true,
-        'qs': {
-          'nID_ServiceTag': options.params.nID_ServiceTag,
-          'nID_Category': options.params.nID_Category,
-          'bRoot': options.params.bRoot
-        }
-      }, callback);
+      // пока sFind с null и пустой строкой не передаеться - используем эту проверку.
+      if(options.params.sFind) {
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_ServiceTag': options.params.nID_ServiceTag,
+            'nID_Category': options.params.nID_Category,
+            'bRoot': options.params.bRoot,
+            'sFind': options.params.sFind,
+            'asIDPlaceUA': options.params.asIDPlaceUA
+          }
+        }, callback);
+      } else {
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_ServiceTag': options.params.nID_ServiceTag,
+            'nID_Category': options.params.nID_Category,
+            'bRoot': options.params.bRoot,
+            'asIDPlaceUA': options.params.asIDPlaceUA
+          }
+        }, callback);
+      }
     }
   });
 };

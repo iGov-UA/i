@@ -1,10 +1,10 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location) {
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state) {
 
     $scope.catalog = [];
-    $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
+    // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
     $scope.limit = 4;
     $scope.nLimitCategory = function(nID){
         if(statesRepository.isCatalogCategoryShowAll(nID)){
@@ -32,7 +32,7 @@ angular.module('app')
       $scope.catalog = data;
       console.log('new catalog', $scope.catalog);
       // TODO: move other handlers here, like update counters, etc
-      $scope.catalogCounts = CatalogService.getCatalogCounts(data);
+      // $scope.catalogCounts = CatalogService.getCatalogCounts(data);
     }, false);
     subscriptions.push(subscriberId);
 
@@ -71,5 +71,6 @@ angular.module('app')
     $scope.changeCategory = function (category) {
       $scope.catalogTab = category;
      };
+    $scope.stateCheck = $state.params.catID;
 
   }]);

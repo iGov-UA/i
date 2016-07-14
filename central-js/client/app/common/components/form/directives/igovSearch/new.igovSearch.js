@@ -1,6 +1,6 @@
 angular.module('app')
-  .directive("newIgovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state',
-    function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state) {
+  .directive("newIgovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state', '$stateParams',
+    function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state, $stateParams) {
       var directive = {
         restrict: 'E',
         scope: {},
@@ -19,6 +19,7 @@ angular.module('app')
           $scope.regionList.load(null, null);
           $scope.localityList = new LocalityListFactory();
           $scope.operators = [];
+          $scope.check = false;
 
           // set defaults
           var defaultSettings = {
@@ -72,10 +73,19 @@ angular.module('app')
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
             $scope.catalog = [];
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders).then(function (result) {
-              fullCatalog = result;
+            $scope.category = $stateParams.catID;
+            $scope.subcategory = $stateParams.scatID;
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, false, $scope.category, $scope.subcategory).then(function (result) {
+              if(result.length === 1) {
+                fullCatalog = result[0];
+              } else {
+                fullCatalog = result;
+              }
               if ($scope.bShowExtSearch || $scope.getOrgan) {
                 $scope.filterByExtSearch();
+              } else if ($scope.check) {
+                updateCatalog(angular.copy(fullCatalog));
+                $scope.check = false;
               } else {
                 updateCatalog(angular.copy(fullCatalog));
               }
@@ -93,6 +103,7 @@ angular.module('app')
           // method to filter full catalog depending on current extended search parameters
           // choosen by user
           $scope.filterByExtSearch = function() {
+            $scope.check = true;
             var filterCriteria = {};
             if ($scope.selectedStatus != -1) {
               filterCriteria.nStatus = $scope.selectedStatus;
@@ -106,30 +117,17 @@ angular.module('app')
 
             // create a copy of current fullCatalog
             var ctlg = angular.copy(fullCatalog);
-            angular.forEach(ctlg, function(category) {
-              angular.forEach(category.aSubcategory, function(subCategory) {
-                // leave services that match filterCriteria
-                subCategory.aService = $filter('filter')(subCategory.aService, filterCriteria);
-              });
-              // leave subcategories that are not empty
-              category.aSubcategory = $filter('filter')(category.aSubcategory, function(subCategory) {
-                if (subCategory.aService.length > 0) {
-                  return true;
-                }
-              });
-            });
-            // leave categories that are not empty
-            ctlg = $filter('filter')(ctlg, function(category) {
-              if (category.aSubcategory.length >0 ) {
+            ctlg.aService = $filter('filter')(ctlg.aService, filterCriteria);
+            // TODO поправить
+            ctlg.aServiceTag_Child = $filter('filter')(ctlg.aServiceTag_Child, function(category) {
                 return true;
-              }
             });
             updateCatalog(ctlg);
           };
 
           $scope.onExtSearchClick = function() {
             $scope.bShowExtSearch = !$scope.bShowExtSearch;
-            if ($scope.operator != -1 || $scope.selectedStatus != -1 || $scope.data.region != null || $scope.getOrgan) {
+            if ($scope.bShowExtSearch) {
               $scope.search();
             }
           };

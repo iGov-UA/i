@@ -3,38 +3,68 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab, category, subcat) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
-    var nID_Category = catalogTab;
+    var nID_Category = catalogTab || category || 1;
+    var nID_ServiceTag = subcat;
 
-    var data = {
-      asIDPlaceUA: asIDPlaceUA,
-      sFind: sFind || null,
-      bShowEmptyFolders: bShowEmptyFolders,
-      nID_Category: nID_Category
-    };
-    return $http.get('./api/catalog/getCatalogTree', {
-      params: data,
-      data: data
-    }).then(function (response) {
-      servicesCache = response.data;
-      return response.data;
-    });
-  };
-
-  this.getServices = function (sFind) {
-    var data = {
-      sFind: sFind || null
-    };
-    return $http.get('./api/catalog', {
-      params: data,
-      data: data
-    }).then(function (response) {
-      servicesCache = response.data;
-      return response.data;
-    });
+    // TODO проверка на страницу категорий, заменить на возможность поиска как подкатегория
+    if(!catalogTab
+        && !category
+        && !subcat
+        || category
+        && !subcat) {
+      var data = {
+        asIDPlaceUA: asIDPlaceUA,
+        bShowEmptyFolders: bShowEmptyFolders,
+        nID_Category: nID_Category
+      };
+      return $http.get('./api/catalog/getCatalogTree', {
+        params: data,
+        data: data
+      }).then(function (response) {
+        servicesCache = response.data;
+        return response.data;
+      });
+    } else {
+      // страница подкатегорий
+      if(sFind) {
+        // проверка есть ли что-то в поисковике, пока если параметр sFind пустая строка или null - будет ошибка сервиса
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          sFind: sFind,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category,
+          nID_ServiceTag: nID_ServiceTag,
+          bRoot: true
+        };
+        return $http.get('./api/catalog/getCatalogTreeTagService', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      } else {
+        // если поисковик пуст
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category,
+          nID_ServiceTag: nID_ServiceTag,
+          bRoot: true
+        };
+        return $http.get('./api/catalog/getCatalogTreeTagService', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      }
+    }
   };
 
   this.getCatalogTreeTag = function (nID_Category, sFind) {
@@ -66,45 +96,23 @@ angular.module('app')
     });
   };
 
-  this.getCatalogCounts = function(catalog) {
-    var catalogCounts = {'0': 0, '1': 0, '2': 0};
-    if (catalog === undefined) {
-      catalog = servicesCache;
-    }
-
-    angular.forEach(catalog, function(category) {
-      angular.forEach(category.aSubcategory, function(subItem) {
-        angular.forEach(subItem.aService, function(aServiceItem) {
-          if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
-            catalogCounts[aServiceItem.nStatus] = 0;
-          }
-          ++catalogCounts[aServiceItem.nStatus];
-        });
-      });
-    });
-    return catalogCounts;
-  };
   this.getOperators = function(catalog) {
     var operators = [];
     if (catalog === undefined) {
       catalog = servicesCache;
     }
-    angular.forEach(catalog, function(category) {
-      angular.forEach(category.aSubcategory, function(subCategory) {
-        angular.forEach(subCategory.aService, function(aServiceItem) {
+    angular.forEach(catalog.aService, function(category) {
           var found = false;
           for (var i = 0; i < operators.length; ++i) {
-            if (operators[i].sSubjectOperatorName === aServiceItem.sSubjectOperatorName) {
+            if (operators[i].sSubjectOperatorName === category.sSubjectOperatorName) {
               found = true;
               break;
             }
           }
-          if (!found && aServiceItem.sSubjectOperatorName != "") {
-            operators.push(aServiceItem);
+          if (!found && category.sSubjectOperatorName != "") {
+            operators.push(category);
           }
         });
-      });
-    });
     return operators;
   };
 
@@ -163,3 +171,95 @@ angular.module('app')
     return del('/api/catalog/servicesTree', undefined, undefined, nID_Subject, callback);
   };
 }]);
+
+// сервисы до редизайна, в будущем можно будет удалить.
+
+// this.getModeSpecificServicesOld = function (asIDPlacesUA, sFind, bShowEmptyFolders) {
+//   var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
+//     return ids + ',' + current;
+//   }) : null;
+//
+//   var data = {
+//     asIDPlaceUA: asIDPlaceUA,
+//     sFind: sFind || null,
+//     bShowEmptyFolders: bShowEmptyFolders
+//   };
+//   return $http.get('./api/catalog', {
+//     params: data,
+//     data: data
+//   }).then(function (response) {
+//     servicesCache = response.data;
+//     return response.data;
+//   });
+// };
+
+// this.getServices = function (sFind) {
+//   var data = {
+//     sFind: sFind || null
+//   };
+//   return $http.get('./api/catalog', {
+//     params: data,
+//     data: data
+//   }).then(function (response) {
+//     servicesCache = response.data;
+//     return response.data;
+//   });
+// };
+
+// this.getCatalogCounts = function(catalog) {
+//   var catalogCounts = {'0': 0, '1': 0, '2': 0};
+//   if (catalog === undefined) {
+//     catalog = servicesCache;
+//   }
+//
+//   angular.forEach(catalog.aService, function(category) {
+//         if (typeof (catalogCounts[category.nStatus]) == 'undefined') {
+//           catalogCounts[category.nStatus] = 0;
+//         }
+//         ++catalogCounts[category.nStatus];
+//   });
+//   return catalogCounts;
+// };
+
+// this.getCatalogCountsOld = function(catalog) {
+//   var catalogCounts = {'0': 0, '1': 0, '2': 0};
+//   if (catalog === undefined) {
+//     catalog = servicesCache;
+//   }
+//
+//   angular.forEach(catalog, function(category) {
+//     angular.forEach(category.aSubcategory, function(subItem) {
+//       angular.forEach(subItem.aService, function(aServiceItem) {
+//         if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+//           catalogCounts[aServiceItem.nStatus] = 0;
+//         }
+//         ++catalogCounts[aServiceItem.nStatus];
+//       });
+//     });
+//   });
+//   return catalogCounts;
+// };
+
+// this.getOperatorsOld = function(catalog) {
+//   var operators = [];
+//   if (catalog === undefined) {
+//     catalog = servicesCache;
+//   }
+//   angular.forEach(catalog, function(category) {
+//     angular.forEach(category.aSubcategory, function(subCategory) {
+//       angular.forEach(subCategory.aService, function(aServiceItem) {
+//         var found = false;
+//         for (var i = 0; i < operators.length; ++i) {
+//           if (operators[i].sSubjectOperatorName === aServiceItem.sSubjectOperatorName) {
+//             found = true;
+//             break;
+//           }
+//         }
+//         if (!found && aServiceItem.sSubjectOperatorName != "") {
+//           operators.push(aServiceItem);
+//         }
+//       });
+//     });
+//   });
+//   return operators;
+// };
