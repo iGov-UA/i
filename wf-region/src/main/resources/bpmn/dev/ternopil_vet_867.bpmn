@@ -136,7 +136,6 @@
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-                <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/ternopil_vet_867.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист привітання громадянина">
@@ -191,7 +190,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка документів">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -315,18 +314,12 @@ ${sNameOrgan}<br />
           <activiti:value id="yes_15" name="Так"></activiti:value>
           <activiti:value id="no_15" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="attr1_wait" name="Прийняти заяву до розгляду"></activiti:value>
-          <activiti:value id="attr2_finish" name="Відмовити у розгляді"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -364,7 +357,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow5" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Відмова у прийнятті документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Відмова у прийнятті документів">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -405,7 +398,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow6" name="status == 'attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr2_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Надіння рішення щодо реєстрації" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надіння рішення щодо реєстрації">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -529,18 +522,12 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:value id="yes_15" name="Так"></activiti:value>
           <activiti:value id="no_15" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
-          <activiti:value id="attr3_finish" name="Висновок (або рішення) готове, запросити громадянина"></activiti:value>
-          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_1" name="Завантажте скановану копию висновку (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Реєстрацію проведено" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Реєстрацію проведено">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -582,14 +569,14 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFile_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFile_10},${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" name="status2 == 'attr4_finish'" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr4_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="У реєстрації відмовлено" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="У реєстрації відмовлено">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -634,15 +621,13 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false"></scriptTask>
-    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
     <serviceTask id="servicetask7" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask7">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_vet_867">
     <bpmndi:BPMNPlane bpmnElement="ternopil_vet_867" id="BPMNPlane_ternopil_vet_867">
@@ -681,9 +666,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="632.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="30.0"></omgdc:Bounds>
@@ -758,17 +740,13 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="142.0" y="293.0"></omgdi:waypoint>
         <omgdi:waypoint x="142.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="75.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="195.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="225.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="142.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="75.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
