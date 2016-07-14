@@ -18,11 +18,21 @@ angular.module('dashboardJsApp').directive('signInfoDialog', [
         };
 
         scope.printSignInfo = function () {
+          var parent = this.$parent.$parent;
           var elementToPrint = element[0].getElementsByClassName('full-sign-info-content')[0];
+          var nOrderID;
+          var sCreateData;
+          try {
+            nOrderID = "" + scope.selectedTask.processInstanceId + parent.lunaService.getLunaValue(scope.selectedTask.processInstanceId);
+            sCreateData = scope.selectedTask.createTime ? parent.sDateShort(scope.selectedTask.createTime) : parent.sDateShort(scope.selectedTask.startTime);
+          } catch (e){
+            alert("Помилка: " + e.message);
+          }
+          var printHeader = '<div style="text-align: right"><span>Звернення № ' + nOrderID + '</span><br><span>від ' + sCreateData + '</span></div><br>';
           var printContents = elementToPrint.innerHTML;
           var popupWin = window.open('', '_blank');
           popupWin.document.open();
-          popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</html>');
+          popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printHeader + printContents + '</html>');
           popupWin.document.close();
           scope.hideModal();
         }
