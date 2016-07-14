@@ -16,6 +16,16 @@ angular.module('dashboardJsApp').directive('signInfoDialog', [
         scope.hideSignInfoModal = function () {
           scope.checkSignState.show = false;
         };
+
+        scope.printSignInfo = function () {
+          var elementToPrint = element[0].getElementsByClassName('full-sign-info-content')[0];
+          var printContents = elementToPrint.innerHTML;
+          var popupWin = window.open('', '_blank');
+          popupWin.document.open();
+          popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</html>');
+          popupWin.document.close();
+          scope.hideModal();
+        }
       }
     };
   }
