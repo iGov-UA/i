@@ -18,7 +18,7 @@ angular.module('dashboardJsApp').directive('signInfoDialog', [
         };
 
         scope.printSignInfo = function () {
-          var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
+          var elementToPrint = element[0].getElementsByClassName('full-sign-info-content')[0];
           var printContents = elementToPrint.innerHTML;
           var popupWin = window.open('', '_blank');
           popupWin.document.open();
