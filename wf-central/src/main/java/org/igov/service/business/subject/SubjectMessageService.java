@@ -248,7 +248,8 @@ public class SubjectMessageService {
             messageFeedback.setnID_Rate(nID_Rate);
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
-            addNewAnswerToFeedback(sAnswer, messageFeedback);
+            messageFeedback.setsAnswer(sAnswer);
+//            addNewAnswerToFeedback(sAnswer, messageFeedback);
 
             return subjectMessageFeedbackDao.save(messageFeedback);
         }
@@ -263,7 +264,8 @@ public class SubjectMessageService {
         messageFeedback.setsEmployeeFIO(sEmployeeFIO);
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
-        addNewAnswerToFeedback(sAnswer, messageFeedback);
+        messageFeedback.setsAnswer(sAnswer );
+//        addNewAnswerToFeedback(sAnswer, messageFeedback);
 
        return subjectMessageFeedbackDao.update(messageFeedback);
     }
@@ -275,23 +277,23 @@ public class SubjectMessageService {
 // @ElementCollection(targetClass = String.class)private String saAnswer;
 //    По возможности исправить!
 //    Или перевести на JSON
-    private void addNewAnswerToFeedback(String sAnswer, SubjectMessageFeedback feedback) {
-        List<String> comments = new ArrayList<>();
-        try {
-            if (sAnswer != null) {
-                if (feedback.getsAnswer() != null)
-                comments = JsonRestUtils.readObject(feedback.getsAnswer(), ArrayList.class);
-                comments.add(sAnswer);
-                feedback.setsAnswer(JsonRestUtils.toJson(comments));
-            } else {
-                comments.add(sAnswer);
-                String newSanswer = JsonRestUtils.toJson(comments);
-                feedback.setsAnswer(newSanswer);
-            }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage(),e);
-        }
-    }
+//    private void addNewAnswerToFeedback(String sAnswer, SubjectMessageFeedback feedback) {
+//        List<String> comments = new ArrayList<>();
+//        try {
+//            if (sAnswer != null) {
+//                if (feedback.getsAnswer() != null)
+//                comments = JsonRestUtils.readObject(feedback.getsAnswer(), ArrayList.class);
+//                comments.add(sAnswer);
+//                feedback.setsAnswer(JsonRestUtils.toJson(comments));
+//            } else {
+//                comments.add(sAnswer);
+//                String newSanswer = JsonRestUtils.toJson(comments);
+//                feedback.setsAnswer(newSanswer);
+//            }
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e.getMessage(),e);
+//        }
+//    }
 
     public SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId) {
         return subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
