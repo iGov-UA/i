@@ -546,7 +546,7 @@ public class SubjectMessageControllerScenario {
                 .param("nID_Rate", expectedFeedback.getnID_Rate().toString())
                 .param("nID_Service", expectedFeedback.getnID_Service().toString())
                 .param("sAnswer", "feedbackAfterInit")
-                .param("nId", expectedFeedback.getId().toString()))
+                .param("nID", expectedFeedback.getId().toString()))
                 .andExpect(status().isCreated());
     }
 }
