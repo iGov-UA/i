@@ -467,7 +467,7 @@ public class ActionItemController {
         preparedService.setOpenedLimit(oService.getOpenedLimit());
         preparedService.setOrder(oService.getOrder());
         preparedService.setSub(oService.getSub());
-        preparedService.setStatusID(oService.getStatusID());
+        preparedService.setStatus(oService.getStatusID());
         preparedService.setSubjectOperatorName(oService.getSubjectOperatorName());
 
         if (withServiceData) {
