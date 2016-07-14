@@ -84,7 +84,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка заяви">
+    <userTask id="usertask2" name="Обробка заяви" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="asPosluga" name="Послуга яка запитується" type="enum" writable="false">
           <activiti:value id="sEnamposl1" name="Відповідь на інформаційний запит"></activiti:value>
@@ -175,7 +175,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRishenja == 'sEnam_ok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask3" name="Видача відповіді">
+    <userTask id="usertask3" name="Видача відповіді" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="asPosluga" name="Послуга яка запитується" type="enum" writable="false">
           <activiti:value id="sEnamposl1" name="Відповідь на інформаційний запит"></activiti:value>
