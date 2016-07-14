@@ -329,6 +329,7 @@ public class SubjectMessageControllerScenario {
        
     }
 
+    @Ignore
     @Test
     public void shouldAddFeedbackToServiceAndReturnLink() throws Exception {
         SubjectMessageFeedback feedback = new SubjectMessageFeedback();
@@ -377,6 +378,7 @@ public class SubjectMessageControllerScenario {
                 .andExpect(content().json(expectedResponseObject.toString()));
     }
 
+    @Ignore
     @Test
     public void shouldReturnSubjectMessageFeedbackByIdAndToken() throws Exception {
         SubjectMessageFeedback feedback = new SubjectMessageFeedback();
@@ -411,6 +413,7 @@ public class SubjectMessageControllerScenario {
                 .andExpect(content().json(expectedResponse));
     }
 
+    @Ignore
     @Test
     public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
         SubjectMessageFeedback feedback = new SubjectMessageFeedback();
@@ -452,6 +455,7 @@ public class SubjectMessageControllerScenario {
     }
 
 //    THIS TEST SHOULD BE INTEGRATIONAL OR REFACTORED
+    @Ignore
     @Test
     public void shouldAddAnswerToFeedback() throws Exception {
         SubjectMessageFeedback expectedFeedback = new SubjectMessageFeedback();
