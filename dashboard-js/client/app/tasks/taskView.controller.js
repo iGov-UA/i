@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService) {
+                $state, stateModel, ValidationService, FieldMotionService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -501,6 +501,11 @@
           }
         }
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+
+        $scope.isFieldVisible = function(item) {
+          return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
+              FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
+        };
       }
     ]);
 })();
