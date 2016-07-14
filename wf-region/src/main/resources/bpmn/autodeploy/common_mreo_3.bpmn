@@ -38,8 +38,8 @@
         <activiti:formProperty id="marker1" name="show/hide fields" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganName" name="sOrganName" type="invisible" default="%"></activiti:formProperty>
-        <activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="invisible" default="%"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"  ></activiti:formProperty>
+<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"  ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -313,12 +313,12 @@ ${sMail_Signature}&lt;br&gt;
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask11" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
