@@ -70,8 +70,8 @@
         <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія договору купівлі-продажу;додається  за наявності договору" type="file"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Копія доручення;додається  за наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sOrganName" name="sOrganName" type="invisible" default="%"></activiti:formProperty>
-        <activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="invisible" default="%"></activiti:formProperty>
+      <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"  ></activiti:formProperty>
+<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"  ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -417,12 +417,12 @@ ${sMail_Signature}
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask11" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">

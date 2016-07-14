@@ -28,7 +28,6 @@
         <activiti:formProperty id="nLandArea1" name="Площа земельної ділянки, кв.м." type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="nLandArea2" name="Площа земельної ділянки з твердим покриттям, на якій безпосередньо буде зберігатись та перероблятись металобрухт, кв.м." type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCoating" name="Характер покриття земельної ділянки, на якій безпосередньо буде зберігатись та перероблятись металобрухт" type="string" required="true"></activiti:formProperty>
-    <!-- Обладнання з переробки брухту -->
         <activiti:formProperty id="asProcessingEquipment" name="Кількість наявного обладнання з переробки брухту" type="enum" required="true">
           <activiti:value id="sEnumProcessingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumProcessingEquipment2" name="2"></activiti:value>
@@ -71,7 +70,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumberProcessContract4" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameProcessOwner4" name="Орендодавець" type="string" required="true"></activiti:formProperty>
-    <!-- вантажопідйомне устаткування -->
         <activiti:formProperty id="asLiftingEquipment" name="Кількість наявного вантажопідйомного устаткування" type="enum" required="true">
           <activiti:value id="sEnumLiftingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumLiftingEquipment2" name="2"></activiti:value>
@@ -98,7 +96,6 @@
         <activiti:formProperty id="sNumberLifting2" name="Заводський номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberLiftingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameLiftingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
-    <!-- обладнання для різки -->   
         <activiti:formProperty id="asCuttingEquipment" name="Кількість наявного обладнання для різки" type="enum" required="true">
           <activiti:value id="sEnumCuttingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumCuttingEquipment2" name="2"></activiti:value>
@@ -121,7 +118,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumberCuttingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCuttingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
-    <!-- вагове обладнання -->
         <activiti:formProperty id="asWeighingEquipment" name="Кількість наявного вагового обладнання" type="enum" required="true">
           <activiti:value id="sEnumWeighingEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumWeighingEquipment2" name="2"></activiti:value>
@@ -150,7 +146,6 @@
         <activiti:formProperty id="sNumberWeighing2" name="Заводський номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberWeighingContract2" name="Номер, дата укладання та термін дії договору оренди (суборенди) обладнання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameWeighingOwner2" name="Орендодавець" type="string" required="true"></activiti:formProperty>
-    <!-- обладнання для проведення радіаційного контролю -->    
         <activiti:formProperty id="asRadiationEquipment" name="Кількість наявного обладнання для проведення радіаційного контролю" type="enum" required="true">
           <activiti:value id="sEnumRadiationEquipment1" name="1"></activiti:value>
           <activiti:value id="sEnumRadiationEquipment2" name="2"></activiti:value>
@@ -194,6 +189,10 @@
         <activiti:formProperty id="nFile2" name="Копії установчих документів суб’єкта господарської діяльності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Дозволи на право здійснення даного виду діяльності;(держгірпромнагляду, державної санітарно-епідеміологічної служби, державного нагляду з питань пожежної безпеки та управління екології та природних ресурсів)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile4" name="Повірені в метрологічній службі паспорти на вагове, брухтопереробне, вантажопідйомне обладнення та на прилад, який здійснює радіаційний контроль металобрухту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -497,7 +496,9 @@ ${sNameOrgan}.<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask5" name="Пвідомлення про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -535,7 +536,9 @@ ${sNameOrgan}.<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення (2-й крок)" activiti:candidateGroups="act_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
