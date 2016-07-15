@@ -19,14 +19,16 @@
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис у листі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -113,8 +115,8 @@
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kopi" name="копія рішення" type="invisible" default="надання у постійне користування земельних ділянок"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_36_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/dnepr_cnap_36_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_36.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
@@ -258,8 +260,9 @@
 									&lt;/p&gt;
 									&lt;p&gt;
                              		Отримати документ можна:&lt;br&gt;
-                             		${sAddress}&lt;br&gt;${sWorkTime}
-                             		&lt;/p&gt;
+                             		${sAddress}&lt;br&gt;
+                             		${sWorkTime}&lt;br&gt;
+									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
                             		[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
@@ -307,8 +310,9 @@
 									&lt;/p&gt;
 									&lt;p&gt;
 									Отримати документ можна:&lt;br&gt;
-                             		${sAddress}&lt;br&gt;${sWorkTime}
-                             		&lt;/p&gt;
+                             		${sAddress}&lt;br&gt;
+                             		${sWorkTime}&lt;br&gt;
+									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
                             		[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
