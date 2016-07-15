@@ -12,7 +12,7 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.task.bp.BpService;
-import org.igov.service.business.msg.MsgSend;
+//import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -305,7 +305,7 @@ public class DebugCentralController {
             
             
             try {
-                IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+                //IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
 	    } catch (Exception e) {
         	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
 	    }
