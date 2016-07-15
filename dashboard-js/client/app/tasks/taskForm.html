@@ -57,7 +57,7 @@
   </div>
 
 
-  <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">
+  <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all' || selectedTask.processDefinitionId.indexOf('system') == 0" style="padding-top:5px;">
     <button ng-click="print(form)" class="btn btn-success">Роздрукувати</button>
     <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
     </select>
