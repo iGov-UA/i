@@ -3,7 +3,8 @@
   <process id="loda_invest_1" name="Подача greenfields та brownfields" isExecutable="true">
     <startEvent id="startevent1" name="Start">
         <extensionElements>
-       <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="position" name="Посада" type="string" required="true"></activiti:formProperty>
@@ -12,20 +13,20 @@
         
         <activiti:formProperty id="sObject" name="Назва об'єкту" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sEnumType" name="Тип об'єкта інвестицій" type="enum" required="true">
+        <activiti:formProperty id="asType" name="Тип об'єкта інвестицій" type="enum" required="true">
           <activiti:value id="sEnumType_1" name="Земельна ділянка"></activiti:value>
           <activiti:value id="sEnumType_2" name="Працююче підприємтсво"></activiti:value>
           <activiti:value id="sEnumType_3" name="Непрацююче підприємтсво"></activiti:value>
           <activiti:value id="sEnumType_4" name="Виробниче приміщення"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="sEnumOwnership" name="Форма власності" type="enum" required="true">
+        <activiti:formProperty id="asOwnership" name="Форма власності" type="enum" required="true">
           <activiti:value id="sEnumOwnership_1" name="Державна"></activiti:value>
           <activiti:value id="sEnumOwnership_2" name="Комунальна"></activiti:value>
           <activiti:value id="sEnumOwnership_3" name="Приватна"></activiti:value>
         </activiti:formProperty>
         
-         <activiti:formProperty id="sEnumCondition" name="Умови використання" type="enum" required="true">
+         <activiti:formProperty id="asCondition" name="Умови використання" type="enum" required="true">
           <activiti:value id="sEnumCondition_1" name="Оренда"></activiti:value>
           <activiti:value id="sEnumCondition_2" name="Продаж"></activiti:value>
           <activiti:value id="sEnumCondition_3" name="Спільна діяльність"></activiti:value>
@@ -37,7 +38,7 @@
         <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб;Вкажіть кількість працюючих осіб на підприємстві на даний момент" type="long"></activiti:formProperty>
         <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); вкажіть наявні трудові ресурси (16-60р) в місці, де знаходиться об'єкт" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" required="true">
+        <activiti:formProperty id="asDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" required="true">
                 <activiti:value id="sEnumDistrict_1" name="Бродівський район"></activiti:value>
                 <activiti:value id="sEnumDistrict_2" name="Буський район"></activiti:value>
                 <activiti:value id="sEnumDistrict_3" name="Городоцький район"></activiti:value>
@@ -111,9 +112,9 @@
          
          <activiti:formProperty id="nDistancePower" name="Електропостачання: відстань (км); вкажіть відстань до найближчого джерела електропостачання" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="nCapacityPower" name="Електропостачання: потужність (кВт·г); вкажіть потужність найближчого джерела електропостачання" type="string" required="true"></activiti:formProperty> 
-         <!-- електропостачання на об'єкті -->
+         <!--електропостачання на об'єкті -->
          
-         <!-- газопостачання на об'єкті -->
+         <!--газопостачання на об'єкті -->
         <activiti:formProperty id="asGas" name="Наявність газопостачання на об'єкті" type="enum" required="true">
                 <activiti:value id="sEnumGasYes" name="Так"></activiti:value>
                 <activiti:value id="sEnumGasNo" name="Ні"></activiti:value>
@@ -123,7 +124,7 @@
          <activiti:formProperty id="nCapacityGas" name="Газопостачання: потужність ( ); вкажіть потужність найближчого джерела газопостачання" type="string" required="true"></activiti:formProperty>  
          <!-- газопостачання на об'єкті -->
 
-         <!-- водопостачання на об'єкті -->
+         <!--водопостачання на об'єкті -->
         <activiti:formProperty id="asWaterSupply" name="Наявність водопостачання на об'єкті" type="enum" required="true">
                 <activiti:value id="sEnumWaterSupplyYes" name="Так"></activiti:value>
                 <activiti:value id="sEnumWaterSupplyNo" name="Ні"></activiti:value>
@@ -143,12 +144,25 @@
          <activiti:formProperty id="sTypeDrainage" name="Водовідведення: тип; вкажіть тип найближчого водовідведення" type="string" required="true"></activiti:formProperty>  
          <!-- водовідведення на об'єкті -->
        
+         <!-- транспортне сполучення -->
+         <activiti:formProperty id="nDistanceRoads" name="Під'їздні шляхи (км); вкажіть відстань до найближчих під'їздних шляхів" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceRailway" name="Залізничні шляхи (км); вкажіть відстань до найближчих залізничніх шляхів" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceFlights" name="Авіасполучення (км); вкажіть відстань до найближчого авіасполучення" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceRoadsCountry" name="Дороги міжнародного чи державного значення (км); вкажіть відстань до найближчих таких доріг" type="long" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); вкажіть найближчі пункти перетину корднону" type="string" required="true"></activiti:formProperty> 
+        
+        <activiti:formProperty id="nOwnership" name="Електронна копія документу, що підтверджує власність на поданий об’єкт; якщо документ має декілька сторінок, об'єднайте у pdf-файл або zip архів" type="file" ></activiti:formProperty>
+        
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Львівська ОДА"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_loda" name="Пошта співробітника СММ;для тестування введіть власну пошту" type="string" default="klimkovichy@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default="м. Львів, вул. Винниченка 18, 79008"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default="З 09-00 до 18-00, перерва з 13-00 до 14-00"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default="(032) 261-20-40"></activiti:formProperty>
 
-
-
+        
         </extensionElements>
-
-
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
       <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -162,17 +176,303 @@
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Сповіщення співробітника про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask2" name="Сповіщення співробітника про новє звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+        <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${sMailClerk_loda}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Подача greenfields та brownfields]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу рєєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask3" name="Сповіщення громадянина про вдалу реєстрацію (з смс)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+       <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ Подача greenfields та brownfields]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br>
+[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p> Ваш запит "Подача greenfields та brownfields" було зареєстровано у системі.<br>
+Повідомлення про результат послуги буде спрямовано на Ваш e-mail.</p>
+${sPhoneOrgan}<br>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${privatePhone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements> 
+    </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення"></userTask>
+    
+     <!-- ЮЗЕРТАСКА НАЧАЛО -->
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="loda_invest">
+         <extensionElements>
+        <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sFullName" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="position" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sObject" name="Назва об'єкту; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asType" name="Тип об'єкта інвестицій" type="enum" writable="false">
+          <activiti:value id="sEnumType_1" name="Земельна ділянка"></activiti:value>
+          <activiti:value id="sEnumType_2" name="Працююче підприємтсво"></activiti:value>
+          <activiti:value id="sEnumType_3" name="Непрацююче підприємтсво"></activiti:value>
+          <activiti:value id="sEnumType_4" name="Виробниче приміщення"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asOwnership" name="Форма власності" type="enum" writable="false">
+          <activiti:value id="sEnumOwnership_1" name="Державна"></activiti:value>
+          <activiti:value id="sEnumOwnership_2" name="Комунальна"></activiti:value>
+          <activiti:value id="sEnumOwnership_3" name="Приватна"></activiti:value>
+        </activiti:formProperty>
+        
+         <activiti:formProperty id="asCondition" name="Умови використання" type="enum" writable="false">
+          <activiti:value id="sEnumCondition_1" name="Оренда"></activiti:value>
+          <activiti:value id="sEnumCondition_2" name="Продаж"></activiti:value>
+          <activiti:value id="sEnumCondition_3" name="Спільна діяльність"></activiti:value>
+          <activiti:value id="sEnumCondition_4" name="Оренда/Продаж"></activiti:value>
+        </activiti:formProperty>
+               
+        <activiti:formProperty id="sPreviousUse" name="Попереднє використання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCharacteristics" name="Характеристика підприємства; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" writable="false">
+                <activiti:value id="sEnumDistrict_1" name="Бродівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_2" name="Буський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_3" name="Городоцький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_4" name="Дрогобицький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_5" name="Жидачівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_6" name="Жовківський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_7" name="Золочівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_8" name="Кам'янка-Бузький район"></activiti:value>
+                <activiti:value id="sEnumDistrict_9" name="Миколаївський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_10" name="Мостиський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_11" name="Перемишлянський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_12" name="Пустомитівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_13" name="Радехівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_14" name="Самбірський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_15" name="Сколівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_16" name="Сокальський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_17" name="Старосамбірський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_18" name="Стрийський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_19" name="Турківський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_20" name="Яворівський район"></activiti:value>
+                <activiti:value id="sEnumDistrict_21" name="м. Борислав"></activiti:value>
+                <activiti:value id="sEnumDistrict_22" name="м. Дрогобич"></activiti:value>
+                <activiti:value id="sEnumDistrict_23" name="м. Львів"></activiti:value>
+                <activiti:value id="sEnumDistrict_24" name="м. Моршин"></activiti:value>
+                <activiti:value id="sEnumDistrict_25" name="м. Новий Розділ"></activiti:value>
+                <activiti:value id="sEnumDistrict_26" name="м. Самбір"></activiti:value>
+                <activiti:value id="sEnumDistrict_27" name="м. Стрий"></activiti:value>
+                <activiti:value id="sEnumDistrict_28" name="м. Трускавець"></activiti:value>
+                <activiti:value id="sEnumDistrict_29" name="м. Червоноград"></activiti:value>
+        </activiti:formProperty>
+       
+         <activiti:formProperty id="sSettlement" name="Населений пункт; ;writable=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="sStreet" name="Вулиця (проспект, провулок тощо); ;writable=false" type="string"></activiti:formProperty> 
+         
+         <activiti:formProperty id="nNumber" name="Номер будинку; ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="nZIPCode" name="Поштовий індекс; ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="sLabel1"  name="GPS Координати" type="label" default="Координати можна знайти: &lt;a href=&quot;http://www.gps-coordinates.net/&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+         <activiti:formProperty id="sLatitude" name="Широта; ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="sLongitude" name="Довгота; ;writable=false" type="string"></activiti:formProperty> 
+         
+         
+         <activiti:formProperty id="sQuadrature" name="Площа земельної ділянки, га" type="string" writable="false"></activiti:formProperty> 
+         
+         <activiti:formProperty id="asAppointment" name="Категорія земель за цільовим призначенням" type="enum" writable="false">
+                <activiti:value id="sEnumAppointment_1" name="землі сільськогосподарського призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_2" name="землі житлової та громадської забудови"></activiti:value>
+                <activiti:value id="sEnumAppointment_3" name="землі природно-заповідного та іншого природоохоронного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_4" name="землі оздоровчого призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_5" name="землі рекреаційного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_6" name="землі історико-культурного призначення"></activiti:value>
+                <activiti:value id="sEnumAppointment_7" name="землі лісового фонду"></activiti:value>
+                <activiti:value id="sEnumAppointment_8" name="землі водного фонду"></activiti:value>
+                <activiti:value id="sEnumAppointment_9" name="землі промислового, транспорту, зв'язку, енергетики, оборони та іншого призначення"></activiti:value>  
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="asRealty" name="Нерухоме майно" type="enum" writable="false">
+                <activiti:value id="sEnumRealtyYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumRealtyNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nAmountRealty" name="Кількість об'єктів; ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів; ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна; ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна; ;writable=false" type="textArea" ></activiti:formProperty> 
+         
+         <!-- юзертаска електропостачання на об'єкті -->
+         <activiti:formProperty id="asPower" name="Наявність електропостачання на об'єкті" type="enum" writable="false">
+                <activiti:value id="sEnumPowerYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumPowerNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistancePower" name="Електропостачання: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nCapacityPower" name="Електропостачання: потужність (кВт·г); ;writable=false" type="string"></activiti:formProperty> 
+         <!-- юзертаска електропостачання на об'єкті -->
+         
+         <!-- юзертаска газопостачання на об'єкті -->
+        <activiti:formProperty id="asGas" name="Наявність газопостачання на об'єкті" type="enum" writable="false">
+                <activiti:value id="sEnumGasYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumGasNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceGas" name="Газопостачання: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nCapacityGas" name="Газопостачання: потужність ( ); ;writable=false" type="string"></activiti:formProperty>  
+         <!-- юзертаска газопостачання на об'єкті -->
+
+         <!-- юзертаска водопостачання на об'єкті -->
+        <activiti:formProperty id="asWaterSupply" name="Наявність водопостачання на об'єкті" type="enum" writable="false">
+                <activiti:value id="sEnumWaterSupplyYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumWaterSupplyNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceWaterSupply" name="Водопостачання: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="sTypeWaterSupply" name="Водопостачання: тип; ;writable=false" type="string"></activiti:formProperty>  
+         <!-- юзертаска водопостачання на об'єкті -->
+
+        <!-- юзертаска водовідведення на об'єкті -->
+        <activiti:formProperty id="asDrainage" name="Наявність водовідведення на об'єкті" type="enum" writable="false">
+                <activiti:value id="sEnumDrainageYes" name="Так"></activiti:value>
+                <activiti:value id="sEnumDrainageNo" name="Ні"></activiti:value>
+         </activiti:formProperty> 
+         
+         <activiti:formProperty id="nDistanceDrainage" name="Водовідведення: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="sTypeDrainage" name="Водовідведення: тип; ;writable=false" type="string"></activiti:formProperty>  
+         <!-- юзертаска водовідведення на об'єкті -->
+       
+         <!-- юзертаска юзертаска транспортне сполучення -->
+         <activiti:formProperty id="nDistanceRoads" name="Під'їздні шляхи (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceRailway" name="Залізничні шляхи (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceFlights" name="Авіасполучення (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceRoadsCountry" name="Дороги міжнародного чи державного значення (км); ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); ;writable=false" type="string"></activiti:formProperty> 
+        
+         <activiti:formProperty id="decide" name="Рішення держслужбовця" type="enum" required="true">
+          <activiti:value id="accept" name="Прийняти проект до розгляду інвесторів"></activiti:value>
+          <activiti:value id="reject" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+
+       
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nOwnership}</activiti:expression>
+          </activiti:field>
+       </activiti:taskListener>
+       <!--ЮЗЕРТАСКА КОНЕЦ -->
+        
+        </extensionElements>  
+    </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Негативна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="servicetask5">
+         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+       <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подача greenfields та brownfields]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt; Ваше звернення щодо реєстрації у єдиній базі об'єкту ${sObject} було розглянуто. Відповідь позитивна&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask6">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Негативна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подача greenfields та brownfields]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;На жаль, Ваше звернення щодо реєстрації у єдиній базі об'єкту ${sObject} було відхилено. &lt;br&gt;
+&lt;p&gt;Причина в наступному:&lt;br&gt;
+${scomment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+${sPhoneOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements> 
+    </serviceTask>
     <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
