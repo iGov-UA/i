@@ -552,8 +552,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 									<p>
 										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
 										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю адресу.
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>Коментар держслужбовця:<br>
 										<b><i>${sDecisionComment}</i></b>
@@ -803,7 +803,7 @@ execution.setVariable('sDate_of_expiry', expiry)
        </script>
     </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
@@ -865,8 +865,8 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Сплата за посвідчення особи моряка була зарахована.<br>
-										Для отримання видачі/обміну посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
+                                        Сплата за посвідчення особи моряка була зарахована. Ваш документ буде готовий за 2 робочіх дні.<br>
+										Для отримання посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
 										<ul>
 										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Підписати необхідні документи та отримати посвідчення особи моряка.</li>
@@ -980,7 +980,7 @@ execution.setVariable('sDate_of_expiry', expiry)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask4_green" targetRef="scripttask6"></sequenceFlow>
@@ -1093,7 +1093,7 @@ var year1= year-(-5)
 var expiry=day+' '+month1+' '+year1
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
-var numb=execution.getVariable('sNumber')
+var numb=execution.getVariable('sNumber1')
 var ser=numb.substr(0,2)
 var num=numb.substr(2,6)
 var a1=Number(numb.substr(2,1))
@@ -1118,7 +1118,7 @@ execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow52" sourceRef="scripttask7" targetRef="usertask5_red"></sequenceFlow>
-    <userTask id="usertask5_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask5_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
@@ -1170,7 +1170,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="usertask6_green" targetRef="scripttask8"></sequenceFlow>
@@ -1206,7 +1206,7 @@ else{
 break}}
 var moz1="P"+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz1', moz1)
-var numb=execution.getVariable('sNumber')
+var numb=execution.getVariable('sNumber2')
 var ser=numb.substr(0,2)
 var num=numb.substr(2,6)
 var a1=Number(numb.substr(2,1))
@@ -1313,7 +1313,7 @@ execution.setVariable('sDate_of_expiry', expiry)
        </script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask9" targetRef="usertask7_red"></sequenceFlow>
-    <userTask id="usertask7_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask7_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
