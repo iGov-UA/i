@@ -458,7 +458,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
     <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="endevent5"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${asWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment==' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment==''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -489,13 +489,16 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 									<p>
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
+										${slabelSum}<br>
 										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
-										або Ви можете сплатити онлайн<br>
+										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
 									<p>
 										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -511,9 +514,9 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow35" sourceRef="servicetask6" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway1" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment!=' '}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment!=''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -552,8 +555,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 									<p>
 										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
 										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю адресу.
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>Коментар держслужбовця:<br>
 										<b><i>${sDecisionComment}</i></b>
@@ -678,23 +681,23 @@ var src=execution.getVariable('lastName')
 for (var i = 0; i&lt;50; i++){
 var lname=src.substr(i,1)
 if((lname != "null") || (lname != "")){
-if((lname != "-") || (lname != "`") || (lname != " ") || (lname != "'")){
-per1 = per1+lname}
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&lt;"}
 else {
-per1 = per1+"&lt;"}}
+per1 = per1+lname}}
 else{
 break}}
 var src=execution.getVariable('firstName')
 for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
-if((fname != "-") || (fname != "`") || (fname != " ") || (fname != "'")){
-per2 = per2+fname}
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&lt;"}
 else {
-per2 = per2+"&lt;"}}
+per2 = per2+fname}}
 else{
 break}}
-var moz1="P"+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+var moz1='р'+'&lt;'+'ukr'+per1+"&lt;"+"&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz1', moz1)
 var numb=execution.getVariable('sNumber')
 var ser=numb.substr(0,2)
@@ -706,39 +709,6 @@ var a4=Number(numb.substr(5,1))
 var a5=Number(numb.substr(6,1))
 var a6=Number(numb.substr(7,1))
 var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
-var src=execution.getVariable('sDate_of_birth1')
-var day1=src.substr(0,2)
-var month1=src.substr(3,2)
-var year1=src.substr(8,2)
-var b1=Number(year1.substr(0,1))
-var b2=Number(year1.substr(1,1))
-var b3=Number(month1.substr(0,1))
-var b4=Number(month1.substr(1,1))
-var b5=Number(day1.substr(0,1))
-var b6=Number(day1.substr(1,1))
-var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
-var sex=execution.getVariable('asSex')
-var sex1='Ч / M'
-if (sex=='sWoman'){
-    sex1='Ж / W'}
-execution.setVariable('sSex', sex1)
-var src=execution.getVariable('sSex')
-var sex=src.substr(4,1)
-var src=execution.getVariable('sDate_of_issue')
-var day2=src.substr(0,2)
-var month2=src.substr(3,2)
-var year2=src.substr(8,2)
-var year4=Number(year2)+5
-var year3='year4'
-var c1=Number(year3.substr(0,1))
-var c2=Number(year3[1])
-var c3=Number(month2.substr(0,1))
-var c4=Number(month2.substr(1,1))
-var c5=Number(day2.substr(0,1))
-var c6=Number(day2.substr(1,1))
-k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month1+day1+k2+sex+year4+month2+day2+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
-execution.setVariable('sMoz2', moz2)
 var src=execution.getVariable('sDate_of_birth1')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
@@ -767,43 +737,68 @@ if (month=='11'){
 if (month=='12'){
     month1='ГРУ / DEC'}
 var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
 execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
 var src=execution.getVariable('sDate_of_issue')
-var day=src.substr(0,2)
-var month=src.substr(3,2)
-var year=src.substr(6,4)
-var month1='СІЧ / JAN'
-if (month=='02'){
-    month1='ЛЮТ / FEB'}
-if (month=='03'){
-    month1='БЕР / MAR'}
-if (month=='04'){
-    month1='КВІ / APR'}
-if (month=='05'){
-    month1='ТРА / MAY'}
-if (month=='06'){
-    month1='ЧЕР / JUN'}
-if (month=='07'){
-    month1='ЛИП / JUL'}
-if (month=='08'){
-    month1='СЕР / AUG'}
-if (month=='09'){
-    month1='ВЕР / SEP'}
-if (month=='10'){
-    month1='ЖОВ / OCT'}
-if (month=='11'){
-    month1='ЛИС / NOV'}
-if (month=='12'){
-    month1='ГРУ / DEC'}
-var issue=day+' '+month1+' '+year
-var year1= year-(-5)
-var expiry=day+' '+month1+' '+year1
+var day1=src.substr(0,2)
+var month2=src.substr(3,2)
+var year2=src.substr(6,4)
+var month3='СІЧ / JAN'
+if (month2=='02'){
+    month3='ЛЮТ / FEB'}
+if (month2=='03'){
+    month3='БЕР / MAR'}
+if (month2=='04'){
+    month3='КВІ / APR'}
+if (month2=='05'){
+    month3='ТРА / MAY'}
+if (month2=='06'){
+    month3='ЧЕР / JUN'}
+if (month2=='07'){
+    month3='ЛИП / JUL'}
+if (month2=='08'){
+    month3='СЕР / AUG'}
+if (month2=='09'){
+    month3='ВЕР / SEP'}
+if (month2=='10'){
+    month3='ЖОВ / OCT'}
+if (month2=='11'){
+    month3='ЛИС / NOV'}
+if (month2=='12'){
+    month3='ГРУ / DEC'}
+var issue=day1+' '+month3+' '+year2
+var year3= year2-(-5)
+var expiry=day1+' '+month3+' '+year3
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(month2.substr(0,1))
+var c4=Number(month2.substr(1,1))
+var c5=Number(day1.substr(0,1))
+var c6=Number(day1.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+month2+day1+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
@@ -834,7 +829,7 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -865,8 +860,8 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Сплата за посвідчення особи моряка була зарахована.<br>
-										Для отримання видачі/обміну посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
+                                        Сплата за посвідчення особи моряка була зарахована. Ваш документ буде готовий за 2 робочіх дні.<br>
+										Для отримання посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
 										<ul>
 										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Підписати необхідні документи та отримати посвідчення особи моряка.</li>
@@ -948,7 +943,7 @@ execution.setVariable('sDate_of_expiry', expiry)
     <serviceTask id="servicetask11" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -957,30 +952,30 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".&lt;br&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".<br>
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;br&gt;
-									ДП "Адміністрація морських портів України"&lt;br&gt;
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent4">
-    </sequenceFlow><endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent4"></sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
     <userTask id="usertask4_green" name="Заміна бланку посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку нового посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask4_green" targetRef="scripttask6"></sequenceFlow>
@@ -990,48 +985,42 @@ execution.setVariable('sDate_of_issue', new Date().format("dd.MM.yyyy").toString
        </script>
     </scriptTask>
     <sequenceFlow id="flow51" sourceRef="scripttask6" targetRef="scripttask7"></sequenceFlow>
-    <scriptTask id="scripttask7"  name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1=""
 var per2=""
 var src=execution.getVariable('lastName')
-for (var i = 0; i&lt;20; i++){
+for (var i = 0; i&lt;50; i++){
 var lname=src.substr(i,1)
 if((lname != "null") || (lname != "")){
-if((lname != "-") || (lname != "`") || (lname != " ") || (lname != "'")){
-per1 = per1+lname}
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&lt;"}
 else {
-per1 = per1+"&lt;"}}
+per1 = per1+lname}}
 else{
 break}}
 var src=execution.getVariable('firstName')
-for (var i = 0; i&lt;20; i++){
+for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
-if((fname != "-") || (fname != "`") || (fname != " ") || (fname != "'")){
-per2 = per2+fname}
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&lt;"}
 else {
-per2 = per2+"&lt;"}}
+per2 = per2+fname}}
 else{
 break}}
-var moz1="P"+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+var moz1='P'+'&lt;'+'ukr'+per1+"&lt;"+"&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz1', moz1)
-var src=execution.getVariable('sDate_of_birth1')
-var day1=src.substr(0,2)
-var month1=src.substr(3,2)
-var year1=src.substr(8,2)
-var b1=Number(year1.substr(0,1))
-var b2=Number(year1.substr(1,1))
-var b3=Number(month1.substr(0,1))
-var b4=Number(month1.substr(1,1))
-var b5=Number(day1.substr(0,1))
-var b6=Number(day1.substr(1,1))
-var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
-var sex=execution.getVariable('asSex')
-var sex1='Ч / M'
-if (sex=='sWoman'){
-    sex1='Ж / W'}
-execution.setVariable('sSex', sex1)
+var numb=execution.getVariable('sNumber1')
+var ser=numb.substr(0,2)
+var num=numb.substr(2,6)
+var a1=Number(numb.substr(2,1))
+var a2=Number(numb.substr(3,1))
+var a3=Number(numb.substr(4,1))
+var a4=Number(numb.substr(5,1))
+var a5=Number(numb.substr(6,1))
+var a6=Number(numb.substr(7,1))
+var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
 var src=execution.getVariable('sDate_of_birth1')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
@@ -1060,67 +1049,70 @@ if (month=='11'){
 if (month=='12'){
     month1='ГРУ / DEC'}
 var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
 execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
 var src=execution.getVariable('sDate_of_issue')
-var day=src.substr(0,2)
-var month=src.substr(3,2)
-var year=src.substr(6,4)
-var month1='СІЧ / JAN'
-if (month=='02'){
-    month1='ЛЮТ / FEB'}
-if (month=='03'){
-    month1='БЕР / MAR'}
-if (month=='04'){
-    month1='КВІ / APR'}
-if (month=='05'){
-    month1='ТРА / MAY'}
-if (month=='06'){
-    month1='ЧЕР / JUN'}
-if (month=='07'){
-    month1='ЛИП / JUL'}
-if (month=='08'){
-    month1='СЕР / AUG'}
-if (month=='09'){
-    month1='ВЕР / SEP'}
-if (month=='10'){
-    month1='ЖОВ / OCT'}
-if (month=='11'){
-    month1='ЛИС / NOV'}
-if (month=='12'){
-    month1='ГРУ / DEC'}
-var issue=day+' '+month1+' '+year
-var year1= year-(-5)
-var expiry=day+' '+month1+' '+year1
+var day1=src.substr(0,2)
+var month2=src.substr(3,2)
+var year2=src.substr(6,4)
+var month3='СІЧ / JAN'
+if (month2=='02'){
+    month3='ЛЮТ / FEB'}
+if (month2=='03'){
+    month3='БЕР / MAR'}
+if (month2=='04'){
+    month3='КВІ / APR'}
+if (month2=='05'){
+    month3='ТРА / MAY'}
+if (month2=='06'){
+    month3='ЧЕР / JUN'}
+if (month2=='07'){
+    month3='ЛИП / JUL'}
+if (month2=='08'){
+    month3='СЕР / AUG'}
+if (month2=='09'){
+    month3='ВЕР / SEP'}
+if (month2=='10'){
+    month3='ЖОВ / OCT'}
+if (month2=='11'){
+    month3='ЛИС / NOV'}
+if (month2=='12'){
+    month3='ГРУ / DEC'}
+var issue=day1+' '+month3+' '+year2
+var year3= year2-(-5)
+var expiry=day1+' '+month3+' '+year3
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
-var numb=execution.getVariable('sNumber')
-var ser=numb.substr(0,2)
-var num=numb.substr(2,6)
-var a1=Number(numb.substr(2,1))
-var a2=Number(numb.substr(3,1))
-var a3=Number(numb.substr(4,1))
-var a4=Number(numb.substr(5,1))
-var a5=Number(numb.substr(6,1))
-var a6=Number(numb.substr(7,1))
-var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
 var src=execution.getVariable('sSex')
 var sex=src.substr(4,1)
-var year2=year1.substr(2,2)
-var c1=Number(year1.substr(2,1))
-var c2=Number(year1.substr(3,1))
-var c3=Number(month.substr(0,1))
-var c4=Number(month.substr(1,1))
-var c5=Number(day.substr(0,1))
-var c6=Number(day.substr(1,1))
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(month2.substr(0,1))
+var c4=Number(month2.substr(1,1))
+var c5=Number(day1.substr(0,1))
+var c6=Number(day1.substr(1,1))
 k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month1+day1+k2+sex+year2+month+day+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+month2+day1+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow52" sourceRef="scripttask7" targetRef="usertask5_red"></sequenceFlow>
-    <userTask id="usertask5_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask5_red" name="Друк посвідчення після заміни бланку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -1149,7 +1141,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp1.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -1170,7 +1162,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку нового посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="usertask6_green" targetRef="scripttask8"></sequenceFlow>
@@ -1188,25 +1180,25 @@ var src=execution.getVariable('lastName')
 for (var i = 0; i&lt;50; i++){
 var lname=src.substr(i,1)
 if((lname != "null") || (lname != "")){
-if((lname != "-") || (lname != "`") || (lname != " ") || (lname != "'")){
-per1 = per1+lname}
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&lt;"}
 else {
-per1 = per1+"&lt;"}}
+per1 = per1+lname}}
 else{
 break}}
 var src=execution.getVariable('firstName')
 for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
-if((fname != "-") || (fname != "`") || (fname != " ") || (fname != "'")){
-per2 = per2+fname}
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&lt;"}
 else {
-per2 = per2+"&lt;"}}
+per2 = per2+fname}}
 else{
 break}}
-var moz1="P"+"&lt;"+"ukr"+per1+"&lt;&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+var moz1='P'+'&lt;'+'ukr'+per1+"&lt;"+"&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz1', moz1)
-var numb=execution.getVariable('sNumber')
+var numb=execution.getVariable('sNumber2')
 var ser=numb.substr(0,2)
 var num=numb.substr(2,6)
 var a1=Number(numb.substr(2,1))
@@ -1216,39 +1208,6 @@ var a4=Number(numb.substr(5,1))
 var a5=Number(numb.substr(6,1))
 var a6=Number(numb.substr(7,1))
 var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
-var src=execution.getVariable('sDate_of_birth1')
-var day1=src.substr(0,2)
-var month1=src.substr(3,2)
-var year1=src.substr(8,2)
-var b1=Number(year1.substr(0,1))
-var b2=Number(year1.substr(1,1))
-var b3=Number(month1.substr(0,1))
-var b4=Number(month1.substr(1,1))
-var b5=Number(day1.substr(0,1))
-var b6=Number(day1.substr(1,1))
-var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
-var sex=execution.getVariable('asSex')
-var sex1='Ч / M'
-if (sex=='sWoman'){
-    sex1='Ж / W'}
-execution.setVariable('sSex', sex1)
-var src=execution.getVariable('sSex')
-var sex=src.substr(4,1)
-var src=execution.getVariable('sDate_of_issue')
-var day2=src.substr(0,2)
-var month2=src.substr(3,2)
-var year2=src.substr(8,2)
-var year4=Number(year2)+5
-var year3='year4'
-var c1=Number(year3.substr(0,1))
-var c2=Number(year3[1])
-var c3=Number(month2.substr(0,1))
-var c4=Number(month2.substr(1,1))
-var c5=Number(day2.substr(0,1))
-var c6=Number(day2.substr(1,1))
-k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month1+day1+k2+sex+year4+month2+day2+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
-execution.setVariable('sMoz2', moz2)
 var src=execution.getVariable('sDate_of_birth1')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
@@ -1277,45 +1236,70 @@ if (month=='11'){
 if (month=='12'){
     month1='ГРУ / DEC'}
 var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
 execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
 var src=execution.getVariable('sDate_of_issue')
-var day=src.substr(0,2)
-var month=src.substr(3,2)
-var year=src.substr(6,4)
-var month1='СІЧ / JAN'
-if (month=='02'){
-    month1='ЛЮТ / FEB'}
-if (month=='03'){
-    month1='БЕР / MAR'}
-if (month=='04'){
-    month1='КВІ / APR'}
-if (month=='05'){
-    month1='ТРА / MAY'}
-if (month=='06'){
-    month1='ЧЕР / JUN'}
-if (month=='07'){
-    month1='ЛИП / JUL'}
-if (month=='08'){
-    month1='СЕР / AUG'}
-if (month=='09'){
-    month1='ВЕР / SEP'}
-if (month=='10'){
-    month1='ЖОВ / OCT'}
-if (month=='11'){
-    month1='ЛИС / NOV'}
-if (month=='12'){
-    month1='ГРУ / DEC'}
-var issue=day+' '+month1+' '+year
-var year1= year-(-5)
-var expiry=day+' '+month1+' '+year1
+var day1=src.substr(0,2)
+var month2=src.substr(3,2)
+var year2=src.substr(6,4)
+var month3='СІЧ / JAN'
+if (month2=='02'){
+    month3='ЛЮТ / FEB'}
+if (month2=='03'){
+    month3='БЕР / MAR'}
+if (month2=='04'){
+    month3='КВІ / APR'}
+if (month2=='05'){
+    month3='ТРА / MAY'}
+if (month2=='06'){
+    month3='ЧЕР / JUN'}
+if (month2=='07'){
+    month3='ЛИП / JUL'}
+if (month2=='08'){
+    month3='СЕР / AUG'}
+if (month2=='09'){
+    month3='ВЕР / SEP'}
+if (month2=='10'){
+    month3='ЖОВ / OCT'}
+if (month2=='11'){
+    month3='ЛИС / NOV'}
+if (month2=='12'){
+    month3='ГРУ / DEC'}
+var issue=day1+' '+month3+' '+year2
+var year3= year2-(-5)
+var expiry=day1+' '+month3+' '+year3
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(month2.substr(0,1))
+var c4=Number(month2.substr(1,1))
+var c5=Number(day1.substr(0,1))
+var c6=Number(day1.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+month2+day1+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask9" targetRef="usertask7_red"></sequenceFlow>
-    <userTask id="usertask7_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask7_red" name="Друк посвідчення після заміни бланку2" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -1344,7 +1328,7 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp2.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -1435,11 +1419,17 @@ execution.setVariable('sDate_of_expiry', expiry)
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="592.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="601.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="591.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="598.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="591.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="601.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4_green" id="BPMNShape_usertask4_green">
         <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="660.0"></omgdc:Bounds>
@@ -1470,12 +1460,6 @@ execution.setVariable('sDate_of_expiry', expiry)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="412.0" y="747.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="220.0" y="598.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="591.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
@@ -1527,7 +1511,7 @@ execution.setVariable('sDate_of_expiry', expiry)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="672.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="672.0" y="166.0"></omgdi:waypoint>
@@ -1592,6 +1576,24 @@ execution.setVariable('sDate_of_expiry', expiry)
         <omgdi:waypoint x="510.0" y="619.0"></omgdi:waypoint>
         <omgdi:waypoint x="438.0" y="618.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="333.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="240.0" y="598.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="540.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="540.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="591.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="220.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="90.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="65.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="755.0" y="687.0"></omgdi:waypoint>
         <omgdi:waypoint x="777.0" y="687.0"></omgdi:waypoint>
@@ -1639,24 +1641,6 @@ execution.setVariable('sDate_of_expiry', expiry)
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="432.0" y="787.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="800.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="333.0" y="618.0"></omgdi:waypoint>
-        <omgdi:waypoint x="260.0" y="618.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="240.0" y="598.0"></omgdi:waypoint>
-        <omgdi:waypoint x="240.0" y="540.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="540.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="591.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="220.0" y="618.0"></omgdi:waypoint>
-        <omgdi:waypoint x="195.0" y="618.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="90.0" y="618.0"></omgdi:waypoint>
-        <omgdi:waypoint x="65.0" y="618.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
