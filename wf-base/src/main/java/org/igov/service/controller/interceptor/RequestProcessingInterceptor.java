@@ -514,14 +514,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 .processInstanceId(sID_Process).singleResult();
         String sReturn = "-1";
         try {
-            LOG.debug("Found completed process with sID_Process = {} ", sID_Process);
+            LOG_BIG.debug("Found completed process with sID_Process = {} ", sID_Process);
             if (oHistoricProcessInstance != null) {
         	Long nMinutesDurationProcess  =  oHistoricProcessInstance.getDurationInMillis();
-                LOG.debug("nMinutesDurationProcess = {}, ms", nMinutesDurationProcess);
+        	LOG_BIG.debug("nMinutesDurationProcess = {}, ms", nMinutesDurationProcess);
 
                 if ( nMinutesDurationProcess != null ) {
                     nMinutesDurationProcess = nMinutesDurationProcess / (1000 * 60);
-                    LOG.debug("nMinutesDurationProcess = {}, min", nMinutesDurationProcess);
+                    LOG_BIG.debug("nMinutesDurationProcess = {}, min", nMinutesDurationProcess);
 
                     sReturn = Long.toString(nMinutesDurationProcess);
                 }
