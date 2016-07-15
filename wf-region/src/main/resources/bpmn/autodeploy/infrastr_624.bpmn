@@ -489,13 +489,16 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 									<p>
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
+										${slabelSum}<br>
 										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
-										або Ви можете сплатити онлайн<br>
+										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
 									<p>
 										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -826,7 +829,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -972,7 +975,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку нового посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask4_green" targetRef="scripttask6"></sequenceFlow>
@@ -1107,9 +1110,9 @@ execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow52" sourceRef="scripttask7" targetRef="usertask5_red"></sequenceFlow>
-    <userTask id="usertask5_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask5_red" name="Друк посвідчення після заміни бланку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -1138,7 +1141,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp1.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -1159,7 +1162,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку нового посвідчення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="usertask6_green" targetRef="scripttask8"></sequenceFlow>
@@ -1294,9 +1297,9 @@ execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask9" targetRef="usertask7_red"></sequenceFlow>
-    <userTask id="usertask7_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask7_red" name="Друк посвідчення після заміни бланку2" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -1325,7 +1328,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
           <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp2.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
