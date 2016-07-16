@@ -22,20 +22,6 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         }
       }
     })
-    // .state('index.subcategory', {
-    //   url: 'subcategory/:catID/:scatID',
-    //   resolve: {
-    //     catalog: function(CatalogService) {
-    //       return CatalogService.getServices();
-    //     }
-    //   },
-    //   views: {
-    //     'main@': {
-    //       templateUrl: 'app/service/subcategory/subcategory.html',
-    //       controller: 'SubcategoryController'
-    //     }
-    //   }
-    // })
     .state('index.situation', {
       url: 'situation/:catID/:scatID',
       resolve: {
@@ -54,8 +40,6 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         }
       }
     })
-
-    // поправить когда заработает сервис ,не нужно передавать 2 сервиса
     .state('index.newsubcategory', {
       url: 'subcategory/:catID/:scatID',
       resolve: {

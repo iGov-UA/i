@@ -9,18 +9,26 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
 });
 
 angular.module('app').controller('SituationController', function ($scope, service, AdminService, ServiceService, chosenCategory) {
-  $scope.spinner = true;
   $scope.service = service;
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
-  // $scope.situation = "";
-  // angular.forEach($scope.category.aService, function (service) {
-  //   if(service.nID === service.nID) {
-  //     $scope.situation = service
-  //     console.log(chosenCategory)
-  //   }
-  // });
-  $scope.spinner = false;
+
+  $scope.$on('$stateChangeStart', function(event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = true;
+    }
+  });
+  $scope.$on('$stateChangeSuccess', function(event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = false;
+    }
+  });
+  $scope.$on('$stateChangeError', function(event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = false;
+    }
+  });
+
 });
 
 angular.module('app').controller('ServiceGeneralController', function($state, $scope, ServiceService, PlacesService) {

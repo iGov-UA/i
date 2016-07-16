@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row" ng-if="!spinner">
+  <div class="row" ng-if="!mainSpinner">
 
     <div class="container">
       <div class="col-md-12">
@@ -34,7 +34,7 @@
 
     <div class="row subcategory">
       <div ui-view="contentIn">
-        <div class="row" ng-hide="catalogTab !== 1">
+        <div class="row">
           <div class="container" style="margin-bottom: 40px" >
             <div class="col-sm-4 col-xs-12" ng-repeat="category in catalog">
               <div class="col-sm-12 category-container">
@@ -52,22 +52,20 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="row" ng-show="spinner || catalogTab === 2">
-          <div class="text-center">
-            <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
-          </div>
+      <div class="row" ng-show="spinner">
+        <div class="text-center">
+          <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
         </div>
+      </div>
 
       </div>
     </div>
 
-  </div>
-
-</div>
-
-<div class="row" ng-show="spinner || catalogTab === 2">
-  <div class="text-center">
-    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
-  </div>
+    <div class="row" ng-show="mainSpinner">
+      <div class="text-center">
+        <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+      </div>
+    </div>
 </div>

@@ -18,6 +18,7 @@ angular.module('app')
         && !subcat) {
       var data = {
         asIDPlaceUA: asIDPlaceUA,
+        sFind: sFind || null,
         bShowEmptyFolders: bShowEmptyFolders,
         nID_Category: nID_Category
       };
@@ -30,11 +31,9 @@ angular.module('app')
       });
     } else {
       // страница подкатегорий
-      if(sFind) {
-        // проверка есть ли что-то в поисковике, пока если параметр sFind пустая строка или null - будет ошибка сервиса
         var data = {
           asIDPlaceUA: asIDPlaceUA,
-          sFind: sFind,
+          sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
           nID_Category: nID_Category,
           nID_ServiceTag: nID_ServiceTag,
@@ -47,23 +46,6 @@ angular.module('app')
           servicesCache = response.data;
           return response.data;
         });
-      } else {
-        // если поисковик пуст
-        var data = {
-          asIDPlaceUA: asIDPlaceUA,
-          bShowEmptyFolders: bShowEmptyFolders,
-          nID_Category: nID_Category,
-          nID_ServiceTag: nID_ServiceTag,
-          bRoot: true
-        };
-        return $http.get('./api/catalog/getCatalogTreeTagService', {
-          params: data,
-          data: data
-        }).then(function (response) {
-          servicesCache = response.data;
-          return response.data;
-        });
-      }
     }
   };
 

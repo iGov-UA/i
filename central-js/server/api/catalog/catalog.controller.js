@@ -127,9 +127,6 @@ module.exports.getCatalogTreeTag = function (req, res) {
       };
 
       var url = buildUrl('/action/item/getCatalogTreeTag');
-
-      // пока sFind с null и пустой строкой не передаеться - используем эту проверку.
-      if(options.params.sFind !== null) {
         return request.get({
           'url': url,
           'auth': {
@@ -144,21 +141,6 @@ module.exports.getCatalogTreeTag = function (req, res) {
             'bShowEmptyFolders': options.params.bShowEmptyFolders
           }
         }, callback);
-      }else{
-        return request.get({
-          'url': url,
-          'auth': {
-            'username': options.username,
-            'password': options.password
-          },
-          json: true,
-          'qs': {
-            'nID_Category': options.params.nID_Category,
-            'asID_Place_UA': options.params.asIDPlaceUA,
-            'bShowEmptyFolders': options.params.bShowEmptyFolders
-          }
-        }, callback);
-      }
     }
   });
 };
@@ -177,8 +159,8 @@ module.exports.getCatalogTreeTagService = function (req, res) {
       nID_ServiceTag: req.query.nID_ServiceTag,
       nID_Category: req.query.nID_Category,
       bRoot: req.query.bRoot,
-      sFind: req.query.sFind,
-      asIDPlaceUA: req.query.asIDPlaceUA || ""
+      sFind: req.query.sFind || null,
+      asIDPlaceUA: req.query.asIDPlaceUA || null
     }
   };
 
@@ -196,9 +178,6 @@ module.exports.getCatalogTreeTagService = function (req, res) {
       };
 
       var url = buildUrl('/action/item/getCatalogTreeTagService');
-
-      // пока sFind с null и пустой строкой не передаеться - используем эту проверку.
-      if(options.params.sFind) {
         return request.get({
           'url': url,
           'auth': {
@@ -211,25 +190,9 @@ module.exports.getCatalogTreeTagService = function (req, res) {
             'nID_Category': options.params.nID_Category,
             'bRoot': options.params.bRoot,
             'sFind': options.params.sFind,
-            'asIDPlaceUA': options.params.asIDPlaceUA
+            'asID_Place_UA': options.params.asIDPlaceUA
           }
         }, callback);
-      } else {
-        return request.get({
-          'url': url,
-          'auth': {
-            'username': options.username,
-            'password': options.password
-          },
-          json: true,
-          'qs': {
-            'nID_ServiceTag': options.params.nID_ServiceTag,
-            'nID_Category': options.params.nID_Category,
-            'bRoot': options.params.bRoot,
-            'asIDPlaceUA': options.params.asIDPlaceUA
-          }
-        }, callback);
-      }
     }
   });
 };

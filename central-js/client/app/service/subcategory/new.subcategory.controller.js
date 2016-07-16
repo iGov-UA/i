@@ -46,4 +46,19 @@ angular.module('app')
         $scope.stateCheck = $state.params.catID;
         $anchorScroll();
 
+        $scope.$on('$stateChangeStart', function(event, toState) {
+          if (toState.resolve) {
+            $scope.spinner = true;
+          }
+        });
+        $scope.$on('$stateChangeSuccess', function(event, toState) {
+          if (toState.resolve) {
+            $scope.spinner = false;
+          }
+        });
+        $scope.$on('$stateChangeError', function(event, toState) {
+          if (toState.resolve) {
+            $scope.spinner = false;
+          }
+        });
       }]);

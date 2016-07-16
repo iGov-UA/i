@@ -15,7 +15,7 @@ angular.module('app')
     };
     $scope.bAdmin = AdminService.isAdmin();
     $scope.recalcCounts = true;
-    $scope.spinner = true;
+    $scope.mainSpinner = true;
 
     /*$scope.isCatalogCategoryShowAll = function(nID){
         return statesRepository.isSearch(nID);
@@ -27,7 +27,7 @@ angular.module('app')
 
     var subscriptions = [];
     var subscriberId = messageBusService.subscribe('catalog:update', function(data) {
-      $scope.spinner = false;
+      $scope.mainSpinner = false;
       $scope.fullCatalog = data;
       $scope.catalog = data;
       console.log('new catalog', $scope.catalog);
@@ -38,7 +38,7 @@ angular.module('app')
 
 
     subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
-      $scope.spinner = true;
+      $scope.mainSpinner = true;
       $scope.catalog = [];
     });
     subscriptions.push(subscriberId);
@@ -72,5 +72,21 @@ angular.module('app')
       $scope.catalogTab = category;
      };
     $scope.stateCheck = $state.params.catID;
+
+    $scope.$on('$stateChangeStart', function(event, toState) {
+      if (toState.resolve) {
+        $scope.spinner = true;
+      }
+    });
+    $scope.$on('$stateChangeSuccess', function(event, toState) {
+      if (toState.resolve) {
+        $scope.spinner = false;
+      }
+    });
+    $scope.$on('$stateChangeError', function(event, toState) {
+      if (toState.resolve) {
+        $scope.spinner = false;
+      }
+    });
 
   }]);
