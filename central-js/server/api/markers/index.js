@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var schema = require('./schema.js');
 
 router.post('/validate', validateMarkers);
 
@@ -8,8 +7,8 @@ module.exports = router;
 
 function validateMarkers(req, res) {
     var Ajv = require('ajv');
-    var ajv = Ajv({allErrors: true});
-    var validate = ajv.compile(schema.markersSchema);
-    var valid = validate(req.body);
+    var ajv = Ajv(req.body.definitions.options);
+    var validate = ajv.compile(req.body.definitions.schema);
+    var valid = validate(req.body.markers);
     res.send({valid:valid, errors:validate.errors});
 }
