@@ -354,6 +354,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("Method saveClosedTaskInfo started");
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        
+        LOG_BIG.debug("omRequestBody={}", omRequestBody);
+        
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
         String snID_Task = (String) omRequestBody.get("taskId");
