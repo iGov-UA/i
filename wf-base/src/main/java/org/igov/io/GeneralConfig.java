@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static org.igov.util.ToolLuna.getProtectedNumber;
+import javax.annotation.PostConstruct;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
 /**
  * @author bw
@@ -331,6 +334,31 @@ public class GeneralConfig {
     }
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
-    }    
+    }
+    
+    @PostConstruct
+    // Вывод всех переменных с аннотацией @Value
+    private void init() {
+	
+	LOG.info("-------   Установки конфигурации -------------------");
+	for ( Field f: this.getClass().getDeclaredFields()) {
+	    
+	    for ( Annotation an: f.getDeclaredAnnotations()) {
+		Class<? extends Annotation> ant = an.annotationType();
+		if ("org.springframework.beans.factory.annotation.Value".equals(ant.getName())) {
+		    try {
+			LOG.info("{} = {}", f.getName(), f.get(this));
+		    } catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		    } catch (IllegalAccessException e) {
+			e.printStackTrace();
+		    }
+		    break;    
+		}
+	    }
+         }
+	LOG.info("----------------------------------------------------");
+	
+    }
     
 }
