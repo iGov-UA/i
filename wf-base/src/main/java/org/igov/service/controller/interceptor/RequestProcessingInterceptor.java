@@ -369,6 +369,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG_BIG.debug("oHistoricTaskInstance = {}", oHistoricTaskInstance);
             
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
