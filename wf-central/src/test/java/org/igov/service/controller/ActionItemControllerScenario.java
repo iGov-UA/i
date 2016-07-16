@@ -397,6 +397,18 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(tableDataList.length == 1);
     }
 
+    @Test
+    public void shouldGetService() throws Exception {
+        String jsonData = mockMvc.perform(get("/action/item/getService").
+                param("nID", "142")).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andExpect(jsonPath("$", not(empty()))).
+                andReturn().getResponse().getContentAsString();
+        Service service = JsonRestUtils.readObject(jsonData, Service.class);
+        Assert.assertNotNull(service);
+    }
+
     // region Helpers
 
     private void assertServiceFieldExpected(ResultActions ra, String jsonPath, String expected) throws Exception {

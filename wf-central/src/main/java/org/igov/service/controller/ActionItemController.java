@@ -493,6 +493,7 @@ public class ActionItemController {
                 preparedData.setTest(serviceData.isTest());
                 preparedData.setServiceType(serviceData.getServiceType());
                 preparedData.setUrl(serviceData.getUrl());
+                preparedData.setSubject_Operator(serviceData.getSubject_Operator());
 
                 // TODO remove if below after migration to new approach (via Place)
                 if (preparedData.getCity() != null) {
