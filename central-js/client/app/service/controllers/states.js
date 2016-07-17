@@ -8,10 +8,30 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
   $scope.catalog = catalogContent;
 });
 
-angular.module('app').controller('SituationController', function ($scope, service, AdminService, ServiceService, chosenCategory) {
+angular.module('app').controller('SituationController', function ($scope, service, AdminService, ServiceService, chosenCategory, messageBusService) {
   $scope.service = service;
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
+
+  messageBusService.subscribe('catalog:update', function(data) {
+    console.log('catalog updated, will update items');
+    $scope.spinner = false;
+    $scope.catalog = data;
+    if ($scope.catalog) {
+      $scope.category = data;
+    } else {
+      $scope.category = null;
+    }
+  }, false);
+
+  if($scope.catalog
+    && $scope.catalog.aServiceTag_Child
+    && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
+    $scope.category = $scope.catalog;
+  }
+  if(!$scope.catalog) {
+    $scope.category = $scope.catalog;
+  }
 
   $scope.$on('$stateChangeStart', function(event, toState) {
     if (toState.resolve) {
