@@ -24,7 +24,12 @@ angular.module('app').controller('SituationController', function ($scope, servic
     }
   }, false);
 
-  if($scope.catalog && $scope.catalog.aServiceTag_Child && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
+  if($scope.catalog
+    && $scope.catalog.aServiceTag_Child
+    && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
+    $scope.category = $scope.catalog;
+  }
+  if(!$scope.catalog) {
     $scope.category = $scope.catalog;
   }
 

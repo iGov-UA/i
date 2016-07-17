@@ -38,7 +38,9 @@ angular.module('app')
           });
         });
 
-        if($scope.catalog.aService && chosenCategory.oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID) {
+        if($scope.catalog &&
+          $scope.catalog.aService
+          && chosenCategory.oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID) {
           $scope.subcategory = $scope.catalog;
         }else {
           $scope.subcategory = chosenCategory;
