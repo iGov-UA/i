@@ -1,6 +1,8 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.model.action.item.Category;
 import org.igov.model.action.item.Service;
@@ -978,7 +980,7 @@ public class ActionItemController {
             @RequestParam(value = "nID_Category", required = true) final Long nID_Category
     ) {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
-                bShowEmptyFolders, false, null, null);
+                bShowEmptyFolders, StringUtils.isNotBlank(sFind), null, null);
         return JsonRestUtils.toJsonResponse(res);
     }
 
@@ -994,12 +996,25 @@ public class ActionItemController {
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
-            @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "ID тэга", required = true)
-            @RequestParam(value = "nID_ServiceTag", required = true) final Long nID_ServiceTag, @ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true)
-            @RequestParam(value = "bRoot", required = true) final boolean bRoot
+            @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "ID корневого тега", required = false)
+            @RequestParam(value = "nID_ServiceTag_Root", required = false) Long nID_ServiceTag_Root, @ApiParam(value = "ID корневого тега", required = false)
+            @RequestParam(value = "nID_ServiceTag_Child", required = false) Long nID_ServiceTag_Child, @ApiParam(value = "ID тега", required = false)
+            @RequestParam(value = "nID_ServiceTag", required = false) final Long nID_ServiceTag, @ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true)
+            @RequestParam(value = "bRoot", required = false) final Boolean bRoot
     ) {
+        if (bRoot != null && nID_ServiceTag != null) {
+            if (bRoot) {
+                nID_ServiceTag_Root = nID_ServiceTag;
+                nID_ServiceTag_Child = null;
+            }
+            else {
+                nID_ServiceTag_Root = null;
+                nID_ServiceTag_Child = nID_ServiceTag;
+            }
+        }
+
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
-                bShowEmptyFolders, true, nID_ServiceTag, bRoot);
+                bShowEmptyFolders, true, nID_ServiceTag_Root, nID_ServiceTag_Child);
         res.forEach(n -> n.setaService(n.getaService().stream().map(
                 s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
 

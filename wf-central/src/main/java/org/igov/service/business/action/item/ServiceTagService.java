@@ -2,6 +2,7 @@ package org.igov.service.business.action.item;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.model.action.item.*;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.Place;
@@ -32,8 +33,10 @@ public class ServiceTagService {
     public List<ServiceTagTreeNodeVO> getCatalogTreeTag(Long nID_Category, String sFind,
                                                         List<String> asID_Place_UA, boolean bShowEmptyFolders,
                                                         boolean includeServices,
-                                                        Long nID_ServiceTag, Boolean bRoot) {
+                                                        Long nID_ServiceTag_Root, Long nID_ServiceTag_Child) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
+        boolean hasRootIdFilter = nID_ServiceTag_Root != null;
+        boolean hasChildIdFilter = nID_ServiceTag_Child != null;
 
         ServiceTagTree tree = getServiceTagTreeCached();
         Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
@@ -42,7 +45,7 @@ public class ServiceTagService {
             final ServiceTag parentTag = rootTagNode.getTag();
 
             final Long rootTagId = rootTagNode.getTag().getId();
-            if (BooleanUtils.isTrue(bRoot) && !rootTagId.equals(nID_ServiceTag)) {
+            if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
                 continue;
             }
 
@@ -51,7 +54,7 @@ public class ServiceTagService {
             for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
                 final ServiceTag childTag = childNode.getTag();
 
-                if (BooleanUtils.isFalse(bRoot) && !childNode.getTag().getId().equals(nID_ServiceTag)) {
+                if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
                     continue;
                 }
 
@@ -71,19 +74,21 @@ public class ServiceTagService {
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
                 res.add(nodeVO);
 
-                if (includeServices) {
-                    Stream<Service> servicesStream = nodeVO.getaServiceTag_Child().stream().flatMap(
-                            c -> aService(tagIdToServices, c.getId()).stream());
-                    if (BooleanUtils.isTrue(bRoot)) {
-                        servicesStream = Stream.concat(servicesStream, aService(tagIdToServices, rootTagId).stream());
-                    }
-
-                    final List<Service> selectedServices = servicesStream
-                            .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
-                            .collect(Collectors.toList());
-
-                    nodeVO.setaService(selectedServices);
+                if (!includeServices) {
+                    continue;
                 }
+
+                Stream<Service> servicesStream = nodeVO.getaServiceTag_Child().stream().flatMap(
+                        c -> aService(tagIdToServices, c.getId()).stream());
+                if (!hasChildIdFilter) {
+                    servicesStream = Stream.concat(servicesStream, aService(tagIdToServices, rootTagId).stream());
+                }
+
+                final List<Service> selectedServices = servicesStream
+                        .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
+                        .collect(Collectors.toList());
+
+                nodeVO.setaService(selectedServices);
             }
         }
 
@@ -105,7 +110,7 @@ public class ServiceTagService {
         }
 
         String sFindForServices = sFind;
-        if (sFind != null) {
+        if (StringUtils.isNotBlank(sFind)) {
             if (containsWithoutCase(serviceTag.getsID(), sFind) ||
                     containsWithoutCase(serviceTag.getsName_UA(), sFind) ||
                     containsWithoutCase(serviceTag.getsName_RU(), sFind)) {
@@ -129,7 +134,7 @@ public class ServiceTagService {
                                Long nID_Category, String sFind, List<String> asID_Place_UA) {
         boolean res = true;
         res = nID_Category.equals(service.getSubcategory().getCategory().getId());
-        if (res && sFind != null) {
+        if (res && StringUtils.isNotBlank(sFind)) {
             res = containsWithoutCase(service.getName(), sFind.toLowerCase());
         }
         if (res && CollectionUtils.isNotEmpty(asID_Place_UA)) {
