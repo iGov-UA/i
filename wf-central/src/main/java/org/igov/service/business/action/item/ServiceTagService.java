@@ -72,10 +72,13 @@ public class ServiceTagService {
                 res.add(nodeVO);
 
                 if (includeServices) {
-                    final List<Service> selectedServices = Stream.concat(
-                            rootTagNode.getChildren().stream().flatMap(
-                                    c -> aService(tagIdToServices, c.getTag().getId()).stream()),
-                            aService(tagIdToServices, rootTagId).stream())
+                    Stream<Service> servicesStream = nodeVO.getaServiceTag_Child().stream().flatMap(
+                            c -> aService(tagIdToServices, c.getId()).stream());
+                    if (BooleanUtils.isTrue(bRoot)) {
+                        servicesStream = Stream.concat(servicesStream, aService(tagIdToServices, rootTagId).stream());
+                    }
+
+                    final List<Service> selectedServices = servicesStream
                             .distinct().filter(s -> isSuitable(s, nID_Category, sFind, asID_Place_UA))
                             .collect(Collectors.toList());
 
