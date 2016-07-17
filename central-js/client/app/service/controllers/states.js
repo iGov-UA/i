@@ -24,7 +24,7 @@ angular.module('app').controller('SituationController', function ($scope, servic
     }
   }, false);
 
-  if($scope.catalog && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
+  if($scope.catalog.aServiceTag_Child && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
     $scope.category = $scope.catalog;
   }
 
