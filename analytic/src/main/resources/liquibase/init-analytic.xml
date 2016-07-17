@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="Init tables" author="olga" runOnChange="false">
+
+        <sql splitStatements="true" dbms="postgresql">
+            DROP TABLE IF EXISTS "AttributeType" CASCADE;
+        </sql>
+
+        <sql splitStatements="true" dbms="h2">
+            DROP TABLE IF EXISTS AttributeType CASCADE;
+        </sql>
+        
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="AttributeType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    
+    </changeSet>
+    
+    <changeSet id="Add auto increment for H2" author="olga" dbms="h2">
+        <addAutoIncrement tableName="AttributeType" columnName="nID" startWith="2000" columnDataType="bigint"/>
+    </changeSet>
+
+</databaseChangeLog>
