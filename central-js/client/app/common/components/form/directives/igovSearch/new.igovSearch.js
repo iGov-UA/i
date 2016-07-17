@@ -70,13 +70,19 @@ angular.module('app')
               return null;
             }
             var bShowEmptyFolders = AdminService.isAdmin();
+            var bRoot = true;
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
             $scope.catalog = [];
             $scope.category = $stateParams.catID;
             $scope.subcategory = $stateParams.scatID;
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, false, $scope.category, $scope.subcategory).then(function (result) {
-              if(result.length === 1) {
+            if($state.is('index.situation')){
+              bRoot = false;
+            }
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, false, $scope.category, $scope.subcategory, bRoot).then(function (result) {
+              if($state.is('index.situation')) {
+                fullCatalog = result[0]
+              }else if(result.length === 1) {
                 fullCatalog = result[0];
               } else {
                 fullCatalog = result;

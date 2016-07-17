@@ -3,7 +3,7 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab, category, subcat) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab, category, subcat, bRoot) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -37,7 +37,7 @@ angular.module('app')
           bShowEmptyFolders: bShowEmptyFolders,
           nID_Category: nID_Category,
           nID_ServiceTag: nID_ServiceTag,
-          bRoot: true
+          bRoot: bRoot
         };
         return $http.get('./api/catalog/getCatalogTreeTagService', {
           params: data,
@@ -83,18 +83,34 @@ angular.module('app')
     if (catalog === undefined) {
       catalog = servicesCache;
     }
-    angular.forEach(catalog.aService, function(category) {
-          var found = false;
-          for (var i = 0; i < operators.length; ++i) {
-            if (operators[i].sSubjectOperatorName === category.sSubjectOperatorName) {
-              found = true;
-              break;
-            }
+    if(catalog.aService) {
+      angular.forEach(catalog.aService, function(category) {
+        var found = false;
+        for (var i = 0; i < operators.length; ++i) {
+          if (operators[i].sSubjectOperatorName === category.sSubjectOperatorName) {
+            found = true;
+            break;
           }
-          if (!found && category.sSubjectOperatorName != "") {
-            operators.push(category);
+        }
+        if (!found && category.sSubjectOperatorName != "") {
+          operators.push(category);
+        }
+      });
+    }else {
+      angular.forEach(catalog[0], function(category) {
+        var found = false;
+        for (var i = 0; i < operators.length; ++i) {
+          if (operators[i].sSubjectOperatorName === category.sSubjectOperatorName) {
+            found = true;
+            break;
           }
-        });
+        }
+        if (!found && category.sSubjectOperatorName != "") {
+          operators.push(category);
+        }
+      });
+    }
+
     return operators;
   };
 
