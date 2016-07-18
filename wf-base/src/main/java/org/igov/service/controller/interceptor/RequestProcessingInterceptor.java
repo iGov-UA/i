@@ -524,8 +524,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
-        LOG.info("Looking for a task with ID {}", snID_Task);
+//        LOG.info("Looking for a task with ID {}", snID_Task);
         if (snID_Task == null && mRequestParam.containsKey("taskId")){
+            LOG.info("Looking for a task with ID {}", snID_Task);
         	snID_Task = (String) mRequestParam.get("taskId");
         	LOG.info("Found taskId in mRequestParam {}", snID_Task);
         }
@@ -550,11 +551,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mParam.put("nID_Subject", nID_Subject);
         }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
+        LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
         historyEventService
                 .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
                         mParam);
 
         //
+        LOG.info("historyEventService.updateHistoryEvent finished");
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
         //LOG.info("(sProcessName={})", sProcessName);
         try {
@@ -649,6 +652,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
 	    	}
     	}
+        LOG.info(" not found escalations for process {}", sID_Process);
     }
 
 }
