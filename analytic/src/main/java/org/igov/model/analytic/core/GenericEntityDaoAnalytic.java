@@ -25,6 +25,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.igov.model.core.Entity;
 import org.igov.model.core.EntityDao;
+import static org.hibernate.criterion.Restrictions.in;
+import static org.hibernate.criterion.Restrictions.in;
 
 /**
  * Base implementation of CRUD operations.
@@ -33,15 +35,15 @@ import org.igov.model.core.EntityDao;
  * @param <T> entities type
  * @see EntityDao
  */
-public class GenericEntityDao<P extends Serializable, T extends Entity<P>> implements EntityDao<P, T> {
-    private static final Log LOG = LogFactory.getLog(GenericEntityDao.class);
+public class GenericEntityDaoAnalytic<P extends Serializable, T extends Entity<P>> implements EntityDao<P, T> {
+    private static final Log LOG = LogFactory.getLog(GenericEntityDaoAnalytic.class);
 
     private final static int DEFAULT_DELETE_BATCH_SIZE = 1000;
 
     private Class<T> entityClass;
     private SessionFactory sessionFactory;
 
-    protected GenericEntityDao(Class<T> entityClass) {
+    protected GenericEntityDaoAnalytic(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 

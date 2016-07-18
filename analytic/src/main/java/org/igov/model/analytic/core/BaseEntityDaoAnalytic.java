@@ -21,7 +21,7 @@ import org.igov.model.core.Entity;
  * use {@link GenericEntityDao} instead if possible
  */
 @Repository
-public class BaseEntityDao<P extends Serializable> {
+public class BaseEntityDaoAnalytic<P extends Serializable> {
 
     private SessionFactory sessionFactory;
 
