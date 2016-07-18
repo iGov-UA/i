@@ -348,14 +348,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
     }
+    
+    private void saveComment(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+        LOG_BIG.debug("omRequestBody = {}", omRequestBody);
+        
+        LOG_BIG.debug("oHistoricTaskInstance.getDurationInMillis = {}", oHistoricTaskInstance.getDurationInMillis());
+        LOG_BIG.debug("oHistoricTaskInstance.getProcessDefinitionId = {}", oHistoricTaskInstance.getProcessDefinitionId());
+        LOG_BIG.debug("oHistoricTaskInstance.getProcessInstanceId = {}", oHistoricTaskInstance.getProcessInstanceId());
+    }
 
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-        
-        LOG_BIG.debug("omRequestBody={}", omRequestBody);
         
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
@@ -368,8 +374,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
+            saveComment(omRequestBody, oHistoricTaskInstance);
+            
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG_BIG.debug("oHistoricTaskInstance.getDurationInMillis = {}", oHistoricTaskInstance.getDurationInMillis());
             
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
