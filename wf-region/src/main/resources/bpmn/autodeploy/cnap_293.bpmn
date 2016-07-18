@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 11.07.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 18.07.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -33,6 +33,7 @@
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="изм. назв." type="markers" default="${markerService.loadFromFile('mvk/cnap_293_nameDocTyp.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -327,12 +328,34 @@
     <scriptTask id="scripttask2" name="Script Task (javascript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 		var per1 = ' '
+		var per2 = ' '
 		if (execution.getVariable('sNumRoom_293') != null)
 			if (execution.getVariable('sNumRoom_293') != ' ')
 			{
 				per1 = execution.getVariable('sAddress') + ', ' + execution.getVariable('sNumRoom_293')
 				execution.setVariable('sAddress', per1)
 			}
+		
+		if (execution.getVariable('sIsSelo') == 'True')
+		{
+			if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+				per2= 'копію рішення селищної ради'
+			else
+				if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+					per2= 'копію розпорядження селищного голови'
+				else	
+					per2= 'копію рішення виконавчого комітету селищної ради'
+		}	 
+		else
+			if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+				per2= 'копію рішення міської ради'
+			else
+				if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+					per2= 'копію розпорядження міського голови'
+				else	
+					per2= 'копію рішення виконавчого комітету міської ради'
+		execution.setVariable('docTyp', per2)
+		
       </script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
