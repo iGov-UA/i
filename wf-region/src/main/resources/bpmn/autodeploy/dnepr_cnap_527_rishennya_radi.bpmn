@@ -29,6 +29,11 @@
           <activiti:value id="sEnumElement_Drop" name="внесення зміни (виключити пункт з рішення міської ради)"></activiti:value>
           <activiti:value id="sEnumElement_Prolong" name="продовження терміна дії рішення"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asRelationLand" name="Чи стосується рішення міської ради регулювання земельних відносин?" type="enum" required="true">
+          <activiti:value id="sEnumElement_Tak" name="Так"></activiti:value>
+          <activiti:value id="sEnumElement_Ni" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_LandManagment" name="Копія документації із землеустрою" type="file"></activiti:formProperty>
         <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" default="personally">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
@@ -74,6 +79,10 @@
           <activiti:value id="sEnumElement_Drop" name="внести зміни (виключити пункт з рішення міської ради)"></activiti:value>
           <activiti:value id="sEnumElement_Prolong" name="продовжити термін дії рішення"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asRelationLand" name="Чи стосується рішення міської ради регулювання земельних відносин?" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Tak" name="Так"></activiti:value>
+          <activiti:value id="sEnumElement_Ni" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
@@ -102,7 +111,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}>,${nFile_LandManagment}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -127,6 +136,10 @@
           <activiti:value id="sEnumElement_Edit" name="внести зміни до рішення міської ради"></activiti:value>
           <activiti:value id="sEnumElement_Drop" name="внести зміни (виключити пункт з рішення міської ради)"></activiti:value>
           <activiti:value id="sEnumElement_Prolong" name="продовжити термін дії рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRelationLand" name="Чи стосується рішення міської ради регулювання земельних відносин?" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Tak" name="Так"></activiti:value>
+          <activiti:value id="sEnumElement_Ni" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -157,7 +170,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum},${nFile_LandManagment}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
