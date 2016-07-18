@@ -48,7 +48,7 @@
           <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -65,12 +65,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення №[sID_Order] про надання рішення про продаж земельної ділянки комунальної власності.
+&lt;p&gt; Ваше звернення №[sID_Order] про Видачу сертифіката на право на земельну частку (пай) зареєстроване.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -110,12 +110,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sObstavini" name="Обставини за яких втрачено сертефікат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат розгляду заявки" type="enum" required="true">
-          <activiti:value id="accept" name="Заявку оформлено вірно, рішення прийнято"></activiti:value>
+          <activiti:value id="accept" name="Заявку оформлено вірно, видати сертифікат"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="Printmarker1" name="marker" type="markers" default="${markerService.loadFromFile('zemlja/Print_nov_556.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заява оформлена вірно і рішення прийняте, вона буде передана до секретаря селищної ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заява оформлена вірно, робота по заявці перейде у стадію видачі сертифікату. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_556_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -138,12 +138,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, в задоволенні заяви відмовлено.
+&lt;p&gt; Ваше звернення про Видачу сертифіката на право на земельну частку (пай) розглянуто, в задоволенні заяви відмовлено.
 Причина відмови: ${comment}.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -175,13 +175,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Видача сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, заяву задоволено. 
-Рішення прийнято, ви можете отримати його у секретаря сілищної ради. &lt;/p&gt;
+&lt;p&gt; Ваше звернення про Видачу сертифіката на право на земельну частку (пай) розглянуто, заяву задоволено. 
+Ви можете отримати сертифікат за вказаною нижче адресою.&lt;/p&gt;
 &lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
@@ -233,7 +233,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
