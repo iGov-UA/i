@@ -363,7 +363,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      *    "taskId": "23737517",
      *    "properties": [
      *  {
-     *       "id": "comment",			// В телезапроса присутствует комментарий
+     *       "id": "comment",			// В теле запроса присутствует комментарий
      *        "value": "zaqxsw2222"
      *      },
      *      {
@@ -391,7 +391,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      	    
             String sId = (String) jsonObject.get("id");
      	    String sValue = (String) jsonObject.get("value");
-     	    System.out.println("id=" + sId +", value=" + sValue);
      		
      	    if ("comment".equals(sId)) {
      		sComment = sValue;   
