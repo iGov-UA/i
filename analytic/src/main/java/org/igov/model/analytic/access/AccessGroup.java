@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.attribute;
+package org.igov.model.analytic.access;
 
-import org.igov.model.core.NamedEntity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  *
  * @author olga
  */
 @javax.persistence.Entity
-public class AttributeType extends NamedEntity{ 
+public class AccessGroup  extends AbstractEntity{
     
 }

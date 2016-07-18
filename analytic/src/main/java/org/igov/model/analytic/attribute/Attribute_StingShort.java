@@ -5,13 +5,10 @@
  */
 package org.igov.model.analytic.attribute;
 
-import org.igov.model.core.NamedEntity;
-
 /**
  *
  * @author olga
  */
-@javax.persistence.Entity
-public class AttributeType extends NamedEntity{ 
+public class Attribute_StingShort {
     
 }
