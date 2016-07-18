@@ -981,8 +981,10 @@ public class ActionItemController {
     ) {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, StringUtils.isNotBlank(sFind), null, null);
-        res.forEach(n -> n.setaService(n.getaService().stream().map(
-                s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
+        if (StringUtils.isNotBlank(sFind)) {
+            res.forEach(n -> n.setaService(n.getaService().stream().map(
+                        s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
+        }
         
         return JsonRestUtils.toJsonResponse(res);
     }
