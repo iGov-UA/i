@@ -565,9 +565,6 @@
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
@@ -1406,8 +1403,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
@@ -2205,12 +2200,12 @@ execution.setVariable('sChannelApp', per1)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow77" name="asTypeTr=='sEnumTypeRequest'" sourceRef="exclusivegateway10" targetRef="usertask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumTypeRequest'}]]></conditionExpression>
+    <sequenceFlow id="flow77" name="asTypeTr=='sEnumTypeInformation'" sourceRef="exclusivegateway10" targetRef="usertask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumTypeInformation'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow78" sourceRef="usertask10" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow79" name="asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'" sourceRef="exclusivegateway10" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumApplication'||asTypeTr=='sEnumClaim'||asTypeTr=='sEnumProposal'}]]></conditionExpression>
+    <sequenceFlow id="flow79" name="asTypeTr=='sEnumTypeForExecution'" sourceRef="exclusivegateway10" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asTypeTr=='sEnumTypeForExecution'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_889">
@@ -2419,7 +2414,7 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdi:waypoint x="852.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="852.0" y="302.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="852.0" y="260.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="860.0" y="260.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -2432,7 +2427,7 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdi:waypoint x="677.0" y="450.0"></omgdi:waypoint>
         <omgdi:waypoint x="800.0" y="451.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="84.0" width="100.0" x="621.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="632.0" y="320.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
