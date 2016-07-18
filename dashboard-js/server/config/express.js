@@ -37,6 +37,7 @@ module.exports = function(app) {
     return next();
   });
 
+/*
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
@@ -86,9 +87,19 @@ module.exports = function(app) {
     app.set('appPath', config.root + '/public');
     app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
   }
+*/
 
+  //if (config.bCompile || 'PROD' === env || 'prod-backup' === env || 'test-alpha' === env || 'test-beta' === env || 'test-delta' === env || 'test-omega' === env) {
+  if (config.bCompile) {
+    app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+    app.use(express.static(path.join(config.root, 'public')));
+    app.set('appPath', config.root + '/public');
+    app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
+  }
 
-  if ('development' === env || 'test' === env) {
+  //if (!config.bCompile || 'local' === env || 'test' === env) {
+  //if ('development' === env || 'test' === env) {
+  if (!config.bCompile || 'development' === env || 'local' === env || 'test' === env) {
     app.use(require('connect-livereload')({port: 1337}));
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
