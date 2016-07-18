@@ -5,10 +5,92 @@
  */
 package org.igov.model.analytic.process;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Type;
+import org.igov.model.analytic.source.SourceDB;
+import org.igov.model.core.AbstractEntity;
+import org.igov.util.JSON.JsonDateDeserializer;
+import org.igov.util.JSON.JsonDateSerializer;
+import org.joda.time.DateTime;
+
 /**
  *
  * @author olga
  */
-public class Process {
+@javax.persistence.Entity
+public class Process extends AbstractEntity{
+    
+    @JsonProperty(value = "sID_")
+    @Column
+    private String sID_;
+    
+    @JsonProperty(value = "oSourceDB")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "oSourceDB")
+    private SourceDB oSourceDB;
+    
+    @JsonProperty(value = "oDateStart")
+    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @Type(type = DATETIME_TYPE)
+    @Column
+    private DateTime    oDateStart ;
+    
+    @JsonProperty(value = "oDateFinish")
+    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @Type(type = DATETIME_TYPE)
+    @Column
+    private DateTime    oDateFinish ;
+    
+    @JsonProperty(value = "sID_Data")
+    @Column
+    private String sID_Data;
+
+    public String getsID_() {
+        return sID_;
+    }
+
+    public void setsID_(String sID_) {
+        this.sID_ = sID_;
+    }
+
+    public SourceDB getoSourceDB() {
+        return oSourceDB;
+    }
+
+    public void setoSourceDB(SourceDB oSourceDB) {
+        this.oSourceDB = oSourceDB;
+    }
+
+    public DateTime getoDateStart() {
+        return oDateStart;
+    }
+
+    public void setoDateStart(DateTime oDateStart) {
+        this.oDateStart = oDateStart;
+    }
+
+    public DateTime getoDateFinish() {
+        return oDateFinish;
+    }
+
+    public void setoDateFinish(DateTime oDateFinish) {
+        this.oDateFinish = oDateFinish;
+    }
+
+    public String getsID_Data() {
+        return sID_Data;
+    }
+
+    public void setsID_Data(String sID_Data) {
+        this.sID_Data = sID_Data;
+    }
     
 }

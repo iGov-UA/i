@@ -5,10 +5,29 @@
  */
 package org.igov.model.analytic.attribute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+import org.hibernate.annotations.Type;
+import org.igov.model.core.AbstractEntity;
+
 /**
  *
  * @author olga
  */
-public class Attribute_Boolean {
+@javax.persistence.Entity
+public class Attribute_Boolean extends AbstractEntity{
     
+    @JsonProperty(value = "bValue")
+    //@Type(type="yes_no")
+    @Column(length=1)
+    Boolean bValue;
+
+    public Boolean getbValue() {
+        return bValue;
+    }
+
+    public void setbValue(Boolean bValue) {
+        this.bValue = bValue;
+    }
+   
 }

@@ -5,6 +5,8 @@
  */
 package org.igov.model.analytic.access;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
 import org.igov.model.core.AbstractEntity;
 
 /**
@@ -12,6 +14,18 @@ import org.igov.model.core.AbstractEntity;
  * @author olga
  */
 @javax.persistence.Entity
-public class AccessGroup  extends AbstractEntity{
+public class AccessGroup extends AbstractEntity{
+    
+    @JsonProperty(value = "sID")
+    @Column
+    private String sID;
+
+    public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
+    }
     
 }

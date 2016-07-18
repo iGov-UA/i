@@ -5,10 +5,27 @@
  */
 package org.igov.model.analytic.attribute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+import org.igov.model.core.AbstractEntity;
+
 /**
  *
  * @author olga
  */
-public class Attribute_StringLong {
+@javax.persistence.Entity
+public class Attribute_StringLong extends AbstractEntity{
+    
+    @JsonProperty(value = "sValue")
+    @Column
+    private String sValue;
+
+    public String getsValue() {
+        return sValue;
+    }
+
+    public void setsValue(String sValue) {
+        this.sValue = sValue;
+    }
     
 }

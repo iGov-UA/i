@@ -5,10 +5,27 @@
  */
 package org.igov.model.analytic.attribute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
+import org.igov.model.core.AbstractEntity;
+
 /**
  *
  * @author olga
  */
-public class Attribute_Float {
+@javax.persistence.Entity
+public class Attribute_Float extends AbstractEntity{
+    
+    @JsonProperty(value = "nValue")
+    @Column
+    private Double nValue;
+
+    public Double getnValue() {
+        return nValue;
+    }
+
+    public void setnValue(Double nValue) {
+        this.nValue = nValue;
+    }
     
 }
