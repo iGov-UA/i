@@ -100,15 +100,24 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     });
   };
 
-  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+  self.trimMarkerName = function(markerName){
     if (markerName.indexOf('CustomFormat_') == 0)
       markerName = 'CustomFormat'; //in order to use different format rules at the same time
     if (markerName.indexOf('FileExtensions_') == 0) {
       markerName = 'FileExtensions';
     }
-    /*if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
+    if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
-    }*/
+    }
+    if (markerName.indexOf('NumberBetween_') == 0) {
+      markerName = 'NumberBetween';
+    }
+    return markerName;
+  };
+
+  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+
+    self.trimMarkerName(markerName);
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
@@ -736,16 +745,16 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       }
 
       /* old validate algorithm
-       var ext = sFileName.split('.').pop().toLowerCase();
-       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
-       if (ext === aExtensions[checkingItem]){
-       bValid = true;
-       break;
-       } else {
-       bValid = false;
-       }
-       }
-       */
+      var ext = sFileName.split('.').pop().toLowerCase();
+      for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
+        if (ext === aExtensions[checkingItem]){
+          bValid = true;
+          break;
+        } else {
+          bValid = false;
+        }
+      }
+      */
 
       // start new validate algorithm
       var sReversFileName = "";
@@ -944,4 +953,5 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
     return resultMessage;
   };
+
 }

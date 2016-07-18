@@ -321,7 +321,62 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
           	}
 	</script>
     </scriptTask>
-    <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="exclusivegateway7"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow67" sourceRef="exclusivegateway7" targetRef="scripttask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay=='sYesPay'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask10" name="Дата печати" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>
+execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString())
+       </script>
+    </scriptTask>
+    <sequenceFlow id="flow68" sourceRef="scripttask10" targetRef="scripttask11"></sequenceFlow>
+    <scriptTask id="scripttask11" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('sDate_of_print')
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,4)
+var hour='09'
+var minutes='00'
+var seconds='00'
+var delta=10
+if (day&lt;'21')
+    {
+        day=day-(-delta)
+    }
+else
+    {
+        if ((month!='02'))
+          {
+              month=month+1
+              day=day-(-delta)-30
+          }
+        else
+          {
+            if (month=='02')
+            {
+              month='03'
+              day=day-(-delta)-28
+            }            
+          }
+     }
+var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
+execution.setVariable('sDate_of_print', timer)
+var Pay="надано квитанцію про сплату"
+execution.setVariable('sID_Payment', Pay)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow69" sourceRef="scripttask11" targetRef="timerintermediatecatchevent2"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sDate_of_print}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow70" sourceRef="timerintermediatecatchevent2" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="exclusivegateway7" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay!='sYesPay'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -368,60 +423,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="exclusivegateway7"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow67" sourceRef="exclusivegateway7" targetRef="scripttask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay=='sYesPay'}]]></conditionExpression>
-    </sequenceFlow>
-    <scriptTask id="scripttask10" name="Дата печати" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-execution.setVariable('sDate_of_print', new Date().format("dd.MM.yyyy").toString())
-       </script>
-    </scriptTask>
-    <sequenceFlow id="flow68" sourceRef="scripttask10" targetRef="scripttask11"></sequenceFlow>
-    <scriptTask id="scripttask11" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sDate_of_print')
-var day=src.substr(0,2)
-var month=src.substr(3,2)
-var year=src.substr(6,4)
-var hour='09'
-var minutes='00'
-var seconds='00'
-var delta=10
-if (day&lt;'21')
-    {
-        day=day-(-delta)
-    }
-else
-    {
-        if ((month!='02'))
-          {
-              month=month+1
-              day=day-(-delta)-30
-          }
-        else
-          {
-            if (month=='02')
-            {
-              month='03'
-              day=day-(-delta)-28
-            }            
-          }
-     }
-var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('sDate_of_print', timer)</script>
-    </scriptTask>
-    <sequenceFlow id="flow69" sourceRef="scripttask11" targetRef="timerintermediatecatchevent2"></sequenceFlow>
-    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
-      <timerEventDefinition>
-        <timeDate>${sDate_of_print}</timeDate>
-      </timerEventDefinition>
-    </intermediateCatchEvent>
-    <sequenceFlow id="flow70" sourceRef="timerintermediatecatchevent2" targetRef="usertask2_green"></sequenceFlow>
-	<sequenceFlow id="flow66" sourceRef="exclusivegateway7" targetRef="usertask1_yellow">
-	  <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay!='sYesPay'}]]></conditionExpression>
-    </sequenceFlow>
-    <userTask id="usertask1_yellow" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1_yellow"></sequenceFlow>
+	<userTask id="usertask1_yellow" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянину надсилається лист із реквізитами для сплати"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
@@ -917,7 +920,7 @@ execution.setVariable('sMoz2', moz2)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Сплата за посвідчення особи моряка була зарахована. Ваш документ буде готовий за 2 робочіх дні.<br>
+                                        Сплата за посвідчення особи моряка була зарахована. Ваш документ буде готовий за 2 робочих дні.<br>
 										Для отримання посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
 										<ul>
 										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
@@ -1066,7 +1069,7 @@ else {
 per2 = per2+fname}}
 else{
 break}}
-var moz1='P'+'&lt;'+'ukr'+per1+"&lt;"+"&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+var moz1='&lt;'+'ukr'+per1+"&lt;"+"&lt;"+per2+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
 execution.setVariable('sMoz1', moz1)
 var numb=execution.getVariable('sNumber1')
 var ser=numb.substr(0,2)
@@ -1417,13 +1420,25 @@ execution.setVariable('sMoz2', moz2)
         <omgdc:Bounds height="35.0" width="35.0" x="67.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="141.0" y="41.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="127.0" y="41.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="81.0" width="105.0" x="218.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="300.0" y="106.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="105.0" x="341.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="431.0" y="106.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="231.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="439.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="439.0" y="286.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="474.0" y="368.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1_yellow" id="BPMNShape_usertask1_yellow">
         <omgdc:Bounds height="81.0" width="119.0" x="560.0" y="107.0"></omgdc:Bounds>
@@ -1518,18 +1533,6 @@ execution.setVariable('sMoz2', moz2)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="463.0" y="747.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="471.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="439.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="439.0" y="286.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="474.0" y="368.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="36.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="49.0" y="147.0"></omgdi:waypoint>
@@ -1541,20 +1544,42 @@ execution.setVariable('sMoz2', moz2)
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="106.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="106.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="141.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="127.0" y="68.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="246.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="271.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="251.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="251.0" y="126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="323.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="341.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="431.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="446.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="471.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="536.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="251.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="251.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="491.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="286.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
+        <omgdi:waypoint x="491.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="368.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="491.0" y="403.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="701.0" y="467.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="271.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="679.0" y="147.0"></omgdi:waypoint>
@@ -1710,27 +1735,6 @@ execution.setVariable('sMoz2', moz2)
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="483.0" y="787.0"></omgdi:waypoint>
         <omgdi:waypoint x="613.0" y="800.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="511.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
-        <omgdi:waypoint x="491.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="491.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="491.0" y="255.0"></omgdi:waypoint>
-        <omgdi:waypoint x="491.0" y="286.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="491.0" y="341.0"></omgdi:waypoint>
-        <omgdi:waypoint x="491.0" y="368.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
-        <omgdi:waypoint x="491.0" y="403.0"></omgdi:waypoint>
-        <omgdi:waypoint x="491.0" y="467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="701.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

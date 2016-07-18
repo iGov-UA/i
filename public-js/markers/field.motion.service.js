@@ -37,14 +37,14 @@ function FieldMotionService(MarkersFactory) {
     var b1 = showOnNotEmpty.some(function(e) {
       if(formData[e.sField_ID_s]){
         return formData[e.sField_ID_s]
-        && $.trim(formData[e.sField_ID_s].value)
-        && _.contains(e.aField_ID, fieldId);
+            && $.trim(formData[e.sField_ID_s].value)
+            && _.contains(e.aField_ID, fieldId);
       }else{
         angular.forEach(formData, function (item) {
           if(item.id === [e.sField_ID_s]){
             return item
-            && $.trim(item.value)
-            && _.contains(e.aField_ID, fieldId)
+                && $.trim(item.value)
+                && _.contains(e.aField_ID, fieldId)
           }
         })
       }
@@ -124,22 +124,23 @@ function FieldMotionService(MarkersFactory) {
           result = formData[fId].value.replace(/'/g, "\\'");
         } else if (formData.hasOwnProperty(fId)) {
           result = formData[fId].value;
-        }else {
+        } else {
           console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
         }
-        }else{
-          angular.forEach(formData, function (item) {
-            if(item.id === fId){
-              if(item && (typeof item.value === 'string' || item.value instanceof String)) {
-                result = item.value.replace(/'/g, "\\'");
-              } else if (item.hasOwnProperty(fId)) {
-                result = item.value;
-              } else {
-                console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
-              }
+      }else{
+        angular.forEach(formData, function (item) {
+          if(item.id === fId){
+            if(item && (typeof item.value === 'string' || item.value instanceof String)) {
+              result = item.value.replace(/'/g, "\\'");
+            } else if (item.hasOwnProperty(fId)) {
+              result = item.value;
+            } else {
+              console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
             }
-          })
+          }
+        })
       }
+
       switch(alias.charAt(0)) {
         case 'b': result = result.toString();
         case 's': result = "'" + result + "'"; break;
