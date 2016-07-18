@@ -23,8 +23,10 @@ import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.exception.CommonUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -349,13 +352,71 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //LOG.info("ok!");
     }
     
-    private void saveComment(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+    /*
+     *  Сохранение комментария. Как опрределяется что это комментарий:
+     *  
+     *  В historic-task-instances для этой заявки есть значение вида:
+     *   "processDefinitionId":"system_escalation:16:23595004" здесь ключевое слово system_escalation
+     *  
+     *  Тело запроса имеет вид:
+     *  {
+     *    "taskId": "23737517",
+     *    "properties": [
+     *  {
+     *       "id": "comment",			// В теле запроса присутствует комментарий
+     *        "value": "zaqxsw2222"
+     *      },
+     *      {
+     *        "id": "nCountDays",
+     *        "value": "1"
+     *      }
+     *    ]
+     *  } 
+     */
+    public void saveComment(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+	String sComment = null;
+	String sTaskId = (String) omRequestBody.get("taskId");
+        Long lDurationInMillis = null;
+        String sProcessDefinitionId = null;
+        String sProcessInstanceId = null;        
+        Boolean isSystem_escalation = false;
+	
         LOG_BIG.debug("omRequestBody = {}", omRequestBody);
         
-        LOG_BIG.debug("oHistoricTaskInstance.getDurationInMillis = {}", oHistoricTaskInstance.getDurationInMillis());
-        LOG_BIG.debug("oHistoricTaskInstance.getProcessDefinitionId = {}", oHistoricTaskInstance.getProcessDefinitionId());
-        LOG_BIG.debug("oHistoricTaskInstance.getProcessInstanceId = {}", oHistoricTaskInstance.getProcessInstanceId());
+        JSONArray properties = (JSONArray) omRequestBody.get("properties");
+        @SuppressWarnings("unchecked")	
+        Iterator<JSONObject> iterator = properties.iterator();	
+        while (iterator.hasNext()) {
+            JSONObject jsonObject = iterator.next();
+     	    
+            String sId = (String) jsonObject.get("id");
+     	    String sValue = (String) jsonObject.get("value");
+     		
+     	    if ("comment".equals(sId)) {
+     		sComment = sValue;   
+     	    }
+        }
+
+        LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
+        
+        if (oHistoricTaskInstance != null ) {
+            lDurationInMillis = oHistoricTaskInstance.getDurationInMillis();
+            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // system_escalation:16:23595004
+            sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+            LOG_BIG.debug("sTaskId = {}, getDurationInMillis = {}", sTaskId, lDurationInMillis);
+            LOG_BIG.debug("sTaskId = {}, getProcessDefinitionId = {}", sTaskId, sProcessDefinitionId);
+            LOG_BIG.debug("sTaskId = {}, getProcessInstanceId = {}", sTaskId, sProcessInstanceId);
+            
+            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains("system_escalation") ) {
+        	isSystem_escalation = true;
+            }
+            LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
+            
+        }
+        
     }
+    
 
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
