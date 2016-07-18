@@ -6,7 +6,7 @@ angular.module('app')
 
         $scope.category = $stateParams.catID;
         $scope.subcategory = chosenCategory;
-        $scope.spinner = false;
+        // $scope.spinner = false;
         $scope.bAdmin = AdminService.isAdmin();
 
         var subscribers = [];
@@ -27,6 +27,7 @@ angular.module('app')
           } else {
             $scope.subcategory = null;
           }
+          $scope.spinner = false;
         }, false);
 
         subscribers.push(subscriberId);
@@ -65,4 +66,5 @@ angular.module('app')
             $scope.spinner = false;
           }
         });
+
       }]);

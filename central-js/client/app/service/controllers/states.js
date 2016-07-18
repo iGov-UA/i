@@ -11,6 +11,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $scope.mainSpinner = false;
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
+    $scope.spinner = false;
     console.log('new catalog', $scope.catalog);
   }, false);
 
@@ -38,13 +39,13 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
 
   messageBusService.subscribe('catalog:update', function(data) {
     console.log('catalog updated, will update items');
-    // $scope.spinner = false;
     $scope.catalog = data;
     if ($scope.catalog) {
       $scope.category = data;
     } else {
       $scope.category = null;
     }
+    $scope.spinner = false;
   }, false);
 
   if($scope.catalog
