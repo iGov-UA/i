@@ -9,7 +9,7 @@
         <div class="col-sm-9 text">
           <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
           <ul>
-            <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': subcategory.nID })">{{subcategory.sName_UA | capitalize}}</a></li>
+            <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
           </ul>
         </div>
       </div>

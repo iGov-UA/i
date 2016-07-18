@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('NewSubcategoryController',
-    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state',
-      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state) {
+    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope',
+      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope) {
        $scope.spinner = true;
 
         $scope.category = $stateParams.catID;
@@ -40,8 +40,10 @@ angular.module('app')
 
         if($scope.catalog &&
           $scope.catalog.aService
-          && chosenCategory.oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID) {
+          && chosenCategory.oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID
+          || $rootScope.wasSearched) {
           $scope.subcategory = $scope.catalog;
+          $rootScope.wasSearched = false;
         }else {
           $scope.subcategory = chosenCategory;
         }
@@ -53,11 +55,11 @@ angular.module('app')
             $scope.spinner = true;
           }
         });
-        $scope.$on('$stateChangeSuccess', function(event, toState) {
-          if (toState.resolve) {
-            $scope.spinner = false;
-          }
-        });
+        // $scope.$on('$stateChangeSuccess', function(event, toState) {
+        //   if (toState.resolve) {
+        //     $scope.spinner = false;
+        //   }
+        // });
         $scope.$on('$stateChangeError', function(event, toState) {
           if (toState.resolve) {
             $scope.spinner = false;

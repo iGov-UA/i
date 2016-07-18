@@ -38,7 +38,6 @@ angular.module('app')
 
 
     subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
-      $scope.mainSpinner = true;
       $scope.catalog = [];
     });
     subscriptions.push(subscriberId);

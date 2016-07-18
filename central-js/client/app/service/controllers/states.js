@@ -4,18 +4,41 @@ angular.module('app').controller('ServiceFormController', function($scope, servi
   $scope.bAdmin = AdminService.isAdmin();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
   $scope.catalog = catalogContent;
+  var subscriptions = [];
+  messageBusService.subscribe('catalog:update', function(data) {
+    $scope.mainSpinner = false;
+    $rootScope.fullCatalog = data;
+    $scope.catalog = data;
+    console.log('new catalog', $scope.catalog);
+  }, false);
+
+
+  $scope.$on('$stateChangeStart', function(event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = true;
+    }
+  });
+  // $scope.$on('$stateChangeSuccess', function(event, toState) {
+  //   if (toState.resolve) {
+  //     $scope.spinner = false;
+  //   }
+  // });
+  $scope.$on('$stateChangeError', function(event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = false;
+    }
+  });
 });
 
-angular.module('app').controller('SituationController', function ($scope, service, AdminService, ServiceService, chosenCategory, messageBusService) {
-  $scope.service = service;
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
   messageBusService.subscribe('catalog:update', function(data) {
     console.log('catalog updated, will update items');
-    $scope.spinner = false;
+    // $scope.spinner = false;
     $scope.catalog = data;
     if ($scope.catalog) {
       $scope.category = data;
@@ -26,8 +49,10 @@ angular.module('app').controller('SituationController', function ($scope, servic
 
   if($scope.catalog
     && $scope.catalog.aServiceTag_Child
-    && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID) {
+    && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID
+    || $rootScope.wasSearched) {
     $scope.category = $scope.catalog;
+    $rootScope.wasSearched = false;
   }
   if(!$scope.catalog) {
     $scope.category = $scope.catalog;
@@ -38,16 +63,16 @@ angular.module('app').controller('SituationController', function ($scope, servic
       $scope.spinner = true;
     }
   });
-  $scope.$on('$stateChangeSuccess', function(event, toState) {
-    if (toState.resolve) {
-      $scope.spinner = false;
-    }
-  });
-  $scope.$on('$stateChangeError', function(event, toState) {
-    if (toState.resolve) {
-      $scope.spinner = false;
-    }
-  });
+  // $scope.$on('$stateChangeSuccess', function(event, toState) {
+  //   if (toState.resolve) {
+  //     $scope.spinner = false;
+  //   }
+  // });
+  // $scope.$on('$stateChangeError', function(event, toState) {
+  //   if (toState.resolve) {
+  //     $scope.spinner = false;
+  //   }
+  // });
 
 });
 
