@@ -11,8 +11,8 @@
         <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
             <property name="locations">
                 <list>
-                    <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.properties</value>
-                    <value>file:${catalina.home}/conf/DB.SQL.properties</value>
+                    <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.Analytic.properties</value>
+                    <value>file:${catalina.home}/conf/DB.SQL.Analytic.properties</value>
                 </list>
             </property>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -32,8 +32,8 @@
         <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
             <property name="locations">
                 <list>
-                    <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.properties</value>
-                    <value>file:${catalina.home}/conf/DB.SQL.properties</value>
+                    <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.Analytic.properties</value>
+                    <value>file:${catalina.home}/conf/DB.SQL.Analytic.properties</value>
                 </list>
             </property>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -55,8 +55,8 @@
         <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
             <property name="locations">
                 <list>
-                    <value>classpath:DB.NoSQL.Mongo.properties</value>
-                    <value>classpath:DB.SQL.properties</value>
+                    <value>classpath:DB.NoSQL.Mongo.Analytic.properties</value>
+                    <value>classpath:DB.SQL.Analytic.properties</value>
                 </list>
             </property>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -72,7 +72,7 @@
 
     <beans>
         <!-- ==============================   IMPORT STANDART  ============================= -->
-        
+        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-statical-context.xml" />
         <import resource="classpath:context-db-analytic.xml"/>
         <import resource="classpath:context-dao-analytic.xml"/>
         <import resource="classpath:org-igov-io-db-kv-analytic-context.xml"/>
