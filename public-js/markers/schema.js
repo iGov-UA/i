@@ -246,7 +246,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID"],
                             additionalProperties: false
                         },
-                        "NumberBetween": {
+                        "^NumberBetween": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
