@@ -145,8 +145,6 @@ module.exports.getCatalogTreeTag = function (req, res) {
   });
 };
 
-// при нажатии в главном меню на родителя категории открываем его:
-
 module.exports.getCatalogTreeTagService = function (req, res) {
   var options = {
     protocol: activiti.protocol,
@@ -156,9 +154,9 @@ module.exports.getCatalogTreeTagService = function (req, res) {
     username: activiti.username,
     password: activiti.password,
     params: {
-      nID_ServiceTag: req.query.nID_ServiceTag,
+      nID_ServiceTag_Root: req.query.nID_ServiceTag_Root,
       nID_Category: req.query.nID_Category,
-      bRoot: req.query.bRoot,
+      nID_ServiceTag_Child: req.query.nID_ServiceTag_Child || null,
       sFind: req.query.sFind || null,
       asIDPlaceUA: req.query.asIDPlaceUA || null
     }
@@ -178,21 +176,21 @@ module.exports.getCatalogTreeTagService = function (req, res) {
       };
 
       var url = buildUrl('/action/item/getCatalogTreeTagService');
-        return request.get({
-          'url': url,
-          'auth': {
-            'username': options.username,
-            'password': options.password
-          },
-          json: true,
-          'qs': {
-            'nID_ServiceTag': options.params.nID_ServiceTag,
-            'nID_Category': options.params.nID_Category,
-            'bRoot': options.params.bRoot,
-            'sFind': options.params.sFind,
-            'asID_Place_UA': options.params.asIDPlaceUA
-          }
-        }, callback);
+      return request.get({
+        'url': url,
+        'auth': {
+          'username': options.username,
+          'password': options.password
+        },
+        json: true,
+        'qs': {
+          'nID_Category': options.params.nID_Category,
+          'nID_ServiceTag_Root': options.params.nID_ServiceTag_Root,
+          'nID_ServiceTag_Child': options.params.nID_ServiceTag_Child,
+          'sFind': options.params.sFind,
+          'asID_Place_UA': options.params.asIDPlaceUA
+        }
+      }, callback);
     }
   });
 };

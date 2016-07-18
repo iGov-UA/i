@@ -3,16 +3,16 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, catalogTab, category, subcat, bRoot) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
-    var nID_Category = catalogTab || category || 1;
-    var nID_ServiceTag = subcat;
+    var nID_Category = category || 1;
+    var nID_ServiceTag_Root = subcat;
+    var nID_ServiceTag_Child = situation;
 
     // TODO проверка на страницу категорий, заменить на возможность поиска как подкатегория
-    if(!catalogTab
-        && !category
+    if(!category
         && !subcat
         || category
         && !subcat) {
@@ -36,8 +36,8 @@ angular.module('app')
           sFind: sFind || null,
           bShowEmptyFolders: bShowEmptyFolders,
           nID_Category: nID_Category,
-          nID_ServiceTag: nID_ServiceTag,
-          bRoot: bRoot
+          nID_ServiceTag_Root: nID_ServiceTag_Root,
+          nID_ServiceTag_Child: nID_ServiceTag_Child
         };
         return $http.get('./api/catalog/getCatalogTreeTagService', {
           params: data,
@@ -63,11 +63,11 @@ angular.module('app')
     });
   };
 
-  this.getCatalogTreeTagService = function (category, serviceTag, bRoot) {
+  this.getCatalogTreeTagService = function (category, serviceTag, situation) {
     var data = {
-      nID_Category: category, // TODO fix it
-      nID_ServiceTag: serviceTag,
-      bRoot: bRoot
+      nID_Category: category,
+      nID_ServiceTag_Root: serviceTag,
+      nID_ServiceTag_Child: situation || null
     };
     return $http.get('./api/catalog/getCatalogTreeTagService', {
       params: data,
@@ -75,7 +75,7 @@ angular.module('app')
     }).then(function (response) {
       servicesCache = response.data;
       return response.data[0];
-    });
+    })
   };
 
   this.getOperators = function(catalog) {

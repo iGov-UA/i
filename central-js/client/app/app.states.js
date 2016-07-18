@@ -23,14 +23,10 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
       }
     })
     .state('index.situation', {
-      url: 'situation/:catID/:scatID',
+      url: 'subcategory/:catID/:scatID/situation/:sitID',
       resolve: {
-        service: function($stateParams, ServiceService) {
-          // console.log('App.states: calling get service, $stateParams.id =', $stateParams.id);
-          return ServiceService.get($stateParams.id);
-        },
         chosenCategory: function(CatalogService, $stateParams) {
-          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, false);
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, $stateParams.sitID);
         }
       },
       views: {
@@ -44,7 +40,7 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
       url: 'subcategory/:catID/:scatID',
       resolve: {
         chosenCategory: function(CatalogService, $stateParams) {
-          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, true);
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID);
         }
       },
       views: {

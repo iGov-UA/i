@@ -38,7 +38,6 @@ angular.module('app')
 
 
     subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
-      $scope.mainSpinner = true;
       $scope.catalog = [];
     });
     subscriptions.push(subscriberId);
@@ -76,11 +75,6 @@ angular.module('app')
     $scope.$on('$stateChangeStart', function(event, toState) {
       if (toState.resolve) {
         $scope.spinner = true;
-      }
-    });
-    $scope.$on('$stateChangeSuccess', function(event, toState) {
-      if (toState.resolve) {
-        $scope.spinner = false;
       }
     });
     $scope.$on('$stateChangeError', function(event, toState) {

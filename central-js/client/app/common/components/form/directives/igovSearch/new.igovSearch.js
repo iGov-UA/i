@@ -1,6 +1,6 @@
 angular.module('app')
-  .directive("newIgovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state', '$stateParams',
-    function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state, $stateParams) {
+  .directive("newIgovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state', '$stateParams', '$rootScope',
+    function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state, $stateParams, $rootScope) {
       var directive = {
         restrict: 'E',
         scope: {},
@@ -70,16 +70,15 @@ angular.module('app')
               return null;
             }
             var bShowEmptyFolders = AdminService.isAdmin();
-            var bRoot = true;
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
             $scope.catalog = [];
             $scope.category = $stateParams.catID;
             $scope.subcategory = $stateParams.scatID;
             if($state.is('index.situation')){
-              bRoot = false;
+              $scope.situation = $stateParams.sitID;
             }
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, false, $scope.category, $scope.subcategory, bRoot).then(function (result) {
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
               if($state.is('index.situation')) {
                 fullCatalog = result[0]
               }else if(result.length === 1) {
@@ -94,6 +93,9 @@ angular.module('app')
                 $scope.check = false;
               } else {
                 updateCatalog(angular.copy(fullCatalog));
+              }
+              if(result.length === 0) {
+                $rootScope.wasSearched = true;
               }
             });
           };
@@ -183,6 +185,12 @@ angular.module('app')
             subscriptions.forEach(function(item) {
               messageBusService.unsubscribe(item);
             });
+          });
+          $scope.$on('$stateChangeSuccess', function(event, toState) {
+            if (toState.resolve) {
+              $scope.spinner = true;
+              $scope.search();
+            }
           });
         }
       };
