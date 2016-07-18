@@ -526,7 +526,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Task = (String) omResponseBody.get("taskId");
 //        LOG.info("Looking for a task with ID {}", snID_Task);
         if (snID_Task == null && mRequestParam.containsKey("taskId")){
-            LOG.info("Looking for a task with ID {}", snID_Task);
+            LOG.info("snID_Task is NULL, looking for it in mRequestParam");
         	snID_Task = (String) mRequestParam.get("taskId");
         	LOG.info("Found taskId in mRequestParam {}", snID_Task);
         }
@@ -552,9 +552,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
-        historyEventService
-                .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
-                        mParam);
+        try {
+            historyEventService
+                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
+                            mParam);
+        }catch (Exception e) {
+            LOG.error("Exception caught, message: {}", e.getMessage());
+        }
 
         //
         LOG.info("historyEventService.updateHistoryEvent finished");
@@ -569,7 +573,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else { //issue 1297
                 LOG.trace("BpServiceHandler.PROCESS_ESCALATION = {}", BpServiceHandler.PROCESS_ESCALATION);
             }
-        } catch (Exception oException) {
+        }
+        catch (Exception oException) {
             //LOG.error("Error: {}", oException.getMessage());
             //LOG.trace("FAIL:", oException);
             new Log(oException, LOG)//this.getClass()
