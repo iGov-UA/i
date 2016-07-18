@@ -114,7 +114,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
   self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
 
-    self.trimMarkerName(markerName);
+    markerName = self.trimMarkerName(markerName);
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
