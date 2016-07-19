@@ -106,14 +106,13 @@
         <activiti:formProperty id="sPhoneFil6" name="Тел./факс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKindOfFil6" name="Вид господарської діяльності" type="string" required="true"></activiti:formProperty>
 
-
-
-<!-- Обладнання та персонал -->
+<!-- Обладнання та персонал
 
         <activiti:formProperty id="info_Equipment" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B-f8gnAShc39MXpxS3NzeFdHT1U/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFileEquipment" name="ВІДОМІСТЬ про наявність та стан технологічного обладнання і технічної бази для його обслуговування" type="file" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="info_Personal" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B-f8gnAShc39MXpxS3NzeFdHT1U/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+ -->
+
+        <activiti:formProperty id="nFileEquipment" name="ВІДОМІСТЬ про наявність та стан технологічного обладнання і технічної бази для його обслуговування" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFilePersonal" name="ВІДОМІСТЬ про освітній і кваліфікаційний рівні працівників" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="nFileBalance" name="Баланс підприємства на останню звітну дату" type="file" required="true"></activiti:formProperty>
@@ -152,7 +151,7 @@
           <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове повідомлення: ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення: ${sNameServise}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Звернення № [sID_Order]<br> [pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -199,7 +198,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Крок 1. Перевірка документів, передача ліцензійній комісії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1_yellow" name="Крок 1. Перевірка документів, передача ліцензійній комісії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
@@ -287,12 +286,12 @@
           <activiti:value id="accept" name="Документи відповідають законодавству. Передати комісії по ліцензуванню"></activiti:value>
           <activiti:value id="reject" name="Відмовити. Документи не відповідають законодавству"></activiti:value>
         </activiti:formProperty>        
-        <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea" required="true"></activiti:formProperty>
         
         
 <!-- Атрибуты -->
 	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_print.json')}"></activiti:formProperty>
-	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_user.json')}"></activiti:formProperty>
+	    <activiti:formProperty id="markersShowFillUser1" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_user.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>       
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_860_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
 
@@ -327,8 +326,16 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
+				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
+				В звязку з невідповідністю наданих данних та документів, Вам відмовлено в наданні послуги.
+			</p>
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+		    	Причина в наступному:<br>
+				<b><i>${comment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/937/general">iGov.org.ua</a>
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -347,7 +354,7 @@
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -366,13 +373,15 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}. Первинна перевірка]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> пройшов первинну перевірку.
+				Документи передані на ліцензійну комісію.<br>
+				Не пізніше як чеерз 30 днів Вас буде проінформовано про рішення комісії.  
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -396,7 +405,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Крок 2. Рішення ліцензійної комісії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="Крок 2. Рішення ліцензійної комісії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
 
@@ -480,15 +489,20 @@
         <activiti:formProperty id="sPhoneFil6" name="Тел./факс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKindOfFil6" name="Вид господарської діяльності; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="decide2" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Документи відповідають законодавству. Передати комісії по ліцензуванню"></activiti:value>
-          <activiti:value id="reject" name="Відмовити. Документи не відповідають законодавству"></activiti:value>
+        <activiti:formProperty id="decide2" name="Рішення ліцензійної комісії" type="enum" required="true">
+          <activiti:value id="accept" name="Надати ліцензію"></activiti:value>
+          <activiti:value id="reject" name="Відмовити в видачі ліцензії"></activiti:value>
         </activiti:formProperty>      
-        <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea" required="true"></activiti:formProperty>
 <!-- Атрибуты -->
 	    <activiti:formProperty id="markersShowFillPrint" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_print.json')}"></activiti:formProperty>
+	    <activiti:formProperty id="markersShowFillUser2" name="отображать поля принтформі" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860_user2.json')}"></activiti:formProperty>
+
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>       
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_860_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/license/rivne_oda_860_print.html" type="file"></activiti:formProperty>
+
 
 		<activiti:formProperty id="sNameGovServise" name="Назва послуги" type="invisible"></activiti:formProperty>
 
@@ -515,13 +529,21 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}. Рішення ліцензійної комісії]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
+				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
+				За рішенням ліцензійної комісії Вам відмовлено в наданні ліцензії.
+			</p>
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+		    	Причина в наступному:<br>
+				<b><i>${comment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/937/general">iGov.org.ua</a>
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -540,7 +562,7 @@
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -559,37 +581,55 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: ${sNameServise}. Рішення ліцензійної комісії]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+			<p> 
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було опрацьовано.<br>
+				По рішенню ліцензійної комісії, <b>Вам буде надано ліцензію </b>. <br>
+				
+				Для отримання ліцензії, Вам необхідно внести плату за видачу ліцензій з ${sAddress}
+				<u>у розмірі однієї мінімальної заробітної плати</u>, виходячи з її розміру, 
+				що діє на дату прийняття органом ліцензування рішення про видачу ліцензії
 			</p>
-			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			<p>				
+				<b>Термін сплати:</b> протягом 30 каледндарних днів
+			</p>
+			<p>				
+				<b>Реквізити для оплати:</b> Одержувач обласний бюджет, 
+				рахунок № 31419511700001 в ГУДКУ у Рівненській області, МФО 833017, код ЗКПО 22585490, 
+				код бюджетної класифікації 14060200 "Плата за видачу ліцензій з виробництва теплової енергії, 
+				транспортування теплової енергії магістральними та місцевими (розподільчими) тепловими мережами, 
+				постачання теплової енергії".
+			</p>
+			<br><br>
+			
+			Після сплати, роздрукуйте прикріплену до цього листа заяву, підпищіть її і разом з підтвердженням оплати та оригіналами наданих документів зверністься за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
+			<br>
+			Після підтвердження оплати, не пізніше ніж 10 робочих днів, Вам буде надіслано листа про готовність ліцензії.
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
-        </activiti:field>
+		<activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Nadatu licenziu pislja oplatu". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+		</activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Крок 3. Видача ліцензії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_green" name="Крок 3. Видача ліцензії" activiti:candidateGroups="lic_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
 
@@ -703,16 +743,17 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+			<p> 
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> виконано.<br>				
 			</p>
 			<br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			Ліцезію можна забрати за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.<br />
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
