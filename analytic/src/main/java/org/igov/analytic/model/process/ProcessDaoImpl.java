@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.process;
+package org.igov.analytic.model.process;
 
-import org.igov.model.analytic.core.GenericEntityDaoAnalytic;
+import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
 import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
 

@@ -15,12 +15,12 @@
 
     <aop:config>
         <!-- package depth 1-->
-        <aop:pointcut id="dao1" expression="execution(* org.igov.model.analytic.*.*Dao.*(..))"/>
-        <aop:pointcut id="dao_impl1" expression="execution(* org.igov.model.analytic.*.*DaoImpl.*(..))"/>
+        <aop:pointcut id="dao1" expression="execution(* org.igov.analytic.model.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl1" expression="execution(* org.igov.analytic.model.*.*DaoImpl.*(..))"/>
 
         <!-- package depth 2-->
-        <aop:pointcut id="dao2" expression="execution(* org.igov.model.analytic.*.*.*Dao.*(..))"/>
-        <aop:pointcut id="dao_impl2" expression="execution(* org.igov.model.analytic.*.*.*DaoImpl.*(..))"/>
+        <aop:pointcut id="dao2" expression="execution(* org.igov.analytic.model.*.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl2" expression="execution(* org.igov.analytic.model.*.*.*DaoImpl.*(..))"/>
 
         <aop:advisor pointcut-ref="dao1" advice-ref="txAdvice"/>
         <aop:advisor pointcut-ref="dao_impl1" advice-ref="txAdvice"/>

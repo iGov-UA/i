@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.access;
+package org.igov.analytic.model.access;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import org.igov.model.analytic.process.ProcessTask;
+import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
 /**

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.attribute;
+package org.igov.analytic.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import org.igov.model.analytic.process.Process;
-import org.igov.model.analytic.process.ProcessTask;
+import org.igov.analytic.model.process.Process;
+import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
 /**

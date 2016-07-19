@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.custom;
+package org.igov.analytic.model.custom;
 
 /**
  *
  * @author olga
  */
-public class Custom_ProccessTask_Activiti {
+public class Custom_Process_Activiti {
     
 }

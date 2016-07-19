@@ -1,4 +1,4 @@
-package org.igov.model.analytic.core;
+package org.igov.analytic.model.core;
 
 import static org.hibernate.criterion.Restrictions.eq;
 

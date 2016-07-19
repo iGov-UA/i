@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.process;
+package org.igov.analytic.model.process;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -14,13 +14,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
-import org.igov.model.analytic.attribute.Attribute;
-import org.igov.model.analytic.source.SourceDB;
+import org.igov.analytic.model.access.AccessGroup;
+import org.igov.analytic.model.access.AccessUser;
+import org.igov.analytic.model.attribute.Attribute;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
@@ -31,16 +33,11 @@ import org.joda.time.DateTime;
  * @author olga
  */
 @javax.persistence.Entity
-public class Process extends AbstractEntity{
+public class ProcessTask extends AbstractEntity{
     
     @JsonProperty(value = "sID_")
     @Column
     private String sID_;
-    
-    @JsonProperty(value = "oSourceDB")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "oSourceDB")
-    private SourceDB oSourceDB;
     
     @JsonProperty(value = "oDateStart")
     @JsonSerialize(using = JsonDateSerializer.class)
@@ -58,17 +55,24 @@ public class Process extends AbstractEntity{
     
     @JsonProperty(value = "sID_Data")
     @Column
-    private String sID_Data;
+    private String sID_Data;	
+    
+    @JsonProperty(value = "oProcess")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_Process")
+    private Process oProcess;
     
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Attribute> aAttribute = new ArrayList();
     
-    @JsonProperty(value = "aProcessTask")
-    @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ProcessTask> aProcessTask = new ArrayList();
+    @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
+    private List<AccessGroup> aAccessGroup = new ArrayList();
+    
+    @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
+    private List<AccessUser> aAccessUser = new ArrayList();
+
 
     public String getsID_() {
         return sID_;
@@ -76,14 +80,6 @@ public class Process extends AbstractEntity{
 
     public void setsID_(String sID_) {
         this.sID_ = sID_;
-    }
-
-    public SourceDB getoSourceDB() {
-        return oSourceDB;
-    }
-
-    public void setoSourceDB(SourceDB oSourceDB) {
-        this.oSourceDB = oSourceDB;
     }
 
     public DateTime getoDateStart() {
@@ -110,6 +106,14 @@ public class Process extends AbstractEntity{
         this.sID_Data = sID_Data;
     }
 
+    public Process getoProcess() {
+        return oProcess;
+    }
+
+    public void setoProcess(Process oProcess) {
+        this.oProcess = oProcess;
+    }
+
     public List<Attribute> getaAttribute() {
         return aAttribute;
     }
@@ -118,12 +122,20 @@ public class Process extends AbstractEntity{
         this.aAttribute = aAttribute;
     }
 
-    public List<ProcessTask> getaProcessTask() {
-        return aProcessTask;
+    public List<AccessGroup> getaAccessGroup() {
+        return aAccessGroup;
     }
 
-    public void setaProcessTask(List<ProcessTask> aProcessTask) {
-        this.aProcessTask = aProcessTask;
+    public void setaAccessGroup(List<AccessGroup> aAccessGroup) {
+        this.aAccessGroup = aAccessGroup;
     }
-  
+
+    public List<AccessUser> getaAccessUser() {
+        return aAccessUser;
+    }
+
+    public void setaAccessUser(List<AccessUser> aAccessUser) {
+        this.aAccessUser = aAccessUser;
+    }
+    
 }

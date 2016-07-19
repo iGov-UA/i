@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.attribute;
+package org.igov.analytic.model.attribute;
 
-import org.igov.model.core.EntityDao;
+import org.igov.model.core.NamedEntity;
 
 /**
  *
  * @author olga
  */
-public interface AttributeTypeDao  extends EntityDao<Long, AttributeType>{
+@javax.persistence.Entity
+public class AttributeTypeCustom extends NamedEntity{
     
 }

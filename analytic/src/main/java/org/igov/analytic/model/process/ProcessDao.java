@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.model.analytic.source;
+package org.igov.analytic.model.process;
 
-import org.igov.model.core.NamedEntity;
+import org.igov.model.core.EntityDao;
 
 /**
  *
  * @author olga
  */
-@javax.persistence.Entity
-public class SourceDB extends NamedEntity {
+public interface ProcessDao  extends EntityDao<Long, Process>{
     
 }

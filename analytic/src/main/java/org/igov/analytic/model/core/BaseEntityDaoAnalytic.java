@@ -1,4 +1,4 @@
-package org.igov.model.analytic.core;
+package org.igov.analytic.model.core;
 
 import org.igov.service.exception.EntityNotFoundException;
 import org.apache.commons.beanutils.PropertyUtils;
