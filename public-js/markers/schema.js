@@ -79,7 +79,12 @@ angular.module('iGovMarkers')
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
                                 asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
                                 sCondition: {type: "string"},
-                                asID_Field_sValue: {"$ref": "#/definitions/stringArray"},
+                                asID_Field_sValue: {
+                                    type: "array",
+                                    minItems: 1,
+                                    items: {type: "string"},
+                                    uniqueItems: false
+                                },
                                 sNote: {type: "string"}
                             },
                             required: ["aField_ID", "asID_Field", "sCondition", "asID_Field_sValue"],
@@ -246,7 +251,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID"],
                             additionalProperties: false
                         },
-                        "NumberBetween": {
+                        "^NumberBetween": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
