@@ -151,12 +151,13 @@ public class ProcessController {
     @ApiOperation(value = "/getFile", notes = "##### File - получение контента файла #####\n\n")
     @RequestMapping(value = "/getFile", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    byte[] getFile(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_Data") String sID_Data,
+    byte[] getFile(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "nID_Attribute_File") Long nID_Attribute_File,
             HttpServletResponse httpResponse) throws RecordNotFoundException {
         //получение через дао из таблички с файлами файлов
         VariableMultipartFile multipartFile;
         try {
-            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(sID_Data), "name", "name.txt", "application/octet-stream");
+            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
+                    "name", "name.txt", "application/octet-stream");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -165,7 +166,7 @@ public class ProcessController {
             return multipartFile.getBytes();
         } catch (Exception ex) {
             //httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "error.txt");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "fileNotFound.txt");
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
             httpResponse.setHeader("Content-Type", "application/octet-stream");
             httpResponse.setContentLength(ex.getMessage().length());
