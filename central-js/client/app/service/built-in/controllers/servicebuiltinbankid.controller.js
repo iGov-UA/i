@@ -160,8 +160,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
           }
         });
       }
-    } else {
-      formFieldIDs.inForm.push(field.id);
     }
     if (field.id === 'bReferent') {
       angular.extend($scope.data.formData.params.bReferent, field);
@@ -171,6 +169,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         case 'false': $scope.data.formData.params.bReferent.value = false; break;
       }
     }
+    formFieldIDs.inForm.push(field.id);
   });
   iGovMarkers.validateMarkers(formFieldIDs);
   //save values for each property

@@ -44,9 +44,8 @@ angular.module('iGovMarkers')
                     fieldIDs.nValidateFields++;
                     if(fieldIDs.isPresent[i] == false){
                         console.warn("Field " + i + " NOT found. Markers for this field is not working");
-//                        fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + "Поле " + i + " - відсутнє на формі. ";
-//                        fieldIDs.isFieldNotFound = true;
-                      fieldIDs.nFieldTurnOn++;
+                        fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + "Поле " + i + " - відсутнє на формі. ";
+                        fieldIDs.isFieldNotFound = true;
                     } else {
                         fieldIDs.nFieldTurnOn++;
                     }
