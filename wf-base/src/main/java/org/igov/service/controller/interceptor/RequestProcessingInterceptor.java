@@ -422,7 +422,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         HistoricTaskInstance taskDetails = historyService
                 .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(sProcessInstanceId)
+                .includeProcessVariables().taskId(sTaskId)
                 .singleResult();
         
         LOG_BIG.debug("taskDetails = {}", taskDetails);
@@ -446,8 +446,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG_BIG.debug("Запись комментария для эскалации");
-
+            LOG_BIG.debug("Запись комментария для эскалации. sID_Order = {}, sComment = {}", sID_Order, sComment);
         }
         
         
