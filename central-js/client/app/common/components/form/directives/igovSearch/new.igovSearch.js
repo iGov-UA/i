@@ -70,7 +70,6 @@ angular.module('app')
               return null;
             }
             var bShowEmptyFolders = AdminService.isAdmin();
-            var bRoot = true;
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
             $scope.catalog = [];
@@ -191,7 +190,6 @@ angular.module('app')
             if (toState.resolve) {
               $scope.spinner = true;
               $scope.search();
-              $scope.spinner = false;
             }
           });
         }

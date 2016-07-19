@@ -208,20 +208,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
             	LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
-                return;
+//                return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType="Save";
-                LOG.info("saveNewTaskInfo block");
+                LOG.info("saveNewTaskInfo block started");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 sType="Close";
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
+                LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 sType="Update";
-            	LOG.info("saveUpdatedTaskInfo block");
+            	LOG.info("saveUpdatedTaskInfo block started");
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
+                LOG.info("saveUpdatedTaskInfo block finished");
             }
         } catch (Exception oException) {
             //LOG.error("Can't save service-history record: {}", oException.getMessage());
@@ -373,7 +376,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      *    ]
      *  } 
      */
-    public void saveComment(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+    public void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
 	String sComment = null;
 	String sTaskId = (String) omRequestBody.get("taskId");
         Long lDurationInMillis = null;
@@ -401,19 +404,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         if (oHistoricTaskInstance != null ) {
             lDurationInMillis = oHistoricTaskInstance.getDurationInMillis();
-            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // system_escalation:16:23595004
+            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // строка вида: system_escalation:16:23595004
             sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
 
-            LOG_BIG.debug("sTaskId = {}, getDurationInMillis = {}", sTaskId, lDurationInMillis);
-            LOG_BIG.debug("sTaskId = {}, getProcessDefinitionId = {}", sTaskId, sProcessDefinitionId);
-            LOG_BIG.debug("sTaskId = {}, getProcessInstanceId = {}", sTaskId, sProcessInstanceId);
+            LOG_BIG.debug("getDurationInMillis = {}", lDurationInMillis);
+            LOG_BIG.debug("getProcessDefinitionId = {}", sProcessDefinitionId);
+            LOG_BIG.debug("getProcessInstanceId = {}", sProcessInstanceId);
             
-            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains("system_escalation") ) {
+            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
         	isSystem_escalation = true;
             }
-            LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
-            
+            LOG_BIG.debug("sProcessInstanceId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sProcessInstanceId)));
         }
+
+        LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
+        
+        LOG_BIG.debug("sTaskId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sTaskId)));
+        
+        
+        // Если это комментарий эскалации
+        if ( isSystem_escalation && sComment != null ) {
+            LOG_BIG.debug("Записать комментарий для эскалации");
+            
+
+        }
+        
         
     }
     
@@ -435,7 +450,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-            saveComment(omRequestBody, oHistoricTaskInstance);
+            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance);
             
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             
@@ -508,9 +523,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     ;
                 }
                 if (bProcessClosed){
+                    LOG.info("Saving closed task");
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
 	                                mParam);//sID_Process
+                    LOG.info("saving closed task finished");
                 }
             }
         }
@@ -520,12 +537,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
-        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+//        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
+        String sUserTaskName = mRequestParam.get("sUserTaskName");
+//                (String) omResponseBody.get("sUserTaskName");
+//        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+        Long nID_StatusType = 2L;
+//                Long.parseLong(mRequestParam.get("nID_StatusType"));
+//                omResponseBody.get("nID_StatusType"));
+//        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
-        LOG.info("Looking for a task with ID {}", snID_Task);
+//        LOG.info("Looking for a task with ID {}", snID_Task);
         if (snID_Task == null && mRequestParam.containsKey("taskId")){
+            LOG.info("snID_Task is NULL, looking for it in mRequestParam");
         	snID_Task = (String) mRequestParam.get("taskId");
         	LOG.info("Found taskId in mRequestParam {}", snID_Task);
         }
@@ -550,11 +574,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mParam.put("nID_Subject", nID_Subject);
         }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
-        historyEventService
-                .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
-                        mParam);
+        LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
+
+        try {
+            historyEventService
+                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.getInstance(nID_StatusType),
+                            mParam);
+        }catch (Exception e) {
+            LOG.error("Exception caught, message: {}", e.getMessage());
+        }
 
         //
+        LOG.info("historyEventService.updateHistoryEvent finished");
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
         //LOG.info("(sProcessName={})", sProcessName);
         try {
@@ -566,7 +597,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else { //issue 1297
                 LOG.trace("BpServiceHandler.PROCESS_ESCALATION = {}", BpServiceHandler.PROCESS_ESCALATION);
             }
-        } catch (Exception oException) {
+        }
+        catch (Exception oException) {
             //LOG.error("Error: {}", oException.getMessage());
             //LOG.trace("FAIL:", oException);
             new Log(oException, LOG)//this.getClass()
@@ -649,6 +681,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 	    		runtimeService.deleteProcessInstance(process.getProcessInstanceId(), "State of initial process has been changed. Removing escalaton process");
 	    	}
     	}
+        LOG.info(" not found escalations for process {}", sID_Process);
     }
 
 }
