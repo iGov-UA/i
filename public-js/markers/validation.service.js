@@ -100,15 +100,21 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     });
   };
 
-  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+  self.trimMarkerName = function(markerName){
     if (markerName.indexOf('CustomFormat_') == 0)
       markerName = 'CustomFormat'; //in order to use different format rules at the same time
     if (markerName.indexOf('FileExtensions_') == 0) {
       markerName = 'FileExtensions';
     }
-    /*if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
+    if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
-    }*/
+    }
+    return markerName;
+  };
+
+  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
+
+    markerName = self.trimMarkerName(markerName);
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
@@ -735,6 +741,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         aExtensions[convertedItem].toLowerCase();
       }
 
+      /* old validate algorithm
       var ext = sFileName.split('.').pop().toLowerCase();
       for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
         if (ext === aExtensions[checkingItem]){
@@ -744,6 +751,32 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           bValid = false;
         }
       }
+      */
+
+      // start new validate algorithm
+      var sReversFileName = "";
+      for (var charInd = sFileName.length - 1; charInd >= 0; charInd--){
+        sReversFileName = sReversFileName + sFileName.charAt(charInd);
+      }
+      for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
+        var bCharValid = true;
+        for(var chInd = 0; chInd < aExtensions[checkingItem].length; chInd++){
+          if(bCharValid == true && sReversFileName.charAt(chInd).toLowerCase() === aExtensions[checkingItem].charAt((aExtensions[checkingItem].length - 1) - chInd).toLowerCase()){
+            bCharValid = true;
+          } else {
+            bCharValid = false;
+            break;
+          }
+        }
+        if (bCharValid){
+          bValid = true;
+          break;
+        } else {
+          bValid = false;
+        }
+      }
+      // end new validate algorithm
+
       console.log("bValid=" + bValid);
 
       if (!bValid) {
@@ -917,4 +950,5 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
     return resultMessage;
   };
+
 }
