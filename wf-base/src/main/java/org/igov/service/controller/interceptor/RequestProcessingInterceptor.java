@@ -421,6 +421,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         LOG_BIG.debug("sTaskId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sTaskId)));
         
+        HistoricTaskInstance taskDetails = historyService
+                .createHistoricTaskInstanceQuery()
+                .includeProcessVariables().taskId(sTaskId)
+                .singleResult();
+        
+        LOG_BIG.debug("taskDetails = {}", taskDetails);
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null ) {
