@@ -427,11 +427,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 .singleResult();
         
         LOG_BIG.debug("taskDetails = {}", taskDetails);
-        if ( taskDetails!=null ) {
+        if ( taskDetails != null ) {
             Map<String, Object> pvs = taskDetails.getProcessVariables();
-            for ( String pv : pvs.keySet()) {
-                LOG_BIG.debug("taskDetails: key = {}, value = {}", pv, pvs.get(pv));
-	    }
+            LOG_BIG.debug("pvs = {}", pvs);
+            if (pvs !=null ) {
+                LOG_BIG.debug("pvs.size = {}", pvs.size());
+                for ( String pv : pvs.keySet()) {
+                    LOG_BIG.debug("taskDetails: key = {}, value = {}", pv, pvs.get(pv));
+                }
+            }
             
         }
         
