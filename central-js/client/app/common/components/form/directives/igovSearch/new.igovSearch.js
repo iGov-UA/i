@@ -100,7 +100,7 @@ angular.module('app')
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length > 3 || $scope.sSearch.length === 0) {
+            if($scope.sSearch.length > 3) {
               $scope.search();
               $scope.valid = true;
             } else if($scope.valid) {
