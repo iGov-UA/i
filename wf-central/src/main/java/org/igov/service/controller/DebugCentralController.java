@@ -12,6 +12,7 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.task.bp.BpService;
+//import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -254,28 +255,9 @@ public class DebugCentralController {
             
 //            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
 //        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
-            try {
-                //IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
-                new Log()//this.getClass()
-                        ._MsgType("danger".equals(sType) ? MsgType.EXTERNAL_ERROR : "warning".equals(sType) ? MsgType.WARNING : MsgType.INF_MESSAGE)
-                        ._Case("Client_"+sFunction)
-                        ._Status("danger".equals(sType) ? Log.LogStatus.ERROR : "warning".equals(sType) ? Log.LogStatus.WARN : Log.LogStatus.INFO)
-                        ._Head(sHead)
-                        ._Body(sBody)
-                        ._SubjectID(nID_Subject)
-                        ._ServerID_Custom(nID_Server)
-                        ._Param("sError", sError)
-                        ._Param("smData", smData)
-                        ._Param("nID_Subject", nID_Subject)
-                        ._Param("nID_Server", nID_Server)
-                        //._Param("sExcetion", oException.getMessage())
-                        .save()
-                        
-                        
-                    ;
-	    } catch (Exception e) {
-        	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
-	    }
+
+            
+//////////            
             
             //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
@@ -323,6 +305,32 @@ public class DebugCentralController {
             //LOG_BIG.debug("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             LOG_MAX.debug("sType={}|nID_Subject={}|nID_Server={}|sFunction={}|sHead={}|sBody={}|sError={}|smData={}|sResponseMessage={}|sResponseCode={}|soResponseData={}|asParam={}|sDate={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,sResponseMessage,sResponseCode,soResponseData,asParam,sDate);
             //subjectMessages = subjectMessagesDao.tranferDataFromMailToSubjectMail();
+            
+            
+            try {
+                //IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+                new Log()//this.getClass()
+                        ._MsgType("danger".equals(sType) ? MsgType.EXTERNAL_ERROR : "warning".equals(sType) ? MsgType.WARNING : MsgType.INF_MESSAGE)
+                        ._Case("Client_"+sFunction)
+                        ._Status("danger".equals(sType) ? Log.LogStatus.ERROR : "warning".equals(sType) ? Log.LogStatus.WARN : Log.LogStatus.INFO)
+                        ._Head(sHead)
+                        ._Body(sBody)
+                        ._SubjectID(nID_Subject)
+                        ._ServerID_Custom(nID_Server)
+                        ._Param("sError", sError)
+                        ._Param("smData", smData)
+                        ._Param("nID_Subject", nID_Subject)
+                        ._Param("nID_Server", nID_Server)
+                        //._Param("sExcetion", oException.getMessage())
+                        .save()
+                        
+                        
+                    ;
+	    } catch (Exception e) {
+        	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
+	    }
+            
+            
         } catch (Exception e) {
         	LOG.trace("FAIL:", e);
             throw new CommonServiceException(
