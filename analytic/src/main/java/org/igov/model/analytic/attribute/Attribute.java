@@ -43,27 +43,31 @@ public class Attribute extends AbstractEntity{
     
     @JsonProperty(value = "oAttribute_Boolean")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_Boolean;
+    Attribute_Boolean oAttribute_Boolean;
     
     @JsonProperty(value = "oAttribute_Date")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_Date;
+    Attribute_Date oAttribute_Date;
     
     @JsonProperty(value = "oAttribute_Float")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_Float;
+    Attribute_Float oAttribute_Float;
     
     @JsonProperty(value = "oAttribute_Integer")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_Integer;
+    Attribute_Integer oAttribute_Integer;
     
     @JsonProperty(value = "oAttribute_StingShort")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_StingShort;
+    Attribute_StingShort oAttribute_StingShort;
     
     @JsonProperty(value = "oAttribute_StringLong")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute oAttribute_StringLong;
+    Attribute_StringLong oAttribute_StringLong;
+    
+    @JsonProperty(value = "oAttribute_File")
+    @OneToOne(fetch = FetchType.EAGER)
+    Attribute_File oAttribute_File;
 
     public AttributeType getoAttributeType() {
         return oAttributeType;
@@ -97,52 +101,60 @@ public class Attribute extends AbstractEntity{
         this.oProcessTask = oProcessTask;
     }
 
-    public Attribute getoAttribute_Boolean() {
+    public Attribute_Boolean getoAttribute_Boolean() {
         return oAttribute_Boolean;
     }
 
-    public void setoAttribute_Boolean(Attribute oAttribute_Boolean) {
+    public void setoAttribute_Boolean(Attribute_Boolean oAttribute_Boolean) {
         this.oAttribute_Boolean = oAttribute_Boolean;
     }
 
-    public Attribute getoAttribute_Date() {
+    public Attribute_Date getoAttribute_Date() {
         return oAttribute_Date;
     }
 
-    public void setoAttribute_Date(Attribute oAttribute_Date) {
+    public void setoAttribute_Date(Attribute_Date oAttribute_Date) {
         this.oAttribute_Date = oAttribute_Date;
     }
 
-    public Attribute getoAttribute_Float() {
+    public Attribute_Float getoAttribute_Float() {
         return oAttribute_Float;
     }
 
-    public void setoAttribute_Float(Attribute oAttribute_Float) {
+    public void setoAttribute_Float(Attribute_Float oAttribute_Float) {
         this.oAttribute_Float = oAttribute_Float;
     }
 
-    public Attribute getoAttribute_Integer() {
+    public Attribute_Integer getoAttribute_Integer() {
         return oAttribute_Integer;
     }
 
-    public void setoAttribute_Integer(Attribute oAttribute_Integer) {
+    public void setoAttribute_Integer(Attribute_Integer oAttribute_Integer) {
         this.oAttribute_Integer = oAttribute_Integer;
     }
 
-    public Attribute getoAttribute_StingShort() {
+    public Attribute_StingShort getoAttribute_StingShort() {
         return oAttribute_StingShort;
     }
 
-    public void setoAttribute_StingShort(Attribute oAttribute_StingShort) {
+    public void setoAttribute_StingShort(Attribute_StingShort oAttribute_StingShort) {
         this.oAttribute_StingShort = oAttribute_StingShort;
     }
 
-    public Attribute getoAttribute_StringLong() {
+    public Attribute_StringLong getoAttribute_StringLong() {
         return oAttribute_StringLong;
     }
 
-    public void setoAttribute_StringLong(Attribute oAttribute_StringLong) {
+    public void setoAttribute_StringLong(Attribute_StringLong oAttribute_StringLong) {
         this.oAttribute_StringLong = oAttribute_StringLong;
+    }
+
+    public Attribute_File getoAttribute_File() {
+        return oAttribute_File;
+    }
+
+    public void setoAttribute_File(Attribute_File oAttribute_File) {
+        this.oAttribute_File = oAttribute_File;
     }
     			   
 }

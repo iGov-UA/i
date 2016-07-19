@@ -5,6 +5,7 @@
  */
 package org.igov.model.analytic.process;
 
+import org.igov.model.analytic.core.GenericEntityDaoAnalytic;
 import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
 
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Repository;
  * @author olga
  */
 @Repository
-public class ProcessDaoImpl extends GenericEntityDao<Long, Process> implements ProcessDao {
+public class ProcessDaoImpl 
+        //extends GenericEntityDaoAnalytic<Long, Process> implements ProcessDao 
+{
     
-    public ProcessDaoImpl() {
-        super(Process.class);
-    }
+    //protected ProcessDaoImpl(){
+    //    super(Process.class);
+    //}
     
 }
