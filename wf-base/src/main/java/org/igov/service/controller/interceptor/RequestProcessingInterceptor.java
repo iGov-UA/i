@@ -61,6 +61,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -381,7 +382,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 	String sTaskId = (String) omRequestBody.get("taskId");
         Long lDurationInMillis = null;
         String sProcessDefinitionId = null;
-        String sProcessInstanceId = null;        
+        String sProcessInstanceId = null;
+        String sID_Order = null;
         Boolean isSystem_escalation = false;
 	
         LOG_BIG.debug("omRequestBody = {}", omRequestBody);
@@ -414,12 +416,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
         	isSystem_escalation = true;
             }
-            LOG_BIG.debug("sProcessInstanceId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sProcessInstanceId)));
         }
 
         LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
-        
-        LOG_BIG.debug("sTaskId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sTaskId)));
         
         HistoricTaskInstance taskDetails = historyService
                 .createHistoricTaskInstanceQuery()
@@ -427,12 +426,27 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 .singleResult();
         
         LOG_BIG.debug("taskDetails = {}", taskDetails);
+        if ( taskDetails != null ) {
+            Map<String, Object> pvs = taskDetails.getProcessVariables();
+            LOG_BIG.debug("pvs = {}", pvs);
+            if (pvs !=null ) {
+                LOG_BIG.debug("pvs.size = {}", pvs.size());
+                for ( String pv : pvs.keySet()) {
+                    LOG_BIG.debug("taskDetails: key = {}, value = {}", pv, pvs.get(pv));
+                }
+                String sProcessID = (String) pvs.get("processID");
+                if ( sProcessID !=null ) {
+                    Long nID_Process = Long.valueOf(sProcessID);
+                    sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
+                }
+            }
+        }
+
+        LOG_BIG.debug("sID_Order= {}", sID_Order);
         
         // Если это комментарий эскалации
-        if ( isSystem_escalation && sComment != null ) {
-            LOG_BIG.debug("Запись комментария для эскалации");
-            
-
+        if ( isSystem_escalation && sComment != null && sID_Order != null) {
+            LOG_BIG.debug("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
         }
         
         
