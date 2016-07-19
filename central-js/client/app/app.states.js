@@ -67,6 +67,15 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         }
       }
     })
+    .state('index.service.feedback', {
+      url: '/feedback',
+      views: {
+        'content': {
+          templateUrl: 'app/service/feedback/feedback.html',
+          controller: 'ServiceFeedbackController'
+        }
+      }
+    })
     .state('index.service.legislation', {
       url: '/legislation',
       views: {
