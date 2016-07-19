@@ -421,10 +421,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         LOG_BIG.debug("sTaskId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sTaskId)));
         
+        HistoricTaskInstance taskDetails = historyService
+                .createHistoricTaskInstanceQuery()
+                .includeProcessVariables().taskId(sTaskId)
+                .singleResult();
+        
+        LOG_BIG.debug("taskDetails = {}", taskDetails);
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null ) {
-            LOG_BIG.debug("Записать комментарий для эскалации");
+            LOG_BIG.debug("Запись комментария для эскалации");
             
 
         }
@@ -463,13 +469,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+
+                LOG_BIG.debug("aTask={}", aTask);
+
                 boolean bProcessClosed = aTask == null || aTask.isEmpty();
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
 
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
-                        //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
+                        LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
                         if (!generalConfig.isSelfTest()) {
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
@@ -503,10 +512,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                         : EscalationHistoryService.STATUS_IN_WORK);
                         //                LOG.info("update escalation history: {}", escalationHistory);
                         //issue 1038 -- save message
-                        //LOG.info("try to save service message for escalation process with (snID_Process={})", snID_Process);
+                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
                         String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
                         //LOG.info("(sServiceMessage={})", sServiceMessage);
-                        LOG.info(
+                        LOG_BIG.debug(
                                 "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
                                 sProcessName, sServiceMessage);
                     }
