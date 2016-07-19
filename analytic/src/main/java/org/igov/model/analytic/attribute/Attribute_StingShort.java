@@ -7,6 +7,8 @@ package org.igov.model.analytic.attribute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import org.igov.model.core.AbstractEntity;
 
 /**
@@ -19,6 +21,10 @@ public class Attribute_StingShort extends AbstractEntity{
     @JsonProperty(value = "sValue")
     @Column
     private String sValue;
+    
+    @JsonProperty(value = "oAttribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    Attribute oAttribute;
 
     public String getsValue() {
         return sValue;
@@ -28,4 +34,11 @@ public class Attribute_StingShort extends AbstractEntity{
         this.sValue = sValue;
     }
     
+    public Attribute getoAttribute() {
+        return oAttribute;
+    }
+
+    public void setoAttribute(Attribute oAttribute) {
+        this.oAttribute = oAttribute;
+    }
 }

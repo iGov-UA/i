@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
@@ -28,13 +30,25 @@ public class Attribute_Date extends AbstractEntity{
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime    oValue;
-
+    
+    @JsonProperty(value = "oAttribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    Attribute oAttribute;
+    
     public DateTime getoValue() {
         return oValue;
     }
 
     public void setoValue(DateTime oValue) {
         this.oValue = oValue;
+    }
+    
+    public Attribute getoAttribute() {
+        return oAttribute;
+    }
+
+    public void setoAttribute(Attribute oAttribute) {
+        this.oAttribute = oAttribute;
     }
     
 }

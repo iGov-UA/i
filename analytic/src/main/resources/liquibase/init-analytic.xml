@@ -67,60 +67,6 @@
             </column>
         </createTable>  
         
-        <createTable tableName="Attribute_Integer">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="nValue" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
-        <createTable tableName="Attribute_Float">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="nValue" type="double">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
-        <createTable tableName="Attribute_StingShort">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="sValue" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
-        <createTable tableName="Attribute_StringLong">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="sValue" type="clob">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
-        <createTable tableName="Attribute_Boolean">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="bValue" type="boolean">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
-        <createTable tableName="Attribute_Date">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="oValue" type="datetime with time zone">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-        
         <createTable tableName="Process">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -211,6 +157,84 @@
                              referencedTableName="AttributeTypeCustom" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>  
+        
+        <createTable tableName="Attribute_Integer">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nValue" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeInteger_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Float">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nValue" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeFloat_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_StingShort">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeStingShort_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_StringLong">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sValue" type="clob">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeStringLong_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Boolean">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="bValue" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeBoolean_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Date">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="oValue" type="datetime with time zone">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeDate_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
     
     </changeSet>
     

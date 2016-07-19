@@ -7,6 +7,8 @@ package org.igov.model.analytic.attribute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 
@@ -19,15 +21,27 @@ public class Attribute_Boolean extends AbstractEntity{
     
     @JsonProperty(value = "bValue")
     //@Type(type="yes_no")
-    @Column(length=1)
+    //@Column(length=1)
     Boolean bValue;
-
+    
+    @JsonProperty(value = "oAttribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    Attribute oAttribute;
+    
     public Boolean getbValue() {
         return bValue;
     }
 
     public void setbValue(Boolean bValue) {
         this.bValue = bValue;
+    }
+
+    public Attribute getoAttribute() {
+        return oAttribute;
+    }
+
+    public void setoAttribute(Attribute oAttribute) {
+        this.oAttribute = oAttribute;
     }
    
 }
