@@ -376,7 +376,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      *    ]
      *  } 
      */
-    public void saveComment(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+    public void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
 	String sComment = null;
 	String sTaskId = (String) omRequestBody.get("taskId");
         Long lDurationInMillis = null;
@@ -404,19 +404,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         if (oHistoricTaskInstance != null ) {
             lDurationInMillis = oHistoricTaskInstance.getDurationInMillis();
-            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // system_escalation:16:23595004
+            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // строка вида: system_escalation:16:23595004
             sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
 
-            LOG_BIG.debug("sTaskId = {}, getDurationInMillis = {}", sTaskId, lDurationInMillis);
-            LOG_BIG.debug("sTaskId = {}, getProcessDefinitionId = {}", sTaskId, sProcessDefinitionId);
-            LOG_BIG.debug("sTaskId = {}, getProcessInstanceId = {}", sTaskId, sProcessInstanceId);
+            LOG_BIG.debug("getDurationInMillis = {}", lDurationInMillis);
+            LOG_BIG.debug("getProcessDefinitionId = {}", sProcessDefinitionId);
+            LOG_BIG.debug("getProcessInstanceId = {}", sProcessInstanceId);
             
-            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains("system_escalation") ) {
+            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
         	isSystem_escalation = true;
             }
-            LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
-            
+            LOG_BIG.debug("sProcessInstanceId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sProcessInstanceId)));
         }
+
+        LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
+        
+        LOG_BIG.debug("sTaskId -> sID_Order = {}", generalConfig.getOrderId_ByProcess(Long.valueOf(sTaskId)));
+        
+        
+        // Если это комментарий эскалации
+        if ( isSystem_escalation && sComment != null ) {
+            LOG_BIG.debug("Записать комментарий для эскалации");
+            
+
+        }
+        
         
     }
     
@@ -438,7 +450,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-            saveComment(omRequestBody, oHistoricTaskInstance);
+            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance);
             
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             
