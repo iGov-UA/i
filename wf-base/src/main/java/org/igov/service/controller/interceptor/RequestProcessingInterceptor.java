@@ -529,7 +529,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = mRequestParam.get("sUserTaskName");
 //                (String) omResponseBody.get("sUserTaskName");
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
-        Long nID_StatusType = Long.parseLong(mRequestParam.get("nID_StatusType"));
+        Long nID_StatusType = 2L;
+//                Long.parseLong(mRequestParam.get("nID_StatusType"));
 //                omResponseBody.get("nID_StatusType"));
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
