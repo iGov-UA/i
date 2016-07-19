@@ -11,6 +11,11 @@ import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import org.igov.io.db.kv.analytic.IBytesDataStorage;
+import org.igov.io.db.kv.analytic.IFileStorage;
+import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
+
 import org.igov.model.analytic.access.AccessGroup;
 import org.igov.model.analytic.access.AccessUser;
 import org.slf4j.Logger;
@@ -29,8 +34,10 @@ import org.igov.model.analytic.attribute.Attribute_File;
 import org.igov.model.analytic.attribute.Attribute_StingShort;
 import org.igov.model.analytic.process.ProcessDao;
 import org.igov.model.analytic.source.SourceDB;
+import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -47,6 +54,11 @@ public class ProcessController {
 
     //@Autowired
     //private ProcessDao processDao;
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
+
+    @Autowired
+    private IFileStorage durableFileStorage;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
@@ -56,11 +68,11 @@ public class ProcessController {
         return creatStub();
     }
 
-    //http://localhost:8080/wf-region/service/analytic/process/getProcess?sID_=1
+    //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
     @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    List<Process> getSubject(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+    List<Process> getProcesses(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
@@ -133,6 +145,22 @@ public class ProcessController {
         attributeType.setName("test");
 
         return process;
+    }
+
+    //http://localhost:8080/wf-region/service/analytic/process/getFile?sID_Data=1
+    @ApiOperation(value = "/getFile", notes = "##### File - получение контента файла #####\n\n")
+    @RequestMapping(value = "/getFile", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    byte[] getFile(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_Data") String sID_Data,
+            HttpServletResponse httpResponse) throws RecordNotFoundException {
+        //получение через дао из таблички с файлами файлов
+        VariableMultipartFile multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(sID_Data), "name", "name.txt", "application/octet-stream");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+        //httpResponse.setHeader("Content-Type", "application/octet-stream");
+        httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+        httpResponse.setContentLength(multipartFile.getBytes().length);
+        return multipartFile.getBytes();
     }
 
 }
