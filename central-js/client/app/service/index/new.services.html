@@ -36,7 +36,7 @@
       <div ui-view="contentIn">
         <div class="row">
           <div class="container" style="margin-bottom: 40px" >
-            <div class="col-sm-4 col-xs-12" ng-repeat="category in catalog" ng-if="!catalogColumn">
+            <div class="col-sm-4 col-xs-12" ng-repeat="category in catalog" ng-if="minSearchLength">
               <div class="col-sm-12 category-container">
                 <div class="col-sm-3">
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div class="col-sm-12" ng-repeat="category in catalog" ng-if="catalogColumn">
+            <div class="col-sm-12" ng-repeat="category in catalog" ng-if="!minSearchLength">
               <div class="col-sm-12 category-container">
                 <div class="col-sm-1">
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">

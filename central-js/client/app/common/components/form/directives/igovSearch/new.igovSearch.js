@@ -69,7 +69,7 @@ angular.module('app')
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
             }
-            $rootScope.catalogColumn = $scope.sSearch.length > 3;
+            $rootScope.minSearchLength = $scope.sSearch.length <= 3;
             var bShowEmptyFolders = AdminService.isAdmin();
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');

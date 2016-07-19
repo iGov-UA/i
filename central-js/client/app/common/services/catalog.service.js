@@ -10,8 +10,10 @@ angular.module('app')
     var nID_Category = category || 1;
     var nID_ServiceTag_Root = subcat;
     var nID_ServiceTag_Child = situation;
+    if(sFind.length <= 3){
+      sFind = null;
+    }
 
-    // TODO проверка на страницу категорий, заменить на возможность поиска как подкатегория
     if(!category
         && !subcat
         || category
