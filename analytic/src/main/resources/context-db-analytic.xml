@@ -27,6 +27,7 @@
             <property name="packagesToScan">
                 <array>
                     <value>org.igov.model.analytic</value>
+                    <value>org.igov.model.analytic.process</value>
                 </array>
             </property>
 
@@ -46,7 +47,9 @@
 
 
         <!-- ===========================   TRANSACTIONS   ========================= -->
-
+        
+        <tx:annotation-driven transaction-manager="transactionManagerAnalytic" />
+        
         <tx:advice id="txAdvice" transaction-manager="transactionManagerAnalytic">
             <tx:attributes>
                 <tx:method name="get*" read-only="true"/>
