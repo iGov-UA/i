@@ -98,6 +98,11 @@ angular.module('app')
               }
             });
           };
+          $scope.searching = function () {
+            if($scope.sSearch.length > 3 || $scope.sSearch.length === 0) {
+              $scope.search();
+            }
+          };
           $scope.searchOrder = function () {
             if(sID_Order_Full_RegExp.test($scope.sSearch)) {
               $state.go('index.search', {sID_Order: $scope.sSearch});
