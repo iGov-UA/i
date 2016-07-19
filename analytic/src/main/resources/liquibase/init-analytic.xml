@@ -260,5 +260,33 @@
         <addAutoIncrement tableName="ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
         
     </changeSet>
+    
+    <changeSet id="Add Attribute_File" author="olga" dbms="h2">
+        
+        <createTable tableName="Attribute_File">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_Data" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeFile_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sFileName" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sExtName" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sContentType" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addAutoIncrement tableName="Attribute_File" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        
+    </changeSet>
 
 </databaseChangeLog>
