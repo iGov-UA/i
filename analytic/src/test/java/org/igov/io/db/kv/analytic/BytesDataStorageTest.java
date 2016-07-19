@@ -10,12 +10,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
-@Ignore
+//@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {
 //		"/META-INF/spring/org-igov-io-db-kv-analytic-context.xml"})
         @ContextConfiguration(locations = {
-		"classpath:org-igov-io-db-kv-analytic-context.xml"})
+		"classpath:context-analytic.xml"})
 
 public class BytesDataStorageTest {
 
