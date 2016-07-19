@@ -10,7 +10,10 @@
  */
 angular.module('iGovMarkers')
     .constant('iGovMarkersSchema', {
-
+        options: {
+            allErrors: true,
+            useDefaults: true
+        },
         schema: {
             title: "Markers Schema",
             type: "object",
