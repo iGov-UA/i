@@ -208,20 +208,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
             	LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
-                return;
+//                return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType="Save";
-                LOG.info("saveNewTaskInfo block");
+                LOG.info("saveNewTaskInfo block started");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 sType="Close";
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
+                LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 sType="Update";
-            	LOG.info("saveUpdatedTaskInfo block");
+            	LOG.info("saveUpdatedTaskInfo block started");
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
+                LOG.info("saveUpdatedTaskInfo block finished");
             }
         } catch (Exception oException) {
             //LOG.error("Can't save service-history record: {}", oException.getMessage());
@@ -508,9 +511,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     ;
                 }
                 if (bProcessClosed){
+                    LOG.info("Saving closed task");
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
 	                                mParam);//sID_Process
+                    LOG.info("saving closed task finished");
                 }
             }
         }
