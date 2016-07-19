@@ -45,8 +45,8 @@ public class ProcessController {
 
     private static final String JSON_TYPE = "Accept=application/json";
 
-    @Autowired
-    private ProcessDao processDao;
+    //@Autowired
+    //private ProcessDao processDao;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
@@ -57,19 +57,15 @@ public class ProcessController {
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcess?sID_=1
-    @ApiOperation(value = "/getProcess", notes = "##### Process - получение процесса #####\n\n")
-    @RequestMapping(value = "/getProcess", method = RequestMethod.GET, headers = {JSON_TYPE})
+    @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
+    @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    Process getSubject(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+    List<Process> getSubject(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        try {
-            return processDao.findByIdExpected(new Long(1));
-        } catch (Exception ex) {
-            Process process = creatStub();
-            process.setsID_(ex.getMessage());
-            return process;
-        }
+        List<Process> result = new ArrayList();
+        result.add(creatStub());
+        return result;
     }
 
     private Process creatStub() {
@@ -131,8 +127,8 @@ public class ProcessController {
         accessUser.setId(new Long(1));
         accessUser.setsID("test");
         //--------------------------------
-        accessUser.setId(new Long(1));
-        accessUser.setsID("test");
+        sourceDB.setId(new Long(1));
+        sourceDB.setName("test");
         attributeType.setId(new Long(1));
         attributeType.setName("test");
 
