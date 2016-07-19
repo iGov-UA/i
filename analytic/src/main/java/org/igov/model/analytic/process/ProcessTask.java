@@ -8,11 +8,21 @@ package org.igov.model.analytic.process;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+import org.igov.model.analytic.access.AccessGroup;
+import org.igov.model.analytic.access.AccessUser;
+import org.igov.model.analytic.attribute.Attribute;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
@@ -51,6 +61,18 @@ public class ProcessTask extends AbstractEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
+    
+    @JsonProperty(value = "aAttribute")
+    @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Attribute> aAttribute = new ArrayList();
+    
+    @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
+    private List<AccessGroup> aAccessGroup = new ArrayList();
+    
+    @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
+    private List<AccessUser> aAccessUser = new ArrayList();
+
 
     public String getsID_() {
         return sID_;
@@ -90,6 +112,30 @@ public class ProcessTask extends AbstractEntity{
 
     public void setoProcess(Process oProcess) {
         this.oProcess = oProcess;
+    }
+
+    public List<Attribute> getaAttribute() {
+        return aAttribute;
+    }
+
+    public void setaAttribute(List<Attribute> aAttribute) {
+        this.aAttribute = aAttribute;
+    }
+
+    public List<AccessGroup> getaAccessGroup() {
+        return aAccessGroup;
+    }
+
+    public void setaAccessGroup(List<AccessGroup> aAccessGroup) {
+        this.aAccessGroup = aAccessGroup;
+    }
+
+    public List<AccessUser> getaAccessUser() {
+        return aAccessUser;
+    }
+
+    public void setaAccessUser(List<AccessUser> aAccessUser) {
+        this.aAccessUser = aAccessUser;
     }
     
 }

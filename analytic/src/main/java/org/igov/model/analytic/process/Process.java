@@ -8,11 +8,18 @@ package org.igov.model.analytic.process;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+import org.igov.model.analytic.attribute.Attribute;
 import org.igov.model.analytic.source.SourceDB;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
@@ -52,6 +59,16 @@ public class Process extends AbstractEntity{
     @JsonProperty(value = "sID_Data")
     @Column
     private String sID_Data;
+    
+    @JsonProperty(value = "aAttribute")
+    @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Attribute> aAttribute = new ArrayList();
+    
+    @JsonProperty(value = "aProcessTask")
+    @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<ProcessTask> aProcessTask = new ArrayList();
 
     public String getsID_() {
         return sID_;
@@ -92,5 +109,21 @@ public class Process extends AbstractEntity{
     public void setsID_Data(String sID_Data) {
         this.sID_Data = sID_Data;
     }
-    
+
+    public List<Attribute> getaAttribute() {
+        return aAttribute;
+    }
+
+    public void setaAttribute(List<Attribute> aAttribute) {
+        this.aAttribute = aAttribute;
+    }
+
+    public List<ProcessTask> getaProcessTask() {
+        return aProcessTask;
+    }
+
+    public void setaProcessTask(List<ProcessTask> aProcessTask) {
+        this.aProcessTask = aProcessTask;
+    }
+  
 }

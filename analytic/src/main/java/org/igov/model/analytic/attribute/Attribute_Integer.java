@@ -23,7 +23,7 @@ public class Attribute_Integer extends AbstractEntity{
     private Integer nValue;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_Integer")
     Attribute oAttribute;
     
     public Integer getnValue() {

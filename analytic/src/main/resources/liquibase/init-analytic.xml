@@ -109,9 +109,7 @@
         </createTable>
         
         <createTable tableName="AccessGroup_ProcessTask">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
+
             <column name="nID_ProcessTask" type="bigint">
                 <constraints nullable="false" foreignKeyName="FK_AccessGroup_ProcessTask"
                              referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
@@ -122,10 +120,12 @@
             </column>
         </createTable>
         
+        <addPrimaryKey constraintName="PK_AccessGroup_ProcessTask"
+                             columnNames="nID_AccessGroup, nID_ProcessTask"
+                             tableName="AccessGroup_ProcessTask"/>
+        
         <createTable tableName="AccessUser_ProcessTask">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
+
             <column name="nID_ProcessTask" type="bigint">
                 <constraints nullable="false" foreignKeyName="FK_AccessUser_ProcessTask"
                              referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
@@ -135,6 +135,10 @@
                              referencedTableName="AccessUser" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
+        
+        <addPrimaryKey constraintName="PK_AccessUser_ProcessTask"
+                             columnNames="nID_AccessUser, nID_ProcessTask"
+                             tableName="AccessUser_ProcessTask"/>
         
         <createTable tableName="Attribute">
             <column name="nID" type="bigint">
@@ -251,8 +255,6 @@
         <addAutoIncrement tableName="SourceDB" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="AccessGroup" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="AccessUser" columnName="nID" startWith="2000" columnDataType="bigint"/>
-        <addAutoIncrement tableName="AccessGroup_ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
-        <addAutoIncrement tableName="AccessUser_ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Process" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
         

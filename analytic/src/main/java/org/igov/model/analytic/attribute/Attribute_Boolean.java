@@ -25,7 +25,7 @@ public class Attribute_Boolean extends AbstractEntity{
     Boolean bValue;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_Boolean")
     Attribute oAttribute;
     
     public Boolean getbValue() {

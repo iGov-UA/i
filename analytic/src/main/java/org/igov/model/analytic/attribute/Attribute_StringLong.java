@@ -23,7 +23,7 @@ public class Attribute_StringLong extends AbstractEntity{
     private String sValue;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_StringLong")
     Attribute oAttribute;
 
     public String getsValue() {

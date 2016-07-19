@@ -32,7 +32,7 @@ public class Attribute_Date extends AbstractEntity{
     private DateTime    oValue;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_Date")
     Attribute oAttribute;
     
     public DateTime getoValue() {

@@ -23,7 +23,7 @@ public class Attribute_Float extends AbstractEntity{
     private Double nValue;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "nID_Attribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_Float")
     Attribute oAttribute;
 
     public Double getnValue() {
