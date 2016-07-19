@@ -560,11 +560,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-//        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
-        String sUserTaskName = mRequestParam.get("sUserTaskName");
+        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
+//        String sUserTaskName = mRequestParam.get("sUserTaskName");
 //                (String) omResponseBody.get("sUserTaskName");
-//        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
-        Long nID_StatusType = 2L;
+        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+//        Long nID_StatusType = 2L;
 //                Long.parseLong(mRequestParam.get("nID_StatusType"));
 //                omResponseBody.get("nID_StatusType"));
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
@@ -599,13 +599,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
 
-        try {
+//        try {
             historyEventService
-                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.getInstance(nID_StatusType),
+                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
                             mParam);
-        }catch (Exception e) {
-            LOG.error("Exception caught, message: {}", e.getMessage());
-        }
+//        }catch (Exception e) {
+//            LOG.error("Exception caught, message: {}", e.getMessage());
+//        }
 
         //
         LOG.info("historyEventService.updateHistoryEvent finished");
