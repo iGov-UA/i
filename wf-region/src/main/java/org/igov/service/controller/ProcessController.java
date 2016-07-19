@@ -54,11 +54,12 @@ public class ProcessController {
 
     //@Autowired
     //private ProcessDao processDao;
-    @Autowired
-    private IBytesDataStorage durableBytesDataStorage;
+    
+    //@Autowired
+    //private IBytesDataStorage durableBytesDataStorage;
 
-    @Autowired
-    private IFileStorage durableFileStorage;
+    //@Autowired
+    //private IFileStorage durableFileStorage;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
@@ -148,7 +149,7 @@ public class ProcessController {
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getFile?sID_Data=1
-    @ApiOperation(value = "/getFile", notes = "##### File - получение контента файла #####\n\n")
+    /*@ApiOperation(value = "/getFile", notes = "##### File - получение контента файла #####\n\n")
     @RequestMapping(value = "/getFile", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     byte[] getFile(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "nID_Attribute_File") Long nID_Attribute_File,
@@ -173,6 +174,6 @@ public class ProcessController {
             return ex.getMessage().getBytes();
         }
 
-    }
+    }*/
 
 }
