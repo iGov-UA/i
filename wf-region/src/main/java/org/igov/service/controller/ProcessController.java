@@ -154,13 +154,24 @@ public class ProcessController {
     byte[] getFile(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_Data") String sID_Data,
             HttpServletResponse httpResponse) throws RecordNotFoundException {
         //получение через дао из таблички с файлами файлов
-        VariableMultipartFile multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(sID_Data), "name", "name.txt", "application/octet-stream");
-        httpResponse.setCharacterEncoding("UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
-        //httpResponse.setHeader("Content-Type", "application/octet-stream");
-        httpResponse.setHeader("Content-Type", multipartFile.getContentType());
-        httpResponse.setContentLength(multipartFile.getBytes().length);
-        return multipartFile.getBytes();
+        VariableMultipartFile multipartFile;
+        try {
+            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(sID_Data), "name", "name.txt", "application/octet-stream");
+            httpResponse.setCharacterEncoding("UTF-8");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+            //httpResponse.setHeader("Content-Type", "application/octet-stream");
+            httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+            httpResponse.setContentLength(multipartFile.getBytes().length);
+            return multipartFile.getBytes();
+        } catch (Exception ex) {
+            httpResponse.setCharacterEncoding("UTF-8");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "error");
+            //httpResponse.setHeader("Content-Type", "application/octet-stream");
+            httpResponse.setHeader("Content-Type", "application/octet-stream");
+            httpResponse.setContentLength(ex.getMessage().length());
+            return ex.getMessage().getBytes();
+        }
+
     }
 
 }
