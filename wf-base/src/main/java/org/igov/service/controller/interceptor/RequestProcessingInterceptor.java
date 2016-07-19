@@ -61,6 +61,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -382,7 +383,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         Long lDurationInMillis = null;
         String sProcessDefinitionId = null;
         String sProcessInstanceId = null;
-        String nID_Protected = null;
         String sID_Order = null;
         Boolean isSystem_escalation = false;
 	
@@ -434,9 +434,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 for ( String pv : pvs.keySet()) {
                     LOG_BIG.debug("taskDetails: key = {}, value = {}", pv, pvs.get(pv));
                 }
-                nID_Protected = (String) pvs.get("nID_Protected");
-                if ( nID_Protected !=null ) {
-                    Long nID_Process = Long.valueOf(nID_Protected);
+                String sProcessID = (String) pvs.get("processID");
+                if ( sProcessID !=null ) {
+                    Long nID_Process = Long.valueOf(sProcessID);
                     sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 }
             }
@@ -446,7 +446,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG_BIG.debug("Запись комментария для эскалации. sID_Order = {}, sComment = {}", sID_Order, sComment);
+            LOG_BIG.debug("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
         }
         
         
