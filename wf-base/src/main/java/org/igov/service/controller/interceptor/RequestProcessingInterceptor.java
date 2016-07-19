@@ -520,8 +520,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
-        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+//        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
+        String sUserTaskName = (String) omResponseBody.get("sUserTaskName");
+//        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
+        Long nID_StatusType = Long.parseLong((String) omResponseBody.get("nID_StatusType"));
+        mParam.put("nID_StatusType",HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
 //        LOG.info("Looking for a task with ID {}", snID_Task);
@@ -552,9 +555,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
+
         try {
             historyEventService
-                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
+                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.getInstance(nID_StatusType),
                             mParam);
         }catch (Exception e) {
             LOG.error("Exception caught, message: {}", e.getMessage());
