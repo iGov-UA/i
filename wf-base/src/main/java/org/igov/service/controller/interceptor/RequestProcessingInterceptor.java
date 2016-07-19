@@ -521,10 +521,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
 //        String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
-        String sUserTaskName = (String) omResponseBody.get("sUserTaskName");
+        String sUserTaskName = mRequestParam.get("sUserTaskName");
+//                (String) omResponseBody.get("sUserTaskName");
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID().toString());
-        Long nID_StatusType = Long.parseLong((String) omResponseBody.get("nID_StatusType"));
-        mParam.put("nID_StatusType",HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
+        Long nID_StatusType = Long.parseLong(mRequestParam.get("nID_StatusType"));
+//                omResponseBody.get("nID_StatusType"));
+//        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
 //        LOG.info("Looking for a task with ID {}", snID_Task);
