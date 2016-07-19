@@ -46,7 +46,8 @@ module.exports = function (app) {
   }
 
   //if (!config.bCompile || 'local' === env || 'test' === env) {
-  if (!config.bCompile || 'development' === env || 'local' === env || 'test' === env) {
+  //if (!config.bCompile || 'development' === env || 'local' === env || 'test' === env) {
+  if (!config.bCompile || 'development' === env || 'local' === env) {
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
