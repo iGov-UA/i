@@ -21,4 +21,6 @@ public class ProcessDaoImpl extends GenericEntityDao<Long, Process> implements P
     protected ProcessDaoImpl() {
         super(Process.class);
     }
+    
+    //transactionManagerAnalytic
 }
