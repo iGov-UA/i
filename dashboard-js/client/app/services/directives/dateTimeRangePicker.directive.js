@@ -95,7 +95,7 @@
           if((attrs.hasOwnProperty('ngReadonly') && !$scope.$eval(attrs.ngReadonly)) ||
             (!attrs.hasOwnProperty('ngReadonly') && !attrs.hasOwnProperty('readonly'))){
             initDateRangePicker($scope, element, ngModel, config);
-          }		  
+          }
 
         }
       };
