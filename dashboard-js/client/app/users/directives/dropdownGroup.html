@@ -1,0 +1,56 @@
+<div style="position: relative">
+
+  <div class="form-group" >
+    <div class="input-group" dropdown>
+
+      <input autocomplete="off"
+             class="form-control"
+             name="group"
+             type="text"
+             ng-model="vm.selected"
+             typeahead="item.name for item in vm.allGroups | filter:$viewValue"
+             typeahead-on-select="vm.onSelectGroup($item)"
+             typeahead-empty
+             ng-required="ngRequired"/>
+
+      <ul class="dropdown-menu"
+          role="menu">
+        <li ng-repeat="item in vm.allGroups">
+          <a ng-click="vm.onSelectGroup(item)">{{item.name}}</a>
+        </li>
+      </ul>
+
+      <span class="input-group-btn">
+        <button class="btn btn-default"
+                type="button"
+                dropdown-toggle>
+          <span class="caret"></span>
+        </button>
+        <button class="btn btn-primary"
+                type="button"
+                ng-click="vm.addGroup()">
+          Додати в групу
+        </button>
+      </span>
+    </div>
+  </div>
+
+
+  <!--<div class="col-md-12 col-xs-12">-->
+  <div class="form-group">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="item in vm.data.groupsList">
+        <span class="col-md-11 col-xs-11">{{item.name}}</span>
+        <div class="btn-group">
+          <button type="button" class="btn btn-danger" ng-click="vm.removeGroup(item)"
+                  tooltip="Виключити з групи" tooltip-trigger="mouseenter" tooltip-placement="top"
+                  tooltip-append-to-body="true">
+            <i class="fa fa-trash-o"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+</div>
