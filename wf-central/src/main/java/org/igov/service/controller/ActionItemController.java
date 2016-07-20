@@ -997,27 +997,14 @@ public class ActionItemController {
                     = "строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
                     + "в имени которых встречается значение этого параметра, без учета регистра.", required = false)
             @RequestParam(value = "sFind", required = false) final String sFind, @ApiParam(value
-                    = "массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
+                    = "массив строк - фильтр по ID места (мест), где надается услуга. Значения ID перечисляются через запятую."
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
             @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "ID корневого тега", required = false)
             @RequestParam(value = "nID_ServiceTag_Root", required = false) Long nID_ServiceTag_Root, @ApiParam(value = "ID корневого тега", required = false)
-            @RequestParam(value = "nID_ServiceTag_Child", required = false) Long nID_ServiceTag_Child, @ApiParam(value = "ID тега", required = false)
-            @RequestParam(value = "nID_ServiceTag", required = false) final Long nID_ServiceTag, @ApiParam(value = "булевый флаг. корневой или не корневой тэг", required = true)
-            @RequestParam(value = "bRoot", required = false) final Boolean bRoot
+            @RequestParam(value = "nID_ServiceTag_Child", required = false) Long nID_ServiceTag_Child
     ) {
-        if (bRoot != null && nID_ServiceTag != null) {
-            if (bRoot) {
-                nID_ServiceTag_Root = nID_ServiceTag;
-                nID_ServiceTag_Child = null;
-            }
-            else {
-                nID_ServiceTag_Root = null;
-                nID_ServiceTag_Child = nID_ServiceTag;
-            }
-        }
-
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag_Root, nID_ServiceTag_Child);
         res.forEach(n -> n.setaService(n.getaService().stream().map(
