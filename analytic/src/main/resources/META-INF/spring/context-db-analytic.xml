@@ -10,6 +10,7 @@
 
 
     <beans>
+        <!--context:component-scan base-package="org.igov.analytic.model" /-->
         <!--bean id="dataSource" class="org.igov.util.logging.LoggingDriverDataSource"-->
         <bean id="dataSourceAnalytic" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
             <property name="driverClass" value="${jdbc.analytic.driver}"/>
@@ -64,7 +65,7 @@
         
         <!-- ============================ LIQUIBASE ============================= -->
         
-        <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <bean id="liquibaseAnalytic" class="liquibase.integration.spring.SpringLiquibase">
             <property name="dataSource" ref="dataSourceAnalytic"/>
             <property name="changeLog" value="classpath:liquibase/db.changelog-analytic.xml"/>
             <property name="contexts" value="prod"/>

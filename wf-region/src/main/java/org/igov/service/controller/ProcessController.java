@@ -9,11 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.igov.io.db.kv.analytic.IBytesDataStorage;
-import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
 import org.igov.analytic.model.access.AccessGroup;
@@ -34,10 +31,12 @@ import org.igov.analytic.model.attribute.Attribute_File;
 import org.igov.analytic.model.attribute.Attribute_StingShort;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.io.db.kv.analytic.IBytesDataStorage;
+import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
@@ -51,14 +50,15 @@ public class ProcessController {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
 
     private static final String JSON_TYPE = "Accept=application/json";
-
-    /*@Autowired
+  
+    @Autowired
     private ProcessDao processDao;
-    @Autowired
-    private IBytesDataStorage durableBytesDataStorage;
+
+    //@Autowired
+    //private IBytesDataStorage durableBytesDataStorage;
 
     @Autowired
-    private IFileStorage durableFileStorage;*/
+    private IFileStorage durableFileStorage;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
@@ -76,7 +76,11 @@ public class ProcessController {
             @ApiParam(value = "ид источника", required = false) @RequestParam(value = "nID_Source", required = false) Long nID_Source) {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
-        result.add(creatStub());
+        try {
+            //result.addAll(processDao.findAll());
+        } catch (Exception ex) {
+            result.add(creatStub());
+        }
         return result;
     }
 
@@ -156,8 +160,8 @@ public class ProcessController {
         //получение через дао из таблички с файлами файлов
         VariableMultipartFile multipartFile = null;
         try {
-            //multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
-            //        "name", "name.txt", "application/octet-stream");
+            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
+                    "name", "name.txt", "application/octet-stream");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -165,14 +169,13 @@ public class ProcessController {
             httpResponse.setContentLength(multipartFile.getBytes().length);
             return multipartFile.getBytes();
         } catch (Exception ex) {
-            //httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "fileNotFound.txt");
+            httpResponse.setCharacterEncoding("UTF-8");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=fileNotFound.txt"); //"Content-Disposition"
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
-            httpResponse.setHeader("Content-Type", "application/octet-stream");
-            httpResponse.setContentLength(ex.getMessage().length());
+            httpResponse.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
+            httpResponse.setContentLength(ex.getMessage().getBytes().length);
             return ex.getMessage().getBytes();
         }
-
     }
 
 }
