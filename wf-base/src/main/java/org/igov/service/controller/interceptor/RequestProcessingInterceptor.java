@@ -550,6 +550,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                     mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
                     mParam.put("sUserTaskName", sUserTaskName);
+                    mParam.put("sID_Order", sID_Order);
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, mParam);//sID_Process
                     LOG.info("saving closed task finished");
