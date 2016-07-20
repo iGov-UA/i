@@ -57,8 +57,8 @@ public class ProcessController {
     //@Autowired
     //private IBytesDataStorage durableBytesDataStorage;
 
-    //@Autowired
-    //private IFileStorage durableFileStorage;
+    @Autowired
+    private IFileStorage durableFileStorage;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
@@ -160,8 +160,8 @@ public class ProcessController {
         //получение через дао из таблички с файлами файлов
         VariableMultipartFile multipartFile = null;
         try {
-            //multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
-            //        "name", "name.txt", "application/octet-stream");
+            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
+                    "name", "name.txt", "application/octet-stream");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
