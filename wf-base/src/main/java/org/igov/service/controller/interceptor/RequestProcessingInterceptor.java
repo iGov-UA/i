@@ -62,7 +62,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
-    private final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
+    private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -485,8 +485,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
             
-            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
-            
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             
             closeEscalationProcessIfExists(snID_Process);
@@ -541,12 +539,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                         : EscalationHistoryService.STATUS_IN_WORK);
                         //                LOG.info("update escalation history: {}", escalationHistory);
                         //issue 1038 -- save message
-                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
-                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
+//                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
+//                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
+                        saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
+                        
                         //LOG.info("(sServiceMessage={})", sServiceMessage);
-                        LOG_BIG.debug(
-                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
-                                sProcessName, sServiceMessage);
+//                        LOG_BIG.debug(
+//                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
+//                                sProcessName, sServiceMessage);
                     }
                 } catch (Exception oException) {
                     //LOG.error("Can't save service message for escalation: {}", oException.getMessage());
