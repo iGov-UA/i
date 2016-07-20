@@ -600,9 +600,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
 
 //        try {
-            historyEventService
-                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
-                            mParam);
+//            historyEventService
+//                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
+//                            mParam);
+        LOG_BIG.info("mParams: {}", mParam.toString());
+        historyEventService.updateHistoryEvent(sID_Order, mParam);
 //        }catch (Exception e) {
 //            LOG.error("Exception caught, message: {}", e.getMessage());
 //        }
