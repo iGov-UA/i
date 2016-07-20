@@ -318,7 +318,7 @@ console.log($scope)
 
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
-      var windowWithLetter = window.open("","letter", "width=800,height=500,left=350,top=200",scrollbars=yes,resizable=yes,location=no");
+      var windowWithLetter = window.open("","letter", "width=800,height=500,left=350,top=200,scrollbars=yes,resizable=yes,location=no");
       try{
         windowWithLetter.document.open();
         windowWithLetter.document.write(res.data)
