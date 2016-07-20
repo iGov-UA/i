@@ -27,6 +27,7 @@
             <property name="packagesToScan">
                 <array>
                     <value>org.igov.analytic.model</value>
+                    <value>org.igov.analytic.model.process</value>
                 </array>
             </property>
 
@@ -46,8 +47,10 @@
 
 
         <!-- ===========================   TRANSACTIONS   ========================= -->
-
-        <tx:advice id="txAdvice" transaction-manager="transactionManagerAnalytic">
+        
+        <tx:annotation-driven transaction-manager="transactionManagerAnalytic" />
+        
+        <tx:advice id="txAdviceAnalytic" transaction-manager="transactionManagerAnalytic">
             <tx:attributes>
                 <tx:method name="get*" read-only="true"/>
                 <tx:method name="find*" read-only="true"/>
@@ -60,7 +63,7 @@
         
         <!-- ============================ LIQUIBASE ============================= -->
         
-        <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <bean id="liquibaseAnalytic" class="liquibase.integration.spring.SpringLiquibase">
             <property name="dataSource" ref="dataSourceAnalytic"/>
             <property name="changeLog" value="classpath:liquibase/db.changelog-analytic.xml"/>
             <property name="contexts" value="prod"/>
