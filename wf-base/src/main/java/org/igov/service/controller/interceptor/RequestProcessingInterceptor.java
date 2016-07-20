@@ -62,7 +62,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
-    private final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
+    private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -437,7 +437,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG.info("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+            LOG.info("Попытка записи комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
 
             Map<String, String> mParamComment = new HashMap<String, String>();
             mParamComment.put("sID_Order", sID_Order);
@@ -446,6 +446,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sURL = generalConfig.getSelfHostCentral() + URI_SET_SERVICE_MESSAGE;
             try {
 		String sResponse = httpRequester.getInside(sURL, mParamComment);
+		LOG.info("Запись комментария успешна");
 		LOG_BIG.debug("sResponse = {}", sResponse);
 	    } catch (Exception e) {
                 new Log(e, LOG)
@@ -483,7 +484,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance);
             
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             
@@ -539,12 +539,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                         : EscalationHistoryService.STATUS_IN_WORK);
                         //                LOG.info("update escalation history: {}", escalationHistory);
                         //issue 1038 -- save message
-                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
-                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
+//                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
+//                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
+                        saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
+                        
                         //LOG.info("(sServiceMessage={})", sServiceMessage);
-                        LOG_BIG.debug(
-                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
-                                sProcessName, sServiceMessage);
+//                        LOG_BIG.debug(
+//                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
+//                                sProcessName, sServiceMessage);
                     }
                 } catch (Exception oException) {
                     //LOG.error("Can't save service message for escalation: {}", oException.getMessage());
