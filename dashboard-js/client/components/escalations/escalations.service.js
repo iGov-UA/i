@@ -4,7 +4,7 @@ angular.module('dashboardJsApp')
   .factory('escalationsService', function services($http, $q) {
 
 
-    var getRule = function(url, sID_BP, callback){
+    var getRule = function (url, sID_BP, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
@@ -13,18 +13,18 @@ angular.module('dashboardJsApp')
         url: url,
         data: {},
         params: {
-          sID_BP : sID_BP
+          sID_BP: sID_BP
         }
       };
 
       $http(request).
-        success(function(data) {
+        success(function (data) {
           var slots = angular.fromJson(data);
           slots.forEach(clearAndConvert);
           deferred.resolve(slots);
           return cb();
         }).
-        error(function(err) {
+        error(function (err) {
           deferred.reject(err);
           return cb(err);
         }.bind(this));
@@ -32,13 +32,13 @@ angular.module('dashboardJsApp')
       return deferred.promise;
     };
 
-    var setRule = function(url, ruleToSet, callback){
+    var setRule = function (url, ruleToSet, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
-      
+
       //var id = 0;
       //if (ruleToSet.nID != null && ruleToSet.nID != undefined) id = ruleToSet.nID;
-      
+
       var request = {
         method: 'POST',
         url: url,
@@ -68,20 +68,20 @@ angular.module('dashboardJsApp')
     };
 
 
-    var setEscalationFunctionFunc = function(url, ruleFunctionToSet, callback){
+    var setEscalationFunctionFunc = function (url, ruleFunctionToSet, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
-      
+
       //var id = 0;
       //if (ruleToSet.nID != null && ruleToSet.nID != undefined) id = ruleToSet.nID;
-      
+
       var request = {
         method: 'POST',
         url: url,
         params: {
           nID: ruleFunctionToSet.nID,
           sName: ruleFunctionToSet.sName,
-          sBeanHandler: ruleFunctionToSet.sBeanHandler         
+          sBeanHandler: ruleFunctionToSet.sBeanHandler
         }
       };
 
@@ -98,8 +98,8 @@ angular.module('dashboardJsApp')
 
       return deferred.promise;
     };
-    
- var getAll = function(url, callback){
+
+    var getAll = function (url, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
@@ -107,26 +107,25 @@ angular.module('dashboardJsApp')
         method: 'GET',
         url: url,
         data: {},
-        params: {
-        }
+        params: {}
       };
 
       $http(request).
-        success(function(data) {
+        success(function (data) {
           var rules = angular.fromJson(data);
-          
+
           deferred.resolve(rules);
           return cb();
         }).
-        error(function(err) {
+        error(function (err) {
           deferred.reject(err);
           return cb(err);
         }.bind(this));
 
       return deferred.promise;
-    };       
-    
-        var deleteRule = function(url, ruleToDelete, callback){
+    };
+
+    var deleteRule = function (url, ruleToDelete, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
@@ -134,12 +133,12 @@ angular.module('dashboardJsApp')
         method: 'DELETE',
         url: url,
         params: {
-          nID: ruleToDelete.nID         
+          nID: ruleToDelete.nID
         }
       };
 
       $http(request).
-        success(function (data) {         
+        success(function (data) {
           deferred.resolve(data);
           return cb();
         }).
@@ -150,28 +149,28 @@ angular.module('dashboardJsApp')
 
       return deferred.promise;
     };
-    
+
     return {
-      getRule: function(sID_BP, callback) {
+      getRule: function (sID_BP, callback) {
         //return getRule('/api/escalations/getEscalationRule', sID_BP, callback);
       },
-      getAllRules: function(callback){
+      getAllRules: function (callback) {
         return getAll('/api/escalations/escalationRules', callback);
-        
+
       },
-      setRule: function(ruleToSet, callback) {
+      setRule: function (ruleToSet, callback) {
         return setRule('/api/escalations/escalationRules', ruleToSet, callback);
       },
-      deleteRule: function(ruleToDelete, callback) {
+      deleteRule: function (ruleToDelete, callback) {
         return deleteRule('/api/escalations/escalationRules', ruleToDelete, callback);
       },
-     getAllEscalationFunctions: function(callback) {
+      getAllEscalationFunctions: function (callback) {
         return getAll('/api/escalations/escalationFunctions', callback);
       },
-      setEscalationFunctionFunc: function(ruleFunctionToSet, callback) {
+      setEscalationFunctionFunc: function (ruleFunctionToSet, callback) {
         return setEscalationFunctionFunc('/api/escalations/escalationFunctions', ruleFunctionToSet, callback);
       },
-      deleteEscalationFunctionFunc: function(ruleFunctionToDelete, callback) {
+      deleteEscalationFunctionFunc: function (ruleFunctionToDelete, callback) {
         return deleteRule('/api/escalations/escalationFunctions', ruleFunctionToDelete, callback);
       }
     };
