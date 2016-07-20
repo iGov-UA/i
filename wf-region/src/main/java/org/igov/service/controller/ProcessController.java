@@ -165,11 +165,11 @@ public class ProcessController {
             httpResponse.setContentLength(multipartFile.getBytes().length);
             return multipartFile.getBytes();
         } catch (Exception ex) {
-            //httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + "fileNotFound.txt");
+            httpResponse.setCharacterEncoding("UTF-8");
+            httpResponse.setHeader("Content-disposition", "attachment; filename=fileNotFound.txt");
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
             httpResponse.setHeader("Content-Type", "application/octet-stream");
-            httpResponse.setContentLength(ex.getMessage().length());
+            httpResponse.setContentLength(ex.getMessage().getBytes().length);
             return ex.getMessage().getBytes();
         }
 
