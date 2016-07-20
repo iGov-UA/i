@@ -263,7 +263,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID", 'nMin', "nMax"],
                             additionalProperties: false
                         },
-                        "NumberFractionalBetween": {
+                        "^NumberFractionalBetween": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
@@ -274,7 +274,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID", 'nMin', "nMax"],
                             additionalProperties: false
                         },
-                        "Numbers_Accounts": {
+                        "^Numbers_Accounts": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},

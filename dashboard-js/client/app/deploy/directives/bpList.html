@@ -1,0 +1,104 @@
+<div class="form-horizontal">
+  <div class="form-group">
+    <button class="btn btn-primary col-sm-2" ng-click="openViewFilter()" style="margin: 2px"><span class="glyphicon glyphicon-eye-open"></span> Показати фільтр</button>
+    <button class="btn btn-danger col-sm-2" ng-click="openRemoveFilter()" style="margin: 2px"><span class="glyphicon glyphicon-remove"></span> Видалити</button>
+    <button id="uploader" class="btn btn-primary pull-right col-sm-2" style="margin: 2px">
+      <span class="glyphicon glyphicon-cloud-upload" ng-if="!isBPfileUploading"></span>
+      <span class="glyphicon glyphicon-time" ng-if="isBPfileUploading"></span>
+      <span> Додати</span>
+      <input id="file-field" type="file" style="display:none">
+    </button>
+
+    <hr>
+    <div ng-show="bViewFilterSetting">
+      <div class="form-horizontal">
+        <div class="panel-heading"><h4>Налаштування фільтру</h4></div>
+        <div class="form-group">
+          <label for="inputIdBp" class="col-sm-4 control-label">Ідентифікатор бізнес-процесу:</label>
+          <div class="col-sm-8">
+            <input type="text" ng-model="oFilter.sID_BP" class="form-control" id="inputIdBp" placeholder="Ідентифікатор бізнес-процесу">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputFieldType" class="col-sm-4 control-label">Тип поля:</label>
+          <div class="col-sm-8">
+            <input type="text" ng-model="oFilter.sFieldType" class="form-control" id="inputFieldType" placeholder="Тип поля">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="inputFieldId" class="col-sm-4 control-label">Ідентивікатор поля:</label>
+          <div class="col-sm-8">
+            <input type="text" ng-model="oFilter.sID_Field" class="form-control" id="inputFieldId" placeholder="Ідентивікатор поля">
+          </div>
+        </div>
+        <div class="form-group" ng-show="bSettingDeleteFilter">
+          <label for="inputVersion" class="col-sm-4 control-label">Версія:</label>
+          <div class="col-sm-8">
+            <input type="text" ng-model="oFilter.sVersion" class="form-control" id="inputVersion" placeholder="Версія">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+            <button type="button" class="btn btn-success"
+                    ng-click="init(oFilter)" ng-if="!bSettingDeleteFilter"><span class="glyphicon glyphicon-filter"></span> Застосувати</button>
+            <button type="button" class="btn btn-danger"
+                    ng-click="delete(oFilter)" ng-if="bSettingDeleteFilter"><span class="glyphicon glyphicon-trash"></span> Видалити</button>
+            <button type="button" class="btn btn-default" ng-click="closeFilter()">Відміна</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row center-block" ng-if="inProgress">
+  <h4>Зачекайте...</h4>
+</div>
+<div ng-if="!inProgress">
+  <div class="row center-block" ng-if="aBPs.length == 0" ng-hide="bViewFilterSetting">
+    <p class="text-center control-label">Інформація для відображення відсутня. Будь ласка, змініть налаштування фільтру</p>
+  </div>
+  <div ng-if="aBPs.length > 0">
+    <table st-table="displayedCollection" st-safe-src="aBPs" class="table table-striped">
+      <thead>
+      <tr>
+        <th class="col-md-3 col-xs-3 text-center" st-sort="key" style="cursor:pointer">Код</th>
+        <th class="col-md-1 col-xs-1 text-center" st-sort="version" style="cursor:pointer">Версія</th>
+        <th class="col-md-1 col-xs-1 text-center" st-sort="deploymentId" style="cursor:pointer">Номер викладення</th>
+        <th class="col-md-5 col-xs-5 text-center" st-sort="name" style="cursor:pointer">Найменування</th>
+      </tr>
+      <tr ng-if="aBPs.length > 1">
+        <th colspan="3"><input st-search="id" class="form-control" placeholder="Пошук за ідентифікатором ..." type="search"/></th>
+        <th><input st-search="name" class="form-control" placeholder="Пошук за назвою ..." type="search"/></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="oBP in displayedCollection | orderBy:'id'">
+        <td class="col-md-3 col-xs-3" style="word-break: break-all">{{oBP.key}}</td>
+        <td class="col-md-1 col-xs-1 text-center">{{oBP.version}}</td>
+        <td class="col-md-1 col-xs-1 text-center">{{oBP.deploymentId}}</td>
+        <td class="col-md-5 col-xs-5">{{oBP.name}}</td>
+        <td class="col-md-2 col-xs-2 rulebuttons">
+          <div class="btn-group">
+            <a href="/api/deploy/getBP/{{oBP.id}}" class="btn btn-success" tooltip="Завантажити"
+               tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-append-to-body="true"
+               target="_blank"><i class="glyphicon glyphicon-download-alt"></i></a>
+            <button type="button" class="btn btn-danger" ng-click="removeItem(oBP)" tooltip="Видалити"
+                    tooltip-trigger="mouseenter" tooltip-placement="top"
+                    tooltip-append-to-body="true">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5" class="text-center">
+          <div st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
