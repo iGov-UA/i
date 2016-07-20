@@ -109,6 +109,15 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
     }
+    if (markerName.indexOf('NumberBetween_') == 0) {
+      markerName = 'NumberBetween';
+    }
+    if (markerName.indexOf('NumberFractionalBetween_') == 0) {
+      markerName = 'NumberFractionalBetween';
+    }
+    if (markerName.indexOf('Numbers_Accounts_') == 0) {
+      markerName = 'Numbers_Accounts';
+    }
     return markerName;
   };
 

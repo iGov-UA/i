@@ -27,6 +27,7 @@
             <property name="packagesToScan">
                 <array>
                     <value>org.igov.analytic.model</value>
+                    <value>org.igov.analytic.model.process</value>
                 </array>
             </property>
 
@@ -42,12 +43,15 @@
         <bean id="transactionManagerAnalytic"
               class="org.springframework.orm.hibernate4.HibernateTransactionManager">
             <property name="sessionFactory" ref="sessionFactoryAnalytic"/>
+            <qualifier value="transactionManagerAnalytic"/>
         </bean>
 
 
         <!-- ===========================   TRANSACTIONS   ========================= -->
-
-        <tx:advice id="txAdvice" transaction-manager="transactionManagerAnalytic">
+        
+        <tx:annotation-driven transaction-manager="transactionManagerAnalytic" />
+        
+        <tx:advice id="txAdviceAnalytic" transaction-manager="transactionManagerAnalytic">
             <tx:attributes>
                 <tx:method name="get*" read-only="true"/>
                 <tx:method name="find*" read-only="true"/>
