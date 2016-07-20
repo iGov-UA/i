@@ -504,7 +504,7 @@
 
         $scope.isFieldVisible = function(item) {
           return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
-          FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
+              FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
         };
       }
     ]);
