@@ -380,9 +380,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     public void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
 	String sComment = null;
 	String sTaskId = (String) omRequestBody.get("taskId");
-        Long lDurationInMillis = null;
         String sProcessDefinitionId = null;
-        String sProcessInstanceId = null;
         String sID_Order = null;
         Boolean isSystem_escalation = false;
 	
@@ -405,13 +403,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
         
         if (oHistoricTaskInstance != null ) {
-            lDurationInMillis = oHistoricTaskInstance.getDurationInMillis();
             sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // строка вида: system_escalation:16:23595004
-            sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
 
-            LOG_BIG.debug("getDurationInMillis = {}", lDurationInMillis);
             LOG_BIG.debug("getProcessDefinitionId = {}", sProcessDefinitionId);
-            LOG_BIG.debug("getProcessInstanceId = {}", sProcessInstanceId);
             
             if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
         	isSystem_escalation = true;
@@ -426,14 +420,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 .singleResult();
         
         LOG_BIG.debug("taskDetails = {}", taskDetails);
+
         if ( taskDetails != null ) {
             Map<String, Object> pvs = taskDetails.getProcessVariables();
-            LOG_BIG.debug("pvs = {}", pvs);
             if (pvs !=null ) {
-                LOG_BIG.debug("pvs.size = {}", pvs.size());
-                for ( String pv : pvs.keySet()) {
-                    LOG_BIG.debug("taskDetails: key = {}, value = {}", pv, pvs.get(pv));
-                }
                 String sProcessID = (String) pvs.get("processID");
                 if ( sProcessID !=null ) {
                     Long nID_Process = Long.valueOf(sProcessID);
@@ -446,7 +436,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG_BIG.debug("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+            LOG.info("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+        } else {
+            LOG.error("Запись комментария для эскалации не возможна, нулевой параметр: sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
         }
         
         
