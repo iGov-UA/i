@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * @author olga
  */
 //@Transactional("transactionManagerAnalytic")
-@Repository("processDao")
+@Repository()
 public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> implements ProcessDao {
 
     private static final Logger log = Logger.getLogger(ProcessDaoImpl.class);
