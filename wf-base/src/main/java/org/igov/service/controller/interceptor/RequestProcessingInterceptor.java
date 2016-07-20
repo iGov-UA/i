@@ -437,7 +437,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         // Если это комментарий эскалации
         if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG.info("Запись комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+            LOG.info("Попытка записи комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
 
             Map<String, String> mParamComment = new HashMap<String, String>();
             mParamComment.put("sID_Order", sID_Order);
@@ -446,6 +446,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sURL = generalConfig.getSelfHostCentral() + URI_SET_SERVICE_MESSAGE;
             try {
 		String sResponse = httpRequester.getInside(sURL, mParamComment);
+		LOG.info("Запись комментария успешна");
 		LOG_BIG.debug("sResponse = {}", sResponse);
 	    } catch (Exception e) {
                 new Log(e, LOG)
@@ -483,7 +484,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance);
+            
+            saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
             
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             
