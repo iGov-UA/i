@@ -52,7 +52,6 @@ public class ProcessController {
     private static final String JSON_TYPE = "Accept=application/json";
   
     @Autowired
-    @Qualifier()
     private ProcessDao processDao;
 
     //@Autowired
@@ -60,7 +59,7 @@ public class ProcessController {
 
     //@Autowired
     //private IFileStorage durableFileStorage;
-    
+
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
     public @ResponseBody
