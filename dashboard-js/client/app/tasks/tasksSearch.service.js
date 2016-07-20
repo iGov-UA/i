@@ -41,7 +41,7 @@
               defer.resolve(aIds);
               searchSuccess(aIds[0]);
             } else {
-              Modal.inform.error()('За даним кпритерієм задач не знайдено');
+              Modal.inform.error()('За даним критерієм задач не знайдено');
               defer.reject();
             }
           }
