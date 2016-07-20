@@ -525,6 +525,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
@@ -1136,6 +1137,7 @@
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -1717,6 +1719,7 @@
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:expression><![CDATA[EO180277SMV]]></activiti:expression>
@@ -1862,7 +1865,7 @@ p {font-size: 14px;}
 </html>]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:string><![CDATA[В-0-00000/0]]></activiti:string>
+            <activiti:string><![CDATA[${sID_Order_GovPublicValue}]]></activiti:string>
           </activiti:field>
           <activiti:field name="sSourceChannel">
             <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
@@ -2488,6 +2491,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
             <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}","asAnonymousTr":"enum{[asAnonymousTr]}"}]]></activiti:expression>
@@ -3062,6 +3066,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
@@ -3993,6 +3998,7 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumDep21" name="Управління майном колишнього селища міського типу Таромське"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -4717,6 +4723,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublicValue" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
