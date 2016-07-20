@@ -15,7 +15,6 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-      
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" default="ur" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
@@ -449,7 +448,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на перевезення надгабаритних, великовагових вантажів]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_4}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1},${PrintForm_4}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
@@ -460,14 +459,6 @@ ${sNameOrgan}&lt;br /&gt;
 Номер рішення ${rishen_number} &lt;br /&gt;
 ${rishen_date}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Дві заяви, що знаходяться у додатку до листа (завантажте і роздрукуйте), засвідчені особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Погодження з комунальними і дорожніми організаціями (підприємствами) власниками відповідальними за стан вулично-дорожньої мережі.&lt;br /&gt;
-5. Погодження власників залізничних переїздів, мостового господарства, та при необхідності служб міського електротранспорту, електромереж, електрифікації, електрозв’язку (якщо габарити надгабаритного транспортного засобу перевищують за шириною 5 метрів, за довжиною 26м, за висотою 4.5 м, а загальна маса великовагового ТЗ перевищує 52 тони.).&lt;br /&gt;
-6. Висновок за результатами проведення спеціалізованого обстеження або випробування будівель, споруд і мереж на маршруті (якщо загальна маса великовагового транспортного засобу перевищує 60 тон).&lt;br /&gt;
-7. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 ${sListDocumentsLetter}
 &lt;br /&gt;

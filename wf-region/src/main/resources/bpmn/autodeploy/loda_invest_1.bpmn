@@ -20,14 +20,17 @@
           <activiti:value id="sEnumType_4" name="Виробниче приміщення"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="sLabelEarth"  name="Приклад заповнення для земельної ділянки" type="label" default="Знаходиться за &lt;a href=&quot;https://goo.gl/WjTO3X &quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelManufacture"  name="Приклад заповнення для підприємтсва" type="label" default="Знаходиться за &lt;a href=&quot;https://goo.gl/BB3beH &quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelEarth"  name="Приклад заповнення для земельної ділянки" type="label" default="знаходиться за &lt;a href=&quot;https://goo.gl/WjTO3X &quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelManufacture"  name="Приклад заповнення для підприємтсва" type="label" default="знаходиться за &lt;a href=&quot;https://goo.gl/BB3beH &quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         
         <activiti:formProperty id="asOwnership" name="Форма власності" type="enum" required="true">
           <activiti:value id="sEnumOwnership_1" name="Державна"></activiti:value>
           <activiti:value id="sEnumOwnership_2" name="Комунальна"></activiti:value>
           <activiti:value id="sEnumOwnership_3" name="Приватна"></activiti:value>
+          <activiti:value id="sEnumOwnership_4" name="Інше"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="sOwnership" name="Вкажіть форму власності" type="string" required="true"></activiti:formProperty>
         
          <activiti:formProperty id="asCondition" name="Умови використання" type="enum" required="true">
           <activiti:value id="sEnumCondition_1" name="Оренда"></activiti:value>
@@ -39,7 +42,7 @@
         <activiti:formProperty id="sPreviousUse" name="Попереднє використання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCharacteristics" name="Характеристика підприємства" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб;Вкажіть кількість працюючих осіб на підприємстві на даний момент" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); вкажіть наявні трудові ресурси (16-60р) в місці, де знаходиться об'єкт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); вкажіть наявні трудові ресурси (16-60р) в місці, де знаходиться об'єкт" type="textArea" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" required="true">
                 <activiti:value id="sEnumDistrict_1" name="Бродівський район"></activiti:value>
@@ -79,7 +82,7 @@
          <activiti:formProperty id="nNumber" name="Номер будинку" type="string" required="true"></activiti:formProperty> 
          <activiti:formProperty id="nZIPCode" name="Поштовий індекс" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="nDistanceToLviv" name="Відстань до Львова (км)" type="long" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="sLabel1"  name="GPS Координати" type="label" default="Координати можна знайти за: &lt;a href=&quot;http://www.gps-coordinates.net/&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+         <activiti:formProperty id="sLabel1"  name="GPS Координати" type="label" default="Координати можна знайти за &lt;a href=&quot;http://www.gps-coordinates.net/&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
          <activiti:formProperty id="sLatitude" name="Широта" type="string" required="true"></activiti:formProperty> 
          <activiti:formProperty id="sLongitude" name="Довгота" type="string" required="true"></activiti:formProperty> 
          
@@ -104,7 +107,7 @@
          </activiti:formProperty> 
          
          <activiti:formProperty id="nAmountRealty" name="Кількість об'єктів" type="long" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів (кв.м)" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна; будь ласка, вкажіть, чи потрібен ремонт" type="string" required="true"></activiti:formProperty> 
          <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна;дата прийняття в експлуатацію, короткий опис приміщень, їхня площа тощо" type="textArea" required="true"></activiti:formProperty> 
          
@@ -125,7 +128,12 @@
          </activiti:formProperty> 
          
          <activiti:formProperty id="nDistanceGas" name="Газопостачання: відстань (км); вкажіть відстань до найближчого джерела газопостачання" type="long" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="nCapacityGas" name="Газопостачання: потужність (тиск); вкажіть потужність найближчого джерела газопостачання" type="string" required="true"></activiti:formProperty>  
+         
+         <activiti:formProperty id="asCapacityGas" name="Газопостачання: потужність (тиск); вкажіть потужність найближчого джерела газопостачання" type="enum" required="true">
+              <activiti:value id="asCapacityGasLow" name="Низький"></activiti:value>
+              <activiti:value id="asCapacityGasMedium" name="Середній"></activiti:value>
+              <activiti:value id="asCapacityGasHigh" name="Високий"></activiti:value>
+         </activiti:formProperty>  
          <!-- газопостачання на об'єкті -->
 
          <!--водопостачання на об'єкті -->
@@ -135,7 +143,11 @@
          </activiti:formProperty> 
          
          <activiti:formProperty id="nDistanceWaterSupply" name="Водопостачання: відстань (км); вкажіть відстань до найближчого джерела водопостачання" type="long" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="sTypeWaterSupply" name="Водопостачання: тип; вкажіть тип найближчого джерела водопостачання" type="string" required="true"></activiti:formProperty>  
+         
+         <activiti:formProperty id="asTypeWaterSupply" name="Водопостачання: тип; вкажіть тип найближчого джерела водопостачання" type="enum" required="true">
+                <activiti:value id="sEnumWaterSupply" name="Водогін"></activiti:value>
+                <activiti:value id="sEnumWaterSupplyWell" name="Свердловина"></activiti:value>
+         </activiti:formProperty>  
          <!-- водопостачання на об'єкті -->
 
         <!-- водовідведення на об'єкті -->
@@ -153,7 +165,7 @@
          <activiti:formProperty id="nDistanceRailway" name="Залізничні шляхи (км); вкажіть відстань до найближчих залізничніх шляхів" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="nDistanceFlights" name="Авіасполучення (км); вкажіть відстань до найближчого авіасполучення" type="long" required="true"></activiti:formProperty> 
          <activiti:formProperty id="nDistanceRoadsCountry" name="Дороги міжнародного чи державного значення (км); вкажіть відстань до найближчих таких доріг" type="long" required="true"></activiti:formProperty> 
-         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); вкажіть найближчі пункти перетину корднону" type="string" required="true"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); вкажіть найближчі пункти перетину корднону" type="textArea" required="true"></activiti:formProperty> 
              <!-- транспортне сполучення -->
         <activiti:formProperty id="nOwnership" name="Електронна копія документу, що підтверджує власність на поданий об’єкт; якщо документ має декілька сторінок, об'єднайте у pdf-файл або zip архів" type="file" ></activiti:formProperty>
         
@@ -255,13 +267,17 @@ ${sNameOrgan}<br>
           <activiti:value id="sEnumType_2" name="Працююче підприємтсво"></activiti:value>
           <activiti:value id="sEnumType_3" name="Непрацююче підприємтсво"></activiti:value>
           <activiti:value id="sEnumType_4" name="Виробниче приміщення"></activiti:value>
+          <activiti:value id="sEnumType_5" name="Незавершене будівництво"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="asOwnership" name="Форма власності" type="enum" writable="false">
           <activiti:value id="sEnumOwnership_1" name="Державна"></activiti:value>
           <activiti:value id="sEnumOwnership_2" name="Комунальна"></activiti:value>
           <activiti:value id="sEnumOwnership_3" name="Приватна"></activiti:value>
+          <activiti:value id="sEnumOwnership_4" name="Інше"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="sOwnership" name="Вкажіть форму власності" type="string" writable="false"></activiti:formProperty>
         
          <activiti:formProperty id="asCondition" name="Умови використання" type="enum" writable="false">
           <activiti:value id="sEnumCondition_1" name="Оренда"></activiti:value>
@@ -273,7 +289,7 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sPreviousUse" name="Попереднє використання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCharacteristics" name="Характеристика підприємства; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб; ;writable=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="asDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" writable="false">
                 <activiti:value id="sEnumDistrict_1" name="Бродівський район"></activiti:value>
@@ -307,17 +323,18 @@ ${sNameOrgan}<br>
                 <activiti:value id="sEnumDistrict_29" name="м. Червоноград"></activiti:value>
         </activiti:formProperty>
        
-         <activiti:formProperty id="sSettlement" name="Населений пункт; ;writable=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="sSettlement" name="Населений пункт ;;writable=false" type="string"></activiti:formProperty>
          <activiti:formProperty id="sStreet" name="Вулиця (проспект, провулок тощо); ;writable=false" type="string"></activiti:formProperty> 
          
          <activiti:formProperty id="nNumber" name="Номер будинку; ;writable=false" type="string"></activiti:formProperty> 
          <activiti:formProperty id="nZIPCode" name="Поштовий індекс; ;writable=false" type="long"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceToLviv" name="Відстань до Львова (км);;writable=false" type="long"></activiti:formProperty> 
          <activiti:formProperty id="sLabel1"  name="GPS Координати" type="label" default="Координати можна знайти: &lt;a href=&quot;http://www.gps-coordinates.net/&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
          <activiti:formProperty id="sLatitude" name="Широта; ;writable=false" type="string"></activiti:formProperty> 
          <activiti:formProperty id="sLongitude" name="Довгота; ;writable=false" type="string"></activiti:formProperty> 
          
          
-         <activiti:formProperty id="sQuadrature" name="Площа земельної ділянки, га" type="string" writable="false"></activiti:formProperty> 
+         <activiti:formProperty id="sQuadrature" name="Площа земельної ділянки, га" type="long" writable="false"></activiti:formProperty> 
          
          <activiti:formProperty id="asAppointment" name="Категорія земель за цільовим призначенням" type="enum" writable="false">
                 <activiti:value id="sEnumAppointment_1" name="землі сільськогосподарського призначення"></activiti:value>
@@ -337,7 +354,7 @@ ${sNameOrgan}<br>
          </activiti:formProperty> 
          
          <activiti:formProperty id="nAmountRealty" name="Кількість об'єктів; ;writable=false" type="long"></activiti:formProperty> 
-         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів; ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="sQuadratureRealty" name="Загальна площа об'єктів (кв.м); ;writable=false" type="long"></activiti:formProperty> 
          <activiti:formProperty id="sStateRealty" name="Стан нерухомого майна; ;writable=false" type="string"></activiti:formProperty> 
          <activiti:formProperty id="sDescriptionRealty" name="Опис нерухомого майна; ;writable=false" type="textArea" ></activiti:formProperty> 
          
@@ -358,7 +375,12 @@ ${sNameOrgan}<br>
          </activiti:formProperty> 
          
          <activiti:formProperty id="nDistanceGas" name="Газопостачання: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
-         <activiti:formProperty id="nCapacityGas" name="Газопостачання: потужність ( ); ;writable=false" type="string"></activiti:formProperty>  
+         
+         <activiti:formProperty id="asCapacityGas" name="Газопостачання: потужність (тиск); вкажіть потужність найближчого джерела газопостачання" type="enum" writable="false">
+              <activiti:value id="asCapacityGasLow" name="Низький"></activiti:value>
+              <activiti:value id="asCapacityGasMedium" name="Середній"></activiti:value>
+              <activiti:value id="asCapacityGasHigh" name="Високий"></activiti:value>
+         </activiti:formProperty>   
          <!-- юзертаска газопостачання на об'єкті -->
 
          <!-- юзертаска водопостачання на об'єкті -->
@@ -368,7 +390,11 @@ ${sNameOrgan}<br>
          </activiti:formProperty> 
          
          <activiti:formProperty id="nDistanceWaterSupply" name="Водопостачання: відстань (км); ;writable=false" type="long"></activiti:formProperty> 
-         <activiti:formProperty id="sTypeWaterSupply" name="Водопостачання: тип; ;writable=false" type="string"></activiti:formProperty>  
+          
+         <activiti:formProperty id="asTypeWaterSupply" name="Водопостачання: тип; вкажіть тип найближчого джерела водопостачання" type="enum" writable="false">
+                <activiti:value id="sEnumWaterSupply" name="Водогін"></activiti:value>
+                <activiti:value id="sEnumWaterSupplyWell" name="Свердловина"></activiti:value>
+         </activiti:formProperty>
          <!-- юзертаска водопостачання на об'єкті -->
 
         <!-- юзертаска водовідведення на об'єкті -->
@@ -386,7 +412,7 @@ ${sNameOrgan}<br>
          <activiti:formProperty id="nDistanceRailway" name="Залізничні шляхи (км); ;writable=false" type="long"></activiti:formProperty> 
          <activiti:formProperty id="nDistanceFlights" name="Авіасполучення (км); ;writable=false" type="long"></activiti:formProperty> 
          <activiti:formProperty id="nDistanceRoadsCountry" name="Дороги міжнародного чи державного значення (км); ;writable=false" type="long"></activiti:formProperty> 
-         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); ;writable=false" type="string"></activiti:formProperty> 
+         <activiti:formProperty id="nDistanceBorder" name="Пункти перетину кордону та відстань до них (км); ;writable=false" type="textArea"></activiti:formProperty> 
         
          <activiti:formProperty id="decide" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Прийняти проект до розгляду інвесторів"></activiti:value>
