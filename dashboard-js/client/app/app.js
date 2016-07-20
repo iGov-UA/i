@@ -14,7 +14,8 @@ angular.module('dashboardJsApp', [
   'ngClipboard',
   'iGovMarkers',
   'ngMessages',
-  'smart-table'
+  'smart-table',
+  'ui.validate'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

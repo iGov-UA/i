@@ -31,8 +31,8 @@
       config.endDate = new Date(asDate[1]);
     }
     */
-   
-    
+
+
     if (!asDate) {
         config.startDate = new Date();
         config.endDate = config.startDate;
@@ -44,8 +44,8 @@
           config.endDate = config.startDate;
         }
     }
-    
-    
+
+
   };
 
   var initDateRangePicker = function ($scope, element, ngModel, config) {
@@ -92,7 +92,11 @@
             config.locale.format = attrs.format;
           }
 
-          initDateRangePicker($scope, element, ngModel, config);
+          if((attrs.hasOwnProperty('ngReadonly') && !$scope.$eval(attrs.ngReadonly)) ||
+            (!attrs.hasOwnProperty('ngReadonly') && !attrs.hasOwnProperty('readonly'))){
+            initDateRangePicker($scope, element, ngModel, config);
+          }		  
+
         }
       };
     })
