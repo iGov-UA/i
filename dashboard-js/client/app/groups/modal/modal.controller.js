@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('dashboardJsApp')
-  .controller('GroupModalController', function ($scope, $modalInstance, groupToEdit, getUsToGFunc) {
+  .controller('GroupModalController', function ($scope, $modalInstance, groupToEdit, getUsersFunc, userInGroup, allGroups, allUsers, editModes, editMode) {
 
     var parser = function () {
       return {
@@ -30,10 +30,6 @@ angular.module('dashboardJsApp')
       }
     }();
 
-    $scope.showSave = function () {
-      return true;
-    };
-
     $scope.save = function () {
       var dataToSave = {
         groupToSave: $scope.data.group,
@@ -52,8 +48,27 @@ angular.module('dashboardJsApp')
       $(".modal-dialog").addClass("groups-modal-dialog");
     };
 
+    function isIdTaken(id) {
+      return !allGroups.some(function (group) {
+        return group.id === id;
+      })
+    }
+
+    $scope.idHasNotBeenUsed = function( $value ) {
+      return isIdTaken($value);
+    };
+
     //  Init
-    $scope.data = {group: parser.parse(groupToEdit), usersToAdd: [], usersToRemove: []};
-    $scope.getUsers = getUsToGFunc;
+    $scope.data = {
+      group: parser.parse(groupToEdit),
+      userInGroup: userInGroup,
+      usersToAdd: [],
+      usersToRemove: [],
+      allGroups: allGroups,
+      allUsers: allUsers,
+      editMode: editMode,
+      editModes: editModes
+    };
+    $scope.getUsers = getUsersFunc;
 
   });
