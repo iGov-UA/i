@@ -456,15 +456,37 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         try {
             String sResponse = httpRequester.getInside(sURL, mParamComment);
-            LOG.info("Добавлен комментарий эскалации: {}", sComment);
+
             LOG_BIG.debug("sResponse = {}", sResponse);
+
+            JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+            int nCode = ( int ) oResponseJson.get("code");
+            String sMessage = (String) oResponseJson.get("message");
+            if ( nCode == 200 ) {
+                LOG.info("Добавлен комментарий эскалации: {}", sComment);
+            } else {
+        	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
+                new Log(this.getClass(), LOG)
+                ._Case("saveCommentSystemEscalation")
+                ._Status(Log.LogStatus.ERROR)
+                ._Head("Ошибка при добавлении коммменатирия эскалации")
+                ._Body(sMessage)
+                ._Param("sURL", sURL)
+                ._Param("sID_Order", sID_Order)
+                ._Param("sBody", sComment)
+                ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
+                .save();
+            }
+            
         } catch (Exception e) {
             new Log(e, LOG)
             ._Case("saveCommentSystemEscalation")
             ._Status(Log.LogStatus.ERROR)
-            ._Head("Ошибка сохранения коммменатирия эскалации")
+            ._Head("Ошибка при добавлении коммменатирия эскалации")
             ._Body("Комментарий: "+sComment)
+            ._Param("sURL", sURL)
             ._Param("sID_Order", sID_Order)
+            ._Param("sBody", sComment)
             ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
             .save();
         }
