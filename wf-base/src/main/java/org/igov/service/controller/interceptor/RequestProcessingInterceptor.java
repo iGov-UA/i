@@ -459,7 +459,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
             LOG_BIG.debug("sResponse = {}", sResponse);
 
-            JSONObject oResponseJson = (JSONObject) oJSONParser.parse("{\"code\":\"500\",\"message\":\"{sID_Order=4-237060937}:Record with nID_Server=4 and nID_Process=23706093 not found!\"}");
+            JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
             int nCode = ( int ) oResponseJson.get("code");
             String sMessage = (String) oResponseJson.get("message");
             if ( nCode == 200 ) {
@@ -493,16 +493,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
     }
     
-  public static void main(String[] args)  {
-      JSONParser oJSONParser = new JSONParser();
-      try {
-	JSONObject omRequestBody = (JSONObject) oJSONParser.parse("{\"code\":\"500\",\"message\":\"{sID_Order=4-237060937}:Record with nID_Server=4 and nID_Process=23706093 not found!\"}");
-	System.out.println(omRequestBody.get("code"));
-	System.out.println(omRequestBody.get("message"));
-    } catch (ParseException e) {
-	e.printStackTrace();
-    }
-  }
 
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
