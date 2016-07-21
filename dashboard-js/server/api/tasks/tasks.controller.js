@@ -321,6 +321,35 @@ exports.getTasksByText = function (req, res) {
   });
 };
 
+exports.getProcesses = function (req, res) {
+  var user = JSON.parse(req.cookies.user);
+  var roles = JSON.stringify(user.roles);
+  //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+  var options = {
+    path: 'analytic/process/getProcesses',
+    query: {
+      'sID_': req.query.sID,
+      'asID_Group': roles
+    }
+  };
+  activiti.get(options, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+    //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
+  });
+};
+
+exports.getFile = function (req, res) {
+  var user = JSON.parse(req.cookies.user);
+  var options = {
+    path: 'analytic/process/getFile',
+    query: {
+      'sLogin': user.id,
+      'nID_Attribute_File': req.params.nFile
+    }
+  };
+  activiti.filedownload(req, res, options);
+};
+
 exports.getPatternFile = function (req, res) {
   var options = {
     path: 'object/file/getPatternFile',
