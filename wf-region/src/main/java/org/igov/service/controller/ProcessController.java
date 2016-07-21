@@ -56,10 +56,10 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
-    
+
     @Autowired
     private AttributeDao attributeDao;
-    
+
     @Autowired
     private Attribute_FileDao attribute_FileDao;
 
@@ -74,8 +74,7 @@ public class ProcessController {
     public @ResponseBody
     Process setSubject() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        
-        
+
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         Attribute attribute = new Attribute();
@@ -192,6 +191,16 @@ public class ProcessController {
             } else {
                 List<Process> processes = processDao.findAll();
                 LOG.info("processes: " + processes.size());
+                for (Process process : processes) {
+                    for (Attribute attribute : process.getaAttribute()) {
+                        if (attribute.getoAttributeType().getId() == 7) { //file
+                            Optional<Attribute_File> attribute_File = attribute_FileDao.findBy("oAttribute.id", attribute.getId());
+                            if (attribute_File.isPresent()) {
+                                attribute.setoAttribute_File(attribute_File.get());
+                            }
+                        }
+                    }
+                }
                 result.addAll(processes);
             }
         } catch (Exception ex) {

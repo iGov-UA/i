@@ -33,12 +33,12 @@ public class Attribute extends AbstractEntity{
     private AttributeTypeCustom oAttributeTypeCustom;
     
     @JsonProperty(value = "oProcess")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
     
     @JsonProperty(value = "oProcessTask")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
     
