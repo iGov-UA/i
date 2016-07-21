@@ -50,13 +50,12 @@ public class ProcessController {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
 
     private static final String JSON_TYPE = "Accept=application/json";
-  
+
     @Autowired
     private ProcessDao processDao;
 
     //@Autowired
     //private IBytesDataStorage durableBytesDataStorage;
-
     @Autowired
     private IFileStorage durableFileStorage;
 
@@ -77,9 +76,19 @@ public class ProcessController {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
         try {
-            //result.addAll(processDao.findAll());
+            if ("1".equalsIgnoreCase(sID_.trim())) {
+                result.add(creatStub());
+            } else {
+                List<Process> processes = processDao.findAll();
+                LOG.info("processes: " + processes.size());
+                result.addAll(processes);
+            }
         } catch (Exception ex) {
-            result.add(creatStub());
+            LOG.info("ex: " + ex);
+            LOG.error("ex: ", ex);
+            Process process = creatStub();
+            process.setsID_(ex.getMessage());
+            result.add(process);
         }
         return result;
     }
@@ -160,7 +169,7 @@ public class ProcessController {
         //получение через дао из таблички с файлами файлов
         VariableMultipartFile multipartFile = null;
         try {
-            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)), 
+            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)),
                     "name", "name.txt", "application/octet-stream");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
