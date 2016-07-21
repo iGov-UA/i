@@ -116,6 +116,49 @@ public class ProcessController {
         }
         return process;
     }
+    
+    @ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    )
+    public @ResponseBody
+    Process setSubjectNew() { //@RequestBody Process oProcess
+        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        Process process = new Process();
+        try {
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+
+            process.setoDateStart(new DateTime());
+            process.setoDateFinish(new DateTime());
+            process.setoSourceDB(sourceDB);
+            process.setsID_("test!!:)");
+            process.setsID_Data("test!!:)");
+            //process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
+            //attribute = attributeDao.saveOrUpdate(attribute);
+            List<Attribute> attributes = new ArrayList();
+            attributes.add(attribute);
+            process.setaAttribute(attributes);
+            Attribute_File attribute_File = new Attribute_File();
+            attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data("test");
+            attribute_File.setsFileName("test");
+            attribute_File.setsContentType("pdf");
+            attribute_File.setsExtName("txt");
+            attribute.setoAttribute_File(attribute_File);
+            //attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+            processDao.saveOrUpdate(process);
+            //Optional<Process> oProcess = processDao.findById(process.getId());
+            return process;
+        } catch (Exception ex) {
+            LOG.error("!!!!Eror: ", ex);
+            process.setsID_(ex.getMessage());
+        }
+        return process;
+    }
 
     private Process creatStubForSet() {
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
