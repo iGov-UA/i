@@ -37,32 +37,6 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Значення прінтформи" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var gal = 'V'
-      var param1 = '&lt;del&gt;щорічний&lt;/del&gt; / проміжний'
-      var param2 = 'щорічний / &lt;del&gt;проміжний&lt;/del&gt;'
-if(execution.getVariable('asOglyad') == 'sNew'){execution.setVariable('og1', gal)}
-if(execution.getVariable('asOglyad') == 'sReg'){execution.setVariable('og2', gal)}
-if(execution.getVariable('asOglyad') == 'sYear'){execution.setVariable('og3', gal);execution.setVariable('param', param2)}
-if(execution.getVariable('asOglyad') == 'sMiddle'){execution.setVariable('og3', gal);execution.setVariable('param', param1)}
-if(execution.getVariable('asOglyad') == 'sUnWat'){execution.setVariable('og4', gal)}
-if(execution.getVariable('asOglyad') == 'sUnReg'){execution.setVariable('og5', gal)}
-if(execution.getVariable('asOglyad') == 'sOther'){execution.setVariable('og6', gal)}
-if(execution.getVariable('asTypePay') == 'sShipOwner'){execution.setVariable('pay1', gal)}
-if(execution.getVariable('asTypePay') == 'sOwner'){execution.setVariable('pay2', gal)}
-if(execution.getVariable('asTypePay') == 'sManPay'){execution.setVariable('pay3', gal)}
-if(execution.getVariable('asTypePay') == 'sOtherPay'){execution.setVariable('pay4', gal)}
-if(execution.getVariable('asType') == 'sShipOwner'){execution.setVariable('zay1', gal)}
-if(execution.getVariable('asType') == 'sOwner'){execution.setVariable('zay2', gal)}
-if(execution.getVariable('asType') == 'sManPay'){execution.setVariable('zay3', gal)}
-if(execution.getVariable('asType') == 'sOtherPay'){execution.setVariable('zay4', gal)}
-if(execution.getVariable('asChange') == 'sYes1'){execution.setVariable('yes3', gal)}else{execution.setVariable('no3', gal)}
-if(execution.getVariable('asBrakeCorp') == 'sYes2'){execution.setVariable('yes4', gal)}else{execution.setVariable('no4', gal)}
-if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5', gal)}else{execution.setVariable('no5', gal)}
-
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow45" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -80,7 +54,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -102,6 +76,15 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
 								Державна служба України з безпеки на транспорті,<br>
 								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -148,7 +131,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
     <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -163,7 +146,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				На жаль, ми змушені відмовити Вам у наданні послуги.
+				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
 			</p>
 			<p>
 			Коментар державного службовця:<br>
@@ -174,6 +157,15 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
 			Державна служба України з безпеки на транспорті.</p>
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent5"></sequenceFlow>
@@ -181,7 +173,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
     <sequenceFlow id="flow7" name="decide == 'accept'" sourceRef="exclusivegateway3" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -195,7 +187,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка на видачу свідоцтва про мінімальний склад екіпажу судна прийнята в роботу.<br>
+			<p>Ваша заявка №[sID_Order] на видачу свідоцтва про мінімальний склад екіпажу судна прийнята в роботу.<br>
 			В додатках до листа ви знайдете рахунок для сплати послуг Державної служби України з безпеки на транспорті
 			</p> 
 			<p>
@@ -234,9 +226,6 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="55.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="70.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -264,10 +253,6 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="45.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="70.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="107.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="122.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="175.0" y="157.0"></omgdi:waypoint>
