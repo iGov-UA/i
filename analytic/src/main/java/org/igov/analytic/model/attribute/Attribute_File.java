@@ -23,7 +23,7 @@ public class Attribute_File extends AbstractEntity{
     private String sID_Data;
     
     @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_File")
     Attribute oAttribute;
     
     @JsonProperty(value = "sFileName")
