@@ -320,7 +320,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //mParam.put("sProcessInstanceName", sProcessInstanceName);
         mParam.put("sHead", sProcessName);
 
-        List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+        List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).active().list();
         boolean bProcessClosed = aTask == null || aTask.size() == 0;
         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
 
@@ -615,6 +615,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
+        
 //        LOG.info("Looking for a task with ID {}", snID_Task);
         if (snID_Task == null && mRequestParam.containsKey("taskId")){
             LOG.info("snID_Task is NULL, looking for it in mRequestParam");
@@ -624,6 +625,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
 
+        mParam.put("sUserTaskName", oHistoricTaskInstance.getName());
         //String sID_Process = historicTaskInstance.getProcessInstanceId();
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         //LOG.info("(snID_Process={})", snID_Process);
