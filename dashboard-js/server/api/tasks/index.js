@@ -7,6 +7,8 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/getTaskData', controller.getTaskData);
+router.get('/getProcesses', controller.getProcesses);
+router.get('/getFile/:nFile', controller.getFile);
 router.get('/getPatternFile', controller.getPatternFile);
 router.get('/:taskId/events', controller.getAllTaskEvents);
 router.get('/:taskId/form', controller.getForm);

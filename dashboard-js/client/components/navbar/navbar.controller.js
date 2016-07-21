@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state', 'tasks'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state, tasks) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -90,15 +90,26 @@
         $scope.tasksSearch.loading=true;
         $scope.tasksSearch.count=0;
         $scope.tasksSearch.submited=true;
-        tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
-          .then(function(aIds) {
-            $scope.tasksSearch.count = aIds.length;
+        if($scope.tasksSearch.archive) {
+          tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
+            var response = JSON.parse(res)[0];
+            $scope.archive = response;
           })
-          .finally(function() {
-            $scope.tasksSearch.loading=false;
-          });
+        } else {
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
+            .then(function(res, aIds) {
+              $scope.tasksSearch.count = aIds.length;
+            })
+            .finally(function(res) {
+              $scope.tasksSearch.loading=false;
+           });
+        }
       }
-    }
+    };
+
+    $scope.closeArchive = function () {
+      $scope.tasksSearch.archive = false;
+    };
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
       return menuItem.state==$state.current.name;
