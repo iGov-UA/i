@@ -80,10 +80,10 @@ public class ProcessController {
     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
-    Process setSubject() { //@RequestBody Process oProcess
+    Process setProcess() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
-        try {
+        //try {
             SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
             AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
 
@@ -108,20 +108,21 @@ public class ProcessController {
             attribute_File.setsExtName("txt");
             attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
 
-            Optional<Process> oProcess = processDao.findById(process.getId());
-            return oProcess.isPresent() ? oProcess.get() : process;
-        } catch (Exception ex) {
-            LOG.error("!!!!Eror: ", ex);
-            process.setsID_(ex.getMessage());
-        }
-        return process;
+            //Optional<Process> oProcess = processDao.findById(process.getId());
+            //return oProcess.isPresent() ? oProcess.get() : process;
+            return process;
+        //} catch (Exception ex) {
+        //    LOG.error("!!!!Eror: ", ex);
+        //    process.setsID_(ex.getMessage());
+        //}
+        //return process;
     }
     
     @ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
-    Process setSubjectNew() { //@RequestBody Process oProcess
+    Process setProcessNew() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         try {
