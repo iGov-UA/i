@@ -118,15 +118,17 @@ public class ProcessController {
             @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
             @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
             @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") Date oDateStart,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") Date oDateFinish) {
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
         AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
 
-        process.setoDateStart(new DateTime(oDateStart));
-        process.setoDateFinish(new DateTime(oDateFinish));
+        //process.setoDateStart(new DateTime(oDateStart));
+        //process.setoDateFinish(new DateTime(oDateFinish));
+        process.setoDateStart(oDateStart);
+        process.setoDateFinish(oDateFinish);
         process.setoSourceDB(sourceDB);
         process.setsID_(sID_);
         process.setsID_Data(sID_Data);
@@ -312,7 +314,7 @@ public class ProcessController {
                 httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
                 //httpResponse.setHeader("Content-Type", "application/octet-stream");
                 httpResponse.setHeader("Content-Type", multipartFile.getContentType());
-                httpResponse.setContentLength(multipartFile.getBytes().length);
+                httpResponse.setContentLength(multipartFile.getBytes() != null ? multipartFile.getBytes().length : 0);
             }
             return multipartFile.getBytes();
         } catch (Exception ex) {
