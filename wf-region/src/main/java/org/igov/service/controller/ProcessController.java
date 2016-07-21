@@ -324,7 +324,7 @@ public class ProcessController {
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
             httpResponse.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
             //httpResponse.setContentLength(10);
-            return ex.getMessage().getBytes();
+            return ("error: " + ex.getMessage()).getBytes();
         }
     }
 
