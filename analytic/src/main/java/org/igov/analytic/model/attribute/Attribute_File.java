@@ -8,7 +8,10 @@ package org.igov.analytic.model.attribute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 
 /**
@@ -22,8 +25,11 @@ public class Attribute_File extends AbstractEntity{
     @Column
     private String sID_Data;
     
-    @JsonProperty(value = "oAttribute")
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_File")
+    //@JsonProperty(value = "oAttribute")
+    //@OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_File")
+    @OneToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinColumn(name = "nID_Attribute")
     Attribute oAttribute;
     
     @JsonProperty(value = "sFileName")
