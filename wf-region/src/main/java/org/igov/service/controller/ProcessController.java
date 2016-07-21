@@ -263,7 +263,7 @@ public class ProcessController {
     }
 
     private Process creatStub() {
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        LOG.info("/creatStub!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();
