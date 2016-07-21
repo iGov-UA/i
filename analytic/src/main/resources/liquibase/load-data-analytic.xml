@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="Update data" author="olga" runOnChange="true">
+
+        <sql splitStatements="true" dbms="postgresql">
+            SET CONSTRAINTS ALL DEFERRED;
+        </sql>
+
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/AttributeType.csv" tableName="AttributeType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/AttributeTypeCustom.csv" tableName="AttributeTypeCustom" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SourceDB.csv" tableName="SourceDB" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+    
+    </changeSet>
+
+</databaseChangeLog>

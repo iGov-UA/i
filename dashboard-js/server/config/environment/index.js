@@ -157,6 +157,9 @@ var all = {
 
   bTest: (config.getProperty('bTest') === "TRUE"),
 
+  //debug: (config.getProperty('bDebug_Application') === "TRUE"),
+
+
   // Server port
   port: config.getProperty('sURLBackProxyRegionParts.port') || process.env.PORT,
 
