@@ -316,7 +316,7 @@ public class ProcessController {
                 httpResponse.setHeader("Content-Type", multipartFile.getContentType());
                 httpResponse.setContentLength(multipartFile.getBytes() != null ? multipartFile.getBytes().length : 0);
             }
-            return multipartFile.getBytes();
+            return (multipartFile.getBytes() != null ? multipartFile.getBytes() : "".getBytes());
         } catch (Exception ex) {
             LOG.error("!!!Error: ", ex);
             httpResponse.setCharacterEncoding("UTF-8");
