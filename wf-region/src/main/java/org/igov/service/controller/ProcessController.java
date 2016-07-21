@@ -131,8 +131,8 @@ public class ProcessController {
             @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
             @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
             @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") DateTime oDateStart,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") DateTime oDateFinish) {
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
             SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
