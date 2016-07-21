@@ -283,7 +283,7 @@ public class ProcessController {
             if (attribute_File.isPresent()) {
                 Attribute_File file = attribute_File.get();
                 multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(file.getsID_Data())),
-                        file.getsFileName(), file.getsFileName() + file.getsExtName(), file.getsContentType());
+                        file.getsFileName(), file.getsFileName() + "." + file.getsExtName(), file.getsContentType());
                 httpResponse.setCharacterEncoding("UTF-8");
                 httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
                 //httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -292,6 +292,7 @@ public class ProcessController {
             }
             return multipartFile.getBytes();
         } catch (Exception ex) {
+            LOG.error("!!!Error: ", ex);
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=fileNotFound.txt"); //"Content-Disposition"
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
