@@ -456,21 +456,53 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         try {
             String sResponse = httpRequester.getInside(sURL, mParamComment);
-            LOG.info("Добавлен комментарий эскалации: {}", sComment);
+
             LOG_BIG.debug("sResponse = {}", sResponse);
+
+            JSONObject oResponseJson = (JSONObject) oJSONParser.parse("{\"code\":\"500\",\"message\":\"{sID_Order=4-237060937}:Record with nID_Server=4 and nID_Process=23706093 not found!\"}");
+            int nCode = ( int ) oResponseJson.get("code");
+            String sMessage = (String) oResponseJson.get("message");
+            if ( nCode == 200 ) {
+                LOG.info("Добавлен комментарий эскалации: {}", sComment);
+            } else {
+        	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
+                new Log(this.getClass(), LOG)
+                ._Case("saveCommentSystemEscalation")
+                ._Status(Log.LogStatus.ERROR)
+                ._Head("Ошибка при добавлении коммменатирия эскалации")
+                ._Body(sMessage)
+                ._Param("sURL", sURL)
+                ._Param("sID_Order", sID_Order)
+                ._Param("sBody", sComment)
+                ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
+                .save();
+            }
+            
         } catch (Exception e) {
             new Log(e, LOG)
             ._Case("saveCommentSystemEscalation")
             ._Status(Log.LogStatus.ERROR)
-            ._Head("Ошибка сохранения коммменатирия эскалации")
+            ._Head("Ошибка при добавлении коммменатирия эскалации")
             ._Body("Комментарий: "+sComment)
+            ._Param("sURL", sURL)
             ._Param("sID_Order", sID_Order)
+            ._Param("sBody", sComment)
             ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
             .save();
         }
         
     }
     
+  public static void main(String[] args)  {
+      JSONParser oJSONParser = new JSONParser();
+      try {
+	JSONObject omRequestBody = (JSONObject) oJSONParser.parse("{\"code\":\"500\",\"message\":\"{sID_Order=4-237060937}:Record with nID_Server=4 and nID_Process=23706093 not found!\"}");
+	System.out.println(omRequestBody.get("code"));
+	System.out.println(omRequestBody.get("message"));
+    } catch (ParseException e) {
+	e.printStackTrace();
+    }
+  }
 
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
