@@ -13,6 +13,4 @@ import org.igov.model.core.EntityDao;
  */
 public interface ProcessDao  extends EntityDao<Long, Process>{
     
-    //public Process save(Process process, Long nID_SourceDB, Long nID_AttributeType);
-    
 }
