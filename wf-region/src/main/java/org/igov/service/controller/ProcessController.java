@@ -323,7 +323,7 @@ public class ProcessController {
             httpResponse.setHeader("Content-disposition", "attachment; filename=fileNotFound.txt"); //"Content-Disposition"
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
             httpResponse.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
-            httpResponse.setContentLength(ex.getMessage().getBytes().length);
+            //httpResponse.setContentLength(10);
             return ex.getMessage().getBytes();
         }
     }
