@@ -106,6 +106,7 @@ public class ProcessController {
             attribute.setoAttribute_File(attribute_File);
             processDao.saveOrUpdate(process);
         } catch (Exception ex) {
+            LOG.error("!!!!Eror: ", ex);
             process.setsID_(ex.getMessage());
         }
         return process;
