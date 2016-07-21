@@ -7,20 +7,18 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище члена екіпажу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я учлена екіпажу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові члена екіпажу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBirth1" name="Дата народження члена екіпажу; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="№, серія паспорта члена екіпажу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAppointment" name="Посада члена екіпажу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asHavePassport" name="Чи має посвідчення члена екіпажу?" type="enum" required="true">
-          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
-          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocComp" name="Подання щодо оформлення посвідчення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nManPassport" name="Копія паспорта громадянина України" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocAir" name="Копія свідоцтва авіаційного персоналу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc1" name="Пакет документів по першому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc2" name="Пакет документів по другому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc3" name="Пакет документів по третьому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc4" name="Пакет документів по четвертому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc5" name="Пакет документів по п'ятому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc6" name="Пакет документів по шостому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc7" name="Пакет документів по сьомому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc8" name="Пакет документів по восьмому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc9" name="Пакет документів по дев'ятому громадянину" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nManDoc10" name="Пакет документів по десятому громадянину" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -33,7 +31,7 @@
           <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нова заявка на проведення огляду судна в експлуатацiї]]></activiti:expression>
+          <activiti:expression><![CDATA[Нова заявка на оформлення посвідчення члена екіпажу]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -56,7 +54,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
-            						Ваша заявка на видачу посвідчення члена екіпажу успішно зареєстрована [sID_Order].<br>
+            						Ваша заявка на видачу посвідчення члена екіпажу успішно зареєстрована №[sID_Order].<br>
 									Спеціалісти Державної авіаційної служби України повинні дати відповідь найближчим часом.
                                 </p>
                                 [pattern/mail/_common_signature_start.html]
@@ -72,31 +70,20 @@
         <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище члена екіпажу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я учлена екіпажу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові члена екіпажу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth1" name="Дата народження члена екіпажу; Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc1" name="№, серія паспорта члена екіпажу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAppointment" name="Посада члена екіпажу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHavePassport" name="Наявність посвідчення члена екіпажу" type="enum" writable="false">
-          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
-          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
-          <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Назва авіакомпанії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManPositive" name="Прізвища та ініціали осіб, які готові для видачі посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManNegative" name="Прізвища та ініціали осіб, по яких треба внести зауваження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Додайте у цьому полі зміст зауважень, або парметри необхадна для подання заявки" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocComp},${nManPassport},${nDocAir}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocComp},${nManDoc1},${nManDoc2},${nManDoc3},${nManDoc4},${nManDoc5},${nManDoc6},${nManDoc7},${nManDoc8},${nManDoc9},${nManDoc10}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
@@ -116,7 +103,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				На жаль, ми змушені відмовити Вам у наданні послуги.
+				На жаль, ми змушені відмовити Вам у наданні послуги за заявкою №[sID_Order].
 			</p>
 			<p>
 			Коментар державного службовця:<br>
@@ -148,24 +135,24 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка на видачу посвідчення члена екіпажу прийнята в роботу.<br>
-			В додатках до листа ви знайдете рахунок для сплати державного мита
+			<p>Ваша заявка №[sID_Order] на видачу посвідчення члена екіпажу прийнята в роботу.<br>
+			В додатках до листа ви знайдете рахунок для сплати державного збору.
 			</p> 
 			<p>
 			Для того щоб закінчити процедуру подання документів для оформлення посвідчення члена екіпажу необхідно:<br>
 			<ul>
-			<li>Сплатити держмито (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
-			<li>Відвідати Державіаслужбу за адресою: <b>адреса</b>, сфотографуватись та подати документи.</li>
+			<li>Сплатити державний збір (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
+			<li>Протягом 3-х робочіх днів відвідати Державіаслужбу за адресою: <b>м. Київ, пр. Перемоги, 14</b> та принести оригінал подання та завірені копії документів членів екіпажу.</li>
 			</ul>
-			${comment}
 			</p> 
-			<p>
-			Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
-            </p>
+			<p>Докумети в порядку у ${sManPositive}
+			</p> 
+			<p>Наявні помилки в документах у ${sManNegative}
+			${comment}
+			</p>
             [pattern/mail/_common_signature_start.html]
 			Державна авіаційна служби України,<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -218,8 +205,8 @@
         <omgdi:waypoint x="330.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="441.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="645.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="510.0" y="157.0"></omgdi:waypoint>
