@@ -88,7 +88,7 @@ public class ProcessController {
         Attribute attribute = new Attribute();
         Attribute_File attribute_File = new Attribute_File();
         
-        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(7));
+        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
         AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
         
         process.setId(new Long(1));
