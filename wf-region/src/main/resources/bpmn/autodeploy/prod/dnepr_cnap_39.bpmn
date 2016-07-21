@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 13.07.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 21.07.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -15,7 +15,7 @@
         <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської (селищної) ради" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
@@ -28,7 +28,7 @@
         <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
