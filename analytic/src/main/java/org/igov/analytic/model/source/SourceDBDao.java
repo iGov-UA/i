@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.analytic.model.process;
+package org.igov.analytic.model.source;
 
 import org.igov.model.core.EntityDao;
 
@@ -11,8 +11,6 @@ import org.igov.model.core.EntityDao;
  *
  * @author olga
  */
-public interface ProcessDao  extends EntityDao<Long, Process>{
-    
-    //public Process save(Process process, Long nID_SourceDB, Long nID_AttributeType);
+public interface SourceDBDao  extends EntityDao<Long, SourceDB>{
     
 }

@@ -39,7 +39,9 @@ public class Process extends AbstractEntity{
     
     @JsonProperty(value = "oSourceDB")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "oSourceDB")
+    @JoinColumn(name = "nID_SourceDB")
+    //@ManyToOne(targetEntity = SourceDB.class)
+    //@JoinColumn(name = "nID_SourceDB")
     private SourceDB oSourceDB;
     
     @JsonProperty(value = "oDateStart")

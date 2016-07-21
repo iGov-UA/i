@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
+import javax.persistence.Transient;
 
 /**
  *
@@ -32,16 +32,44 @@ public class Attribute extends AbstractEntity{
     private AttributeTypeCustom oAttributeTypeCustom;
     
     @JsonProperty(value = "oProcess")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
     
     @JsonProperty(value = "oProcessTask")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
     
     @JsonProperty(value = "oAttribute_Boolean")
+    @Transient
+    Attribute_Boolean oAttribute_Boolean;
+    
+    @JsonProperty(value = "oAttribute_Date")
+    @Transient
+    Attribute_Date oAttribute_Date;
+    
+    @JsonProperty(value = "oAttribute_Float")
+    @Transient
+    Attribute_Float oAttribute_Float;
+    
+    @JsonProperty(value = "oAttribute_Integer")
+    @Transient
+    Attribute_Integer oAttribute_Integer;
+    
+    @JsonProperty(value = "oAttribute_StingShort")
+    @Transient
+    Attribute_StingShort oAttribute_StingShort;
+    
+    @JsonProperty(value = "oAttribute_StringLong")
+    @Transient
+    Attribute_StringLong oAttribute_StringLong;
+    
+    @JsonProperty(value = "oAttribute_File")
+    @Transient
+    Attribute_File oAttribute_File;
+    
+    /*@JsonProperty(value = "oAttribute_Boolean")
     @OneToOne(fetch = FetchType.EAGER)
     Attribute_Boolean oAttribute_Boolean;
     
@@ -67,7 +95,7 @@ public class Attribute extends AbstractEntity{
     
     @JsonProperty(value = "oAttribute_File")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute_File oAttribute_File;
+    Attribute_File oAttribute_File;*/
 
     public AttributeType getoAttributeType() {
         return oAttributeType;

@@ -358,7 +358,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
     
     /*
-     *  Сохранение комментария. Как определяется что это комментарий:
+     *  Сохранение комментария эскалации. Как определяется что это комментарий эскалации:
      *  
      *  В historic-task-instances для этой заявки есть значение вида:
      *   "processDefinitionId":"system_escalation:16:23595004" здесь ключевое слово system_escalation
@@ -385,8 +385,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sID_Order = null;
         Boolean isSystem_escalation = false;
 	
-        LOG_BIG.debug("omRequestBody = {}", omRequestBody);
+        // Блок определения - это эскалация или нет
+        if (oHistoricTaskInstance != null ) {
+            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // строка вида: system_escalation:16:23595004
+
+            LOG_BIG.debug("getProcessDefinitionId = {}", sProcessDefinitionId);
+            
+            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
+        	isSystem_escalation = true;
+            }
+        } 
+        if ( !isSystem_escalation ) {
+            LOG_BIG.debug("Это не процесс эскалации");
+            return;
+        }
         
+        
+        // Блок получения комментария эскалации
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
         @SuppressWarnings("unchecked")	
         Iterator<JSONObject> iterator = properties.iterator();	
@@ -398,30 +413,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      		
      	    if ("comment".equals(sId)) {
      		sComment = sValue;   
+     	        LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
      	    }
         }
-
-        LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
-        
-        if (oHistoricTaskInstance != null ) {
-            sProcessDefinitionId = oHistoricTaskInstance.getProcessDefinitionId(); // строка вида: system_escalation:16:23595004
-
-            LOG_BIG.debug("getProcessDefinitionId = {}", sProcessDefinitionId);
-            
-            if ( sProcessDefinitionId !=null && sProcessDefinitionId.contains(BpServiceHandler.PROCESS_ESCALATION) ) {
-        	isSystem_escalation = true;
-            }
+        if ( sComment == null ) {
+            LOG.error("Комментарий эскалации равен null");
+            return;
         }
 
-        LOG_BIG.debug("isSystem_escalation = {}", isSystem_escalation );
         
+        // Блок получения sID_Order первичной заявки эскалации
         HistoricTaskInstance taskDetails = historyService
                 .createHistoricTaskInstanceQuery()
                 .includeProcessVariables().taskId(sTaskId)
                 .singleResult();
-        
-        LOG_BIG.debug("taskDetails = {}", taskDetails);
-
+        LOG_BIG.trace("taskDetails = {}", taskDetails);
         if ( taskDetails != null ) {
             Map<String, Object> pvs = taskDetails.getProcessVariables();
             if (pvs !=null ) {
@@ -429,40 +435,61 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 if ( sProcessID !=null ) {
                     Long nID_Process = Long.valueOf(sProcessID);
                     sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
+                    LOG_BIG.debug("sID_Order= {}", sID_Order);
                 }
             }
         }
+        if ( sID_Order == null ) {
+            LOG.error("sID_Order первичной заявки эскалации равен null");
+            return;
+        }
 
-        LOG_BIG.debug("sID_Order= {}", sID_Order);
         
-        // Если это комментарий эскалации
-        if ( isSystem_escalation && sComment != null && sID_Order != null) {
-            LOG.info("Попытка записи комментария для эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+        LOG.debug("Попытка записи комментария эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
 
-            Map<String, String> mParamComment = new HashMap<String, String>();
-            mParamComment.put("sID_Order", sID_Order);
-            mParamComment.put("sBody", sComment);
-            mParamComment.put("nID_SubjectMessageType", Long.toString(SubjectMessageType_ServiceCommentEmployeeAnswer));
-            String sURL = generalConfig.getSelfHostCentral() + URI_SET_SERVICE_MESSAGE;
-            try {
-		String sResponse = httpRequester.getInside(sURL, mParamComment);
-		LOG.info("Запись комментария успешна");
-		LOG_BIG.debug("sResponse = {}", sResponse);
-	    } catch (Exception e) {
-                new Log(e, LOG)
+        Map<String, String> mParamComment = new HashMap<String, String>();
+        mParamComment.put("sID_Order", sID_Order);
+        mParamComment.put("sBody", sComment);
+        mParamComment.put("nID_SubjectMessageType", Long.toString(SubjectMessageType_ServiceCommentEmployeeAnswer));
+        
+        String sURL = generalConfig.getSelfHostCentral() + URI_SET_SERVICE_MESSAGE;
+        
+        try {
+            String sResponse = httpRequester.getInside(sURL, mParamComment);
+
+            LOG_BIG.debug("sResponse = {}", sResponse);
+
+            JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+            String sCode = ( String ) oResponseJson.get("code");
+            String sMessage = (String) oResponseJson.get("message");
+            if ( "200".equals(sCode) ) {
+                LOG.info("Добавлен комментарий эскалации: {}", sComment);
+            } else {
+        	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
+                new Log(this.getClass(), LOG)
                 ._Case("saveCommentSystemEscalation")
                 ._Status(Log.LogStatus.ERROR)
-                ._Head("Ошибка сохранения коммменатирия эскалации")
-                ._Body(sComment)
+                ._Head("Ошибка при добавлении коммменатирия эскалации")
+                ._Body(sMessage)
+                ._Param("sURL", sURL)
                 ._Param("sID_Order", sID_Order)
+                ._Param("sBody", sComment)
                 ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
                 .save();
-	    }
-
-        } else {
-            LOG.error("Запись комментария для эскалации не возможна, нулевой параметр: sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+            }
+            
+        } catch (Exception e) {
+            new Log(e, LOG)
+            ._Case("saveCommentSystemEscalation")
+            ._Status(Log.LogStatus.ERROR)
+            ._Head("Ошибка при добавлении коммменатирия эскалации")
+            ._Body("Комментарий: "+sComment)
+            ._Param("sURL", sURL)
+            ._Param("sID_Order", sID_Order)
+            ._Param("sBody", sComment)
+            ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
+            .save();
         }
-        
         
     }
     

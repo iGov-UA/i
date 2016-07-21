@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
@@ -29,17 +30,20 @@ import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
+import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_File;
 import org.igov.analytic.model.attribute.Attribute_FileDao;
 import org.igov.analytic.model.attribute.Attribute_StingShort;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IBytesDataStorage;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -56,10 +60,16 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
-    
+
+    @Autowired
+    private SourceDBDao sourceDBDao;
+
+    @Autowired
+    private AttributeTypeDao attributeTypeDao;
+
     @Autowired
     private AttributeDao attributeDao;
-    
+
     @Autowired
     private Attribute_FileDao attribute_FileDao;
 
@@ -68,44 +78,127 @@ public class ProcessController {
     @Autowired
     private IFileStorage durableFileStorage;
 
+    @ApiOperation(value = "/setProcessTest", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/setProcessTest", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    )
+    public @ResponseBody
+    Process setProcessTest() { //@RequestBody Process oProcess
+        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        Process process = new Process();
+        //try {
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+
+            process.setoDateStart(new DateTime());
+            process.setoDateFinish(new DateTime());
+            process.setoSourceDB(sourceDB);
+            process.setsID_("test!!");
+            process.setsID_Data("test!!");
+            process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
+            attribute = attributeDao.saveOrUpdate(attribute);
+
+            //attributes.add(attribute);
+            Attribute_File attribute_File = new Attribute_File();
+            attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data("test");
+            attribute_File.setsFileName("test");
+            attribute_File.setsContentType("pdf");
+            attribute_File.setsExtName("txt");
+            attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+
+            //Optional<Process> oProcess = processDao.findById(process.getId());
+            //return oProcess.isPresent() ? oProcess.get() : process;
+            return process;
+        //} catch (Exception ex) {
+        //    LOG.error("!!!!Eror: ", ex);
+        //    process.setsID_(ex.getMessage());
+        //}
+        //return process;
+    }
+    
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
-    Process setSubject() { //@RequestBody Process oProcess
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        
-        
+    Process setProcess(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+            @ApiParam(value = "ключ сохраненного объекта в монгу", required = true) @RequestParam(value = "sID_Data") String sID_Data,
+            @ApiParam(value = "имя файла", required = true) @RequestParam(value = "sFileName") String sFileName,
+            @ApiParam(value = "расширение файла", required = true) @RequestParam(value = "sExtName") String sExtName,
+            @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
+            @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
-        Attribute attribute = new Attribute();
-        Attribute_File attribute_File = new Attribute_File();
-        SourceDB sourceDB = new SourceDB();
-        AttributeType attributeType = new AttributeType();
-        process.setId(new Long(1));
-        process.setoDateStart(new DateTime());
-        process.setoDateFinish(new DateTime());
-        process.setoSourceDB(sourceDB);
-        process.setsID_("test!!");
-        process.setsID_Data("test!!");
-        List<Attribute> attributes = new ArrayList();
-        process.setaAttribute(attributes);
-        attribute.setoAttributeType(attributeType);
-        attribute_File.setsID_Data("test");
-        attribute_File.setsFileName("test");
-        attribute_File.setsContentType("pdf");
-        attribute_File.setsExtName("txt");
-        sourceDB.setId(new Long(1));
-        attributeType.setId(new Long(7));
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
 
-        try {
+            process.setoDateStart(oDateStart);
+            process.setoDateFinish(oDateStart);
+            process.setoSourceDB(sourceDB);
+            process.setsID_(sID_);
+            process.setsID_Data(sID_Data);
+            process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
             attribute = attributeDao.saveOrUpdate(attribute);
-            attributes.add(attribute);
+
+            Attribute_File attribute_File = new Attribute_File();
             attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data(sID_Data);
+            attribute_File.setsFileName(sFileName);
+            attribute_File.setsContentType(sContentType);
+            attribute_File.setsExtName(sExtName);
             attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+
+            return process;
+    }
+    
+    @ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    )
+    public @ResponseBody
+    Process setProcessNew() { //@RequestBody Process oProcess
+        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        Process process = new Process();
+        try {
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+
+            process.setoDateStart(new DateTime());
+            process.setoDateFinish(new DateTime());
+            process.setoSourceDB(sourceDB);
+            process.setsID_("test!!:)");
+            process.setsID_Data("test!!:)");
+            //process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
+            //attribute = attributeDao.saveOrUpdate(attribute);
+            List<Attribute> attributes = new ArrayList();
+            attributes.add(attribute);
+            process.setaAttribute(attributes);
+            Attribute_File attribute_File = new Attribute_File();
+            attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data("test");
+            attribute_File.setsFileName("test");
+            attribute_File.setsContentType("pdf");
+            attribute_File.setsExtName("txt");
             attribute.setoAttribute_File(attribute_File);
+            //attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
             processDao.saveOrUpdate(process);
+            //Optional<Process> oProcess = processDao.findById(process.getId());
+            return process;
         } catch (Exception ex) {
+            LOG.error("!!!!Eror: ", ex);
             process.setsID_(ex.getMessage());
         }
         return process;
@@ -191,6 +284,16 @@ public class ProcessController {
             } else {
                 List<Process> processes = processDao.findAll();
                 LOG.info("processes: " + processes.size());
+                for (Process process : processes) {
+                    for (Attribute attribute : process.getaAttribute()) {
+                        if (attribute.getoAttributeType().getId() == 7) { //file
+                            Optional<Attribute_File> attribute_File = attribute_FileDao.findBy("oAttribute.id", attribute.getId());
+                            if (attribute_File.isPresent()) {
+                                attribute.setoAttribute_File(attribute_File.get());
+                            }
+                        }
+                    }
+                }
                 result.addAll(processes);
             }
         } catch (Exception ex) {
@@ -204,7 +307,7 @@ public class ProcessController {
     }
 
     private Process creatStub() {
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        LOG.info("/creatStub!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();
@@ -283,7 +386,7 @@ public class ProcessController {
             if (attribute_File.isPresent()) {
                 Attribute_File file = attribute_File.get();
                 multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(file.getsID_Data())),
-                        file.getsFileName(), file.getsFileName() + file.getsExtName(), file.getsContentType());
+                        file.getsFileName(), file.getsFileName() + "." + file.getsExtName(), file.getsContentType());
                 httpResponse.setCharacterEncoding("UTF-8");
                 httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
                 //httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -292,6 +395,7 @@ public class ProcessController {
             }
             return multipartFile.getBytes();
         } catch (Exception ex) {
+            LOG.error("!!!Error: ", ex);
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setHeader("Content-disposition", "attachment; filename=fileNotFound.txt"); //"Content-Disposition"
             //httpResponse.setHeader("Content-Type", "application/octet-stream");
