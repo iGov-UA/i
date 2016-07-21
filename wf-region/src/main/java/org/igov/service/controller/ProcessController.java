@@ -58,10 +58,10 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
-    
+
     @Autowired
     private SourceDBDao sourceDBDao;
-    
+
     @Autowired
     private AttributeTypeDao attributeTypeDao;
 
@@ -83,33 +83,33 @@ public class ProcessController {
     Process setSubject() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
-        Attribute attribute = new Attribute();
-        Attribute_File attribute_File = new Attribute_File();
-        
-        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
-        
-        process.setoDateStart(new DateTime());
-        process.setoDateFinish(new DateTime());
-        process.setoSourceDB(sourceDB);
-        process.setsID_("test!!");
-        process.setsID_Data("test!!");
-        
-        List<Attribute> attributes = new ArrayList();
-        process.setaAttribute(attributes);
-        attribute.setoAttributeType(attributeType);
-        attribute_File.setsID_Data("test");
-        attribute_File.setsFileName("test");
-        attribute_File.setsContentType("pdf");
-        attribute_File.setsExtName("txt");
-
         try {
-            attribute = attributeDao.saveOrUpdate(attribute);
-            attributes.add(attribute);
-            attribute_File.setoAttribute(attribute);
-            attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
-            attribute.setoAttribute_File(attribute_File);
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+
+            process.setoDateStart(new DateTime());
+            process.setoDateFinish(new DateTime());
+            process.setoSourceDB(sourceDB);
+            process.setsID_("test!!");
+            process.setsID_Data("test!!");
             process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
+            attribute = attributeDao.saveOrUpdate(attribute);
+
+            //attributes.add(attribute);
+            Attribute_File attribute_File = new Attribute_File();
+            attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data("test");
+            attribute_File.setsFileName("test");
+            attribute_File.setsContentType("pdf");
+            attribute_File.setsExtName("txt");
+            attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+
+            Optional<Process> oProcess = processDao.findById(process.getId());
+            return oProcess.isPresent() ? oProcess.get() : process;
         } catch (Exception ex) {
             LOG.error("!!!!Eror: ", ex);
             process.setsID_(ex.getMessage());
