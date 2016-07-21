@@ -5,6 +5,7 @@
  */
 package org.igov.service.controller;
 
+import com.google.common.base.Optional;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -278,13 +279,17 @@ public class ProcessController {
         //получение через дао из таблички с файлами файлов
         VariableMultipartFile multipartFile = null;
         try {
-            multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(nID_Attribute_File)),
-                    "name", "name.txt", "application/octet-stream");
-            httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
-            //httpResponse.setHeader("Content-Type", "application/octet-stream");
-            httpResponse.setHeader("Content-Type", multipartFile.getContentType());
-            httpResponse.setContentLength(multipartFile.getBytes().length);
+            Optional<Attribute_File> attribute_File = attribute_FileDao.findById(nID_Attribute_File);
+            if (attribute_File.isPresent()) {
+                Attribute_File file = attribute_File.get();
+                multipartFile = new VariableMultipartFile(durableFileStorage.openFileStream(String.valueOf(file.getsID_Data())),
+                        file.getsFileName(), file.getsFileName() + file.getsExtName(), file.getsContentType());
+                httpResponse.setCharacterEncoding("UTF-8");
+                httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+                //httpResponse.setHeader("Content-Type", "application/octet-stream");
+                httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+                httpResponse.setContentLength(multipartFile.getBytes().length);
+            }
             return multipartFile.getBytes();
         } catch (Exception ex) {
             httpResponse.setCharacterEncoding("UTF-8");
