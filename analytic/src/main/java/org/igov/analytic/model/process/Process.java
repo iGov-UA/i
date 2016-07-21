@@ -22,6 +22,7 @@ import org.hibernate.annotations.Type;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.model.core.AbstractEntity;
+import org.igov.model.flow.Flow_ServiceData;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
@@ -39,7 +40,9 @@ public class Process extends AbstractEntity{
     
     @JsonProperty(value = "oSourceDB")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "oSourceDB")
+    @JoinColumn(name = "nID_SourceDB")
+    //@ManyToOne(targetEntity = SourceDB.class)
+    //@JoinColumn(name = "nID_SourceDB")
     private SourceDB oSourceDB;
     
     @JsonProperty(value = "oDateStart")
