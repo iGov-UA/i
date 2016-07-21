@@ -644,7 +644,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
 
-        mParam.put("sID_Order", sID_Order);
+        if (sID_Order != null){
+        	mParam.put("sID_Order", sID_Order);
+        }
 //        try {
 //            historyEventService
 //                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
