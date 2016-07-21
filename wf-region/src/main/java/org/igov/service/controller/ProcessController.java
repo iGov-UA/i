@@ -29,11 +29,13 @@ import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
+import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_File;
 import org.igov.analytic.model.attribute.Attribute_FileDao;
 import org.igov.analytic.model.attribute.Attribute_StingShort;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IBytesDataStorage;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.util.VariableMultipartFile;
@@ -56,6 +58,12 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
+    
+    @Autowired
+    private SourceDBDao sourceDBDao;
+    
+    @Autowired
+    private AttributeTypeDao attributeTypeDao;
 
     @Autowired
     private AttributeDao attributeDao;
@@ -79,14 +87,17 @@ public class ProcessController {
         Process process = new Process();
         Attribute attribute = new Attribute();
         Attribute_File attribute_File = new Attribute_File();
-        SourceDB sourceDB = new SourceDB();
-        AttributeType attributeType = new AttributeType();
+        
+        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(7));
+        AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+        
         process.setId(new Long(1));
         process.setoDateStart(new DateTime());
         process.setoDateFinish(new DateTime());
         process.setoSourceDB(sourceDB);
         process.setsID_("test!!");
         process.setsID_Data("test!!");
+        
         List<Attribute> attributes = new ArrayList();
         process.setaAttribute(attributes);
         attribute.setoAttributeType(attributeType);
@@ -94,8 +105,8 @@ public class ProcessController {
         attribute_File.setsFileName("test");
         attribute_File.setsContentType("pdf");
         attribute_File.setsExtName("txt");
-        sourceDB.setId(new Long(1));
-        attributeType.setId(new Long(7));
+        //sourceDB.setId(new Long(1));
+        //attributeType.setId(new Long(7));
 
         try {
             attribute = attributeDao.saveOrUpdate(attribute);
@@ -103,7 +114,7 @@ public class ProcessController {
             attribute_File.setoAttribute(attribute);
             attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
             attribute.setoAttribute_File(attribute_File);
-            processDao.saveOrUpdate(process);
+            process = processDao.saveOrUpdate(process);
         } catch (Exception ex) {
             LOG.error("!!!!Eror: ", ex);
             process.setsID_(ex.getMessage());
