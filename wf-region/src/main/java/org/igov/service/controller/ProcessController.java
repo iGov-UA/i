@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
@@ -42,6 +43,7 @@ import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -76,11 +78,11 @@ public class ProcessController {
     @Autowired
     private IFileStorage durableFileStorage;
 
-    @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
-    @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    @ApiOperation(value = "/setProcessTest", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/setProcessTest", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
-    Process setProcess() { //@RequestBody Process oProcess
+    Process setProcessTest() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         //try {
@@ -116,6 +118,47 @@ public class ProcessController {
         //    process.setsID_(ex.getMessage());
         //}
         //return process;
+    }
+    
+    @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    )
+    public @ResponseBody
+    Process setProcess(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+            @ApiParam(value = "ключ сохраненного объекта в монгу", required = true) @RequestParam(value = "sID_Data") String sID_Data,
+            @ApiParam(value = "имя файла", required = true) @RequestParam(value = "sFileName") String sFileName,
+            @ApiParam(value = "расширение файла", required = true) @RequestParam(value = "sExtName") String sExtName,
+            @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
+            @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
+            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
+        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        Process process = new Process();
+            SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
+            AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
+
+            process.setoDateStart(oDateStart);
+            process.setoDateFinish(oDateStart);
+            process.setoSourceDB(sourceDB);
+            process.setsID_(sID_);
+            process.setsID_Data(sID_Data);
+            process = processDao.saveOrUpdate(process);
+
+            Attribute attribute = new Attribute();
+            attribute.setoAttributeType(attributeType);
+            attribute.setoProcess(process);
+            attribute = attributeDao.saveOrUpdate(attribute);
+
+            Attribute_File attribute_File = new Attribute_File();
+            attribute_File.setoAttribute(attribute);
+            attribute_File.setsID_Data(sID_Data);
+            attribute_File.setsFileName(sFileName);
+            attribute_File.setsContentType(sContentType);
+            attribute_File.setsExtName(sExtName);
+            attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+
+            return process;
     }
     
     @ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
