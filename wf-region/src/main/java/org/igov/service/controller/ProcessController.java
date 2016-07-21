@@ -75,7 +75,7 @@ public class ProcessController {
     @Autowired
     private IFileStorage durableFileStorage;
 
-    @ApiOperation(value = "/setProcessTest", notes = "##### Process - сохранение процесса #####\n\n")
+    /*@ApiOperation(value = "/setProcessTest", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcessTest", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
@@ -105,7 +105,7 @@ public class ProcessController {
         attribute_File.setsExtName("txt");
         attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
         return process;
-    }
+    }*/
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
@@ -137,6 +137,8 @@ public class ProcessController {
         Attribute attribute = new Attribute();
         attribute.setoAttributeType(attributeType);
         attribute.setoProcess(process);
+        attribute.setsID(sFileName);
+        attribute.setsID_Name(sFileName);
         attribute = attributeDao.saveOrUpdate(attribute);
 
         Attribute_File attribute_File = new Attribute_File();
@@ -271,6 +273,8 @@ public class ProcessController {
         attribute.setoAttributeType(attributeType);
         attribute.setoAttribute_StingShort(attribute_StingShort);
         attribute.setoAttribute_File(attribute_File);
+        attribute.setsID("test");
+        attribute.setsID_Name("test");
         //------------------------------
         attribute_StingShort.setId(new Long(1));
         attribute_StingShort.setsValue("test");
