@@ -22,7 +22,6 @@ import org.hibernate.annotations.Type;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.model.core.AbstractEntity;
-import org.igov.model.flow.Flow_ServiceData;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;

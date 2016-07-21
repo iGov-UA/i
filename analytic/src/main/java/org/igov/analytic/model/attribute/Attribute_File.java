@@ -7,7 +7,6 @@ package org.igov.analytic.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;

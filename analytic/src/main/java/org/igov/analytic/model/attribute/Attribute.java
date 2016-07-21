@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
