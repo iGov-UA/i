@@ -14,21 +14,18 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 import javax.persistence.Transient;
+import org.igov.model.core.NamedEntity;
 
 /**
  *
  * @author olga
  */
 @javax.persistence.Entity
-public class Attribute extends AbstractEntity{
+public class Attribute extends NamedEntity{
     
     @JsonProperty(value = "sID")
     @Column
     private String sID;
-    
-    @JsonProperty(value = "sID_Name")
-    @Column
-    private String sID_Name;
     
     @JsonProperty(value = "oAttributeType")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -84,14 +81,6 @@ public class Attribute extends AbstractEntity{
 
     public void setsID(String sID) {
         this.sID = sID;
-    }
-
-    public String getsID_Name() {
-        return sID_Name;
-    }
-
-    public void setsID_Name(String sID_Name) {
-        this.sID_Name = sID_Name;
     }
     
     /*@JsonProperty(value = "oAttribute_Boolean")
