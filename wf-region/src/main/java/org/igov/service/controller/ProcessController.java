@@ -69,7 +69,7 @@ public class ProcessController {
         try {
             processDao.saveOrUpdate(process);
         } catch (Exception ex) {
-            process.setId(ex.getMessage());
+            process.setsID_(ex.getMessage());
         }
         return process;
     }
