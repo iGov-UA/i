@@ -82,8 +82,6 @@ public class ProcessController {
     public @ResponseBody
     Process setSubject() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         Process process = new Process();
         Attribute attribute = new Attribute();
         Attribute_File attribute_File = new Attribute_File();
@@ -91,7 +89,6 @@ public class ProcessController {
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
         AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
         
-        process.setId(new Long(1));
         process.setoDateStart(new DateTime());
         process.setoDateFinish(new DateTime());
         process.setoSourceDB(sourceDB);
@@ -105,8 +102,6 @@ public class ProcessController {
         attribute_File.setsFileName("test");
         attribute_File.setsContentType("pdf");
         attribute_File.setsExtName("txt");
-        //sourceDB.setId(new Long(1));
-        //attributeType.setId(new Long(7));
 
         try {
             attribute = attributeDao.saveOrUpdate(attribute);
