@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  *
@@ -41,7 +42,28 @@ public class Attribute extends AbstractEntity{
     @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
     
-    @JsonProperty(value = "oAttribute_Boolean")
+    @Transient
+    Attribute_Boolean oAttribute_Boolean;
+    
+    @Transient
+    Attribute_Date oAttribute_Date;
+    
+    @Transient
+    Attribute_Float oAttribute_Float;
+    
+    @Transient
+    Attribute_Integer oAttribute_Integer;
+    
+    @Transient
+    Attribute_StingShort oAttribute_StingShort;
+    
+    @Transient
+    Attribute_StringLong oAttribute_StringLong;
+    
+    @Transient
+    Attribute_File oAttribute_File;
+    
+    /*@JsonProperty(value = "oAttribute_Boolean")
     @OneToOne(fetch = FetchType.EAGER)
     Attribute_Boolean oAttribute_Boolean;
     
@@ -67,7 +89,7 @@ public class Attribute extends AbstractEntity{
     
     @JsonProperty(value = "oAttribute_File")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute_File oAttribute_File;
+    Attribute_File oAttribute_File;*/
 
     public AttributeType getoAttributeType() {
         return oAttributeType;
