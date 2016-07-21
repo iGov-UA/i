@@ -460,9 +460,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG_BIG.debug("sResponse = {}", sResponse);
 
             JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-            int nCode = ( int ) oResponseJson.get("code");
+            String sCode = ( String ) oResponseJson.get("code");
             String sMessage = (String) oResponseJson.get("message");
-            if ( nCode == 200 ) {
+            if ( "200".equals(sCode) ) {
                 LOG.info("Добавлен комментарий эскалации: {}", sComment);
             } else {
         	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
