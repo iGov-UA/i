@@ -25,9 +25,7 @@ public class Attribute_File extends AbstractEntity{
     @Column
     private String sID_Data;
     
-    //@JsonProperty(value = "oAttribute")
-    //@OneToOne(fetch = FetchType.EAGER, mappedBy = "oAttribute_File")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Attribute")
     Attribute oAttribute;
