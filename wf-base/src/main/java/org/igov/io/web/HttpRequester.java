@@ -250,9 +250,9 @@ public class HttpRequester {
                     ._Param("mParam", mParam)
                     ._Param("osReturn", osReturn)
                     .save();
-//            if (bExceptionOnNorSuccess) {
-//                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "osReturn=" + osReturn);
-//            }
+            if (bExceptionOnNorSuccess) {
+                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "osReturn=" + osReturn);
+            }
         }
         return osReturn.toString();
     }
