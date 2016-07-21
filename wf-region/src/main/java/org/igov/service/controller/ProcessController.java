@@ -60,11 +60,84 @@ public class ProcessController {
     private IFileStorage durableFileStorage;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
-    @RequestMapping(value = "/setProcess", method = RequestMethod.POST, headers = {JSON_TYPE})
+    @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
+    )
     public @ResponseBody
-    Process setSubject(@RequestBody Process oProcess) {
+    Process setSubject() { //@RequestBody Process oProcess
         LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        return creatStub();
+        Process process = creatStubForSet();
+        try {
+            processDao.saveOrUpdate(process);
+        } catch (Exception ex) {
+            process.setId(ex.getMessage());
+        }
+        return process;
+    }
+
+    private Process creatStubForSet() {
+        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        Process process = new Process();
+        //ProcessTask processTask = new ProcessTask();
+        Attribute attribute = new Attribute();
+        //Attribute_StingShort attribute_StingShort = new Attribute_StingShort();
+        Attribute_File attribute_File = new Attribute_File();
+        //AccessGroup accessGroup = new AccessGroup();
+        //AccessUser accessUser = new AccessUser();
+        SourceDB sourceDB = new SourceDB();
+        AttributeType attributeType = new AttributeType();
+        //---------------------------
+        process.setId(new Long(1));
+        process.setoDateStart(new DateTime());
+        process.setoDateFinish(new DateTime());
+        process.setoSourceDB(sourceDB);
+        process.setsID_("test!!");
+        process.setsID_Data("test!!");
+
+        //List<ProcessTask> tasks = new ArrayList();
+        //tasks.add(processTask);
+        //process.setaProcessTask(tasks);
+        List<Attribute> attributes = new ArrayList();
+        attributes.add(attribute);
+        process.setaAttribute(attributes);
+        //process.setaAttribute(attributes);
+        //-------------------------------
+        //processTask.setId(new Long(1));
+        //processTask.setoDateStart(new DateTime());
+        //processTask.setoDateFinish(new DateTime());
+        //processTask.setsID_("test");
+        //List<AccessGroup> accessGroups = new ArrayList();
+        //accessGroups.add(accessGroup);
+        //processTask.setaAccessGroup(accessGroups);
+        //List<AccessUser> accessUsers = new ArrayList();
+        //accessUsers.add(accessUser);
+        //processTask.setaAccessUser(accessUsers);
+        //------------------------------
+        //attribute.setId(new Long(1));
+        attribute.setoAttributeType(attributeType);
+        //attribute.setoAttribute_StingShort(attribute_StingShort);
+        attribute.setoAttribute_File(attribute_File);
+        //------------------------------
+        //attribute_StingShort.setId(new Long(1));
+        //attribute_StingShort.setsValue("test");
+        //------------------------------
+        //attribute_File.setId(new Long(1));
+        attribute_File.setsID_Data("test");
+        attribute_File.setsFileName("test");
+        attribute_File.setsContentType("pdf");
+        attribute_File.setsExtName("txt");
+        //-------------------------------
+        //accessGroup.setId(new Long(1));
+        //accessGroup.setsID("test");
+        //--------------------------------
+        //accessUser.setId(new Long(1));
+        //accessUser.setsID("test");
+        //--------------------------------
+        sourceDB.setId(new Long(1));
+        //sourceDB.setName("test");
+        attributeType.setId(new Long(7));
+        //attributeType.setName("test");
+
+        return process;
     }
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
