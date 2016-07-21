@@ -40,7 +40,7 @@ module.exports = {
     hostname: 'test.igov.org.ua',
     port: '8443',
     path: '/wf/service',
-    username: 'activiti-master',
-    password: 'UjhtJnEvf!'
+    username: 'system',
+    password: 'system'
   }
 };
