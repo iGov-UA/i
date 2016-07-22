@@ -6,20 +6,25 @@
 package org.igov.analytic.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
-import org.igov.model.core.AbstractEntity;
 import javax.persistence.Transient;
+import org.igov.model.core.NamedEntity;
 
 /**
  *
  * @author olga
  */
 @javax.persistence.Entity
-public class Attribute extends AbstractEntity{
+public class Attribute extends NamedEntity{
+    
+    @JsonProperty(value = "sID_")
+    @Column
+    private String sID_;
     
     @JsonProperty(value = "oAttributeType")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -68,6 +73,14 @@ public class Attribute extends AbstractEntity{
     @JsonProperty(value = "oAttribute_File")
     @Transient
     Attribute_File oAttribute_File;
+
+    public String getsID_() {
+        return sID_;
+    }
+
+    public void setsID_(String sID_) {
+        this.sID_ = sID_;
+    }
     
     /*@JsonProperty(value = "oAttribute_Boolean")
     @OneToOne(fetch = FetchType.EAGER)

@@ -320,7 +320,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //mParam.put("sProcessInstanceName", sProcessInstanceName);
         mParam.put("sHead", sProcessName);
 
-        List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+        List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).active().list();
         boolean bProcessClosed = aTask == null || aTask.size() == 0;
         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
 
@@ -414,6 +414,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      	    if ("comment".equals(sId)) {
      		sComment = sValue;   
      	        LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
+     	        break;
      	    }
         }
         if ( sComment == null ) {
@@ -461,10 +462,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
             JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
             String sCode = ( String ) oResponseJson.get("code");
-            String sMessage = (String) oResponseJson.get("message");
             if ( "200".equals(sCode) ) {
                 LOG.info("Добавлен комментарий эскалации: {}", sComment);
             } else {
+                String sMessage = (String) oResponseJson.get("message");
         	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
                 new Log(this.getClass(), LOG)
                 ._Case("saveCommentSystemEscalation")
@@ -615,6 +616,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 //        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.getInstance(nID_StatusType).toString());
 
         String snID_Task = (String) omResponseBody.get("taskId");
+        
 //        LOG.info("Looking for a task with ID {}", snID_Task);
         if (snID_Task == null && mRequestParam.containsKey("taskId")){
             LOG.info("snID_Task is NULL, looking for it in mRequestParam");
@@ -624,6 +626,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
 
+        mParam.put("sUserTaskName", oHistoricTaskInstance.getName());
         //String sID_Process = historicTaskInstance.getProcessInstanceId();
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         //LOG.info("(snID_Process={})", snID_Process);
@@ -644,6 +647,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         LOG.info("historyEventService.updateHistoryEvent sID_Order = {}", sID_Order);
 
+        if (sID_Order != null){
+        	mParam.put("sID_Order", sID_Order);
+        }
 //        try {
 //            historyEventService
 //                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,
