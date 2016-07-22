@@ -26,6 +26,10 @@
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Керівник юридичної особи&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum" required="true">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
@@ -335,6 +339,9 @@
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Будівництво та архітектура"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Екологія, охорона навколишнього природного середовища"></activiti:value>
@@ -672,7 +679,10 @@
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Юридична адраса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Будівництво та архітектура"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Екологія, охорона навколишнього природного середовища"></activiti:value>
@@ -1039,6 +1049,7 @@ p {font-size: 14px;}
         <p><b>Юридична адреса:</b></p>
         <p>${sAdress}<br>${sCity}<br>${sZipCode}</p>
         <p>телефон: ${sPhone}</p>
+        <p>Керівник: ${sBossLastName} ${sBossFirstName} ${sBossMiddleName}</p>
     </div>
     <div class="clear"></div>
     <div class="line_col ta-c m-t-25">
@@ -1181,7 +1192,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Будівництво та архітектура"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Екологія, охорона навколишнього природного середовища"></activiti:value>
@@ -1588,6 +1602,9 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="sEnumTopHead1" name="Будівництво та архітектура"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Екологія, охорона навколишнього природного середовища"></activiti:value>
@@ -1919,6 +1936,9 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCity" name="Населенний пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBossLastName" name="Прізвище керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstName" name="Ім'я керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBossMiddleName" name="По батькові керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="sEnumTopHead1" name="Будівництво та архітектура"></activiti:value>
           <activiti:value id="sEnumTopHead4" name="Екологія, охорона навколишнього природного середовища"></activiti:value>
