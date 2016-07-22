@@ -235,12 +235,14 @@ public class ProcessController {
         Process process = new Process();
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();
+        Attribute attribute1 = new Attribute();
         Attribute_StingShort attribute_StingShort = new Attribute_StingShort();
         Attribute_File attribute_File = new Attribute_File();
         AccessGroup accessGroup = new AccessGroup();
         AccessUser accessUser = new AccessUser();
         SourceDB sourceDB = new SourceDB();
         AttributeType attributeType = new AttributeType();
+        AttributeType attributeType1 = new AttributeType();
         //---------------------------
         process.setId(new Long(1));
         process.setoDateStart(new DateTime());
@@ -255,8 +257,9 @@ public class ProcessController {
 
         List<Attribute> attributes = new ArrayList();
         attributes.add(attribute);
+        attributes.add(attribute1);
         process.setaAttribute(attributes);
-        process.setaAttribute(attributes);
+        //process.setaAttribute(attributes);
         //-------------------------------
         processTask.setId(new Long(1));
         processTask.setoDateStart(new DateTime());
@@ -271,8 +274,15 @@ public class ProcessController {
         //------------------------------
         attribute.setId(new Long(1));
         attribute.setoAttributeType(attributeType);
-        attribute.setoAttribute_StingShort(attribute_StingShort);
+        //attribute.setoAttribute_StingShort(attribute_StingShort);
         attribute.setoAttribute_File(attribute_File);
+        attribute.setsID_("test");
+        attribute.setName("test");
+        
+        attribute1.setId(new Long(2));
+        attribute1.setoAttributeType(attributeType1);
+        attribute1.setoAttribute_StingShort(attribute_StingShort);
+        //attribute.setoAttribute_File(attribute_File);
         attribute.setsID_("test");
         attribute.setName("test");
         //------------------------------
@@ -293,9 +303,10 @@ public class ProcessController {
         //--------------------------------
         sourceDB.setId(new Long(1));
         sourceDB.setName("test");
-        attributeType.setId(new Long(1));
+        attributeType.setId(new Long(7));
         attributeType.setName("test");
-
+        attributeType1.setId(new Long(2));
+        attributeType1.setName("test");
         return process;
     }
 
