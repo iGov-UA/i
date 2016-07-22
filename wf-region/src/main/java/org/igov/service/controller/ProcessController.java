@@ -137,7 +137,7 @@ public class ProcessController {
         Attribute attribute = new Attribute();
         attribute.setoAttributeType(attributeType);
         attribute.setoProcess(process);
-        attribute.setsID(sFileName);
+        attribute.setsID_(sFileName);
         attribute.setName(sFileName);
         attribute = attributeDao.saveOrUpdate(attribute);
 
@@ -273,7 +273,7 @@ public class ProcessController {
         attribute.setoAttributeType(attributeType);
         attribute.setoAttribute_StingShort(attribute_StingShort);
         attribute.setoAttribute_File(attribute_File);
-        attribute.setsID("test");
+        attribute.setsID_("test");
         attribute.setName("test");
         //------------------------------
         attribute_StingShort.setId(new Long(1));
