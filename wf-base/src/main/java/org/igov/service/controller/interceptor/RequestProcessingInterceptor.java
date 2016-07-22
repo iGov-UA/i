@@ -414,6 +414,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      	    if ("comment".equals(sId)) {
      		sComment = sValue;   
      	        LOG_BIG.debug("sTaskId = {}, sComment = {}", sTaskId, sComment);
+     	        break;
      	    }
         }
         if ( sComment == null ) {
@@ -461,10 +462,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
             JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
             String sCode = ( String ) oResponseJson.get("code");
-            String sMessage = (String) oResponseJson.get("message");
             if ( "200".equals(sCode) ) {
                 LOG.info("Добавлен комментарий эскалации: {}", sComment);
             } else {
+                String sMessage = (String) oResponseJson.get("message");
         	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
                 new Log(this.getClass(), LOG)
                 ._Case("saveCommentSystemEscalation")
