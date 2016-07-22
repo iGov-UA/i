@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
-import org.igov.model.core.AbstractEntity;
 import javax.persistence.Transient;
 import org.igov.model.core.NamedEntity;
 
@@ -23,9 +22,9 @@ import org.igov.model.core.NamedEntity;
 @javax.persistence.Entity
 public class Attribute extends NamedEntity{
     
-    @JsonProperty(value = "sID")
+    @JsonProperty(value = "sID_")
     @Column
-    private String sID;
+    private String sID_;
     
     @JsonProperty(value = "oAttributeType")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -75,12 +74,12 @@ public class Attribute extends NamedEntity{
     @Transient
     Attribute_File oAttribute_File;
 
-    public String getsID() {
-        return sID;
+    public String getsID_() {
+        return sID_;
     }
 
-    public void setsID(String sID) {
-        this.sID = sID;
+    public void setsID_(String sID_) {
+        this.sID_ = sID_;
     }
     
     /*@JsonProperty(value = "oAttribute_Boolean")
