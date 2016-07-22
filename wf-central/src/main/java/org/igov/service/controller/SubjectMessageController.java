@@ -544,6 +544,31 @@ public class SubjectMessageController {
             throws CommonServiceException {
 
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
+        if(nId!=null){
+            SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
+            if (feedback != null) {
+                feedback.setsID_Token(null);
+                LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
+                return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
+            } else {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "feedback = null nId="+nId, HttpStatus.NOT_FOUND);
+            }
+        }else if(nID_Service!=null){
+                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
+            List<SubjectMessageFeedback> feedbackList =
+                    oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
+            for (SubjectMessageFeedback messageFeedback : feedbackList) {
+                messageFeedback.setsID_Token(null);
+            }
+            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nID_Service);
+            return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
+        }else{
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "need parameters!", HttpStatus.NOT_FOUND);
+        }        
+        /*
+        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
         SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
         if (feedback != null && sID_Token.equals(feedback.getsID_Token())) {
             LOG.info("authentication passed");
@@ -565,6 +590,7 @@ public class SubjectMessageController {
         LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
         throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
+        */
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
