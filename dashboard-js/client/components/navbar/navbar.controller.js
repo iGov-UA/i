@@ -92,8 +92,8 @@
         $scope.tasksSearch.submited=true;
         if($scope.tasksSearch.archive) {
           tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
-            var response = JSON.parse(res)[0];
-            $scope.archive = response;
+            var response = JSON.parse(res);
+            $scope.archive = response[0];
           })
         } else {
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
@@ -109,6 +109,10 @@
 
     $scope.closeArchive = function () {
       $scope.tasksSearch.archive = false;
+    };
+
+    $scope.archiveTextValue = function () {
+      return isNaN($scope.tasksSearch.value);
     };
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
