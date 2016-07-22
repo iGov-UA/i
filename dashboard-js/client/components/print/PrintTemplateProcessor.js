@@ -138,6 +138,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         var user = Auth.getCurrentUser();
         return user.lastName + ' ' + user.firstName ;
       });
+      printTemplate = this.populateSystemTag(printTemplate, "[sCurrentDateTime]", $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime.replace(' ', 'T'), 'yyyy-MM-dd HH:mm'));
 
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
@@ -160,7 +161,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'HH:mm');
           });
         }
-      } catch (e) { 
+      } catch (e) {
         Modal.inform.error()(form.taskData.message)
       }
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
