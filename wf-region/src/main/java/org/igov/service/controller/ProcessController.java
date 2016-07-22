@@ -283,11 +283,11 @@ public class ProcessController {
         attribute1.setoAttributeType(attributeType1);
         attribute1.setoAttribute_StingShort(attribute_StingShort);
         //attribute.setoAttribute_File(attribute_File);
-        attribute.setsID_("test");
-        attribute.setName("test");
+        attribute1.setsID_("test");
+        attribute1.setName("test");
         //------------------------------
         attribute_StingShort.setId(new Long(1));
-        attribute_StingShort.setsValue("test");
+        attribute_StingShort.setsValue("attribute_StingShort");
         //------------------------------
         attribute_File.setId(new Long(1));
         attribute_File.setsID_Data("test");
@@ -302,11 +302,11 @@ public class ProcessController {
         accessUser.setsID("test");
         //--------------------------------
         sourceDB.setId(new Long(1));
-        sourceDB.setName("test");
+        sourceDB.setName("Gorsovet");
         attributeType.setId(new Long(7));
-        attributeType.setName("test");
-        attributeType1.setId(new Long(2));
-        attributeType1.setName("test");
+        attributeType.setName("File");
+        attributeType1.setId(new Long(3));
+        attributeType1.setName("StingShort");
         return process;
     }
 
