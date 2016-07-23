@@ -538,21 +538,26 @@ public class SubjectMessageController {
     @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва и паролю или все отзывы по сервису")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(
-            @ApiParam(value = "ID отзыва", required = true) @RequestParam(value = "nID") Long nId,
-            @ApiParam(value = "Строка-токен для доступа к записи", required = true) @RequestParam(value = "sID_Token") String sID_Token,
+            @ApiParam(value = "ID отзыва", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service)
             throws CommonServiceException {
 
-        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
-        if(nId!=null){
-            SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
+        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
+        if(nID!=null){
+            SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
             if (feedback != null) {
-                feedback.setsID_Token(null);
-                LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nId, sID_Token);
-                return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
+                if (sID_Token!=null && sID_Token.equals(feedback.getsID_Token())) {
+                    //feedback.setsID_Token(null);
+                    //LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nID, sID_Token);
+                    return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
+                } else {
+                    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "sID_Token not equal or absant! sID_Token="+sID_Token+", nId="+nID, HttpStatus.NOT_FOUND);
+                }
             } else {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "feedback = null nId="+nId, HttpStatus.NOT_FOUND);
+                        "feedback = null nId="+nID, HttpStatus.NOT_FOUND);
             }
         }else if(nID_Service!=null){
                 LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
