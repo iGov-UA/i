@@ -411,6 +411,7 @@ public class SubjectMessageControllerScenario {
                 .andExpect(content().json(expectedResponse));
     }
 
+    @Ignore
     @Test
     public void shouldReturnListOfSubjectMessageFeedbackBynID_Service() throws Exception {
         SubjectMessageFeedback feedback = new SubjectMessageFeedback();
