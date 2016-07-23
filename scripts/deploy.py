@@ -32,7 +32,8 @@ if os.path.exists("iSystem"):
     subprocess.call("rm -rf iSystem", shell=True)
 
 #subprocess.call("ssh-agent bash -c 'ssh-add /sybase/.secret/id_rsa_iSystem; git clone git@github.com:e-government-ua/iSystem.git'", shell=True)
-subprocess.call("git clone git@github.com:e-government-ua/iSystem.git", shell=True)
+#subprocess.call("git clone git@github.com:e-government-ua/iSystem.git", shell=True)
+subprocess.call("git clone git@iSystem.github.com:e-government-ua/iSystem.git", shell=True)
 #if 'project' in args:
 #    subprocess.call(["rsync","-rt","iSystem/config/" + args.version + "/" + args.project + "/", "./" + args.project + "/"])
 
