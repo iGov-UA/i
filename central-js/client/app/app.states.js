@@ -68,10 +68,10 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
       }
     })
     .state('index.service.feedback', {
-      url: '/feedback',
+      url: '/feedback?:nID&:sID_Token',
       views: {
         'content': {
-          templateUrl: 'app/service/feedback/feedback.html',
+          templateUrl: 'app/service/feedback.html',
           controller: 'ServiceFeedbackController'
         }
       }

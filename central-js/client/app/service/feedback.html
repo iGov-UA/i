@@ -1,1 +1,46 @@
+<div class="container" ng-hide="feedback.feedbackError">
+  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <span>Ваша оцінка</span>
+    <span star-rating ng-model="feedback.raiting" max="5" on-rating-select="feedback.rateFunction(rating)"></span>
+  </div>
+  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <span>Ваш вiдгук</span>
+  </div>
+  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <span>{{::commentHead}}</span>
+  </div>
 
+  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <textarea rows="5" ng-model="feedback.messageBody" class="form-control" style="width: 500px !important;"></textarea>
+  </div>
+  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <input type="button" class="btn btn-info" value="Залишити вiдгук" ng-click="feedback.postFeedback()"/>
+  </div>
+
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="page-header">
+          <h2>Відгуки громадян</h2>
+        </div>
+        <div ng-repeat="item in feedback.messageList">
+          <div class="well">
+            <p>
+              <small>{{::item.sAuthorFIO}}</small>
+              <star-rating ng-model="item.nID_Rate" readonly="true"></star-rating>
+            </p>
+            <p>{{::item.sBody}}</p>
+          </div>
+
+          <!--<div>{{item.nID_Rate}}</div>-->
+          <!--<div>{{item.sAuthorFIO}}</div>-->
+          <!--<div>{{item.sID_Source}}</div>-->
+          <!--<div>{{item.sHead}}</div>-->
+          <!--<div>{{item.sMail}}</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

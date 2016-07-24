@@ -1,4 +1,4 @@
-angular.module('app').controller('ServiceFormController', function($scope, service, regions, AdminService, ServiceService) {
+angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService) {
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
@@ -7,7 +7,7 @@ angular.module('app').controller('ServiceFormController', function($scope, servi
 angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
   $scope.catalog = catalogContent;
   var subscriptions = [];
-  messageBusService.subscribe('catalog:update', function(data) {
+  messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
@@ -16,7 +16,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
   }, false);
 
 
-  $scope.$on('$stateChangeStart', function(event, toState) {
+  $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
     }
@@ -26,7 +26,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
   //     $scope.spinner = false;
   //   }
   // });
-  $scope.$on('$stateChangeError', function(event, toState) {
+  $scope.$on('$stateChangeError', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = false;
     }
@@ -37,7 +37,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
-  messageBusService.subscribe('catalog:update', function(data) {
+  messageBusService.subscribe('catalog:update', function (data) {
     console.log('catalog updated, will update items');
     $scope.catalog = data;
     if ($scope.catalog) {
@@ -48,18 +48,18 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
     $scope.spinner = false;
   }, false);
 
-  if($scope.catalog
+  if ($scope.catalog
     && $scope.catalog.aServiceTag_Child
     && chosenCategory.aServiceTag_Child[0].nID === $scope.catalog.aServiceTag_Child[0].nID
     || $rootScope.wasSearched) {
     $scope.category = $scope.catalog;
     $rootScope.wasSearched = false;
   }
-  if(!$scope.catalog) {
+  if (!$scope.catalog) {
     $scope.category = $scope.catalog;
   }
 
-  $scope.$on('$stateChangeStart', function(event, toState) {
+  $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
     }
@@ -77,7 +77,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
 
 });
 
-angular.module('app').controller('ServiceGeneralController', function($state, $scope, ServiceService, PlacesService) {
+angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
   PlacesService.resetPlaceData();
 
   return $state.go('index.service.general.place', {
@@ -87,11 +87,99 @@ angular.module('app').controller('ServiceGeneralController', function($state, $s
   });
 });
 
-angular.module('app').controller('ServiceLegislationController', function($state, $rootScope, $scope) {});
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, ServiceService, FeedbackService, ErrorsFactory) {
 
-angular.module('app').controller('ServiceQuestionsController', function($state, $rootScope, $scope) {});
+  $scope.nID = null;
+  $scope.sID_Token = null;
+  $scope.feedback = {
+    messageBody: '',
+    messageList: [],
+    allowLeaveFeedback: false,
+    feedbackError: false,
+    postFeedback: postFeedback,
+    rateFunction: rateFunction,
+    raiting: 3,
+    exist: false
+  };
 
-angular.module('app').controller('ServiceDiscussionController', function($state, $rootScope, $scope) {
+  activate();
+
+  function activate(){
+
+    $scope.nID = $stateParams.nID;
+    $scope.sID_Token = $stateParams.sID_Token;
+
+    if($scope.nID && $scope.sID_Token){
+      $scope.feedback.allowLeaveFeedback = true;
+    }
+
+    FeedbackService.getFeedbackListForService(ServiceService.oService.nID).then(function (response) {
+      var funcDesc = {sHead:"Завантаженя фідбеку для послуг", sFunc:"getFeedbackForService"};
+      ErrorsFactory.init(funcDesc, {asParam:['nID: '+ServiceService.oService.nID]});
+      if(ErrorsFactory.bSuccessResponse(response)){
+        if(Array.isArray(response.data)){
+          $scope.feedback.exist = response.data.some(function(o){
+            return o.sID_Source && o.sID_Source === $scope.nID;
+          });
+        }
+      }
+      $scope.feedback.messageList =_.sortBy(response.data, function(o) { return -o.nID; });
+
+    }, function (error){
+
+      switch (error.message){
+        case "Security Error":
+          pushError("Помилка безпеки!");
+          break;
+        case "Record Not Found":
+          pushError("Запис не знайдено!");
+          break;
+        case "Already exist":
+          pushError("Вiдгук вже залишено!");
+          break;
+        default :
+          $scope.feedback.feedbackError = true;
+          ErrorsFactory.logFail({sBody:"Невідома помилка!",sError:error.message});
+          break;
+      }
+    }).finally(function () {
+      $scope.loaded = true;
+    });
+  }
+
+  function rateFunction(rating){
+    $scope.feedback.raiting = rating;
+  }
+
+  function postFeedback(){
+    var sAuthorFIO = 'anonymous',
+      sMail = '',
+      sHead = '';
+
+    FeedbackService.postFeedbackForService($scope.nID,
+      ServiceService.oService.nID,
+      $scope.sID_Token,
+      $scope.feedback.messageBody,
+      sAuthorFIO,
+      sMail,
+      sHead,
+      $scope.feedback.raiting);
+
+    $state.go('index.service.feedback',{
+      nID: null,
+      sID_Token: null
+    });
+  }
+
+});
+
+angular.module('app').controller('ServiceLegislationController', function ($state, $rootScope, $scope) {
+});
+
+angular.module('app').controller('ServiceQuestionsController', function ($state, $rootScope, $scope) {
+});
+
+angular.module('app').controller('ServiceDiscussionController', function ($state, $rootScope, $scope) {
   var HC_LOAD_INIT = false;
   window._hcwp = window._hcwp || [];
   window._hcwp.push({
@@ -110,62 +198,63 @@ angular.module('app').controller('ServiceDiscussionController', function($state,
   angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
 });
 
-angular.module('app').controller('ServiceStatisticsController', function($scope, ServiceService) {
+angular.module('app').controller('ServiceStatisticsController', function ($scope, ServiceService) {
   $scope.loaded = false;
   $scope.arrow = '\u2191';
   $scope.reverse = false;
 
-  $scope.changeSort = function() {
+  $scope.changeSort = function () {
     $scope.reverse = !$scope.reverse;
     $scope.arrow = $scope.reverse ? '\u2191' : '\u2193';
   };
 
-  ServiceService.getStatisticsForService(ServiceService.oService.nID).then(function(response) {
-    $scope.stats = response.data;
-    $scope.nRate = 0;
-    var nRate=0;
-    angular.forEach(response.data, function (entry) {
-      if (entry.nRate !== null && entry.nRate > 0) {
+  ServiceService.getStatisticsForService(ServiceService.oService.nID).then(function (response) {
+      $scope.stats = response.data;
+      $scope.nRate = 0;
+      var nRate = 0;
+      angular.forEach(response.data, function (entry) {
+        if (entry.nRate !== null && entry.nRate > 0) {
           //nRate=nRate+(entry.nRate/20);
-          nRate=nRate+entry.nRate;
+          nRate = nRate + entry.nRate;
           //nRate=nRate/20;
-      }
-      //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
-      //>=5 && <=20 - родовий множина
-      //якщо закінч на - то 2,3,4 називний інакше родовий множина
-      function getWord(num, odnina, rodovii_plural, nazivnii_plural) {
-        if (num == 1 || (num > 20 && num % 10 == 1) )
-          return odnina;
-        else if ((num < 5 || num > 20) && _.contains([2, 3, 4], num % 10))
-          return nazivnii_plural;
-        else
-          return rodovii_plural;
-      }
-      entry['timing'] = '';
-      var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = Math.floor(entry.nTimeMinutes / 60) % 24,
-        minutes = entry.nTimeMinutes % 60;
-      var daysw = getWord(days, 'день', 'днів', 'дні'),
-        hoursw = getWord(hours, 'година', 'годин', 'години'),
-        minutesw = getWord(minutes, 'хвилина', 'хвилин', 'хвилини');
-      if (days > 0) entry.timing =  days + ' ' + daysw;
-      if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
-      if (minutes > 0) entry.timing += (entry.timing ? ', ' : '') + minutes + ' ' + minutesw;
-      if (!entry.timing) entry.timing = '0 годин'
-    });
-    $scope.nRate = nRate;
+        }
+        //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
+        //>=5 && <=20 - родовий множина
+        //якщо закінч на - то 2,3,4 називний інакше родовий множина
+        function getWord(num, odnina, rodovii_plural, nazivnii_plural) {
+          if (num == 1 || (num > 20 && num % 10 == 1))
+            return odnina;
+          else if ((num < 5 || num > 20) && _.contains([2, 3, 4], num % 10))
+            return nazivnii_plural;
+          else
+            return rodovii_plural;
+        }
+
+        entry['timing'] = '';
+        var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = Math.floor(entry.nTimeMinutes / 60) % 24,
+          minutes = entry.nTimeMinutes % 60;
+        var daysw = getWord(days, 'день', 'днів', 'дні'),
+          hoursw = getWord(hours, 'година', 'годин', 'години'),
+          minutesw = getWord(minutes, 'хвилина', 'хвилин', 'хвилини');
+        if (days > 0) entry.timing = days + ' ' + daysw;
+        if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
+        if (minutes > 0) entry.timing += (entry.timing ? ', ' : '') + minutes + ' ' + minutesw;
+        if (!entry.timing) entry.timing = '0 годин'
+      });
+      $scope.nRate = nRate;
 
 
-    }, function(response) {
+    }, function (response) {
       console.log(response.status + ' ' + response.statusText + '\n' + response.data);
     })
-    .finally(function() {
+    .finally(function () {
       $scope.loaded = true;
     });
 });
 
 
 // контроллер для загрузки статистики во вкладке "О портале" https://github.com/e-government-ua/i/issues/1230
-angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function($scope, ServiceService, AdminService) {
+angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function ($scope, ServiceService, AdminService) {
 
   // поскольку статистика видна только админу, делаем проверку.
   $scope.bAdmin = AdminService.isAdmin();
@@ -181,14 +270,14 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
   // сортировка по клику на заголовок в шапке
   $scope.predicate = 'sID_Order';
   $scope.reverse = true;
-  $scope.order = function(predicate) {
+  $scope.order = function (predicate) {
     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
     $scope.predicate = predicate;
   };
 
   //проверка процесса загрузки таблицы. в процессе загрузки true, загружен - false
   $scope.isStatisticLoading = {
-    bState : false
+    bState: false
   };
 
   $scope.switchStatisticLoadingStatus = function () {
@@ -211,9 +300,9 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     var selectedMonth = '';
 
     // меняем буквенное обозначение мес на числовое
-    if(dateSplited[1].indexOf(months)){
-      selectedMonth = months.indexOf(dateSplited[1])+1;
-      if(selectedMonth < 10){
+    if (dateSplited[1].indexOf(months)) {
+      selectedMonth = months.indexOf(dateSplited[1]) + 1;
+      if (selectedMonth < 10) {
         selectedMonth = '0' + selectedMonth;
       }
     }
@@ -224,9 +313,9 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
 
   // загрузка статистики в формате .csv . проверка на корректность фильтра (если он есть),
   // а также если он используеться - исключение отфильтрованных тасок с файла
-  $scope.downloadStatistic = function() {
+  $scope.downloadStatistic = function () {
     var prot = location.protocol;
-    if($scope.statistics !== undefined) {
+    if ($scope.statistics !== undefined) {
       if ($scope.sanIDServiceExclude !== undefined) {
         if ($scope.sanIDServiceExclude.match(/^(\d+,)*\d+$/)) {
           window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo + '&sanID_Service_Exclude=' + exclude)
@@ -257,25 +346,25 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
       $scope.statistics = [];
       var statistic = {};
 
-      for(var i=0; i<responseSplited.length; i++){
-        var n = 12*i;
-        if(n + 2 > responseSplited.length){
+      for (var i = 0; i < responseSplited.length; i++) {
+        var n = 12 * i;
+        if (n + 2 > responseSplited.length) {
           break
         }
         statistic = {
-          sID_Order : responseSplited[n],
-          nID_Server : Number(responseSplited[1 + n]),
-          nID_Service : Number(responseSplited[2 + n]),
-          sID_Place : Number(responseSplited[3 + n]),
-          nID_Subject : Number(responseSplited[4 + n]),
-          nRate : Number(responseSplited[5 + n]),
-          sTextFeedback : responseSplited[6 + n],
-          sUserTaskName : responseSplited[7 + n],
-          sHead : responseSplited[8 + n],
-          sBody : responseSplited[9 + n],
-          nTimeMinutes : Number(responseSplited[10 + n]),
-          sPhone : responseSplited[11 + n],
-          nID_ServiceData : ''
+          sID_Order: responseSplited[n],
+          nID_Server: Number(responseSplited[1 + n]),
+          nID_Service: Number(responseSplited[2 + n]),
+          sID_Place: Number(responseSplited[3 + n]),
+          nID_Subject: Number(responseSplited[4 + n]),
+          nRate: Number(responseSplited[5 + n]),
+          sTextFeedback: responseSplited[6 + n],
+          sUserTaskName: responseSplited[7 + n],
+          sHead: responseSplited[8 + n],
+          sBody: responseSplited[9 + n],
+          nTimeMinutes: Number(responseSplited[10 + n]),
+          sPhone: responseSplited[11 + n],
+          nID_ServiceData: ''
         };
 
         $scope.statistics.push(statistic);
