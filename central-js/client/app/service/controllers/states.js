@@ -99,7 +99,8 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     postFeedback: postFeedback,
     rateFunction: rateFunction,
     raiting: 3,
-    exist: false
+    exist: false,
+    readonly: true
   };
 
   activate();
