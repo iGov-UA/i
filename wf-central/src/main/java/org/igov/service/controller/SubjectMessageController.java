@@ -538,11 +538,41 @@ public class SubjectMessageController {
     @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва и паролю или все отзывы по сервису")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(
-            @ApiParam(value = "ID отзыва", required = true) @RequestParam(value = "nID") Long nId,
-            @ApiParam(value = "Строка-токен для доступа к записи", required = true) @RequestParam(value = "sID_Token") String sID_Token,
+            @ApiParam(value = "ID отзыва", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service)
             throws CommonServiceException {
 
+        LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
+        if(nID!=null){
+            SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
+            if (feedback != null) {
+                if (sID_Token!=null && sID_Token.equals(feedback.getsID_Token())) {
+                    //feedback.setsID_Token(null);
+                    //LOG.info("getFeedbackExternal returned SubjectMessageFeedback with the nID: {}, sID_Token: {}", nID, sID_Token);
+                    return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedback);
+                } else {
+                    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "sID_Token not equal or absant! sID_Token="+sID_Token+", nId="+nID, HttpStatus.NOT_FOUND);
+                }
+            } else {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "feedback = null nId="+nID, HttpStatus.NOT_FOUND);
+            }
+        }else if(nID_Service!=null){
+                LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
+            List<SubjectMessageFeedback> feedbackList =
+                    oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
+            for (SubjectMessageFeedback messageFeedback : feedbackList) {
+                messageFeedback.setsID_Token(null);
+            }
+            LOG.info("getFeedbackExternal returned list size: {} for nID_Service: {} ", feedbackList.size(), nID_Service);
+            return JsonRestUtils.toJsonResponse(HttpStatus.OK, feedbackList);
+        }else{
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "need parameters!", HttpStatus.NOT_FOUND);
+        }        
+        /*
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nId, sID_Token);
         SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nId);
         if (feedback != null && sID_Token.equals(feedback.getsID_Token())) {
@@ -565,6 +595,7 @@ public class SubjectMessageController {
         LOG.info("feedback is absent or authentication failed for the nID: {}, sID_Token: {}", nId, sID_Token);
         throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "can't find SubjectMessageFeedback with nID: " + nId, HttpStatus.NOT_FOUND);
+        */
     }
 
     @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"

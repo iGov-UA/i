@@ -26,8 +26,8 @@ module.exports = {
   ACTIVITI_HOSTNAME: 'test.igov.org.ua',
   ACTIVITI_PORT: 8080,
   ACTIVITI_PATH: '/wf/service',
-  ACTIVITI_USER: 'activiti-master',
-  ACTIVITI_PASSWORD: 'UjhtJnEvf!',
+  ACTIVITI_USER: 'system',
+  ACTIVITI_PASSWORD: 'system',
 
   BANKID_SPROTOCOL_ACCESS_SERVICE: 'https',
   BANKID_SHOST_ACCESS_SERVICE: 'bankid.privatbank.ua',

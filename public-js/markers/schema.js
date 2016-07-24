@@ -7,6 +7,7 @@
  *
  * Более подробная документация:
  * http://epoberezkin.github.io/ajv/
+ * alpha
  */
 angular.module('iGovMarkers')
     .constant('iGovMarkersSchema', {
@@ -79,7 +80,12 @@ angular.module('iGovMarkers')
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
                                 asID_Field: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string"}}},
                                 sCondition: {type: "string"},
-                                asID_Field_sValue: {"$ref": "#/definitions/stringArray"},
+                                asID_Field_sValue: {
+                                    type: "array",
+                                    minItems: 1,
+                                    items: {type: "string"},
+                                    uniqueItems: false
+                                },
                                 sNote: {type: "string"}
                             },
                             required: ["aField_ID", "asID_Field", "sCondition", "asID_Field_sValue"],
@@ -246,7 +252,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID"],
                             additionalProperties: false
                         },
-                        "NumberBetween": {
+                        "^NumberBetween": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
@@ -257,7 +263,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID", 'nMin', "nMax"],
                             additionalProperties: false
                         },
-                        "NumberFractionalBetween": {
+                        "^NumberFractionalBetween": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
@@ -268,7 +274,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID", 'nMin', "nMax"],
                             additionalProperties: false
                         },
-                        "Numbers_Accounts": {
+                        "^Numbers_Accounts": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},

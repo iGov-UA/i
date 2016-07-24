@@ -382,8 +382,7 @@ public class ActionItemControllerScenario {
         for (int i = 0; i < 2; ++i) {
             String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
                     param("nID_Category", "1").
-                    param("bRoot", "true").
-                    param("nID_ServiceTag", "60").
+                    param("nID_ServiceTag_Root", "60").
                     param("sFind", "реєстр").
                     param("bShowEmptyFolders", "false").
                     param("asID_Place_UA", "1200000000,1220300000,1220310100")).

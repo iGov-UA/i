@@ -67,7 +67,7 @@ angular.module('iGovMarkers')
                             console.info('markers are valid');
                         } else {
                             if (data.valid) {
-                                alert(fieldIDs.sFieldNotFaundMessages);
+                                //alert(fieldIDs.sFieldNotFaundMessages);
                             } else {
                                 console.error('markers validation failed', data.errors);
                                 var errMessages = "Виникла помилка під час валідації маркерів: ";
@@ -82,7 +82,7 @@ angular.module('iGovMarkers')
                                         }
                                     }
                                 }
-                                alert(fieldIDs.sFieldNotFaundMessages + errMessages);
+                                //alert(fieldIDs.sFieldNotFaundMessages + errMessages);
                             }
                         }
                     });
