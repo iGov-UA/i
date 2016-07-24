@@ -284,11 +284,11 @@ public class EscalationService {
         m.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
         m.putAll(processInstance.getProcessVariables());
 
-        Map<String, Object> mapKeysWithNewLine = new HashMap<>();
-        for (Map.Entry<String, Object> entry : m.entrySet()){
-            mapKeysWithNewLine.put("\n" + entry.getKey(), entry.getValue());
-        }
-        m = mapKeysWithNewLine;
+//        Map<String, Object> mapKeysWithNewLine = new HashMap<>();
+//        for (Map.Entry<String, Object> entry : m.entrySet()){
+//            mapKeysWithNewLine.put("\n" + entry.getKey(), entry.getValue());
+//        }
+//        m = mapKeysWithNewLine;
 
         return m;
     }
