@@ -48,6 +48,7 @@
     }
 
     function toggle(index) {
+      console.log('[Log vm.readonly:] ',vm.readonly);
       if (!vm.readonly) {
         vm.ratingValue = index + 1;
         vm.onRatingSelect({
