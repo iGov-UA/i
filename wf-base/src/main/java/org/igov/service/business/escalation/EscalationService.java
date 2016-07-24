@@ -128,7 +128,7 @@ public class EscalationService {
                     nFails++;
                     nFailsTotal++;
                     //LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, sID_BP={}, sID_State_BP={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(), sID_BP, sID_State_BP);
-                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", oException.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mTaskParam);
+                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", oException.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mAddNewLineBeforeEachKey(mTaskParam));
                     LOG.trace("FAIL:", oException);
                     new Log(oException, LOG)//this.getClass()
                             ._Case("Escalation")
@@ -137,7 +137,7 @@ public class EscalationService {
 //                            ._Body(oException.getMessage())
                             ._Param("oTask.getId()", oTask.getId())
                             ._Param("oEscalationRuleFunction.getsBeanHandler()", oEscalationRuleFunction.getsBeanHandler())
-                            ._Param("mTaskParam", mTaskParam)
+                            ._Param("mTaskParam", mAddNewLineBeforeEachKey(mTaskParam))
                             .save()
                         ;
                 }
@@ -148,6 +148,17 @@ public class EscalationService {
             LOG.trace("FAIL:", e);
             //throw e;
         }
+    }
+
+//     this will make map more readable in logs
+    private Map<String, Object> mAddNewLineBeforeEachKey(Map<String, Object> map) {
+                Map<String, Object> mapKeysWithNewLine = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()){
+            mapKeysWithNewLine.put("\n" + entry.getKey(), entry.getValue());
+        }
+
+        return mapKeysWithNewLine;
+
     }
 
     private Map<String, Object> getTaskData(final Task oTask) throws Exception {//Long nID_task_activiti
@@ -283,12 +294,6 @@ public class EscalationService {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         m.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
         m.putAll(processInstance.getProcessVariables());
-
-//        Map<String, Object> mapKeysWithNewLine = new HashMap<>();
-//        for (Map.Entry<String, Object> entry : m.entrySet()){
-//            mapKeysWithNewLine.put("\n" + entry.getKey(), entry.getValue());
-//        }
-//        m = mapKeysWithNewLine;
 
         return m;
     }
