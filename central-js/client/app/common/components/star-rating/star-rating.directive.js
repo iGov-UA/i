@@ -13,7 +13,7 @@
         ratingValue: '=ngModel',
         max: '=?',
         onRatingSelect: '&?',
-        readonly: '=readonly'
+        showonly: '=?'
       },
       controller: StarRatingController,
       controllerAs: 'vm',
@@ -48,8 +48,8 @@
     }
 
     function toggle(index) {
-      console.log('[Log vm.readonly:] ',vm.readonly);
-      if (!vm.readonly) {
+      console.log('[Log vm.showonly:] ',vm.showonly);
+      if (!vm.showonly) {
         vm.ratingValue = index + 1;
         vm.onRatingSelect({
           rating: index + 1
