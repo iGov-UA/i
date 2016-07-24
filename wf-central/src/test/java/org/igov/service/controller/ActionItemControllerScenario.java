@@ -360,6 +360,7 @@ public class ActionItemControllerScenario {
     }
 
 
+    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
@@ -374,6 +375,7 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(tableDataList.length > 0);
     }
 
+    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTagService() throws Exception {
         dbManager.recreateDb();
@@ -396,6 +398,7 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(tableDataList.length == 1);
     }
 
+    @Ignore
     @Test
     public void shouldGetService() throws Exception {
         String jsonData = mockMvc.perform(get("/action/item/getService").
