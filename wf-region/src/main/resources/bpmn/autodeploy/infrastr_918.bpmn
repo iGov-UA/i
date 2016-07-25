@@ -28,7 +28,7 @@
         <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asPassShip" name="Чи потрібна ліцензія на перевезення пасажирів річковим, морським транспортом" type="enum" default="sPassShipNo" required="true">
           <activiti:value id="sPassShipOk" name="Так"></activiti:value>
           <activiti:value id="sPassShipNo" name="Ні"></activiti:value>
@@ -49,15 +49,15 @@
         <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYVmFXN1NsYThxZ0E&quot;&gt;посиланням&lt;/a&gt; та заповнити Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності."></activiti:formProperty>
         <activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocKvalif" name="Копії кваліфікаційних документів членів екіпажу;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocSvid" name="Копія класифікаційного свідоцтва судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nShipTiket" name="Копія суднового білета" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocSafety" name="Копія свідоцтва про управління безпекою;В разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocSysSafety" name="Копія документа про відповідність системи управління безпекою;В разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocCharter" name=" Копія договору бербоут-чартеру;В разі наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nShipTiket" name="Копія суднового білета" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -252,7 +252,7 @@ execution.setVariable('sTypeBiz', res)
 			<p>
 			Для того щоб закінчити процедуру видачі сліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом необхідно:<br>
 			<ul>
-			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Повітрофлотський 76В, 4 поверх</li>
+			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Перемоги, 14</li>
 			<li>Роздрукувати та підписати заяву з файлу, що додається.</li>
 			<li>Привезти заяву та оригінали документів та передати Державну службу України з безпеки на транспорті до засідання комісії.</li>
 			</ul>
