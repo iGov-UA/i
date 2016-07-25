@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="novopscov_rda_cnap556" name="Видача сертифіката на право на земельну частку (пай) за рішенням суду" isExecutable="true">
+  <process id="novopscov_rda_cnap556" name="Видача сертифіката на право на земельну частку (пай)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoicePoslug" name="Оберіть підставу видачі сертифікату" type="enum" required="true">
+          <activiti:value id="sEnumSud" name="Видати за рішенням суду"></activiti:value>
+          <activiti:value id="sEnumDubl" name="Видати дублікат взамін втраченого"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІНН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотного зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_zemli" name="Розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSud_nazva" name="Назва суду що видав рішення про право на пай" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRish_rekv" name="Реквізити рішення суду;(номер і дата)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_rishenia" name="Завантадте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRish_rekv" name="Реквізити рішення суду;(Вкажіть в форматі:№ХХХХХХХХХ від ХХ.ХХ.ХХХХ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_rishenia" name="Сканкопія рішення суду" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSertRecv" name="Реквізити втраченого сертифіката;(Вкажіть в форматі: СеріяХХ №ХХХХХХХХХ від ХХ.ХХ.ХХХХ)" default="Серія__ №_______ від __.__.____" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObstavini" name="Обставини за яких втрачено сертефікат" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_ogolosh" name="Копія оголошення у друкованому ЗМІ про втрату сертефікату" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_kadastr" name="Довідка з держземагенства щодо дійсності одержання сертифікату" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('zemlja/nov_556.json')}"></activiti:formProperty>
         <activiti:formProperty id="file_dovir" name="Копія довіреності на представника в разі портеби" type="file"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
@@ -39,7 +48,7 @@
           <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -56,12 +65,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення №[sID_Order] про надання рішення про продаж земельної ділянки комунальної власності.
+&lt;p&gt; Ваше звернення №[sID_Order] про Видачу сертифіката на право на земельну частку (пай) зареєстроване.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -84,28 +93,35 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="asChoicePoslug" name="Підставу видачі сертифікату" type="enum" writable="false">
+          <activiti:value id="sEnumSud" name="Видати за рішенням суду"></activiti:value>
+          <activiti:value id="sEnumDubl" name="Видати дублікат взамін втраченого"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІНН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотного зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_zemli" name="Розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSud_nazva" name="Назва суду що видав рішення про право на пай" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRish_rekv" name="Реквізити рішення суду;(вкажыть в форматі №ХХХХХ від ХХ.ХХ.ХХХХ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRish_rekv" name="Реквізити рішення суду" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSertRecv" name="Реквізити втраченого сертифіката" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObstavini" name="Обставини за яких втрачено сертефікат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат розгляду заявки" type="enum" required="true">
-          <activiti:value id="accept" name="Заявку оформлено вірно, рішення прийнято"></activiti:value>
+          <activiti:value id="accept" name="Заявку оформлено вірно, видати сертифікат"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заява оформлена вірно і рішення прийняте, вона буде передана до секретаря селищної ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="Printmarker1" name="marker" type="markers" default="${markerService.loadFromFile('zemlja/Print_nov_556.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заява оформлена вірно, робота по заявці перейде у стадію видачі сертифікату. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_556_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file_rishenia},${file_dovir}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${file_rishenia},${file_dovir},${file_ogolosh},${file_kadastr}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -122,12 +138,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, в задоволенні заяви відмовлено.
+&lt;p&gt; Ваше звернення про Видачу сертифіката на право на земельну частку (пай) розглянуто, в задоволенні заяви відмовлено.
 Причина відмови: ${comment}.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -159,13 +175,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Видача сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, заяву задоволено. 
-Рішення прийнято, ви можете отримати його у секретаря сілищної ради. &lt;/p&gt;
+&lt;p&gt; Ваше звернення про Видачу сертифіката на право на земельну частку (пай) розглянуто, заяву задоволено. 
+Ви можете отримати сертифікат за вказаною нижче адресою.&lt;/p&gt;
 &lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
@@ -217,7 +233,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Про Видачу сертифіката на право на земельну частку (пай)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -248,16 +264,16 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow16" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_novopscov_silrada_455">
-    <bpmndi:BPMNPlane bpmnElement="novopscov_silrada_455" id="BPMNPlane_novopscov_silrada_455">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_novopscov_rda_cnap556">
+    <bpmndi:BPMNPlane bpmnElement="novopscov_rda_cnap556" id="BPMNPlane_novopscov_rda_cnap556">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="131.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="221.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="30.0"></omgdc:Bounds>
@@ -291,10 +307,10 @@ ${sNameOrgan}.&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="235.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="236.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="280.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
@@ -349,7 +365,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="235.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="236.0" y="90.0"></omgdi:waypoint>
         <omgdi:waypoint x="234.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="357.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="357.0" y="200.0"></omgdi:waypoint>
