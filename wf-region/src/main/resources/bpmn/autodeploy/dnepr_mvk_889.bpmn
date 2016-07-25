@@ -276,6 +276,7 @@
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -918,6 +919,7 @@
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:expression><![CDATA[EO180277SMV]]></activiti:expression>
@@ -1065,6 +1067,24 @@ p {font-size: 14px;}
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
             <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sNameCompany">
+            <activiti:expression><![CDATA[${sNameCompany}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="edrpou">
+            <activiti:expression><![CDATA[${edrpou}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBossLastName">
+            <activiti:expression><![CDATA[${sBossLastName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBossFirstName">
+            <activiti:expression><![CDATA[${sBossFirstName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBossMiddleName">
+            <activiti:expression><![CDATA[${sBossMiddleName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bOrganization">
+            <activiti:expression><![CDATA[${bOrganization}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSourceChannel">
             <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
