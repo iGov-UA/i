@@ -23,10 +23,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs navi-citizens-business" ng-init="catalogTab = 1">
           <li>
-            <a ui-sref="index.catalog({'catID': 1})" ng-click="catalogTab = 1" ng-class="{'active-tab': catalogTab === 1}">Послуги громадянам</a>
+            <a ui-sref="index.catalog({'catID': 1})" ng-click="catalogTab = 1" ng-class="{'active-tab': catalogTab === 1 || state.is('index')}">Послуги громадянам</a>
           </li>
           <li>
-            <a ui-sref="index.catalog({'catID': 2})" ng-click="catalogTab = 2" ng-class="{'active-tab': catalogTab === 2}">Послуги бізнесу</a>
+            <a ui-sref="index.catalog({'catID': 2})" ng-click="catalogTab = 2" ng-class="{'active-tab': catalogTab === 2 && !state.is('index')}">Послуги бізнесу</a>
           </li>
         </ul>
       </div>
@@ -43,9 +43,9 @@
 	                <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
                 </div>
                 <div class="col-sm-9 text">
-                  <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
+                  <h3><a ui-sref="index.newsubcategory({'catID': 1, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
                   <ul>
-                    <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
+                    <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': 1, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
                   </ul>
                 </div>
               </div>
@@ -58,9 +58,9 @@
                   <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
                 </div>
                 <div class="col-sm-11 text">
-                  <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
+                  <h3><a ui-sref="index.newsubcategory({'catID': 1, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
                   <ul>
-                    <li ng-repeat="subcategory in category.aServiceTag_Child"><a style="font-size: 16px" ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
+                    <li ng-repeat="subcategory in category.aServiceTag_Child"><a style="font-size: 16px" ui-sref="index.situation({'catID': 1, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
                   </ul>
                 </div>
               </div>

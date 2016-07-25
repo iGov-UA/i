@@ -12,9 +12,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
     $scope.spinner = false;
-    console.log('new catalog', $scope.catalog);
   }, false);
-
 
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {

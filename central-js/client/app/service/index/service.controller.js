@@ -67,12 +67,15 @@ angular.module('app')
         return false
       }
     };
-    $scope.changeCategory = function (category) {
-      $scope.catalogTab = category;
-     };
+
     $scope.stateCheck = $state.params.catID;
 
     $scope.$on('$stateChangeStart', function(event, toState) {
+      if(toState.name === 'index') {
+        CatalogService.getCatalogTreeTag(1).then(function (res) {
+          $scope.catalog = res;
+        });
+      }
       if (toState.resolve) {
         $scope.spinner = true;
       }
