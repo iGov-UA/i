@@ -125,7 +125,8 @@
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі розрахунку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте копію розрахунку, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -205,7 +206,7 @@
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1}</activiti:expression>
+          <activiti:expression>${file1},${file2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
