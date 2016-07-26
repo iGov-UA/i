@@ -51,8 +51,7 @@
         <activiti:formProperty id="markers2" name="Якщо  тварини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;perelic_animals&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumAnimals'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо  корма" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;perelic_provender&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumProvender'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="назва доку по тваринам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік продуктів тваринного походження&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumAnimals'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="назва доку по кормам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік добавок, преміксів і кормів&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumProvender'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="назва документів" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік продуктів тваринного походження&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asDozvil&quot;,&quot;sReason2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sEnumAnimals'&amp;&amp;[sReason2] != 'don_mariupolT'&quot;},&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік добавок, преміксів і кормів&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asDozvil&quot;,&quot;sReason2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumProvender'&amp;&amp;[sReason2] != 'don_mariupolT'&quot;},&quot;ValuesFieldsOnCondition_9_1&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'don_mariupolT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -178,7 +177,7 @@
     </serviceTask>
     <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -215,7 +214,7 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -250,7 +249,7 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <serviceTask id="servicetask4" name="повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
