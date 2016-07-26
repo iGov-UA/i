@@ -1,41 +1,29 @@
 <div class="row" ng-if="!spinner">
-  <div class="container">
-    <div class="col-sm-4" ng-repeat="category in catalog" ng-if="minSearchLength">
+  <div class="container" style="padding-left: 0; padding-right: 0">
+    <div ng-class="{'col-sm-4': minSearchLength, 'col-sm-12': !minSearchLength}" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'">
       <div class="col-sm-12 category-container">
-        <div class="col-sm-3">
+        <div ng-class="{'col-sm-3': minSearchLength, 'col-sm-1': !minSearchLength}">
           <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
           <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
         </div>
-        <div class="col-sm-9 text">
+        <div class="text" ng-class="{'col-sm-9': minSearchLength, 'col-sm-11': !minSearchLength}">
           <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
           <ul>
-            <li ng-repeat="subcategory in category.aServiceTag_Child"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
+            <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
           </ul>
         </div>
       </div>
-    </div>
 
-    <div class="col-sm-12" ng-repeat="category in catalog" ng-if="!minSearchLength">
-      <div class="col-sm-12 category-container">
-        <div class="col-sm-1">
-          <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
-          <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
-        </div>
-        <div class="col-sm-11 text">
-          <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
-          <ul>
-            <li ng-repeat="subcategory in category.aServiceTag_Child"><a style="font-size: 16px" ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA | capitalize}}</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-12 text">
+      <div class="col-sm-12 text" ng-if="!minSearchLength">
         <ul>
-          <li ng-repeat="service in category.aService" style="list-style-type:square; color: #dddddd">
+          <li ng-repeat="service in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
             <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
           </li>
         </ul>
       </div>
+
     </div>
+
   </div>
 </div>
 

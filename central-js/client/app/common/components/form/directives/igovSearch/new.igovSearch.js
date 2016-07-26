@@ -80,7 +80,8 @@ angular.module('app')
               $scope.situation = $stateParams.sitID;
             }
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
-              if(result.length === 1 || $state.is('index.situation')) {
+              if(!$state.is('index')
+                  && !$state.is('index.catalog')) {
                 fullCatalog = result[0];
               } else {
                 fullCatalog = result;

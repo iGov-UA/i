@@ -14,6 +14,12 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $scope.spinner = false;
   }, false);
 
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      messageBusService.unsubscribe(item);
+    });
+  });
+
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
