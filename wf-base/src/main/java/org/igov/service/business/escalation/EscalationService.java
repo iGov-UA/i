@@ -118,6 +118,7 @@ public class EscalationService {
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
                     //send emails (or processing by other bean-handlers)
+                    mAddNewLineBeforeEachKey(mTaskParam);
                     escalationHelper.checkTaskOnEscalation(mTaskParam
                             , oEscalationRule.getsCondition()
                             , oEscalationRule.getSoData()
