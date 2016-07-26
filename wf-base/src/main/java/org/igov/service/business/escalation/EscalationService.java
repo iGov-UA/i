@@ -155,7 +155,7 @@ public class EscalationService {
     private Map<String, Object> mAddNewLineBeforeEachKey(Map<String, Object> map) {
                 Map<String, Object> mapKeysWithNewLine = new HashMap<>();
         for (Map.Entry<String, Object> entry : map.entrySet()){
-            mapKeysWithNewLine.put("\n" + entry.getKey(), entry.getValue());
+            mapKeysWithNewLine.put("\n".concat(entry.getKey()), entry.getValue());
         }
 
         return mapKeysWithNewLine;
