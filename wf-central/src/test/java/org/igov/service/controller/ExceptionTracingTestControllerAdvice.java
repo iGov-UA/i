@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Date: 26.07.2016
  * Time: 23:23
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionTracingTestControllerAdvice {
 
     @ExceptionHandler
