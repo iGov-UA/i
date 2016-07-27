@@ -120,23 +120,23 @@
 
         <activiti:formProperty id="line_File_3" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="info_3" name="Додаток 3" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1jO-EekC0v9iXGWqUxX9S8eNoJeK1YPkxZIuI5TMaX2A/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFile_3" name="ВІДОМІСТЬ про наявність матеріально-технічної бази, необхідної для провадження відповідного виду господарської діяльності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="ВІДОМІСТЬ про наявність матеріально-технічної бази, необхідної для провадження відповідного виду господарської діяльності" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="line_File_4" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="info_4" name="Додаток 4" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/18wrk3mX2HBpBETEInHkoJCCa3wbQFn4dMtu3m17Zo_A/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFile_4" name="ПЕРЕЛІК трубопроводів, що перебувають у користуванні заявника, їх технічна характеристика та річні обсяги транспортування теплової енергії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="ПЕРЕЛІК трубопроводів, що перебувають у користуванні заявника, їх технічна характеристика та річні обсяги транспортування теплової енергії" type="file" required="true"></activiti:formProperty>
 
 
 
         <activiti:formProperty id="line_File_5" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="info_5" name="Додаток 5" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1zDJFiga9FnZcAlg3AyW0rd3VfUm2Yum8SWIQXkOrhA4/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFile_5" name="ПЕРЕЛІК приладів обліку із зазначенням місць їх встановлення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="ПЕРЕЛІК приладів обліку із зазначенням місць їх встановлення" type="file" required="true"></activiti:formProperty>
 
 
 
         <activiti:formProperty id="line_File_6" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="info_6" name="Додаток 6" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/18u5CF6BbhJ7MHSAh4w2EPdMtr__CXKPQvExyRfyFL8A/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFile_6" name="ВІДОМІСТЬ про технічний стан трубопроводів та споруд на них (на підставі експлуатаційної документації на такі об’єкти)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="ВІДОМІСТЬ про технічний стан трубопроводів та споруд на них (на підставі експлуатаційної документації на такі об’єкти)" type="file" required="true"></activiti:formProperty>
 
 
 
@@ -144,7 +144,7 @@
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
 
         <activiti:formProperty id="sNameServise" name="Назва послуги" type="invisible" default="Видача ліцензії на провадження господарської діяльності з транспортування теплової енергії магістральними та місцевими (розподільчими) тепловими мережами"></activiti:formProperty>
-		<activiti:formProperty id="sNameGovServise" name="Назва послуги" type="invisible" default="транспортування теплової енергії"></activiti:formProperty>
+		<activiti:formProperty id="sNameGovServise" name="Назва послуги" type="invisible" default="транспортування теплової енергії магістральними та місцевими (розподільчими) тепловими мережами"></activiti:formProperty>
 
 
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>
@@ -340,7 +340,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6}</activiti:expression>
+            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         
@@ -559,7 +559,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6}</activiti:expression>
+            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -780,7 +780,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6}</activiti:expression>
+            <activiti:expression>${nFileBalance},${nFileOwn},${nFileEdrpou},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
