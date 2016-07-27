@@ -787,8 +787,7 @@ public class SubjectController {
             + "https://test.igov.org.ua/wf/service/subject/getSubjectsBy\n\n"
             + "что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
             + " 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
-            + "Ответ:\n"
-            + "\n```\n")
+            + "Ответ:\n")
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
