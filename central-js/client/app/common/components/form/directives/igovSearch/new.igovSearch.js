@@ -69,7 +69,7 @@ angular.module('app')
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
             }
-            $rootScope.minSearchLength = $scope.sSearch.length <= 3;
+            $rootScope.minSearchLength = $scope.sSearch.length < 3;
             var bShowEmptyFolders = AdminService.isAdmin();
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
@@ -101,7 +101,7 @@ angular.module('app')
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length > 3) {
+            if($scope.sSearch.length >= 3) {
               $scope.search();
               $rootScope.valid = true;
             } else if($rootScope.valid) {
