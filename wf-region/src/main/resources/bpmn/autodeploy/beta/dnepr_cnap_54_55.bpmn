@@ -13,7 +13,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -70,7 +69,6 @@
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Cуб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -123,7 +121,6 @@
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -178,7 +175,7 @@
     </serviceTask>
     <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -215,7 +212,7 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -250,7 +247,7 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <serviceTask id="servicetask4" name="повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -352,7 +349,6 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -427,7 +423,6 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
