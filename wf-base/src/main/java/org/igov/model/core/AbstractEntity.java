@@ -38,7 +38,7 @@ public abstract class AbstractEntity implements Entity<Long> {
       if (obj instanceof AbstractEntity) {
          AbstractEntity entity = (AbstractEntity) obj;
 
-         if (!entity.getClass().equals(getClass()) {
+         if (!entity.getClass().equals(getClass())) {
             return false;
          }
 
