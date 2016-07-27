@@ -14,6 +14,7 @@ import org.igov.model.object.place.Place;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.service.business.action.item.ServiceTagService;
 import org.igov.service.business.action.item.ServiceTagTreeNodeVO;
+import org.igov.service.business.action.item.ServiceTagTreeVO;
 import org.igov.service.business.core.EntityService;
 import org.igov.service.business.core.TableData;
 import org.igov.service.business.core.TableDataService;
@@ -42,6 +43,7 @@ import org.igov.model.action.item.ServiceTagLink;
 import static org.igov.util.Tool.bFoundText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import springfox.documentation.spring.web.json.Json;
 
 @Controller
 @Api(tags = {"ActionItemController - Предметы действий (каталог сервисов)"})
@@ -977,13 +979,19 @@ public class ActionItemController {
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
-            @RequestParam(value = "nID_Category", required = true) final Long nID_Category
+            @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
+            @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
+        final boolean includeServices = StringUtils.isNotBlank(sFind);
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
-                bShowEmptyFolders, StringUtils.isNotBlank(sFind), null, null);
-        if (StringUtils.isNotBlank(sFind)) {
+                bShowEmptyFolders, includeServices, null, null);
+        if (includeServices) {
             res.forEach(n -> n.setaService(n.getaService().stream().map(
                         s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
+        }
+
+        if (BooleanUtils.isTrue(bNew)) {
+            return JsonRestUtils.toJsonResponse(toNewFormat(res));
         }
         
         return JsonRestUtils.toJsonResponse(res);
@@ -1003,14 +1011,36 @@ public class ActionItemController {
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
             @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "ID корневого тега", required = false)
             @RequestParam(value = "nID_ServiceTag_Root", required = false) Long nID_ServiceTag_Root, @ApiParam(value = "ID корневого тега", required = false)
-            @RequestParam(value = "nID_ServiceTag_Child", required = false) Long nID_ServiceTag_Child
+            @RequestParam(value = "nID_ServiceTag_Child", required = false) Long nID_ServiceTag_Child, @ApiParam(value = "Новый формат ответа", required = false)
+            @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, true, nID_ServiceTag_Root, nID_ServiceTag_Child);
         res.forEach(n -> n.setaService(n.getaService().stream().map(
                 s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
 
+        if (BooleanUtils.isTrue(bNew)) {
+            return JsonRestUtils.toJsonResponse(toNewFormat(res));
+        }
+
         return JsonRestUtils.toJsonResponse(res);
+    }
+
+    private ServiceTagTreeVO toNewFormat(List<ServiceTagTreeNodeVO> nodes) {
+        ServiceTagTreeVO res = new ServiceTagTreeVO();
+
+        Set<Service> uniqueServices = new LinkedHashSet<>();
+        for (ServiceTagTreeNodeVO node : nodes) {
+            if (node.getaService() != null) {
+                uniqueServices.addAll(node.getaService());
+                node.setaService(null);
+            }
+        }
+
+        res.setaNode(nodes);
+        res.setaService(new ArrayList<>(uniqueServices));
+
+        return res;
     }
 
 }

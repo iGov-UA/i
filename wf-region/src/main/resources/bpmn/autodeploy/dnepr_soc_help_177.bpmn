@@ -38,6 +38,8 @@
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта посадовця" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sOrganName" name="sOrganName" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="${group}">
@@ -175,6 +177,38 @@ execution.setVariable('remail', per4)
     </scriptTask>
     <sequenceFlow id="flow39" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>P7DT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask6" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Ваша заявка ще не взята в роботу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_client_notify.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] ne obrobleno.Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow41" sourceRef="escalationTimer1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soc_help_177">
     <bpmndi:BPMNPlane bpmnElement="dnepr_soc_help_177" id="BPMNPlane_dnepr_soc_help_177">
@@ -184,6 +218,9 @@ execution.setVariable('remail', per4)
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="189.0" x="480.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="500.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="165.0" x="160.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -191,7 +228,7 @@ execution.setVariable('remail', per4)
         <omgdc:Bounds height="30.0" width="30.0" x="160.0" y="58.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="165.0" x="270.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="165.0" x="270.0" y="102.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="157.0" y="120.0"></omgdc:Bounds>
@@ -201,6 +238,9 @@ execution.setVariable('remail', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="71.0" width="180.0" x="485.0" y="199.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="135.0" y="57.0"></omgdi:waypoint>
@@ -229,6 +269,14 @@ execution.setVariable('remail', per4)
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="455.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="515.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="575.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="574.0" y="165.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

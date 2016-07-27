@@ -5,16 +5,19 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
 });
 
 angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
-  $scope.catalog = catalogContent;
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
     $scope.spinner = false;
-    console.log('new catalog', $scope.catalog);
   }, false);
 
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      messageBusService.unsubscribe(item);
+    });
+  });
 
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
@@ -31,6 +34,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
       $scope.spinner = false;
     }
   });
+
 });
 
 angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope) {

@@ -2,8 +2,8 @@
 
   <div class="row">
     <div class="container">
-      <a href="/1" ng-if="catalogTab === 1 || !catalogTab">Головна</a>
-      <a href="/2" ng-if="catalogTab === 2">Головна</a>
+      <a href="/1" ng-if="catalogTab == 1 || !catalogTab">Головна</a>
+      <a href="/2" ng-if="catalogTab == 2">Головна</a>
       >
       <a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a>
       >
@@ -13,19 +13,32 @@
   </div>
 
   <div class="row">
-    <div class="container">
+    <div class="container" ng-if="category.aServiceTag_Child[0].sNote">
       <div class="col-md-9" style="padding-left: 0">
         <span data-ng-bind-html="category.aServiceTag_Child[0].sNote"></span>
       </div>
       <div class="col-md-3">
         <div class="vertical-divider"></div>
-        <span style="font-size: 24px; font-family: 'Open Sans'">Пов'язані послуги</span>
+        <span style="font-size: 24px; font-family: 'Open Sans'; padding-left: 8px">Пов'язані послуги</span>
         <br>
         <ul class="similar-situation">
-          <li ng-repeat="relatedServices in category.aService">
+          <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'">
             <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div class="container" ng-if="!category.aServiceTag_Child[0].sNote">
+      <div style="margin-top: 20px">
+        <div class="vertical-divider"></div>
+        <span style="font-size: 24px; font-family: 'Open Sans'; padding-left: 10px">Пов'язані послуги</span>
+        <div class="col-sm-12 catalog-with-search-result">
+          <ul style="padding-left: 3px">
+            <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+              <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

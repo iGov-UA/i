@@ -69,7 +69,7 @@ angular.module('app')
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
             }
-            $rootScope.minSearchLength = $scope.sSearch.length <= 3;
+            $rootScope.minSearchLength = $scope.sSearch.length < 3;
             var bShowEmptyFolders = AdminService.isAdmin();
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
@@ -80,7 +80,8 @@ angular.module('app')
               $scope.situation = $stateParams.sitID;
             }
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
-              if(result.length === 1 || $state.is('index.situation')) {
+              if(!$state.is('index')
+                  && !$state.is('index.catalog')) {
                 fullCatalog = result[0];
               } else {
                 fullCatalog = result;
@@ -100,11 +101,11 @@ angular.module('app')
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length > 3) {
+            if($scope.sSearch.length >= 3) {
               $scope.search();
-              $scope.valid = true;
-            } else if($scope.valid) {
-              $scope.valid = false;
+              $rootScope.valid = true;
+            } else if($rootScope.valid) {
+              $rootScope.valid = false;
               $scope.search();
             }
           };
