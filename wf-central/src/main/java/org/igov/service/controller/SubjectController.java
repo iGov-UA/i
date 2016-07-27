@@ -835,4 +835,25 @@ public class SubjectController {
         return newSubjectSet;
     }
 
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/subject/service/getActionKVED?sFind=03\n\n"
+            + "Ответ:\n")
+    @RequestMapping(value = "/getActionKVED", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED(
+            @ApiParam(value = "sFind - кретерий текста в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sFind); 
+    }
+
+    @RequestMapping(value = "/getActionKVED2", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED2(
+            @ApiParam(value = "sID - кретерий текста в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+            @ApiParam(value = "sNote - кретерий текста в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sID, sNote); 
+    }
+    
 }
