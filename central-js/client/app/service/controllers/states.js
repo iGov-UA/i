@@ -11,6 +11,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
     $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
   }, false);
 
   $scope.$on('$destroy', function() {
@@ -50,6 +51,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       $scope.category = null;
     }
     $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
   }, false);
 
   if ($scope.catalog

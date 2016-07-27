@@ -30,6 +30,7 @@ angular.module('app')
       $scope.mainSpinner = false;
       $scope.fullCatalog = data;
       $scope.catalog = data;
+      $rootScope.rand = (Math.random()*10).toFixed(2);
     }, false);
     subscriptions.push(subscriberId);
 
