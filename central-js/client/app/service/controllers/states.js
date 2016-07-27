@@ -38,7 +38,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
 
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -64,7 +64,9 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   if (!$scope.catalog) {
     $scope.category = $scope.catalog;
   }
-
+  $scope.trustAsHtml = function(string) {
+    return $sce.trustAsHtml(string);
+  };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
