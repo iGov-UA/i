@@ -51,7 +51,7 @@ public abstract class AbstractEntity implements Entity<Long> {
 
    @Override
    public int hashCode() {
-      return id != null ? return id.intValue() : super.hashCode();
+      return id != null ? id.intValue() : super.hashCode();
    }
 
 }
