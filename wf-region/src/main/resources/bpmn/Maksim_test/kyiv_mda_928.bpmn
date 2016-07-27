@@ -63,7 +63,19 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="usertask7"></sequenceFlow>
     <userTask id="usertask8" name="Підписання листа відмови (директор ДАБК)"></userTask>
     <sequenceFlow id="flow12" sourceRef="usertask7" targetRef="usertask8"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Сповіщення заявника про відмову"></serviceTask>
+    <serviceTask id="servicetask3" name="Сповіщення заявника про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Декларація про готовність об'єкта до експлуатації.]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow13" sourceRef="usertask8" targetRef="usertask9"></sequenceFlow>
     <userTask id="usertask9" name="Присвоєння реєстраційного номеру вихідного документу"></userTask>
     <sequenceFlow id="flow14" sourceRef="usertask9" targetRef="servicetask3"></sequenceFlow>
@@ -71,13 +83,13 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow15" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask10" name="Внесення інформації до реєстру (відділ)"></userTask>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="usertask10"></sequenceFlow>
-    <userTask id="usertask11" name="User Task"></userTask>
+    <userTask id="usertask11" name="Підписання паперового документу (директор ДАБК)"></userTask>
     <sequenceFlow id="flow17" sourceRef="usertask10" targetRef="usertask11"></sequenceFlow>
-    <userTask id="usertask12" name="User Task"></userTask>
+    <userTask id="usertask12" name="Присвоєння реєстраційного номеру (канцелярія ДАБК)"></userTask>
     <sequenceFlow id="flow18" sourceRef="usertask11" targetRef="usertask12"></sequenceFlow>
-    <userTask id="usertask13" name="User Task"></userTask>
+    <userTask id="usertask13" name="Внесення інформації до системи звернень ЦНАП (присвоєння вихідного реєстраційного номеру)"></userTask>
     <sequenceFlow id="flow19" sourceRef="usertask12" targetRef="usertask13"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Service Task"></serviceTask>
+    <serviceTask id="servicetask4" name="Сповіщення заявника про можливість отримання декларації у ЦНАП"></serviceTask>
     <sequenceFlow id="flow20" sourceRef="usertask13" targetRef="servicetask4"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
