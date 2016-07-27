@@ -87,7 +87,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, ServiceService, FeedbackService, ErrorsFactory) {
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, ServiceService, FeedbackService, ErrorsFactory, $q) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -105,55 +105,68 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
   activate();
 
-  function activate(){
+  function activate() {
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
 
-    if($scope.nID && $scope.sID_Token){
+    if ($scope.nID && $scope.sID_Token) {
       $scope.feedback.allowLeaveFeedback = true;
     }
 
-    FeedbackService.getFeedbackListForService(ServiceService.oService.nID).then(function (response) {
-      var funcDesc = {sHead:"Завантаженя фідбеку для послуг", sFunc:"getFeedbackForService"};
-      ErrorsFactory.init(funcDesc, {asParam:['nID: '+ServiceService.oService.nID]});
-      if(ErrorsFactory.bSuccessResponse(response)){
-        if(Array.isArray(response.data)){
-          $scope.feedback.exist = response.data.some(function(o){
-            return o.sID_Source && o.sID_Source === $scope.nID;
-          });
+    $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
+        FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
+      .then(function (response) {
+        var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
+        ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
+        if (ErrorsFactory.bSuccessResponse(response)) {
+          //if (response[1].data) {
+          //  $scope.feedback.exist = response[1].data.sBody.trim() === '';
+          //}
+          //if(Array.isArray(response.data)){
+          //  $scope.feedback.exist = response.data.some(function(o){
+          //    return o.sID_Source && o.sBody !== '';
+          //  });
+          //}
         }
-      }
-      $scope.feedback.messageList =_.sortBy(response.data, function(o) { return -o.nID; });
 
-    }, function (error){
+        $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
+          return -o.nID;
+        });
+        $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
+          return o.nID != $scope.nID;
+        });
 
-      switch (error.message){
-        case "Security Error":
-          pushError("Помилка безпеки!");
-          break;
-        case "Record Not Found":
-          pushError("Запис не знайдено!");
-          break;
-        case "Already exist":
-          pushError("Вiдгук вже залишено!");
-          break;
-        default :
-          $scope.feedback.feedbackError = true;
-          ErrorsFactory.logFail({sBody:"Невідома помилка!",sError:error.message});
-          break;
-      }
-    }).finally(function () {
+        $scope.feedback.currentFeedback = angular.copy(response[1].data);
+
+      }, function (error) {
+
+        switch (error.message) {
+          case "Security Error":
+            pushError("Помилка безпеки!");
+            break;
+          case "Record Not Found":
+            pushError("Запис не знайдено!");
+            break;
+          case "Already exist":
+            pushError("Вiдгук вже залишено!");
+            break;
+          default :
+            $scope.feedback.feedbackError = true;
+            ErrorsFactory.logFail({sBody: "Невідома помилка!", sError: error.message});
+            break;
+        }
+      }).finally(function () {
       $scope.loaded = true;
     });
   }
 
-  function rateFunction(rating){
+  function rateFunction(rating) {
     $scope.feedback.raiting = rating;
   }
 
-  function postFeedback(){
-    var sAuthorFIO = 'anonymous',
+  function postFeedback() {
+    var sAuthorFIO =  $scope.feedback.currentFeedback.sAuthorFIO,
       sMail = '',
       sHead = '';
 
@@ -166,7 +179,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       sHead,
       $scope.feedback.raiting);
 
-    $state.go('index.service.feedback',{
+    $state.go('index.service.feedback', {
       nID: null,
       sID_Token: null
     });

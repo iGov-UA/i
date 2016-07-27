@@ -11,7 +11,13 @@
   </div>
 
   <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
-    <textarea rows="5" ng-model="feedback.messageBody" class="form-control" style="width: 500px !important;"></textarea>
+    <div class="col-md-6 ">
+      <textarea rows="5" ng-model="feedback.messageBody" class="form-control" style="width: 500px !important;"></textarea>
+    </div>
+    <div class="col-md-6">
+      <p class="operator-name">Автор</p>
+      <p>{{feedback.currentFeedback.sAuthorFIO}}</p>
+    </div>
   </div>
   <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
     <input type="button" class="btn btn-info" value="Залишити вiдгук" ng-click="feedback.postFeedback()"/>
@@ -31,7 +37,6 @@
             </p>
             <p>{{::item.sBody}}</p>
           </div>
-
           <!--<div>{{item.nID_Rate}}</div>-->
           <!--<div>{{item.sAuthorFIO}}</div>-->
           <!--<div>{{item.sID_Source}}</div>-->
