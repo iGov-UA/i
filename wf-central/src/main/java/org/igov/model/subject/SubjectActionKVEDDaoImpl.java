@@ -26,8 +26,13 @@ public class SubjectActionKVEDDaoImpl extends GenericEntityDao<Long, SubjectActi
 	if (sNote != null) {
 	    criteria.add(Restrictions.ilike("sNote", sNote, MatchMode.ANYWHERE));
 	}
+	
+	if ( sID == null && sNote == null ) {
+	    return null;
+	} else {
+	    return criteria.list();
+	}
 
-	return criteria.list();
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +44,12 @@ public class SubjectActionKVEDDaoImpl extends GenericEntityDao<Long, SubjectActi
 		    Restrictions.ilike("sNote", sFind, MatchMode.ANYWHERE)));
 	}
 
-	return criteria.list();
+	if ( sFind == null ) {
+	    return null;
+	} else {
+	    return criteria.list();
+	}
+
     }
 
 }

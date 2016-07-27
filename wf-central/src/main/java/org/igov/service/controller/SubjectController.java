@@ -837,21 +837,53 @@ public class SubjectController {
 
     @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
             + "Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/subject/service/getActionKVED?sFind=03\n\n"
-            + "Ответ:\n")
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED?sFind=рибальство\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.11\",\n"
+            + "    \"sNote\": \"Морське рибальство \",\n"
+            + "    \"nID\": 36\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
     @RequestMapping(value = "/getActionKVED", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     List<SubjectActionKVED> getActionKVED(
-            @ApiParam(value = "sFind - кретерий текста в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+            @ApiParam(value = "sFind - кретерий поиска в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
         	    throws CommonServiceException {
 	return subjectService.getSubjectActionKVED(sFind); 
     }
 
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED2?sID=03&sNote=Прісноводне\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.22\",\n"
+            + "    \"sNote\": \"Прісноводне рибництво (аквакультура) \",\n"
+            + "    \"nID\": 39\n"
+            + "  }\n"
+            + "]\n"            
+            + "\n```\n")
     @RequestMapping(value = "/getActionKVED2", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     List<SubjectActionKVED> getActionKVED2(
-            @ApiParam(value = "sID - кретерий текста в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
-            @ApiParam(value = "sNote - кретерий текста в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
+            @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+            @ApiParam(value = "sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
         	    throws CommonServiceException {
 	return subjectService.getSubjectActionKVED(sID, sNote); 
     }
