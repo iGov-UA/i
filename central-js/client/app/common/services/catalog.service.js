@@ -18,19 +18,37 @@ angular.module('app')
         && !subcat
         || category
         && !subcat) {
-      var data = {
-        asIDPlaceUA: asIDPlaceUA,
-        sFind: sFind || null,
-        bShowEmptyFolders: bShowEmptyFolders,
-        nID_Category: nID_Category
-      };
-      return $http.get('./api/catalog/getCatalogTree', {
-        params: data,
-        data: data
-      }).then(function (response) {
-        servicesCache = response.data;
-        return response.data;
-      });
+      // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
+      if(sFind) {
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          sFind: sFind || null,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category,
+          bNew: true
+        };
+        return $http.get('./api/catalog/getCatalogTree', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      } else {
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          sFind: sFind || null,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category
+        };
+        return $http.get('./api/catalog/getCatalogTree', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      }
     } else {
       // страница подкатегорий
         var data = {

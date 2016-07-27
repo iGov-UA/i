@@ -36,27 +36,36 @@
       <div ui-view="contentIn">
         <div class="row">
           <div class="container" style="margin-bottom: 40px; padding-left: 0; padding-right: 0" >
-            <div ng-class="{'col-sm-4': minSearchLength, 'col-sm-12': !minSearchLength}" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'">
+            <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength">
               <div class="col-sm-12 category-container">
-                <div ng-class="{'col-sm-3': minSearchLength, 'col-sm-1': !minSearchLength}">
+                <div class="col-sm-3">
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
 	                <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
                 </div>
-                <div class="text" ng-class="{'col-sm-9': minSearchLength, 'col-sm-11': !minSearchLength}">
+                <div class="col-sm-9 text">
                   <h3><a ui-sref="index.newsubcategory({'catID': 1, 'scatID': category.oServiceTag_Root.nID })" ng-click="catalogTab = 1">{{category.oServiceTag_Root.sName_UA}}</a></h3>
                   <ul>
                     <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': 1, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})" ng-click="catalogTab = 1">{{subcategory.sName_UA | capitalize}}</a></li>
                   </ul>
                 </div>
-                <div class="col-sm-12 text" ng-if="!minSearchLength">
-                  <ul>
-                    <li ng-repeat="service in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
-                      <a ui-sref="index.service.general({'id': service.nID })" ng-click="catalogTab = 1">{{service.sName}}</a>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
+
+            <div style="margin-top: 20px">
+              <div class="col-sm-12 catalog-with-search-result" ng-if="!minSearchLength">
+                <ul>
+                  <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+                    <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row" ng-show="spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode">
+          <div class="text-center">
+            <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
           </div>
         </div>
       </div>

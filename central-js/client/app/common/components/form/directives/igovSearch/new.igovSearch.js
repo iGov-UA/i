@@ -103,9 +103,9 @@ angular.module('app')
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
             if($scope.sSearch.length > 3) {
               $scope.search();
-              $scope.valid = true;
-            } else if($scope.valid) {
-              $scope.valid = false;
+              $rootScope.valid = true;
+            } else if($rootScope.valid) {
+              $rootScope.valid = false;
               $scope.search();
             }
           };

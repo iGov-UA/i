@@ -5,7 +5,6 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
 });
 
 angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
-  $scope.catalog = catalogContent;
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -35,6 +34,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
       $scope.spinner = false;
     }
   });
+
 });
 
 angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope) {
