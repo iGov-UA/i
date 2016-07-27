@@ -26,7 +26,6 @@ commandArr = ["bash", "scripts/deploy_private.sh"]
 for arg in vars(args):
     commandArr.append('--'+arg)
     commandArr.append(getattr(args, arg))
-print commandArr
 
 if os.path.exists("iSystem"):
     subprocess.call("rm -rf iSystem", shell=True)
