@@ -171,7 +171,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     formFieldIDs.inForm.push(field.id);
   });
-  iGovMarkers.validateMarkers(formFieldIDs, oServiceData.bTest);
+  iGovMarkers.validateMarkers(formFieldIDs);
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
