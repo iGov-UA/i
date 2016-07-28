@@ -32,6 +32,7 @@
         <activiti:formProperty id="scan_inn" name="Копія ІПН уповноваженої особи;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="dover" name="Копія документа, який підтверджує повноваження діяти від імені заявника;у разі подання заяви уповноваженою заявником особою" type="file"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sflag_dgk" name="гілка ДГК" type="invisible" default="no_dgk"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default=" "></activiti:formProperty>
@@ -288,7 +289,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Опрацювання звернення після ДГК" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -313,6 +314,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnam_ok" name="Видати довідку"></activiti:value>
           <activiti:value id="sEnam_bad" name="Відмовити в видачі довідки"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sflag_dgk" name="гілка ДГК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markerdgk" name="скрытие полей" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_211dashb.json')}"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="ok" name="Довідку виготовлено"></activiti:value>
@@ -433,6 +435,12 @@ if(execution.getVariable('goal') == per5){
 var per6 = num2[i]
 break}}
 execution.setVariable('CLgoal', per6)
+
+var per10 = 'no_dgk'
+if(execution.getVariable('sID_Public_SubjectOrganJoin') == magdal)
+{var per10 = 'yes_dgk'}
+
+execution.setVariable('sflag_dgk', per10)
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
