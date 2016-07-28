@@ -72,17 +72,30 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       $scope.spinner = true;
     }
   });
-  // $scope.$on('$stateChangeSuccess', function(event, toState) {
-  //   if (toState.resolve) {
-  //     $scope.spinner = false;
-  //   }
-  // });
   // $scope.$on('$stateChangeError', function(event, toState) {
   //   if (toState.resolve) {
   //     $scope.spinner = false;
   //   }
   // });
+  var HC_LOAD_INIT = false;
+  window._hcwp = window._hcwp || [];
+  window._hcwp.push({
+    widget: 'Stream',
+    widget_id: 60115
+  });
+  if ('HC_LOAD_INIT' in window) {
+    return;
+  }
+  HC_LOAD_INIT = true;
+  var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
+  var hcc = document.createElement('script');
+  hcc.type = 'text/javascript';
+  hcc.async = true;
+  hcc.src = ('https:' === document.location.protocol ? 'https' : 'http') + '://w.hypercomments.com/widget/hc/60115/' + lang + '/widget.js';
 
+  $scope.runComments = function () {
+    angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
+  }
 });
 
 angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
