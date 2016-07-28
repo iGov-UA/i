@@ -9,7 +9,6 @@ angular.module('app')
 
         var subscribers = [];
         var subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
-          console.log("spinner true");
           $scope.spinner = true;
           $scope.catalog = [];
           $scope.category = null;
@@ -17,7 +16,6 @@ angular.module('app')
         });
         subscribers.push(subscriberId);
         messageBusService.subscribe('catalog:update', function(data) {
-          console.log('catalog updated, will update items');
           $scope.spinner = false;
           $scope.catalog = data;
           if ($scope.catalog) {
@@ -26,6 +24,7 @@ angular.module('app')
             $scope.subcategory = null;
           }
           $scope.spinner = false;
+          $rootScope.rand = (Math.random()*10).toFixed(2);
         }, false);
 
         subscribers.push(subscriberId);

@@ -196,6 +196,25 @@ angular.module('app')
               messageBusService.unsubscribe(item);
             });
           });
+          jQuery.fn.highlight = function (str, className) {
+            var regex = new RegExp(str, "gi");
+            return this.each(function () {
+              $(this).contents().filter(function() {
+                return this.nodeType == 3 && regex.test(this.nodeValue);
+              }).replaceWith(function() {
+                return (this.nodeValue || "").replace(regex, function(match) {
+                  return "<span class=\"" + className + "\">" + match + "</span>";
+                });
+              });
+            });
+          };
+          $rootScope.$watch('rand', function () {
+            if($scope.sSearch.length >= 3) {
+              setTimeout(function () {
+                $(".igov-container a").highlight($scope.sSearch, "marked-string");
+              }, 100)
+            }
+          });
           $scope.$on('$stateChangeSuccess', function(event, toState) {
             if (toState.resolve) {
               $scope.spinner = true;
