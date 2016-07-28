@@ -179,6 +179,12 @@
       tasks.list($stateParams.type, data)
         .then(function (oResult) {
           try {
+			if (oResult.data.code) {
+              var e = new Error(oResult.data.message);
+              e.name = oResult.data.code;
+
+              throw e;
+            }
             if (oResult.data !== null && oResult.data !== undefined) {
               // build tasks array
               var aTaskFiltered = _.filter(oResult.data, function (oTask) {
