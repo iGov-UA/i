@@ -88,7 +88,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="agro_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" required="true">
@@ -203,7 +203,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Видача сертифікату">
+    <userTask id="usertask2" name="Видача сертифікату" activiti:candidateGroups="agro_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" required="true">
