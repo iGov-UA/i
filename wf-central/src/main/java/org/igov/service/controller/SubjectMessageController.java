@@ -506,7 +506,7 @@ public class SubjectMessageController {
             @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail", required = true) String sMail,
             @ApiParam(value = "Заголовок отзыва", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody", required = true) String sBody,
-            @ApiParam(value = "Заголовок отзыва", required = false) @RequestParam(value = "sPlace", required = false) String sPlace,
+            @ApiParam(value = "Место", required = false) @RequestParam(value = "sPlace", required = false) String sPlace,
             @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
             @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,

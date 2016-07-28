@@ -69,7 +69,7 @@ angular.module('app')
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
             }
-            $rootScope.minSearchLength = $scope.sSearch.length <= 3;
+            $rootScope.minSearchLength = $scope.sSearch.length < 3;
             var bShowEmptyFolders = AdminService.isAdmin();
             $scope.spinner = true;
             messageBusService.publish('catalog:updatePending');
@@ -101,11 +101,11 @@ angular.module('app')
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length > 3) {
+            if($scope.sSearch.length >= 3) {
               $scope.search();
-              $scope.valid = true;
-            } else if($scope.valid) {
-              $scope.valid = false;
+              $rootScope.valid = true;
+            } else if($rootScope.valid) {
+              $rootScope.valid = false;
               $scope.search();
             }
           };
@@ -195,6 +195,25 @@ angular.module('app')
             subscriptions.forEach(function(item) {
               messageBusService.unsubscribe(item);
             });
+          });
+          jQuery.fn.highlight = function (str, className) {
+            var regex = new RegExp(str, "gi");
+            return this.each(function () {
+              $(this).contents().filter(function() {
+                return this.nodeType == 3 && regex.test(this.nodeValue);
+              }).replaceWith(function() {
+                return (this.nodeValue || "").replace(regex, function(match) {
+                  return "<span class=\"" + className + "\">" + match + "</span>";
+                });
+              });
+            });
+          };
+          $rootScope.$watch('rand', function () {
+            if($scope.sSearch.length >= 3) {
+              setTimeout(function () {
+                $(".igov-container a").highlight($scope.sSearch, "marked-string");
+              }, 100)
+            }
           });
           $scope.$on('$stateChangeSuccess', function(event, toState) {
             if (toState.resolve) {
