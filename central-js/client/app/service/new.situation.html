@@ -1,7 +1,13 @@
+<style>
+  .hc__right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+</style>
 <div class="container subcategory-tmpl" ng-if="!spinner">
 
   <div class="row">
-    <div class="container">
+    <div class="container" style="padding-right: 0; padding-left: 0">
       <a href="/1" ng-if="catalogTab == 1 || !catalogTab">Головна</a>
       <a href="/2" ng-if="catalogTab == 2">Головна</a>
       >
@@ -13,7 +19,7 @@
   </div>
 
   <div class="row">
-    <div class="container igov-container" ng-if="category.aServiceTag_Child[0].sNote">
+    <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="category.aServiceTag_Child[0].sNote">
       <div class="col-md-9" style="padding-left: 0">
         <span class="situation-html" data-ng-bind-html="trustAsHtml(category.aServiceTag_Child[0].sNote)"></span>
       </div>
@@ -28,7 +34,7 @@
         </ul>
       </div>
     </div>
-    <div class="container igov-container" ng-if="!category.aServiceTag_Child[0].sNote">
+    <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="!category.aServiceTag_Child[0].sNote">
       <div style="margin-top: 20px">
         <div class="vertical-divider"></div>
         <span style="font-size: 24px; font-family: 'Open Sans'; padding-left: 10px">Пов'язані послуги</span>
@@ -39,6 +45,17 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-right: 0; padding-left: 0">
+    <div ng-class="{'col-md-9': category.aServiceTag_Child[0].sNote, 'col-md-11': !category.aServiceTag_Child[0].sNote}">
+      <div class="hypercomments-container" ng-init="runComments()">
+        <div id="hypercomments_widget"></div>
+        <a href="http://hypercomments.com"
+           class="hc-link"
+           title="comments widget"></a><!--comments powered by HyperComments-->
       </div>
     </div>
   </div>
