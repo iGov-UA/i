@@ -422,7 +422,7 @@ public abstract class AbstractModelTask {
                 String sDate = (String) m.get(QueueDataFormType.sDate);
                 LOG.info("(sDate={})", sDate);
                 //int nSlots = QueueDataFormType.get_nSlots(m);
-                String snSlots = getVariableValue(oExecution, sID+"_nSlots");
+                String snSlots = getVariableValue(oExecution, "nSlots_"+sID);
                 int nSlots = snSlots!=null?Integer.valueOf(snSlots):1;
 
                 try {
