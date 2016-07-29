@@ -188,8 +188,8 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
   function postFeedback() {
     var sAuthorFIO =  $scope.feedback.currentFeedback.sAuthorFIO,
-      sMail = '',
-      sHead = '';
+      sMail = $scope.feedback.currentFeedback.sMail,
+      sHead = $scope.feedback.currentFeedback.sHead;
 
     FeedbackService.postFeedbackForService($scope.nID,
       ServiceService.oService.nID,
