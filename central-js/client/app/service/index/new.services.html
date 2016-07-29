@@ -23,10 +23,15 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs navi-citizens-business">
           <li>
-            <a ui-sref="index.catalog({'catID': 1})" ng-click="changeCategory(1)" ng-class="{'active-tab': changeCategory() == 1 || state.is('index')}">Послуги громадянам</a>
+            <!--подключить ng-click="changeCategory(2)" после добавления тегов в бизнес-->
+            <a ui-sref="index.catalog({'catID': 1})" ng-click="catalogTab = 1" ng-class="{'active-tab': catalogTab == 1 || state.is('index')}">Послуги громадянам</a>
           </li>
+          <!--временно скрываем и добавляем роут к старому сервису бизнеса, после реализации нового, вернуть.-->
+          <!--<li>-->
+            <!--<a ui-sref="index.catalog({'catID': 2})" ng-click="changeCategory(2)" ng-class="{'active-tab': changeCategory() == 2 && !state.is('index')}">Послуги бізнесу</a>-->
+          <!--</li>-->
           <li>
-            <a ui-sref="index.catalog({'catID': 2})" ng-click="changeCategory(2)" ng-class="{'active-tab': changeCategory() == 2 && !state.is('index')}">Послуги бізнесу</a>
+            <a ui-sref="index.oldbusiness" ng-click="catalogTab = 2" ng-class="{'active-tab': catalogTab == 2 && !state.is('index')}">Послуги бізнесу</a>
           </li>
         </ul>
       </div>

@@ -1,24 +1,18 @@
-<style>
-  @media (min-width: 992px) {
-    .col-md-4:nth-child(3n+1) {
-      clear: left;
-    }
-  }
-</style>
-
+<div class="container" style="margin-top: 20px" ng-if="!spinner">
+  <div class="row">
+    <div class="container">
+      <a href="/1" ng-if="catalogTab == 1">Головна</a>
+      <a href="/2" ng-if="catalogTab == 2">Головна</a>
+      >
+      <span>{{subcategory.oServiceTag_Root.sName_UA}}</span>
+      <hr class="common-hr" style="width: 101%">
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="container igov-container subcategory-tmpl">
 
     <div ng-if="!spinner">
-      <div class="row">
-        <div class="container">
-          <a href="/1" ng-if="catalogTab == 1">Головна</a>
-          <a href="/2" ng-if="catalogTab == 2">Головна</a>
-          >
-          <span>{{subcategory.oServiceTag_Root.sName_UA}}</span>
-          <hr class="common-hr">
-        </div>
-      </div>
 
       <div class="row" ng-if="subcategory">
         <div class="container">
@@ -56,6 +50,7 @@
         <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
       </div>
     </div>
+
   </div>
 </div>
 

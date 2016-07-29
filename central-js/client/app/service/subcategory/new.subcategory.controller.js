@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('NewSubcategoryController',
-    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope',
-      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope) {
+    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope', 'TitleChangeService',
+      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope, TitleChangeService) {
         $scope.category = $stateParams.catID;
         $scope.subcategory = chosenCategory;
         // $scope.spinner = false;
@@ -46,7 +46,6 @@ angular.module('app')
           $scope.subcategory = chosenCategory;
         }
         $scope.stateCheck = $state.params.catID;
-        $anchorScroll();
 
         $scope.$on('$stateChangeStart', function(event, toState) {
           if (toState.resolve) {
@@ -63,5 +62,5 @@ angular.module('app')
             $scope.spinner = false;
           }
         });
-
+        $anchorScroll();
       }]);

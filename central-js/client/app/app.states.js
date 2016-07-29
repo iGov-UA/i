@@ -125,5 +125,34 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
             controller: 'NewIndexController'
           }
         }
-    });
+    })
+    // !! для старого "бизнеса"
+    .state('index.oldbusiness', {
+      url: 'business/1',
+      resolve: {
+        businessContent: function (CatalogService) {
+          return CatalogService.getServices()
+        }
+      },
+      views: {
+        'contentIn' : {
+          templateUrl: 'app/service/index/oldbusiness.html',
+          controller: 'OldBusinessController'
+        }
+      }
+    })
+    .state('index.subcategory', {
+      url: 'business/subcategory/:catID/:scatID',
+      resolve: {
+        catalog: function (CatalogService) {
+          return CatalogService.getServices()
+        }
+      },
+      views: {
+        'contentIn': {
+          templateUrl: 'app/service/subcategory/oldbusiness.subcategory.html',
+          controller: 'SubcategoryController'
+        }
+      }
+    })
 });
