@@ -32,7 +32,8 @@
           <activiti:string><![CDATA[Нове звернення. Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -43,7 +44,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення громадянину про доставку в ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянину про доставку в ЦНАП" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -55,7 +56,8 @@
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -65,6 +67,15 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:299:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -117,7 +128,7 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -129,9 +140,10 @@
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
 &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
@@ -143,13 +155,22 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="decision == 'doc_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'doc_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -161,7 +182,8 @@
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - відправлене в управління житлово-комунального господарства міської ради.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом шести календарних днів з дня реєстрації заяви.&lt;br /&gt; 
@@ -172,6 +194,15 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -203,7 +234,7 @@
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про позитивне рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Повідомлення про позитивне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -215,7 +246,8 @@
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - опрацьовано. &lt;br /&gt;
@@ -236,9 +268,15 @@
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${reference}</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -250,7 +288,8 @@
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради. &lt;br /&gt;
@@ -264,6 +303,12 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${reference}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

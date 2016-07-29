@@ -88,6 +88,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
+  var formFieldIDs = {
+    inForm: [],
+    inMarkers: []
+  };
 
   angular.forEach($scope.activitiForm.formProperties, function(field) {
 
@@ -122,6 +126,34 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
       }
       if (sourceObj !== null) {
+        if(sourceObj.validate){
+          for(var key1 in sourceObj.validate) if (sourceObj.validate.hasOwnProperty(key1)){
+            var tempV = formFieldIDs.inMarkers;
+            if(sourceObj.validate[key1].aField_ID){
+              formFieldIDs.inMarkers = tempV.concat(sourceObj.validate[key1].aField_ID);
+            } else if (sourceObj.validate[key1].sID_Field){
+              formFieldIDs.inMarkers = tempV.concat(sourceObj.validate[key1].sID_Field);
+            }
+          }
+        } else if (sourceObj.motion){
+          for(var key2 in sourceObj.motion) if (sourceObj.motion.hasOwnProperty(key2)){
+            var tempM = formFieldIDs.inMarkers;
+            if(sourceObj.motion[key2].aField_ID){
+              formFieldIDs.inMarkers = tempM.concat(sourceObj.motion[key2].aField_ID);
+            } else if (sourceObj.motion[key2].sID_Field){
+              formFieldIDs.inMarkers = tempM.concat(sourceObj.motion[key2].sID_Field);
+            }
+          }
+        } else if (sourceObj.attributes){
+          for(var key3 in sourceObj.attributes) if (sourceObj.attributes.hasOwnProperty(key3)){
+            var tempA = formFieldIDs.inMarkers;
+            if(sourceObj.attributes[key3].aField_ID){
+              formFieldIDs.inMarkers = tempA.concat(sourceObj.attributes[key3].aField_ID);
+            } else if (sourceObj.attributes[key3].sID_Field){
+              formFieldIDs.inMarkers = tempA.concat(sourceObj.attributes[key3].sID_Field);
+            }
+          }
+        }
         _.merge(iGovMarkers.getMarkers(), sourceObj, function(destVal, sourceVal) {
           if (_.isArray(sourceVal)) {
             return sourceVal;
@@ -137,8 +169,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         case 'false': $scope.data.formData.params.bReferent.value = false; break;
       }
     }
+    formFieldIDs.inForm.push(field.id);
   });
-  iGovMarkers.validateMarkers();
+  iGovMarkers.validateMarkers(formFieldIDs);
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){

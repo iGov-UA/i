@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_232" name="Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про землі в межах території адміністративно-територіальних одиниць" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
         <activiti:formProperty id="sRekv" name="Вартість послуги 71 грн. Реквізити для оплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг" type="file" required="true"></activiti:formProperty>
@@ -341,7 +341,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>На жаль, Ваше звернення відхилене. </p>
+			<p>На жаль, Ваше звернення було відхилено. </p>
 			<p>${comment1}</p>
 			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
@@ -470,15 +470,11 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" writable="false">
-          <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
-          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="ok" name="Витяг надано"></activiti:value>
           <activiti:value id="bad" name="У видачі витягу відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr232.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr232.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
@@ -537,15 +533,11 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" writable="false">
-          <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
-          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" writable="false">
           <activiti:value id="ok" name="Витяг надано"></activiti:value>
           <activiti:value id="bad" name="У видачі витягу відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

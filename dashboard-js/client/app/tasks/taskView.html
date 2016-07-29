@@ -32,7 +32,7 @@
     <!--<submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>-->
   <!--</div>-->
 
-  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned'">
+  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0">
     <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
     <div ng-if="clarify" style="padding-top:5px;">
       <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>

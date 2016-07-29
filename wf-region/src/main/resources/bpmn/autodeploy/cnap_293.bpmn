@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 30.05.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 18.07.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -29,20 +29,22 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumRoom_293" name="номер комнати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="изм. назв." type="markers" default="${markerService.loadFromFile('mvk/cnap_293_nameDocTyp.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow26" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
+    <scriptTask id="scripttask1" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="true">
       <script>
       		execution.setVariable("docDateFormat", execution.getVariable("sDocDate").format("dd.MM.yyyy"))
       		execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())
       	</script>
     </scriptTask>
-    <sequenceFlow id="flow27" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -119,6 +121,7 @@
         <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -224,6 +227,7 @@
         <activiti:formProperty id="result" name="Додайте скановану копію довідки, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -296,7 +300,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль Вам відмовлено в видачі копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом (звернення [sID_Order]).&lt;/p&gt;
+			&lt;p&gt;На жаль, Вам відмовлено в видачі копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом (звернення [sID_Order]).&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;br&gt;&lt;br&gt;	
 			Якщо у вас виникли питання, Ви можете звернутись до&lt;br&gt;
@@ -321,6 +325,40 @@
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
+    <scriptTask id="scripttask2" name="Script Task (javascript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+		var per1 = ' '
+		var per2 = ' '
+		if (execution.getVariable('sNumRoom_293') != null)
+			if (execution.getVariable('sNumRoom_293') != ' ')
+			{
+				per1 = execution.getVariable('sAddress') + ', ' + execution.getVariable('sNumRoom_293')
+				execution.setVariable('sAddress', per1)
+			}
+		
+		if (execution.getVariable('sIsSelo') == 'True')
+		{
+			if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+				per2= 'копію рішення селищної ради'
+			else
+				if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+					per2= 'копію розпорядження селищного голови'
+				else	
+					per2= 'копію рішення виконавчого комітету селищної ради'
+		}	 
+		else
+			if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+				per2= 'копію рішення міської ради'
+			else
+				if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+					per2= 'копію розпорядження міського голови'
+				else	
+					per2= 'копію рішення виконавчого комітету міської ради'
+		execution.setVariable('docTyp', per2)
+		
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow28" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_293">
     <bpmndi:BPMNPlane bpmnElement="cnap_293" id="BPMNPlane_cnap_293">
@@ -372,13 +410,16 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="196.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="64.0" width="105.0" x="65.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="53.0" y="105.0"></omgdi:waypoint>
         <omgdi:waypoint x="53.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="106.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="123.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="53.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="117.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="214.0" y="197.0"></omgdi:waypoint>
@@ -441,6 +482,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="722.0" y="105.0"></omgdi:waypoint>
         <omgdi:waypoint x="790.0" y="149.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="117.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="175.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

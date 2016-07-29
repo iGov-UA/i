@@ -51,7 +51,10 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression sDepartNameFull;
     private Expression sSex;
     private Expression sAddress;
+    private Expression sZipCode;
+    private Expression sCity;
     private Expression sID_Document;
+    private Expression sDateAppeal;
 
     @Autowired
     GeneralConfig generalConfig;
@@ -72,9 +75,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         String sID_DocumentValue = getStringFromFieldExpression(this.sID_Document, execution);
         try {
             if (sID_DocumentValue == null || "".equals(sID_DocumentValue.trim())) {
+                String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
                 String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
-                String sHeadValue = getStringFromFieldExpression(this.sHead, execution)
-                        + " (" + generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId())) + ")";
+                String sHeadValue = getStringFromFieldExpression(this.sHead, execution) + " (" + sID_Order + ")";
                 String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
                 String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
                 String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
@@ -82,10 +85,14 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
                 String sSexValue = getStringFromFieldExpression(this.sSex, execution);
                 String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
+                String sZipCodeValue = getStringFromFieldExpression(this.sZipCode, execution);
+                String sCityValue = getStringFromFieldExpression(this.sCity, execution);
                 String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
                 String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
                 String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+                String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);;
                 String shortFIO = "_", fullIO = "_";
+                sID_Order_GovPublicValue = (bankIdlastName!=null&&bankIdlastName.length()>0?bankIdlastName.substring(0,1):"")+sID_Order;
                 LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
                 if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
@@ -139,7 +146,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
                 Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
                         attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
-                        sDepartNameFullValue, sSexValue, sAddressValue);
+                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue);
 
                 JSONObject json = new JSONObject();
                 json.putAll(urkDocRequest);
@@ -162,6 +169,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                             + ((org.activiti.engine.impl.util.json.JSONObject) details).get("year");
                     runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
                     runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Document_UkrDoc", documentId);
+                    runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Order_GovPublic", sID_Order_GovPublicValue);
                     LOG.info("Set variable to runtime process:{}", documentId);
 
                     LOG.info("Looking for a new task to set form properties");

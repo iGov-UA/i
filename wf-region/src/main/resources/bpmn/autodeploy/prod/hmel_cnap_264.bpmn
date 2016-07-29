@@ -4,7 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/687</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -82,7 +82,6 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
@@ -304,7 +303,8 @@
           <activiti:string><![CDATA[Нове  звернення. Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 Шановний(-а) колего!&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -314,7 +314,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -326,7 +326,8 @@
           <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
@@ -338,9 +339,18 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask8" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask8" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -352,7 +362,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 Ваше звернення отримано та буде опрацьовано протягом 15 робочих днів.&lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду вхідних данних.&lt;br /&gt;
@@ -363,9 +374,18 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -377,7 +397,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Вам відмовено у встановленні статусу та видачі посвідчень батьків та дитини з багатодітної сім’ї .&lt;br /&gt;
 Коментар держслужбовця: ${comment_2}&lt;br /&gt;
@@ -386,9 +407,18 @@ ${sPhoneOrgan}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -400,7 +430,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї схвалено.&lt;br /&gt;
 Вам призначено дату і час візиту для отримання посвідчень - ${sDateVisit2}.&lt;br /&gt;
@@ -418,7 +449,13 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
-      </extensionElements>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+	   </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>

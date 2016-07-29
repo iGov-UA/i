@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_211" name="Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями ФізОсоба" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -38,7 +38,7 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markerEnum" name="скрытие полей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dilianka&quot;,&quot;nakaz&quot;,&quot;eDoc&quot;,&quot;pravo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markerEnum" name="скрытие полей" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_211.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>

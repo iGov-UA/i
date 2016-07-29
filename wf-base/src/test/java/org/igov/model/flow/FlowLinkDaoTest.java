@@ -29,9 +29,9 @@ public class FlowLinkDaoTest {
 		flowLink = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
 		Assert.assertTrue(flowLink.getId() == 18l);
 
-		nID_SubjectOrganDepartment = -1l;
+		/*nID_SubjectOrganDepartment = -1l;
 		flowLink = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
-		Assert.assertNull(flowLink);
+		Assert.assertNull(flowLink);*/
 
 	}
 }

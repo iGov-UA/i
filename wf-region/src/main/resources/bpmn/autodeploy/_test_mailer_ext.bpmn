@@ -24,6 +24,8 @@
       <extensionElements>
         <activiti:formProperty id="file" name="file" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dms/dnepr_dms_print.html]" type="invisible" default="принт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrganName" name="sOrganName" type="string" default="sOrganName - название органа"></activiti:formProperty>
+        <activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="string" default="sOrganPhone - телефон органа"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -62,11 +64,9 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="to">        
-          <activiti:expression><activiti:expression>${mail},${mail2},kyrbatsky@gmail.com,kurbpa@gmail.com</activiti:expression></activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${mail},${mail2}</activiti:expression>
         </activiti:field>
-        
-        <!-- ${mail},${mail2},kyrbatsky@gmail.com,kurbpa@gmail.com -->
         <activiti:field name="subject">
           <activiti:expression>"Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
         </activiti:field>
@@ -146,6 +146,38 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="servicetask2"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask6" name="оповещение заявителя + смс (если заявка зависла)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${mail}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>"Ваша заявка [sID_Order] ще не взята в роботу"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_client_notify.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>"Vashe zvernennya [sID_Order] ne obrobleno.Detali: igov.org.ua/journal abo u Vashomu email"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="escalationTimer1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_mailer_ext">
     <bpmndi:BPMNPlane bpmnElement="_test_mailer_ext" id="BPMNPlane__test_mailer_ext">
@@ -161,6 +193,9 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="105.0" x="560.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="632.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="105.0" x="750.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -175,6 +210,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="78.0" width="105.0" x="660.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="78.0" width="191.0" x="560.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
         <omgdi:waypoint x="105.0" y="201.0"></omgdi:waypoint>
@@ -203,6 +241,16 @@
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="712.0" y="330.0"></omgdi:waypoint>
         <omgdi:waypoint x="802.0" y="241.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="647.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="108.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="560.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

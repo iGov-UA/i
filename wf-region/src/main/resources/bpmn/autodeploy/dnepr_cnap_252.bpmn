@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_252" name="Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст (в т.ч. приватним лабораторіям)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -220,7 +220,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст було відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
@@ -234,8 +234,18 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] peredano v SES.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>

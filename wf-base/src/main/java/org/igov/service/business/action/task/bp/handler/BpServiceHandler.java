@@ -121,10 +121,10 @@ public class BpServiceHandler {
             LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
             JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
             Object escalationId = historyEvent.get(ESCALATION_FIELD_NAME);
-            if (!(escalationId == null || "null".equals(escalationId.toString()))) {
+            if (!(escalationId == null || "null".equalsIgnoreCase(String.valueOf(escalationId).trim()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                //return;  для тестировани закоменчено
+                return;
             }
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
@@ -138,7 +138,7 @@ public class BpServiceHandler {
         LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             LOG.info(" updateHistoryEvent: " + snID_Process + " taskName: " + taskName + " params: " + params);
-            //для тестирования закоменчено historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
+            historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);

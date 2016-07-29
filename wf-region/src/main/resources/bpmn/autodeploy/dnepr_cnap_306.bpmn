@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_306" name="Надання будівельного паспорту забудови земельної ділянки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть Центр надання адміністративних послуг" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -53,8 +53,7 @@
           <activiti:string><![CDATA[Надання будівельного паспорту забудови земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-                        [sID_Order]&lt;br&gt;
+          <activiti:expression>[sID_Order]&lt;br&gt;
                         [pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
@@ -187,7 +186,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Ваше звернення відхилене.&lt;/p&gt;
+			&lt;p&gt;На жаль, Ваше звернення було відхилено.&lt;/p&gt;
 			&lt;p&gt;У додатку до листа міститься офіційна відповідь.&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
 			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
@@ -300,7 +299,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
+			&lt;p&gt;На жаль, Ваше звернення було відхилено. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
@@ -398,7 +397,7 @@
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum" writable="false">
+        <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum">
           <activiti:value id="ok" name="будівельний паспорт забудови земельної ділянки надан"></activiti:value>
           <activiti:value id="bad" name="надати будівельний паспорт забудови земельної ділянки неможливо"></activiti:value>
         </activiti:formProperty>
@@ -434,7 +433,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="-150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="-10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="590.0" y="-10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="0.0"></omgdc:Bounds>
@@ -491,7 +490,7 @@
         <omgdi:waypoint x="590.0" y="-123.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="695.0" y="17.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="30.0"></omgdi:waypoint>
         <omgdi:waypoint x="740.0" y="17.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -555,8 +554,8 @@
         <omgdi:waypoint x="354.0" y="37.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="374.0" y="17.0"></omgdi:waypoint>
-        <omgdi:waypoint x="590.0" y="17.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="-3.0"></omgdi:waypoint>
+        <omgdi:waypoint x="642.0" y="-95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

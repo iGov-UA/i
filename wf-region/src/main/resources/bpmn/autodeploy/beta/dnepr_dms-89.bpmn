@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -39,7 +39,7 @@
         <activiti:formProperty id="sVlasnName" name="ПІБ власника житла, за згодою якого здійснюється реєстрація" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasnDoc" name="Дані документа, що засвідчує особу власника житла;Вид, серія, номер, дата видачі, найменування органу, який його видав" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sMilitDoc" name="Реквізити довідки, виданої командиром військової частини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="asMilitStatus" name="Чи є Ви військовозобов'язаним?" type="enum" required="true">
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуваєте Ви на військовому обліку?" type="enum" required="true">
           <activiti:value id="sYesM" name="Так"></activiti:value>
           <activiti:value id="sNoM" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -63,9 +63,9 @@
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка або свідоцтва про приписку;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nSvidOwn" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSvidOwn" name="Документ щодо права властності; cвідоцтво про право власності, договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно. Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nOrder" name="Ордер, або копія ордеру з печаткою ЖЕКу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nForma3" name="Довідка про склад сім'ї або зареєстрованих осіб" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocNaim" name="Договір найму / піднайму / оренди;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -160,7 +160,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Дані паспорта громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -172,6 +172,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
+          <activiti:value id="sYesM" name="Так"></activiti:value>
+          <activiti:value id="sNoM" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється" type="enum" writable="false">
           <activiti:value id="sOwner" name="до власного житлового приміщення"></activiti:value>
           <activiti:value id="sRent" name="до орендованого житла"></activiti:value>
@@ -200,6 +204,7 @@ execution.setVariable('sMaxPay', maxpay)
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_regFr.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_10" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
@@ -442,7 +447,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Дані паспорта громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -454,7 +459,11 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється" type="enum" writable="false">
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
+          <activiti:value id="sYesM" name="Так"></activiti:value>
+          <activiti:value id="sNoM" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється" type="enum" writable="false">
           <activiti:value id="sOwner" name="до власного житлового приміщення"></activiti:value>
           <activiti:value id="sRent" name="до орендованого житла"></activiti:value>
           <activiti:value id="sSoc" name="до спеціалізованої соціальної установи"></activiti:value>

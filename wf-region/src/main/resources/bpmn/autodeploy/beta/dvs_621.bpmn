@@ -165,7 +165,8 @@
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте копію довідки, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -192,7 +193,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів - відхилене.&lt;/p&gt;
+			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів було відхилено.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному:&lt;/p&gt;
 			&lt;p&gt;${sComment}&lt;/p&gt;
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -246,7 +247,7 @@
 			</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1}</activiti:expression>
+          <activiti:expression>${file1},${file2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

@@ -179,6 +179,12 @@
       tasks.list($stateParams.type, data)
         .then(function (oResult) {
           try {
+			if (oResult.data.code) {
+              var e = new Error(oResult.data.message);
+              e.name = oResult.data.code;
+
+              throw e;
+            }
             if (oResult.data !== null && oResult.data !== undefined) {
               // build tasks array
               var aTaskFiltered = _.filter(oResult.data, function (oTask) {
@@ -279,8 +285,28 @@
       }
     };
 
-    $scope.getProcessName = function (processDefinitionId) {
-      return processes.getProcessName(processDefinitionId);
+    $scope.getProcessName = function (task) {
+      var result = processes.getProcessName(task.processDefinitionId);
+      if (angular.isDefined(task.variables)) {
+        for (var i = 0; i < task.variables.length; i++) {
+          var v = task.variables[i];
+          if (v.name == 'sPlace' && v.type == 'string')
+            result = v.value + ' - ' + result;
+        }
+      }
+      return result;
+    };
+
+    $scope.getTaskTitle = function (task) {
+      return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
+        + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
+    };
+
+    $scope.getTaskDateTimeTitle = function (task) {
+      var result = task.createTime ? $scope.sDateShort(task.createTime) : $scope.sDateShort(task.startTime);
+      if (task.endTime)
+        result += ' - ' + $scope.sDateShort(task.endTime);
+      return result;
     };
 
     $scope.ticketsFilter = {

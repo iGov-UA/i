@@ -6,7 +6,7 @@
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Якщо Ви будете реєструвати нове місце проживання у межах міста,у якому вже працює послуга &lt;a href=&quot;https://igov.org.ua/service/29/general&quot;&gt;реєстрації місця проживання&lt;/a&gt;, рекомендуємо Вам замовити реєстрацію із одночасним зняттям. Це зменшить кількість візитів і збереже Ваш час."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -24,7 +24,7 @@
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстраці;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="Місце проживання дитини молодше 14 років не може бути зареєстровано окремо від батьків, тому якщо Ви знімаєтесь з реєстрації та другий із батьків зареєстрований за іншою адресою, дитина повина бути знята з реєстрації разом із Вами. Для цього скористайтесь окремою &lt;a href=&quot;https://igov.org.ua/service/185/general&quot;&gt;послугою&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asMilitStatus" name="Чи є Ви військовозобов'язаним?" type="enum" required="true">
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуваєте Ви на військовому обліку?" type="enum" required="true">
           <activiti:value id="sYesM" name="Так"></activiti:value>
           <activiti:value id="sNoM" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -134,7 +134,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -145,6 +145,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
+          <activiti:value id="sYesM" name="Так"></activiti:value>
+          <activiti:value id="sNoM" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -152,6 +156,7 @@ execution.setVariable('sMaxPay', maxpay)
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу зняття з реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/zajava_znFr.html" type="file"></activiti:formProperty>
@@ -225,7 +230,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Реєстрація нового місця проживання]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації місця проживання особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -252,10 +257,14 @@ execution.setVariable('sMaxPay', maxpay)
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
 											&lt;li&gt;документ, до якого вносяться відомості про місце проживання, якщо дитина не досягла 16 - річного віку, подається свідоцтво про народження або свідоцтво про належність до громадянства України;&lt;/li&gt;
-											&lt;li&gt;квитанцію про сплату адміністративного збору;&lt;/li&gt;
+											&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
 											&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
 											&lt;li&gt;заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;
 										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Зверніть увагу!&lt;/b&gt;&lt;br&gt;
+										Зняття з реєстрації місця проживання осіб, які перебувають на військовому обліку здійснюється після зняття з обліку у військовому комісаріаті, про що повинна бути відмітка у військовому документі.
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br&gt;
@@ -326,6 +335,10 @@ execution.setVariable('sMaxPay', maxpay)
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
+										&lt;b&gt;Зверніть увагу!&lt;/b&gt;&lt;br&gt;
+										Зняття з реєстрації місця проживання осіб, які перебувають на військовому обліку здійснюється після зняття з обліку у військовому комісаріаті, про що повинна бути відмітка у військовому документі.
+									&lt;/p&gt;
+									&lt;p&gt;
 										Коментар Державного службовця:&lt;br&gt;
 										&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
@@ -357,7 +370,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -368,6 +381,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
+          <activiti:value id="sYesM" name="Так"></activiti:value>
+          <activiti:value id="sNoM" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum">

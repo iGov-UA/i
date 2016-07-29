@@ -78,7 +78,8 @@ public class UkrDocUtil {
     public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue,
             String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig,
             String sID_Order_GovPublicValue, String sSourceChannelValue, String shortFIO, String fullIO,
-            String sDepartNameFull, String sSex, String sAddress) {
+            String sDepartNameFull, String sSex, String sAddress,
+            String sZipCode, String sPlace, String sDateAppealValue) {
 
         Map<String, Object> res = new LinkedHashMap<String, Object>();
 
@@ -97,7 +98,11 @@ public class UkrDocUtil {
         attributes.put("Имя и отчество заявителя", fullIO);
         attributes.put("Полное название управления/департамента", sDepartNameFull);
         //attributes.put("Пол заявителя", sSex);
-        attributes.put("Адрес проживания", sAddress);
+        //attributes.put("Адрес проживания", sAddress);
+        attributes.put("Индекс", sZipCode);
+        attributes.put("Населенный пункт", sPlace);
+        attributes.put("Остальной адрес", sAddress);
+        attributes.put("Дата заявки", sDateAppealValue);
 
         Map<String, Object> extensions = new HashMap<String, Object>();
         if (attachmentsIds != null && !attachmentsIds.isEmpty()) {

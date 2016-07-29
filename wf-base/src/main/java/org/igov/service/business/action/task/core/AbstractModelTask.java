@@ -305,6 +305,10 @@ public abstract class AbstractModelTask {
                         if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                             //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                             String sDescription = asFieldName.get(n);
+                            if(sDescription!=null&&sDescription.contains(";")){
+                                LOG.info("BEFORE:(sDescription={})", sDescription);
+                                sDescription=sDescription.split(";")[0];
+                            }
                             LOG.info("(sDescription={})", sDescription);
                             String sID_Field = asFieldID.get(n);
                             LOG.info("(sID_Field={})", sID_Field);

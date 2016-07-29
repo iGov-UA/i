@@ -1,0 +1,26 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdinn", "bankId_scan_inn", "bankIdAddressFactual", "asAdress"], 
+			"asID_Field" : {
+				"sClient" : "asChoiceObject"
+			}, 
+			"sCondition" : "[sClient] == 'fiz'||[sClient] == 'Фізична особа'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["sNameCompany", "edrpou", "sNameUr", "sAddressFactualUr", "nFileEdrpou", "sNamePostCompany", "lastName_UA1", "firstName_UA1", "middleName_UA1"], 
+			"asID_Field" : {
+				"sClient" : "asChoiceObject"
+			}, 
+			"sCondition" : "[sClient] == 'ur'||[sClient] == 'Юридична особа'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field" : {
+				"sClient" : "asChoiceObject", 
+				"sClient1" : "asAdress"
+			}, 
+			"sCondition" : "([sClient1] == 'no'||[sClient1] == 'Ні') && ([sClient] == 'fiz'||[sClient] == 'Фізична особа')"
+		}
+	}
+}
