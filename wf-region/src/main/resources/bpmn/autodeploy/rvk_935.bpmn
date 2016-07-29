@@ -106,7 +106,7 @@
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty><activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocWedding},${nDocDivorce},${nDocChild},${nDocPass},${nDocMed}]]></activiti:expression>
@@ -178,7 +178,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка №[sID_Order] про надання РВК документів для внесення змін про сімейний стан, місце роботи та посаду успішно .<br>
+			<p>Ваша заявка №[sID_Order] про надання РВК документів для внесення змін про сімейний стан, місце роботи та посаду успішно опрацьована.<br>
 			Зміни внесено до бази даних РВК
 			</p>
             <p>
