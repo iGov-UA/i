@@ -10,6 +10,7 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
 import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
@@ -50,6 +51,9 @@ public class ObjectPlaceController {
 
     @Autowired
     private PlaceTypeDao placeTypeDao;
+
+    @Autowired
+    private ObjectPlace_UADao objectPlace_UADao;
 
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
@@ -984,6 +988,59 @@ public class ObjectPlaceController {
                 response.setHeader("Reason", e.getMessage());
             } 
             return result;
+        }
+
+        @ApiOperation(value = "Получение данных из справочника КОАТУУ", notes = "Получаем данные из справочника КОАТУУ. "
+                + "Пример:\n"
+                + "https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA?sFind=рибальство\n\n"
+                + "Ответ:\n"
+                + "\n```json\n"
+                + "[\n"
+                + "  {\n"
+                + "    \"sID\": \"03.11\",\n"
+                + "    \"sNote\": \"Морське рибальство \",\n"
+                + "    \"nID\": 36\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"sID\": \"03.12\",\n"
+                + "    \"sNote\": \"Прісноводне рибальство \",\n"
+                + "    \"nID\": 37\n"
+                + "  }\n"
+                + "]\n"
+                + "\n```\n")
+        @RequestMapping(value = "/getObjectPlace_UA", method = RequestMethod.GET, headers = {JSON_TYPE})
+        public @ResponseBody
+        List<ObjectPlace_UA> getObjectPlace_UA(
+                @ApiParam(value = "sFind - кретерий поиска в sID или sName_UA (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+            	    throws CommonServiceException {
+    		return objectPlace_UADao.getObjectPlace_UA(sFind); 
+        }
+
+        @ApiOperation(value = "Получение данных из справочника КОАТУУ", notes = "Получаем данные из справочника КОАТУУ. "
+                + "Пример:\n"
+                + "https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA2?sID=03&sName_UA=Прісноводне\n\n"
+                + "Ответ:\n"
+                + "\n```json\n"
+                + "[\n"
+                + "  {\n"
+                + "    \"sID\": \"03.12\",\n"
+                + "    \"sNote\": \"Прісноводне рибальство \",\n"
+                + "    \"nID\": 37\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"sID\": \"03.22\",\n"
+                + "    \"sNote\": \"Прісноводне рибництво (аквакультура) \",\n"
+                + "    \"nID\": 39\n"
+                + "  }\n"
+                + "]\n"            
+                + "\n```\n")
+        @RequestMapping(value = "/getObjectPlace_UA2", method = RequestMethod.GET, headers = {JSON_TYPE})
+        public @ResponseBody
+        List<ObjectPlace_UA> getObjectPlace_UA2(
+                @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+                @ApiParam(value = "sName_UA - кретерий поиска в sName_UA (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sName_UA", required = false) String sName_UA)
+            	    throws CommonServiceException {
+    		return objectPlace_UADao.getObjectPlace_UA(sID, sName_UA); 
         }
 
 }
