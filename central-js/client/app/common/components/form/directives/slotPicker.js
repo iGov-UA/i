@@ -10,7 +10,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       property: "="
     },
     link: function(scope) {
-
       scope.selected = {
         date: null,
         slot: null
@@ -30,8 +29,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
 
       scope.$watch('selected.slot', function(newValue) {
         if (newValue) {
+          var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
+          var nSlotsKey = 'nSlots_' + scope.property.id;
+          if (scope.formData.params.hasOwnProperty(nSlotsKey)) {
+            var nSlots = parseInt(scope.formData.params[nSlotsKey].value) || 0;
+            if (nSlots > 1)
+              setFlowUrl += '&nSlots=' + nSlots;
+          }
           //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
-          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
+          $http.post(setFlowUrl).then(function(response) {
             scope.ngModel = JSON.stringify({
               nID_FlowSlotTicket: response.data.nID_Ticket,
               sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
