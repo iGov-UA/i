@@ -110,7 +110,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка ЦНАП (1 етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -138,7 +138,7 @@
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
+        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення звернення" type="enum" required="true">
           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
@@ -264,7 +264,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надання відповіді заявнику (2 етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -292,7 +292,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
+        <activiti:formProperty id="proverka" name="Рішення про видачу відомостей у формі викопіювання" type="enum" required="true">
           <activiti:value id="ok" name="Викопіювання надано"></activiti:value>
           <activiti:value id="bad" name="У видачі викопіювання відмовлено"></activiti:value>
         </activiti:formProperty>
