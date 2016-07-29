@@ -11,10 +11,26 @@
   </div>
 
   <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
-    <textarea rows="5" ng-model="feedback.messageBody" class="form-control" style="width: 500px !important;"></textarea>
+    <div class="col-md-6 ">
+      <div class="form-group">
+        <textarea rows="5" ng-model="feedback.messageBody" class="form-control"
+                  style="width: 500px !important;"></textarea>
+      </div>
+      <div class="form-group">
+        <input type="button" class="btn btn-info" value="Залишити вiдгук" ng-click="feedback.postFeedback()"/>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p class="feedback-info-header">Ваш регіон і місто</p>
+      <p class="feedback-info-body">{{::feedback.currentFeedback.sPlace}}</p>
+      <p class="feedback-info-header">Співробітник, який Вас обслуговував</p>
+      <p class="feedback-info-body">{{::feedback.currentFeedback.sEmployeeFIO}}</p>
+      <p class="feedback-info-header">Ваш підпис</p>
+      <p class="feedback-info-body">{{::feedback.currentFeedback.sAuthorFIO}}</p>
+    </div>
   </div>
   <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
-    <input type="button" class="btn btn-info" value="Залишити вiдгук" ng-click="feedback.postFeedback()"/>
+
   </div>
 
   <div class="row">
@@ -31,7 +47,6 @@
             </p>
             <p>{{::item.sBody}}</p>
           </div>
-
           <!--<div>{{item.nID_Rate}}</div>-->
           <!--<div>{{item.sAuthorFIO}}</div>-->
           <!--<div>{{item.sID_Source}}</div>-->
