@@ -16,14 +16,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи АБО ФОП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sVlasn" type="label" default="Додайте документи"></activiti:formProperty>
-        <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
+        <activiti:formProperty id="nDocWedding" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocDivorce" name="Копія свідоцтва про розірвання шлюбу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Копія свідоцтва про народження дитини" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія паспорта зі сторінкою реєстрації" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocMed" name="Копія довідки з МСЕК" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
-      </extensionElements>
+      </extensionElements> 
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -109,7 +109,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocWedding},${nDocDivorce},${nDocChild},${nDocPass},${nDocMed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
