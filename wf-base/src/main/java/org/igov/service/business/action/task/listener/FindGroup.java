@@ -65,10 +65,10 @@ public class FindGroup implements TaskListener {
         DelegateExecution execution = delegateTask.getExecution();
         String group_pattern = (String) execution.getVariable("group_pattern");
         execution.setVariable("group_pattern_last", group_pattern);
-        System.out.println("group_pattern: " + group_pattern);
+        LOG.info("group_pattern: " + group_pattern);
         // определение user'а
         String user = delegateTask.getAssignee();
-        System.out.println("user: " + user);
+        LOG.info("user: " + user);
         execution.setVariable("user_last", user);
         // определение списка групп у user
         List<Group> userGroup;
@@ -87,7 +87,7 @@ public class FindGroup implements TaskListener {
 // }
 //}
         for (int i = 0; i < userGroup.size(); i++) {
-            System.out.println("userGroup.get(i).getId(): " + userGroup.get(i).getId());
+            LOG.info("userGroup.get(i).getId(): " + userGroup.get(i).getId());
 
 //            boolean containPattern;
             if (userGroup.get(i).getId().contains(group_pattern)) {
@@ -107,9 +107,9 @@ public class FindGroup implements TaskListener {
         
             //Проверка количеcтва элементов в коллекции aGroupPatternFound. Если отлично от единицы, то передать в переменную usertask2 none. Иначе название группы
             if (aGroupPatternFound.size() != 1) {
-                System.out.println("aGroupPatternFound.size(): " + aGroupPatternFound.size());
+                LOG.info("aGroupPatternFound.size(): " + aGroupPatternFound.size());
                 execution.setVariable("group_found", "none");
-                System.out.println("none");
+                LOG.info("none");
                 // execution.setVariable("group_found", userGroup.get(0).getId());  // передача ид-группы в значение group_found 
                 // System.out.println("GroupName: " + userGroup.get(0).getName());
             } else if(aGroupPatternFound.size() > 1){
@@ -118,8 +118,8 @@ public class FindGroup implements TaskListener {
                 // execution.setVariable("group_found", "none");
                 // System.out.println("none");
                 execution.setVariable("group_found", userGroup.get(0).getId());  // передача ид-группы в значение group_found 
-                System.out.println("GroupID: " + userGroup.get(0).getId());
-                System.out.println("GroupName: " + userGroup.get(0).getName());
+                LOG.info("GroupID: " + userGroup.get(0).getId());
+                LOG.info("GroupName: " + userGroup.get(0).getName());
             }
 
         
