@@ -49,7 +49,7 @@ public class BpServiceImpl implements BpService {
 
         String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
         LOG.info("variables={}", variables);
-        LOG.info("organ={}", organ);
+        LOG.info("organ ={}", organ);
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key, organ);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
