@@ -1,5 +1,5 @@
 angular.module('app').service('TitleChangeService', function () {
-  var title = 'iGov.org.ua – Портал державних послуг';
+  var title = 'iGov – Портал державних послуг';
   return {
     title: function() {
       return title;
