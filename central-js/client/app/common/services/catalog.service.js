@@ -83,6 +83,31 @@ angular.module('app')
     }
   };
 
+  this.getServiceTags = function (sFind) {
+    var data = {
+      sFind: sFind,
+      nID_Category: 1
+    };
+    return $http.get('./api/catalog/getCatalogTree', {
+      params: data,
+      data: data
+    }).then(function (response) {
+        return response.data;
+    });
+  };
+
+  this.getServiceBusiness = function (sFind) {
+    var data = {
+      sFind: sFind
+    };
+    return $http.get('./api/catalog', {
+      params: data,
+      data: data
+    }).then(function (res) {
+      return res.data;
+    })
+  };
+
   this.getCatalogTreeTag = function (nID_Category, sFind) {
     var data = {
       nID_Category: nID_Category,

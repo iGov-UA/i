@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('NewSubcategoryController',
-    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope',
-      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope) {
+    ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope', 'TitleChangeService',
+      function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope, TitleChangeService) {
         $scope.category = $stateParams.catID;
         $scope.subcategory = chosenCategory;
         // $scope.spinner = false;
@@ -62,5 +62,7 @@ angular.module('app')
             $scope.spinner = false;
           }
         });
+        var tag = $scope.subcategory.oServiceTag_Root.sName_UA;
+        TitleChangeService.setTitle(tag);
         $anchorScroll();
       }]);

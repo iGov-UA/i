@@ -1,10 +1,27 @@
-angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService) {
+angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService, TitleChangeService, CatalogService, $anchorScroll) {
+  $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+  var sServiceName = $scope.service.sName;
+  var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
+    if(res.length !== 0) {
+      var tag = res[0].oServiceTag_Root.sName_UA;
+      var situation = res[0].aServiceTag_Child[0].sName_UA;
+      TitleChangeService.setTitle(sServiceName + ' / ' + situation + ' / ' + tag);
+      $scope.spinner = false;
+    } else {
+      CatalogService.getServiceBusiness(sServiceName).then(function (res) {
+        var scat = res[0].aSubcategory[0].sName;
+        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        $scope.spinner = false;
+      })
+    }
+  });
+  $anchorScroll();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -25,11 +42,6 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
       $scope.spinner = true;
     }
   });
-  // $scope.$on('$stateChangeSuccess', function(event, toState) {
-  //   if (toState.resolve) {
-  //     $scope.spinner = false;
-  //   }
-  // });
   $scope.$on('$stateChangeError', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = false;
@@ -38,7 +50,7 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
   $anchorScroll();
 });
 
-angular.module('app').controller('OldBusinessController', function ($scope, AdminService, businessContent, messageBusService, $rootScope, $anchorScroll) {
+angular.module('app').controller('OldBusinessController', function ($scope, AdminService, businessContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
   $scope.spinner = true;
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
@@ -61,6 +73,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
       $scope.spinner = true;
     }
   });
+
   $scope.$on('$stateChangeError', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = false;
@@ -72,7 +85,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -130,6 +143,10 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $scope.runComments = function () {
     angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
+  var situation = $scope.category.aServiceTag_Child[0].sName_UA;
+  var tag = $scope.category.oServiceTag_Root.sName_UA;
+  var title = situation + ' / ' + tag;
+  TitleChangeService.setTitle(title);
   $anchorScroll();
 });
 
@@ -445,3 +462,15 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
   }
 
 }]);
+
+angular.module('app').controller('TitleChange', function ($scope, TitleChangeService) {
+  $scope.$on('$stateChangeSuccess', function (event, toState) {
+    if(!$state.is('index.situation') ||
+      !$state.is('index.newsubcategory') ||
+      !$state.is('index.service') ||
+      !$state.is('index.oldbusiness') ||
+      !$state.is('index.subcategory')){
+      TitleChangeService.defaultTitle();
+    }
+  })
+});

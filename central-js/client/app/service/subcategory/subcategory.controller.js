@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('SubcategoryController',
-  ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'catalog', 'EditServiceTreeFactory', 'AdminService', '$rootScope',
-    function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, catalog, EditServiceTreeFactory, AdminService, $rootScope) {
+  ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'catalog', 'EditServiceTreeFactory', 'AdminService', '$rootScope', 'TitleChangeService',
+    function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, catalog, EditServiceTreeFactory, AdminService, $rootScope, TitleChangeService) {
       var getCurrentCategory = function(catalog) {
         return $filter('filter')(catalog, {nID: parseInt($stateParams.catID)}, true)[0]
       };
@@ -49,10 +49,12 @@ angular.module('app')
   });
 
   if(!$scope.subcategory) {
-    var category = getCurrentCategory(catalog);
+    category = getCurrentCategory(catalog);
     $scope.subcategory = getCurrentSubcategory(category);
     $scope.spinner = false;
   }
+  var tag = $scope.subcategory.sName + ' / Бізнес';
+  TitleChangeService.setTitle(tag);
 
   // Scroll to the top of the section - issues/589
   // After Angular upgrade (current version which is used is 1.3.15),
