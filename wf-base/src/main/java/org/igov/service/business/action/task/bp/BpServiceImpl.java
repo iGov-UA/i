@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
@@ -47,6 +48,7 @@ public class BpServiceImpl implements BpService {
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
         String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
+        LOG.info("organ={}", organ);
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key, organ);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
@@ -62,6 +64,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error stacktrace!: {}", ExceptionUtils.getStackTrace(oException));
             LOG.debug("FAIL:", oException);
         }
         return jsonProcessInstance;
