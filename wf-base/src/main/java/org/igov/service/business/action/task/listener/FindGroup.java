@@ -92,7 +92,7 @@ public class FindGroup implements TaskListener {
 //            boolean containPattern;
             if (userGroup.get(i).getId().contains(group_pattern)) {
 //                System.out.println("Искомая группа соотвутсвующая group_pattern: " + userGroup.get(i).getName());
-//                containPattern = userGroup.get(i).getId().contains(group_pattern);// true
+//                containPattern = userGroup.get(i).getId().contains(group_pattern);// truee
 //                System.out.println(containPattern); // true
 //                aGroupPatternFound.size();
 //                System.out.println("aGroupPatternFound.size(): " + aGroupPatternFound.size());
