@@ -20,7 +20,7 @@ angular.module('dashboardJsApp')
         var deferred = $q.defer();
         var req = {
           method: 'GET',
-          url: '/api/profile/'+userLogin+'/2'
+          url: '/api/profile/getSubjects/'+userLogin+'/1'
         };
 
         $http(req).

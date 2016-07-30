@@ -46,7 +46,6 @@ angular.module('app')
           $scope.subcategory = chosenCategory;
         }
         $scope.stateCheck = $state.params.catID;
-        $anchorScroll();
 
         $scope.$on('$stateChangeStart', function(event, toState) {
           if (toState.resolve) {
@@ -63,5 +62,5 @@ angular.module('app')
             $scope.spinner = false;
           }
         });
-
+        $anchorScroll();
       }]);

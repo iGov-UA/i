@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
   $scope.bAdmin = AdminService.isAdmin();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -35,10 +35,44 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
       $scope.spinner = false;
     }
   });
-
+  $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce) {
+angular.module('app').controller('OldBusinessController', function ($scope, AdminService, businessContent, messageBusService, $rootScope, $anchorScroll) {
+  $scope.spinner = true;
+  var subscriptions = [];
+  messageBusService.subscribe('catalog:update', function (data) {
+    $scope.mainSpinner = false;
+    $rootScope.fullCatalog = data;
+    $scope.catalog = data;
+    $rootScope.busSpinner = false;
+    $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
+  }, false);
+
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      messageBusService.unsubscribe(item);
+    });
+  });
+
+  $scope.$on('$stateChangeStart', function (event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = true;
+    }
+  });
+  $scope.$on('$stateChangeError', function (event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = false;
+    }
+  });
+  $rootScope.$watch('catalog', function () {
+    if($scope.catalog.length !== 0) $scope.spinner = false;
+  });
+  $anchorScroll();
+});
+
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -95,7 +129,8 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
 
   $scope.runComments = function () {
     angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
-  }
+  };
+  $anchorScroll();
 });
 
 angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
