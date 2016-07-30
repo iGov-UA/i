@@ -110,7 +110,7 @@ public class FindGroup implements TaskListener {
                 LOG.info("aGroupPatternFound.size(): " + aGroupPatternFound.size());
                 execution.setVariable("group_found", "[none]");
                 LOG.info("none");
-                // execution.setVariable("group_found", userGroup.get(0).getId());  // пttередача ид-группы в значение group_found 
+                // execution.setVariable("group_found", userGroup.get(0).getId());  // передача ид-группы в значение group_found 
                 // System.out.println("GroupName: " + userGroup.get(0).getName());
             } else if(aGroupPatternFound.size() > 1){
             execution.setVariable("group_found", "[many]");
