@@ -61,7 +61,12 @@ angular.module('app')
           function updateCatalog(ctlg) {
             $scope.catalog = ctlg;
             if ($scope.operator == -1) {
-              $scope.operators = CatalogService.getOperators(ctlg);
+              // временно для старого бизнеса, после реализации тегов - удалить.
+              if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+                $scope.operators = CatalogService.getOperatorsOld(ctlg);
+              }else {
+                $scope.operators = CatalogService.getOperators(ctlg);
+              }
             }
             messageBusService.publish('catalog:update', ctlg);
           }
@@ -78,10 +83,13 @@ angular.module('app')
             $scope.subcategory = $stateParams.scatID;
             if($state.is('index.situation')){
               $scope.situation = $stateParams.sitID;
+              // поиск для старого бизнеса, когда будут доработаны теги в новом - удалить.
+            } else if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+              $scope.category = 'business';
             }
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
               if(!$state.is('index')
-                  && !$state.is('index.catalog')) {
+                  && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
               } else {
                 fullCatalog = result;
@@ -102,6 +110,8 @@ angular.module('app')
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
             if($scope.sSearch.length >= 3) {
+              // после реализации тегов в бизнесе - удалить.
+              $rootScope.busSpinner = true;
               $scope.search();
               $rootScope.valid = true;
             } else if($rootScope.valid) {
@@ -122,25 +132,66 @@ angular.module('app')
           // choosen by user
           $scope.filterByExtSearch = function() {
             $scope.check = true;
-            var filterCriteria = {};
-            if ($scope.selectedStatus != -1) {
-              filterCriteria.nStatus = $scope.selectedStatus;
-            }
-            if ($scope.operator != -1) {
-              filterCriteria.sSubjectOperatorName = $scope.operator;
-            }
-            if ($scope.getOrgan) {
-              filterCriteria.sSubjectOperatorName = $scope.getOrgan;
-            }
-
-            // create a copy of current fullCatalog
-            var ctlg = angular.copy(fullCatalog);
-            ctlg.aService = $filter('filter')(ctlg.aService, filterCriteria);
-            // TODO поправить
-            ctlg.aServiceTag_Child = $filter('filter')(ctlg.aServiceTag_Child, function(category) {
+            // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
+            // убрать когда теги в бизнесе будут готовы.
+            if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+              var filterCriteria = {};
+              var selectedStatus;
+              if($scope.selectedStatus == 0) {
+                selectedStatus = 1;
+              } else if ($scope.selectedStatus == 1) {
+                selectedStatus = 2;
+              }
+              if ($scope.selectedStatus != -1) {
+                filterCriteria.nStatus = selectedStatus;
+              }
+              if ($scope.operator != -1) {
+                filterCriteria.sSubjectOperatorName = $scope.operator;
+              }
+              if ($scope.getOrgan) {
+                filterCriteria.sSubjectOperatorName = $scope.getOrgan;
+              }
+              // create a copy of current fullCatalog
+              var ctlg = angular.copy(fullCatalog);
+              angular.forEach(ctlg, function(category) {
+                angular.forEach(category.aSubcategory, function(subCategory) {
+                  // leave services that match filterCriteria
+                  subCategory.aService = $filter('filter')(subCategory.aService, filterCriteria);
+                });
+                // leave subcategories that are not empty
+                category.aSubcategory = $filter('filter')(category.aSubcategory, function(subCategory) {
+                  if (subCategory.aService.length > 0) {
+                    return true;
+                  }
+                });
+              });
+              // leave categories that are not empty
+              ctlg = $filter('filter')(ctlg, function(category) {
+                if (category.aSubcategory.length >0 ) {
+                  return true;
+                }
+              });
+              updateCatalog(ctlg);
+            } else {
+              var filterCriteria = {};
+              if ($scope.selectedStatus != -1) {
+                filterCriteria.nStatus = $scope.selectedStatus;
+              }
+              if ($scope.operator != -1) {
+                filterCriteria.sSubjectOperatorName = $scope.operator;
+              }
+              if ($scope.getOrgan) {
+                filterCriteria.sSubjectOperatorName = $scope.getOrgan;
+              }
+              // create a copy of current fullCatalog
+              var ctlg = angular.copy(fullCatalog);
+              ctlg.aService = $filter('filter')(ctlg.aService, filterCriteria);
+              // TODO поправить
+              ctlg.aServiceTag_Child = $filter('filter')(ctlg.aServiceTag_Child, function(category) {
                 return true;
-            });
-            updateCatalog(ctlg);
+              });
+              updateCatalog(ctlg);
+            }
           };
 
           $scope.onExtSearchClick = function() {

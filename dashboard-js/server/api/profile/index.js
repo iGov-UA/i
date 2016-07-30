@@ -5,7 +5,7 @@ var controller = require('./profile.controller');
 
 var router = express.Router();
 
-router.get('/:saAccount/:nID_SubjectAccountType', controller.index);
+router.get('/getSubjects/:saAccount/:nID_SubjectAccountType', controller.getSubjects);
 router.post('/changePassword', controller.changePassword);
 
 

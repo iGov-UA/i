@@ -13,6 +13,9 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         },
         regions: function(PlacesService, service) {
           return PlacesService.getRegionsForService(service);
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
         }
       },
       views: {
@@ -117,6 +120,9 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
       resolve : {
         catalogContent : function (CatalogService, $stateParams) {
           return CatalogService.getCatalogTreeTag($stateParams.catID)
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
         }
       },
         views: {
@@ -125,5 +131,37 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
             controller: 'NewIndexController'
           }
         }
-    });
+    })
+    // !! для старого "бизнеса"
+    .state('index.oldbusiness', {
+      url: 'business/1',
+      resolve: {
+        businessContent: function (CatalogService) {
+          return CatalogService.getServices()
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
+        }
+      },
+      views: {
+        'contentIn' : {
+          templateUrl: 'app/service/index/oldbusiness.html',
+          controller: 'OldBusinessController'
+        }
+      }
+    })
+    .state('index.subcategory', {
+      url: 'business/subcategory/:catID/:scatID',
+      resolve: {
+        catalog: function (CatalogService) {
+          return CatalogService.getServices()
+        }
+      },
+      views: {
+        'contentIn': {
+          templateUrl: 'app/service/subcategory/oldbusiness.subcategory.html',
+          controller: 'SubcategoryController'
+        }
+      }
+    })
 });

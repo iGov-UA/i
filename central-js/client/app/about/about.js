@@ -4,6 +4,11 @@ angular.module('about').config(function ($stateProvider, statesRepositoryProvide
     $stateProvider
       .state('index.about', {
         url: 'about',
+        resolve: {
+          title: function (TitleChangeService) {
+            TitleChangeService.defaultTitle();
+          }
+        },
         views: {
           'main@': {
             templateUrl: 'app/about/about.html',
