@@ -5,6 +5,8 @@
  */
 package org.igov.service.business.action.task.listener;
 
+import com.vaadin.terminal.gwt.client.RenderInformation;
+import java.util.ArrayList;
 import java.util.List;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -62,35 +64,65 @@ public class FindGroup implements TaskListener {
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
         String group_pattern = (String) execution.getVariable("group_pattern");
-        System.out.println("group_pattern: " + group_pattern + "123456");
+        execution.setVariable("group_pattern_last", group_pattern);
+        System.out.println("group_pattern: " + group_pattern);
         // определение user'а
         String user = delegateTask.getAssignee();
         System.out.println("user: " + user);
+        execution.setVariable("user_last", user);
         // определение списка групп у user
         List<Group> userGroup;
-        System.out.println("userGroup-1");
+//        System.out.println("userGroup-1");
         userGroup = execution.getEngineServices().getIdentityService().createGroupQuery().groupMember(user).list();
-        System.out.println("userGroup-2 " + userGroup);
+//        System.out.println("userGroup-2");
 
         // определение размера списка групп
         userGroup.size();
-        System.out.println("userGroup.size: " + userGroup.size());
+//        LOG.info("userGroup.size: " + userGroup.size());
 
-              
-        try {
-            //Проверка количеcтва элементов в коллекции userGroup. Если отлично от единицы, то передать в переменную usertask2 none. Иначе название группы
-        if (userGroup.size() == 1)  {
-            System.out.println("none");
-            execution.setVariable("group_found", userGroup.get(0).getId()); 
-            System.out.println("GroupName: " + userGroup.get(0).getName());
-        } else {
-            execution.setVariable("group_found", "none");
-           System.out.println("none"); 
+        List<Group> aGroupPatternFound = new ArrayList<Group>();
+//for(Group group : userGroup){
+// if (group.getId().contains(group_pattern)) {
+// aGroupPatternFound.add(group);
+// }
+//}
+        for (int i = 0; i < userGroup.size(); i++) {
+            System.out.println("userGroup.get(i).getId(): " + userGroup.get(i).getId());
+
+//            boolean containPattern;
+            if (userGroup.get(i).getId().contains(group_pattern)) {
+//                System.out.println("Искомая группа соотвутсвующая group_pattern: " + userGroup.get(i).getName());
+//                containPattern = userGroup.get(i).getId().contains(group_pattern);// true
+//                System.out.println(containPattern); // true
+//                aGroupPatternFound.size();
+//                System.out.println("aGroupPatternFound.size(): " + aGroupPatternFound.size());
+                aGroupPatternFound.add(userGroup.get(i));
+//                aGroupPatternFound.size();
+//                System.out.println("aGroupPatternFound.size()_after add: " + aGroupPatternFound.size());
+
+//                aGroupPatternFound.add(i, (Group) userGroup);
+//                System.out.println("aGroupPatternFound.add" + aGroupPatternFound);
+            }
         }
-            System.out.println("The end");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
+            //Проверка количеcтва элементов в коллекции aGroupPatternFound. Если отлично от единицы, то передать в переменную usertask2 none. Иначе название группы
+            if (aGroupPatternFound.size() != 1) {
+                System.out.println("aGroupPatternFound.size(): " + aGroupPatternFound.size());
+                execution.setVariable("group_found", "none");
+                System.out.println("none");
+                // execution.setVariable("group_found", userGroup.get(0).getId());  // передача ид-группы в значение group_found 
+                // System.out.println("GroupName: " + userGroup.get(0).getName());
+            } else if(aGroupPatternFound.size() > 1){
+            execution.setVariable("group_found", "many");
+            }else {
+                // execution.setVariable("group_found", "none");
+                // System.out.println("none");
+                execution.setVariable("group_found", userGroup.get(0).getId());  // передача ид-группы в значение group_found 
+                System.out.println("GroupID: " + userGroup.get(0).getId());
+                System.out.println("GroupName: " + userGroup.get(0).getName());
+            }
+
+        
     }
 
 }
