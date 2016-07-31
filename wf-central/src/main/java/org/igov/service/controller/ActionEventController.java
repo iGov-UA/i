@@ -642,6 +642,7 @@ public class ActionEventController {
             HttpServletResponse httpResponse) {
     	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
     	
+    	LOG.info("Found ActionProcessCount {}", res);
     	if (res == null){
     		ActionProcessCount newElem = new ActionProcessCount();
     		newElem.setsID_BP(sID_BP);
@@ -653,6 +654,7 @@ public class ActionEventController {
     		res.setnCountYear(res.getnCountYear() + 1);
     	}
     	res = actionProcessCountDao.saveOrUpdate(res);
+    	LOG.info("Saved updated info {}", res);
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
