@@ -15,15 +15,15 @@ public class ActionProcessCount extends AbstractEntity {
 	
 	@JsonProperty(value = "nID_Service")
     @Column(name = "nID_Service")
-	private Long nID_Service;
+	private Integer nID_Service;
 	
 	@JsonProperty(value = "nCountYear")
     @Column(name = "nCountYear")
-	private Long nCountYear;
+	private Integer nCountYear;
 	
 	@JsonProperty(value = "nYear")
     @Column(name = "nYear")
-	private Long nYear;
+	private Integer nYear;
 
 	public String getsID_BP() {
 		return sID_BP;
@@ -33,27 +33,27 @@ public class ActionProcessCount extends AbstractEntity {
 		this.sID_BP = sID_BP;
 	}
 
-	public Long getnID_Service() {
+	public Integer getnID_Service() {
 		return nID_Service;
 	}
 
-	public void setnID_Service(Long nID_Service) {
+	public void setnID_Service(Integer nID_Service) {
 		this.nID_Service = nID_Service;
 	}
 
-	public Long getnCountYear() {
+	public Integer getnCountYear() {
 		return nCountYear;
 	}
 
-	public void setnCountYear(Long nCountYear) {
+	public void setnCountYear(Integer nCountYear) {
 		this.nCountYear = nCountYear;
 	}
 
-	public Long getnYear() {
+	public Integer getnYear() {
 		return nYear;
 	}
 
-	public void setnYear(Long nYear) {
+	public void setnYear(Integer nYear) {
 		this.nYear = nYear;
 	}
 

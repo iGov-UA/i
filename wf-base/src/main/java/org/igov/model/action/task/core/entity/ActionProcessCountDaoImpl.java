@@ -1,16 +1,14 @@
 package org.igov.model.action.task.core.entity;
 
+import java.util.Calendar;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.model.escalation.EscalationHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * @author askosyr
@@ -26,7 +24,7 @@ public class ActionProcessCountDaoImpl extends GenericEntityDao<Long, ActionProc
 
     @Transactional
     @Override
-    public ActionProcessCount getByCriteria(String sID_BP, Long nID_Service, Long nYear) {
+    public ActionProcessCount getByCriteria(String sID_BP, Integer nID_Service, Integer nYear) {
         Criteria criteria = getSession().createCriteria(ActionProcessCount.class);
         if (sID_BP != null) {
             criteria.add(Restrictions.eq("sID_BP", sID_BP));
