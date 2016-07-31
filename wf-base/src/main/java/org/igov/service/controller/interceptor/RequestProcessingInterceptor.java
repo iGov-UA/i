@@ -357,8 +357,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
-        LOG.info("Before calling set action process count {}", mParam);
-        callSetActionProcessCount("dnepr_mvk_291_common", Long.valueOf(snID_Service));
+        LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
+        if ("dnepr_mvk_291_common".equalsIgnoreCase(oProcessDefinition.getKey())){
+        	callSetActionProcessCount(oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+        }
     }
     
     /*
@@ -769,7 +771,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     	mParam.put("sID_BP", sID_Process);
     	mParam.put("nID_Service", nID_Service.toString());
     	try {
-			String soResponse = httpRequester.getInside(URI_SET_ACTION_PROCESS_COUNT, mParam);
+			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
 			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
 		} catch (Exception e) {
 			LOG.info("Error occured while processing  {}", e.getMessage());
