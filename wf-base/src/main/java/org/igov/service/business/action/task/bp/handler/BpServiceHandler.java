@@ -206,7 +206,8 @@ public class BpServiceHandler {
         if(res.endsWith(DELIMITER)){
             res = StringUtils.removeEnd(res, DELIMITER);
         }
-        return res;
+//        return res;
+        return organs.iterator().next().toString();
     }
 
     private String getPlaceForProcess(String sID_Process) {
