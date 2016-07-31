@@ -26,7 +26,7 @@ public class ActionProcessCountDaoImpl extends GenericEntityDao<Long, ActionProc
 
     @Transactional
     @Override
-    public ActionProcessCount getByCriteria(String sID_BP, Long nID_Service, Long nYear) {
+    public ActionProcessCount getByCriteria(String sID_BP, Integer nID_Service, Integer nYear) {
         Criteria criteria = getSession().createCriteria(ActionProcessCount.class);
         if (sID_BP != null) {
             criteria.add(Restrictions.eq("sID_BP", sID_BP));

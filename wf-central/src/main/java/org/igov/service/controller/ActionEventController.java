@@ -637,8 +637,8 @@ public class ActionEventController {
     public @ResponseBody
     String setActionProcessCount(
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
-            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Long nYear,
+            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
+            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
     	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
     	
