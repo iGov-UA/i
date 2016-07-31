@@ -6,6 +6,7 @@ import org.igov.model.core.AbstractEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@javax.persistence.Entity
 public class ActionProcessCount extends AbstractEntity {
 
 	@JsonProperty(value = "sID_BP")

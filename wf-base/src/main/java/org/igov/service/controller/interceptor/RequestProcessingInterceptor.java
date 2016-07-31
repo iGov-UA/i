@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import org.igov.io.Log;
 
 import static org.igov.util.Tool.sCut;
@@ -63,6 +64,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
+    private static final String URI_SET_ACTION_PROCESS_COUNT = "/wf/service/action/event/setActionProcessCount";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -355,6 +357,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
+        LOG.info("Before calling set action process count {}", mParam);
+        callSetActionProcessCount("dnepr_mvk_291_common", Long.valueOf(snID_Service));
     }
     
     /*
@@ -760,4 +764,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info(" not found escalations for process {}", sID_Process);
     }
 
+    protected void callSetActionProcessCount(String sID_Process, Long nID_Service){
+    	Map<String, String> mParam = new HashMap<String, String>();
+    	mParam.put("sID_BP", sID_Process);
+    	mParam.put("nID_Service", nID_Service.toString());
+    	try {
+			String soResponse = httpRequester.getInside(URI_SET_ACTION_PROCESS_COUNT, mParam);
+			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
+		} catch (Exception e) {
+			LOG.info("Error occured while processing  {}", e.getMessage());
+		}
+    }
 }
