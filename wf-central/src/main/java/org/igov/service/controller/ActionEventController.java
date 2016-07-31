@@ -650,7 +650,7 @@ public class ActionEventController {
     		newElem.setnYear(nYear);
     		res = newElem;
     	} else {
-    		res.setnYear(res.getnYear() + 1);
+    		res.setnCountYear(res.getnCountYear() + 1);
     	}
     	res = actionProcessCountDao.saveOrUpdate(res);
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
