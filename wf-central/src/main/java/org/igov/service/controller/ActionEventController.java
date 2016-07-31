@@ -617,17 +617,17 @@ public class ActionEventController {
     public @ResponseBody
     String getActionProcessCount(
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP,
-            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
-            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Long nYear,
+            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
+            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
     	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
     	
-    	Map<String, Long> resMap = new HashMap<String, Long>();
+    	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
     		resMap.put("nCountYear", res.getnCountYear());
     	} else {
-    		resMap.put("nCountYear", 0l);
+    		resMap.put("nCountYear", 0);
     	}
     	return JSONValue.toJSONString(resMap);
     }
@@ -645,17 +645,17 @@ public class ActionEventController {
     	if (res == null){
     		ActionProcessCount newElem = new ActionProcessCount();
     		newElem.setsID_BP(sID_BP);
-    		newElem.setnCountYear(0l);
+    		newElem.setnCountYear(0);
     		newElem.setnID_Service(nID_Service);
     		newElem.setnYear(nYear);
     		res = actionProcessCountDao.saveOrUpdate(newElem);
     	}
-    	Map<String, Long> resMap = new HashMap<String, Long>();
+    	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
     		resMap.put("nCountYear", res.getnCountYear());
     	} else {
-    		resMap.put("nCountYear", 0l);
+    		resMap.put("nCountYear", 0);
     	}
     	return JSONValue.toJSONString(resMap);
     }
