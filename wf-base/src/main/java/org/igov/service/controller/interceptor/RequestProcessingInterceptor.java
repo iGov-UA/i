@@ -55,7 +55,8 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common";
+	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
     private boolean bFinish = false;
@@ -64,7 +65,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
-    private static final String URI_SET_ACTION_PROCESS_COUNT = "/wf/service/action/event/setActionProcessCount";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -358,9 +358,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
         LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
-        if ("dnepr_mvk_291_common".equalsIgnoreCase(oProcessDefinition.getKey())){
-        	callSetActionProcessCount(oProcessDefinition.getKey(), Long.valueOf(snID_Service));
-        }
+        //if (DNEPR_MVK_291_COMMON_BP.equalsIgnoreCase(oProcessDefinition.getKey())){
+        	ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+        //}
     }
     
     /*
@@ -766,15 +766,4 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info(" not found escalations for process {}", sID_Process);
     }
 
-    protected void callSetActionProcessCount(String sID_Process, Long nID_Service){
-    	Map<String, String> mParam = new HashMap<String, String>();
-    	mParam.put("sID_BP", sID_Process);
-    	mParam.put("nID_Service", nID_Service.toString());
-    	try {
-			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
-			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
-		} catch (Exception e) {
-			LOG.info("Error occured while processing  {}", e.getMessage());
-		}
-    }
 }
