@@ -43,13 +43,4 @@ public class ActionProcessCountDaoImpl extends GenericEntityDao<Long, ActionProc
         return (ActionProcessCount)criteria.uniqueResult();
     }
 
-    @Transactional
-    @Override
-    public ActionProcessCount setActionProcessCount(ActionProcessCount actionProcessCount) {
-
-    	ActionProcessCount res = saveOrUpdate(actionProcessCount);
-        LOG.info("actionProcessCount {} is upload", actionProcessCount);
-        return res;
-    }
-
 }
