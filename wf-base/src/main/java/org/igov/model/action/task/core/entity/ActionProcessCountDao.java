@@ -8,6 +8,6 @@ import org.igov.model.core.EntityDao;
  */
 public interface ActionProcessCountDao extends EntityDao<Long, ActionProcessCount> {
 
-	ActionProcessCount getByCriteria(String sID_BP, Integer nID_Service, Integer nYear);
+	ActionProcessCount getByCriteria(String sID_BP, Long nID_Service, Long nYear);
 
 }

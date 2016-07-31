@@ -620,12 +620,13 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service != null ? Long.valueOf(nID_Service): null, 
+    			nYear != null ? Long.valueOf(nYear) : null);
     	
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
-    		resMap.put("nCountYear", res.getnCountYear());
+    		resMap.put("nCountYear", res.getnCountYear().intValue());
     	} else {
     		resMap.put("nCountYear", 0);
     	}
@@ -640,15 +641,16 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service != null ? Long.valueOf(nID_Service): null, 
+    			nYear != null ? Long.valueOf(nYear) : null);
     	
     	LOG.info("Found ActionProcessCount {}", res);
     	if (res == null){
     		ActionProcessCount newElem = new ActionProcessCount();
     		newElem.setsID_BP(sID_BP);
-    		newElem.setnCountYear(0);
-    		newElem.setnID_Service(nID_Service);
-    		newElem.setnYear(nYear);
+    		newElem.setnCountYear(0l);
+    		newElem.setnID_Service(Long.valueOf(nID_Service));
+    		newElem.setnYear(Long.valueOf(nYear));
     		res = newElem;
     	} else {
     		res.setnCountYear(res.getnCountYear() + 1);
@@ -658,7 +660,7 @@ public class ActionEventController {
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
-    		resMap.put("nCountYear", res.getnCountYear());
+    		resMap.put("nCountYear", res.getnCountYear().intValue());
     	} else {
     		resMap.put("nCountYear", 0);
     	}
