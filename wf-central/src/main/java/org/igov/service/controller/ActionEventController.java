@@ -648,7 +648,7 @@ public class ActionEventController {
     		newElem.setsID_BP(sID_BP);
     		newElem.setnCountYear(0);
     		newElem.setnID_Service(nID_Service);
-    		newElem.setnYear(nYear);
+    		newElem.setnYear(nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
     		res = newElem;
     	} else {
     		res.setnCountYear(res.getnCountYear() + 1);
