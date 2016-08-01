@@ -41,7 +41,11 @@ public class ActionProcessCountDaoImpl extends GenericEntityDao<Long, ActionProc
         	LOG.info("Adding  nYear{}", Calendar.getInstance().get(Calendar.YEAR));
         }
 
-        LOG.info("Found list of action process count {}", criteria.list());
+        try {
+        	LOG.info("Found list of action process count {}", criteria.list());
+        } catch (Exception e){
+        	e.printStackTrace();
+        }
         
         return (ActionProcessCount)criteria.uniqueResult();
     }
