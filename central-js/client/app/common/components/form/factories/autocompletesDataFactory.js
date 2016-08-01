@@ -41,6 +41,12 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       titleProperty: 'sFind',
       orderBy: 'nID',
       apiUrl: './api/subject-action-kved'
+    },
+    ID_ObjectPlace_UA: {
+      valueProperty: 'sID',
+      titleProperty: 'sFind',
+      orderBy: 'nID',
+      apiUrl: './api/object-place'
     }
   }
 });
