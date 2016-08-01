@@ -654,7 +654,10 @@ public class ActionEventController {
     		res.setnCountYear(res.getnCountYear() + 1);
     	}
     	res = actionProcessCountDao.saveOrUpdate(res);
-    	LOG.info("Saved updated info {}", res);
+    	LOG.info("Saved updated info {}: {}", res, res.getId());
+    	
+    	List<ActionProcessCount> list = actionProcessCountDao.findAll();
+    	LOG.info("Total number of elements: {}", list);
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
     	if (res != null){
