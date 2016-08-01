@@ -92,8 +92,8 @@
         <activiti:formProperty id="floors" name="Кількість поверхів" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="total_place" name="Загальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="warming_place" name="Опалювальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_from" name="Період, за який Ви заповнюєте декларацію, з; якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="string" default="01/01/2015" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_to" name="Період, за який Ви заповнюєте декларацію, по; якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="string" default="31/12/2015" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_from" name="Період, за який Ви заповнюєте декларацію, з; якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="invisible" default="01/01/2015"></activiti:formProperty>
+        <activiti:formProperty id="date_to" name="Період, за який Ви заповнюєте декларацію, по; якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="invisible" default="31/12/2015"></activiti:formProperty>
         <activiti:formProperty id="income0" name="Ваш вид доходу; наприклад: заробітна плата, стипендія, пенсія, соціальна допомога, доходи від підприємницької діяльності, здача майна в оренду, продаж майна та немайнових прав, грошове забезпечення, інше або безробітний(а). Якщо Ви маєте декілька видів доходу, перерахуйте їх через кому." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="org0" name="Назва організації, де Ви отримуєте дохід (або назва органу, який його виплачує);якщо Ви отримуєте дохід в декількох місцях, перерахуйте їх через кому, відповідно до видів доходу, які Ви зазначили вище. Увага! При отриманні доходу з пенсійного фонду, зазначте районну приналежність відділення пенсійного фонду." type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру" type="file"></activiti:formProperty>
@@ -385,8 +385,8 @@ ${sNameOrgan}&lt;br /&gt;&lt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-&lt;p&gt;Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг розглядається працівниками УПСЗН, надані Вами відомості перевіряються. Незабаром Ви отримаєте результат розгляду Вашої заяви.&lt;/p&gt;&lt;br&gt;
-&lt;p&gt;Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment}&lt;/p&gt;&lt;br&gt;
+&lt;p&gt;Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг розглядається працівниками УПСЗН, надані Вами відомості перевіряються. Незабаром Ви отримаєте результат розгляду Вашої заяви.&lt;/p&gt;
+&lt;p&gt;Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment}&lt;/p&gt;
 &lt;p&gt;Контакти підрозділу соцзахисту, який обробляє Ваше звернення:&lt;/p&gt;
 &lt;p&gt;${sNameOrgan}.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -396,6 +396,39 @@ ${sPhoneOrgan}&lt;/p&gt;
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask5" name="Невірно заповнена заява" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено через недостатню або неправильну інформацію.&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;&lt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -533,7 +566,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="overload_type" name="Вид придбаного майна, товарів або оплачених послуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_cost" name="Вартість, гривень" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_date" name="Дата придбання; наприклад, 18.01.2016" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Примітки УПСЗН на етапі перевірки даних" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Стан" type="enum" required="true">
           <activiti:value id="attr3" name="відмовлено у субсидії"></activiti:value>
           <activiti:value id="attr4" name="субсидія погоджена"></activiti:value>
@@ -576,7 +610,7 @@ ${sNameOrgan}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;На жаль, Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено.&lt;/p&gt;
 &lt;p&gt;Причина вказана у файлі, який прикріплено до цього листа.&lt;/p&gt;
-&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment1}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -615,7 +649,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ваше звернення  №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.&lt;/p&gt;
 &lt;p&gt;Розмір субсидії вказаний у файлі, який прикріплено до цього листа.&lt;/p&gt;
-&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment1}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -657,7 +691,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ваше звернення  №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.&lt;/p&gt;
 &lt;p&gt;Ваші документи підлягають комісійному розгляду. Про дату і час засідання комісії Вас буде поінформовано додатково.&lt;/p&gt;
-&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment1}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -666,41 +700,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
     <sequenceFlow id="flow15" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Невірно заповнена заява" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено через недостатню або неправильну інформацію.&lt;/p&gt;
-&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;&lt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
