@@ -22,13 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import javax.security.auth.Subject;
-
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.core.NamedEntity;
 import org.igov.service.business.action.task.bp.BpService;
 
 /**
@@ -160,9 +157,10 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
-        Set<String> organ = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        //asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, asCandidateCroupToCheck.toString().length() - 1)
-        mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
+
+        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        String organ = trimGroupsLengthTo64(organs);
+        mParam.put("organ", organ);
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
@@ -179,6 +177,37 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         return snID_ProcessEscalation;
+    }
+
+    /**
+     * While starting/saving Activiti process activiti engine uses table ACT_ID_GROUP and column where engine put
+     * list of groups has type character varying(64). It means that we have to trim group list.
+     * @param organs
+     * @return
+     */
+    private String trimGroupsLengthTo64(Set<String> organs) {
+        if(organs.isEmpty()){
+            return "";
+        }
+        final String DELIMITER = ", ";
+
+        StringBuilder result = new StringBuilder();
+        for (Iterator<String> iterator = organs.iterator(); iterator.hasNext(); ) {
+            String group = iterator.next();
+            result.append(group);
+            if (result.length() > 64) {
+                int position = result.lastIndexOf(group);
+                result.replace(position, position + group.length(), "");
+                break;
+            }
+            result.append(DELIMITER);
+        }
+        String res = result.toString();
+        if(res.endsWith(DELIMITER)){
+            res = StringUtils.removeEnd(res, DELIMITER);
+        }
+//        return res;
+        return organs.iterator().next().toString();
     }
 
     private String getPlaceForProcess(String sID_Process) {
