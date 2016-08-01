@@ -57,7 +57,7 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common";
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC";
 	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
@@ -360,7 +360,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
         LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
-        if (DNEPR_MVK_291_COMMON_BP.equalsIgnoreCase(oProcessDefinition.getKey())){
+        if (DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())){
         	ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
         }
     }
