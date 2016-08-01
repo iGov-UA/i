@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2016-07-31.
  */
 @Repository
-@SuppressWarnings("unchecked")
 public class ActionProcessCountDaoImpl extends GenericEntityDao<Long, ActionProcessCount> implements ActionProcessCountDao {
     private static final Logger LOG = LoggerFactory.getLogger(ActionProcessCountDaoImpl.class);
     protected ActionProcessCountDaoImpl() {
