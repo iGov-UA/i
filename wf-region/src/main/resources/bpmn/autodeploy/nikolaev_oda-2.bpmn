@@ -412,6 +412,14 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" writable="false"></activiti:formProperty>
 
+
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Надати послугу"></activiti:value>
+          <activiti:value id="reject" name="Відмовити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+		
+
         <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sFIO1" name="ПІБ" type="invisible"></activiti:formProperty>
@@ -450,11 +458,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Надати послугу"></activiti:value>
-          <activiti:value id="reject" name="Відмовити"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+
 		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
@@ -509,7 +513,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 			</p>
 			<p>
 		    	Причина в наступному:<br>
-				<b><i>${comment}</i></b>
+				<b><i>${sComment}</i></b>
 		    </p>
 		    <p>
 		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/17/general">iGov.org.ua</a>
@@ -630,6 +634,14 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" writable="false"></activiti:formProperty>
+
+
+        <activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
+          <activiti:value id="yes" name="Так, готовий"></activiti:value>
+          <activiti:value id="no" name="витяг не може бути наданий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+
         
         <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
 
@@ -669,11 +681,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
-          <activiti:value id="yes" name="Так, готовий"></activiti:value>
-          <activiti:value id="no" name="витяг не може бути наданий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+
 		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
