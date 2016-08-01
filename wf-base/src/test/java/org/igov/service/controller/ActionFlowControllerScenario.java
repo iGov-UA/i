@@ -72,7 +72,11 @@ public class ActionFlowControllerScenario {
         Assert.assertFalse(days.getaDay().isEmpty());
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000").param("nFreeDays", "1")).
+                param("nID_ServiceData", "1").
+                param("nID_SubjectOrganDepartment", "1").
+                param("nDays", "1000000").
+                param("nFreeDays", "1").
+                param("nSlots", "2")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -81,6 +85,7 @@ public class ActionFlowControllerScenario {
 
         Day day = findFirstFreeDay(days);
         FlowSlotVO freeSlot = findFirstFreeSlot(day);
+        Assert.assertEquals(2, day.getaSlot().size());
         Assert.assertTrue(freeSlot.isbFree());
 
         String[] hoursAndMinutes = freeSlot.getsTime().split(":");
@@ -95,7 +100,8 @@ public class ActionFlowControllerScenario {
                 param("nID_FlowSlot", "" + freeSlot.getnID()).
                 param("sDate", sDateTime).
                 param("nID_Subject", "2").
-                param("nID_Task_Activiti", "1")).
+                param("nID_Task_Activiti", "1").
+                param("nSlots", "2")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -105,12 +111,17 @@ public class ActionFlowControllerScenario {
         Assert.assertTrue(ticketId != null);
 
         getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1")).
+                param("nID_ServiceData", "1").
+                param("nID_SubjectOrganDepartment", "1").
+                param("sDate", sDateTime).
+                param("nDays", "1000000").
+                param("nSlots", "2")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         days = JsonRestUtils.readObject(getJsonData, Days.class);
 
+        Assert.assertEquals(1, days.getaDay().get(0).getaSlot().size());
         FlowSlotVO slotAfterModification1 = findSlot(days, freeSlot.getnID());
         Assert.assertTrue(slotAfterModification1 == null); // slot is no more free, therefor it doesn't returned
 
