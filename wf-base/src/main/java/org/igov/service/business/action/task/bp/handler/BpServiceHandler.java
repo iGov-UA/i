@@ -159,7 +159,7 @@ public class BpServiceHandler {
         mParam.put("email", mTaskParam.get("email"));
 
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        String organ = trimGroupsLengthTo64(organs);
+        String organ = trimGroups(organs);
         mParam.put("organ", organ);
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
@@ -180,26 +180,19 @@ public class BpServiceHandler {
     }
 
     /**
-     * While starting/saving Activiti process activiti engine uses table ACT_ID_GROUP and column where engine put
-     * list of groups has type character varying(64). It means that we have to trim group list.
+     * organise groups into string
      * @param organs
      * @return
      */
-    private String trimGroupsLengthTo64(Set<String> organs) {
+    private String trimGroups(Set<String> organs) {
         if(organs.isEmpty()){
             return "";
         }
         final String DELIMITER = ", ";
 
         StringBuilder result = new StringBuilder();
-        for (Iterator<String> iterator = organs.iterator(); iterator.hasNext(); ) {
-            String group = iterator.next();
+        for (String group : organs) {
             result.append(group);
-            if (result.length() > 64) {
-                int position = result.lastIndexOf(group);
-                result.replace(position, position + group.length(), "");
-                break;
-            }
             result.append(DELIMITER);
         }
         String res = result.toString();
@@ -207,7 +200,6 @@ public class BpServiceHandler {
             res = StringUtils.removeEnd(res, DELIMITER);
         }
         return res;
-//        return organs.iterator().next().toString();
     }
 
     private String getPlaceForProcess(String sID_Process) {
