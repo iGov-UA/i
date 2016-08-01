@@ -35,6 +35,12 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       orderBy: 'sNameShort_UA',
       additionalValueProperty: 'sID_UA',
       apiUrl: './api/countries/'
+    },
+    ID_SubjectActionKVED: {
+      valueProperty: 'sID',
+      titleProperty: 'sFind',
+      orderBy: 'nID',
+      apiUrl: './api/subject-action-kved'
     }
   }
 });
