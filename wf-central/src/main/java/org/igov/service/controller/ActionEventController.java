@@ -620,7 +620,7 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
     	
     	Map<String, Integer> resMap = new HashMap<String, Integer>();
     	
@@ -640,7 +640,7 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear);
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
     	
     	LOG.info("Found ActionProcessCount {}", res);
     	if (res == null){
@@ -666,5 +666,13 @@ public class ActionEventController {
     		resMap.put("nCountYear", 0);
     	}
     	return JSONValue.toJSONString(resMap);
+    }
+    
+    @ApiOperation(value = "cleanActionProcessCount", notes = "cleanActionProcessCount")
+    @RequestMapping(value = "/cleanActionProcessCount", method = RequestMethod.GET)
+    public void setActionProcessCount(
+            @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
+    	int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
+    	LOG.info("Removed {} entities", res);
     }
 }
