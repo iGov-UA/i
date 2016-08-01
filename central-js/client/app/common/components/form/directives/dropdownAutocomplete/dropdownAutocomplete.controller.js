@@ -11,6 +11,8 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
         angular.forEach(res.data, function (el) {
           if(angular.isDefined(el.sID) && angular.isDefined(el.sNote)){
             el.sFind = el.sID + " " + el.sNote;
+          } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
+            el.sFind = el.sID + " " + el.sName_UA;
           }
         });
       }

@@ -39,6 +39,7 @@ module.exports = function (app) {
   app.use('/api/subject', require('./api/subject'));
   app.use('/api/object-earth-target', require('./api/object-earth-target'));
   app.use('/api/subject-action-kved', require('./api/subject-action-kved'));
+  app.use('/api/object-place', require('./api/object-place'));
   app.use('/api/markers', require('./api/markers'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets|public-js)/*')
