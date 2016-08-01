@@ -104,7 +104,7 @@ public class ActionProcessCount extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "ActionProcessCount [sID_BP=" + sID_BP + ", nID_Service="
+		return "ActionProcessCount [id=" + this.getId() + ", sID_BP=" + sID_BP + ", nID_Service="
 				+ nID_Service + ", nCountYear=" + nCountYear + ", nYear="
 				+ nYear + "]";
 	}
