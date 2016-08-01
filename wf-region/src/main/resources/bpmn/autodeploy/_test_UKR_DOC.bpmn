@@ -40,6 +40,7 @@
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="NumberGov" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -120,12 +121,13 @@
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Head_Document_UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Body_UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="NumberGov" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:string><![CDATA[№123456789]]></activiti:string>
+            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSourceChannel">
             <activiti:string><![CDATA[Source channel]]></activiti:string>
