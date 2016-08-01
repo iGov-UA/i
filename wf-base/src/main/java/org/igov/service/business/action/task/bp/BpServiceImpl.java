@@ -41,8 +41,6 @@ public class BpServiceImpl implements BpService {
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
         String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
-        LOG.info("variables={}", variables);
-        LOG.info("organ ={}", organ);
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();

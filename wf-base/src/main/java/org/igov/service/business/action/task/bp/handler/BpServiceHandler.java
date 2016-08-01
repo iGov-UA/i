@@ -180,7 +180,7 @@ public class BpServiceHandler {
     }
 
     /**
-     * organise groups into string
+     * organise groups into single string
      * @param organs
      * @return
      */
