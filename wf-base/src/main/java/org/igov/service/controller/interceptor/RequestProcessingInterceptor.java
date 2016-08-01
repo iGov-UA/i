@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import org.igov.io.Log;
 
 import static org.igov.util.Tool.sCut;
@@ -54,7 +55,8 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common";
+	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
     private boolean bFinish = false;
@@ -355,6 +357,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
+        LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
+        //if (DNEPR_MVK_291_COMMON_BP.equalsIgnoreCase(oProcessDefinition.getKey())){
+        	ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+        //}
     }
     
     /*

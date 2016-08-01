@@ -87,7 +87,8 @@ module.exports.getServicesTree = function (req, res) {
         },
         json: true,
         'qs': {
-          'nID_Category': options.params.sFind
+          'sFind': options.params.sFind,
+          'asID_Place_UA': options.params.asIDPlaceUA
         }
       }, callback);
     }

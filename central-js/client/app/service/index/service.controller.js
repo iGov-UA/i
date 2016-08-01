@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state) {
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll) {
     $rootScope.catalogTab = 1;
     $scope.catalog = [];
     // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -97,7 +97,5 @@ angular.module('app')
         $scope.spinner = false;
       }
     });
-
-    console.log($state)
-
+    $anchorScroll();
   }]);

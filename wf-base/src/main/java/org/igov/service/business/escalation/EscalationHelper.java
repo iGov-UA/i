@@ -35,6 +35,7 @@ public class EscalationHelper implements ApplicationContextAware {
     public void checkTaskOnEscalation(Map<String, Object> mTaskParam,
             String sCondition, String soData,
             String sPatternFile, String sBeanHandler) throws Exception {
+        LOG.info("checkTaskOnEscalation started");
 
         //1 -- result of condition
         Map<String, Object> mDataParam = parseJsonData(soData);//from json
@@ -58,7 +59,8 @@ public class EscalationHelper implements ApplicationContextAware {
                             for (int i = 0; i < basicDBList.size(); i++) {
                                 asRecipientMail[i] = (String)basicDBList.get(i);
                             }
-                        } 
+                        }
+                        LOG.info("before oEscalationHandler.execute");
                         oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 } else {
