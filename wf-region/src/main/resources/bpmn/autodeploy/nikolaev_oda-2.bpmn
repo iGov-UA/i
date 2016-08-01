@@ -10,9 +10,34 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN0" name="Копія ідентифікаційного коду заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Копія ідентифікаційного коду заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" required="true">
+          <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
+          <activiti:value id="fam2" name="Розлучений(а)"></activiti:value>
+          <activiti:value id="fam3" name="Не одружений (не заміжня)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileFamily1" name="Копія свідоцтва про одруження(заміжня)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileFamily2" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
+
+<!-- 
+        <activiti:formProperty id="asChangePlace" name="Чи міняли Ви місце проживання за останні 5 років" type="enum" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileChangePlace" name="Довідка з попереднього місця реєстрації" type="file" required="true"></activiti:formProperty>
+ -->
+
+        <activiti:formProperty id="asPrison" name="Чи перебували Ви в місцях позбавлення волі" type="enum" required="true" default="no">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePrison" name="Довідка про звільнення з місць позбавлення волі" type="file" required="true"></activiti:formProperty>
+
+
+
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork0" name="Працюєте" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -63,7 +88,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport1" name="Копія паспорта громадянина України першого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN1" name="Копія ідентифіувційного коду першого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN1" name="Копія ідентифікаційного коду першого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork1" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -83,7 +108,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport2" name="Копія паспорта громадянина України другого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN2" name="Копія ідентифіувційного коду другого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN2" name="Копія ідентифікаційного коду другого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork2" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -103,7 +128,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport3" name="Копія паспорта громадянина України третього члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN3" name="Копія ідентифіувційного коду третього члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN3" name="Копія ідентифікаційного коду третього члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork3" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -123,7 +148,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport4" name="Копія паспорта громадянина України четвертого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN4" name="Копія ідентифіувційного коду четвертого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN4" name="Копія ідентифікаційного коду четвертого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork4" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -143,7 +168,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport5" name="Копія паспорта громадянина України п'ятого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN5" name="Копія ідентифіувційного коду п'ятого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN5" name="Копія ідентифікаційного коду п'ятого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork5" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -163,7 +188,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport6" name="Копія паспорта громадянина України шостого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN6" name="Копія ідентифіувційного коду шостого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN6" name="Копія ідентифікаційногоифіувційного коду шостого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asWork6" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -194,15 +219,14 @@
         <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="invisible" default=" "></activiti:formProperty>
 
-
-
-        <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_fields_start" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_1" name="Отображать 1 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_2" name="Отображать 2 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_3" name="Отображать 3 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_4" name="Отображать 4 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_5" name="Отображать 5 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_6" name="Отображать 6 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_fields_invisible" name="hide fields invisible" type="markers" default="${markerService.loadFromFile('mvk/show_fill_invisible.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -225,7 +249,7 @@ if(execution.getVariable('asPrivilege')=='no'){
 
 // скільки проживає людей
 int maxCountFamily = 6
-int countFamily = execution.getVariable('asCountFamily')[1]
+int countFamily = execution.getVariable('asCountFamily')
 int countIsAdult = 0
 
 /*форматуємо поле місце роботи*/
@@ -238,7 +262,7 @@ for (int i = 1; i <= maxCountFamily; i++) {
     def name_nWhereLives = 'nWhereLives' + "${i}"
     def name_sFIO = 'sFIO' + "${i}"
     def name_sClFio = 'sClFio' + "${i}"
-	if(i<=countFamily){
+	if(i <= countFamily){
 		def ClFio = execution.getVariable(name_sFIO) + ', ' + execution.getVariable(name_sFamilyRelation) + ', ' + execution.getVariable(name_nBirthday) + ' р.н.'     
 		execution.setVariable(name_sClFio, ClFio)     
 		if(execution.getVariable(name_asAdult)== 'yes'){
@@ -251,7 +275,7 @@ for (int i = 1; i <= maxCountFamily; i++) {
 			execution.setVariable(name_sWorkPlace, 'не працює')    
 		}
 	}
-	else{/*родственники НЕ существуют*/     
+	if(i > countFamily){/*родственники НЕ существуют*/     
 		execution.setVariable(name_sWorkPlace, ' ')
 		execution.setVariable(name_sFamilyRelation, ' ')   
 		execution.setVariable(name_nBirthday, ' ')  
@@ -332,6 +356,25 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" writable="false">
+          <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
+          <activiti:value id="fam2" name="Розведений(а)"></activiti:value>
+          <activiti:value id="fam3" name="Не одружений (не заміжня)"></activiti:value>
+        </activiti:formProperty>
+
+<!-- 
+        <activiti:formProperty id="asChangePlace" name="Чи міняли Ви місце проживання за останні 5 років" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+ -->
+
+        <activiti:formProperty id="asPrison" name="Чи перебували Ви в місцях позбавлення волі" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
         <activiti:formProperty id="sWorkPlace0" name="Місце роботи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Фактична адреса за якою проживаєте заявник" type="string" writable="false"></activiti:formProperty>
@@ -428,7 +471,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
+			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${bankIdinn}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}, ${nFileFamily1}, ${nFileFamily2}, ${nFilePrison}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -533,6 +576,25 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" writable="false">
+          <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
+          <activiti:value id="fam2" name="Розведений(а)"></activiti:value>
+          <activiti:value id="fam3" name="Не одружений (не заміжня)"></activiti:value>
+        </activiti:formProperty>
+
+<!-- 
+        <activiti:formProperty id="asChangePlace" name="Чи міняли Ви місце проживання за останні 5 років" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+ -->
+
+        <activiti:formProperty id="asPrison" name="Чи перебували Ви в місцях позбавлення волі" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
         <activiti:formProperty id="sWorkPlace0" name="Місце роботи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Фактична адреса за якою проживаєте заявник" type="string" writable="false"></activiti:formProperty>
@@ -626,9 +688,11 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_For_Print_3" name="hide-show fields sFIO" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_3.json')}"></activiti:formProperty>
 
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
+			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${bankIdinn}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}, ${nFileFamily1}, ${nFileFamily2}, ${nFilePrison}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
