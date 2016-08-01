@@ -16,10 +16,10 @@
 
         <activiti:formProperty id="asFamily" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="fam1" name="Одружений(заміжня)"></activiti:value>
-          <activiti:value id="fam2" name="Розведений(а)"></activiti:value>
+          <activiti:value id="fam2" name="Розлучений(а)"></activiti:value>
           <activiti:value id="fam3" name="Не одружений (не заміжня)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileFamily1" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileFamily1" name="Копія свідоцтва про одруження(заміжня)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamily2" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
 
 <!-- 
@@ -249,7 +249,7 @@ if(execution.getVariable('asPrivilege')=='no'){
 
 // скільки проживає людей
 int maxCountFamily = 6
-int countFamily = execution.getVariable('asCountFamily')[1]
+int countFamily = execution.getVariable('asCountFamily')
 int countIsAdult = 0
 
 /*форматуємо поле місце роботи*/
@@ -262,7 +262,7 @@ for (int i = 1; i <= maxCountFamily; i++) {
     def name_nWhereLives = 'nWhereLives' + "${i}"
     def name_sFIO = 'sFIO' + "${i}"
     def name_sClFio = 'sClFio' + "${i}"
-	if(i<=countFamily){
+	if(i <= countFamily){
 		def ClFio = execution.getVariable(name_sFIO) + ', ' + execution.getVariable(name_sFamilyRelation) + ', ' + execution.getVariable(name_nBirthday) + ' р.н.'     
 		execution.setVariable(name_sClFio, ClFio)     
 		if(execution.getVariable(name_asAdult)== 'yes'){
@@ -275,7 +275,7 @@ for (int i = 1; i <= maxCountFamily; i++) {
 			execution.setVariable(name_sWorkPlace, 'не працює')    
 		}
 	}
-	if(i>countFamily){/*родственники НЕ существуют*/     
+	if(i > countFamily){/*родственники НЕ существуют*/     
 		execution.setVariable(name_sWorkPlace, ' ')
 		execution.setVariable(name_sFamilyRelation, ' ')   
 		execution.setVariable(name_nBirthday, ' ')  
