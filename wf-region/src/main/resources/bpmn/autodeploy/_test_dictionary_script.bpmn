@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>        
         <activiti:formProperty id="sMinSalary" name="Мінімальная заробітна плата сьогодні" type="invisible"></activiti:formProperty>        
-        <activiti:formProperty id="dVisit" name="Дата визита" type="date"></activiti:formProperty>
+        <activiti:formProperty id="dVisit" name="Дата визита" type="date" default="02/12/2016"></activiti:formProperty>
         <activiti:formProperty id="sDateMinSalary" name="Мінімальная заробітна плата після дати" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -25,9 +25,10 @@ def obj = new FileSystemDictonary()
 //получаем заданную дату в виде строки
 def sVisit = execution.getVariable('dVisit')
 //задаем формат строки, регистр и количество букв важен
-format.applyPattern("dd/MM/yyyy")
+//format.applyPattern("dd/MM/yyyy")
 //преобразовываем строку в дату
-def dVisit = format.parse(sVisit)
+def dVisit = sVisit
+// format.parse(sVisit)
 
 
 //получаем дату из библиотеки, где 1 - это строка, 4-столбец в файле services_price.csv
