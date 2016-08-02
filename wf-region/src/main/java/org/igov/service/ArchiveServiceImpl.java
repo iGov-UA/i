@@ -99,10 +99,10 @@ public class ArchiveServiceImpl implements ArchiveService {
                 if (index < 1 && rs.next()) {
                     index++;
                     String date = rs.getString("minREGDATE");
-                    System.out.println("date:" + date);
+                    LOG.info("date:" + date);
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
                         String sID_Complain = rs.getString("IDENTITY");
-                        System.out.println("sID_Complain:" + sID_Complain);
+                        LOG.info("sID_Complain:" + sID_Complain);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", rs.getString("IDENTITY"));
                             if (!process.isPresent()) {
@@ -116,7 +116,10 @@ public class ArchiveServiceImpl implements ArchiveService {
                     hasNextDate = false;
                 }
             }
-        } finally {
+        } catch(Exception ex){
+            ex.printStackTrace();
+            LOG.error("!!! archive error: ", ex);
+        }finally { 
             try {
                 if (null != stat) {
                     stat.close();
@@ -157,11 +160,10 @@ public class ArchiveServiceImpl implements ArchiveService {
 
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        System.out.println("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
+        LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
         process.setoDateStart(new DateTime(dateFormat.parse(rs.getString("REGDATE"))));
         System.out.println(process.getoDateStart());
         process.setoDateFinish(new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")))); //EXECCOMPLDATE
-        //System.out.println(process.getoDateFinish());
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
         process.setsID_Data(rs.getString("IDENTITY"));
@@ -194,11 +196,5 @@ public class ArchiveServiceImpl implements ArchiveService {
             attribute.setName(metaData.getColumnLabel(i));
             attribute = attributeDao.saveOrUpdate(attribute);
         }
-    }
-    
-    public static void main(String[] arg) throws ParseException{
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(new DateTime(dateFormat.parse("2003-01-13")));
-    
     }
 }
