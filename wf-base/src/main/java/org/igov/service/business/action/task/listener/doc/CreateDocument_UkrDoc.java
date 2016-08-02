@@ -22,6 +22,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
@@ -215,9 +216,10 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     }
 
 	private String getActionProcessCount(String sID_BP, Long nID_Service) {
-		int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, sID_BP, nID_Service, null);
-		LOG.info("Retrieved {} as a result");
-		return String.format("%07d", res);
+		int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
+		String resStr = String.format("%07d", res);
+		LOG.info("Retrieved {} as a result", resStr);
+		return resStr;
 	}
 
 }
