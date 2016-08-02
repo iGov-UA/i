@@ -1,6 +1,6 @@
-<div class="container" ng-class="{'sfs-container': service.subjectOperatorName === 'Державна фіскальна служба'}">
-    <div class="service-name">{{service.sName}}</div>
-    <div class="operator-name">{{service.sSubjectOperatorName}}</div>
+<div class="container" ng-class="{'sfs-container': service.subjectOperatorName === 'Державна фіскальна служба'}" ng-if="!spinner">
+    <div class="service-name">{{::service.sName}}</div>
+    <div class="operator-name">{{::service.sSubjectOperatorName}}</div>
 
     <div class="row">
         <div class="col-md-12">
@@ -49,4 +49,10 @@
         </div>
     </div>
 
+</div>
+
+<div class="row" ng-show="spinner">
+  <div class="text-center">
+    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+  </div>
 </div>

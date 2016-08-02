@@ -14,6 +14,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -40,11 +41,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import org.igov.io.Log;
 
 import static org.igov.util.Tool.sCut;
@@ -54,7 +57,8 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC";
+	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
     private boolean bFinish = false;
@@ -355,8 +359,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
+        LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
+        if (DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())){
+        	ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
+        }
     }
-    
+        
+
     /*
      *  Сохранение комментария эскалации. Как определяется что это комментарий эскалации:
      *  
@@ -467,33 +476,33 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else {
                 String sMessage = (String) oResponseJson.get("message");
         	LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
-                new Log(this.getClass(), LOG)
-                ._Case("saveCommentSystemEscalation")
-                ._Status(Log.LogStatus.ERROR)
-                ._Head("Ошибка при добавлении коммменатирия эскалации")
-                ._Body(sMessage)
-                ._Param("sURL", sURL)
-                ._Param("sID_Order", sID_Order)
-                ._Param("sBody", sComment)
-                ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
-                .save();
+//                new Log(this.getClass(), LOG)
+//                ._Case("saveCommentSystemEscalation")
+//                ._Status(Log.LogStatus.ERROR)
+//                ._Head("Ошибка при добавлении коммменатирия эскалации")
+//                ._Body(sMessage)
+//                ._Param("sURL", sURL)
+//                ._Param("sID_Order", sID_Order)
+//                ._Param("sBody", sComment)
+//                ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
+//                .save();
             }
             
         } catch (Exception e) {
-            new Log(e, LOG)
-            ._Case("saveCommentSystemEscalation")
-            ._Status(Log.LogStatus.ERROR)
-            ._Head("Ошибка при добавлении коммменатирия эскалации")
-            ._Body("Комментарий: "+sComment)
-            ._Param("sURL", sURL)
-            ._Param("sID_Order", sID_Order)
-            ._Param("sBody", sComment)
-            ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
-            .save();
+            LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
+//            new Log(e, LOG)
+//            ._Case("saveCommentSystemEscalation")
+//            ._Status(Log.LogStatus.ERROR)
+//            ._Head("Ошибка при добавлении коммменатирия эскалации")
+//            ._Body("Комментарий: "+sComment)
+//            ._Param("sURL", sURL)
+//            ._Param("sID_Order", sID_Order)
+//            ._Param("sBody", sComment)
+//            ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
+//            .save();
         }
         
     }
-    
 
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
@@ -623,6 +632,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         	snID_Task = (String) mRequestParam.get("taskId");
         	LOG.info("Found taskId in mRequestParam {}", snID_Task);
         }
+
+        LOG.info("Looking for a task with ID {}", snID_Task);
+
+        if (snID_Task == null && mRequestParam.containsKey("taskId")){
+        	snID_Task = (String) mRequestParam.get("taskId");
+        	LOG.info("Found taskId in mRequestParam {}", snID_Task);
+        }
+
         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task)
                 .singleResult();
 

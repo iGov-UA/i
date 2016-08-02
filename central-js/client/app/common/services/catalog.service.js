@@ -10,21 +10,53 @@ angular.module('app')
     var nID_Category = category || 1;
     var nID_ServiceTag_Root = subcat;
     var nID_ServiceTag_Child = situation;
-    if(sFind.length <= 3){
+    if(sFind.length < 3){
       sFind = null;
     }
 
     if(!category
         && !subcat
         || category
-        && !subcat) {
+        && !subcat && category !== 'business') {
+      // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
+      // пока не реализованы теги нового бизнеса, вернул в проверку старый.
+      if(sFind) {
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          sFind: sFind || null,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category,
+          bNew: true
+        };
+        return $http.get('./api/catalog/getCatalogTree', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      } else {
+        var data = {
+          asIDPlaceUA: asIDPlaceUA,
+          sFind: sFind || null,
+          bShowEmptyFolders: bShowEmptyFolders,
+          nID_Category: nID_Category
+        };
+        return $http.get('./api/catalog/getCatalogTree', {
+          params: data,
+          data: data
+        }).then(function (response) {
+          servicesCache = response.data;
+          return response.data;
+        });
+      }
+    } else if(nID_Category === 'business'){
       var data = {
         asIDPlaceUA: asIDPlaceUA,
         sFind: sFind || null,
-        bShowEmptyFolders: bShowEmptyFolders,
-        nID_Category: nID_Category
+        bShowEmptyFolders: bShowEmptyFolders
       };
-      return $http.get('./api/catalog/getCatalogTree', {
+      return $http.get('./api/catalog', {
         params: data,
         data: data
       }).then(function (response) {
@@ -49,6 +81,31 @@ angular.module('app')
           return response.data;
         });
     }
+  };
+
+  this.getServiceTags = function (sFind) {
+    var data = {
+      sFind: sFind,
+      nID_Category: 1
+    };
+    return $http.get('./api/catalog/getCatalogTree', {
+      params: data,
+      data: data
+    }).then(function (response) {
+        return response.data;
+    });
+  };
+
+  this.getServiceBusiness = function (sFind) {
+    var data = {
+      sFind: sFind
+    };
+    return $http.get('./api/catalog', {
+      params: data,
+      data: data
+    }).then(function (res) {
+      return res.data;
+    })
   };
 
   this.getCatalogTreeTag = function (nID_Category, sFind) {
@@ -132,6 +189,46 @@ angular.module('app')
     return deferred.promise;
   }
 
+  // используем старый поиск для бизнеса, пока теги не реализированы, после - удалить.
+  this.getOperatorsOld = function(catalog) {
+    var operators = [];
+    if (catalog === undefined) {
+      catalog = servicesCache;
+    }
+      angular.forEach(catalog, function(category) {
+        angular.forEach(category.aSubcategory, function(subCategory) {
+          angular.forEach(subCategory.aService, function(aServiceItem) {
+            var found = false;
+            for (var i = 0; i < operators.length; ++i) {
+              if (operators[i].sSubjectOperatorName === aServiceItem.sSubjectOperatorName) {
+                found = true;
+                break;
+              }
+            }
+            if (!found && aServiceItem.sSubjectOperatorName != "") {
+              operators.push(aServiceItem);
+            }
+          });
+        });
+      });
+      return operators;
+  };
+
+  // пока не реализованы теги для бизнеса - используем старый сервис, после реализации - удалить.
+  this.getServices = function (sFind) {
+    var data = {
+      sFind: sFind || null
+    };
+    return $http.get('./api/catalog', {
+      params: data,
+      data: data
+    }).then(function (response) {
+      servicesCache = response.data;
+      // нам нужен только бизнес
+      return response.data;
+    });
+  };
+
   this.setServicesTree = function(data, callback){
     var request = {
       method: 'POST',
@@ -212,21 +309,6 @@ angular.module('app')
 //     catalog = servicesCache;
 //   }
 //
-//   angular.forEach(catalog.aService, function(category) {
-//         if (typeof (catalogCounts[category.nStatus]) == 'undefined') {
-//           catalogCounts[category.nStatus] = 0;
-//         }
-//         ++catalogCounts[category.nStatus];
-//   });
-//   return catalogCounts;
-// };
-
-// this.getCatalogCountsOld = function(catalog) {
-//   var catalogCounts = {'0': 0, '1': 0, '2': 0};
-//   if (catalog === undefined) {
-//     catalog = servicesCache;
-//   }
-//
 //   angular.forEach(catalog, function(category) {
 //     angular.forEach(category.aSubcategory, function(subItem) {
 //       angular.forEach(subItem.aService, function(aServiceItem) {
@@ -238,28 +320,4 @@ angular.module('app')
 //     });
 //   });
 //   return catalogCounts;
-// };
-
-// this.getOperatorsOld = function(catalog) {
-//   var operators = [];
-//   if (catalog === undefined) {
-//     catalog = servicesCache;
-//   }
-//   angular.forEach(catalog, function(category) {
-//     angular.forEach(category.aSubcategory, function(subCategory) {
-//       angular.forEach(subCategory.aService, function(aServiceItem) {
-//         var found = false;
-//         for (var i = 0; i < operators.length; ++i) {
-//           if (operators[i].sSubjectOperatorName === aServiceItem.sSubjectOperatorName) {
-//             found = true;
-//             break;
-//           }
-//         }
-//         if (!found && aServiceItem.sSubjectOperatorName != "") {
-//           operators.push(aServiceItem);
-//         }
-//       });
-//     });
-//   });
-//   return operators;
 // };

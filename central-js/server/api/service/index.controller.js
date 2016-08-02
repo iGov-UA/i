@@ -45,7 +45,7 @@ module.exports.index = function (req, res) {
 
 module.exports.getServiceFeedback = function (req, res) {
   var url = sHost + '/subject/message/getFeedbackExternal';
-  var data = req.body;
+  var data = req.query;
 
   var callback = function(error, response, body) {
     res.send(body);
@@ -59,8 +59,10 @@ module.exports.getServiceFeedback = function (req, res) {
       'password': config.password
     },
     'qs': {
-      'sID_Token': 123,
-      'nID_Service': req.params.nID
+      'sID_Token': data.sID_Token || 123,
+      'nID_Service': req.params.nID,
+      'nID': data.sID_Order
+
     }
   }, callback);
 };

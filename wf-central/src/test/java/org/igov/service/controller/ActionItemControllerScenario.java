@@ -7,6 +7,7 @@ import org.igov.model.action.item.ServiceData;
 import org.igov.model.action.item.Subcategory;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.service.business.action.item.ServiceTagTreeNodeVO;
+import org.igov.service.business.action.item.ServiceTagTreeVO;
 import org.igov.service.business.core.TableData;
 import org.igov.service.business.core.TableDataService;
 import org.igov.util.JSON.JsonRestUtils;
@@ -360,22 +361,23 @@ public class ActionItemControllerScenario {
     }
 
 
-    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
         String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
-                param("nID_Category", "1")).
+                param("nID_Category", "1").
+                param("sFind", "реєстрація").
+                param("bNew", "true")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andExpect(jsonPath("$", not(empty()))).
                 andReturn().getResponse().getContentAsString();
-        ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
+        ServiceTagTreeVO tree = JsonRestUtils.readObject(jsonData, ServiceTagTreeVO.class);
 
-        Assert.assertTrue(tableDataList.length > 0);
+        Assert.assertTrue(tree.getaNode().size() > 0);
+        Assert.assertTrue(tree.getaService().size() > 0);
     }
 
-    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTagService() throws Exception {
         dbManager.recreateDb();
@@ -384,10 +386,9 @@ public class ActionItemControllerScenario {
         for (int i = 0; i < 2; ++i) {
             String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
                     param("nID_Category", "1").
-                    param("nID_ServiceTag_Root", "60").
-                    param("sFind", "реєстр").
-                    param("bShowEmptyFolders", "false").
-                    param("asID_Place_UA", "1200000000,1220300000,1220310100")).
+                    param("nID_ServiceTag_Root", "1").
+                    param("sFind", "реєстрація").
+                    param("bShowEmptyFolders", "false")).
                     andExpect(status().isOk()).
                     andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                     andExpect(jsonPath("$", not(empty()))).

@@ -1,37 +1,91 @@
-angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService) {
+angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService, TitleChangeService, CatalogService, $anchorScroll) {
+  $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+  var sServiceName = $scope.service.sName;
+  var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
+    if(res.length !== 0) {
+      var tag = res[0].oServiceTag_Root.sName_UA;
+      var situation = res[0].aServiceTag_Child[0].sName_UA;
+      TitleChangeService.setTitle(sServiceName + ' / ' + situation + ' / ' + tag);
+      $scope.spinner = false;
+    } else {
+      CatalogService.getServiceBusiness(sServiceName).then(function (res) {
+        var scat = res[0].aSubcategory[0].sName;
+        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        $scope.spinner = false;
+      })
+    }
+  });
+  $anchorScroll();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope) {
-  $scope.catalog = catalogContent;
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
     $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
   }, false);
+
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      messageBusService.unsubscribe(item);
+    });
+  });
 
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
     }
   });
-  // $scope.$on('$stateChangeSuccess', function(event, toState) {
-  //   if (toState.resolve) {
-  //     $scope.spinner = false;
-  //   }
-  // });
   $scope.$on('$stateChangeError', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = false;
     }
   });
+  $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope) {
+angular.module('app').controller('OldBusinessController', function ($scope, AdminService, businessContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
+  $scope.spinner = true;
+  var subscriptions = [];
+  messageBusService.subscribe('catalog:update', function (data) {
+    $scope.mainSpinner = false;
+    $rootScope.fullCatalog = data;
+    $scope.catalog = data;
+    $rootScope.busSpinner = false;
+    $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
+  }, false);
+
+  $scope.$on('$destroy', function() {
+    subscriptions.forEach(function(item) {
+      messageBusService.unsubscribe(item);
+    });
+  });
+
+  $scope.$on('$stateChangeStart', function (event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = true;
+    }
+  });
+
+  $scope.$on('$stateChangeError', function (event, toState) {
+    if (toState.resolve) {
+      $scope.spinner = false;
+    }
+  });
+  $rootScope.$watch('catalog', function () {
+    if($scope.catalog.length !== 0) $scope.spinner = false;
+  });
+  $anchorScroll();
+});
+
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -44,6 +98,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       $scope.category = null;
     }
     $scope.spinner = false;
+    $rootScope.rand = (Math.random()*10).toFixed(2);
   }, false);
 
   if ($scope.catalog
@@ -56,23 +111,43 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   if (!$scope.catalog) {
     $scope.category = $scope.catalog;
   }
-
+  $scope.trustAsHtml = function(string) {
+    return $sce.trustAsHtml(string);
+  };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
       $scope.spinner = true;
     }
   });
-  // $scope.$on('$stateChangeSuccess', function(event, toState) {
-  //   if (toState.resolve) {
-  //     $scope.spinner = false;
-  //   }
-  // });
   // $scope.$on('$stateChangeError', function(event, toState) {
   //   if (toState.resolve) {
   //     $scope.spinner = false;
   //   }
   // });
+  var HC_LOAD_INIT = false;
+  window._hcwp = window._hcwp || [];
+  window._hcwp.push({
+    widget: 'Stream',
+    widget_id: 60115
+  });
+  if ('HC_LOAD_INIT' in window) {
+    return;
+  }
+  HC_LOAD_INIT = true;
+  var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
+  var hcc = document.createElement('script');
+  hcc.type = 'text/javascript';
+  hcc.async = true;
+  hcc.src = ('https:' === document.location.protocol ? 'https' : 'http') + '://w.hypercomments.com/widget/hc/60115/' + lang + '/widget.js';
 
+  $scope.runComments = function () {
+    angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
+  };
+  var situation = $scope.category.aServiceTag_Child[0].sName_UA;
+  var tag = $scope.category.oServiceTag_Root.sName_UA;
+  var title = situation + ' / ' + tag;
+  TitleChangeService.setTitle(title);
+  $anchorScroll();
 });
 
 angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
@@ -85,7 +160,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, ServiceService, FeedbackService, ErrorsFactory) {
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -103,57 +178,71 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
   activate();
 
-  function activate(){
+  function activate() {
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
+    $scope.feedback.sSubjectOperatorName = service.sSubjectOperatorName;
 
-    if($scope.nID && $scope.sID_Token){
+    if ($scope.nID && $scope.sID_Token) {
       $scope.feedback.allowLeaveFeedback = true;
     }
 
-    FeedbackService.getFeedbackListForService(ServiceService.oService.nID).then(function (response) {
-      var funcDesc = {sHead:"Завантаженя фідбеку для послуг", sFunc:"getFeedbackForService"};
-      ErrorsFactory.init(funcDesc, {asParam:['nID: '+ServiceService.oService.nID]});
-      if(ErrorsFactory.bSuccessResponse(response)){
-        if(Array.isArray(response.data)){
-          $scope.feedback.exist = response.data.some(function(o){
-            return o.sID_Source && o.sID_Source === $scope.nID;
-          });
+    $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
+        FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
+      .then(function (response) {
+        var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
+        ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
+        if (ErrorsFactory.bSuccessResponse(response)) {
+          //if (response[1].data) {
+          //  $scope.feedback.exist = response[1].data.sBody.trim() === '';
+          //}
+          //if(Array.isArray(response.data)){
+          //  $scope.feedback.exist = response.data.some(function(o){
+          //    return o.sID_Source && o.sBody !== '';
+          //  });
+          //}
         }
-      }
-      $scope.feedback.messageList =_.sortBy(response.data, function(o) { return -o.nID; });
 
-    }, function (error){
+        $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
+          return -o.nID;
+        });
+        $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
+          return o.nID != $scope.nID;
+        });
 
-      switch (error.message){
-        case "Security Error":
-          pushError("Помилка безпеки!");
-          break;
-        case "Record Not Found":
-          pushError("Запис не знайдено!");
-          break;
-        case "Already exist":
-          pushError("Вiдгук вже залишено!");
-          break;
-        default :
-          $scope.feedback.feedbackError = true;
-          ErrorsFactory.logFail({sBody:"Невідома помилка!",sError:error.message});
-          break;
-      }
-    }).finally(function () {
+        $scope.feedback.currentFeedback = angular.copy(response[1].data);
+
+      }, function (error) {
+
+        switch (error.message) {
+          case "Security Error":
+            pushError("Помилка безпеки!");
+            break;
+          case "Record Not Found":
+            pushError("Запис не знайдено!");
+            break;
+          case "Already exist":
+            pushError("Вiдгук вже залишено!");
+            break;
+          default :
+            $scope.feedback.feedbackError = true;
+            ErrorsFactory.logFail({sBody: "Невідома помилка!", sError: error.message});
+            break;
+        }
+      }).finally(function () {
       $scope.loaded = true;
     });
   }
 
-  function rateFunction(rating){
+  function rateFunction(rating) {
     $scope.feedback.raiting = rating;
   }
 
-  function postFeedback(){
-    var sAuthorFIO = 'anonymous',
-      sMail = '',
-      sHead = '';
+  function postFeedback() {
+    var sAuthorFIO =  $scope.feedback.currentFeedback.sAuthorFIO,
+      sMail = $scope.feedback.currentFeedback.sMail,
+      sHead = $scope.feedback.currentFeedback.sHead;
 
     FeedbackService.postFeedbackForService($scope.nID,
       ServiceService.oService.nID,
@@ -164,7 +253,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       sHead,
       $scope.feedback.raiting);
 
-    $state.go('index.service.feedback',{
+    $state.go('index.service.feedback', {
       nID: null,
       sID_Token: null
     });
@@ -374,3 +463,15 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
   }
 
 }]);
+
+angular.module('app').controller('TitleChange', function ($scope, TitleChangeService) {
+  $scope.$on('$stateChangeSuccess', function (event, toState) {
+    if(!$state.is('index.situation') ||
+      !$state.is('index.newsubcategory') ||
+      !$state.is('index.service') ||
+      !$state.is('index.oldbusiness') ||
+      !$state.is('index.subcategory')){
+      TitleChangeService.defaultTitle();
+    }
+  })
+});

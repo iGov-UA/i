@@ -52,7 +52,9 @@
   .menu-item li {
     list-style: circle !important;
   }
-
+  .menu-item {
+    border-bottom: 5px solid #449dcd;
+  }
   .menu-item a {
     font-family: "Open Sans";
   }
@@ -61,7 +63,7 @@
   }
   .menu-item.selected {
     background-color: #449dcd !important;
-    border-bottom: 5px solid #f2f2f2;
+    border-bottom-color: #f2f2f2;
     color: #cfe4f0;
   }
 </style>
@@ -95,11 +97,12 @@
 
     <div class="collapse navbar-collapse" collapse="navBarIsCollapsed">
       <ul class="nav navbar-nav navbar-right">
-        <li class="menu-item" ng-class="{
-                                          selected: state.is('index')
+        <li class="menu-item" ng-class="{selected: state.is('index')
                                           || state.is('index.catalog')
                                           || state.is('index.situation')
-                                          || state.is('index.newsubcategory')}">
+                                          || state.is('index.newsubcategory')
+                                          || state.is('index.oldbusiness')
+                                          || state.is('index.subcategory')}">
           <a ui-sref="index">
             Послуги
           </a>

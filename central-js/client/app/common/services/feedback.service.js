@@ -25,7 +25,7 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
 
     this.getFeedbackForService = function (serviceId, id, token) {
       var deferred = $q.defer();
-      $http.get('./api/service/' + serviceId + '/feedback?sID_Order='+id+'&sToken='+token+'').then(function(data){
+      $http.get('./api/service/' + serviceId + '/feedback?sID_Order='+id+'&sID_Token='+token+'').then(function(data){
         if(data.code === 'SYSTEM_ERR' || data.code==='BUSINESS_ERR'){
           deferred.reject(data);
         }else{

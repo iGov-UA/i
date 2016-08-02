@@ -32,5 +32,26 @@ public abstract class AbstractEntity implements Entity<Long> {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    @Override
+   public boolean equals(Object obj) {
+      if (obj instanceof AbstractEntity) {
+         AbstractEntity entity = (AbstractEntity) obj;
+
+         if (!entity.getClass().equals(getClass())) {
+            return false;
+         }
+
+         if(entity.id != null) {
+            return entity.id.equals(this.id); 
+         }
+      }
+      return super.equals(obj);
+   }
+
+   @Override
+   public int hashCode() {
+      return id != null ? id.intValue() : super.hashCode();
+   }
 
 }

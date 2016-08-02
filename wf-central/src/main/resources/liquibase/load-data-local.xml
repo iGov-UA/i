@@ -404,7 +404,19 @@
             <column name="nID_Server"     type="NUMERIC"/>
             <column name="nID_Subject"    type="NUMERIC"/>
         </loadUpdateData>
+
+         <loadUpdateData tableName="SubjectActionKVED" primaryKey="nID" encoding="UTF-8" file="data/SubjectActionKVED.csv" separator=";" >
+            <column name="nID" type = "NUMERIC" />
+            <column name="sID" type = "STRING" />
+            <column name="sNote" type = "STRING" />
+        </loadUpdateData>
         
+         <loadUpdateData tableName="ObjectPlace_UA" primaryKey="nID" encoding="UTF-8" file="data/ObjectPlace_UA.csv" separator=";" >
+            <column name="nID" type = "NUMERIC" />
+            <column name="sID" type = "STRING" />
+            <column name="sName_UA" type = "STRING" />
+            <column name="nID_PlaceType" type = "NUMERIC" />
+        </loadUpdateData>
     </changeSet>
 
     <changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">

@@ -1,0 +1,55 @@
+<style>
+  .igov-container h3 {
+    font-size: 20px;
+  }
+  .igov-columns-3 a {
+    font-size: 14px;
+  }
+</style>
+<div class="container igov-container">
+  <div class="container" style="margin-top: 20px" ng-if="!spinner">
+    <div class="row">
+      <div class="container" style="padding-left: 0; padding-right: 0">
+        <a ui-sref="index.oldbusiness">Головна</a>
+        >
+        <span>{{subcategory.sName}}</span>
+        <hr class="common-hr" style="width: 101%">
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-right: 27px; padding-left: 27px">
+    <div class="row igov-columns-3" ng-if="!spinner">
+      <div ng-repeat="service in subcategory.aService | orderBy: ['-nStatus', 'nOrder', 'sName'] " ng-if="!busSpinner">
+        <ul class="list-unstyled">
+          <li>
+            <a ui-sref="index.service.general({'id': service.nID })"
+               ng-href="/service/{{service.nID}}/general">
+              <i class="icon-e-service-on"
+                 ng-if="service.nStatus === 2"
+                 title="Ця послуга доступна в електронній формі для одного, кількох або всіх регіонів">
+              </i>
+              <i class="icon-e-service-test"
+                 ng-if="service.nStatus === 1"
+                 title="Ця послуга буде доступна онлайн дуже скоро. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+              </i>
+              <i class="icon-e-service-off"
+                 ng-if="service.nStatus === 0"
+                 title="Ця послуга поки не доступна онлайн. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+              </i>
+              {{service.sName}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row" ng-show="spinner || busSpinner">
+  <div class="text-center">
+    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading" />
+  </div>
+</div>
+

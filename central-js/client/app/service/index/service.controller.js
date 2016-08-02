@@ -1,8 +1,8 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state) {
-
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll) {
+    $rootScope.catalogTab = 1;
     $scope.catalog = [];
     // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
     $scope.limit = 4;
@@ -30,9 +30,7 @@ angular.module('app')
       $scope.mainSpinner = false;
       $scope.fullCatalog = data;
       $scope.catalog = data;
-      console.log('new catalog', $scope.catalog);
-      // TODO: move other handlers here, like update counters, etc
-      // $scope.catalogCounts = CatalogService.getCatalogCounts(data);
+      $rootScope.rand = (Math.random()*10).toFixed(2);
     }, false);
     subscriptions.push(subscriberId);
 
@@ -70,10 +68,24 @@ angular.module('app')
 
     $scope.stateCheck = $state.params.catID;
 
+    $scope.changeCategory = function (num) {
+      if(num){
+        $rootScope.catalogTab = num;
+      }
+      else if($state.params) {
+        $rootScope.catalogTab = $state.params.catID;
+        return $rootScope.catalogTab;
+      }
+      else {
+        return $rootScope.catalogTab;
+      }
+    };
+
     $scope.$on('$stateChangeStart', function(event, toState) {
       if(toState.name === 'index') {
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;
+          $scope.changeCategory();
         });
       }
       if (toState.resolve) {
@@ -85,5 +97,5 @@ angular.module('app')
         $scope.spinner = false;
       }
     });
-
+    $anchorScroll();
   }]);
