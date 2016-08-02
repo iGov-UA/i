@@ -40,7 +40,8 @@
 
     function updateStars() {
       vm.stars = [];
-      for (var i = 0; i < vm.max; i++) {
+      var length = !vm.showonly ? vm.max : vm.ratingValue;
+      for (var i = 0; i < length; i++) {
         vm.stars.push({
           filled: i < vm.ratingValue
         });
@@ -48,7 +49,6 @@
     }
 
     function toggle(index) {
-      console.log('[Log vm.showonly:] ',vm.showonly);
       if (!vm.showonly) {
         vm.ratingValue = index + 1;
         vm.onRatingSelect({
