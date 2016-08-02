@@ -220,7 +220,7 @@ build_in_container ()
 					npm list grunt-google-cdn && \
 					bower install && \
 					npm install grunt-contrib-imagemin && \
-					grunt build && \
+					grunt test server && \
 					cd dist && \
 					npm install --production"
 		
