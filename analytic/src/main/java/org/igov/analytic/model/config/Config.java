@@ -12,6 +12,7 @@ import org.igov.model.core.NamedEntity;
  *
  * @author olga
  */
+@javax.persistence.Entity
 public class Config extends NamedEntity{
     
     @JsonProperty(value = "sValue")

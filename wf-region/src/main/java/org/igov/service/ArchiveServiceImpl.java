@@ -13,29 +13,21 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import org.igov.analytic.model.access.AccessGroup;
-import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
 import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_Date;
-import org.igov.analytic.model.attribute.Attribute_File;
 import org.igov.analytic.model.attribute.Attribute_FileDao;
 import org.igov.analytic.model.attribute.Attribute_Integer;
 import org.igov.analytic.model.attribute.Attribute_StingShort;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.ProcessDao;
-import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.controller.ProcessController;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -70,11 +62,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     @Autowired
     private Attribute_FileDao attribute_FileDao;
 
-    //@Autowired
-    //private IBytesDataStorage durableBytesDataStorage;
-    @Autowired
-    private IFileStorage durableFileStorage;
-
+    /*@Autowired
+    private IFileStorage durableFileStorage;*/
     @Autowired
     private ConfigDao configDao;
 
@@ -82,6 +71,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     public void archiveData() throws SQLException, ParseException, Exception {
 
         try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
             DriverManager.registerDriver(new com.sybase.jdbc3.jdbc.SybDriver());
             conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
             stat = conn.createStatement();
@@ -90,11 +80,20 @@ public class ArchiveServiceImpl implements ArchiveService {
             ResultSet rsComplain;
             boolean hasNextDate = true;
             int index = 0;
-            Config oDateLastBackup;
+            Optional<Config> configOptional;
             String dateLastBackup;
+            Config config;
             while (hasNextDate) {
-                oDateLastBackup = configDao.findByExpected("sName", "dateLastBackup");
-                dateLastBackup = oDateLastBackup.getsValue();
+                configOptional = configDao.findBy("name", "dateLastBackup");
+                if (configOptional.isPresent()) {
+                    config = configOptional.get();
+                } else {
+                    config = new Config();
+                    config.setName("dateLastBackup");
+                    config.setsValue("1999-01-01");
+                    configDao.saveOrUpdate(config);
+                }
+                dateLastBackup = config.getsValue();
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
 
                 if (index < 1 && rs.next()) {
@@ -105,12 +104,14 @@ public class ArchiveServiceImpl implements ArchiveService {
                         String sID_Complain = rs.getString("IDENTITY");
                         System.out.println("sID_Complain:" + sID_Complain);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("", rs.getString("IDENTITY"));
+                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", rs.getString("IDENTITY"));
                             if (!process.isPresent()) {
                                 setProcess(rsComplain);
                             }
                         }
                     }
+                    config.setsValue(dateFormat.format(date));
+                    configDao.saveOrUpdate(config);
                 } else {
                     hasNextDate = false;
                 }
@@ -151,7 +152,7 @@ public class ArchiveServiceImpl implements ArchiveService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
-        
+
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
         System.out.println("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
