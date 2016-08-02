@@ -9,36 +9,9 @@ while [[ $# > 1 ]]
 do
 	sKey="$1"
 	case $sKey in
-		--version)
-			sVersion="$2"
-			shift
-			;;
-		--project)
-			sProject="$2"
-			shift
-			;;
+
 		--skip-deploy)
 			bSkipDeploy="$2"
-			shift
-			;;
-		--skip-build)
-			bSkipBuild="$2"
-			shift
-			;;
-		--skip-test)
-			bSkipTest="$2"
-			shift
-			;;
-		--skip-doc)
-			bSkipDoc="$2"
-			shift
-			;;
-		--deploy-timeout)
-			nSecondsWait="$2"
-			shift
-			;;
-		--compile)
-			IFS=',' read -r -a saCompile <<< "$2"
 			shift
 			;;
 		--jenkins-user)
@@ -49,26 +22,7 @@ do
 			sJenkinsAPI="$2"
 			shift
 			;;
-		--docker)
-			bDocker="$2"
-			shift
-			;;
-		--dockerOnly)
-			bDockerOnly="$2"
-			shift
-			;;
-		--gitCommit)
-			sGitCommit="$2"
-			shift
-			;;
-		--dockerOnly)
-			bDockerOnly="$2"
-			shift
-			;;
-		--gitCommit)
-			sGitCommit="$2"
-			shift
-			;;
+
 		*)
 			echo "bad option"
 			exit 1
