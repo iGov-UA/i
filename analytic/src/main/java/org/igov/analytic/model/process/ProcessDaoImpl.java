@@ -19,12 +19,6 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
 
     private static final Logger log = Logger.getLogger(ProcessDaoImpl.class);
 
-    /*@Autowired
-    private SourceDBDao sourceDBDao;
-
-    @Autowired
-    private AttributeTypeDao attributeTypeDao;*/
-
     protected ProcessDaoImpl() {
         super(Process.class);
     }

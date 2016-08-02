@@ -160,7 +160,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, ServiceService, FeedbackService, ErrorsFactory, $q) {
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -182,6 +182,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
+    $scope.feedback.sSubjectOperatorName = service.sSubjectOperatorName;
 
     if ($scope.nID && $scope.sID_Token) {
       $scope.feedback.allowLeaveFeedback = true;

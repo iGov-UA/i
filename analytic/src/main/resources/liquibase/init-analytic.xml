@@ -267,6 +267,18 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
+        
+        <createTable tableName="Config">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     
     </changeSet>
     
@@ -287,7 +299,8 @@
         <addAutoIncrement tableName="Process" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Attribute_File" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Config" columnName="nID" startWith="2000" columnDataType="bigint"/>
         
     </changeSet>
-
+    
 </databaseChangeLog>
