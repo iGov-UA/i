@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.analytic.model.process;
+package org.igov.analytic.model.config;
 
 import org.apache.log4j.Logger;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
@@ -13,13 +13,12 @@ import org.springframework.stereotype.Repository;
  *
  * @author olga
  */
-//@Transactional("transactionManagerAnalytic")
 @Repository()
-public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> implements ProcessDao {
+public class ConfigDaoImpl extends GenericEntityDaoAnalytic<Long, Config> implements ConfigDao  {
+    
+    private static final Logger log = Logger.getLogger(ConfigDaoImpl.class);
 
-    private static final Logger log = Logger.getLogger(ProcessDaoImpl.class);
-
-    protected ProcessDaoImpl() {
-        super(Process.class);
+    protected ConfigDaoImpl() {
+        super(Config.class);
     }
 }

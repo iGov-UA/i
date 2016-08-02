@@ -9,8 +9,8 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
@@ -37,6 +37,7 @@ import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IFileStorage;
+import org.igov.service.ArchiveServiceImpl;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,38 +75,9 @@ public class ProcessController {
     //private IBytesDataStorage durableBytesDataStorage;
     @Autowired
     private IFileStorage durableFileStorage;
-
-    /*@ApiOperation(value = "/setProcessTest", notes = "##### Process - сохранение процесса #####\n\n")
-    @RequestMapping(value = "/setProcessTest", method = RequestMethod.GET//, headers = {JSON_TYPE}
-    )
-    public @ResponseBody
-    Process setProcessTest() { //@RequestBody Process oProcess
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        Process process = new Process();
-        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
-
-        process.setoDateStart(new DateTime());
-        process.setoDateFinish(new DateTime());
-        process.setoSourceDB(sourceDB);
-        process.setsID_("test!!");
-        process.setsID_Data("test!!");
-        process = processDao.saveOrUpdate(process);
-
-        Attribute attribute = new Attribute();
-        attribute.setoAttributeType(attributeType);
-        attribute.setoProcess(process);
-        attribute = attributeDao.saveOrUpdate(attribute);
-
-        Attribute_File attribute_File = new Attribute_File();
-        attribute_File.setoAttribute(attribute);
-        attribute_File.setsID_Data("test");
-        attribute_File.setsFileName("test");
-        attribute_File.setsContentType("pdf");
-        attribute_File.setsExtName("txt");
-        attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
-        return process;
-    }*/
+    
+    @Autowired
+    private ArchiveServiceImpl archiveService;
 
     @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
@@ -150,6 +122,14 @@ public class ProcessController {
         attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
 
         return process;
+    }
+    
+    @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
+    @RequestMapping(value = "/backup", method = RequestMethod.GET)
+    public @ResponseBody void backup() throws ParseException, Exception {
+        LOG.info("/backup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        archiveService.archiveData();
+        LOG.info("/backup ok!!!");
     }
 
     /*@ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
