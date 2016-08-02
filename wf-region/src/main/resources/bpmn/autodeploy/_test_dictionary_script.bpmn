@@ -11,80 +11,9 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script><![CDATA[
 package org.igov.io.fs
-package org.igov.service.business.action.task.systemtask.mail
-      
-
-import org.apache.commons.lang3.StringUtils
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-
-import org.activiti.bpmn.model.FlowElement
-import org.activiti.bpmn.model.UserTask
-import org.activiti.engine.TaskService
-import org.activiti.engine.delegate.DelegateExecution
-import org.activiti.engine.delegate.Expression
-import org.activiti.engine.delegate.JavaDelegate
-import org.activiti.engine.form.FormData
-import org.activiti.engine.form.FormProperty
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity
-import org.activiti.engine.task.Task
-
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-
-import org.igov.service.controller.security.AuthenticationTokenSelector
-import org.igov.service.business.action.event.HistoryEventService
-import org.igov.service.business.action.task.core.AbstractModelTask
-import org.igov.service.business.finance.Currency
-import org.igov.service.business.object.Language
-import org.igov.service.business.access.AccessKeyService
-import org.igov.service.business.finance.Liqpay
-import org.igov.service.business.action.task.core.ActionTaskService
-import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil
-
-
-
-import org.igov.io.db.kv.statical.IBytesDataStorage
-import org.igov.io.GeneralConfig
-import org.igov.io.mail.Mail
 
 import org.igov.io.fs.*
 import org.igov.io.fs.FileSystemDictonary
-
-import static org.igov.io.fs.FileSystemData.getFileData_Pattern
-import static org.igov.io.fs.FileSystemData.getBufferedReader_PatternDictonary
-
-
-import org.igov.util.Tool
-import static org.igov.util.ToolLuna.getProtectedNumber
-
-import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.io.BufferedReader
-
-import java.net.URISyntaxException
-import java.nio.charset.Charset
-import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.HashMap
-import java.util.Map
-
-import org.activiti.engine.HistoryService
-
-import org.igov.io.sms.ManagerOTP
-import org.igov.io.sms.ManagerSMS
-import org.igov.service.controller.security.AccessContract
-import org.igov.util.JSON.JsonDateTimeSerializer
-
-import org.igov.util.ToolWeb
-import org.joda.time.format.DateTimeFormatter
-import org.springframework.context.ApplicationContext
-import org.springframework.web.bind.annotation.RequestMethod
 
 
 def obj = '[pattern_dictonary:dnepr_soc_help.csv:4:2]'
