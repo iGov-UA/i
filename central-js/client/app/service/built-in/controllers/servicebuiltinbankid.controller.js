@@ -617,6 +617,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     } else {
       return BankIDAccount.customer.isAuthTypeFromBankID;
     }
+  };
+
+  // https://github.com/e-government-ua/i/issues/1325
+  $scope.getBpAndFieldID = function(field){
+    return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id;
   }
 
 });
