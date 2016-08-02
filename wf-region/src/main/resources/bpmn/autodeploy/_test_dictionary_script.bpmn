@@ -3,30 +3,65 @@
   <process id="_test_dictionary_script" name="Тест получение данных из библиотеки в скрипт" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFillDictionary" name="Поле из библиотеки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sMinSalary" name="Мінімальная заробітна плата сьогодні" type="invisible"></activiti:formProperty>        
+        <activiti:formProperty id="dVisit" name="Дата визита" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateMinSalary" name="Мінімальная заробітна плата після дати" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script><![CDATA[
-//package org.igov.io.fs
-
-//import org.igov.io.fs.*
+//подключаем библиотеки
+//для работы с датами (парсинга)
+import java.text.SimpleDateFormat
+//для работы с csv данными по адресу /i/wf-base/src/main/resources/patterns/dictionary/
 import org.igov.io.fs.FileSystemDictonary
 
-def result = new FileSystemDictonary().replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:3]') 
+//создаем объект для парсинга дат
+def format = new SimpleDateFormat()
+//создаем объект для чтения библиотек
+def obj = new FileSystemDictonary()
 
-execution.setVariable('sFillDictionary', result)
+//получаем заданную дату в виде строки
+def sVisit = execution.getVariable('dVisit')
+//задаем формат строки
+format.applyPattern("yyyy/MM/dd")
+//преобразовываем строку в дату
+def dVisit = format.parse(sVisit)
 
+
+//получаем дату из библиотеки, где 1 - это строка, 4-столбец в файле services_price.csv
+def sDict[] = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:4]').split(".")
+//повторяем процесс преобразования
+format.applyPattern("dd.MM.yyyy")
+def dDict = format.parse(sDict)
+
+//получаем минимальную зарплату текущую и планируемую, значения будут string-овые, 
+//поэтому математические оперции не будут работать без конвертирования в число, 
+//можно использовать метод который вернет результут в виде числа Integer.parseInt(сюда помещаем нашу строку)
+def priceCur = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:3]')
+def priceNew = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:5]')
+
+//сравниваем заданную и полученную из библиотеки дату
+if(dVisit.compareTo(dDict) < 0){
+//если dVisit < dDict значение будет -1, тоесть меньше 0
+execution.setVariable('sDateMinSalary', priceCur)
+} else{
+//если значение dVisit >= dDict значение 1 или 0(если равны)
+execution.setVariable('sDateMinSalary', priceNew)
+}
+
+
+execution.setVariable('sMinSalary', priceCur)
    		]]> </script>
 	</scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
-      <extensionElements>        
-      	<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+      <extensionElements>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFillDictionary" name="Поле из библиотеки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMinSalary" name="Мінімальная заробітна плата сьогодні" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="dVisit" name="Дата візиту" type="date" writable="false"></activiti:formProperty>      
+        <activiti:formProperty id="sDateMinSalary" name="Мінімальная заробітна плата після дати" type="string" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
