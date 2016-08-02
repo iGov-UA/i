@@ -3,6 +3,8 @@
   <process id="_test_dictionary_script" name="Тест получение данных из библиотеки в скрипт" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+      	<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFillDictionary" name="Поле из библиотеки" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -16,7 +18,9 @@ execution.setVariable('sFillDictionary', result)</script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
-      <extensionElements>
+      <extensionElements>        
+      	<activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFillDictionary" name="Поле из библиотеки" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
