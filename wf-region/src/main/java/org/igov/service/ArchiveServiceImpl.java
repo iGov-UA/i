@@ -149,7 +149,9 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     private void setProcess(ResultSet rs) throws SQLException, ParseException, Exception {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
 
@@ -192,5 +194,11 @@ public class ArchiveServiceImpl implements ArchiveService {
             attribute.setName(metaData.getColumnLabel(i));
             attribute = attributeDao.saveOrUpdate(attribute);
         }
+    }
+    
+    public static void main(String[] arg) throws ParseException{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(new DateTime(dateFormat.parse("2003-01-13")));
+    
     }
 }
