@@ -9,7 +9,19 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>package org.igov.io.fs
+      <script>
+      package org.igov.io.fs
+      
+import org.apache.commons.lang3.StringUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+import java.io.BufferedReader
+import java.util.HashMap
+import java.util.Map
+import org.igov.io.fs.*
+import org.igov.io.fs.FileSystemDictonary;
+import static org.igov.io.fs.FileSystemData.getBufferedReader_PatternDictonary
 
 def obj = new FileSystemDictonary()
 def result = obj.replaceMVSTagWithValue('[pattern_dictonary:dnepr_soc_help.csv:value{4}:2]')
