@@ -43,8 +43,13 @@
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty>
@@ -52,7 +57,7 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>>
+        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -100,7 +105,7 @@
     </userTask>
     <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -142,7 +147,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>middayka@yandex.ru</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -262,7 +267,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія довідки знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку особисто під підпис у центрі надання адміністративних послуг за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
 Графік роботи:&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}
@@ -295,7 +300,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія відмови знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис у центрі надання адміністративних послуг за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
 Графік роботи:&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}
