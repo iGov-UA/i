@@ -63,7 +63,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     private Attribute_FileDao attribute_FileDao;
 
     /*@Autowired
-    private IFileStorage durableFileStorage;*/
+     private IFileStorage durableFileStorage;*/
     @Autowired
     private ConfigDao configDao;
 
@@ -116,10 +116,10 @@ public class ArchiveServiceImpl implements ArchiveService {
                     hasNextDate = false;
                 }
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             LOG.error("!!! archive error: ", ex);
-        }finally { 
+        } finally {
             try {
                 if (null != stat) {
                     stat.close();
@@ -161,9 +161,20 @@ public class ArchiveServiceImpl implements ArchiveService {
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
         LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
-        process.setoDateStart(new DateTime(dateFormat.parse(rs.getString("REGDATE"))));
+        DateTime dateStart, dateFinish;
+        if (rs.getString("REGDATE") != null) {
+            dateStart = new DateTime(dateFormat.parse(rs.getString("REGDATE")));
+        } else {
+            dateStart = new DateTime();
+        }
+        process.setoDateStart(dateStart);
         System.out.println(process.getoDateStart());
-        process.setoDateFinish(new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")))); //EXECCOMPLDATE
+        if (rs.getString("EXECCOMPLDATE") != null) {
+            dateFinish = new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")));
+        } else {
+            dateFinish = new DateTime();
+        }
+        process.setoDateFinish(dateFinish); //EXECCOMPLDATE
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
         process.setsID_Data(rs.getString("IDENTITY"));
@@ -185,7 +196,9 @@ public class ArchiveServiceImpl implements ArchiveService {
             } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(6));
                 Attribute_Date attributeValue = new Attribute_Date();
-                attributeValue.setoValue(new DateTime(dateFormat.parse(rs.getString(i))));
+                if (rs.getString(i) != null) {
+                    attributeValue.setoValue(new DateTime(dateFormat.parse(rs.getString(i))));
+                }
                 attribute.setoAttribute_Date(attributeValue);
             } else {
                 throw new Exception("Not Foud type of attribute!!!!!!!!!!!!!");
