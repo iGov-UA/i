@@ -9,25 +9,20 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-      package org.igov.io.fs
-      
-import org.apache.commons.lang3.StringUtils
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+      <script><![CDATA[
+package org.igov.io.fs
 
-import java.io.BufferedReader
-import java.util.HashMap
-import java.util.Map
 import org.igov.io.fs.*
-import org.igov.io.fs.FileSystemDictonary;
-import static org.igov.io.fs.FileSystemData.getBufferedReader_PatternDictonary
+import org.igov.io.fs.FileSystemDictonary
 
-def obj = new FileSystemDictonary()
-def result = obj.replaceMVSTagWithValue('[pattern_dictonary:dnepr_soc_help.csv:value{4}:2]')
 
-execution.setVariable('sFillDictionary', result)</script>
-    </scriptTask>
+def obj = '[pattern_dictonary:dnepr_soc_help.csv:4:2]'
+def result = new FileSystemDictonary().replaceMVSTagWithValue(obj) 
+
+execution.setVariable('sFillDictionary', result)
+
+   		]]> </script>
+	</scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>        
