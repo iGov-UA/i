@@ -104,7 +104,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                         String sID_Complain = rs.getString("IDENTITY");
                         LOG.info("sID_Complain:" + sID_Complain);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", rs.getString("IDENTITY"));
+                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             if (!process.isPresent()) {
                                 setProcess(rsComplain);
                             }
