@@ -1,71 +1,37 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-#Setting-up variables
-export LANG=en_US.UTF-8
-#This will cause the shell to exit immediately if a simple command exits with a nonzero exit value.
-set -e
+import os, argparse, subprocess
 
-while [[ $# > 1 ]]
-do
-	sKey="$1"
-	case $sKey in
+parser = argparse.ArgumentParser()
+parser.add_argument('-v', '--version', help='Project version', required=True)
+parser.add_argument('-ti', '--tier', help='Project tier', required=False, default='none')
+parser.add_argument('-ty', '--type', help='Project type', required=False, default='none')
+parser.add_argument('-p', '--project', help='Project name', default=argparse.SUPPRESS)
+parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', dest='skip-deploy', default='false')
+parser.add_argument('-sb', '--skip-build', help='Skip build', dest='skip-build', default='false')
+parser.add_argument('-st', '--skip-test', help='Skip tests', dest='skip-test', default='false')
+parser.add_argument('-sdoc', '--skip-doc', help='Skip doc', dest='skip-doc', default='false')
+parser.add_argument('-dt', '--deploy-timeout', help='Deploy timeout', dest='deploy-timeout', default="200")
+parser.add_argument('-c', '--compile', help='Compile', default=argparse.SUPPRESS)
+parser.add_argument('-ju', '--jenkins-user', help='Jenkins username', dest='jenkins-user', required=True)
+parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', dest='jenkins-api', required=True)
+parser.add_argument('-d', '--docker', help='Build with docker', default='false')
+parser.add_argument('-do', '--dockerOnly', help='Only build with docker', default='false')
+parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
+parser.add_argument('-bic', '--bBuildInContainer', help='Build in container', default='false')
+args = parser.parse_args()
 
-		--skip-deploy)
-			bSkipDeploy="$2"
-			shift
-			;;
-		--jenkins-user)
-			sJenkinsUser="$2"
-			shift
-			;;
-		--jenkins-api)
-			sJenkinsAPI="$2"
-			shift
-			;;
+commandArr = ["bash", "scripts/iTest_Node.sh"]
 
-		*)
-			echo "bad option"
-			exit 1
-			;;
-	esac
-shift
-done
+for arg in vars(args):
+    commandArr.append('--'+arg)
+    commandArr.append(getattr(args, arg))
 
-unset IFS
-sDate=`date "+%Y.%m.%d-%H.%M.%S"`
+if os.path.exists("iSystem"):
+    subprocess.call("rm -rf iSystem", shell=True)
 
-build_central-js ()
-{
-	if [ "$bSkipBuild" == "true" ]; then
-		echo "Deploy to host: $sHost"
-		cd central-js
-		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
-		return
-	fi
-	if [ "$bSkipDeploy" == "true" ]; then
-		cd central-js
-		npm cache clean
-		npm install
-		bower install
-		npm install grunt-contrib-imagemin
-		grunt test server
-		cd dist
-		npm install --production
-		cd ..
-		rm -rf /tmp/$sProject
-		return
-	else
-		cd central-js
-		npm cache clean
-		npm install
-		bower install
-		npm install grunt-contrib-imagemin
-		grunt test server
-		cd dist
-		npm install --production
-		cd ..
-		rm -rf /tmp/$sProject
-		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
-		cd ..
-	fi
-}
+subprocess.call("git clone git@iSystem.github.com:e-government-ua/iSystem.git", shell=True)
+subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
+subprocess.call("rm -rf iSystem", shell=True)
+subprocess.call("chmod +x scripts/*", shell=True)
+subprocess.check_call(commandArr)
