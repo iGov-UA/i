@@ -24,14 +24,14 @@ def obj = new FileSystemDictonary()
 
 //получаем заданную дату в виде строки
 def sVisit = execution.getVariable('dVisit')
-//задаем формат строки
-format.applyPattern("yyyy/MM/dd")
+//задаем формат строки, регистр и количество букв важен
+format.applyPattern("dd/MM/yyyy")
 //преобразовываем строку в дату
 def dVisit = format.parse(sVisit)
 
 
 //получаем дату из библиотеки, где 1 - это строка, 4-столбец в файле services_price.csv
-def sDict[] = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:4]').split(".")
+def sDict = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:4]')
 //повторяем процесс преобразования
 format.applyPattern("dd.MM.yyyy")
 def dDict = format.parse(sDict)
