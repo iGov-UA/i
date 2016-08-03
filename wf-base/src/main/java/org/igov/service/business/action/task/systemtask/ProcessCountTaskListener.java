@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 @Component("ProcessCountTaskListener")
 public class ProcessCountTaskListener implements JavaDelegate, TaskListener {
 
-	private static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
+	public static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
 
 	private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 	
