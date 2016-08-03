@@ -177,7 +177,7 @@ public class ArchiveServiceImpl implements ArchiveService {
         process.setoDateFinish(dateFinish); //EXECCOMPLDATE
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
-        process.setsID_Data(rs.getString("IDENTITY"));
+        process.setData(rs.getString("IDENTITY"));
         process = processDao.saveOrUpdate(process);
         for (int i = 1; i <= columnCount; i++) {
             System.out.println(metaData.getColumnClassName(i) + " " + metaData.getColumnLabel(i));
