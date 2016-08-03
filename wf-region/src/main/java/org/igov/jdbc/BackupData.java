@@ -12,27 +12,13 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import org.igov.analytic.model.access.AccessGroup;
-import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.Attribute;
-import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
-import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_Date;
-import org.igov.analytic.model.attribute.Attribute_File;
-import org.igov.analytic.model.attribute.Attribute_FileDao;
 import org.igov.analytic.model.attribute.Attribute_Integer;
 import org.igov.analytic.model.attribute.Attribute_StingShort;
-import org.igov.analytic.model.process.ProcessDao;
-import org.igov.analytic.model.process.ProcessTask;
-import org.igov.analytic.model.source.SourceDB;
-import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.ArchiveService;
 import static org.igov.service.ArchiveService.DB_PATH;
 import static org.igov.service.ArchiveService.DB_PSWD;
@@ -44,8 +30,6 @@ import org.igov.service.controller.ProcessController;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *

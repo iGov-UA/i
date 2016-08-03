@@ -20,7 +20,7 @@ public interface ArchiveService {
     static final String queryMinDate = new StringBuilder()
             .append("select min(co.REGDATE) as minREGDATE ")
             .append("from \"gComplain\".\"DBA\".\"COMPLAIN\" as co ")
-            .append("where co.\"UPDATEDATE\" > '%s'").toString();
+            .append("where co.\"REGDATE\" > '%s'").toString();
     static final String queryListComplain = new StringBuilder()
             .append("select co.IDENTITY ")
             .append("from \"gComplain\".\"DBA\".\"COMPLAIN\" as co ")
