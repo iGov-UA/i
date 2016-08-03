@@ -216,7 +216,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             }
             attribute.setoProcess(process);
             attribute.setoAttributeType(attributeType);
-            attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i) + ":");
+            attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i));
             attribute.setName(metaData.getColumnLabel(i));
             attribute = attributeDao.saveOrUpdate(attribute);
         }
