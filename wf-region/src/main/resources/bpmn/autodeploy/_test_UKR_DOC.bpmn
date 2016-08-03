@@ -445,13 +445,7 @@ var fullNumber=firstLetter+'--'+number
 execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
     <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask13" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}">
-      <extensionElements>
-        <activiti:field name="sID_Order_GovPublic">
-          <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    <serviceTask id="servicetask13" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow40" sourceRef="servicetask13" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask3" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>
