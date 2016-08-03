@@ -96,15 +96,16 @@ public class ArchiveServiceImpl implements ArchiveService {
                     configDao.saveOrUpdate(config);
                 }
                 dateLastBackup = config.getsValue();
+                LOG.info("dateLastBackup:" + dateLastBackup);
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
 
-                if (index < 1 && rs.next()) {
-                    index++;
+                if (rs.next()) {
                     String date = rs.getString("minREGDATE");
                     LOG.info("date:" + date);
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
+                        index++;
                         String sID_Complain = rs.getString("IDENTITY");
-                        LOG.info("sID_Complain:" + sID_Complain);
+                        LOG.info("sID_Complain:" + sID_Complain + " index = " + index);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             if (!process.isPresent()) {
@@ -117,7 +118,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                             //setProcess(rsComplain);
                         }
                     }
-                    LOG.info("date:" + date);
+                    //LOG.info("date:" + date);
                     //config.setsValue(dateFormat.format(date.trim()));
                     config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
@@ -169,7 +170,7 @@ public class ArchiveServiceImpl implements ArchiveService {
 
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
+        //LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
         DateTime dateStart, dateFinish;
         if (rs.getString("REGDATE") != null) {
             dateStart = new DateTime(dateFormat.parse(rs.getString("REGDATE")));
@@ -177,7 +178,6 @@ public class ArchiveServiceImpl implements ArchiveService {
             dateStart = new DateTime();
         }
         process.setoDateStart(dateStart);
-        System.out.println(process.getoDateStart());
         if (rs.getString("EXECCOMPLDATE") != null) {
             dateFinish = new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")));
         } else {
