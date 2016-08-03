@@ -5,5 +5,4 @@
 		bower install
 		npm install grunt-contrib-imagemin
 		grunt test server
-		cd dist
 	return
