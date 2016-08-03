@@ -362,7 +362,7 @@ public class BpServiceHandler {
 
         // Получаем набор элементов
         Set<Map.Entry<String, Object>> set = hm.entrySet();
-        String result = "";
+        String result = " ";
 
         // Отобразим набор
         for (Map.Entry<String, Object> entry : set) {
