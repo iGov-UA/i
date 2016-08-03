@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
@@ -71,7 +72,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     public void archiveData() throws SQLException, ParseException, Exception {
 
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            SimpleDateFormat dateFormatFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DriverManager.registerDriver(new com.sybase.jdbc3.jdbc.SybDriver());
             conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
             stat = conn.createStatement();
@@ -104,13 +106,19 @@ public class ArchiveServiceImpl implements ArchiveService {
                         String sID_Complain = rs.getString("IDENTITY");
                         LOG.info("sID_Complain:" + sID_Complain);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("data", sID_Complain);
+                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             if (!process.isPresent()) {
                                 setProcess(rsComplain);
+                            } else{
+                                LOG.info("Already presented sID_Complain: " + sID_Complain);
                             }
+                            //List<org.igov.analytic.model.process.Process> process = processDao.findAll();
+                            //LOG.info("process.size():" + process.size());
+                            //setProcess(rsComplain);
                         }
                     }
-                    config.setsValue(dateFormat.format(date));
+                    LOG.info("date:" + date);
+                    config.setsValue(dateFormat.format(date.trim()));
                     configDao.saveOrUpdate(config);
                 } else {
                     hasNextDate = false;
@@ -177,7 +185,8 @@ public class ArchiveServiceImpl implements ArchiveService {
         process.setoDateFinish(dateFinish); //EXECCOMPLDATE
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
-        process.setData(rs.getString("IDENTITY"));
+        process.setsID_Data(rs.getString("IDENTITY"));
+        process.setsID_Data(rs.getString("IDENTITY"));
         process = processDao.saveOrUpdate(process);
         for (int i = 1; i <= columnCount; i++) {
             System.out.println(metaData.getColumnClassName(i) + " " + metaData.getColumnLabel(i));
@@ -193,7 +202,8 @@ public class ArchiveServiceImpl implements ArchiveService {
                 Attribute_StingShort attributeValue = new Attribute_StingShort();
                 attributeValue.setsValue(rs.getString(i));
                 attribute.setoAttribute_StingShort(attributeValue);
-            } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
+            } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim()) 
+                    || "java.sql.Date".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(6));
                 Attribute_Date attributeValue = new Attribute_Date();
                 if (rs.getString(i) != null) {
@@ -201,7 +211,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                 }
                 attribute.setoAttribute_Date(attributeValue);
             } else {
-                throw new Exception("Not Foud type of attribute!!!!!!!!!!!!!");
+                throw new Exception("Not Foud type of attribute " + metaData.getColumnClassName(i).trim() + " !!!!!!!!!!!!!!!1");
             }
             attribute.setoProcess(process);
             attribute.setoAttributeType(attributeType);

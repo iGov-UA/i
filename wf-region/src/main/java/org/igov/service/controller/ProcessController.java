@@ -103,7 +103,7 @@ public class ProcessController {
         process.setoDateFinish(oDateFinish);
         process.setoSourceDB(sourceDB);
         process.setsID_(sID_);
-        process.setData(sID_Data);
+        process.setsID_Data(sID_Data);
         process = processDao.saveOrUpdate(process);
 
         Attribute attribute = new Attribute();
@@ -229,7 +229,7 @@ public class ProcessController {
         process.setoDateFinish(new DateTime());
         process.setoSourceDB(sourceDB);
         process.setsID_("test");
-        process.setData("test");
+        process.setsID_Data("test");
 
         List<ProcessTask> tasks = new ArrayList();
         tasks.add(processTask);
