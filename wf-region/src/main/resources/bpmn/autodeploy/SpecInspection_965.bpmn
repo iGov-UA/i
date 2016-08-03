@@ -713,7 +713,7 @@ ${sResultConclusion} &lt;br /&gt;
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="parallelgateway1" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask9" name="2. Повідомлення співробітника Сектор з питань запобігання і виявлення корупції Головного територіального управління юстиції">
+    <serviceTask id="servicetask9" name="2. Повідомлення співробітника Сектор з питань запобігання і виявлення корупції Головного територіального управління юстиції"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk02}</activiti:expression>
@@ -730,7 +730,7 @@ ${sResultConclusion} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="3. Повідомлення співробітника Управління кадрової роботи та державної служби Головного територіального управління юстиції">
+    <serviceTask id="servicetask10" name="3. Повідомлення співробітника Управління кадрової роботи та державної служби Головного територіального управління юстиції"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk03}</activiti:expression>
@@ -747,7 +747,7 @@ ${sResultConclusion} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask11" name="2.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask11" name="2.1. Повідомлення про успішну перевірку + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -787,7 +787,7 @@ ${sNameOrgan02}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask12" name="2.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask12" name="2.2. Повідомлення про непройдення перевірки  + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -838,7 +838,7 @@ ${sNameOrgan02}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="servicetask9" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask13" name="3.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask13" name="3.1. Повідомлення про успішну перевірку + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -878,7 +878,7 @@ ${sNameOrgan03}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask14" name="3.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask14" name="3.2. Повідомлення про непройдення перевірки  + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -927,7 +927,7 @@ ${sNameOrgan03}&lt;br /&gt;
     <sequenceFlow id="flow59" name="Перевірку не пройдено" sourceRef="exclusivegateway3" targetRef="servicetask14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_03=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask15" name="4.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask15" name="4.2. Повідомлення про непройдення перевірки  + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -967,7 +967,7 @@ ${sNameOrgan04}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask16" name="4.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask16" name="4.1. Повідомлення про успішну перевірку + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1007,7 +1007,7 @@ ${sNameOrgan04}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask17" name="4. Повідомлення співробітника Департамент освіти і науки обласної  державної адміністрації">
+    <serviceTask id="servicetask17" name="4. Повідомлення співробітника Департамент освіти і науки обласної  державної адміністрації"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk04}</activiti:expression>
@@ -1034,7 +1034,7 @@ ${sNameOrgan04}&lt;br /&gt;
     <sequenceFlow id="flow64" name="Перевірку не пройдено" sourceRef="exclusivegateway4" targetRef="servicetask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_04=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask18" name="5. Повідомлення співробітника Департамент охорони здоров’я обласної державної адміністрації">
+    <serviceTask id="servicetask18" name="5. Повідомлення співробітника Департамент охорони здоров’я обласної державної адміністрації"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk05}</activiti:expression>
@@ -1052,7 +1052,7 @@ ${sNameOrgan04}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask19" name="5.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask19" name="5.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1092,7 +1092,7 @@ ${sNameOrgan05}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask20" name="5.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask20" name="5.2. Повідомлення про непройдення перевірки  + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -1141,7 +1141,7 @@ ${sNameOrgan05}&lt;br /&gt;
     <sequenceFlow id="flow69" name="Перевірку не пройдено" sourceRef="exclusivegateway5" targetRef="servicetask20">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_05=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask21" name="6.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask21" name="6.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1181,7 +1181,7 @@ ${sNameOrgan06}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask22" name="6.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask22" name="6.2. Повідомлення про непройдення перевірки  + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -1222,7 +1222,7 @@ ${sNameOrgan06}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask23" name="6. Повідомлення співробітника Територіальні органи Державної фіскальної служби України за місцем реєстрації особи щодо якої проводиться спеціальна перевірка">
+    <serviceTask id="servicetask23" name="6. Повідомлення співробітника Територіальні органи Державної фіскальної служби України за місцем реєстрації особи щодо якої проводиться спеціальна перевірка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk06}</activiti:expression>
@@ -1248,7 +1248,7 @@ ${sNameOrgan06}&lt;br /&gt;
     <sequenceFlow id="flow74" name="Перевірку не пройдено" sourceRef="exclusivegateway6" targetRef="servicetask22">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_06=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask24" name="7. Повідомлення співробітника Управління інформаційного  забезпечення ГУ НП ">
+    <serviceTask id="servicetask24" name="7. Повідомлення співробітника Управління інформаційного  забезпечення ГУ НП " activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk07}</activiti:expression>
@@ -1266,7 +1266,7 @@ ${sNameOrgan06}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask25" name="7.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask25" name="7.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1306,7 +1306,7 @@ ${sNameOrgan07}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask26" name="7.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask26" name="7.2. Повідомлення про непройдення перевірки  + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -1346,7 +1346,7 @@ ${sNameOrgan07}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask27" name="8. Повідомлення співробітника Територіального управління Державної судової адміністрації України">
+    <serviceTask id="servicetask27" name="8. Повідомлення співробітника Територіального управління Державної судової адміністрації України" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk08}</activiti:expression>
@@ -1363,7 +1363,7 @@ ${sNameOrgan07}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask28" name="9. Повідомлення співробітника обласний  військовий  комісаріат">
+    <serviceTask id="servicetask28" name="9. Повідомлення співробітника обласний  військовий  комісаріат" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk09}</activiti:expression>
@@ -1382,7 +1382,7 @@ ${sNameOrgan07}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow75" sourceRef="parallelgateway1" targetRef="servicetask27"></sequenceFlow>
     <sequenceFlow id="flow76" sourceRef="parallelgateway1" targetRef="servicetask28"></sequenceFlow>
-    <serviceTask id="servicetask29" name="8.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask29" name="8.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1422,7 +1422,7 @@ ${sNameOrgan08}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask30" name="8.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask30" name="8.2. Повідомлення про непройдення перевірки  + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -1480,7 +1480,7 @@ ${sNameOrgan08}&lt;br /&gt;
     <sequenceFlow id="flow85" name="Перевірку не пройдено" sourceRef="exclusivegateway8" targetRef="servicetask30">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_08=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask31" name="9.1. Повідомлення про успішну перевірку + СМС">
+    <serviceTask id="servicetask31" name="9.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1520,7 +1520,7 @@ ${sNameOrgan09}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask32" name="9.2. Повідомлення про непройдення перевірки  + СМС">
+    <serviceTask id="servicetask32" name="9.2. Повідомлення про непройдення перевірки  + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
