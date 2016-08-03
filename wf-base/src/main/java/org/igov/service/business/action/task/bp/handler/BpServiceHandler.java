@@ -161,7 +161,7 @@ public class BpServiceHandler {
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs);
         mParam.put("organ", organ);
-        mParam.put("saField", new JSONObject(mTaskParam).toString());
+        mParam.put("saField", buildString(mTaskParam));
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
@@ -356,5 +356,19 @@ public class BpServiceHandler {
             }
         }
         return sbContact.toString(); //
+    }
+    
+    public static String buildString(Map<String, Object> hm) {
+
+        // Получаем набор элементов
+        Set<Map.Entry<String, Object>> set = hm.entrySet();
+        String result = " ";
+
+        // Отобразим набор
+        for (Map.Entry<String, Object> entry : set) {
+            result += entry.getKey() + " " + entry.getValue() + "\n\r";
+        }
+        LOG.info(result);
+        return result;
     }
 }
