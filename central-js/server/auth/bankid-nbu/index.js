@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express')
+  , Buffer = require('buffer').Buffer
   , passport = require('passport')
   , authService = require('../auth.service');
 
@@ -8,7 +9,8 @@ var router = express.Router();
 
 router.get('/', function (req, res, next) {
   passport.authenticate('nbu-oauth2', {
-    callbackURL: '/auth/bankid-nbu/callback?link=' + req.query.link
+    callbackURL: '/auth/bankid-nbu/callback',
+    link: req.query.link
   })(req, res, next);
 });
 
@@ -16,9 +18,11 @@ router.get('/callback', function (req, res, next) {
   passport.authenticate('nbu-oauth2', {
     session: false,
     code: req.query.code,
-    callbackURL: '/auth/bankid-nbu/callback?link=' + req.query.link
+    callbackURL: '/auth/bankid-nbu/callback'
   }, function (err, user, info) {
     var error;
+
+    var link = new Buffer(req.query.state, 'base64').toString('utf-8');
 
     if (err) {
       error = {error: JSON.stringify(err)};
@@ -33,11 +37,11 @@ router.get('/callback', function (req, res, next) {
     }
 
     if (error) {
-      res.redirect(req.query.link + '?error=' + JSON.stringify(error));
+      res.redirect(link + '?error=' + JSON.stringify(error));
     } else {
       req.session = authService.createSessionObject('bankid-nbu', user, info);
       delete req.session.prepare;
-      res.redirect(req.query.link);
+      res.redirect(link);
     }
   })(req, res, next)
 });

@@ -1,4 +1,5 @@
-var passport = require('passport')
+var Buffer = require('buffer').Buffer
+  , passport = require('passport')
   , OAuth2Strategy = require('passport-oauth2')
   , OAuth2 = require('oauth').OAuth2
   , util = require('util')
@@ -29,7 +30,11 @@ exports.setup = function (config) {
   util.inherits(NBUOAuth2Strategy, OAuth2Strategy);
 
   NBUOAuth2Strategy.prototype.authorizationParams = function (options) {
-    return {};
+    if (options.link) {
+      return {state: new Buffer(options.link).toString('base64')}
+    } else {
+      return {};
+    }
   };
 
   NBUOAuth2Strategy.prototype.tokenParams = function (options) {
