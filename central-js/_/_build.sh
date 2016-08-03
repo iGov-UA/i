@@ -1,7 +1,8 @@
+#!/bin/sh
+
 cd ./..
 
-gem install sass
-npm install 
+npm install
 bower install
 
 cd ./_

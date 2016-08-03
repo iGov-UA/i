@@ -29,7 +29,7 @@ public class NotificationPatterns {
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -83,9 +83,8 @@ public class NotificationPatterns {
 
             Mail oMail = context.getBean(Mail.class);
 
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
-//                                                        ._ToName(makeStringAsName(bankIdFirstName),
-//                                                                 makeStringAsName(bankIdLastName));
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(makeStringAsName(bankIdFirstName),
+                                                                 makeStringAsName(bankIdLastName));
 
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
@@ -178,8 +177,7 @@ public class NotificationPatterns {
 
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
-//                    ._ToName(sClientFIO)
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,

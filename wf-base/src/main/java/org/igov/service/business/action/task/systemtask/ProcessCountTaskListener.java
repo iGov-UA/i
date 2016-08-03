@@ -62,7 +62,6 @@ public class ProcessCountTaskListener implements JavaDelegate, TaskListener {
 		if (processCount != null) {
             runtimeService.setVariable(execution.getProcessInstanceId(), S_ID_ORDER_GOV_PUBLIC, processCount);
             LOG.info("Set variable to runtime process:{}", processCount);
-            
             LOG.info("Looking for a new task to set form properties");
             List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
             LOG.info("Get {} active tasks for the process", tasks);

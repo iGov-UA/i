@@ -12,21 +12,8 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; заповнювати не треба - він завантажується автоматично" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-         <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ;процесуальний статус" type="enum" required="true">
-          <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Юрідична адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання учасника судового процесу;з обов'язковим зазначенням поштового індексу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи;у разі відсутності ідентифікаційного номеру - серія та номер паспорта громадянина" type="string" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" required="true">
           <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
           <activiti:value id="invalid_not_pension" name="призначення допомоги особам, які не мають права на пенсію, та інвалідам"></activiti:value>
@@ -49,11 +36,7 @@
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        
-       <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
-       <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
-     
-      </extensionElements>
+        </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="${group}">
       <extensionElements>
@@ -61,23 +44,9 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
- 		<activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ" type="enum" writable="false">
-          <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса місцезнаходження або місця проживання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sINNFiz" name="Ідентифікаційний номер платника податків - фізичної особи; ;writable=false" type="string"></activiti:formProperty>
-             
-		<activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" writable="false">
+           <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" writable="false">
           <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
           <activiti:value id="invalid_not_pension" name="призначення допомоги особам, які не мають права на пенсію, та інвалідам"></activiti:value>
           <activiti:value id="children_pregnancy" name="призначення допомоги у зв’язку з вагітністю та пологами"></activiti:value>
@@ -96,10 +65,7 @@
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте відскановану довідку" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdresFiz&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
-     
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport}</activiti:expression>
@@ -196,8 +162,8 @@ execution.setVariable('remail', per4)
     <sequenceFlow id="flow39" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soc_help_177">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_soc_help_177" id="BPMNPlane_dnepr_soc_help_177">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_soc_help_177">
+    <bpmndi:BPMNPlane bpmnElement="kiev_soc_help_177" id="BPMNPlane_kiev_soc_help_177">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

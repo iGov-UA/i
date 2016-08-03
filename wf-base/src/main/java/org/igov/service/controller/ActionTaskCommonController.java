@@ -784,7 +784,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (organ != null) {
             Map<String, Object> variables = new HashMap<String, Object>();
             variables.put("organ", organ);
-            pi = runtimeService.startProcessInstanceByKey(key, variables);
+            pi = runtimeService.startProcessInstanceByKey(key);
+            runtimeService.setVariables(pi.getId(), variables);
         } else {
             pi = runtimeService.startProcessInstanceByKey(key);
         }
@@ -2035,27 +2036,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
                 String assignee = null;
                 for (Task task : tasks) {
+
                     String sLogin ="user_UkrDoc"; // тех-логин УкрДок-а
                     Long nID_Task = Long.parseLong(task.getId());
                     if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
                         LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
-//
+
 //                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
-                        assignee = task.getAssignee();
-                        LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
-                        taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-                        runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
-                        runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
-                        taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-                        runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-                        taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
-                        runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
-                        LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}",
-                                status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
-                        taskService.complete(task.getId());
-                        LOG.info("Completed task {}", task.getId());
+                    assignee = task.getAssignee();
+                    LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
+                    taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
+                    runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+                    runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
+                    taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+                    runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+                    taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
+                    runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
+                    LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}",
+                            status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
+                    taskService.complete(task.getId());
+                    LOG.info("Completed task {}", task.getId());
 //                  }
-                    } else {
+                } else {
                         throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR,
                                 String.format("user '%s' not included in group 'group_UkrDoc' ot this usertask", sLogin));
                     }
@@ -2239,14 +2241,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
             @ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
-            HttpServletRequest req) throws IOException {
-
+            HttpServletRequest req) throws CommonServiceException {
         try {
             InputStream inputStream = file.getInputStream();
             repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
+            LOG.debug("BPMN file has been deployed to repository service");
             return "SUCCESS";
         } catch (Exception e) {
-            throw new IllegalArgumentException("Deployment is broken");
+            String message = "The uploaded file is wrong, that is, either no file has been chosen in the multipart form or the chosen file has no content or it is broken.";
+            LOG.debug(message);
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    message,
+                    HttpStatus.FORBIDDEN
+            );
         }
 
     }
