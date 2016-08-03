@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_dictionary_script" name="Тест получение данных из библиотеки в скрипт" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sMinSalary" name="Мінімальная заробітна плата сьогодні" type="invisible"></activiti:formProperty>        
+        <activiti:formProperty id="dVisit" name="Дата визита" type="date" default="02/12/2016"></activiti:formProperty>
+        <activiti:formProperty id="sDateMinSalary" name="Мінімальная заробітна плата після дати" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script><![CDATA[
+//подключаем библиотеки
+//для работы с датами (парсинга)
+import java.text.SimpleDateFormat
+//для работы с csv данными по адресу /i/wf-base/src/main/resources/patterns/dictionary/
+import org.igov.io.fs.FileSystemDictonary
+
+//создаем объект для парсинга дат
+def format = new SimpleDateFormat()
+//создаем объект для чтения библиотек
+def obj = new FileSystemDictonary()
+
+//получаем заданную дату в виде строки
+def sVisit = execution.getVariable('dVisit')
+//задаем формат строки, регистр и количество букв важен
+//format.applyPattern("dd/MM/yyyy")
+//преобразовываем строку в дату
+def dVisit = sVisit
+// format.parse(sVisit)
+
+
+//получаем дату из библиотеки, где 1 - это строка, 4-столбец в файле services_price.csv
+def sDict = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:4]')
+//повторяем процесс преобразования
+format.applyPattern("dd.MM.yyyy")
+def dDict = format.parse(sDict)
+
+//получаем минимальную зарплату текущую и планируемую, значения будут string-овые, 
+//поэтому математические оперции не будут работать без конвертирования в число, 
+//можно использовать метод который вернет результут в виде числа Integer.parseInt(сюда помещаем нашу строку)
+def priceCur = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:3]')
+def priceNew = obj.replaceMVSTagWithValue('[pattern_dictonary:services_price.csv:1:5]')
+
+//сравниваем заданную и полученную из библиотеки дату
+if(dVisit.compareTo(dDict) < 0){
+//если dVisit < dDict значение будет -1, тоесть меньше 0
+execution.setVariable('sDateMinSalary', priceCur)
+} else{
+//если значение dVisit >= dDict значение 1 или 0(если равны)
+execution.setVariable('sDateMinSalary', priceNew)
+}
+
+
+execution.setVariable('sMinSalary', priceCur)
+   		]]> </script>
+	</scriptTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMinSalary" name="Мінімальная заробітна плата сьогодні" type="string" writable="false"></activiti:formProperty>  
+        <activiti:formProperty id="dVisit" name="Дата візиту" type="date" writable="false"></activiti:formProperty>      
+        <activiti:formProperty id="sDateMinSalary" name="Мінімальная заробітна плата після дати" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_dictionary_script">
+    <bpmndi:BPMNPlane bpmnElement="_test_dictionary_script" id="BPMNPlane__test_dictionary_script">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="410.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="640.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="790.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="445.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="595.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="745.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
