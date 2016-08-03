@@ -6,7 +6,9 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
@@ -28,7 +30,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("ProcessCountTaskListener")
-public class ProcessCountTaskListener implements JavaDelegate {
+public class ProcessCountTaskListener implements JavaDelegate, TaskListener {
 
 	private static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
 
@@ -51,7 +53,10 @@ public class ProcessCountTaskListener implements JavaDelegate {
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		
+		loadProcessCount(execution);
+	}
+
+	private void loadProcessCount(DelegateExecution execution) {
 		String processCount = getActionProcessCount(execution.getProcessDefinitionId(), null);
 		
 		if (processCount != null) {
@@ -82,7 +87,6 @@ public class ProcessCountTaskListener implements JavaDelegate {
                 }
             }
         }
-
 	}
 
 	private String getActionProcessCount(String sID_BP, Long nID_Service) {
@@ -90,5 +94,10 @@ public class ProcessCountTaskListener implements JavaDelegate {
 		String resStr = String.format("%07d", res);
 		LOG.info("Retrieved {} as a result", resStr);
 		return resStr;
+	}
+
+	@Override
+	public void notify(DelegateTask delegateTask) {
+		loadProcessCount(delegateTask.getExecution());
 	}
 }
