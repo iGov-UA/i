@@ -134,7 +134,7 @@ public class BackupData implements ArchiveService {
             //System.out.println(process.getoDateFinish());
             //process.setoSourceDB(sourceDB);
             process.setsID_(rs.getString("REGNUMBER"));
-            process.setsID_Data(rs.getString("IDENTITY"));
+            process.setData(rs.getString("IDENTITY"));
             //process = processDao.saveOrUpdate(process);
             AttributeType attributeType = null;
             Attribute attribute = new Attribute();
