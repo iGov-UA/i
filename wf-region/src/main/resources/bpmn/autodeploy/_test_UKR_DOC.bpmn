@@ -354,7 +354,7 @@ p {font-size: 14px;}
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="servicetask13"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask1" name="Script District" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'region'
@@ -444,7 +444,15 @@ var firstLetter=src.substr(0,1)
 var fullNumber=firstLetter+'--'+number
 execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
-    <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="scripttask2" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask13" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
+    <sequenceFlow id="flow40" sourceRef="servicetask13" targetRef="scripttask2"></sequenceFlow>
+    <userTask id="usertask3" name="User Task" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow41" sourceRef="usertask3" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_UKR_DOC">
     <bpmndi:BPMNPlane bpmnElement="_test_UKR_DOC" id="BPMNPlane__test_UKR_DOC">
@@ -488,7 +496,13 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="470.0" y="598.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="405.0" y="340.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="342.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="343.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="342.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="575.0" y="208.0"></omgdi:waypoint>
@@ -501,8 +515,8 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="652.0" y="244.0"></omgdi:waypoint>
         <omgdi:waypoint x="652.0" y="291.0"></omgdi:waypoint>
-        <omgdi:waypoint x="457.0" y="291.0"></omgdi:waypoint>
-        <omgdi:waypoint x="457.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="291.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="343.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="652.0" y="411.0"></omgdi:waypoint>
@@ -543,7 +557,15 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="505.0" y="615.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="510.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="369.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="369.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="305.0" y="370.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="369.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="575.0" y="369.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="370.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
