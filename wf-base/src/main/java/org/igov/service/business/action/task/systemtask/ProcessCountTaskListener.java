@@ -20,12 +20,14 @@ import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 
  * @author askosyr
  *
  */
+@Component("ProcessCountTaskListener")
 public class ProcessCountTaskListener implements JavaDelegate {
 
 	private static final String S_ID_ORDER_GOV_PUBLIC = "sID_Order_GovPublic";
