@@ -72,8 +72,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     public void archiveData() throws SQLException, ParseException, Exception {
 
         try {
-            SimpleDateFormat dateFormatFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //SimpleDateFormat dateFormatFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DriverManager.registerDriver(new com.sybase.jdbc3.jdbc.SybDriver());
             conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
             stat = conn.createStatement();
@@ -118,7 +118,8 @@ public class ArchiveServiceImpl implements ArchiveService {
                         }
                     }
                     LOG.info("date:" + date);
-                    config.setsValue(dateFormat.format(date.trim()));
+                    //config.setsValue(dateFormat.format(date.trim()));
+                    config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
                 } else {
                     hasNextDate = false;
