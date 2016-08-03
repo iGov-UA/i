@@ -104,7 +104,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                         String sID_Complain = rs.getString("IDENTITY");
                         LOG.info("sID_Complain:" + sID_Complain);
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
+                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("data", sID_Complain);
                             if (!process.isPresent()) {
                                 setProcess(rsComplain);
                             }
@@ -177,7 +177,7 @@ public class ArchiveServiceImpl implements ArchiveService {
         process.setoDateFinish(dateFinish); //EXECCOMPLDATE
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
-        process.setsID_Data(rs.getString("IDENTITY"));
+        process.setData(rs.getString("IDENTITY"));
         process = processDao.saveOrUpdate(process);
         for (int i = 1; i <= columnCount; i++) {
             System.out.println(metaData.getColumnClassName(i) + " " + metaData.getColumnLabel(i));

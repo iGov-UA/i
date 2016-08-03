@@ -60,7 +60,7 @@ public class Process extends AbstractEntity{
     
     @JsonProperty(value = "sID_Data")
     @Column(name = "sID_Data")
-    private String sID_Data;
+    private String data;
     
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
@@ -104,12 +104,12 @@ public class Process extends AbstractEntity{
         this.oDateFinish = oDateFinish;
     }
 
-    public String getsID_Data() {
-        return sID_Data;
+    public String getData() {
+        return data;
     }
 
-    public void setsID_Data(String sID_Data) {
-        this.sID_Data = sID_Data;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public List<Attribute> getaAttribute() {
