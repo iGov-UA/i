@@ -37,6 +37,8 @@
         <activiti:formProperty id="nFile_Diplom" name="Копія диплома" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Military_ID" name="Копія військового квитка" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sResultConclusion" name="Ітогове прийняте рішення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sResultConclusionSMS" name="Ітогове прийняте рішення (SMS)" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk01" name="пошта оргструктури 01" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk02" name="пошта оргструктури 02" type="string"></activiti:formProperty>
@@ -563,14 +565,18 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan01} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо корпоративних прав. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan01}&lt;br /&gt;
+${sWorkTime01}&lt;br /&gt;
+${sAddress01}&lt;br /&gt;
+${sPhoneOrgan01}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan01}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -578,7 +584,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 1). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -591,20 +597,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо корпоративних прав)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid01}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan01} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо корпоративних прав. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan01}&lt;br /&gt;
+${sWorkTime01}&lt;br /&gt;
+${sAddress01}&lt;br /&gt;
+${sPhoneOrgan01}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan01}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -612,14 +624,11 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 1)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="повідомлення про позитивне рішення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="повідомлення про ітогове рішення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -628,38 +637,29 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Опрацьовано звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[Опрацьовано (ітоговий звіт) Запит про перевірку відомостей щодо особи, яка претендує на зайняття посади]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid01},${nFileVidpovid02},${nFileVidpovid03},${nFileVidpovid04},${nFileVidpovid05},${nFileVidpovid06},${nFileVidpovid07},${nFileVidpovid08},${nFileVidpovid09}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-${sComment_2}&lt;br /&gt;
-Ваше звернення [sID_Order] щодо рішення про внесення змін або продовження терміну дії рішення міської ради - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи або уповноваженої особи.&lt;br /&gt;
-4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб (для юридичних осіб).&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком опрацьовано.&lt;br /&gt;&lt;br /&gt;
+Результат перевірки:&lt;br /&gt;
+${sAddPrintSpisok} &lt;br /&gt;&lt;br /&gt;
+${sResultConclusion} &lt;br /&gt;
+Висновки органів, що здійснювали спеціальну перевірку, знаходяться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, rishennya otrimano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, ${nsResultConclusionSMS}. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -709,44 +709,6 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask7" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask8" name="повідомлення про негативний результат перевірки + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо внесення змін або продовження терміну дії рішення міської ради було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sComment_2}&lt;/p&gt;&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow47" sourceRef="scripttask2" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -794,22 +756,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо корупційних правопорушень)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid02}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan02} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо корупційних правопорушень. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan02}&lt;br /&gt;
+${sWorkTime02}&lt;br /&gt;
+${sAddress02}&lt;br /&gt;
+${sPhoneOrgan02}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan02}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -817,7 +783,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 2). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -830,20 +796,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо корупційних правопорушень)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid02}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan02} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо корупційних правопорушень. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan02}&lt;br /&gt;
+${sWorkTime02}&lt;br /&gt;
+${sAddress02}&lt;br /&gt;
+${sPhoneOrgan02}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan02}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -851,10 +823,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 2)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -878,22 +847,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо очищення влади)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid03}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan03} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо очищення влади. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan03}&lt;br /&gt;
+${sWorkTime03}&lt;br /&gt;
+${sAddress03}&lt;br /&gt;
+${sPhoneOrgan03}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan03}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -901,7 +874,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 3). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -914,20 +887,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо очищення влади)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid03}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan03} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо очищення влади. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan03}&lt;br /&gt;
+${sWorkTime03}&lt;br /&gt;
+${sAddress03}&lt;br /&gt;
+${sPhoneOrgan03}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan03}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -935,10 +914,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 3)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -960,20 +936,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо освіти)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid04}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan04} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо освіти. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan04}&lt;br /&gt;
+${sWorkTime04}&lt;br /&gt;
+${sAddress04}&lt;br /&gt;
+${sPhoneOrgan04}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan04}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -981,10 +963,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 4)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -997,22 +976,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо освіти)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid04}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan04} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо освіти. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan04}&lt;br /&gt;
+${sWorkTime04}&lt;br /&gt;
+${sAddress04}&lt;br /&gt;
+${sPhoneOrgan04}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan04}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1020,7 +1003,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 4). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1078,22 +1061,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо відомостей про стан здоров‘я)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid05}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan05} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо відомостей про стан здоров‘я. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan05}&lt;br /&gt;
+${sWorkTime05}&lt;br /&gt;
+${sAddress05}&lt;br /&gt;
+${sPhoneOrgan05}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan05}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1101,7 +1088,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 5). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1114,20 +1101,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо відомостей про стан здоров‘я)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid05}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan05} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо відомостей про стан здоров‘я. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan05}&lt;br /&gt;
+${sWorkTime05}&lt;br /&gt;
+${sAddress05}&lt;br /&gt;
+${sPhoneOrgan05}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan05}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1135,10 +1128,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 5)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1160,22 +1150,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо достовірності відомостей, зазначених у декларації)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid06}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan06} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо достовірності відомостей, зазначених у декларації. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan06}&lt;br /&gt;
+${sWorkTime06}&lt;br /&gt;
+${sAddress06}&lt;br /&gt;
+${sPhoneOrgan06}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan06}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1183,7 +1177,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 6). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1196,20 +1190,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо достовірності відомостей, зазначених у декларації)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid06}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan06} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо достовірності відомостей, зазначених у декларації. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan06}&lt;br /&gt;
+${sWorkTime06}&lt;br /&gt;
+${sAddress06}&lt;br /&gt;
+${sPhoneOrgan06}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan06}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1217,10 +1217,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 6)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1278,22 +1275,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо наявності судимості, її зняття, погашення)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid07}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan07} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо наявності судимості, її зняття, погашення. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan07}&lt;br /&gt;
+${sWorkTime07}&lt;br /&gt;
+${sAddress07}&lt;br /&gt;
+${sPhoneOrgan07}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan07}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1301,7 +1302,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 7). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1314,20 +1315,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо наявності судимості, її зняття, погашення)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid07}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan07} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо наявності судимості, її зняття, погашення. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan07}&lt;br /&gt;
+${sWorkTime07}&lt;br /&gt;
+${sAddress07}&lt;br /&gt;
+${sPhoneOrgan07}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan07}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1335,10 +1342,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 7)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1387,22 +1391,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо наявності в  реєстрі судових рішень відомостей про притягнення до кримінальної відповідальності)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid08}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan08} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо наявності в  реєстрі судових рішень відомостей про притягнення до кримінальної відповідальності. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan08}&lt;br /&gt;
+${sWorkTime08}&lt;br /&gt;
+${sAddress08}&lt;br /&gt;
+${sPhoneOrgan08}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan08}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1410,7 +1418,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 8). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1423,20 +1431,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо наявності в  реєстрі судових рішень відомостей про притягнення до кримінальної відповідальності)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid08}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan08} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо наявності в  реєстрі судових рішень відомостей про притягнення до кримінальної відповідальності. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan08}&lt;br /&gt;
+${sWorkTime08}&lt;br /&gt;
+${sAddress08}&lt;br /&gt;
+${sPhoneOrgan08}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan08}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1444,10 +1458,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 8)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1478,22 +1489,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей ()]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено Запит про перевірку відомостей (Щодо відношення особи до військового обов'язку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileVidpovid09}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваш запит [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком перевірено.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan09} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо відношення особи до військового обов'язку. &lt;br /&gt; 
+Інформації, що перешкоджає зайняттю посади не виявлено. &lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+${sNameOrgan09}&lt;br /&gt;
+${sWorkTime09}&lt;br /&gt;
+${sAddress09}&lt;br /&gt;
+${sPhoneOrgan09}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
+${sNameOrgan09}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1501,7 +1516,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno,pozytyvnyi vysnovok nadano (perevirka N 9). Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1514,20 +1529,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+          <activiti:string><![CDATA[НЕ ПРОЙДЕНО перевірку щодо запиту про перевірку відомостей (Щодо відношення особи до військового обов'язку)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileVidpovid09}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;НЕ ПРОЙДЕНО &lt;/b&gt; перевірку, висновок негативний щодо запиту [sID_Order] про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком.;&lt;br /&gt;
+Орган, що здійснювам спеціальну перевірку: ${sNameOrgan09} &lt;br /&gt;    
+Вид спеціальної перевірки: Щодо відношення особи до військового обов'язку. &lt;br /&gt; 
+&lt;b&gt;ВИЯВЛЕНО інформацію, що перешкоджає зайняттю посади!&lt;/b&gt;&lt;br /&gt;
+Висновок органу, що здійснювам спеціальну перевірку, знаходиться у вкладенні до цього email. &lt;br /&gt;  
 &lt;br /&gt;
-${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+${sNameOrgan09}&lt;br /&gt;
+${sWorkTime09}&lt;br /&gt;
+${sAddress09}&lt;br /&gt;
+${sPhoneOrgan09}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan09}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -1535,10 +1556,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>Zaput [sID_Order] obrobleno, perevirku NE PROIDENO (perevirka N 9)! Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1588,6 +1606,87 @@ ${sNameOrgan}&lt;br /&gt;
     execution.setVariable('sAddPrintSpisok', per6)
       </script>
     </scriptTask>
+    <scriptTask id="scripttask3" name="Script Task (javascript) Підготовка ітогової інформації" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+    var per1 = 1
+    var per2 = ''
+    var per3 = ' '
+    var per4 = ' '
+    
+    if (execution.getVariable('asEnum_decision_01') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan01') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan01') +")&lt;br&gt;"
+	per1 = per1 + 1
+	
+    if (execution.getVariable('asEnum_decision_02') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan02') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan02') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_03') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan03') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan03') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_04') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan04') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan04') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_05') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan05') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan05') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_06') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_07') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan07') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan07') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if (execution.getVariable('asEnum_decision_08') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan08') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan08') +")&lt;br&gt;"
+	per1 = per1 + 1
+		
+    if (execution.getVariable('asEnum_decision_09') == 'accept')
+		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+	else
+		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+	per1 = per1 + 1
+
+    if ((execution.getVariable('asEnum_decision_01') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_02') == 'accept') &amp;&amp;  
+    	(execution.getVariable('asEnum_decision_03') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_04') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_05') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_06') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_07') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_08') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_09') == 'accept') )
+		{
+			per3 = "Інформації, що перешкоджає зайняттю посади не виявлено!"
+			per4 = "itog perevirky - OK"
+		}
+	else
+		{
+			per3 = "&lt;b&gt;ВИЯВЛЕНО &lt;/b&gt; інформацію, що перешкоджає зайняттю посади!"
+			per4 = "itog perevirky - ERROR"
+		}
+
+    execution.setVariable('sAddPrintSpisok', per2)
+    execution.setVariable('sResultConclusion', per3)
+    execution.setVariable('sResultConclusionSMS', per4)
+      </script>
+    </scriptTask>
     <sequenceFlow id="flow86" sourceRef="servicetask28" targetRef="usertask9"></sequenceFlow>
     <sequenceFlow id="flow87" sourceRef="usertask9" targetRef="exclusivegateway9"></sequenceFlow>
     <sequenceFlow id="flow88" name="Перевірка ОК" sourceRef="exclusivegateway9" targetRef="servicetask31">
@@ -1616,14 +1715,9 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow105" sourceRef="servicetask30" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow106" sourceRef="servicetask31" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow107" sourceRef="servicetask32" targetRef="parallelgateway2"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow108" sourceRef="exclusivegateway10" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_01=='accept'&&asEnum_decision_02=='accept'&&asEnum_decision_03=='accept'&&asEnum_decision_04=='accept'&&asEnum_decision_05=='accept'&&asEnum_decision_06=='accept'&&asEnum_decision_07=='accept'&&asEnum_decision_08=='accept'&&asEnum_decision_09=='accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow109" sourceRef="exclusivegateway10" targetRef="servicetask8"></sequenceFlow>
-    <sequenceFlow id="flow110" sourceRef="parallelgateway2" targetRef="exclusivegateway10"></sequenceFlow>
     <sequenceFlow id="flow111" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow112" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow112" sourceRef="parallelgateway2" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow113" sourceRef="scripttask3" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_SpecInspection_965">
     <bpmndi:BPMNPlane bpmnElement="SpecInspection_965" id="BPMNPlane_SpecInspection_965">
@@ -1673,7 +1767,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdc:Bounds height="95.0" width="105.0" x="78.0" y="680.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="188.0" x="220.0" y="1010.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="188.0" x="352.0" y="1024.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="52.0" y="630.0"></omgdc:Bounds>
@@ -1683,9 +1777,6 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="74.0" width="194.0" x="349.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="81.0" width="211.0" x="488.0" y="1010.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="230.0"></omgdc:Bounds>
@@ -1796,10 +1887,10 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="870.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="428.0" y="1120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="428.0" y="1140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
-        <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="940.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="61.0" width="209.0" x="341.0" y="940.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="55.0" y="71.0"></omgdi:waypoint>
@@ -2155,27 +2246,17 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="2061.0" y="842.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="870.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
-        <omgdi:waypoint x="425.0" y="960.0"></omgdi:waypoint>
-        <omgdi:waypoint x="314.0" y="960.0"></omgdi:waypoint>
-        <omgdi:waypoint x="314.0" y="1010.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
+        <omgdi:waypoint x="446.0" y="1105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="1140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
-        <omgdi:waypoint x="465.0" y="960.0"></omgdi:waypoint>
-        <omgdi:waypoint x="593.0" y="960.0"></omgdi:waypoint>
-        <omgdi:waypoint x="593.0" y="1010.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
+      <bpmndi:BPMNEdge bpmnElement="flow112" id="BPMNEdge_flow112">
         <omgdi:waypoint x="445.0" y="910.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="940.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
-        <omgdi:waypoint x="314.0" y="1091.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="1120.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow112" id="BPMNEdge_flow112">
-        <omgdi:waypoint x="593.0" y="1091.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="1120.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow113" id="BPMNEdge_flow113">
+        <omgdi:waypoint x="445.0" y="1001.0"></omgdi:waypoint>
+        <omgdi:waypoint x="446.0" y="1024.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

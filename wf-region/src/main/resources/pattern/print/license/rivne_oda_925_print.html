@@ -248,6 +248,7 @@
       .w4p {width: 4%;}      
       .w5p {width: 5%;}   
       .w10p { width: 10%;}
+      .w15p { width: 15%;}
       .w20p { width: 20%;}
       .w30p { width: 30%;}
       .w33p { width: 33%;} 
@@ -289,6 +290,7 @@
       .pl-250 { padding-left: 250px;}
       .pl-300 { padding-left: 300px;}
 
+      .ml-1{ margin-left: 1cm;}
       .ml-5{ margin-left: 5cm;}
       .ml-6{ margin-left: 6cm;}
       .ml-7{ margin-left: 7cm;}
@@ -367,26 +369,26 @@
       }
 
       window.onload = function() { 
-    	  /*
-        var asAdress = "[asAdress]";
-        var subekt = "[subekt]";
-        var asLawCourt =  "[asLawCourt]";
-        var bankIdinn = "[bankIdinn]";
-        var edrpou = "[edrpou]";
+        /*
+var asAdress = "[asAdress]";
+var subekt = "[subekt]";
+var asLawCourt =  "[asLawCourt]";
+var bankIdinn = "[bankIdinn]";
+var edrpou = "[edrpou]";
 
-        ShowElementsOnTrue(subekt == "по собі", "spanFisName");   
-        ShowElementsOnTrue(subekt == "по іншому підприємству", "spanUrName");
-        ShowElementsOnTrue(asAdress == "Так" && subekt == "по собі", "spanAdressRegistr");      
-        ShowElementsOnTrue(asAdress == "Ні" && subekt == "по собі", "spanAdressFactual");    
-        ShowElementsOnTrue(subekt == "по іншому підприємству", "spanAdressFactualUr");
+ShowElementsOnTrue(subekt == "по собі", "spanFisName");   
+ShowElementsOnTrue(subekt == "по іншому підприємству", "spanUrName");
+ShowElementsOnTrue(asAdress == "Так" && subekt == "по собі", "spanAdressRegistr");      
+ShowElementsOnTrue(asAdress == "Ні" && subekt == "по собі", "spanAdressFactual");    
+ShowElementsOnTrue(subekt == "по іншому підприємству", "spanAdressFactualUr");
 
-        ShowElements(asLawCourt == "Так", "spanLawCourt");
+ShowElements(asLawCourt == "Так", "spanLawCourt");
 
-        if(subekt == "по собі"){
-          FillFildsOneChar("trINN", bankIdinn, 10, "ta-c");
-        } else if (subekt == "по іншому підприємству") {
-          FillFildsOneChar("trINN", edrpou, 10, "ta-c");  
-        }
+if(subekt == "по собі"){
+FillFildsOneChar("trINN", bankIdinn, 10, "ta-c");
+} else if (subekt == "по іншому підприємству") {
+FillFildsOneChar("trINN", edrpou, 10, "ta-c");  
+}
 */
       };
     </script>
@@ -401,203 +403,148 @@
       <br><br><br>
 
       <div class="claimBlock">ЗАЯВА</div>
-      <div class="b ta-c">
-        про видачу ліцензії
+      <div class="ta-c">
+        про отримання  ліцензії на освітню діяльність (розширення провадження освітньої діяльності) у сфері загальної середньої освіти
       </div>
 
       <br><br><br>
 
-      <div class="under_multifield w100p ta-j">
-        <b>Заявник </b>
-        <u>
-          <span id="spanNameFiz">
-            [bankIdlastName] [bankIdfirstName] [bankIdmiddleName],
-          </span>
-          <span id="spanNameUr">
-      		[sNameCompany], [sNamePostCompany], [lastName_UA1] [firstName_UA1] [middleName_UA1]
-         </span>
-        </u>
+      <div class="ta-j pl-paragraph">
+        Прошу провести ліцензування та видати ліцензію на освітню діяльність або розширити провадження освітньої діяльності у сфері загальної середньої освіти 
+      </div>   
+
+
+
+      <div class="under_field w100p ta-c">
+        <u>[asLicense]</u>
+        <span>
+          (здобуття початкової загальної освіти, 
+          базової загальної середньої освіти, 
+          повної загальної середньої освіти)
+        </span>
       </div>        
       <br>
-      <div class="ta-j" id="divAdressUr">Місцезнаходження юридичної особи:
-        <em>[sAddressFactualUr]</em>
+      <div class="ta-j">
+        з ліцензованим обсягом
+        <em>[nTeacher]</em>
+        осіб.
       </div>      
 
-      <div class="ta-j"  id="divAdressFiz">
-        Місце проживання фізичної особи - підприємця:
-        <em>
-          <span id="spanAdressRegister">[bankIdAddressFactual]</span>
-          <span id="spanAdressFact">[sAddressFactual]</span>
-        </em>
-      </div> 
+      <div class="whoBlock ml-1">
 
-      <div class="ta-l">
-        Телефон  
-        <u>[phone]</u>, 
-        факс         
-        <div class="under_field w150">
-          <u>&#160;</u>
-          <span>(за наявності)</span>
-        </div>, 
-        електронна адреса 
-        <u>[email]</u>
-      </div> 
+        <div class="under_field w100p ta-j ">
+          <b>Здобувач ліцензії</b>
+          <u>[sNameUr]</u>
+          <span>
+            (повне найменування закладу освіти - юридичної особи)
+          </span>
+        </div>
 
-      <br>
-      <div class="ta-j"  id="divEDRPOU">
-        Код згідно з ЄДРПОУ:
-        <em>[edrpou]</em>
-      </div> 
+        <div class="under_field w100p ta-j ">
+          <b>Керівник</b>
+          <u>[lastName_UA1] [firstName_UA1] [middleName_UA1]</u>
+          <span>
+            (найменування посади, прізвище, ім’я та по батькові)
+          </span>
+        </div>
 
-      <div class="ta-j" id=divINN>
-        Реєстраційний номер облікової картки платника податків*:
-        <em>[bankIdinn]</em>
-      </div> 
-
-      <div class="ta-j">
-        Поточний рахунок №
-        <em>[sBankAccount]</em>
-        у 
-        <em>[sBankName]</em>, 
-        МФО 
-        <em>[mfo]</em>
-      </div> 
-
-      <br>
-      <div class="ta-j">
-        Прошу видати ліцензію та <u>[anBranch]</u> копій для відокремлених 
-        структурних підрозділів на провадження господарської діяльності з 
-        <em>[sNameGovServise]</em>
-      </div> 
-
-      <br>
-      <div class="ta-j">
-        Кількість областей України, на території яких планується провадити 
-        господарську діяльність з постачання теплової енергії:
-        <em>[sNumberArea]</em>
-      </div> 
-
-      <br>
-      <div class="ta-j">
-        Річний обсяг виробленої теплової енергії, який планується відпускати 
-        із джерел теплової енергії суб’єкта господарювання для потреб споживачів:
-        <em>[sPlanYearProd]</em>
-      </div> 
-
-      <br>
-      <div class="ta-j">
-        Відомості про відокремлені підрозділи (філії), 
-        що провадитимуть зазначену діяльність на підставі ліцензії:
-      </div> 
+        <div class="under_field w100p ta-j ">
+          <b>Ідентифікаційний код</b>
+          <u>[bankIdinn]</u>
+        </div>
 
 
 
-      <table class="w100p">
-        <tr>
-          <th>№ з/п</th>
-          <th>Найменування</th>
-          <th>Місцезнаходження</th>
-          <th>Тел./факс</th>
-          <th>Вид господарської діяльності</th>
-        </tr>
-        <tr>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-          <th>4</th>
-          <th>5</th>
-        </tr>
-        <tr id="row1">
-          <td>1</td>
-          <td>[sNameFil1]</td>
-          <td>[sAdressFil1]</td>
-          <td>[sPhoneFil1]</td>
-          <td>[sKindOfFil1]</td>
-        </tr>
-        <tr id="row2">
-          <td>2</td>
-          <td>[sNameFil2]</td>
-          <td>[sAdressFil2]</td>
-          <td>[sPhoneFil2]</td>
-          <td>[sKindOfFil2]</td>
-        </tr>
-        <tr id="row3">
-          <td>3</td>
-          <td>[sNameFil3]</td>
-          <td>[sAdressFil3]</td>
-          <td>[sPhoneFil3]</td>
-          <td>[sKindOfFil3]</td>
-        </tr>
-        <tr id="row4">
-          <td>4</td>
-          <td>[sNameFil4]</td>
-          <td>[sAdressFil4]</td>
-          <td>[sPhoneFil4]</td>
-          <td>[sKindOfFil4]</td>
-        </tr>
-        <tr id="row5">
-          <td>5</td>
-          <td>[sNameFil5]</td>
-          <td>[sAdressFil5]</td>
-          <td>[sPhoneFil5]</td>
-          <td>[sKindOfFil5]</td>
-        </tr>
-        <tr id="row6">
-          <td>6</td>
-          <td>[sNameFil6]</td>
-          <td>[sAdressFil6]</td>
-          <td>[sPhoneFil6]</td>
-          <td>[sKindOfFil6]</td>
-        </tr>
-        <tr id="row7">
-          <td>&#160;</td>
-          <td>&#160;</td>
-          <td>&#160;</td>
-          <td>&#160;</td>
-          <td>&#160;</td>
-        </tr>
-      </table>      
 
-      <div class="smallText ta-j">
-        Відповідно до ст.11
-        ЗУ “Про захист персональних даних” надаю згоду на обробку та
-        використання моїх персональних даних для здійснення повноважень,
-        пов'язаних із розглядом даного запиту</div>
-      <br>
+        <div class="under_field w100p ta-j ">
+          <b>Організаційно-правова форма</b>
+          <u>[sLegalForm]</u>
+        </div>
+
+        <div class="under_field w100p ta-j ">
+          <b>Форма власності</b>
+          <u>[sOwnership]</u>
+        </div>
+
+        <div class="under_field w100p ta-j ">
+          <b>Орган управління</b>
+          <u>[sGoverningBody]</u>
+        </div>
+
+        <div class="under_field w100p ta-j ">
+          <b>Місцезнаходження</b>
+          <u>[sAddressFactualUr]</u>
+        </div>
+
+        <div class="under_field w100p ta-j ">
+          <b>Місце провадження освітньої діяльності</b>
+          <u>[sAddressFactualFiz]</u>
+        </div>
+
+        <div class="ta-l">
+          Телефон  
+          <u>[phone]</u>, 
+          факс         
+          <div class="under_field w150">
+            <u>&#160;</u>
+            <span>(за наявності)</span>
+          </div>, 
+          електронна адреса 
+          <u>[email]</u>
+        </div> 
+
+        <div class="ta-j">
+          Поточний рахунок №
+          <em>[sBankAccount]</em>
+          у 
+          <em>[sBankName]</em>, 
+          МФО 
+          <em>[mfo]</em>
+        </div> 
+      </div>   
+
+
+      <div class="ta-j pl-paragraph">
+        З порядком проведення ліцензування та Ліцензійними умовами провадження освітньої діяльності закладів освіти ознайомлений і зобов’язуюся їх виконувати. 
+      </div>   
+
+      <div class="ta-j pl-paragraph">
+        Відомості, зазначені в документах, поданих для проведення ліцензування, є достовірними. 
+      </div>   
+      <div class="ta-j pl-paragraph">
+        Бажаний спосіб одержання документів <em>паперовий носій</em>
+      </div>   
+
+
+
 
       <div>
-        <div class="under_field notb w20p">          
+        <div class="under_field w40p">      
+          <u>          
+            [sNamePostCompany]
+          </u>
+          <span>(найменування посади керівника)</span>
         </div>
-        <div class="notunder_field w10p"></div>
-        <div class="under_field w20p">
+        <div class="notunder_field w1p"></div>
+        <div class="under_field w15p">
           <u>          
             &#160;
           </u>
           <span>(підпис)</span>
         </div>
-        <div class="notunder_field w10p"></div>
-        <div class="under_field w30p">
+        <div class="notunder_field w1p"></div>
+        <div class="under_field w40p">
           <u>          
-            &#160;
+            [lastName_UA1]
           </u>
           <span>(прізвище, ім’я, по батькові)</span>
         </div>
       </div>
+      
       <div>
-        "___" _______________ 20__ р. 
-        <br/><br/>
-
-        М.П.
-
+        МП<span class="smalltext">(у разі наявності)</span>
       </div>
-
-      <br/><br/><br/>
-      <div class="smalltext">
-        ____________________________________________<br>
-        * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні переконання
-        відмовляються від прийняття реєстраційного номера облікової картки платника податків
-        та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
-      </div>
+      
     </div>
   </body>
 </html>
