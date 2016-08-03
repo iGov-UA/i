@@ -103,6 +103,7 @@ public class UkrDocUtil {
         attributes.put("Населенный пункт", sPlace);
         attributes.put("Остальной адрес", sAddress);
         attributes.put("Дата заявки", sDateAppealValue);
+        attributes.put("sHost", generalConfig.sHost());
 
         Map<String, Object> extensions = new HashMap<String, Object>();
         if (attachmentsIds != null && !attachmentsIds.isEmpty()) {

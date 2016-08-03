@@ -27,6 +27,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.systemtask.ProcessCountTaskListener;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import org.json.simple.JSONObject;
@@ -98,8 +99,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
                 String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);;
                 String shortFIO = "_", fullIO = "_";
-                sID_Order_GovPublicValue = (bankIdlastName!=null&&bankIdlastName.length()>0?bankIdlastName.substring(0,1):"")+ 
-                		"-" + getActionProcessCount(delegateTask.getExecution().getProcessDefinitionId(), null);
+                sID_Order_GovPublicValue = runtimeService.hasVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC)?
+                		(String)runtimeService.getVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC):"";
                 LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
                 if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
