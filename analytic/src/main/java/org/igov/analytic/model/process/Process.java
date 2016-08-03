@@ -59,7 +59,7 @@ public class Process extends AbstractEntity{
     private DateTime    oDateFinish ;
     
     @JsonProperty(value = "sID_Data")
-    @Column
+    @Column(name = "sID_Data")
     private String sID_Data;
     
     @JsonProperty(value = "aAttribute")
