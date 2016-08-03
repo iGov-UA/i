@@ -160,7 +160,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q) {
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -171,14 +171,21 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     feedbackError: false,
     postFeedback: postFeedback,
     rateFunction: rateFunction,
+    sendAnswer: sendAnswer,
+    answer: answer,
+    hideAnswer: hideAnswer,
     raiting: 3,
     exist: false,
-    readonly: true
+    readonly: true,
+    isAdmin: false,
+    showAnswer: false
   };
 
   activate();
 
   function activate() {
+
+    $scope.feedback.isAdmin = AdminService.isAdmin();
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
@@ -194,14 +201,6 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
         var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
         ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
         if (ErrorsFactory.bSuccessResponse(response)) {
-          //if (response[1].data) {
-          //  $scope.feedback.exist = response[1].data.sBody.trim() === '';
-          //}
-          //if(Array.isArray(response.data)){
-          //  $scope.feedback.exist = response.data.some(function(o){
-          //    return o.sID_Source && o.sBody !== '';
-          //  });
-          //}
         }
 
         $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
@@ -257,6 +256,30 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       nID: null,
       sID_Token: null
     });
+  }
+
+  function sendAnswer(data){
+    var sHead = '';
+
+    FeedbackService.postFeedbackForService(data.nID,
+      data.nID_Service,
+      $scope.sID_Token,
+      data.sBody,
+      data.sAuthorFIO,
+      data.sMail,
+      sHead,
+      data.nID_Rate,
+      data.sAnswer);
+
+    hideAnswer();
+  }
+
+  function answer(commentID){
+    $scope.feedback.commentToShowAnswer = commentID;
+  }
+
+  function hideAnswer(){
+    $scope.feedback.commentToShowAnswer = -1;
   }
 
 });
