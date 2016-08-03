@@ -21,10 +21,11 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
-          <activiti:value id="iGov" name="Заявка подана через портал iGov"></activiti:value>
           <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
           <activiti:value id="sEnum1" name="Скорочений обряд(15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд(45 хвилин, вартість - 337 грн.)"></activiti:value>
@@ -94,7 +95,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="${asSourceType} - Перевірка інформації" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="${sSourceType} - Перевірка інформації" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
@@ -160,7 +161,7 @@
     <sequenceFlow id="flow7" name="${decide == 'accept' || decide == 'accept2'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' || decide == 'accept2'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="${asSourceType} - Надання послуги" activiti:candidateGroups="sales">
+    <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
@@ -382,7 +383,7 @@ ${sMail_Signature}
     <sequenceFlow id="flow41" name="${decide == 'accept'}" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3_yellow" name="${asSourceType} - Очикування підпису" activiti:candidateGroups="sales">
+    <userTask id="usertask3_yellow" name="${sSourceType} - Очикування підпису" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="string" writable="false"></activiti:formProperty>
@@ -498,13 +499,10 @@ ${sMail_Signature}
     <sequenceFlow id="flow48" name="${bReferent == 'false'}" sourceRef="exclusivegateway4" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="${asSourceType} - Резервування часу референтом" activiti:candidateGroups="sales">
+    <userTask id="usertask3" name="${sSourceType} - Резервування часу референтом" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum" writable="false">
-          <activiti:value id="iGov" name="Заявка подана через портал iGov"></activiti:value>
-          <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
-          <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sSourceType" name="Джерело надходження звернення" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="isOk" name="Чи відбулась церемонія?" type="enum" required="true">
           <activiti:value id="accept" name="Церемонія відбулась"></activiti:value>
           <activiti:value id="reject" name="Церемонія скасована. Звільнити місця в електронній черзі."></activiti:value>
