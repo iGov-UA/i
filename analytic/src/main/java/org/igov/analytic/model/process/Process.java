@@ -104,12 +104,12 @@ public class Process extends AbstractEntity{
         this.oDateFinish = oDateFinish;
     }
 
-    public String getsID_Data() {
+    public String getData() {
         return data;
     }
 
-    public void setsID_Data(String sID_Data) {
-        this.data = sID_Data;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public List<Attribute> getaAttribute() {
