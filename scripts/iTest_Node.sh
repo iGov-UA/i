@@ -6,6 +6,4 @@
 		npm install grunt-contrib-imagemin
 		grunt test server
 		cd dist
-		npm install --production
-		cd ..
 	return
