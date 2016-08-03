@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписоної обома нареченими заяви. Ви маєете накласти електроний підпис або в продовж 3 днів з моменту  відправлення звернення приїхати особисто в РАГС і підписати паперовий екземпляр цього звернення"></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="string"></activiti:formProperty>
@@ -16,7 +16,7 @@
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="string" default="i10172968078"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name=" мерчанта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string"></activiti:formProperty>
@@ -34,8 +34,8 @@
           <activiti:value id="sEnum1" name="Ні, не маємо"></activiti:value>
           <activiti:value id="sEnum2" name="Так, маємо поважні причини і бажаємо скорочення місячного строку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="oMarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="long"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="visitDate1" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -53,10 +53,10 @@
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="oMarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу(паспорт або паспортнний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="oPassport1" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFemaleData" name="Дані нареченої" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName2" name="Приізвище" type="string"></activiti:formProperty>
@@ -73,10 +73,10 @@
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="oMarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу(паспорт або паспортнний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="oPassport2" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -85,7 +85,7 @@
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oFeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay"  name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
