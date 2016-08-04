@@ -101,7 +101,20 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="${sSourceType} - Перевірка інформації" activiti:candidateGroups="sales">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
+
+
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+      
+      
+
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Приізвище; ;writable=false" type="string"></activiti:formProperty>
@@ -167,8 +180,22 @@
     </sequenceFlow>
     <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
+      
+        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
+
+
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+      
+      
+        <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
+
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Приізвище" type="string" writable="false"></activiti:formProperty>
@@ -382,7 +409,21 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask3_yellow" name="${sSourceType} - Очикування підпису" activiti:candidateGroups="sales">
       <extensionElements>
+      
+        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
+
+
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+      
+    
+
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Приізвище" type="string" writable="false"></activiti:formProperty>
@@ -423,8 +464,8 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Бажаний тип церемонії" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Скорочений (10 хвилин, ... грн )"></activiti:value>
-          <activiti:value id="sEnum2" name="Повний (20 хвилин, ... грн)"></activiti:value>
+          <activiti:value id="sEnum1" name="Скорочений"></activiti:value>
+          <activiti:value id="sEnum2" name="Повний"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні.Повідомити заявника "></activiti:value>
@@ -498,6 +539,17 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask3" name="${sSourceType} - Резервування часу референтом" activiti:candidateGroups="sales">
       <extensionElements>
+      	<activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="string" writable="false"></activiti:formProperty>
+
+      	<activiti:formProperty id="asMarriageType" name="бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Скорочений обряд - 15 хвилин"></activiti:value>
+          <activiti:value id="sEnum2" name="Повний обряд - 45 хвилин"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="visitDate1" name="Дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
+      	
         <activiti:formProperty id="sSourceType" name="Джерело надходження звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="isOk" name="Чи відбулась церемонія?" type="enum" required="true">
           <activiti:value id="accept" name="Церемонія відбулась"></activiti:value>
