@@ -532,16 +532,6 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask12" name="User Task 03" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_grp01">
-      <extensionElements>
-        <activiti:formProperty id="sNameOrgan09" name="Орган, що здійснює спеціальної перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sResultConclusion" name="Ітогове прийняте рішення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sResultConclusionSMS" name="Ітогове прийняте рішення (SMS)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="string"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
     <serviceTask id="servicetask5" name="1. Повідомлення співробітника Управління державної реєстрації Головного територіального управління юстиції " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -1727,8 +1717,6 @@ ${sNameOrgan09}&lt;br /&gt;
     <sequenceFlow id="flow105" sourceRef="servicetask30" targetRef="scripttask11"></sequenceFlow>
     <sequenceFlow id="flow106" sourceRef="servicetask31" targetRef="scripttask13"></sequenceFlow>
     <sequenceFlow id="flow107" sourceRef="servicetask32" targetRef="scripttask13"></sequenceFlow>
-    <sequenceFlow id="flow111" sourceRef="servicetask3" targetRef="usertask12"></sequenceFlow>
-    <sequenceFlow id="flow116" sourceRef="usertask12" targetRef="endevent3"></sequenceFlow>
     <scriptTask id="scripttask4" name="Gate01" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 1</script>
     </scriptTask>
@@ -1767,6 +1755,7 @@ ${sNameOrgan09}&lt;br /&gt;
     <sequenceFlow id="flow125" sourceRef="scripttask13" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow126" sourceRef="parallelgateway2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow127" sourceRef="scripttask3" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow128" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_SpecInspection_965">
     <bpmndi:BPMNPlane bpmnElement="SpecInspection_965" id="BPMNPlane_SpecInspection_965">
@@ -1806,9 +1795,6 @@ ${sNameOrgan09}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
         <omgdc:Bounds height="111.0" width="105.0" x="1948.0" y="489.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask12" id="BPMNShape_usertask12">
-        <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="1330.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="133.0" width="117.0" x="14.0" y="331.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1819,7 +1805,7 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdc:Bounds height="95.0" width="105.0" x="78.0" y="680.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="188.0" x="352.0" y="1130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="188.0" x="352.0" y="1110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="52.0" y="630.0"></omgdc:Bounds>
@@ -1942,7 +1928,7 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="950.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="428.0" y="1450.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="428.0" y="1240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="20.0" y="810.0"></omgdc:Bounds>
@@ -2316,14 +2302,6 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdi:waypoint x="2062.0" y="775.0"></omgdi:waypoint>
         <omgdi:waypoint x="2000.0" y="800.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
-        <omgdi:waypoint x="446.0" y="1211.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="1330.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow116" id="BPMNEdge_flow116">
-        <omgdi:waypoint x="445.0" y="1385.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="1450.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow117" id="BPMNEdge_flow117">
         <omgdi:waypoint x="72.0" y="865.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="950.0"></omgdi:waypoint>
@@ -2371,7 +2349,11 @@ ${sNameOrgan09}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
         <omgdi:waypoint x="445.0" y="1081.0"></omgdi:waypoint>
-        <omgdi:waypoint x="446.0" y="1130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="446.0" y="1110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
+        <omgdi:waypoint x="446.0" y="1191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="1240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
