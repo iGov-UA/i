@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="name_company" name="Найменування юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="name_company" name="Найменування юридичної особи/П.І.Б. фізичної особи - підприємця;оператора ринку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Адреса потужності оператора ринку (місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця);(у форматі індекс, область, місто (село), вулиця, будинок, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону оператора ринку" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти оператора ринку" type="string" required="true"></activiti:formProperty>
@@ -183,7 +183,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[middayka@yandex.ru]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Висновок державної санітарно-епідеміологічної експертизи діючих об’єктів.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Державна реєстрація потужностей операторів ринку.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -193,9 +193,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="Найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Адреса потужності оператора ринку (місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця);(у форматі індекс, область, місто (село), вулиця, будинок, квартира)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону оператора ринку" type="string" default="+380" writable="false"></activiti:formProperty>
@@ -219,22 +217,22 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sPosada_1" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone_1" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmail_1" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_2" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_2" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_2" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_2" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_3" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_3" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_3" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_3" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_4" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_4" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_4" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_4" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_5" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_5" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_5" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_5" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_2" name="ПІП другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_2" name="Посада другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_2" name="Контактний номер телефону другого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_2" name="Адреса електронної пошти другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_3" name="ПІП третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_3" name="Посада третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_3" name="Контактний номер телефону третього члена колегіального органу" type="string" default="+380" writable="false"</activiti:formProperty>
+        <activiti:formProperty id="sEmail_3" name="Адреса електронної пошти третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_4" name="ПІП четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_4" name="Посада четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_4" name="Контактний номер телефону четвертого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_4" name="Адреса електронної пошти четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_5" name="ПІП п'ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_5" name="Посада п'ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_5" name="Контактний номер телефону п`ятого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_5" name="Адреса електронної пошти п`ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anDiyal" name="1. Діяльність, пов'язана з харчовими продуктами, які не потребують дотримання температурного режиму та можуть зберігатися при температурі вище 10 °C і залишатися придатними для споживання людиною" type="enum" writable="false">
           <activiti:value id="yes1" name="Так"></activiti:value>
           <activiti:value id="no2" name="Ні"></activiti:value>
@@ -321,6 +319,9 @@ ${sNameOrgan}<br />
           <activiti:value id="attr2_finish" name="Відмовити у розгляді"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/ternopil_vet_867_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopil_vet_867.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/ternopil/ternopil_vet_867.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -407,9 +408,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </sequenceFlow>
     <userTask id="usertask2" name="Надіння рішення щодо реєстрації" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+<activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="Найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Адреса потужності оператора ринку (місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця);(у форматі індекс, область, місто (село), вулиця, будинок, квартира)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону оператора ринку" type="string" default="+380" writable="false"></activiti:formProperty>
@@ -433,22 +432,22 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sPosada_1" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone_1" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmail_1" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_2" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_2" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_2" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_2" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_3" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_3" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_3" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_3" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_4" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_4" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_4" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_4" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPib_5" name="ПІП керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosada_5" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone_5" name="Контактний номер телефону керівника" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail_5" name="Адреса електронної пошти керівника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_2" name="ПІП другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_2" name="Посада другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_2" name="Контактний номер телефону другого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_2" name="Адреса електронної пошти другого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_3" name="ПІП третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_3" name="Посада третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_3" name="Контактний номер телефону третього члена колегіального органу" type="string" default="+380" writable="false"</activiti:formProperty>
+        <activiti:formProperty id="sEmail_3" name="Адреса електронної пошти третього члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_4" name="ПІП четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_4" name="Посада четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_4" name="Контактний номер телефону четвертого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_4" name="Адреса електронної пошти четвертого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_5" name="ПІП п'ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada_5" name="Посада п'ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone_5" name="Контактний номер телефону п`ятого члена колегіального органу" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail_5" name="Адреса електронної пошти п`ятого члена колегіального органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anDiyal" name="1. Діяльність, пов'язана з харчовими продуктами, які не потребують дотримання температурного режиму та можуть зберігатися при температурі вище 10 °C і залишатися придатними для споживання людиною" type="enum" writable="false">
           <activiti:value id="yes1" name="Так"></activiti:value>
           <activiti:value id="no2" name="Ні"></activiti:value>
