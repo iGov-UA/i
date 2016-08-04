@@ -35,6 +35,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
         <activiti:formProperty id="sNameServise" name="Назва послуги" type="invisible" default="Довідка про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"></activiti:formProperty>
         <activiti:formProperty id="sNameGovServise" name="Назва послуги" type="invisible" default="надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям"></activiti:formProperty>
         
+        <activiti:formProperty id="markerAdressStart" name="Отображение адреса" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
         
       </extensionElements>
     </startEvent>
@@ -118,7 +119,11 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:value id="reject" name="Відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_2.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerAdressPrint" name="Отображение адреса" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minsoc/soc_815_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
