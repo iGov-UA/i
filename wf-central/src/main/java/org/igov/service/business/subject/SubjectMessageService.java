@@ -76,6 +76,8 @@ public class SubjectMessageService {
             sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 9l) {
             sHead = "Відповідь/коментар робітника по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 10l) {
+            sHead = "Коментар служби підтримки за результатами контакту з відповідальним посадовцем по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 9l) {
             sHead = "Отправлено письмо";
         }
