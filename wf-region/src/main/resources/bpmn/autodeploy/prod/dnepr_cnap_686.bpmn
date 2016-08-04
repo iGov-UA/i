@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця" isExecutable="true">
+  <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця (з заповненням заяви онлайн)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="markers_ext_01" name="extra_required_fields" type="markers" default="${markerService.loadFromFile('dnepr_cnap_686.json')}"></activiti:formProperty>
@@ -26,6 +26,7 @@
         <activiti:formProperty id="sVar2BankIdmiddleName" name="Нове по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_1_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_02" name="2. ІПН" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -34,6 +35,7 @@
         <activiti:formProperty id="sVar2BankIdinn" name="Новий ІПН" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_02" name="Копія нового ІПН" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_2_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_03" name="3. Паспортні дані" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -43,6 +45,7 @@
         <activiti:formProperty id="sVar2NumPass" name="Новий номер паспорту" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_3_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_04" name="4. Громадянство" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -51,6 +54,7 @@
         <activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Нова країна громадянства" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_4_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_05" name="5. Місце проживання/місцезнаходження" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -143,12 +147,13 @@
         <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_5_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_06" name="6. Види економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Info_5_2" name="Код виду економічної діяльності" type="label" default="перелік існуючих кодів можна знайти за &lt;a href=&quot;http://sfs.gov.ua/dovidniki--reestri--perelik/pereliki-/128651.html&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="markers_Hide_01_06" name="показать строки если есть изменения №6" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_06&quot;:{&quot;aField_ID&quot;:[&quot;asSelectIzmKVED_0002_01&quot;,&quot;asSelectIzmKVED_0002_02&quot;,&quot;asSelectIzmKVED_0003_02&quot;,&quot;Info_5_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_06" name="показать строки если есть изменения №6" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_06&quot;:{&quot;aField_ID&quot;:[&quot;asSelectIzmKVED_0002_01&quot;,&quot;asSelectIzmKVED_0002_02&quot;,&quot;asSelectIzmKVED_0003_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- НОВЫЙ ОСНОВНОЙ КВЕД -->        
         <activiti:formProperty id="asSelectIzmKVED_0002_01" name="Змінюється основний вид економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -156,16 +161,26 @@
         <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Lblminus_0002_00" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="string" default=" "></activiti:formProperty>
+
+<!-- маркер показать поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_1) -->        
         <activiti:formProperty id="markers_Show_sKVED_new_0002_01" name="показать поля если (asSelectIzmKVED_0002_01 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_sKVED_new_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_0002_01&quot;,&quot;Lblminus_0002_00&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_new_0002_01 != "") -->        
         <activiti:formProperty id="markers_sKVED_new_0002_01_1" name="поставити + для нового основного виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_new_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_new_0002_01_2" name="убрать + для нового основного виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_new_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркер установить в пробел поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_2) -->        
         <activiti:formProperty id="markers_sKVED_new_0002_03" name="установить в пробел поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_2)" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_03&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
+<!-- скрыть маркеры и строки -->        
         <activiti:formProperty id="markers_Hides_KVED_new_0002_00" name="спрятать маркеры и строки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hides_KVED_new_0002_00&quot;:{&quot;aField_ID&quot;:[&quot;markers_sKVED_new_0002_03&quot;,&quot;sKVED_new_Plus_0002_01&quot;,&quot;markers_Show_sKVED_new_0002_01&quot;,&quot;markers_sKVED_new_0002_01_1&quot;,&quot;markers_sKVED_new_0002_01_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
+
+
+<!-- НОВЫЕ КВЕДЫ -->        
         <activiti:formProperty id="asSelectIzmKVED_0002_02" name="Додаються нові види економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
+<!-- маркер показать поля для ввода если (asSelectIzmKVED_0002_02 == tf1702_1) -->        
         <activiti:formProperty id="markers_Show_asSelectNumKVED_0002_01" name="показать энум выбора количества и первый вид деятельности если (asSelectIzmKVED_0002_02 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_asSelectNumKVED_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;asSelectNumKVED_0002_01&quot;,&quot;sKVED_0002_01&quot;,&quot;Lblminus_0002_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- маркер для очистки всех новых видов деятельности если (asSelectIzmKVED_0002_02 == "tf1702_2") -->        
         <activiti:formProperty id="markers_sKVED_0002_02_0" name="очистить КВЕДы если (asSelectIzmKVED_0002_02 == 'tf1702_2')" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_02_0&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_01&quot;,&quot;sKVED_0002_02&quot;,&quot;sKVED_0002_03&quot;,&quot;sKVED_0002_04&quot;,&quot;sKVED_0002_05&quot;,&quot;sKVED_0002_06&quot;,&quot;sKVED_0002_07&quot;,&quot;sKVED_0002_08&quot;,&quot;sKVED_0002_09&quot;,&quot;sKVED_0002_10&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asSelectNumKVED_0002_01" name="Оберіть кількість видів діяльності які Ви додаєте/активуєте" type="enum" default="tf1600">
           <activiti:value id="tf1600" name="1"></activiti:value>
@@ -186,26 +201,49 @@
         <activiti:formProperty id="sKVED_0002_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Lblminus_0002_01" name="----------------------------------------------------" type="label" default="----------------------------------------------"></activiti:formProperty>
+
+<!-- маркеры КВЕДа _01_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_01 != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_01_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_01_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _02_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_02 != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_02_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_02_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_02&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_02_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_02_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_02&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _03_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_03 != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_03_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_03_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_03&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_03&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_03_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_03_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_03&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_03&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _04_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_04 != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_04_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_04_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_04&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_04&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_04_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_04_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_04&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_04&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _05_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_05_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_05_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_05_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_05&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_05&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_05_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_05_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_05&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_05&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _06_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_06_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_06_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_06_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_06&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_06&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_06_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_06_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_06&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _07_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_07_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_07_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_07_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_07&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_07&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_07_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_07_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_07&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _08_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_08_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_08_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_08_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_08&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_08&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_08_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_08_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_08&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _09_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_09_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_09_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_09_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_09&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_09&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_09_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_09_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_09&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_09&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _10_ -->        
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_10_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0002_10_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_10_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_10&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_10&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0002_10_2" name="убрать + для нового виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_10_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_10&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_10&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _01-10_ -->        
+<!-- маркеры спрятать все кведы и плюсы новых КВЕДов -->        
         <activiti:formProperty id="markers_Hide_sKVED_0002_01" name="спрятать маркеры и плюсы всех новых КВЕДов" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_sKVED_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;markers_sKVED_0002_01_1&quot;,&quot;markers_sKVED_0002_01_2&quot;,&quot;markers_sKVED_0002_02_1&quot;,&quot;markers_sKVED_0002_02_2&quot;,&quot;markers_sKVED_0002_03_1&quot;,&quot;markers_sKVED_0002_03_2&quot;,&quot;markers_sKVED_0002_04_1&quot;,&quot;markers_sKVED_0002_04_2&quot;,&quot;markers_sKVED_0002_05_1&quot;,&quot;markers_sKVED_0002_05_2&quot;,&quot;markers_sKVED_0002_06_1&quot;,&quot;markers_sKVED_0002_06_2&quot;,&quot;markers_sKVED_0002_07_1&quot;,&quot;markers_sKVED_0002_07_2&quot;,&quot;markers_sKVED_0002_08_1&quot;,&quot;markers_sKVED_0002_08_2&quot;,&quot;markers_sKVED_0002_09_1&quot;,&quot;markers_sKVED_0002_09_2&quot;,&quot;markers_sKVED_0002_10_1&quot;,&quot;markers_sKVED_0002_10_2&quot;,&quot;sKVED_Plus_0002_01&quot;,&quot;sKVED_Plus_0002_02&quot;,&quot;sKVED_Plus_0002_03&quot;,&quot;sKVED_Plus_0002_04&quot;,&quot;sKVED_Plus_0002_05&quot;,&quot;sKVED_Plus_0002_06&quot;,&quot;sKVED_Plus_0002_07&quot;,&quot;sKVED_Plus_0002_08&quot;,&quot;sKVED_Plus_0002_09&quot;,&quot;sKVED_Plus_0002_10&quot;,&quot;markers_Hides_KVED_new_0002_00&quot;,&quot;markers_Show_asSelectNumKVED_0002_01&quot;,&quot;markers_sKVED_0002_02_0&quot;,&quot;markers_Hide03_0002_01&quot;,&quot;markers_0002_1601&quot;,&quot;markers_0002_1602&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_01" name="+ на Код виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_02" name="+ на Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
@@ -217,11 +255,15 @@
         <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+
+<!-- КВЕДЫ ДЛЯ УДАЛЕНИЯ -->        
         <activiti:formProperty id="asSelectIzmKVED_0003_02" name="Видаляються зареєстровані види економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
+<!-- маркер показать поля для ввода если (asSelectIzmKVED_0003_02 == tf1702_1) -->        
         <activiti:formProperty id="markers_Show_asSelectNumKVED_0003_01" name="показать энум выбора количества и первый вид деятельности если (asSelectIzmKVED_0003_02 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_asSelectNumKVED_0003_01&quot;:{&quot;aField_ID&quot;:[&quot;asSelectNumKVED_0003_01&quot;,&quot;sKVED_0003_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- маркер для очистки всех новых видов деятельности если (asSelectIzmKVED_0003_02 == "tf1702_2") -->        
         <activiti:formProperty id="markers_sKVED_0003_02_0" name="очистить КВЕДы если (asSelectIzmKVED_0003_02 == 'tf1702_2')" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_02_0&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_01&quot;,&quot;sKVED_0003_02&quot;,&quot;sKVED_0003_03&quot;,&quot;sKVED_0003_04&quot;,&quot;sKVED_0003_05&quot;,&quot;sKVED_0003_06&quot;,&quot;sKVED_0003_07&quot;,&quot;sKVED_0003_08&quot;,&quot;sKVED_0003_09&quot;,&quot;sKVED_0003_10&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asSelectNumKVED_0003_01" name="Оберіть кількість видів діяльності які Ви видаляєте/деактивуєте" type="enum" default="tf1600">
           <activiti:value id="tf1600" name="1"></activiti:value>
@@ -241,26 +283,48 @@
         <activiti:formProperty id="sKVED_0003_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+<!-- маркеры КВЕДа _01_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_01 != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_01_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_01_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _02_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_02 != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_02_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_02_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_02&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_02_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_02_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_02&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _03_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_03 != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_03_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_03_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_03&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_03&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_03_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_03_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_03&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_03&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _04_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_04 != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_04_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_04_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_04&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_04&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_04_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_04_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_04&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_04&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _05_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_05_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_05_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_05_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_05&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_05&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_05_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_05_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_05&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_05&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _06_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_06_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_06_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_06_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_06&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_06&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_06_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_06_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_06&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _07_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_07_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_07_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_07_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_07&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_07&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_07_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_07_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_07&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _08_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_08_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_08_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_08_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_08&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_08&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_08_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_08_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_08&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _09_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_09_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_09_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_09_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_09&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_09&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_09_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_09_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_09&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_09&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _10_ -->        
+<!-- маркеры устастарить/убрать плюс для старого вида деятельности если (sKVED_0003_10_ != "") -->        
         <activiti:formProperty id="markers_sKVED_0003_10_1" name="поставити + для старого виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_10_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_10&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_10&quot;},&quot;sCondition&quot;:&quot;[sClient] != ' ' &amp;&amp; [sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sKVED_0003_10_2" name="убрать + для старого виду   " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0003_10_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0003_10&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0003_10&quot;},&quot;sCondition&quot;:&quot;[sClient] == ' ' || [sClient] == ''&quot;}}}"></activiti:formProperty>
+<!-- маркеры КВЕДа _01-10_ -->        
+<!-- маркеры спрятать все кведы и плюсы старых КВЕДов и предыдущий скрывающий маркер-->        
         <activiti:formProperty id="markers_Hide_sKVED_0003_01" name="спрятать маркеры и плюсы всех старых КВЕДов" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_sKVED_0003_01&quot;:{&quot;aField_ID&quot;:[&quot;markers_sKVED_0003_01_1&quot;,&quot;markers_sKVED_0003_01_2&quot;,&quot;markers_sKVED_0003_02_1&quot;,&quot;markers_sKVED_0003_02_2&quot;,&quot;markers_sKVED_0003_03_1&quot;,&quot;markers_sKVED_0003_03_2&quot;,&quot;markers_sKVED_0003_05_1&quot;,&quot;markers_sKVED_0003_05_2&quot;,&quot;markers_sKVED_0003_06_1&quot;,&quot;markers_sKVED_0003_06_2&quot;,&quot;markers_sKVED_0003_07_1&quot;,&quot;markers_sKVED_0003_07_2&quot;,&quot;markers_sKVED_0003_08_1&quot;,&quot;markers_sKVED_0003_08_2&quot;,&quot;markers_sKVED_0003_09_1&quot;,&quot;markers_sKVED_0003_09_2&quot;,&quot;markers_sKVED_0003_10_1&quot;,&quot;markers_sKVED_0003_10_2&quot;,&quot;sKVED_Plus_0003_01&quot;,&quot;sKVED_Plus_0003_02&quot;,&quot;sKVED_Plus_0003_03&quot;,&quot;sKVED_Plus_0003_04&quot;,&quot;sKVED_Plus_0003_05&quot;,&quot;sKVED_Plus_0003_06&quot;,&quot;sKVED_Plus_0003_07&quot;,&quot;sKVED_Plus_0003_08&quot;,&quot;sKVED_Plus_0003_09&quot;,&quot;sKVED_Plus_0003_10&quot;,&quot;markers_Hides_KVED_new_0003_00&quot;,&quot;markers_Show_asSelectNumKVED_0003_01&quot;,&quot;markers_sKVED_0003_02_0&quot;,&quot;markers_Hide03_0003_01&quot;,&quot;markers_0003_1601&quot;,&quot;markers_0003_1602&quot;,&quot;markers_Hide_sKVED_0002_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0003_01" name="+ на Код виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0003_02" name="+ на Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
@@ -273,12 +337,22 @@
         <activiti:formProperty id="sKVED_Plus_0003_09" name="+ на Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0003_10" name="+ на Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_6_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
-        <activiti:formProperty id="Info_10_3" name="7. Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо" type="label" default="Для зміни цих реєстраційних даних просимо звернутися персонально до держреєстратора."></activiti:formProperty>
+
+        <activiti:formProperty id="Info_10_3" name="7. Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо" type="label" default="Для зміни цих реєстраційних даних просимо звернутися персонально до держреєстратора."></activiti:formProperty> 
+<!--         <activiti:formProperty id="asSelectIzm_07" name="7. Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо" type="enum" default="tf1702_2" writable="false"> -->
+<!--           <activiti:value id="tf1702_1" name="Так"></activiti:value> -->
+<!--          <activiti:value id="tf1702_2" name="Ні"></activiti:value> -->
+<!--        </activiti:formProperty> -->
+<!--        <activiti:formProperty id="Info_10_2" name="" type="label" default="Для зміни цих реєстраційних даних просимо звернутися персонально до держреєстратора."></activiti:formProperty> -->
+<!-- ЗАГЛУШКА кейса по №7 -->
         <activiti:formProperty id="markers_Hide_01_07_Off" name="ЗАКРЫТО ВСЕГДА показать строки если есть изменения №7" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_07_Off&quot;:{&quot;aField_ID&quot;:[&quot;Info_7_1_Off&quot;,&quot;Info_7_2_Off&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Info_7_0_Off" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="Info_7_1_Off" name="Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_7_2_Off" name="Важлива інформація" type="label" default="Для зміни цих реєстраційних даних просимо звернутися персонально до держреєстратора."></activiti:formProperty>
+<!-- отключено оказание кейса по №7 -->
         <activiti:formProperty id="markers_Hide_01_07" name="ЗАКРЫТО ВСЕГДА строки изменения №7" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_07&quot;:{&quot;aField_ID&quot;:[&quot;Info_7_0&quot;,&quot;Info_7_1&quot;,&quot;Info_7_2&quot;,&quot;sVar2BankIdlastName_N002&quot;,&quot;sVar2BankIdfirstName_N002&quot;,&quot;sVar2BankIdmiddleName_N002&quot;,&quot;sVar2BankIdinn_N002&quot;,&quot;sVar2NameObmeg_N002&quot;,&quot;Info_7_3&quot;,&quot;sVar2BankIdlastName_N003&quot;,&quot;sVar2BankIdfirstName_N003&quot;,&quot;sVar2BankIdmiddleName_N003&quot;,&quot;sVar2BankIdinn_N003&quot;,&quot;sVar2NameObmeg_N003&quot;,&quot;sVar2BankBDay_N002&quot;,&quot;sVar2BankBDay_N003&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
+
+<!--        <activiti:formProperty id="markers_Hide_01_07" name="показать строки если есть изменения №7" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_07&quot;:{&quot;aField_ID&quot;:[&quot;Info_7_0&quot;,&quot;Info_7_1&quot;,&quot;Info_7_2&quot;,&quot;sVar2BankIdlastName_N002&quot;,&quot;sVar2BankIdfirstName_N002&quot;,&quot;sVar2BankIdmiddleName_N002&quot;,&quot;sVar2BankIdinn_N002&quot;,&quot;sVar2NameObmeg_N002&quot;,&quot;Info_7_3&quot;,&quot;sVar2BankIdlastName_N003&quot;,&quot;sVar2BankIdfirstName_N003&quot;,&quot;sVar2BankIdmiddleName_N003&quot;,&quot;sVar2BankIdinn_N003&quot;,&quot;sVar2NameObmeg_N003&quot;,&quot;sVar2BankBDay_N002&quot;,&quot;sVar2BankBDay_N003&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty> -->
         <activiti:formProperty id="Info_7_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="Info_7_1" name="Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_7_2" name=" " type="label" default="Відомості про першу особу"></activiti:formProperty>
@@ -295,6 +369,7 @@
         <activiti:formProperty id="sVar2BankBDay_N003" name="Дата народження" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdinn_N003" name="ІПН" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2NameObmeg_N003" name="Наявність обмежень;щодо представництва від імені юридичної особи" type="string" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="asSelectIzm_08" name="8. Додаткової інформації про зв'язок з фізичною особою – підприємцем - контактні дані" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -307,6 +382,8 @@
         <activiti:formProperty id="sVar2Email" name="Нова адреса електронної пошти" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarOtherInfoName_N001" name="Нові інші відомості" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_8_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
+<!-- НАЧАЛО - Блок работы с плюсами изменений -->        
         <activiti:formProperty id="markers_Hide_sIzm_00_Plus" name="спрятать маркеры и плюсы всех выборов изменений" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_sIzm_00_Plus&quot;:{&quot;aField_ID&quot;:[&quot;markers_sIzm_01_Plus_0&quot;,&quot;markers_sIzm_01_Plus_1&quot;,&quot;markers_sIzm_02_Plus_0&quot;,&quot;markers_sIzm_02_Plus_1&quot;,&quot;markers_sIzm_03_Plus_0&quot;,&quot;markers_sIzm_03_Plus_1&quot;,&quot;markers_sIzm_04_Plus_0&quot;,&quot;markers_sIzm_04_Plus_1&quot;,&quot;markers_sIzm_05_Plus_0&quot;,&quot;markers_sIzm_05_Plus_1&quot;,&quot;markers_sIzm_06_Plus_0&quot;,&quot;markers_sIzm_06_Plus_1&quot;,&quot;markers_sIzm_07_Plus_0&quot;,&quot;markers_sIzm_07_Plus_1&quot;,&quot;markers_sIzm_08_Plus_0&quot;,&quot;markers_sIzm_08_Plus_1&quot;,&quot;sIzm_01_Plus&quot;,&quot;sIzm_02_Plus&quot;,&quot;sIzm_03_Plus&quot;,&quot;sIzm_04_Plus&quot;,&quot;sIzm_05_Plus&quot;,&quot;sIzm_06_Plus&quot;,&quot;sIzm_07_Plus&quot;,&quot;sIzm_08_Plus&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sIzm_01_Plus" name="+ Изменения 01" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIzm_02_Plus" name="+ Изменения 02" type="string" default=" "></activiti:formProperty>
@@ -328,15 +405,25 @@
         <activiti:formProperty id="markers_sIzm_05_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_05_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_05_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_05&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sIzm_06_Plus_0" name="очистить + для изменения " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_06_Plus_0&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_06_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sIzm_06_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_06_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_06_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_sIzm_08_Plus_0" name="очистить + для изменения " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_08_Plus_0&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_08_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
+<!--        <activiti:formProperty id="markers_sIzm_07_Plus_0" name="очистить + для изменения " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_07_Plus_0&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_07_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>  -->  
+<!--        <activiti:formProperty id="markers_sIzm_07_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_07_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_07_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>   -->
+        <activiti:formProperty id="markers_sIzm_08_Plus_0" name="очистить + для изменения " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_08_Plus_0&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_08_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty> 
         <activiti:formProperty id="markers_sIzm_08_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_08_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_08_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- КОНЕЦ - Блок работы с плюсами изменений -->        
+
+<!--        <activiti:formProperty id="Info_9_0" name="======================================" type="label" default="======================================"></activiti:formProperty> -->
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_686_print.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація змін до відомостей про фізичну особу – підприємця"></activiti:formProperty>
       </extensionElements>
+
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all_pay">
+
+
+<!-- ЮЗЕРТАСКА 1 -->        
+
+    <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all">
       <extensionElements>
         <activiti:formProperty id="group_pattern" name="Префикс названия группы" type="invisible" default="jur_"></activiti:formProperty>
 
@@ -350,6 +437,8 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_0" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+<!--  --> 
         <activiti:formProperty id="Info_ut1_1" name="== Зміни № 1. Прізвище, та/або імені, та/або по батькові ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -364,25 +453,27 @@
         <activiti:formProperty id="Info_ut1_5" name="== Зміни № 5. Місце проживання/місцезнаходження ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajOblNam_0002_ADR01" name="Найменування району області; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajCityNam_0002_ADR01" name="Назва району в місті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_6" name="== Зміни № 6. Види економічної діяльності ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с добавляемыми кведами -->
+
         <activiti:formProperty id="Info_ut1_6_01" name="----- КВЕДИ які додаються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -404,6 +495,7 @@
         <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с удаляемыми кведами -->
         <activiti:formProperty id="Info_ut1_6_02" name="----- КВЕДИ які видаляються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -425,6 +517,7 @@
         <activiti:formProperty id="sKVED_Plus_0003_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0003_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0003_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="Info_ut1_7_0" name="== Зміни № 7. Відомості про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця ==" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_7_1" name="== Перша людина ==" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdlastName_N002" name="Прізвище; ;writable=false" type="invisible"></activiti:formProperty>
@@ -448,6 +541,7 @@
         <activiti:formProperty id="sVar2Email" name="Адреса електронної пошти; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarOtherInfoName_N001" name="Інші відомості; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_9" name="============================================================================" type="label" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="sIzm_01_Plus" name="+ Изменения 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_02_Plus" name="+ Изменения 02" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_03_Plus" name="+ Изменения 03" type="invisible"></activiti:formProperty>
@@ -456,50 +550,59 @@
         <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" default=" " required="true">
+
+        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" required="true" default=" " writable="true">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
+          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
           <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
           <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
+          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
           <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
+          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
+<!--           <activiti:value id="ternopil" name="Тернопільський"></activiti:value> -->
           <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
           <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
-          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
-          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
-          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
-          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
+<!-- вставлять новые ЦНАПы сюда -->          
         </activiti:formProperty>
+
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPayCode" name="Код платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarWhoPayGetCode" name="КОД ОТРИМУВАЧА (ЄДРПОУ)" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarWhoPayGet" name="ОТРИМУВАЧ ПЛАТЕЖУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPayGetSchet" name="РАХУНОК" type="invisible" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (Васильковка)" type="invisible" default="i5516072613"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (Васильковка)" type="invisible" default="i5516072613"></activiti:formProperty> 
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="142.57"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="101;${bankIdinn};22010300 Адміністративний збір за держреєстрацію змін ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+<!--        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="*101;${bankIdinn};22010300 Адміністративний збір за держреєстрацію змін ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>  -->
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="101;${bankIdinn};22010300 Адміністративний збір за держреєстрацію змін ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty> 
+
         <activiti:formProperty id="asDecisionFirst_01" name="Результат аналізу звернення" type="enum" required="true">
           <activiti:value id="sYes" name="Так - Заява прийнята для обробки (надіслати листа для сплати)"></activiti:value>
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки (надіслати листа про відмову)"></activiti:value>
         </activiti:formProperty>
+
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]"    type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+
+<!--        <activiti:formProperty id="fAppWithECP" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty> -->
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>  
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
+          <activiti:field name="aFieldInheritedAttachmentID"> 
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
+          </activiti:field> 
+        </activiti:taskListener> 
       </extensionElements>
     </userTask>
+
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>          
+      	<script>          
       	  var sVarCNAP=execution.getVariable('asChoiceCNAP')
           if (sVarCNAP=='vasil')
           	{
@@ -633,66 +736,36 @@
 				execution.setVariable('sVarPayGetSchet','31414501700174')          			
 				execution.setVariable('sVarSumPay','140.00')          			
           	}
-          if (sVarCNAP=='nikopolT')
-          	{
-          		execution.setVariable('sID_Merchant','i65350712368')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','38033121')          			
-				execution.setVariable('sVarWhoPayGet','УК у м. Нікополі/ м. Нікополь/')          			
-				execution.setVariable('sVarPayGetSchet','31417501700029')          			
-				execution.setVariable('sVarSumPay','140.00')          			
-          	}
-          if (sVarCNAP=='dndz')
-          	{
-          		execution.setVariable('sID_Merchant','i53978776110')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','38028588')          			
-				execution.setVariable('sVarWhoPayGet','УДКСУ у м. Дніпродзержинську')          			
-				execution.setVariable('sVarPayGetSchet','31412501700013')          			
-				execution.setVariable('sVarSumPay','140.00')          			
-          	}
-          if (sVarCNAP=='persotravT')
-          	{
-          		execution.setVariable('sID_Merchant','i24795480631')
-				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
-				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')          			
-				execution.setVariable('sVarBankMFO','805012')          			
-				execution.setVariable('sVarPayCode','22010300')          			
-				execution.setVariable('sVarWhoPayGetCode','37804890')          			
-				execution.setVariable('sVarWhoPayGet','УК у м.Першотравенськ')          			
-				execution.setVariable('sVarPayGetSchet','31412501700013')          			
-				execution.setVariable('sVarSumPay','140.00')          			
-          	}
 		</script>
     </scriptTask>
+
+
+<!-- ЮЗЕРТАСКА 2 -->        
+	
     <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="jur_${asChoiceCNAP}">
       <extensionElements>
         <activiti:formProperty id="group_found" name="Найденная группа по префиксу" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
           <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
           <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
-          <activiti:value id="vilnogirskT" name="ЦНАП м.Вільногірськ"></activiti:value>
+          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
           <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
           <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
-          <activiti:value id="ordzonikT" name="ЦНАП м.Орджонікідзе"></activiti:value>
+          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
           <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
-          <activiti:value id="zhvodT" name="ЦНАП м.Жовті Води"></activiti:value>
+          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
+          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
           <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
           <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
-          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
-          <activiti:value id="nikopolT" name="ЦНАП м.Нікополь"></activiti:value>
-          <activiti:value id="dndz" name="ЦНАП м.Дніпродзержинськ"></activiti:value>
-          <activiti:value id="persotravT" name="ЦНАП м.Першотравенськ"></activiti:value>
+<!-- вставлять новые ЦНАПы сюда -->          
         </activiti:formProperty>
+
         <activiti:formProperty id="sID_Payment" name="ID платежу" type="string" writable="false"></activiti:formProperty>
+<!--        <activiti:formProperty id="sVarIDPayment" name="id платежа-присвоенный" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty> -->
+
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="true"></activiti:formProperty>
@@ -701,7 +774,12 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+
+<!-- Поля для заявы НАЧАЛО -->
+
         <activiti:formProperty id="Info_ut1_0" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+<!--  --> 
         <activiti:formProperty id="Info_ut1_1" name="== Зміни № 1. Прізвище, та/або імені, та/або по батькові ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -714,27 +792,28 @@
         <activiti:formProperty id="Info_ut1_4" name="== Зміни № 4. Громадянство ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_5" name="== Зміни № 5. Місце проживання/місцезнаходження ==" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajOblNam_0002_ADR01" name="Найменування району області; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajCityNam_0002_ADR01" name="Назва району в місті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_6" name="== Зміни № 6. Види економічної діяльності ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с добавляемыми кведами -->
         <activiti:formProperty id="Info_ut1_6_01" name="----- КВЕДИ які додаються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -756,6 +835,7 @@
         <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с удаляемыми кведами -->
         <activiti:formProperty id="Info_ut1_6_02" name="----- КВЕДИ які видаляються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -800,6 +880,7 @@
         <activiti:formProperty id="sVar2Email" name="Адреса електронної пошти; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarOtherInfoName_N001" name="Інші відомості; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_9" name="============================================================================" type="label" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="sIzm_01_Plus" name="+ Изменения 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_02_Plus" name="+ Изменения 02" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_03_Plus" name="+ Изменения 03" type="invisible"></activiti:formProperty>
@@ -808,6 +889,9 @@
         <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
+
+<!-- Поля для заявы КОНЕЦ  -->
+
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
@@ -816,10 +900,13 @@
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію змін"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію змін відсутній"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty> 
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+
+<!-- блок для квитанции старт -->
         <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="string" required="true"></activiti:formProperty>
+	<!-- блок для определения в скрипте - старт -->
         <activiti:formProperty id="sVarBankOut" name="Банк платника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible"></activiti:formProperty>
@@ -828,18 +915,39 @@
         <activiti:formProperty id="sVarWhoPayGet" name="ОТРИМУВАЧ ПЛАТЕЖУ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPayGetSchet" name="РАХУНОК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarSumPay" name="Сумма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty> 
+	<!-- блок для определения в скрипте - конец -->
+
+
+<!-- блок для квитанции конец -->
+
+<!--        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fAppWithECP" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty>  -->
+
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
+          </activiti:field> 
+        </activiti:taskListener> 
+
+
+
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Надання послуги" activiti:candidateGroups="jur_all">
+
+<!-- ЮЗЕРТАСКА 3 (1 но без оплаты) -->        
+   
+	<userTask id="usertask3" name="Перевірка наданих даних (1)" activiti:candidateGroups="jur_all">
+
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -851,6 +959,8 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_0" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+ 
         <activiti:formProperty id="Info_ut1_1" name="== Зміни № 1. Прізвище, та/або імені, та/або по батькові ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -863,27 +973,28 @@
         <activiti:formProperty id="Info_ut1_4" name="== Зміни № 4. Громадянство ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_5" name="== Зміни № 5. Місце проживання/місцезнаходження ==" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajOblNam_0002_ADR01" name="Найменування району області; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sVarRajCityNam_0002_ADR01" name="Назва району в місті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_6" name="== Зміни № 6. Види економічної діяльності ==" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с добавляемыми кведами -->
         <activiti:formProperty id="Info_ut1_6_01" name="----- КВЕДИ які додаються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -905,6 +1016,7 @@
         <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с удаляемыми кведами -->
         <activiti:formProperty id="Info_ut1_6_02" name="----- КВЕДИ які видаляються -----" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
@@ -949,6 +1061,7 @@
         <activiti:formProperty id="sVar2Email" name="Адреса електронної пошти; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarOtherInfoName_N001" name="Інші відомості; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Info_ut1_9" name="============================================================================" type="label" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="sIzm_01_Plus" name="+ Изменения 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_02_Plus" name="+ Изменения 02" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_03_Plus" name="+ Изменения 03" type="invisible"></activiti:formProperty>
@@ -957,6 +1070,189 @@
         <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="asChoiceCNAP" name="ВИКОНУВАЧ ПОСЛУГИ (важливо обирати свій район, оскільки саме на його рахунок буде надходити оплата за послугу)" type="enum" required="true" default=" " writable="true">
+          <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
+          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
+          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
+          <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
+          <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
+          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
+          <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
+          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
+<!--           <activiti:value id="ternopil" name="Тернопільський"></activiti:value> -->
+          <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
+          <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
+<!-- вставлять новые ЦНАПы сюда -->          
+        </activiti:formProperty>
+
+        <activiti:formProperty id="asDecisionFirst_03" name="Результат аналізу звернення" type="enum" required="true">
+          <activiti:value id="sYes" name="Так - Заява прийнята для обробки"></activiti:value>
+          <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dnepr_cnap_686_print.html]"    type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
+          <activiti:field name="aFieldInheritedAttachmentID"> 
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
+          </activiti:field>  
+        </activiti:taskListener> 
+      </extensionElements>	
+	
+	</userTask>
+
+<!-- ЮЗЕРТАСКА 4 (2 но без оплаты) -->        
+
+    <userTask id="usertask4" name="Надання послуги (2)" activiti:candidateGroups="jur_${asChoiceCNAP}">
+
+      <extensionElements>
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="asChoiceCNAP" name="Виконувач послуги" type="enum" writable="false">
+          <activiti:value id="vasil" name="Васильківський ЦНАП"></activiti:value>
+          <activiti:value id="charichanka" name="Царичанський ЦНАП"></activiti:value>
+          <activiti:value id="vilnogirskT" name="Вільногірський ЦНАП"></activiti:value>
+          <activiti:value id="tomak" name="Томаківський ЦНАП"></activiti:value>
+          <activiti:value id="krinichki" name="Криничанський ЦНАП"></activiti:value>
+          <activiti:value id="ordzonikT" name="Орджонікідзевський ЦНАП"></activiti:value>
+          <activiti:value id="meziv" name="Межівський ЦНАП"></activiti:value>
+          <activiti:value id="zhvodT" name="Жовтоводський ЦНАП"></activiti:value>
+          <activiti:value id="ternopil" name="Тернопільський"></activiti:value>
+          <activiti:value id="petropavl" name="Петропавлівський ЦНАП"></activiti:value>
+          <activiti:value id="nikopol" name="Нікопольский райЦНАП"></activiti:value>
+<!-- вставлять новые ЦНАПы сюда -->          
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="invisible" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="invisible" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+
+<!-- Поля для заявы НАЧАЛО -->
+
+        <activiti:formProperty id="Info_ut1_0" name="===========================================================================" type="label" default=" "></activiti:formProperty>
+
+<!--  --> 
+        <activiti:formProperty id="Info_ut1_1" name="== Зміни № 1. Прізвище, та/або імені, та/або по батькові ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdlastName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdfirstName" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdmiddleName" name="По Батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_2" name="== Зміни № 2. ІПН ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_3" name="== Зміни № 3. Паспортні дані ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2SerPass" name="Серія; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVar2NumPass" name="Номер; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_4" name="== Зміни № 4. Громадянство ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_5" name="== Зміни № 5. Місце проживання/місцезнаходження ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPostIndex_0002_ADR01" name="Поштовий індекс; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarOblNam_0002_ADR01" name="Найменування області; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblPlus02_ADR01" name="область +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarRajOblNam_0002_ADR01" name="Найменування району області; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajObl301Plus02_ADR01" name="Район області +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlaceNam_0002_ADR01" name="Назва населеного пункту; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace401Plus02_ADR01" name="Місто +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace402Plus02_ADR01" name="Селище міського типу +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace403Plus02_ADR01" name="Селище +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPlace404Plus02_ADR01" name="Село +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCityNam_0002_ADR01" name="Назва району в місті; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCity501Plus02_ADR01" name="В районі міста +" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulType_0002_ADR01" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarVulNam_0002_ADR01" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarBudNum_0002_ADR01" name="Будинок; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_6" name="== Зміни № 6. Види економічної діяльності ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с добавляемыми кведами -->
+        <activiti:formProperty id="Info_ut1_6_01" name="----- КВЕДИ які додаються -----" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_03" name="Код третього виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_04" name="Код четвертого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_05" name="Код п'ятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_06" name="Код шостого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_07" name="Код сьомого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_08" name="Код восьмого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_09" name="Код дев'ятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_10" name="Код десятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_01" name="+ на Код виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_02" name="+ на Код другого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_03" name="+ на Код третього виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_04" name="+ на Код четвертого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_05" name="+ на Код п'ятого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_06" name="+ на Код шостого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_07" name="+ на Код сьомого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+<!-- Блок работы с удаляемыми кведами -->
+        <activiti:formProperty id="Info_ut1_6_02" name="----- КВЕДИ які видаляються -----" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_03" name="Код третього виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_04" name="Код четвертого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_05" name="Код п'ятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_06" name="Код шостого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_07" name="Код сьомого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_08" name="Код восьмого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_09" name="Код дев'ятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0003_10" name="Код десятого виду діяльності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_01" name="+ на Код виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_02" name="+ на Код другого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_03" name="+ на Код третього виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_04" name="+ на Код четвертого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_05" name="+ на Код п'ятого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_06" name="+ на Код шостого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_07" name="+ на Код сьомого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_08" name="+ на Код восьмого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_09" name="+ на Код дев'ятого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0003_10" name="+ на Код десятого виду діяльності" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_7_0" name="== Зміни № 7 ===============================================================" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_7_1" name="== Перша людина ==" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdlastName_N002" name="Прізвище; ;writable=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdfirstName_N002" name="Ім'я; ;writable=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVar2BankIdmiddleName_N002" name="По Батькові; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankBDay_N002" name="Дата народження; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankIdinn_N002" name="ІПН; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2NameObmeg_N002" name="Наявність обмежень; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="Info_ut1_7_2" name="== Друга людина ==" type="invisible" default=" "></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankIdlastName_N003" name="Прізвище; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankIdfirstName_N003" name="Ім'я; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankIdmiddleName_N003" name="По Батькові; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankBDay_N003" name="Дата народження; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2BankIdinn_N003" name="ІПН; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sVar2NameObmeg_N003" name="Наявність обмежень; ;writable=false" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="Info_ut1_8" name="== Зміни № 8. Додаткова інформація про зв'язок з фізичною особою – підприємцем - контактні дані ==" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="phone_2" name="Телефон 1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone_3" name="Телефон 2; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone_4" name="Факс; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarWebAddr_N001" name="Адреса сторінки в мережі Інтернет; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVar2Email" name="Адреса електронної пошти; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarOtherInfoName_N001" name="Інші відомості; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info_ut1_9" name="============================================================================" type="label" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="sIzm_01_Plus" name="+ Изменения 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_02_Plus" name="+ Изменения 02" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_03_Plus" name="+ Изменения 03" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_04_Plus" name="+ Изменения 04" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_05_Plus" name="+ Изменения 05" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_06_Plus" name="+ Изменения 06" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_07_Plus" name="+ Изменения 07" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIzm_08_Plus" name="+ Изменения 08" type="invisible"></activiti:formProperty>
+
+<!-- Поля для заявы КОНЕЦ  -->
+
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
@@ -968,15 +1264,27 @@
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty>
+
+<!--        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації)" type="file" writable="false"></activiti:formProperty>  -->
+<!--        <activiti:formProperty id="fAppWithECP" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty>  -->
+
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
+          <activiti:field name="aFieldInheritedAttachmentID"> 
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
+          </activiti:field> 
+        </activiti:taskListener> 
       </extensionElements>
-    </userTask>
+	  
+	</userTask>
+
+
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -1312,9 +1620,68 @@
     <sequenceFlow id="flow47" name="Потрібна сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectIzm_01!= 'tf1702_2' || asSelectIzm_05!= 'tf1702_2'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow48" name="Відсутня сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask4">
+
+    <sequenceFlow id="flow48" name="Відсутня сплата за послугу" sourceRef="exclusivegateway6" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectIzm_01== 'tf1702_2' && asSelectIzm_05== 'tf1702_2'}]]></conditionExpression>
     </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow49" sourceRef="usertask3" targetRef="exclusivegateway7"></sequenceFlow>
+
+    <serviceTask id="servicetask15" name="Е-mail повідомлення заявнику про відмову в обробці заявки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" не пройшло перевірку.&lt;br /&gt; 
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    
+    </serviceTask>
+    <sequenceFlow id="flow50" name="Відмова в обробці" sourceRef="exclusivegateway7" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_03== 'sNo'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow51" sourceRef="servicetask15" targetRef="endevent4"></sequenceFlow>
+    <serviceTask id="servicetask16" name="Е-mail повідомлення заявнику про початок обробки заявки (без SMS)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;" успішно пройшло перевірку та по ньому розпочата реєстрація.&lt;br /&gt; 
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    
+    </serviceTask>
+
+    <sequenceFlow id="flow52" name="Прийнято до роботи" sourceRef="exclusivegateway7" targetRef="servicetask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_03== 'sYes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask16" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="usertask4" targetRef="exclusivegateway5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow56" sourceRef="servicetask5" targetRef="exclusivegateway8"></sequenceFlow>
@@ -1342,14 +1709,14 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="315.0" y="-31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="453.0" y="-31.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="786.0" y="-31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="315.0" y="124.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="548.0" y="107.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="786.0" y="124.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="890.0" y="54.0"></omgdc:Bounds>
@@ -1408,8 +1775,23 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="347.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="520.0" y="131.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
+        <omgdc:Bounds height="55.0" width="105.0" x="488.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="269.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="124.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="1330.0" y="54.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="453.0" y="-31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="-34.0" y="109.0"></omgdi:waypoint>
@@ -1514,15 +1896,39 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="367.0" y="94.0"></omgdi:waypoint>
-        <omgdi:waypoint x="367.0" y="134.0"></omgdi:waypoint>
-        <omgdi:waypoint x="548.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="367.0" y="124.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="380.0" y="86.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="420.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="151.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="540.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="190.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="93.0" x="437.0" y="170.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="540.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="269.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="560.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="151.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="560.0" y="105.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="755.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="786.0" y="151.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="653.0" y="134.0"></omgdi:waypoint>
-        <omgdi:waypoint x="837.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="838.0" y="124.0"></omgdi:waypoint>
         <omgdi:waypoint x="838.0" y="94.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
@@ -1576,3 +1982,6 @@
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </definitions>
+
+
+<!--  Буфер для работы с последствиями сохранения из схемы -->

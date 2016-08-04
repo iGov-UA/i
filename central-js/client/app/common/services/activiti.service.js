@@ -127,17 +127,17 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
     var oFormDataPrintPdf = angular.copy(oFormData);
-      angular.forEach(activitiForm.formProperties, function (formProperty) {
-        if(formProperty.type === 'enum') {
-          if(formProperty.id in oFormDataPrintPdf.params) {
-            angular.forEach(formProperty.enumValues, function (enumValue) {
-              if(enumValue.id === oFormDataPrintPdf.params[formProperty.id]) {
-                oFormDataPrintPdf.params[formProperty.id] = enumValue.name;
-              }
-            })
-          }
+    angular.forEach(activitiForm.formProperties, function (formProperty) {
+      if(formProperty.type === 'enum') {
+        if(formProperty.id in oFormDataPrintPdf.params) {
+          angular.forEach(formProperty.enumValues, function (enumValue) {
+            if(enumValue.id === oFormDataPrintPdf.params[formProperty.id]) {
+              oFormDataPrintPdf.params[formProperty.id] = enumValue.name;
+            }
+          })
         }
-      });
+      }
+    });
     var aField = aFieldFormData(activitiForm.formProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processName: '+processName, 'businessKey: '+businessKey, 'saField: '+JSON.stringify(aField)]});
     var oData = {
@@ -159,7 +159,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
           if(oResponse.data.formDataPrintPdf){
             delete oResponse.data.formDataPrintPdf;
           }
-          return oResponse.data;
+            return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
         ErrorsFactory.push({

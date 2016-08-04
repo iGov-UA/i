@@ -124,27 +124,32 @@ public class HttpEntityCover {
             //Integer nStatus = nReturn();
             
             if(nStatus()!=200){
-                new Log(this.getClass())
+                new Log(this.getClass(), LOG)
+                        ._Case("Web_PostNo200")
                         ._Head("[_Send]:nStatus!=200")
                         ._Status(Log.LogStatus.ERROR)
                         //._StatusHTTP(nReturn())
                         ._Param("sURL", sURL)
                         ._Param("sRequest", sRequest)
                         ._Param("nReturn", nStatus())
-                        ._SendThrow()
+                        ._LogTransit()
+                        .save()
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
             LOG_BIG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
-            new Log(this.getClass(), oException, null)
+            new Log(oException, LOG)
+                    ._Case("Web_Post")
                     ._Head("[_Send]:BREAKED!")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("sRequest", sRequest)
-                    ._SendThrow()
+                    ._LogTransit()
+                    ._LogTrace()
+                    .save()
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
             //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);

@@ -31,8 +31,11 @@ import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import org.igov.io.Log;
+import org.igov.service.business.msg.MsgType;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.service.business.msg.IMsgSend;
 
 /**
  * @author BW
@@ -306,6 +309,23 @@ public class DebugCentralController {
             
             try {
                 //IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+                new Log()//this.getClass()
+                        ._MsgType("danger".equals(sType) ? MsgType.EXTERNAL_ERROR : "warning".equals(sType) ? MsgType.WARNING : MsgType.INF_MESSAGE)
+                        ._Case("Client_"+sFunction)
+                        ._Status("danger".equals(sType) ? Log.LogStatus.ERROR : "warning".equals(sType) ? Log.LogStatus.WARN : Log.LogStatus.INFO)
+                        ._Head(sHead)
+                        ._Body(sBody)
+                        ._SubjectID(nID_Subject)
+                        ._ServerID_Custom(nID_Server)
+                        ._Param("sError", sError)
+                        ._Param("smData", smData)
+                        ._Param("nID_Subject", nID_Subject)
+                        ._Param("nID_Server", nID_Server)
+                        //._Param("sExcetion", oException.getMessage())
+                        .save()
+                        
+                        
+                    ;
 	    } catch (Exception e) {
         	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
 	    }

@@ -58,7 +58,7 @@ public class EscalationHelper implements ApplicationContextAware {
                             for (int i = 0; i < basicDBList.size(); i++) {
                                 asRecipientMail[i] = (String)basicDBList.get(i);
                             }
-                        } 
+                        }
                         oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 } else {
