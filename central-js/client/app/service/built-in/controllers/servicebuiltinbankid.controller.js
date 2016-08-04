@@ -609,4 +609,19 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   if($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot){
     $scope.fillSelfPrevious();
   }
+
+  // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
+  $scope.isShowMessageRequiringToValidateUserData = function(){
+    if($scope.isFormDataEmpty()){
+      return false;
+    } else {
+      return BankIDAccount.customer.isAuthTypeFromBankID;
+    }
+  };
+
+  // https://github.com/e-government-ua/i/issues/1325
+  $scope.getBpAndFieldID = function(field){
+    return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id;
+  }
+
 });

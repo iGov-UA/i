@@ -22,13 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import javax.security.auth.Subject;
-
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.core.NamedEntity;
 import org.igov.service.business.action.task.bp.BpService;
 
 /**
@@ -160,10 +157,11 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
-        Set<String> organ = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        //asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, asCandidateCroupToCheck.toString().length() - 1)
-        mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
-        mParam.put("saField", new JSONObject(mTaskParam).toString());
+
+        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        String organ = trimGroups(organs);
+        mParam.put("organ", organ);
+        mParam.put("saField", buildString(mTaskParam));
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
@@ -181,6 +179,29 @@ public class BpServiceHandler {
         return snID_ProcessEscalation;
     }
 
+    /**
+     * organise groups into single string
+     * @param organs
+     * @return
+     */
+    private String trimGroups(Set<String> organs) {
+        if(organs.isEmpty()){
+            return "";
+        }
+        final String DELIMITER = ", ";
+
+        StringBuilder result = new StringBuilder();
+        for (String group : organs) {
+            result.append(group);
+            result.append(DELIMITER);
+        }
+        String res = result.toString();
+        if(res.endsWith(DELIMITER)){
+            res = StringUtils.removeEnd(res, DELIMITER);
+        }
+        return res;
+    }
+
     private String getPlaceForProcess(String sID_Process) {
     	Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
@@ -193,7 +214,7 @@ public class BpServiceHandler {
             Map res = JsonRestUtils.readObject(soResponse, Map.class); 
             soResponse = (String) res.get("place");
         } catch (Exception ex) {
-        	 LOG.error("[getPlaceForProcess]: ", ex);
+            LOG.error("[getPlaceForProcess]: ", ex);
         }
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
@@ -335,5 +356,19 @@ public class BpServiceHandler {
             }
         }
         return sbContact.toString(); //
+    }
+    
+    public static String buildString(Map<String, Object> hm) {
+
+        // Получаем набор элементов
+        Set<Map.Entry<String, Object>> set = hm.entrySet();
+        String result = " ";
+
+        // Отобразим набор
+        for (Map.Entry<String, Object> entry : set) {
+            result += entry.getKey() + ": " + entry.getValue() + "\n\r";
+        }
+        LOG.info(result);
+        return result;
     }
 }

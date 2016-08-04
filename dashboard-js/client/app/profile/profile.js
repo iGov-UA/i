@@ -14,6 +14,15 @@
         controller: 'ProfileCtrl',
         access: {
           requiresLogin: true
+        },
+        resolve: {
+          accountSubjects: [
+            'Profile',
+            'Auth',
+            function (Profile, Auth) {
+              return Profile.getSubjects(Auth.getCurrentUser().id);
+            }
+          ]
         }
       });
   }

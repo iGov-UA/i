@@ -7,6 +7,7 @@
  *
  * Более подробная документация:
  * http://epoberezkin.github.io/ajv/
+ * alpha
  */
 angular.module('iGovMarkers')
     .constant('iGovMarkersSchema', {

@@ -57,13 +57,6 @@
                 <sRevision>d</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionSubPath>/delta</sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0d-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0d-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0d-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0d-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0d-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/delta</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/delta</activiti.custom.data.path-->
             </properties>
         </profile>
         <profile>
@@ -72,13 +65,6 @@
                 <sRevision>o</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0o-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0o-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0o-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0o-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0o-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path-->
             </properties>
         </profile>
         <profile>
@@ -87,13 +73,6 @@
                 <sRevision></sRevision>
                 <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0-RELEASE</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0-RELEASE</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0-RELEASE</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0-RELEASE</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0-RELEASE</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path-->
             </properties>
         </profile>
     </profiles>
@@ -160,9 +139,11 @@
         
         <igov.storage-static.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-static.version>
         <igov.storage-temp.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-temp.version>
+        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
         <igov.wf-base.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-base.version>
         <igov.wf-central.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
         <igov.wf-region.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
+        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
         <liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path>
         <activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path>
     </properties>
@@ -216,6 +197,7 @@
         <module>auth-custom</module>
         <module>storage-static</module>
         <module>storage-temp</module>
+        <module>analytic</module>
         <module>wf-base</module>
         <module>wf-region</module>
         <module>wf-central</module>
@@ -238,16 +220,16 @@
                 <type>jar</type>
             </dependency>
 
-  <dependency>
-    <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j-api</artifactId>
-    <version>2.5</version>
-  </dependency>
-  <dependency>
-    <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j-core</artifactId>
-    <version>2.5</version>
-  </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.5</version>
+            </dependency>
 
             <dependency>
                 <groupId>commons-collections</groupId>
@@ -566,7 +548,7 @@
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>1.5.2.1</version>
                 <scope>test</scope>
-            </dependency> 
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
