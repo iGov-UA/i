@@ -166,6 +166,50 @@ public class EscalationService {
         m.put("nElapsedDays", nElapsedDays);
         m.put("nDays", nElapsedDays);
 
+        
+        m.put("bSuspended", oTask.isSuspended());
+        m.put("bAssigned", oTask.getAssignee()!=null);
+        //m.put("isSuspended", oTask.getAssignee()isSuspended());
+        
+        long nDueElapsedHours = -1;
+        long nDueElapsedDays = -1;
+        if (oTask.getDueDate() != null ) {
+            long nDueDiffMS = 0;
+            //nAssignedDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            nDueDiffMS = DateTime.now().toDate().getTime() - oTask.getDueDate().getTime();
+            LOG.debug("(nDueDiffMS={})", nDueDiffMS);
+            nDueElapsedHours = nDueDiffMS / 1000 / 60 / 60;
+            LOG.debug("(nDueElapsedHours={})", nDueElapsedHours);
+            nDueElapsedDays = nDueElapsedHours / 24;
+            LOG.debug("(nDueElapsedDays={})", nDueElapsedDays);
+//            nDueDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+        }else{
+            LOG.debug("(oTask.getDueDate() = null)");
+        }
+        m.put("nDueElapsedHours", nDueElapsedHours);
+        m.put("nDueElapsedDays", nDueElapsedDays);
+        //m.put("nDueDays", nDueElapsedDays);
+
+        long nCreateElapsedHours = -1;
+        long nCreateElapsedDays = -1;
+        if (oTask.getCreateTime() != null ) {
+            long nCreateDiffMS = 0;
+            //nAssignedDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            //nDueDiffMS = oTask.getDueDate().getTime() - DateTime.now().toDate().getTime();
+            nCreateDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+            LOG.debug("(nCreateDiffMS={})", nCreateDiffMS);
+            nCreateElapsedHours = nCreateDiffMS / 1000 / 60 / 60;
+            LOG.debug("(nCreateElapsedHours={})", nCreateElapsedHours);
+            nCreateElapsedDays = nCreateElapsedHours / 24;
+            LOG.debug("(nCreateElapsedDays={})", nCreateElapsedDays);
+        }else{
+            LOG.debug("(oTask.getCreateDate() = null)");
+        }
+        m.put("nCreateElapsedHours", nCreateElapsedHours);
+        m.put("nCreateElapsedDays", nCreateElapsedDays);
+        //m.put("nDueDays", nDueElapsedDays);
+        
+        
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
         	String sType = oFormProperty.getType().getName();
@@ -228,7 +272,6 @@ public class EscalationService {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         m.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
         m.putAll(processInstance.getProcessVariables());
-
 
         return m;
     }
