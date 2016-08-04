@@ -3,26 +3,29 @@
   <process id="common_zags_1" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+      	<activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписоної обома нареченими заяви. Ви маєете накласти електроний підпис або в продовж 3 днів з моменту  відправлення звернення приїхати особисто в РАГС і підписати паперовий екземпляр цього звернення"></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="sShapka" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="Підпис" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" мерчанта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
           <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
@@ -38,7 +41,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="string"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="visitDate1" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Приізвище" type="string"></activiti:formProperty>
@@ -80,8 +83,7 @@
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу(паспорт або паспортнний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
