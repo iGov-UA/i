@@ -83,7 +83,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. ${sNameServise}]]></activiti:string>
+          <activiti:string><![CDATA[iGov: ${sNameServise}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -101,6 +101,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -149,14 +150,13 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:string>
+          <activiti:string><![CDATA[iGov: ${sNameServise}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-			Ви подавали звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
-			щодо отримання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям.<br>
+			Ви подавали звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> щодо ${sNameGovServise}<br>
 			</p>
 			<p>
 		    	Коментар чиновника:<br>
@@ -201,15 +201,14 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Надання довідки про про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:string>
+          <activiti:string><![CDATA[iGov: ${sNameServise}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>
-				щодо надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям, 
-				відхилено через недостатню або неправильну інформацію.
+				щодо ${sNameGovServise}, відхилено через недостатню або неправильну інформацію.
 			</p>
 			<p>
 		    	Причина в наступному:<br>
