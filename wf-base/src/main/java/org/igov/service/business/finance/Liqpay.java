@@ -129,7 +129,7 @@ public class Liqpay {
             params.put("sandbox", sandbox);
         }
 
-        LOG.info("getPayButtonHTML (LiqPay params={},privateKey={})", params, privateKey);
+        LOG.info("(params={},privateKey={})", params, privateKey);
         return params;
     }
 
