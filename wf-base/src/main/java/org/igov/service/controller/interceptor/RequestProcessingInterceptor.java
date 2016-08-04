@@ -68,8 +68,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
     
-    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC";
-
     @Autowired
     protected RuntimeService runtimeService;
     @Autowired
