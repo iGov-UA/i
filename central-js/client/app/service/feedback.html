@@ -56,12 +56,23 @@
             </div>
             <div class="feedback-list-content">
               <div ng-repeat="item in feedback.messageList">
-                <div class="feedback-list-item">
+                <div class="feedback-list-item form-horizontal">
                   <p>
                     <star-rating ng-model="item.nID_Rate" showonly="true"></star-rating>
                     <small class="feedback-info-list-author">{{::item.sAuthorFIO}}</small>
                   </p>
                   <p>{{::item.sBody}}</p>
+                  <button class="btn btn-link"
+                          ng-if="feedback.isAdmin && feedback.commentToShowAnswer !== item.nID"
+                          ng-click="feedback.answer(item.nID)"><h5>Відповісти</h5></button>
+                  <button class="btn btn-link"
+                          ng-if="feedback.isAdmin && feedback.commentToShowAnswer === item.nID"
+                          ng-click="feedback.hideAnswer()"><h6>Сховати</h6></button>
+                  <feedback-answer
+                    ng-if="feedback.commentToShowAnswer === item.nID"
+                    current-feedback="item"
+                    on-send="feedback.sendAnswer(answerData)"
+                    ></feedback-answer>
                 </div>
               </div>
             </div>

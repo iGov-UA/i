@@ -56,7 +56,8 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
                                           sAuthorFIO,
                                           sMail,
                                           sHead,
-                                          nID_Rate){
+                                          nID_Rate,
+                                          sAnswer){
       var deferred = $q.defer();
       var data = {
         'sToken': token,
@@ -66,7 +67,8 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
         'sMail': sMail,
         'sHead': sHead,
         'nID_Rate': nID_Rate,
-        'nID_Service': serviceId
+        'nID_Service': serviceId,
+        'sAnswer': sAnswer
       };
 
       $http.post('./api/service/'+serviceId+'/feedback', data).then(function(response) {
