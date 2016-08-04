@@ -216,10 +216,4 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         }
     }
 
-    private String getActionProcessCount(String sID_BP, Long nID_Service) {
-		int res = ActionProcessCountUtils.callGetActionProcessCount(httpRequester, generalConfig, StringUtils.substringBefore(sID_BP, ":"), nID_Service, null);
-		String resStr = String.format("%07d", res);
-		LOG.info("Retrieved {} as a result", resStr);
-		return resStr;
-	}
 }

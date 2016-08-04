@@ -366,7 +366,7 @@ public class BpServiceHandler {
 
         // Отобразим набор
         for (Map.Entry<String, Object> entry : set) {
-            result += entry.getKey() + " " + entry.getValue() + "\n\r<br/>";
+            result += entry.getKey() + ": " + entry.getValue() + "\n\r";
         }
         LOG.info(result);
         return result;

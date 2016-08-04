@@ -53,9 +53,9 @@ public class ProcessTask extends AbstractEntity{
     @Column
     private DateTime    oDateFinish ;
     
-    @JsonProperty(value = "sID_Data")
+    /*@JsonProperty(value = "sID_Data")
     @Column
-    private String sID_Data;	
+    private String sID_Data;*/	
     
     @JsonProperty(value = "oProcess")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -98,13 +98,13 @@ public class ProcessTask extends AbstractEntity{
         this.oDateFinish = oDateFinish;
     }
 
-    public String getsID_Data() {
+    /*public String getsID_Data() {
         return sID_Data;
     }
 
     public void setsID_Data(String sID_Data) {
         this.sID_Data = sID_Data;
-    }
+    }*/
 
     public Process getoProcess() {
         return oProcess;
