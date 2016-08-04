@@ -337,14 +337,13 @@
                              form-data="data.formData"
                              property="property"
                              ng-required="isFieldRequired(property)"></slot-picker>
-                <div ng-switch-when="select">
+                <div ng-switch-when="select" ng-class="getBpAndFieldID(property)">
                   <dropdown-organ ng-if="property.id==='sID_Public_SubjectOrganJoin'"
                                   ng-model="data.formData.params[property.id].value"
                                   form-data-property="data.formData.params[property.id]"
                                   service-data="oServiceData"
                                   activiti-form="activitiForm"
                                   ng-required="isFieldRequired(property)"
-                                  ng-class="getBpAndFieldID(property)"
                                   form-data="data.formData"
                                   name="property.id"></dropdown-organ>
 
@@ -354,7 +353,6 @@
                              ng-required="isFieldRequired(property)"
                              autocomplete-data="property.autocompleteData"
                              autocomplete-name="property.autocompleteName"
-                             ng-class="getBpAndFieldID(property)"
                              form-data="data.formData"
                              reach-infinity="requestMoreItems($select.items)"
                              on-select="onSelectDataList($item)">
