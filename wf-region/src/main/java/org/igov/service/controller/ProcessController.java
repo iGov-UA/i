@@ -32,7 +32,7 @@ import org.igov.analytic.model.attribute.AttributeType;
 import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_File;
 import org.igov.analytic.model.attribute.Attribute_FileDao;
-import org.igov.analytic.model.attribute.Attribute_StingShort;
+import org.igov.analytic.model.attribute.Attribute_StringShort;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
@@ -41,7 +41,6 @@ import org.igov.service.ArchiveServiceImpl;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -79,7 +78,7 @@ public class ProcessController {
     @Autowired
     private ArchiveServiceImpl archiveService;
 
-    @ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
+    /*@ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
     )
     public @ResponseBody
@@ -122,7 +121,7 @@ public class ProcessController {
         attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
 
         return process;
-    }
+    }*/
     
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
@@ -216,7 +215,7 @@ public class ProcessController {
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();
         Attribute attribute1 = new Attribute();
-        Attribute_StingShort attribute_StingShort = new Attribute_StingShort();
+        Attribute_StringShort attribute_StingShort = new Attribute_StringShort();
         Attribute_File attribute_File = new Attribute_File();
         AccessGroup accessGroup = new AccessGroup();
         AccessUser accessUser = new AccessUser();

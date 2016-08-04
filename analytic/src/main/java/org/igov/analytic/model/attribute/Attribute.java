@@ -5,11 +5,14 @@
  */
 package org.igov.analytic.model.attribute;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import javax.persistence.Transient;
@@ -20,58 +23,58 @@ import org.igov.model.core.NamedEntity;
  * @author olga
  */
 @javax.persistence.Entity
-public class Attribute extends NamedEntity{
-    
+public class Attribute extends NamedEntity {
+
     @JsonProperty(value = "sID_")
     @Column
     private String sID_;
-    
+
     @JsonProperty(value = "oAttributeType")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeType")
     private AttributeType oAttributeType;
-    
+
     @JsonProperty(value = "oAttributeTypeCustom")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeTypeCustom")
     private AttributeTypeCustom oAttributeTypeCustom;
-    
-    @JsonProperty(value = "oProcess")
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
-    
-    @JsonProperty(value = "oProcessTask")
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
-    
+
     @JsonProperty(value = "oAttribute_Boolean")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_Boolean oAttribute_Boolean;
-    
+
     @JsonProperty(value = "oAttribute_Date")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_Date oAttribute_Date;
-    
+
     @JsonProperty(value = "oAttribute_Float")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_Float oAttribute_Float;
-    
+
     @JsonProperty(value = "oAttribute_Integer")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_Integer oAttribute_Integer;
-    
+
     @JsonProperty(value = "oAttribute_StingShort")
-    @Transient
-    Attribute_StingShort oAttribute_StingShort;
-    
+    @OneToOne(mappedBy="oAttribute")
+    Attribute_StringShort oAttribute_StingShort;
+
     @JsonProperty(value = "oAttribute_StringLong")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_StringLong oAttribute_StringLong;
-    
+
     @JsonProperty(value = "oAttribute_File")
-    @Transient
+    @OneToOne(mappedBy="oAttribute")
     Attribute_File oAttribute_File;
 
     public String getsID_() {
@@ -81,7 +84,7 @@ public class Attribute extends NamedEntity{
     public void setsID_(String sID_) {
         this.sID_ = sID_;
     }
-    
+
     /*@JsonProperty(value = "oAttribute_Boolean")
     @OneToOne(fetch = FetchType.EAGER)
     Attribute_Boolean oAttribute_Boolean;
@@ -100,7 +103,7 @@ public class Attribute extends NamedEntity{
     
     @JsonProperty(value = "oAttribute_StingShort")
     @OneToOne(fetch = FetchType.EAGER)
-    Attribute_StingShort oAttribute_StingShort;
+    Attribute_StringShort oAttribute_StingShort;
     
     @JsonProperty(value = "oAttribute_StringLong")
     @OneToOne(fetch = FetchType.EAGER)
@@ -109,7 +112,6 @@ public class Attribute extends NamedEntity{
     @JsonProperty(value = "oAttribute_File")
     @OneToOne(fetch = FetchType.EAGER)
     Attribute_File oAttribute_File;*/
-
     public AttributeType getoAttributeType() {
         return oAttributeType;
     }
@@ -174,11 +176,11 @@ public class Attribute extends NamedEntity{
         this.oAttribute_Integer = oAttribute_Integer;
     }
 
-    public Attribute_StingShort getoAttribute_StingShort() {
+    public Attribute_StringShort getoAttribute_StingShort() {
         return oAttribute_StingShort;
     }
 
-    public void setoAttribute_StingShort(Attribute_StingShort oAttribute_StingShort) {
+    public void setoAttribute_StingShort(Attribute_StringShort oAttribute_StingShort) {
         this.oAttribute_StingShort = oAttribute_StingShort;
     }
 
@@ -197,5 +199,5 @@ public class Attribute extends NamedEntity{
     public void setoAttribute_File(Attribute_File oAttribute_File) {
         this.oAttribute_File = oAttribute_File;
     }
-    			   
+
 }
