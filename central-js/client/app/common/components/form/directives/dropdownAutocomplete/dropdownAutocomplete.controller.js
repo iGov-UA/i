@@ -6,7 +6,18 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
 
   function getInfinityScrollChunk() {
     $scope.isRequestMoreItems = true;
-    return $http.get($scope.autocompleteData.apiUrl, queryParams);
+    return $http.get($scope.autocompleteData.apiUrl, queryParams).then(function (res) {
+      if(angular.isDefined(res.config.params.sFind) && angular.isArray(res.data)){
+        angular.forEach(res.data, function (el) {
+          if(angular.isDefined(el.sID) && angular.isDefined(el.sNote)){
+            el.sFind = el.sID + " " + el.sNote;
+          } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
+            el.sFind = el.sID + " " + el.sName_UA;
+          }
+        });
+      }
+      return res;
+    });
   }
 
   var getAdditionalPropertyName = function() {

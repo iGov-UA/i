@@ -38,7 +38,6 @@ public class RestRequest {
         if (charset != null) {
             httpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { charset }));
         }
-        LOG.info("httpHeaders={}", httpHeaders.toString());
         LOG.info("httpHeaders.contentType: " + httpHeaders.getContentType() + " httpHeaders.accept: " + httpHeaders.getAccept());
         HttpEntity httpEntity = new HttpEntity(requestBody, httpHeaders);
         LOG.debug("Sending POST to rest resource:{}, HttpEntity:{}", url, httpEntity);

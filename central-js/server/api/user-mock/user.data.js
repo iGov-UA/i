@@ -40,13 +40,27 @@ var user = {
       issue: 'ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ',
       dateIssue: '18.03.2002',
       issueCountryIso2: 'UA'
-    }],
+    },
+      {
+        type: 'inn',
+        series: 'АМ',
+        number: '765369',
+        issue: 'ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ',
+        dateIssue: '18.03.2002',
+        issueCountryIso2: 'UA'
+      }],
     scans: [{
       type: 'passport',
-      link: '',
+      link: 'passport.pdf',
       extension: 'pdf',
       number: 1
-    }]
+    },
+      {
+        type: 'inn',
+        link: 'inn.pdf',
+        extension: 'pdf',
+        number: 1
+      }]
   },
   admin: {
     inn: '3119325858',

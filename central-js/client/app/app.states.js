@@ -13,6 +13,9 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         },
         regions: function(PlacesService, service) {
           return PlacesService.getRegionsForService(service);
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
         }
       },
       views: {
@@ -22,17 +25,31 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         }
       }
     })
-    .state('index.subcategory', {
-      url: 'subcategory/:catID/:scatID',
+    .state('index.situation', {
+      url: 'subcategory/:catID/:scatID/situation/:sitID',
       resolve: {
-        catalog: function(CatalogService) {
-          return CatalogService.getServices();
+        chosenCategory: function(CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID, $stateParams.sitID);
         }
       },
       views: {
-        'main@': {
-          templateUrl: 'app/service/subcategory/subcategory.html',
-          controller: 'SubcategoryController'
+        'contentIn': {
+          templateUrl: 'app/service/new.situation.html',
+          controller: 'SituationController'
+        }
+      }
+    })
+    .state('index.newsubcategory', {
+      url: 'subcategory/:catID/:scatID',
+      resolve: {
+        chosenCategory: function(CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTagService($stateParams.catID, $stateParams.scatID);
+        }
+      },
+      views: {
+        'contentIn': {
+          templateUrl: 'app/service/subcategory/new.subcategory.html',
+          controller: 'NewSubcategoryController'
         }
       }
     })
@@ -50,6 +67,15 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         'content': {
           templateUrl: 'app/service/instruction/instruction.html',
           controller: 'ServiceInstructionController'
+        }
+      }
+    })
+    .state('index.service.feedback', {
+      url: '/feedback?:nID&:sID_Token',
+      views: {
+        'content': {
+          templateUrl: 'app/service/feedback.html',
+          controller: 'ServiceFeedbackController'
         }
       }
     })
@@ -88,5 +114,54 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
           controller: 'ServiceStatisticsController'
         }
       }
-    });
+    })
+    .state('index.catalog', {
+      url: ':catID',
+      resolve : {
+        catalogContent : function (CatalogService, $stateParams) {
+          return CatalogService.getCatalogTreeTag($stateParams.catID)
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
+        }
+      },
+        views: {
+          'contentIn' : {
+            templateUrl: 'app/service/template.services.html',
+            controller: 'NewIndexController'
+          }
+        }
+    })
+    // !! для старого "бизнеса"
+    .state('index.oldbusiness', {
+      url: 'business/1',
+      resolve: {
+        businessContent: function (CatalogService) {
+          return CatalogService.getServices()
+        },
+        title: function (TitleChangeService) {
+          TitleChangeService.defaultTitle();
+        }
+      },
+      views: {
+        'contentIn' : {
+          templateUrl: 'app/service/index/oldbusiness.html',
+          controller: 'OldBusinessController'
+        }
+      }
+    })
+    .state('index.subcategory', {
+      url: 'business/subcategory/:catID/:scatID',
+      resolve: {
+        catalog: function (CatalogService) {
+          return CatalogService.getServices()
+        }
+      },
+      views: {
+        'contentIn': {
+          templateUrl: 'app/service/subcategory/oldbusiness.subcategory.html',
+          controller: 'SubcategoryController'
+        }
+      }
+    })
 });
