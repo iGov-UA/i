@@ -6,9 +6,7 @@
       	<activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписоної обома нареченими заяви. Ви маєете накласти електроний підпис або в продовж 3 днів з моменту  відправлення звернення приїхати особисто в РАГС і підписати паперовий екземпляр цього звернення"></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
@@ -101,11 +99,7 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="${sSourceType} - Перевірка інформації" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
-
-
+       
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
@@ -181,10 +175,7 @@
     <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
       
-        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
-
+       
 
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
@@ -410,10 +401,7 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
     <userTask id="usertask3_yellow" name="${sSourceType} - Очикування підпису" activiti:candidateGroups="sales">
       <extensionElements>
       
-        <activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="invisible"></activiti:formProperty>
-
+        
 
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
@@ -539,10 +527,7 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask3" name="${sSourceType} - Резервування часу референтом" activiti:candidateGroups="sales">
       <extensionElements>
-      	<activiti:formProperty id="bankIdlastName" name="Прізвище автора заявки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я автора заявки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові автора заявки" type="string" writable="false"></activiti:formProperty>
-
+      
       	<activiti:formProperty id="asMarriageType" name="бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Скорочений обряд - 15 хвилин"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд - 45 хвилин"></activiti:value>
