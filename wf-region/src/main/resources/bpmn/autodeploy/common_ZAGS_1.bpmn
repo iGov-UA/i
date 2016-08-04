@@ -3,10 +3,9 @@
   <process id="common_zags_1" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" ></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" ></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" ></activiti:formProperty>
-
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписоної обома нареченими заяви. Ви маєете накласти електроний підпис або в продовж 3 днів з моменту  відправлення звернення приїхати особисто в РАГС і підписати паперовий екземпляр цього звернення"></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
@@ -29,8 +28,7 @@
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="string"></activiti:formProperty>
-       
-       <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
+        <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
           <activiti:value id="sEnum1" name="Скорочений обряд(15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд(45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
@@ -85,14 +83,11 @@
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
-
-		<activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>		
-       
-        
+        <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -251,29 +246,22 @@
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
+
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
-Примітка щодо візиту: &lt;br /&gt;
+Примітка: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
-Рекомендований час 20-40 хвилин.
-&lt;p&gt;
-Графік прийому громадян:&lt;br /&gt;
-${sWork_Time}
- &lt;br /&gt;
-&lt;p&gt;
-Просимо Вас мати із собою:&lt;br /&gt;
-1. Громадянський паспорт&lt;br /&gt;і
 
 
-&lt;/p&gt;
-&lt;/p&gt;
+
+
 
 
 
                                     
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sMail_Signature} &lt;br /&gt; &lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -303,12 +291,12 @@ ${sMail_Signature}
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
 &lt;br /&gt;
-На жаль, Вам відмовлено в реєстраціі шлюбу.&lt;br /&gt;
+На жаль, Вам відмовлено в наданні послуги.&lt;br /&gt;
 Підстава: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html] 
  
 
@@ -340,7 +328,7 @@ ${sMail_Signature}
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
 
-Дякуємо, Вам що скористались нашим сервісом!
+Дякуємо, Вам що скористались нашим сервісом!&lt;br /&gt;&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]   
@@ -364,11 +352,11 @@ ${sMail_Signature}
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
-                                    &lt;p&gt;
+                                    
 Ваше звернення [sID_Order] успішно зареєстровано. &lt;br /&gt;
 Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html] 
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -481,7 +469,7 @@ ${sMail_Signature}
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html] 
  
 
