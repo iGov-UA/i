@@ -17,18 +17,20 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name=" мерчанта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито (0,85 грн) онлайн;після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
+        
         <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
           <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
           <activiti:value id="sEnum1" name="Скорочений обряд(15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд(45 хвилин, вартість - 337 грн.)"></activiti:value>
@@ -38,7 +40,7 @@
           <activiti:value id="sEnum2" name="Так, маємо поважні причини і бажаємо скорочення місячного строку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="date_of_visit" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
@@ -82,7 +84,7 @@
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу(паспорт або паспортнний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
+        
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
