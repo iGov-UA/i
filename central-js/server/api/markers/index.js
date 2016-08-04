@@ -18,10 +18,6 @@ function validateMarkers(req, res) {
         allErrors: true,
         useDefaults: true
       }
-      var ajv = Ajv(req.body.definitions.options);
-      var validate = ajv.compile(req.body.definitions.schema);
-      var valid = validate(req.body.markers);
-      res.send({valid:valid, errors:validate.errors});
     }
     var ajv = Ajv(req.body.definitions.options);
     var validate = ajv.compile(req.body.definitions.schema);
