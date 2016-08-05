@@ -94,7 +94,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             Optional<Config> configOptional;
             String dateLastBackup;
             Config config;
-            while (hasNextDate && index < 3) { // while (hasNextDate)
+            while (hasNextDate) { // while (hasNextDate && index < 3)
                 configOptional = configDao.findBy("name", "dateLastBackup");
                 if (configOptional.isPresent()) {
                     config = configOptional.get();
