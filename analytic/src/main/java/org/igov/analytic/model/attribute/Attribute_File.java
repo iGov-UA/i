@@ -5,6 +5,7 @@
  */
 package org.igov.analytic.model.attribute;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -25,6 +26,7 @@ public class Attribute_File extends AbstractEntity{
     @Column
     private String sID_Data;
     
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Attribute")
