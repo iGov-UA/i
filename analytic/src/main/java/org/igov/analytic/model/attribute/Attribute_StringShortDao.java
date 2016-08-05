@@ -11,6 +11,6 @@ import org.igov.model.core.EntityDao;
  *
  * @author olga
  */
-public interface AttributeDao  extends EntityDao<Long, Attribute>{
+public interface Attribute_StringShortDao  extends EntityDao<Long, Attribute_StringShort>{
     
 }

@@ -5,6 +5,7 @@
  */
 package org.igov.analytic.model.attribute;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -18,12 +19,13 @@ import org.igov.model.core.AbstractEntity;
  * @author olga
  */
 @javax.persistence.Entity
-public class Attribute_StingShort extends AbstractEntity{
+public class Attribute_StringShort extends AbstractEntity{
     
     @JsonProperty(value = "sValue")
     @Column
     private String sValue;
     
+    @JsonIgnore
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Attribute")

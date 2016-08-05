@@ -15,12 +15,12 @@ import org.springframework.stereotype.Repository;
  */
 //@Transactional("transactionManagerAnalytic")
 @Repository()
-public class AttributeDaoImpl extends GenericEntityDaoAnalytic<Long, Attribute> implements AttributeDao {
+public class Attribute_DateDaoImp extends GenericEntityDaoAnalytic<Long, Attribute_Date> implements Attribute_DateDao {
 
-    private static final Logger log = Logger.getLogger(AttributeDaoImpl.class);
+    private static final Logger log = Logger.getLogger(Attribute_DateDaoImp.class);
 
-    protected AttributeDaoImpl() {
-        super(Attribute.class);
+    protected Attribute_DateDaoImp() {
+        super(Attribute_Date.class);
     }
 
 }
