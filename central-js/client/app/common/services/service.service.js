@@ -292,4 +292,18 @@ angular.module('app').service('ServiceService', function ($http, $q) {
         return response.data;
       });
   };
+
+  // https://github.com/e-government-ua/i/issues/1326
+  this.getRedirectPaymentLiqpay = function (paramsLiqPay) {
+    var req = {
+      params: angular.copy(paramsLiqPay)
+    };
+    return $http.get('api/payment-liqpay', req).
+    success(function(data, status, headers, config) {
+      var res = data;
+    }).
+    error(function(data, status, headers, config) {
+      alert("Status: " + status + ". Error: " + data.code + ". Messege: " + data.message);
+    });
+  }
 });

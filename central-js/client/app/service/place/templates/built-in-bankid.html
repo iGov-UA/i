@@ -151,12 +151,22 @@
                 <input ng-switch-when="string"
                        type="text"
                        name="{{property.id}}"
-                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0"
+                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
+
+                <button ng-switch-when="string"
+                       type="button"
+                       name="{{property.id}}"
+                       ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       ng-click="redirectPaymentLiqpay(property.value)"
+                       class="form-control btn btn-success">Сплатити</button>
 
                 <label style="display: none;"
                        ng-switch-when="invisible"
