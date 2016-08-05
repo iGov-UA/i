@@ -324,15 +324,8 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формування реквізитів для сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var lastName = execution.getVariable('bankIdlastName')
-var firstName = execution.getVariable('bankIdfirstName')
-var middleName = execution.getVariable('bankIdmiddleName')
-var inn = execution.getVariable('bankIdinn')
-var contract = execution.getVariable('sInsuranceContract')
-var descript = 'Страховий платіж за договором '+contract+'. Страхувальник '+lastName+' '+firstName+' '+middleName+' '+inn
-execution.setVariable('sID_Merchant_1','i38613227067')
-execution.setVariable('sSum_1','51.92')
-execution.setVariable('sDescription_1',descript)</script>
+      <script>execution.setVariable('sID_Merchant_1','i38613227067')
+execution.setVariable('sSum_1','51.92')</script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="parallelgateway3"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="parallelgateway1" targetRef="exclusivegateway3"></sequenceFlow>
