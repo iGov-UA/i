@@ -6,11 +6,10 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон;(у форматі +380ХХХХХХХХХ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Оберіть категорію кореспондента" type="enum" required="true">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -22,8 +21,8 @@
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Юридична адреса&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCity" name="Населенний пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string" default="49000" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCity" name="Населенний пункт" type="string" default="Дніпро" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Керівник юридичної особи&lt;/b&gt;"></activiti:formProperty>
@@ -257,16 +256,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" required="true">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true" default="sEnumAnsw1">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Службова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
@@ -313,16 +310,15 @@
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Особа, яка заповнила форму" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Категорія кореспондента" type="enum" required="true">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -331,9 +327,19 @@
           <activiti:value id="sEnumCat8" name="Юридичні особи"></activiti:value>
           <activiti:value id="sEnumCat9" name="Інші"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum" required="true">
+        <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
           <activiti:value id="sEnumTypeForExecution" name="Для виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeliveryMethodDoc" name="Спосіб одержання документа" type="enum">
+          <activiti:value id="sEnumDeliveryPersonally" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumDeliveryTrust" name="Довірена особа, помічник"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmail" name="Електронна пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmailBoss" name="З пошти керівника"></activiti:value>
+          <activiti:value id="sEnumDeliveryPost" name="Пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryCourier" name="Кур’єрська доставка"></activiti:value>
+          <activiti:value id="sEnumDeliveryWorker" name="Працівник установи"></activiti:value>
+          <activiti:value id="sEnumDeliveryFax" name="Факс"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
@@ -566,10 +572,8 @@
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" required="true">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
@@ -658,12 +662,11 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Категорія кореспондента" type="enum">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади, ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -675,6 +678,16 @@
         <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
           <activiti:value id="sEnumTypeForExecution" name="Для виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeliveryMethodDoc" name="Спосіб одержання документа" type="enum">
+          <activiti:value id="sEnumDeliveryPersonally" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumDeliveryTrust" name="Довірена особа, помічник"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmail" name="Електронна пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmailBoss" name="З пошти керівника"></activiti:value>
+          <activiti:value id="sEnumDeliveryPost" name="Пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryCourier" name="Кур’єрська доставка"></activiti:value>
+          <activiti:value id="sEnumDeliveryWorker" name="Працівник установи"></activiti:value>
+          <activiti:value id="sEnumDeliveryFax" name="Факс"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
@@ -903,10 +916,8 @@
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
@@ -1071,16 +1082,15 @@ execution.setVariable('sAnswerEmail', res)</script>
     </sequenceFlow>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Особа, яка заповнила форму" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Категорія кореспондента" type="enum" required="true">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади, ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -1092,6 +1102,16 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum" required="true">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
           <activiti:value id="sEnumTypeForExecution" name="Для виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeliveryMethodDoc" name="Спосіб одержання документа" type="enum">
+          <activiti:value id="sEnumDeliveryPersonally" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumDeliveryTrust" name="Довірена особа, помічник"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmail" name="Електронна пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmailBoss" name="З пошти керівника"></activiti:value>
+          <activiti:value id="sEnumDeliveryPost" name="Пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryCourier" name="Кур’єрська доставка"></activiti:value>
+          <activiti:value id="sEnumDeliveryWorker" name="Працівник установи"></activiti:value>
+          <activiti:value id="sEnumDeliveryFax" name="Факс"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
@@ -1324,10 +1344,6 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
@@ -1357,6 +1373,8 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
@@ -1483,13 +1501,12 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow46" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
     <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="dmr_front_office">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Особа, яка заповнила форму" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Категорія кореспондента" type="enum" writable="false">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади, ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -1501,6 +1518,16 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum" writable="false">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
           <activiti:value id="sEnumTypeForExecution" name="Для виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeliveryMethodDoc" name="Спосіб одержання документа" type="enum" writable="false">
+          <activiti:value id="sEnumDeliveryPersonally" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumDeliveryTrust" name="Довірена особа, помічник"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmail" name="Електронна пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmailBoss" name="З пошти керівника"></activiti:value>
+          <activiti:value id="sEnumDeliveryPost" name="Пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryCourier" name="Кур’єрська доставка"></activiti:value>
+          <activiti:value id="sEnumDeliveryWorker" name="Працівник установи"></activiti:value>
+          <activiti:value id="sEnumDeliveryFax" name="Факс"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
@@ -1731,10 +1758,6 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь з управлиння" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Номер картки документа УкрДок" type="string" writable="false"></activiti:formProperty>
@@ -1761,6 +1784,8 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumDep20" name="Управління по роботі зі зверненнями громадян"></activiti:value>
           <activiti:value id="sEnumDep21" name="Управління майном колишнього селища міського типу Таромське"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_889_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
@@ -1792,11 +1817,29 @@ execution.setVariable('sNameDepartment', per2)</script>
     <scriptTask id="scripttask3" name="Script Task Канал подачи" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'channel'
           var per2 = 'channel RGA'
-if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal4'){
-per1 = 'Фронт-офіс'
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryPersonally'){
+per1 = 'Особисто'
 }
-if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal5'){
-per1 = 'Портал'
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryTrust'){
+per1 = 'Довірена особа'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryEmail'){
+per1 = 'Електронна пошта'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryEmailBoss'){
+per1 = 'З пошти керівника'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryPost'){
+per1 = 'Пошта'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryCourier'){
+per1 = 'Кур’єрська доставка'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryWorker'){
+per1 = 'Працівник установи'
+}
+if (execution.getVariable('asDeliveryMethodDoc') == 'sEnumDeliveryFax'){
+per1 = 'Факс'
 }
 execution.setVariable('sChannelApp', per1)</script>
     </scriptTask>
@@ -1814,16 +1857,15 @@ execution.setVariable('sChannelApp', per1)</script>
     <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask10" name="Перевірка запита юристом" activiti:candidateGroups="dmr_lawyer">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Особа, яка заповнила форму" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Категорія кореспондента" type="enum" writable="false">
-          <activiti:value id="sEnumCat1" name="Органи вищої влади "></activiti:value>
-          <activiti:value id="sEnumCat2" name="ОДА, ОР, обласні організації тощо"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Органи вищої влади, ОДА, ОР, обласні організації тощо"></activiti:value>
           <activiti:value id="sEnumCat3" name="Виконавчі органи, комунальні підприємства міської ради"></activiti:value>
           <activiti:value id="sEnumCat4" name="Районні у місті ради та їх підрозділи"></activiti:value>
           <activiti:value id="sEnumCat5" name="Депутати, депутатські комісії, фракції"></activiti:value>
@@ -1835,6 +1877,16 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="asTypeTr" name="Характеристика документа" type="enum" writable="false">
           <activiti:value id="sEnumTypeInformation" name="Інформаційний"></activiti:value>
           <activiti:value id="sEnumTypeForExecution" name="Для виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeliveryMethodDoc" name="Спосіб одержання документа" type="enum" writable="false">
+          <activiti:value id="sEnumDeliveryPersonally" name="Особисто"></activiti:value>
+          <activiti:value id="sEnumDeliveryTrust" name="Довірена особа, помічник"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmail" name="Електронна пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryEmailBoss" name="З пошти керівника"></activiti:value>
+          <activiti:value id="sEnumDeliveryPost" name="Пошта"></activiti:value>
+          <activiti:value id="sEnumDeliveryCourier" name="Кур’єрська доставка"></activiti:value>
+          <activiti:value id="sEnumDeliveryWorker" name="Працівник установи"></activiti:value>
+          <activiti:value id="sEnumDeliveryFax" name="Факс"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
@@ -2067,10 +2119,6 @@ execution.setVariable('sChannelApp', per1)</script>
           <activiti:value id="sEnumAnsw2" name="Особисто"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
-          <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
-          <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
@@ -2102,6 +2150,8 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="dateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
