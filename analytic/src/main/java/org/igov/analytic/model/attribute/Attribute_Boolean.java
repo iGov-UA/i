@@ -5,6 +5,7 @@
  */
 package org.igov.analytic.model.attribute;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -24,6 +25,7 @@ public class Attribute_Boolean extends AbstractEntity{
     //@Column(length=1)
     Boolean bValue;
     
+    @JsonIgnore
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Attribute")
