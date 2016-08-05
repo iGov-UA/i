@@ -6,5 +6,5 @@ var activiti = require('../../components/activiti');
 
 module.exports.getRedirectPaymentLiqpay = function (req, res) {
   activiti.sendGetRequest(req, res, '/finance/redirectPaymentLiqpay', req.query);
-  debugger;
+ // debugger;
 };
