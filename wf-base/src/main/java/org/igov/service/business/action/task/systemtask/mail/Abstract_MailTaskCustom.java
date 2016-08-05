@@ -29,7 +29,7 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -53,7 +53,6 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 
 import org.igov.util.ToolWeb;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -82,7 +81,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     private static final String PATTERN_DESCRIPTION = "sDescription%s";
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
-    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    
     @Autowired
     public TaskService taskService;
     @Autowired
@@ -197,7 +196,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         if (sTextReturn.contains(TAG_sDateCreate)) {
             Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(execution.getProcessInstanceId()).singleResult().getStartTime();
-            DateTimeFormatter formatter = DATETIME_FORMATTER;
+            DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
             String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
             LOG.info("TAG_sDateCreate: (sDateCreate={})", sDateCreate);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sDateCreate + "\\E", "" + sDateCreate);
