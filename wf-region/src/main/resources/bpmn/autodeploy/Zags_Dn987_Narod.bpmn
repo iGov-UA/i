@@ -11,10 +11,12 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі щодо якої запитується свідоцтво" type="enum" required="true">
+        <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі, щодо якої запитується свідоцтво" type="enum" required="true">
           <activiti:value id="sEnamTato" name="Батько"></activiti:value>
           <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
+          <activiti:value id="sEnamOpikun" name="Опікун"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджуэ статус опікуна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_LastName" name="Прізвище матері" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_Name" name="Ім'я матері" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_MiddleName" name="По батькові матері" type="string" required="true"></activiti:formProperty>
@@ -30,19 +32,21 @@
         <activiti:formProperty id="sRegistr_born" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name=" мерчанта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="string" default="0,51"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string" default="державне мито за повторну видачу свідоцтва"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject_2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_2" name=" мерчанта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum_2" name="сумма платежа" type="string" default="0,51"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="string" default="державне мито за повторну видачу свідоцтва"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPIBMom" name="ПІБ матері" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPIBDad" name="ПІБ батька" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про народження"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -99,7 +103,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -111,16 +115,16 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamTato" name="Батько"></activiti:value>
           <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="MomFio" name="ПІБ Матері" type="string" default="${sMom_LastName} ${sMom_Name} ${sMom_MiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="DadFio" name="ПІБ Батька" type="string" default="${sDad_LastName} ${sDad_Name} ${sDad_MiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIBMom" name="ПІБ Матері" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIBDad" name="ПІБ Батька" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_born" name="Місце народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-		  <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
-		  <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
+          <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Nar_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
@@ -215,11 +219,60 @@ ${sNameOrgan}.&lt;br /&gt;
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+        var Z_LastName=''
+        var Z_FirstName=''
+        var Z_MiddleName=''
+        var M_LastName=''
+        var M_FirstName=''
+        var M_MiddleName=''
+        var D_LastName=''
+        var D_FirstName=''
+        var D_MiddleName=''
+        var M_PIB=''
+        var D_PIB=''
+        Z_LastName=execution.getVariable('bankIdlastName')
+        Z_FirstName=execution.getVariable('bankIdfirstName')
+        Z_MiddleName=execution.getVariable('bankIdmiddleName')
+        M_LastName=execution.getVariable('sMom_LastName')
+        M_FirstName=execution.getVariable('sMom_Name')
+        M_MiddleName=execution.getVariable('sMom_MiddleName')
+        D_LastName=execution.getVariable('sDad_LastName')
+        D_FirstName=execution.getVariable('sDad_Name')
+        D_MiddleName=execution.getVariable('sDad_MiddleName')
+        
+        if(execution.getVariable('asRodich') == 'sEnamTato')
+          {
+          D_PIB=Z_LastName+''+Z_FirstName+''+Z_MiddleName
+          M_PIB=M_LastName+''+M_FirstName+''+M_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamMatu')
+          {
+          M_PIB=Z_LastName+''+Z_FirstName+''+Z_MiddleName
+          D_PIB=D_LastName+''+D_FirstName+''+D_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamOpikun')
+          {
+          D_PIB=D_LastName+''+D_FirstName+''+D_MiddleName
+          M_PIB=M_LastName+''+M_FirstName+''+M_MiddleName
+          }
+        execution.setVariable('sPIBMom', M_PIB)
+        execution.setVariable('sPIBDad', D_PIB)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Narod">
     <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Narod" id="BPMNPlane_Zags_Dn987_Narod">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="185.0" y="164.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="120.0"></omgdc:Bounds>
@@ -242,19 +295,16 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="505.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="120.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="185.0" y="164.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="305.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="425.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="522.0" y="175.0"></omgdi:waypoint>
@@ -267,10 +317,16 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="542.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="626.0" y="330.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="577.0" y="296.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="502.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="418.0" y="330.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="296.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="626.0" y="385.0"></omgdi:waypoint>
@@ -288,6 +344,10 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="200.0" y="194.0"></omgdi:waypoint>
         <omgdi:waypoint x="199.0" y="457.0"></omgdi:waypoint>
         <omgdi:waypoint x="505.0" y="457.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="372.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
