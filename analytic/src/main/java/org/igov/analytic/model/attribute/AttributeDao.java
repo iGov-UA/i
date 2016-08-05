@@ -5,7 +5,6 @@
  */
 package org.igov.analytic.model.attribute;
 
-import org.igov.analytic.model.process.*;
 import org.igov.model.core.EntityDao;
 
 /**

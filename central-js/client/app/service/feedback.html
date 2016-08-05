@@ -1,79 +1,85 @@
-<div class="container" ng-hide="feedback.feedbackError">
-  <div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
-    <div class="col-md-6 col-sm-6 feedback-padding0">
+<div class="row feedback feedback-clearfix">
 
-      <div>
-        <span class="feedback-font14">Ваша оцінка</span>
-        <span star-rating ng-model="feedback.raiting" max="5" on-rating-select="feedback.rateFunction(rating)"></span>
-      </div>
+  <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
-      <div>
-        <span class="feedback-font14">Ваш вiдгук</span>
-      </div>
+    <div class="row container" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+      <div class="col-md-6 col-sm-6 feedback-padding0">
 
-      <div>
-        <span>{{::commentHead}}</span>
-      </div>
-
-      <div>
-        <div class="form-group">
-          <textarea rows="5" ng-model="feedback.messageBody" class="form-control pull-right feedback-margin-bottom"
-                    placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
+        <div class="feedback-assessment">
+          <div class="feedback-assessment-header feedback-font14">Ваша оцінка</div>
+          <div star-rating class="feedback-assessment-body fa-custom-edit" ng-model="feedback.raiting" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
         </div>
-        <div class="form-group">
-          <input type="button" class="btn btn-info pull-right" value="Надіслати" ng-click="feedback.postFeedback()"/>
+
+        <div>
+          <span class="feedback-font14">Ваш вiдгук</span>
         </div>
-      </div>
 
-    </div>
-
-    <div class="col-md-6 col-sm-6">
-      <p class="feedback-info-header">Ваш регіон і місто</p>
-      <p class="feedback-info-body">{{::feedback.currentFeedback.sPlace}}</p>
-      <p class="feedback-info-header">Державний орган</p>
-      <p class="feedback-info-body">{{::feedback.sSubjectOperatorName}}</p>
-      <p class="feedback-info-header">Співробітник, який Вас обслуговував</p>
-      <p class="feedback-info-body">{{::feedback.currentFeedback.sEmployeeFIO}}</p>
-      <p class="feedback-info-header">Ваш підпис</p>
-      <p class="feedback-info-body">{{::feedback.currentFeedback.sAuthorFIO}}</p>
-    </div>
-    <!--<div class="col-md-6 col-sm-6" ng-if="feedback.allowLeaveFeedback && !feedback.exist">-->
-    <!--<div class="form-horizontal">-->
-    <!--<div class="form-group">-->
-    <!--<input type="button" class="btn btn-info pull-right" value="Надіслати" ng-click="feedback.postFeedback()"/>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-  </div>
-  <!--<div class="row" ng-if="feedback.allowLeaveFeedback && !feedback.exist">-->
-
-  <!--</div>-->
-
-  <div class="row">
-    <div class="feedback-padding0 col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="page-header">
-            <h2>Відгуки громадян</h2>
+        <div>
+          <div class="feedback-form-group">
+              <textarea rows="5" ng-model="feedback.messageBody"
+                        class="form-control pull-right feedback-textarea feedback-margin-bottom"
+                        placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
           </div>
-          <div ng-repeat="item in feedback.messageList">
-            <div class="well">
-              <p>
-                <small>{{::item.sAuthorFIO}}</small>
-                <star-rating ng-model="item.nID_Rate" showonly="true"></star-rating>
-              </p>
-              <p>{{::item.sBody}}</p>
+          <div class="">
+            <input type="button" class="feedback-btn btn pull-right" value="Надіслати"
+                   ng-click="feedback.postFeedback()"/>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="feedback-info-content col-md-6 col-sm-6">
+        <p class="feedback-info-header">Ваш регіон і місто</p>
+
+        <p class="feedback-info-body">{{::feedback.currentFeedback.sPlace}}</p>
+
+        <p class="feedback-info-header">Державний орган</p>
+
+        <p class="feedback-info-body">{{::feedback.sSubjectOperatorName}}</p>
+
+        <p class="feedback-info-header">Співробітник, який Вас обслуговував</p>
+
+        <p class="feedback-info-body">{{::feedback.currentFeedback.sEmployeeFIO}}</p>
+
+        <p class="feedback-info-header">Ваш підпис</p>
+
+        <p class="feedback-info-body">{{::feedback.currentFeedback.sAuthorFIO}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="container col-md-12">
+        <div>
+          <div class="feedback-list-container">
+            <div class="feedback-list-header">
+              <h2 class="feedback-callout feedback-callout-info">Відгуки громадян</h2>
             </div>
-            <!--<div>{{item.nID_Rate}}</div>-->
-            <!--<div>{{item.sAuthorFIO}}</div>-->
-            <!--<div>{{item.sID_Source}}</div>-->
-            <!--<div>{{item.sHead}}</div>-->
-            <!--<div>{{item.sMail}}</div>-->
+            <div class="feedback-list-content">
+              <div ng-repeat="item in feedback.messageList">
+                <div class="feedback-list-item form-horizontal">
+                  <p>
+                    <star-rating ng-model="item.nID_Rate" showonly="true"></star-rating>
+                    <small class="feedback-info-list-author">{{::item.sAuthorFIO}}</small>
+                  </p>
+                  <p>{{::item.sBody}}</p>
+                  <button class="btn btn-link"
+                          ng-if="feedback.isAdmin && feedback.commentToShowAnswer !== item.nID"
+                          ng-click="feedback.answer(item.nID)"><h5>Відповісти</h5></button>
+                  <button class="btn btn-link"
+                          ng-if="feedback.isAdmin && feedback.commentToShowAnswer === item.nID"
+                          ng-click="feedback.hideAnswer()"><h6>Сховати</h6></button>
+                  <feedback-answer
+                    ng-if="feedback.commentToShowAnswer === item.nID"
+                    current-feedback="item"
+                    on-send="feedback.sendAnswer(answerData)"
+                    ></feedback-answer>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>

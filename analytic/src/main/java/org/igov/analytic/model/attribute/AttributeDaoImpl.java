@@ -5,7 +5,6 @@
  */
 package org.igov.analytic.model.attribute;
 
-import org.igov.analytic.model.process.*;
 import org.apache.log4j.Logger;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
 import org.springframework.stereotype.Repository;

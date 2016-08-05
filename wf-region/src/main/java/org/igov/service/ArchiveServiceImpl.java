@@ -20,14 +20,18 @@ import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
 import org.igov.analytic.model.attribute.AttributeTypeDao;
 import org.igov.analytic.model.attribute.Attribute_Date;
-import org.igov.analytic.model.attribute.Attribute_FileDao;
+import org.igov.analytic.model.attribute.Attribute_DateDao;
 import org.igov.analytic.model.attribute.Attribute_Integer;
-import org.igov.analytic.model.attribute.Attribute_StingShort;
+import org.igov.analytic.model.attribute.Attribute_IntegerDao;
+import org.igov.analytic.model.attribute.Attribute_StringShort;
+import org.igov.analytic.model.attribute.Attribute_StringShortDao;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
+import org.igov.model.core.AbstractEntity;
+import org.igov.model.core.EntityDao;
 import org.igov.service.controller.ProcessController;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -60,10 +64,16 @@ public class ArchiveServiceImpl implements ArchiveService {
     private AttributeDao attributeDao;
 
     @Autowired
-    private Attribute_FileDao attribute_FileDao;
+    private Attribute_IntegerDao attribute_IntegerDao;
+
+    @Autowired
+    private Attribute_StringShortDao attribute_StringShortDao;
+
+    @Autowired
+    private Attribute_DateDao attribute_DateDao;
 
     /*@Autowired
-    private IFileStorage durableFileStorage;*/
+     private IFileStorage durableFileStorage;*/
     @Autowired
     private ConfigDao configDao;
 
@@ -71,7 +81,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     public void archiveData() throws SQLException, ParseException, Exception {
 
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            //SimpleDateFormat dateFormatFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DriverManager.registerDriver(new com.sybase.jdbc3.jdbc.SybDriver());
             conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
             stat = conn.createStatement();
@@ -83,7 +94,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             Optional<Config> configOptional;
             String dateLastBackup;
             Config config;
-            while (hasNextDate) {
+            while (hasNextDate) { // while (hasNextDate && index < 3)
                 configOptional = configDao.findBy("name", "dateLastBackup");
                 if (configOptional.isPresent()) {
                     config = configOptional.get();
@@ -94,28 +105,36 @@ public class ArchiveServiceImpl implements ArchiveService {
                     configDao.saveOrUpdate(config);
                 }
                 dateLastBackup = config.getsValue();
+                LOG.info("dateLastBackup:" + dateLastBackup);
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
 
-                if (index < 1 && rs.next()) {
-                    index++;
+                if (rs.next()) {
                     String date = rs.getString("minREGDATE");
-                    System.out.println("date:" + date);
+                    LOG.info("date:" + date);
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
+                        index++;
                         String sID_Complain = rs.getString("IDENTITY");
-                        System.out.println("sID_Complain:" + sID_Complain);
+
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", rs.getString("IDENTITY"));
-                            if (!process.isPresent()) {
-                                setProcess(rsComplain);
-                            }
+//                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
+//                            if (!process.isPresent()) {
+//                                setProcess(rsComplain);
+//                            } else {
+//                                LOG.info("Already presented sID_Complain: " + sID_Complain);
+//                            }
+                            LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
+                            setProcess(rsComplain);
                         }
                     }
-                    config.setsValue(dateFormat.format(date));
+                    config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
                 } else {
                     hasNextDate = false;
                 }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            LOG.error("!!! archive error: ", ex);
         } finally {
             try {
                 if (null != stat) {
@@ -151,54 +170,75 @@ public class ArchiveServiceImpl implements ArchiveService {
     private void setProcess(ResultSet rs) throws SQLException, ParseException, Exception {
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        EntityDao attributeValueDao;
+        AbstractEntity attributeValueEntity;
 
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
 
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        System.out.println("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
-        process.setoDateStart(new DateTime(dateFormat.parse(rs.getString("REGDATE"))));
-        System.out.println(process.getoDateStart());
-        process.setoDateFinish(new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")))); //EXECCOMPLDATE
-        //System.out.println(process.getoDateFinish());
+        //LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
+        DateTime dateStart, dateFinish;
+        if (rs.getString("REGDATE") != null) {
+            dateStart = new DateTime(dateFormat.parse(rs.getString("REGDATE")));
+        } else {
+            dateStart = new DateTime();
+        }
+        process.setoDateStart(dateStart);
+        if (rs.getString("EXECCOMPLDATE") != null) {
+            dateFinish = new DateTime(dateFormat.parse(rs.getString("EXECCOMPLDATE")));
+        } else {
+            dateFinish = new DateTime();
+        }
+        process.setoDateFinish(dateFinish);
         process.setoSourceDB(sourceDB);
         process.setsID_(rs.getString("REGNUMBER"));
         process.setsID_Data(rs.getString("IDENTITY"));
+        process.setsID_Data(rs.getString("IDENTITY"));
         process = processDao.saveOrUpdate(process);
         for (int i = 1; i <= columnCount; i++) {
-            System.out.println(metaData.getColumnClassName(i) + " " + metaData.getColumnLabel(i));
             AttributeType attributeType;
             Attribute attribute = new Attribute();
+
             if ("java.lang.Integer".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(1));
                 Attribute_Integer attributeValue = new Attribute_Integer();
                 attributeValue.setnValue(rs.getInt(i));
-                attribute.setoAttribute_Integer(attributeValue);
+                //attribute.setoAttribute_Integer(attributeValue);
+                attributeValue.setoAttribute(attribute);
+                attributeValueDao = attribute_IntegerDao;
+                attributeValueEntity = attributeValue;
             } else if ("java.lang.String".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(3));
-                Attribute_StingShort attributeValue = new Attribute_StingShort();
+                Attribute_StringShort attributeValue = new Attribute_StringShort();
                 attributeValue.setsValue(rs.getString(i));
-                attribute.setoAttribute_StingShort(attributeValue);
-            } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
+                //attribute.setoAttribute_StringShort(attributeValue);
+                attributeValue.setoAttribute(attribute);
+                attributeValueDao = attribute_StringShortDao;
+                attributeValueEntity = attributeValue;
+            } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())
+                    || "java.sql.Date".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(6));
                 Attribute_Date attributeValue = new Attribute_Date();
-                attributeValue.setoValue(new DateTime(dateFormat.parse(rs.getString(i))));
-                attribute.setoAttribute_Date(attributeValue);
+                if (rs.getString(i) != null) {
+                    attributeValue.setoValue(new DateTime(dateFormat.parse(rs.getString(i))));
+                }
+                //attribute.setoAttribute_Date(attributeValue);
+                attributeValue.setoAttribute(attribute);
+                attributeValueDao = attribute_DateDao;
+                attributeValueEntity = attributeValue;
             } else {
-                throw new Exception("Not Foud type of attribute!!!!!!!!!!!!!");
+                throw new Exception("Not Foud type of attribute " + metaData.getColumnClassName(i).trim() + " !!!!!!!!!!!!!!!1");
             }
             attribute.setoProcess(process);
             attribute.setoAttributeType(attributeType);
-            attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i) + ":");
+            attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i));
             attribute.setName(metaData.getColumnLabel(i));
             attribute = attributeDao.saveOrUpdate(attribute);
+            LOG.info("attribute:" + attribute.getId());
+            attributeValueDao.saveOrUpdate(attributeValueEntity);
+            LOG.info("attributeValueEntity:" + attributeValueEntity.getId());
         }
-    }
-    
-    public static void main(String[] arg) throws ParseException{
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(new DateTime(dateFormat.parse("2003-01-13")));
-    
     }
 }
