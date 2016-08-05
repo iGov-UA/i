@@ -8,18 +8,49 @@
     <changeSet id="Init tables" author="olga" runOnChange="false">
 
         <sql splitStatements="true" dbms="postgresql">
+            DROP TABLE IF EXISTS "Config" CASCADE;
+            DROP TABLE IF EXISTS "AccessGroup_ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "AccessUser_ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "AccessGroup" CASCADE;
+            DROP TABLE IF EXISTS "AccessUser" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Boolean" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Date" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_File" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Float" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Integer" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_StringShort" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_StringLong" CASCADE;
+            DROP TABLE IF EXISTS "Attribute" CASCADE;
+            DROP TABLE IF EXISTS "ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "Process" CASCADE;
             DROP TABLE IF EXISTS "AttributeType" CASCADE;
             DROP TABLE IF EXISTS "AttributeTypeCustom" CASCADE;
             DROP TABLE IF EXISTS "SourceDB" CASCADE;
         </sql>
 
         <sql splitStatements="true" dbms="h2">
+            DROP TABLE IF EXISTS Config CASCADE;
+            DROP TABLE IF EXISTS AccessGroup_ProcessTask CASCADE;
+            DROP TABLE IF EXISTS AccessUser_ProcessTask CASCADE;
+            DROP TABLE IF EXISTS AccessGroup CASCADE;
+            DROP TABLE IF EXISTS AccessUser CASCADE;
+            DROP TABLE IF EXISTS Attribute_Boolean CASCADE;
+            DROP TABLE IF EXISTS Attribute_Date CASCADE;
+            DROP TABLE IF EXISTS Attribute_File CASCADE;
+            DROP TABLE IF EXISTS Attribute_Float CASCADE;
+            DROP TABLE IF EXISTS Attribute_Integer CASCADE;
+            DROP TABLE IF EXISTS Attribute_StringShort CASCADE;
+            DROP TABLE IF EXISTS Attribute_StringLong CASCADE;
+            DROP TABLE IF EXISTS Attribute CASCADE;
+            DROP TABLE IF EXISTS ProcessTask CASCADE;
+            DROP TABLE IF EXISTS Process CASCADE;
             DROP TABLE IF EXISTS AttributeType CASCADE;
             DROP TABLE IF EXISTS AttributeTypeCustom CASCADE;
             DROP TABLE IF EXISTS SourceDB CASCADE;
         </sql>
 
-        <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
+
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence_analytic" startValue="20000"/>
         
         <!-- ####################################################################################################### -->
         <createTable tableName="AttributeType">

@@ -5,6 +5,7 @@
  */
 package org.igov.analytic.model.access;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class AccessUser extends AbstractEntity{
     @Column
     private String sID;
     
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = ProcessTask.class)
     @JoinTable(name = "AccessUser_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessUser"),
