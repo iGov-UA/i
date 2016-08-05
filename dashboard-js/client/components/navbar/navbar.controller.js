@@ -94,6 +94,7 @@
           tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
             var response = JSON.parse(res);
             $scope.archive = response[0];
+            $scope.switchArchive = true;
           })
         } else {
           tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
@@ -105,10 +106,13 @@
            });
         }
       }
+      if($event.keyCode === 8 || $event.keyCode === 46) {
+        $scope.switchArchive = false;
+      }
     };
 
     $scope.closeArchive = function () {
-      $scope.tasksSearch.archive = false;
+      $scope.switchArchive = false;
     };
 
     $scope.archiveTextValue = function () {
