@@ -277,12 +277,12 @@ public class FinanceCommonController {
         }else{
             sSum="0";
         }
-        if(sURL_CallbackStatusNew==null){
+        /*if(sURL_CallbackStatusNew==null){
             sURL_CallbackStatusNew="";
         }
         if(sURL_CallbackPaySuccess==null){
             sURL_CallbackPaySuccess="";
-        }
+        }*/
         if(sDescription==null){
             sDescription="";
         }
