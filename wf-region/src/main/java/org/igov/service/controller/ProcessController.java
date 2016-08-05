@@ -215,7 +215,7 @@ public class ProcessController {
         ProcessTask processTask = new ProcessTask();
         Attribute attribute = new Attribute();
         Attribute attribute1 = new Attribute();
-        Attribute_StringShort attribute_StingShort = new Attribute_StringShort();
+        Attribute_StringShort attribute_StringShort = new Attribute_StringShort();
         Attribute_File attribute_File = new Attribute_File();
         AccessGroup accessGroup = new AccessGroup();
         AccessUser accessUser = new AccessUser();
@@ -253,20 +253,20 @@ public class ProcessController {
         //------------------------------
         attribute.setId(new Long(1));
         attribute.setoAttributeType(attributeType);
-        //attribute.setoAttribute_StingShort(attribute_StingShort);
+        //attribute.setoAttribute_StingShort(attribute_StringShort);
         attribute.setoAttribute_File(attribute_File);
         attribute.setsID_("test");
         attribute.setName("test");
         
         attribute1.setId(new Long(2));
         attribute1.setoAttributeType(attributeType1);
-        attribute1.setoAttribute_StingShort(attribute_StingShort);
+        attribute1.setoAttribute_StringShort(attribute_StringShort);
         //attribute.setoAttribute_File(attribute_File);
         attribute1.setsID_("test");
         attribute1.setName("test");
         //------------------------------
-        attribute_StingShort.setId(new Long(1));
-        attribute_StingShort.setsValue("attribute_StingShort");
+        attribute_StringShort.setId(new Long(1));
+        attribute_StringShort.setsValue("attribute_StringShort");
         //------------------------------
         attribute_File.setId(new Long(1));
         attribute_File.setsID_Data("test");

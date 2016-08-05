@@ -65,9 +65,9 @@ public class Attribute extends NamedEntity {
     @OneToOne(mappedBy="oAttribute")
     Attribute_Integer oAttribute_Integer;
 
-    @JsonProperty(value = "oAttribute_StingShort")
+    @JsonProperty(value = "oAttribute_StringShort")
     @OneToOne(mappedBy="oAttribute")
-    Attribute_StringShort oAttribute_StingShort;
+    Attribute_StringShort oAttribute_StringShort;
 
     @JsonProperty(value = "oAttribute_StringLong")
     @OneToOne(mappedBy="oAttribute")
@@ -85,33 +85,6 @@ public class Attribute extends NamedEntity {
         this.sID_ = sID_;
     }
 
-    /*@JsonProperty(value = "oAttribute_Boolean")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_Boolean oAttribute_Boolean;
-    
-    @JsonProperty(value = "oAttribute_Date")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_Date oAttribute_Date;
-    
-    @JsonProperty(value = "oAttribute_Float")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_Float oAttribute_Float;
-    
-    @JsonProperty(value = "oAttribute_Integer")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_Integer oAttribute_Integer;
-    
-    @JsonProperty(value = "oAttribute_StingShort")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_StringShort oAttribute_StingShort;
-    
-    @JsonProperty(value = "oAttribute_StringLong")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_StringLong oAttribute_StringLong;
-    
-    @JsonProperty(value = "oAttribute_File")
-    @OneToOne(fetch = FetchType.EAGER)
-    Attribute_File oAttribute_File;*/
     public AttributeType getoAttributeType() {
         return oAttributeType;
     }
@@ -176,12 +149,12 @@ public class Attribute extends NamedEntity {
         this.oAttribute_Integer = oAttribute_Integer;
     }
 
-    public Attribute_StringShort getoAttribute_StingShort() {
-        return oAttribute_StingShort;
+    public Attribute_StringShort getoAttribute_StringShort() {
+        return oAttribute_StringShort;
     }
 
-    public void setoAttribute_StingShort(Attribute_StringShort oAttribute_StingShort) {
-        this.oAttribute_StingShort = oAttribute_StingShort;
+    public void setoAttribute_StringShort(Attribute_StringShort oAttribute_StringShort) {
+        this.oAttribute_StringShort = oAttribute_StringShort;
     }
 
     public Attribute_StringLong getoAttribute_StringLong() {

@@ -213,7 +213,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(3));
                 Attribute_StringShort attributeValue = new Attribute_StringShort();
                 attributeValue.setsValue(rs.getString(i));
-                //attribute.setoAttribute_StingShort(attributeValue);
+                //attribute.setoAttribute_StringShort(attributeValue);
                 attributeValue.setoAttribute(attribute);
                 attributeValueDao = attribute_StringShortDao;
                 attributeValueEntity = attributeValue;
