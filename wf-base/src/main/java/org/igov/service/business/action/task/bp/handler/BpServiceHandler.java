@@ -35,6 +35,7 @@ import org.igov.service.business.action.task.bp.BpService;
 @Service
 public class BpServiceHandler {
 
+    static Map<String, Object> gaide = new LinkedHashMap<String, Object>();
     public static final String PROCESS_ESCALATION = "system_escalation";
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
@@ -148,6 +149,9 @@ public class BpServiceHandler {
 
     private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
             final String sProcessName, Integer nID_Server) {
+        Map newMap;
+        newMap = createNewMap(mTaskParam);
+        buildString(newMap);
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
@@ -181,11 +185,12 @@ public class BpServiceHandler {
 
     /**
      * organise groups into single string
+     *
      * @param organs
      * @return
      */
     private String trimGroups(Set<String> organs) {
-        if(organs.isEmpty()){
+        if (organs.isEmpty()) {
             return "";
         }
         final String DELIMITER = ", ";
@@ -196,31 +201,31 @@ public class BpServiceHandler {
             result.append(DELIMITER);
         }
         String res = result.toString();
-        if(res.endsWith(DELIMITER)){
+        if (res.endsWith(DELIMITER)) {
             res = StringUtils.removeEnd(res, DELIMITER);
         }
         return res;
     }
 
     private String getPlaceForProcess(String sID_Process) {
-    	Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-    	String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
+        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
         try {
             soResponse = httpRequester.getInside(sURL, param);
-            Map res = JsonRestUtils.readObject(soResponse, Map.class); 
+            Map res = JsonRestUtils.readObject(soResponse, Map.class);
             soResponse = (String) res.get("place");
         } catch (Exception ex) {
             LOG.error("[getPlaceForProcess]: ", ex);
         }
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
-	}
+    }
 
-	private Set<String> getCurrentCadidateGroup(final String sProcessName) {
+    private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
         BpmnModel oBpmnModel = repositoryService.getBpmnModel(sProcessName);
         for (FlowElement oFlowElement : oBpmnModel.getMainProcess().getFlowElements()) {
@@ -315,7 +320,7 @@ public class BpServiceHandler {
         try {
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            if(task.getAssignee() != null){
+            if (task.getAssignee() != null) {
                 accounts.add(task.getAssignee());
             }
             accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables, ""));
@@ -327,7 +332,7 @@ public class BpServiceHandler {
                 List<Map<String, Object>> aSubjectAccount = (List<Map<String, Object>>) result.get("aSubjectAccount");
                 for (Map<String, Object> subjectAccount : aSubjectAccount) {
                     Map<String, Object> subject = (Map<String, Object>) subjectAccount.get("oSubject");
-                    String label = (String)subject.get("sLabel");
+                    String label = (String) subject.get("sLabel");
                     String accountContacts = getContact((List<Map>) subject.get("aSubjectAccountContact"));
                     sb.append(" ").append(label).append(" (").append(accountContacts).append(")");
                 }
@@ -345,7 +350,7 @@ public class BpServiceHandler {
         if (aSubjectAccountContact != null && !aSubjectAccountContact.isEmpty()) {
             for (Map subjectAccountContact : aSubjectAccountContact) {
                 LOG.info("!!!subjectAccountContact: " + subjectAccountContact);
-                if (subjectAccountContact != null && !subjectAccountContact.isEmpty() 
+                if (subjectAccountContact != null && !subjectAccountContact.isEmpty()
                         && subjectAccountContact.get("sValue") != null
                         && !"".equals(subjectAccountContact.get("sValue"))
                         && subjectAccountContact.get("oSubjectContactType") != null
@@ -357,11 +362,14 @@ public class BpServiceHandler {
         }
         return sbContact.toString(); //
     }
+
     
-    public static String buildString(Map<String, Object> hm) {
+    
+    
+    public static String buildString(Map<String, Object> mTaskParam) {
 
         // Получаем набор элементов
-        Set<Map.Entry<String, Object>> set = hm.entrySet();
+        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
         String result = " ";
 
         // Отобразим набор
@@ -370,5 +378,24 @@ public class BpServiceHandler {
         }
         LOG.info(result);
         return result;
+
+    }
+
+      public static Map<String, Object> createNewMap(Map<String, Object> mTaskParam) {
+        Map<String, Object> newMap = new LinkedHashMap<String, Object>();
+        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
+        String res = " ";
+        for (Map.Entry<String, Object> entry : mTaskParam.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            if (gaide.get(key) != null) {
+                String newKey = (String) gaide.get(key);
+                newMap.put(newKey, value);
+            } else {
+                newMap.put(key, value);
+            }
+        }
+        return newMap;
     }
 }
