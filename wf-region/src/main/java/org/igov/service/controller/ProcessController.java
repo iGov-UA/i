@@ -185,8 +185,9 @@ public class ProcessController {
             if ("1".equalsIgnoreCase(sID_.trim())) {
                 result.add(creatStub());
             } else {
-                List<Process> processes = processDao.findAllBy("sID_", sID_);
-                //LOG.info("processes: " + processes.size());
+                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
+                List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
+                LOG.info("processes: " + processes.size());
                 /*for (Process process : processes) {
                     for (Attribute attribute : process.getaAttribute()) {
                         if (attribute.getoAttributeType().getId() == 7) { //file
@@ -200,7 +201,6 @@ public class ProcessController {
                 result.addAll(processes);
             }
         } catch (Exception ex) {
-            LOG.info("ex: " + ex);
             LOG.error("ex: ", ex);
             Process process = creatStub();
             process.setsID_(ex.getMessage());
