@@ -310,7 +310,7 @@ angular.module('app').service('ServiceService', function ($http, $q, ErrorsFacto
         windowWithLetter.document.open();
         windowWithLetter.document.write(sHTMLbody)
       } catch (e) {
-        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно для платежу LiqPay. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте здыйснити платыж ще раз."});
+        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно для платежу LiqPay. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте здійснити платіж ще раз."});
       }
     }).
     error(function(data, status, headers, config) {
