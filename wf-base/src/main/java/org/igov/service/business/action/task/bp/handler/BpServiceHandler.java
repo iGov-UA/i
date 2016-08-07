@@ -35,7 +35,7 @@ import org.igov.service.business.action.task.bp.BpService;
 @Service
 public class BpServiceHandler {
 
-    static Map<String, Object> gaide = new LinkedHashMap<String, Object>();
+    public static Map<String, Object> gaideTaskParamKey = new TreeMap<>();
     public static final String PROCESS_ESCALATION = "system_escalation";
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
@@ -149,28 +149,36 @@ public class BpServiceHandler {
 
     private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
             final String sProcessName, Integer nID_Server) {
-        Map newMap;
-        newMap = createNewMap(mTaskParam);
-        buildString(newMap);
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
+        gaideTaskParamKey.put("bankIdfirstName", "Имя: ");
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
+        gaideTaskParamKey.put("bankIdfirstName", "Отчество: ");
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+        gaideTaskParamKey.put("bankIdfirstName", "Фамилия: ");
         mParam.put("phone", "" + mTaskParam.get("phone"));
+        gaideTaskParamKey.put("phone", "Телефон: ");
         mParam.put("email", mTaskParam.get("email"));
+        gaideTaskParamKey.put("email", "Электронный адрес: ");
 
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        gaideTaskParamKey.put("sTaskId", "ИД таски: ");
         String organ = trimGroups(organs);
         mParam.put("organ", organ);
-        mParam.put("saField", buildString(mTaskParam));
+        Map mTaskParamConverted = convertTaskParam(mTaskParam);
+        String sField = convertTaskParamToString(mTaskParamConverted);
+        mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
+        gaideTaskParamKey.put("sDate_BP", "Дата БП: ");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
+        gaideTaskParamKey.put("sServiceType", "Услуга: ");
         mParam.put("sOrganName", mTaskParam.get("area"));
+        gaideTaskParamKey.put("area", "Район: ");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
-        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
+        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);        
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
         try {
@@ -363,39 +371,36 @@ public class BpServiceHandler {
         return sbContact.toString(); //
     }
 
-    
-    
-    
-    public static String buildString(Map<String, Object> mTaskParam) {
+    public static String convertTaskParamToString(Map<String, Object> mTaskParam) {
 
         // Получаем набор элементов
-        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
+        Set<Map.Entry<String, Object>> aTaskParamEntrySet = mTaskParam.entrySet();
         String result = " ";
 
         // Отобразим набор
-        for (Map.Entry<String, Object> entry : set) {
-            result += entry.getKey() + ": " + entry.getValue() + "\n\r";
+        for (Map.Entry<String, Object> taskParam : aTaskParamEntrySet) {
+            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
         }
         LOG.info(result);
         return result;
 
     }
 
-      public static Map<String, Object> createNewMap(Map<String, Object> mTaskParam) {
-        Map<String, Object> newMap = new LinkedHashMap<String, Object>();
-        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
-        String res = " ";
-        for (Map.Entry<String, Object> entry : mTaskParam.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
+    public static Map<String, Object> convertTaskParam(Map<String, Object> mTaskParam) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> taskParam : mTaskParam.entrySet()) {
+            String taskParamKey = taskParam.getKey();
+            Object taskParamValue = taskParam.getValue();
 
-            if (gaide.get(key) != null) {
-                String newKey = (String) gaide.get(key);
-                newMap.put(newKey, value);
+            if (gaideTaskParamKey.get(taskParamKey) != null) {
+                String newKeyTaskParam = (String) gaideTaskParamKey.get(taskParamKey);
+                if (!"Удалить".equalsIgnoreCase(newKeyTaskParam)) {
+                    result.put(newKeyTaskParam, taskParamValue);
+                }
             } else {
-                newMap.put(key, value);
+                result.put(taskParamKey, taskParamValue);
             }
         }
-        return newMap;
+        return result;
     }
 }
