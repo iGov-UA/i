@@ -1402,4 +1402,16 @@
 
     </changeSet>
 
+    <changeSet id="issue-1321" author="taaraora">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="nID_SubjectMessage" type="bigint" >
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedback_SubjectMessage"
+                             referencedTableName    ="SubjectMessage"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

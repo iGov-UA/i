@@ -23,6 +23,7 @@ import org.igov.analytic.model.attribute.Attribute_Date;
 import org.igov.analytic.model.attribute.Attribute_DateDao;
 import org.igov.analytic.model.attribute.Attribute_Integer;
 import org.igov.analytic.model.attribute.Attribute_IntegerDao;
+import org.igov.analytic.model.attribute.Attribute_StringLong;
 import org.igov.analytic.model.attribute.Attribute_StringShort;
 import org.igov.analytic.model.attribute.Attribute_StringShortDao;
 import org.igov.analytic.model.config.Config;
@@ -68,6 +69,9 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     @Autowired
     private Attribute_StringShortDao attribute_StringShortDao;
+    
+    @Autowired
+    private Attribute_StringShortDao attribute_StringLongDao;
 
     @Autowired
     private Attribute_DateDao attribute_DateDao;
@@ -116,14 +120,15 @@ public class ArchiveServiceImpl implements ArchiveService {
                         String sID_Complain = rs.getString("IDENTITY");
 
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
-//                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
-//                            if (!process.isPresent()) {
-//                                setProcess(rsComplain);
-//                            } else {
-//                                LOG.info("Already presented sID_Complain: " + sID_Complain);
-//                            }
                             LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
-                            setProcess(rsComplain);
+                            Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
+                            if (!process.isPresent()) {
+                                setProcess(rsComplain);
+                            } else {
+                                LOG.info("Already presented sID_Complain: " + sID_Complain);
+                            }
+
+                            //setProcess(rsComplain);
                         }
                     }
                     config.setsValue(date.trim());
@@ -210,13 +215,24 @@ public class ArchiveServiceImpl implements ArchiveService {
                 attributeValueDao = attribute_IntegerDao;
                 attributeValueEntity = attributeValue;
             } else if ("java.lang.String".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
-                attributeType = attributeTypeDao.findByIdExpected(new Long(3));
-                Attribute_StringShort attributeValue = new Attribute_StringShort();
-                attributeValue.setsValue(rs.getString(i));
-                //attribute.setoAttribute_StringShort(attributeValue);
-                attributeValue.setoAttribute(attribute);
-                attributeValueDao = attribute_StringShortDao;
-                attributeValueEntity = attributeValue;
+                if (rs.getString(i) != null && rs.getString(i).length() < 255) {
+                    attributeType = attributeTypeDao.findByIdExpected(new Long(3));
+                    Attribute_StringShort attributeValue = new Attribute_StringShort();
+                    attributeValue.setsValue(rs.getString(i));
+                    //attribute.setoAttribute_StringShort(attributeValue);
+                    attributeValue.setoAttribute(attribute);
+                    attributeValueDao = attribute_StringShortDao;
+                    attributeValueEntity = attributeValue;
+                } else {
+                    attributeType = attributeTypeDao.findByIdExpected(new Long(4));
+                    Attribute_StringLong attributeValue = new Attribute_StringLong();
+                    attributeValue.setsValue(rs.getString(i));
+                    //attribute.setoAttribute_StringLong(attributeValue);
+                    attributeValue.setoAttribute(attribute);
+                    attributeValueDao = attribute_StringLongDao;
+                    attributeValueEntity = attributeValue;
+                }
+
             } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())
                     || "java.sql.Date".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 attributeType = attributeTypeDao.findByIdExpected(new Long(6));
