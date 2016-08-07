@@ -138,7 +138,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                             LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
                             Long start = System.currentTimeMillis();
                             beforeIteration = start;
-                            sb.append(" queryComplaim: ").append(getTimeDiff());
+                            sb = new StringBuilder(" queryComplaim: ").append(getTimeDiff());
                             getTimeDiff();
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             sb.append(" findProcess: ").append(getTimeDiff());
