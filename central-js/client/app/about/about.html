@@ -1,75 +1,63 @@
+<style>
+  @media (min-width: 992px) {
+    .col-sm-4:nth-child(3n+1) {
+      clear: left;
+    }
+  }
+
+  .ctrls-about p {
+    margin: 1em 0;
+  }
+
+  .developers > div {
+    line-height: 2;
+    margin-bottom: 0;
+  }
+
+  .developers > div > div {
+    border-top: 1px solid #ddd;
+  }
+
+  table > thead > tr > th {
+    text-align: center;
+    font-size: 12px;
+    padding: 5px;
+    cursor: default;
+  }
+
+  table > thead > tr {
+    border-bottom: 2px solid #ddd;
+  }
+
+  table > tbody > tr > th {
+    font-size: 12px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    padding: 5px;
+    font-weight: normal;
+    background: #f9f9f9;
+  }
+
+</style>
+
 <div class="container">
-  <style>
-    .ctrls-about p {
-      margin: 1em 0;
-    }
-
-    .developers > div {
-      line-height: 2;
-      margin-bottom: 0;
-    }
-
-    .developers > div > div {
-      border-top: 1px solid #ddd;
-    }
-
-    table > thead > tr > th {
-      text-align: center;
-      font-size: 12px;
-      padding: 5px;
-      cursor: default;
-    }
-
-    table > thead > tr {
-      border-bottom: 2px solid #ddd;
-    }
-
-    table > tbody > tr > th {
-      font-size: 12px;
-      text-align: center;
-      border-top: 1px solid #ddd;
-      padding: 5px;
-      font-weight: normal;
-      background: #f9f9f9;
-    }
-
-    #date-from, #date-to {
-      line-height: 15px;
-    }
-
-    .about-filter-button, .about-save-button {
-      font-size: 14px;
-      border-radius: 4px;
-      outline: none;
-    }
-
-    .load-statistic {
-      position: relative;
-      top: 5px;
-    }
-    .load-statistic:disabled {
-      color: #c2c2c2;
-    }
-  </style>
-
-
   <div class="container" ng-show="bAdmin">
-      <div class="row">
-          <div class="col-sm-3">
-            <label for="date-from">Почати вибірку з дати : </label>
-            <br>
-            <input type="datetime-local" id="date-from" ng-model="statisticDateBegin.value">
-          </div>
-          <div class="col-sm-3">
-            <label for="date-to">Закінчити вибірку на даті : </label>
-            <br>
-            <input type="datetime-local" id="date-to" ng-model="statisticDateEnd.value">
-          </div>
-          <div class="col-sm-1">
-            <br>
-            <input type="button" value="Отримати дані" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
-          </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <label for="date-from">Почати вибірку з дати : </label>
+        <br>
+        <input type="datetime-local" id="date-from" ng-model="statisticDateBegin.value">
       </div>
+      <div class="col-sm-3">
+        <label for="date-to">Закінчити вибірку на даті : </label>
+        <br>
+        <input type="datetime-local" id="date-to" ng-model="statisticDateEnd.value">
+      </div>
+      <div class="col-sm-1">
+        <br>
+        <input type="button" value="Отримати дані" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
+      </div>
+    </div>
     <br>
 
     <div class="row">
@@ -95,48 +83,161 @@
 
     <table>
       <thead>
-        <tr>
-          <th ng-click="order('sID_Order')">sID_Order</th>
-          <th ng-click="order('nID_Server')">nID_Server</th>
-          <th ng-click="order('nID_Service')">nID_Service</th>
-          <th ng-click="order('sID_Place')">sID_Place</th>
-          <th ng-click="order('nID_Subject')">nID_Subject</th>
-          <th ng-click="order('nRate')">nRate</th>
-          <th ng-click="order('sTextFeedback')">sTextFeedback</th>
-          <th ng-click="order('sUserTaskName')">sUserTaskName</th>
-          <th ng-click="order('sHead')">sHead</th>
-          <th ng-click="order('sBody')">sBody</th>
-          <th ng-click="order('nTimeMinutes')">nTime Minutes</th>
-          <th ng-click="order('sPhone')">sPhone</th>
-          <th ng-click="order('nID_ServiceData')">nID_Service Data</th>
-        </tr>
+      <tr>
+        <th ng-click="order('sID_Order')">sID_Order</th>
+        <th ng-click="order('nID_Server')">nID_Server</th>
+        <th ng-click="order('nID_Service')">nID_Service</th>
+        <th ng-click="order('sID_Place')">sID_Place</th>
+        <th ng-click="order('nID_Subject')">nID_Subject</th>
+        <th ng-click="order('nRate')">nRate</th>
+        <th ng-click="order('sTextFeedback')">sTextFeedback</th>
+        <th ng-click="order('sUserTaskName')">sUserTaskName</th>
+        <th ng-click="order('sHead')">sHead</th>
+        <th ng-click="order('sBody')">sBody</th>
+        <th ng-click="order('nTimeMinutes')">nTime Minutes</th>
+        <th ng-click="order('sPhone')">sPhone</th>
+        <th ng-click="order('nID_ServiceData')">nID_Service Data</th>
+      </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in statistics | orderBy:predicate:reverse">
-          <th style="width:84px;">{{item.sID_Order}}</th>
-          <th>{{item.nID_Server}}</th>
-          <th>{{item.nID_Service}}</th>
-          <th>{{item.sID_Place}}</th>
-          <th>{{item.nID_Subject}}</th>
-          <th>{{item.nRate}}</th>
-          <th>{{item.sTextFeedback}}</th>
-          <th>{{item.sUserTaskName}}</th>
-          <th>{{item.sHead}}</th>
-          <th>{{item.sBody}}</th>
-          <th>{{item.nTimeMinutes}}</th>
-          <th style="width:110px;">{{item.sPhone}}</th>
-          <th>{{item.nID_ServiceData}}</th>
-        </tr>
+      <tr ng-repeat="item in statistics | orderBy:predicate:reverse">
+        <th style="width:84px;">{{item.sID_Order}}</th>
+        <th>{{item.nID_Server}}</th>
+        <th>{{item.nID_Service}}</th>
+        <th>{{item.sID_Place}}</th>
+        <th>{{item.nID_Subject}}</th>
+        <th>{{item.nRate}}</th>
+        <th>{{item.sTextFeedback}}</th>
+        <th>{{item.sUserTaskName}}</th>
+        <th>{{item.sHead}}</th>
+        <th>{{item.sBody}}</th>
+        <th>{{item.nTimeMinutes}}</th>
+        <th style="width:110px;">{{item.sPhone}}</th>
+        <th>{{item.nID_ServiceData}}</th>
+      </tr>
       </tbody>
     </table>
 
     <hr style="background: lightgrey; border-top: none;">
     <br>
   </div>
+</div>
+
+<div ng-controller="aboutController">
+  <div class="container-fluid about-page-background">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 about-igov">
+          <span>iGov - це волонтерський проект.</span>
+          <span>В його створенні беруть участь</span>
+          <span>сотні та тисячі волонтерів по</span>
+          <span>всій країні та навіть світу.</span>
+        </div>
+        <div class="col-sm-4 about-join">
+          <span>Бажаєте допомогти?</span>
+          <a href="https://docs.google.com/forms/d/1w-BR01CSicvhWSXb36CiRjHCwvp-vyPuTHBaWw1iW4U/viewform" class="btn btn-warning join-button">Стати Волонтером iGov</a>
+          <span class="volunteer-info">також ознайомтесь з <a href="https://github.com/e-government-ua/i/wiki">Путівником Волонтера iGov</a></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 about-text">
+          <span>
+                Цей портал зроблено волонтерською командою iGov в рамках боротьби з корупцією в Україні та
+                вдосконалення бізнес-процесів в наших державних органах. Тут зібрано послуги, які державні органи
+                України надають громадянам та бізнесу.
+          </span>
+          <br><br>
+          <span>Велика подяка всім волонтерам, які взяли та беруть участь у розробці Порталу.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid it-volunteers">
+    <div class="container" style="margin-top: 50px">
+      <h1>IT-волонтери iGov</h1>
+      <div class="container">
+        <div class="col-sm-4 volunteer" ng-repeat="topVolunteer in topVolunteers">
+          <img style="opacity: 0.25;" ng-if="!topVolunteer.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+          <img ng-if="topVolunteer.sPhoto" ng-src="{{topVolunteer.sPhoto}}" alt="img">
+          <div class="top-vol-text-container">
+            <a ng-if="topVolunteer.sURL" href={{topVolunteer.sURL}}><h3>{{topVolunteer.sFIO}}</h3></a>
+            <h3 style="color: #4B5053;" ng-if="!topVolunteer.sURL">{{topVolunteer.sFIO}}</h3>
+            <p style="color: #4B5053;">{{topVolunteer.sCity}}</p>
+          </div>
+        </div>
+      </div>
 
 
+      <div class="col-sm-12 join-team-button">
+        <span>Якщо Ви маєте досвід у розробці ІТ-продуктів та бажаєте приєднатись до команди ІТ-волонтерів, запрошуємо Вас заповнити цю <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdXGCPWRZHy0EHVJ-TPAyNeUkK5oBzzAERfFv1xJK2gTzUQpA/viewform">форму</a>.</span>
+      </div>
+    </div>
+  </div>
 
-  <div class="row">
+  <div class="container-fluid region-volunteers">
+    <div class="container" style="margin-top: 50px">
+      <h1>Регіональні Волонтери iGov</h1>
+
+      <div class="col-sm-12 region-container" ng-repeat="region in regionVolunteers">
+        <div class="row">
+          <div class="col-sm-12 region-name">
+            <div class="col-sm-4" style="padding-right: 0"><hr class="common-hr"></div>
+            <div class="col-sm-4 text-center">
+              <span ng-if="region[0][0].regionName">{{region[0][0].regionName}}</span>
+            </div>
+            <div class="col-sm-4" style="padding-left: 0"><hr class="common-hr"></div>
+          </div>
+        </div>
+        <div class="container">
+          <div ng-if="!volunteers[0].regionName" class="col-sm-4 volunteer-city" ng-repeat="volunteers in region">
+            <div>
+              <h3><img src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/region.png" style="border-radius: 0; padding-bottom: 5px">
+                <span style="font-size: 24px" ng-if="volunteers[0].cityName !== 'Сингапур' && volunteers[0].cityName !== ''">м. </span>
+                {{volunteers[0].cityName}}
+              </h3>
+              <a href="#">Паспорт iGov міста</a><br>
+              <a href="#">Група з новинами iGov міста - {{volunteers[0].cityName}}</a><br>
+              <a href="#">Група волонтерів iGov міста - {{volunteers[0].cityName}}</a><br>
+            </div>
+
+            <div>
+              <div>
+                <h4>Рада волонтерів міста</h4>
+                <ul class="content-ul">
+                  <li ng-init="checkForEmpty()" ng-if="rada.sGroup.type[0].region[0].city[1].sName === 'Рада волонтерів'" ng-repeat="rada in volunteers">
+                    <img ng-if="rada.sPhoto" ng-src="{{rada.sPhoto}}" alt="no-img">
+                    <img style="opacity: 0.25;" ng-if="!rada.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+                    <a ng-if="rada.sURL" href="{{rada.sURL}}">{{rada.sFIO}}</a>
+                    <span ng-if="!rada.sURL">{{rada.sFIO}}</span>
+                    <span ng-if="rada.prof">- {{rada.prof}}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4>Волонтери міста</h4>
+                <ul class="content-ul">
+                  <li ng-init="checkForEmpty()" ng-if="volunteer.sGroup.type[0].region[0].city[1].sName === 'Волонтер'" ng-repeat="volunteer in volunteers">
+                    <img ng-if="volunteer.sPhoto" ng-src="{{volunteer.sPhoto}}" alt="no-img">
+                    <img style="opacity: 0.25;" ng-if="!volunteer.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+                    <a ng-if="volunteer.sURL" href="{{volunteer.sURL}}">{{volunteer.sFIO}}</a>
+                    <span ng-if="!volunteer.sURL">{{volunteer.sFIO}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="display: none">
     <div class="col-md-12 ctrls-about">
       <p>
         На цьому порталі зібрано послуги, які державні органи України надають громадянам та бізнесу. Частина послуг
@@ -326,7 +427,12 @@
         </div>
         <div class="row">
           <div class="col-sm-4"><a href="https://www.linkedin.com/in/sergey-turenko-b8708a94" target="_blank">Туренко Сергей</a>, Днепропетровск</div>
-          <div class="col-sm-4"></div>
+          <div class="col-sm-4"><a href="https://www.facebook.com/profile.php?id=100007298923596&fref=ts" target="_blank">Волобуев Дмитрий</a>, Днепропетровск</div>
+          <div class="col-sm-4"><a href="https://github.com/Seerann" target="_blank">Иванов Сергей</a>, Днепропетровск</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><a href="https://github.com/sergeygorban" target="_blank">Горбань Сергей</a>, Днепропетровск</div>
+          <div class="col-sm-4"><a href="https://github.com/djekildp" target="_blank">Марченко Игорь</a>, Днепропетровск</div>
           <div class="col-sm-4"></div>
         </div>
       </div>

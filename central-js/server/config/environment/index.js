@@ -43,6 +43,11 @@ function convertStringsToObject(processProps) {
       JSON.parse(processProps.Auth_BankID) :
       processProps.Auth_BankID;
 
+  processProps.Auth_BankID_NBU =
+    typeof processProps.Auth_BankID_NBU == 'string' ?
+      JSON.parse(processProps.Auth_BankID_NBU) :
+      processProps.Auth_BankID_NBU;
+
   processProps.Auth_CardKyanyn =
     typeof processProps.Auth_CardKyanyn == 'string' ?
       JSON.parse(processProps.Auth_CardKyanyn) :
@@ -71,10 +76,12 @@ function parsePath(pathStr) {
 
 //If path is absolute? return as it is, else return relative path
 var sPrivateKeyPathAuthBankID;
+var pathStr;
+var pathArr;
 try {
 
-  var pathStr = processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY;
-  var pathArr = parsePath(processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY);
+  pathStr = processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY;
+  pathArr = parsePath(processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY);
 
   if (pathArr.length > 1) {
     sPrivateKeyPathAuthBankID = pathStr;
@@ -84,6 +91,23 @@ try {
 
 } catch (e) {
   sPrivateKeyPathAuthBankID = '';
+}
+
+var sPrivateKeyPathAuthBankIDNBU;
+
+try {
+
+  pathStr = processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPrivateKeyPath_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY;
+  pathArr = parsePath(processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPrivateKeyPath_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY);
+
+  if (pathArr.length > 1) {
+    sPrivateKeyPathAuthBankIDNBU = pathStr;
+  } else {
+    sPrivateKeyPathAuthBankIDNBU = (__dirname + '/../../../' + pathStr);
+  }
+
+} catch (e) {
+  sPrivateKeyPathAuthBankIDNBU = '';
 }
 
 function parseUrl(url) {
@@ -104,12 +128,16 @@ var sURLBackProxyCentralParts,
   sURLBackCentralParts,
   sURLAccessAuthBankIDParts,
   sURLResourceAuthBankIDParts,
+  sURLAccessAuthBankIDNBUParts,
+  sURLResourceAuthBankIDNBUParts,
   sURLAuthCardKyanynParts;
 try {
   sURLBackProxyCentralParts = parseUrl(processProps.BackProxy_Central.sURL_BackProxy_Central);
   sURLBackCentralParts = parseUrl(processProps.Back_Central.sURL_Back_Central);
   sURLAccessAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Access_Auth_BankID);
   sURLResourceAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Resource_Auth_BankID);
+  sURLAccessAuthBankIDNBUParts = parseUrl(processProps.Auth_BankID_NBU.sURL_Access_Auth_BankID);
+  sURLResourceAuthBankIDNBUParts = parseUrl(processProps.Auth_BankID_NBU.sURL_Resource_Auth_BankID);
   sURLAuthCardKyanynParts = parseUrl(processProps.Auth_CardKyanyn.sURL_Auth_CardKyanyn);
 } catch (e) {
   sURLBackProxyCentralParts = undefined;
@@ -189,6 +217,18 @@ var all = {
      */
     privateKeyPassphrase: processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPassphrase_Auth_BankID : process.env.BANKID_PRIVATE_KEY_PASSPHRASE
 
+  },
+
+  bankidnbu: {
+    sProtocol_AccessService_BankID: sURLAccessAuthBankIDNBUParts ? sURLAccessAuthBankIDNBUParts.protocol : process.env.BANKIDNBU_SPROTOCOL_ACCESS_SERVICE,
+    sHost_AccessService_BankID: sURLAccessAuthBankIDNBUParts ? sURLAccessAuthBankIDNBUParts.host : process.env.BANKIDNBU_SHOST_ACCESS_SERVICE,
+    sProtocol_ResourceService_BankID: sURLResourceAuthBankIDNBUParts ? sURLResourceAuthBankIDNBUParts.protocol : process.env.BANKIDNBU_SPROTOCOL_RESOURC_SERVICE,
+    sHost_ResourceService_BankID: sURLResourceAuthBankIDNBUParts ? sURLResourceAuthBankIDNBUParts.host : process.env.BANKIDNBU_SHOST_RESOURCE_SERVICE,
+    client_id: processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sClientID_Auth_BankID : process.env.BANKIDNBU_CLIENTID,
+    client_secret: processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sClientSecret_Auth_BankID : process.env.BANKIDNBU_CLIENT_SECRET,
+    enableCipher: processProps.Auth_BankID_NBU ? (processProps.Auth_BankID_NBU.bCrypt_Auth_BankID === "TRUE") : process.env.BANKIDNBU_ENABLE_CIPHER,
+    privateKey: sPrivateKeyPathAuthBankIDNBU,
+    privateKeyPassphrase: processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPrivateKeyPassphrase_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY_PASSPHRASE
   },
 
   soccard: {

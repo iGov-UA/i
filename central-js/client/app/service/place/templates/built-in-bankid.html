@@ -100,7 +100,7 @@
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
             </div>
 
-              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="!isFormDataEmpty()">
+              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="isShowMessageRequiringToValidateUserData()">
                   Якщо ці або будь-які інші дані, які були передані з Вашого банку, вже не актуальні,
                   просимо Вас звернутися до цього банку для актуалізації.
               </div>
@@ -131,6 +131,7 @@
                                           name="{{property.id}}"
                                           ng-model="data.formData.params[property.id].value"
                                           ng-required="isFieldRequired(property)"
+                                          ng-class="getBpAndFieldID(property)"
                                           class="form-control"></textarea>
                 <label ng-switch-when="label"
                        name="{{property.id}}"
@@ -143,17 +144,29 @@
                 <dropdown-country ng-switch-when="string"
                                   ng-if="property.id==='resident' || property.id === 'sCountry'"
                                   ng-model="data.formData.params[property.id].value"
+                                  ng-class="getBpAndFieldID(property)"
                                   service-data="oServiceData"
                                   ng-required="isFieldRequired(property)"></dropdown-country>
 
                 <input ng-switch-when="string"
                        type="text"
                        name="{{property.id}}"
-                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0"
+                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
+
+                <button ng-switch-when="string"
+                       type="button"
+                       name="{{property.id}}"
+                       ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       ng-click="redirectPaymentLiqpay(property.value)"
+                       class="form-control btn btn-success">Сплатити</button>
 
                 <label style="display: none;"
                        ng-switch-when="invisible"
@@ -172,6 +185,7 @@
                        name="{{property.id}}"
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
 
@@ -181,6 +195,7 @@
                        ng-model="data.formData.params[property.id].value"
                        ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
                        ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
 
@@ -195,6 +210,7 @@
                          ng-model="data.formData.params[property.id].value"
                          ng-required="isFieldRequired(property)"
                          ng-readonly="true"
+                         ng-class="getBpAndFieldID(property)"
                          close-text="Close"
                          class="form-control"
                          value="">
@@ -301,6 +317,7 @@
                         ng-model="data.formData.params[property.id].value"
                         ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in property.enumValues"
                         ng-required="isFieldRequired(property)"
+                        ng-class="getBpAndFieldID(property)"
                         class="form-control"></select>
 
                 <p class="input-group"
@@ -316,6 +333,7 @@
                   <file-field name="{{property.id}}"
                               ng-model="data.formData.params[property.id].value"
                               ng-required="isFieldRequired(property)"
+                              ng-class="getBpAndFieldID(property)"
                               ng-if="data.formData.params[property.id].upload">Add File
                   </file-field>
                 </p>
@@ -325,10 +343,11 @@
                              service="oService"
                              service-data="oServiceData"
                              ng-model="data.formData.params[property.id].value"
+                             ng-class="getBpAndFieldID(property)"
                              form-data="data.formData"
                              property="property"
                              ng-required="isFieldRequired(property)"></slot-picker>
-                <div ng-switch-when="select">
+                <div ng-switch-when="select" ng-class="getBpAndFieldID(property)">
                   <dropdown-organ ng-if="property.id==='sID_Public_SubjectOrganJoin'"
                                   ng-model="data.formData.params[property.id].value"
                                   form-data-property="data.formData.params[property.id]"
@@ -369,6 +388,7 @@
                        name="{{property.id}}"
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
                        class="form-control"
                        value="">
               </div>

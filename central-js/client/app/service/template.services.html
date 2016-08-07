@@ -1,0 +1,35 @@
+<div class="row" ng-if="!spinner">
+  <div class="container igov-container" style="padding-left: 0; padding-right: 0">
+    <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength && !catalog.aNode">
+      <div class="col-sm-12 category-container">
+        <div class="col-sm-3" style="padding-right: 11.25px">
+          <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
+          <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
+        </div>
+        <div class="col-sm-9 text" style="padding-right: 11.25px">
+          <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
+          <ul>
+            <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <div class="col-sm-12 catalog-with-search-result" ng-if="!minSearchLength">
+        <ul>
+          <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+            <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row" ng-show="spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode">
+  <div class="text-center">
+    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+  </div>
+</div>
