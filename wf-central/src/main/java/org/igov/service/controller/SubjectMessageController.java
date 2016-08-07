@@ -494,7 +494,7 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
 
-    @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
+    @ApiOperation(value = "Сохранить отзыв по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackExternal(
             @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source", required = true) String sID_Source,
@@ -506,19 +506,20 @@ public class SubjectMessageController {
             @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
             @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-            @ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
-            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nId,
+            //@ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
+            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
 
-        LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
-        JSONObject responseObject = new JSONObject();
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        JSONObject oJSONObject = new JSONObject();
         try {
-            SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
-                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nId,
+            String sAnswer=null;
+            SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
+                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
                     nID_Subject);
 
-            if (!isEmpty(sAnswer)) {
+            /*if (!isEmpty(sAnswer)) {
                 SubjectMessageFeedbackAnswer answer = oSubjectMessageService
                         .setSubjectMessageFeedbackAnswer(feedback.getId(), sAnswer, nID_Subject);
 
@@ -526,23 +527,70 @@ public class SubjectMessageController {
                 answers.add(answer);
                 feedback.setoSubjectMessageFeedbackAnswers(answers);
                 subjectMessageFeedbackDao.update(feedback);
-            }
+            }*/
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
-                    sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
+                    sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
             String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
-                    generalConfig.getSelfHost(), nID_Service, feedback.getId(), feedback.getsID_Token());
+                    generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
-            responseObject.put("sURL", responseMessage);
-            return new ResponseEntity<>(responseObject.toString(), HttpStatus.CREATED);
+            oJSONObject.put("sURL", responseMessage);
+            return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
 
         } catch (Exception e) {
-            LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
+            LOG.error("/setFeedbackExternal, nID={}, message={}", nID, e.getMessage());
             throw new CommonServiceException(e.getMessage(), e);
         }
     }
 
+    
+    @ApiOperation(value = "Сохранить ответ об отзыве по услуге от сторонней организации")
+    @RequestMapping(value = "/setFeedbackAnswerExternal", method = RequestMethod.POST)
+    public ResponseEntity<String> setFeedbackAnswerExternal(
+            @ApiParam(value = "Тело ответа", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+            @ApiParam(value = "ID отзыва, ответ на который надо сохранить", required = true) @RequestParam(value = "nID_SubjectMessageFeedback", required = true) Long nID_SubjectMessageFeedback,
+            @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+    ) throws CommonServiceException {
+
+        //String sID_Source=null;
+        //String sAuthorFIO="(Администратор)";
+        //String sMail=null;
+        //String sHead="Ответ об отзыве";
+        //String sPlace=null;
+        //String sEmployeeFIO=null;
+        //Long nID_Rate=null;
+        //Long nID_Service=null;
+        String sAnswer=sBody;
+        
+        LOG.info("Started! (nID_SubjectMessageFeedback={}, sBody={})", nID_SubjectMessageFeedback, sBody);
+        JSONObject oJSONObject = new JSONObject();
+        try {
+            SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
+            SubjectMessageFeedbackAnswer oSubjectMessageFeedbackAnswer=null;
+            if (isEmpty(sAnswer)) {
+                LOG.warn("sBody is empty!, nID_SubjectMessageFeedback={}", nID_SubjectMessageFeedback);
+                throw new CommonServiceException("sBody is empty!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
+            }else if (oSubjectMessageFeedback==null) {
+                LOG.warn("oSubjectMessageFeedback==null! (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
+                throw new CommonServiceException("oSubjectMessageFeedback==null!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
+            }else{
+                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject);
+
+                List<SubjectMessageFeedbackAnswer> aSubjectMessageFeedbackAnswer = oSubjectMessageFeedback.getoSubjectMessageFeedbackAnswers();
+                aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
+                oSubjectMessageFeedback.setoSubjectMessageFeedbackAnswers(aSubjectMessageFeedbackAnswer);
+                subjectMessageFeedbackDao.update(oSubjectMessageFeedback);
+            }
+            LOG.info("successfully saved answer to feedback (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
+            oJSONObject.put("nID", oSubjectMessageFeedbackAnswer.getId());
+            return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            LOG.error("/setFeedbackAnswerExternal, message: {}", e.getMessage());
+            throw new CommonServiceException(e.getMessage(), e);
+        }
+    }    
+    
     @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва и паролю или все отзывы по сервису")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(
