@@ -2744,7 +2744,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
     });
     angular.forEach(region, function (volunteer) {
       var found = false;
-      for(i = 0; i < sortedVol.length; ++i) {
+      for(var i = 0; i < sortedVol.length; ++i) {
         if (sortedVol[i][0].regionName === volunteer.sGroup.type[0].region[0].sName) {
           sortedVol[i].push(volunteer);
           found = true;
@@ -2782,7 +2782,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
 
   $scope.checkForEmpty = function () {
     var el = document.querySelectorAll('.content-ul');
-    for(i=0; i<el.length; i++) {
+    for(var i=0; i<el.length; i++) {
       if(el[i].childElementCount === 0) {
         el[i].parentNode.style.display = 'none'
       } else {
