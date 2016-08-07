@@ -175,7 +175,7 @@ public class BpServiceHandler {
         gaideTaskParamKey.put("sDate_BP", "Дата БП");
         gaideTaskParamKey.put("nDaysLimit", "Лимит дней");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        gaideTaskParamKey.put("sServiceType", "Услуга");
+        gaideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
         gaideTaskParamKey.put("area", "Район");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));

@@ -297,7 +297,7 @@ public class EscalationService {
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
         BpServiceHandler.gaideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
-        BpServiceHandler.gaideTaskParamKey.put("sResponsiblePersons", "Ответ гражданину");
+        BpServiceHandler.gaideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(oTask.getProcessInstanceId()).singleResult();
