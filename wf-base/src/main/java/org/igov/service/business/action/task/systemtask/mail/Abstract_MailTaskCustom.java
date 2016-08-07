@@ -575,12 +575,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 	
-private String getFormattedDateS(String date) {
-		
-	DateTime dt = DateTime.parse(date);
-	Date d = dt.toDate();
-	return getFormattedDate(d);
-	}
+	private String getFormattedDateS(String date) {
+		DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("MM/dd/yyyy");
+	    DateTime dateTime = dateStringFormat.parseDateTime(date);
+		Date d = dateTime.toDate();
+		return getFormattedDate(d);
+		}
 
 	@Override
 	public void execute(DelegateExecution oExecution) throws Exception {
