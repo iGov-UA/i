@@ -54,7 +54,7 @@ public class EscalationHelper implements ApplicationContextAware {
                         //LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
                         String[] asRecipientMail = null;
                         BasicDBList basicDBList = (BasicDBList) mTaskParam.get("asRecipientMail");
-                        BpServiceHandler.gaideTaskParamKey.put("asRecipientMail", "Почта пполучателя: ");
+                        BpServiceHandler.gaideTaskParamKey.put("asRecipientMail", "Почта получателя: ");
                         if (basicDBList != null && !basicDBList.isEmpty()) {
                             asRecipientMail = new String[basicDBList.size()];
                             for (int i = 0; i < basicDBList.size(); i++) {
