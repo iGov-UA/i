@@ -124,7 +124,7 @@ public class ActionEscalationController {
             throws CommonServiceException {
 
         try {
-            escalationRuleFunctionDao.delete(nID);
+            escalationRuleFunctionDao.delete(nID); 
         } catch (EntityNotFoundException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
