@@ -260,7 +260,7 @@ public class EscalationService {
         result.put("sTaskName", oTask.getName());
         BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски: ");
         result.put("sTaskDescription", oTask.getDescription());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описание: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описанние: ");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
         BpServiceHandler.gaideTaskParamKey.put("sProcessInstanceId", "ИД процесса: ");
         result.put("sLoginAssigned", oTask.getAssignee());

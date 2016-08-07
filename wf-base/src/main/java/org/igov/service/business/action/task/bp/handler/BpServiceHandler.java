@@ -159,7 +159,7 @@ public class BpServiceHandler {
         gaideTaskParamKey.put("bankIdfirstName", "Отчество: ");
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         gaideTaskParamKey.put("bankIdfirstName", "Фамилия: ");
-        mParam.put("phone", "" + mTaskParam.get("phone"));
+        mParam.put("phone", "" + mTaskParam.get("phonee"));
         gaideTaskParamKey.put("phone", "Телефон: ");
         mParam.put("email", mTaskParam.get("email"));
         gaideTaskParamKey.put("email", "Электронный адрес: ");
