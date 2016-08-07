@@ -74,105 +74,105 @@ public class ProcessController {
     //private IBytesDataStorage durableBytesDataStorage;
     @Autowired
     private IFileStorage durableFileStorage;
-    
+
     @Autowired
     private ArchiveServiceImpl archiveService;
 
     /*@ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
-    @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
-    )
-    public @ResponseBody
-    Process setProcess(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
-            @ApiParam(value = "ключ сохраненного объекта в монгу", required = true) @RequestParam(value = "sID_Data") String sID_Data,
-            @ApiParam(value = "имя файла", required = true) @RequestParam(value = "sFileName") String sFileName,
-            @ApiParam(value = "расширение файла", required = true) @RequestParam(value = "sExtName") String sExtName,
-            @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
-            @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
-            @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        Process process = new Process();
-        SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
-        AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
+     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
+     )
+     public @ResponseBody
+     Process setProcess(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
+     @ApiParam(value = "ключ сохраненного объекта в монгу", required = true) @RequestParam(value = "sID_Data") String sID_Data,
+     @ApiParam(value = "имя файла", required = true) @RequestParam(value = "sFileName") String sFileName,
+     @ApiParam(value = "расширение файла", required = true) @RequestParam(value = "sExtName") String sExtName,
+     @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
+     @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
+     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
+     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
+     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
+     LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+     Process process = new Process();
+     SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
+     AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
 
-        //process.setoDateStart(new DateTime(oDateStart));
-        //process.setoDateFinish(new DateTime(oDateFinish));
-        process.setoDateStart(oDateStart);
-        process.setoDateFinish(oDateFinish);
-        process.setoSourceDB(sourceDB);
-        process.setsID_(sID_);
-        process.setsID_Data(sID_Data);
-        process = processDao.saveOrUpdate(process);
+     //process.setoDateStart(new DateTime(oDateStart));
+     //process.setoDateFinish(new DateTime(oDateFinish));
+     process.setoDateStart(oDateStart);
+     process.setoDateFinish(oDateFinish);
+     process.setoSourceDB(sourceDB);
+     process.setsID_(sID_);
+     process.setsID_Data(sID_Data);
+     process = processDao.saveOrUpdate(process);
 
-        Attribute attribute = new Attribute();
-        attribute.setoAttributeType(attributeType);
-        attribute.setoProcess(process);
-        attribute.setsID_(sFileName);
-        attribute.setName(sFileName);
-        attribute = attributeDao.saveOrUpdate(attribute);
+     Attribute attribute = new Attribute();
+     attribute.setoAttributeType(attributeType);
+     attribute.setoProcess(process);
+     attribute.setsID_(sFileName);
+     attribute.setName(sFileName);
+     attribute = attributeDao.saveOrUpdate(attribute);
 
-        Attribute_File attribute_File = new Attribute_File();
-        attribute_File.setoAttribute(attribute);
-        attribute_File.setsID_Data(sID_Data);
-        attribute_File.setsFileName(sFileName);
-        attribute_File.setsContentType(sContentType);
-        attribute_File.setsExtName(sExtName);
-        attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+     Attribute_File attribute_File = new Attribute_File();
+     attribute_File.setoAttribute(attribute);
+     attribute_File.setsID_Data(sID_Data);
+     attribute_File.setsFileName(sFileName);
+     attribute_File.setsContentType(sContentType);
+     attribute_File.setsExtName(sExtName);
+     attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
 
-        return process;
-    }*/
-    
+     return process;
+     }*/
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
-    public @ResponseBody void backup() throws ParseException, Exception {
+    public @ResponseBody
+    void backup() throws ParseException, Exception {
         LOG.info("/backup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         archiveService.archiveData();
         LOG.info("/backup ok!!!");
     }
 
     /*@ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
-    @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
-    )
-    public @ResponseBody
-    Process setProcessNew() { //@RequestBody Process oProcess
-        LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        Process process = new Process();
-        try {
-            SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-            AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
+     @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
+     )
+     public @ResponseBody
+     Process setProcessNew() { //@RequestBody Process oProcess
+     LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+     Process process = new Process();
+     try {
+     SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+     AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
 
-            process.setoDateStart(new DateTime());
-            process.setoDateFinish(new DateTime());
-            process.setoSourceDB(sourceDB);
-            process.setsID_("test!!:)");
-            process.setsID_Data("test!!:)");
-            //process = processDao.saveOrUpdate(process);
+     process.setoDateStart(new DateTime());
+     process.setoDateFinish(new DateTime());
+     process.setoSourceDB(sourceDB);
+     process.setsID_("test!!:)");
+     process.setsID_Data("test!!:)");
+     //process = processDao.saveOrUpdate(process);
 
-            Attribute attribute = new Attribute();
-            attribute.setoAttributeType(attributeType);
-            attribute.setoProcess(process);
-            //attribute = attributeDao.saveOrUpdate(attribute);
-            List<Attribute> attributes = new ArrayList();
-            attributes.add(attribute);
-            process.setaAttribute(attributes);
-            Attribute_File attribute_File = new Attribute_File();
-            attribute_File.setoAttribute(attribute);
-            attribute_File.setsID_Data("test");
-            attribute_File.setsFileName("test");
-            attribute_File.setsContentType("pdf");
-            attribute_File.setsExtName("txt");
-            attribute.setoAttribute_File(attribute_File);
-            //attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
-            processDao.saveOrUpdate(process);
-            //Optional<Process> oProcess = processDao.findById(process.getId());
-            return process;
-        } catch (Exception ex) {
-            LOG.error("!!!!Eror: ", ex);
-            process.setsID_(ex.getMessage());
-        }
-        return process;
-    }*/
+     Attribute attribute = new Attribute();
+     attribute.setoAttributeType(attributeType);
+     attribute.setoProcess(process);
+     //attribute = attributeDao.saveOrUpdate(attribute);
+     List<Attribute> attributes = new ArrayList();
+     attributes.add(attribute);
+     process.setaAttribute(attributes);
+     Attribute_File attribute_File = new Attribute_File();
+     attribute_File.setoAttribute(attribute);
+     attribute_File.setsID_Data("test");
+     attribute_File.setsFileName("test");
+     attribute_File.setsContentType("pdf");
+     attribute_File.setsExtName("txt");
+     attribute.setoAttribute_File(attribute_File);
+     //attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
+     processDao.saveOrUpdate(process);
+     //Optional<Process> oProcess = processDao.findById(process.getId());
+     return process;
+     } catch (Exception ex) {
+     LOG.error("!!!!Eror: ", ex);
+     process.setsID_(ex.getMessage());
+     }
+     return process;
+     }*/
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
     @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = {JSON_TYPE})
@@ -185,22 +185,26 @@ public class ProcessController {
             if ("1".equalsIgnoreCase(sID_.trim())) {
                 result.add(creatStub());
             } else {
-                List<Process> processes = processDao.findAll();
+                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
+                List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
                 LOG.info("processes: " + processes.size());
-                for (Process process : processes) {
-                    for (Attribute attribute : process.getaAttribute()) {
-                        if (attribute.getoAttributeType().getId() == 7) { //file
-                            Optional<Attribute_File> attribute_File = attribute_FileDao.findBy("oAttribute.id", attribute.getId());
-                            if (attribute_File.isPresent()) {
-                                attribute.setoAttribute_File(attribute_File.get());
-                            }
-                        }
-                    }
+                Optional<Process> process = processDao.findBy("sID_", sID_.trim());
+                if (process.isPresent()) {
+                    result.add(process.get());
                 }
+                /*for (Process process : processes) {
+                 for (Attribute attribute : process.getaAttribute()) {
+                 if (attribute.getoAttributeType().getId() == 7) { //file
+                 Optional<Attribute_File> attribute_File = attribute_FileDao.findBy("oAttribute.id", attribute.getId());
+                 if (attribute_File.isPresent()) {
+                 attribute.setoAttribute_File(attribute_File.get());
+                 }
+                 }
+                 }
+                 }*/
                 result.addAll(processes);
             }
         } catch (Exception ex) {
-            LOG.info("ex: " + ex);
             LOG.error("ex: ", ex);
             Process process = creatStub();
             process.setsID_(ex.getMessage());
@@ -257,7 +261,7 @@ public class ProcessController {
         attribute.setoAttribute_File(attribute_File);
         attribute.setsID_("test");
         attribute.setName("test");
-        
+
         attribute1.setId(new Long(2));
         attribute1.setoAttributeType(attributeType1);
         attribute1.setoAttribute_StringShort(attribute_StringShort);
@@ -311,7 +315,7 @@ public class ProcessController {
                 httpResponse.setContentLength(multipartFile.getBytes() != null ? multipartFile.getBytes().length : 0);
             }
             LOG.info("multipartFile: " + multipartFile);
-            return ((multipartFile != null &&multipartFile.getBytes() != null) ? multipartFile.getBytes() : "".getBytes());
+            return ((multipartFile != null && multipartFile.getBytes() != null) ? multipartFile.getBytes() : "".getBytes());
         } catch (Exception ex) {
             LOG.error("!!!Error: ", ex);
             httpResponse.setCharacterEncoding("UTF-8");

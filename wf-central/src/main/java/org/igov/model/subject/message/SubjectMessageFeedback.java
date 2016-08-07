@@ -1,9 +1,12 @@
 package org.igov.model.subject.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.*;
 import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "SubjectMessageFeedback")
@@ -52,6 +55,20 @@ public class SubjectMessageFeedback extends AbstractEntity {
     @JsonProperty(value = "sAnswer")
     @Column(name = "sAnswer", nullable = true)
     private String sAnswer;
+
+    @JsonProperty(value = "oSubjectMessage")
+    @ManyToOne
+    @JoinColumn(name = "nID_SubjectMessage", nullable = true)
+    @Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    private SubjectMessage oSubjectMessage;
+
+    public SubjectMessage getoSubjectMessage() {
+        return oSubjectMessage;
+    }
+
+    public void setoSubjectMessage(SubjectMessage oSubjectMessage) {
+        this.oSubjectMessage = oSubjectMessage;
+    }
 
 
     public String getsID_Source() {
