@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function ($http, $q) {
+angular.module('app').service('ServiceService', function ($http, $q, ErrorsFactory) {
 
   var self = this;
 
@@ -298,12 +298,24 @@ angular.module('app').service('ServiceService', function ($http, $q) {
     var req = {
       params: angular.copy(paramsLiqPay)
     };
-    return $http.get('api/payment-liqpay', req).
+    $http.get('api/payment-liqpay', req).
     success(function(data, status, headers, config) {
-      var res = data;
+      var sHTMLbody = '<HTML><form method="POST" action="' + data.sURL + '" accept-charset="utf-8">' +
+          '<input type="hidden" name="data" value="' + data.data + '"/> ' +
+        '<input type="hidden" name="signature" value="' + data.signature + '"/> ' +
+        '<input type="image" src="//static.liqpay.com/buttons/p1ru.radius.png"/>' +
+        '</form></HTML>';
+      var windowWithLetter = window.open("","LiqPay", "width=800,height=500,left=350,top=200,scrollbars=yes,resizable=yes,location=no");
+      try{
+        windowWithLetter.document.open();
+        windowWithLetter.document.write(sHTMLbody)
+      } catch (e) {
+        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно для платежу LiqPay. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте здійснити платіж ще раз."});
+      }
     }).
     error(function(data, status, headers, config) {
-      alert("Status: " + status + ". Error: " + data.code + ". Messege: " + data.message);
+      //debugger;
+      //alert("Status: " + status + ". Error: " + data.code + ". Messege: " + data.message);
     });
   }
 });
