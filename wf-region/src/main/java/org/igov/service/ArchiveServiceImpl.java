@@ -69,7 +69,7 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     @Autowired
     private Attribute_StringShortDao attribute_StringShortDao;
-    
+
     @Autowired
     private Attribute_StringShortDao attribute_StringLongDao;
 
@@ -80,6 +80,10 @@ public class ArchiveServiceImpl implements ArchiveService {
      private IFileStorage durableFileStorage;*/
     @Autowired
     private ConfigDao configDao;
+
+    Long beforeIteration;
+    Long lastIteration;
+    StringBuilder sb;
 
     //public static void main(String[] args) throws Exception {
     public void archiveData() throws SQLException, ParseException, Exception {
@@ -110,18 +114,23 @@ public class ArchiveServiceImpl implements ArchiveService {
                 }
                 dateLastBackup = config.getsValue();
                 LOG.info("dateLastBackup:" + dateLastBackup);
+                Long start = System.currentTimeMillis();
+                beforeIteration = start;
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
-
                 if (rs.next()) {
                     String date = rs.getString("minREGDATE");
-                    LOG.info("date:" + date);
+                    sb = new StringBuilder("date: ").append(date).append(" queryMinDate: ").append(getTimeDiff());
+                    //LOG.info("date:" + date);
+                    getTimeDiff();
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
+                        sb.append(" queryListComplain: ").append(getTimeDiff());
                         index++;
                         String sID_Complain = rs.getString("IDENTITY");
-
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
                             LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
+                            getTimeDiff();
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
+                            sb.append(" findProcess: ").append(getTimeDiff());
                             if (!process.isPresent()) {
                                 setProcess(rsComplain);
                             } else {
@@ -131,6 +140,8 @@ public class ArchiveServiceImpl implements ArchiveService {
                             //setProcess(rsComplain);
                         }
                     }
+                    sb.append(" allTime: ").append(System.currentTimeMillis() - start);
+                    LOG.info(sb.toString());
                     config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
                 } else {
@@ -172,6 +183,14 @@ public class ArchiveServiceImpl implements ArchiveService {
         }
     }
 
+    private String getTimeDiff() {
+        String result;
+        lastIteration = System.currentTimeMillis();
+        result = String.valueOf(lastIteration - beforeIteration);
+        beforeIteration = lastIteration;
+        return result;
+    }
+
     private void setProcess(ResultSet rs) throws SQLException, ParseException, Exception {
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -182,7 +201,9 @@ public class ArchiveServiceImpl implements ArchiveService {
         int columnCount = metaData.getColumnCount();
 
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
+        getTimeDiff();
         SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+        sb.append(" sourceDB: ").append(getTimeDiff());
         //LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
         DateTime dateStart, dateFinish;
         if (rs.getString("REGDATE") != null) {
@@ -201,13 +222,17 @@ public class ArchiveServiceImpl implements ArchiveService {
         process.setsID_(rs.getString("REGNUMBER"));
         process.setsID_Data(rs.getString("IDENTITY"));
         process.setsID_Data(rs.getString("IDENTITY"));
+        getTimeDiff();
         process = processDao.saveOrUpdate(process);
+        sb.append(" processDao: ").append(getTimeDiff());
         for (int i = 1; i <= columnCount; i++) {
             AttributeType attributeType;
             Attribute attribute = new Attribute();
 
             if ("java.lang.Integer".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
+                getTimeDiff();
                 attributeType = attributeTypeDao.findByIdExpected(new Long(1));
+                sb.append(" attributeTypeDao: ").append(getTimeDiff());
                 Attribute_Integer attributeValue = new Attribute_Integer();
                 attributeValue.setnValue(rs.getInt(i));
                 //attribute.setoAttribute_Integer(attributeValue);
@@ -216,7 +241,9 @@ public class ArchiveServiceImpl implements ArchiveService {
                 attributeValueEntity = attributeValue;
             } else if ("java.lang.String".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 if (rs.getString(i) != null && rs.getString(i).length() < 255) {
+                    getTimeDiff();
                     attributeType = attributeTypeDao.findByIdExpected(new Long(3));
+                    sb.append(" attributeTypeDao: ").append(getTimeDiff());
                     Attribute_StringShort attributeValue = new Attribute_StringShort();
                     attributeValue.setsValue(rs.getString(i));
                     //attribute.setoAttribute_StringShort(attributeValue);
@@ -224,7 +251,9 @@ public class ArchiveServiceImpl implements ArchiveService {
                     attributeValueDao = attribute_StringShortDao;
                     attributeValueEntity = attributeValue;
                 } else {
+                    getTimeDiff();
                     attributeType = attributeTypeDao.findByIdExpected(new Long(4));
+                    sb.append(" attributeTypeDao: ").append(getTimeDiff());
                     Attribute_StringLong attributeValue = new Attribute_StringLong();
                     attributeValue.setsValue(rs.getString(i));
                     //attribute.setoAttribute_StringLong(attributeValue);
@@ -235,7 +264,9 @@ public class ArchiveServiceImpl implements ArchiveService {
 
             } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())
                     || "java.sql.Date".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
+                getTimeDiff();
                 attributeType = attributeTypeDao.findByIdExpected(new Long(6));
+                sb.append(" attributeTypeDao: ").append(getTimeDiff());
                 Attribute_Date attributeValue = new Attribute_Date();
                 if (rs.getString(i) != null) {
                     attributeValue.setoValue(new DateTime(dateFormat.parse(rs.getString(i))));
@@ -251,10 +282,14 @@ public class ArchiveServiceImpl implements ArchiveService {
             attribute.setoAttributeType(attributeType);
             attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i));
             attribute.setName(metaData.getColumnLabel(i));
+            getTimeDiff();
             attribute = attributeDao.saveOrUpdate(attribute);
-            LOG.info("attribute:" + attribute.getId());
+            sb.append(" attributeDao: ").append(getTimeDiff());
+            //LOG.info("attribute:" + attribute.getId());
+            getTimeDiff();
             attributeValueDao.saveOrUpdate(attributeValueEntity);
-            LOG.info("attributeValueEntity:" + attributeValueEntity.getId());
+            sb.append(" attributeValueDao: ").append(getTimeDiff());
+            //OG.info("attributeValueEntity:" + attributeValueEntity.getId());
         }
     }
 }
