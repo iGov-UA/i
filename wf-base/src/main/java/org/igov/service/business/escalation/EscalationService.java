@@ -258,7 +258,7 @@ public class EscalationService {
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         BpServiceHandler.gaideTaskParamKey.put("nID_task_activiti", "ИД таски активити: ");
         result.put("sTaskName", oTask.getName());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя  таски: ");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описание: ");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());

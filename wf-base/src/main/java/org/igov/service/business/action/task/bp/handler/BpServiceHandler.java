@@ -172,7 +172,7 @@ public class BpServiceHandler {
         String sField = convertTaskParamToString(mTaskParamConverted);
         mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
-        gaideTaskParamKey.put("sDate_BP", "Дата БП: ");
+        gaideTaskParamKey.put("sDate_BP", "Дата  БП: ");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         gaideTaskParamKey.put("sServiceType", "Услуга: ");
         mParam.put("sOrganName", mTaskParam.get("area"));
