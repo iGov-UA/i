@@ -14,7 +14,7 @@ public interface ArchiveService {
     static final String DB_USR = "dba";
     static final String DB_PSWD = "Databa$e1029";
     static final String EX_PATH = "D:/";
-    static final String DB_PATH = "jdbc:sybase:Tds:52.209.80.165:5000/gComplain";
+    static final String DB_PATH = "jdbc:sybase:Tds:52.17.200.205:5000/gComplain";
 
     
     static final String queryMinDate = new StringBuilder()
