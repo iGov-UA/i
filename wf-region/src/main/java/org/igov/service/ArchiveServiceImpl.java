@@ -84,6 +84,12 @@ public class ArchiveServiceImpl implements ArchiveService {
     Long beforeIteration;
     Long lastIteration;
     StringBuilder sb;
+    SourceDB sourceDB;
+
+    AttributeType attributeTypeInteger;
+    AttributeType attributeTypeStringShort;
+    AttributeType attributeTypeStringLong;
+    AttributeType attributeTypeDate;
 
     //public static void main(String[] args) throws Exception {
     public void archiveData() throws SQLException, ParseException, Exception {
@@ -102,6 +108,11 @@ public class ArchiveServiceImpl implements ArchiveService {
             Optional<Config> configOptional;
             String dateLastBackup;
             Config config;
+            sourceDB = sourceDBDao.findByIdExpected(new Long(1));
+            attributeTypeInteger = attributeTypeDao.findByIdExpected(new Long(1));
+            attributeTypeStringShort = attributeTypeDao.findByIdExpected(new Long(3));
+            attributeTypeStringLong = attributeTypeDao.findByIdExpected(new Long(4));
+            attributeTypeDate = attributeTypeDao.findByIdExpected(new Long(6));
             while (hasNextDate) { // while (hasNextDate && index < 3)
                 configOptional = configDao.findBy("name", "dateLastBackup");
                 if (configOptional.isPresent()) {
@@ -114,20 +125,20 @@ public class ArchiveServiceImpl implements ArchiveService {
                 }
                 dateLastBackup = config.getsValue();
                 LOG.info("dateLastBackup:" + dateLastBackup);
-                Long start = System.currentTimeMillis();
-                beforeIteration = start;
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
                 if (rs.next()) {
                     String date = rs.getString("minREGDATE");
-                    sb = new StringBuilder("date: ").append(date).append(" queryMinDate: ").append(getTimeDiff());
+                    //sb = new StringBuilder("date: ").append(date).append(" queryMinDate: ").append(getTimeDiff());
                     //LOG.info("date:" + date);
-                    getTimeDiff();
+                    //getTimeDiff();
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
-                        sb.append(" queryListComplain: ").append(getTimeDiff());
                         index++;
                         String sID_Complain = rs.getString("IDENTITY");
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
                             LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
+                            Long start = System.currentTimeMillis();
+                            beforeIteration = start;
+                            sb = new StringBuilder(" queryComplaim: ").append(getTimeDiff());
                             getTimeDiff();
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             sb.append(" findProcess: ").append(getTimeDiff());
@@ -136,12 +147,11 @@ public class ArchiveServiceImpl implements ArchiveService {
                             } else {
                                 LOG.info("Already presented sID_Complain: " + sID_Complain);
                             }
-
                             //setProcess(rsComplain);
+                            sb.append(" allTime: ").append(System.currentTimeMillis() - start);
+                            LOG.info(sb.toString());
                         }
                     }
-                    sb.append(" allTime: ").append(System.currentTimeMillis() - start);
-                    LOG.info(sb.toString());
                     config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
                 } else {
@@ -201,9 +211,6 @@ public class ArchiveServiceImpl implements ArchiveService {
         int columnCount = metaData.getColumnCount();
 
         org.igov.analytic.model.process.Process process = new org.igov.analytic.model.process.Process();
-        getTimeDiff();
-        SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-        sb.append(" sourceDB: ").append(getTimeDiff());
         //LOG.info("rs.getString(\"REGDATE\"): " + rs.getString("REGDATE"));
         DateTime dateStart, dateFinish;
         if (rs.getString("REGDATE") != null) {
@@ -231,7 +238,7 @@ public class ArchiveServiceImpl implements ArchiveService {
 
             if ("java.lang.Integer".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 getTimeDiff();
-                attributeType = attributeTypeDao.findByIdExpected(new Long(1));
+                attributeType = attributeTypeInteger;
                 sb.append(" attributeTypeDao: ").append(getTimeDiff());
                 Attribute_Integer attributeValue = new Attribute_Integer();
                 attributeValue.setnValue(rs.getInt(i));
@@ -242,7 +249,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             } else if ("java.lang.String".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 if (rs.getString(i) != null && rs.getString(i).length() < 255) {
                     getTimeDiff();
-                    attributeType = attributeTypeDao.findByIdExpected(new Long(3));
+                    attributeType = attributeTypeStringShort;
                     sb.append(" attributeTypeDao: ").append(getTimeDiff());
                     Attribute_StringShort attributeValue = new Attribute_StringShort();
                     attributeValue.setsValue(rs.getString(i));
@@ -252,7 +259,7 @@ public class ArchiveServiceImpl implements ArchiveService {
                     attributeValueEntity = attributeValue;
                 } else {
                     getTimeDiff();
-                    attributeType = attributeTypeDao.findByIdExpected(new Long(4));
+                    attributeType = attributeTypeStringLong;
                     sb.append(" attributeTypeDao: ").append(getTimeDiff());
                     Attribute_StringLong attributeValue = new Attribute_StringLong();
                     attributeValue.setsValue(rs.getString(i));
@@ -265,7 +272,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             } else if ("java.sql.Timestamp".equalsIgnoreCase(metaData.getColumnClassName(i).trim())
                     || "java.sql.Date".equalsIgnoreCase(metaData.getColumnClassName(i).trim())) {
                 getTimeDiff();
-                attributeType = attributeTypeDao.findByIdExpected(new Long(6));
+                attributeType = attributeTypeDate;
                 sb.append(" attributeTypeDao: ").append(getTimeDiff());
                 Attribute_Date attributeValue = new Attribute_Date();
                 if (rs.getString(i) != null) {
@@ -283,13 +290,10 @@ public class ArchiveServiceImpl implements ArchiveService {
             attribute.setsID_(metaData.getTableName(i) + ":" + metaData.getColumnLabel(i));
             attribute.setName(metaData.getColumnLabel(i));
             getTimeDiff();
-            attribute = attributeDao.saveOrUpdate(attribute);
+            attributeDao.saveOrUpdate(attribute);
             sb.append(" attributeDao: ").append(getTimeDiff());
-            //LOG.info("attribute:" + attribute.getId());
-            getTimeDiff();
             attributeValueDao.saveOrUpdate(attributeValueEntity);
             sb.append(" attributeValueDao: ").append(getTimeDiff());
-            //OG.info("attributeValueEntity:" + attributeValueEntity.getId());
         }
     }
 }
