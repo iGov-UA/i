@@ -5,13 +5,14 @@
  */
 package org.igov.service.business.subject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
-import org.igov.model.subject.message.*;
-import org.igov.util.JSON.JsonRestUtils;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.model.subject.message.SubjectMessageType;
+import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.igov.service.exception.CommonServiceException;
-
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  *
@@ -235,9 +231,12 @@ public class SubjectMessageService {
 
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
                                                             String sHead, String sBody, String sPlace, String sEmployeeFIO,
-                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId) {
+                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
+                                                            Long nID_Subject) {
 
         SubjectMessageFeedback messageFeedback;
+        SubjectMessage subjectMessage;
+
         if (nId == null){
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
@@ -251,6 +250,17 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
             messageFeedback.setsAnswer(sAnswer);
+            if(!isEmpty(sHead) || !isEmpty(sBody)){
+                SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
+                subjectMessage = new SubjectMessage();
+                subjectMessage.setHead(sHead);
+                subjectMessage.setBody(sBody);
+                subjectMessage.setSubjectMessageType(subjectMessageType);
+                subjectMessage.setDate(new DateTime());
+                subjectMessage.setsSubjectInfo(sAuthorFIO);
+                subjectMessage.setMail(sMail);
+                subjectMessage.setId_subject(nID_Subject);
+            }
 
             return subjectMessageFeedbackDao.save(messageFeedback);
         }
@@ -266,6 +276,15 @@ public class SubjectMessageService {
         messageFeedback.setnID_Rate(nID_Rate);
         messageFeedback.setnID_Service(nID_Service);
         messageFeedback.setsAnswer(sAnswer );
+
+        subjectMessage = messageFeedback.getoSubjectMessage();
+        subjectMessage.setHead(sHead);
+        subjectMessage.setBody(sBody);
+        subjectMessage.setDate(new DateTime());
+        subjectMessage.setsSubjectInfo(sAuthorFIO);
+        subjectMessage.setMail(sMail);
+        subjectMessage.setId_subject(nID_Subject);
+        messageFeedback.setoSubjectMessage(subjectMessage);
 
        return subjectMessageFeedbackDao.update(messageFeedback);
     }
