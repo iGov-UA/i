@@ -652,19 +652,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
     paramsLiqPay.sID_Order = this.oService.nID + "--" + this.oServiceData.oData.processDefinitionId.split(':')[0] + "--" + sCurrDateTime;
     if(!incorrectLiqpayRequest){
-      //ServiceService.getRedirectPaymentLiqpay(paramsLiqPay);
       $http.get('api/payment-liqpay', {
         params: angular.copy(paramsLiqPay)
       }).
-      success(function(data, status, headers, config) {
+      success(function(data) {
         openUrl(data.sURL, {
           data: data.data,
           signature: data.signature
         });
-      }).
-      error(function(data, status, headers, config) {
-
-      });
+      })
     }
   };
 
@@ -690,7 +686,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
       form.appendTo(document.body); // Необходимо для некоторых браузеров
       form.submit();
-
     } else {
       window.open( url, '_blank' );
     }
