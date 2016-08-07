@@ -292,7 +292,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 								}
 							}
 
-							/*String sType = formProperty.getType().getName();
+							String sType = formProperty.getType().getName();
 							if ("date".equals(sType)) {
 								if (formProperty.getValue() != null) {
 									LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
@@ -300,7 +300,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 								} 
 							} else {
 								replacement = formProperty.getValue();
-							}*/
+							}
 
 						}
 					}
