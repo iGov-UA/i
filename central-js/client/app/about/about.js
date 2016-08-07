@@ -30,7 +30,7 @@ angular.module('about').config(function ($stateProvider, statesRepositoryProvide
 
 angular.module('about').controller('aboutController', function ($scope, $http) {
 
-  $http.get('volunteers.json').then(function (res) {
+  $http.get('./app/about/volunteers.json').then(function (res) {
     var volunteers = res.data.aVolunteer;
     var top = [];
     var region = [];
