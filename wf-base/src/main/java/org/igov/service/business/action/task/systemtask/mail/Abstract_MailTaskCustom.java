@@ -292,14 +292,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 								}
 							}
 
-							/*String sType = formProperty.getType().getName();
+							String sType = formProperty.getType().getName();
 							if ("date".equals(sType)) {
 								if (formProperty.getValue() != null) {
 									replacement = getFormattedDateS(formProperty.getValue());
 								} 
 							} else {
 								replacement = formProperty.getValue();
-							}*/
+							}
 
 						}
 					}
