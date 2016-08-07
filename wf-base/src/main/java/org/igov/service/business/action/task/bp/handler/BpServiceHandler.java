@@ -380,7 +380,7 @@ public class BpServiceHandler {
 
         // Отобразим набор
         for (Map.Entry<String, Object> taskParam : aTaskParamEntrySet) {
-            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
+            result += taskParam.getKey() + " " + taskParam.getValue() + "\n\r";
         }
         LOG.info(result);
         return result;
