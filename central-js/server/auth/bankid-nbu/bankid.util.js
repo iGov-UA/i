@@ -9,16 +9,16 @@ var config = require('../../config/environment')
 var privateKeyFromConfigs;
 
 function isCipherEnabled (){
-  return config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true;
+  return config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true;
 }
 
 var initPrivateKey = function () {
-  if ((config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true) && config.bankid.privateKey && !privateKeyFromConfigs) {
+  if ((config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true) && config.bankidnbu.privateKey && !privateKeyFromConfigs) {
     try {
-      var key = fs.readFileSync(config.bankid.privateKey);
+      var key = fs.readFileSync(config.bankidnbu.privateKey);
       privateKeyFromConfigs = {
         key: key,
-        passphrase: config.bankid.privateKeyPassphrase,
+        passphrase: config.bankidnbu.privateKeyPassphrase,
         padding: constants.RSA_PKCS1_PADDING
       }
     } catch (err) {
@@ -81,7 +81,7 @@ module.exports.getAuthorizationURL = function () {
 };
 
 module.exports.getAuth = function (accessToken) {
-  return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
+  return 'Bearer ' + accessToken + ', Id ' + config.bankidnbu.client_id;
 };
 
 module.exports.decryptField = function (value, privateKey) {
