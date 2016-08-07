@@ -21,6 +21,20 @@ var createError = function (error, error_description, response) {
   };
 };
 
+module.exports.decryptCallback = function (callback) {
+  bankidNBUUtil.decryptCallback(callback);
+};
+
+module.exports.convertToCanonical = function (customer) {
+  // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+  customer.isAuthTypeFromBankID = true;
+  return customer;
+};
+
+module.exports.getUserKeyFromSession = function (session){
+  return session.access.accessToken;
+};
+
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidNBUUtil.getInfoURL(config);
 

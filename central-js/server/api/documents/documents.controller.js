@@ -1,11 +1,11 @@
-var request = require('request');
-var bankIDService = require('../../auth/bankid/bankid.service.js');
-var proxy = require('../../components/proxy');
-var _ = require('lodash');
-var FormData = require('form-data');
-var async = require('async');
-var StringDecoder = require('string_decoder').StringDecoder;
-var url = require('url');
+var request = require('request')
+, authProviderRegistry = require('../../auth/auth.provider.registry')
+, proxy = require('../../components/proxy')
+, _ = require('lodash')
+, FormData = require('form-data')
+, async = require('async')
+, StringDecoder = require('string_decoder').StringDecoder
+, url = require('url');
 
 module.exports.shareDocument = function (req, res) {
   var params = {
@@ -127,7 +127,15 @@ module.exports.upload = function (req, res) {
  4;Персональное фото
  5;Справка о предоставлении ИНН */
 module.exports.initialUpload = function (req, res) {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
+
+  if(!userService.scanContentRequest && !userService.scansRequest){
+    res.status(400).send({
+      error: 'type of authorization doesn\'t support documents and scan-copies'
+    });
+    return;
+  }
 
   var accessToken = req.session.access.accessToken;
   var nID_Subject = req.session.subject.nID;
@@ -152,8 +160,6 @@ module.exports.initialUpload = function (req, res) {
     });
     return;
   }
-
-  var options = getBankIDOptions(accessToken);
 
   var docTypesToBankIDDocTypes = {
     2: 'passport',
@@ -182,7 +188,7 @@ module.exports.initialUpload = function (req, res) {
   });
 
   var uploadScan = function (documentScan, optionsForUploadContent, callback) {
-    bankIDService.scanContentRequest(documentScan.type, documentScan.link, accessToken, function (error, buffer) {
+    userService.scanContentRequest(documentScan.type, documentScan.link, accessToken, function (error, buffer) {
       if(error){
         callback(error);
       } else {
@@ -251,7 +257,7 @@ module.exports.initialUpload = function (req, res) {
     }
   };
 
-  bankIDService.scansRequest(accessToken, scansCallback);
+  userService.scansRequest(accessToken, scansCallback);
 };
 
 function buildGetRequest(req, apiURL, params) {

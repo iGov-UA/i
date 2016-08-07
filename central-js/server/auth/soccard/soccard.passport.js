@@ -6,7 +6,7 @@ var _ = require('lodash');
 var soccardUtil = require('./soccard.util');
 var soccardService = require('./soccard.service');
 
-exports.setup = function (config) {
+exports.setup = function (config, authProviderRegistry) {
   function KCOAuth2(clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders) {
     OAuth2.call(this, clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders);
   }
@@ -50,6 +50,7 @@ exports.setup = function (config) {
     });
   };
 
+  authProviderRegistry.use('soccard', soccardService);
   passport.use(new KCOAuth2Strategy({
       authorizationURL: soccardUtil.getAuthorizationURL(config),
       tokenURL: soccardUtil.getTokenURL(config),

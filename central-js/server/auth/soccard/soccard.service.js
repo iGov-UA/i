@@ -6,6 +6,30 @@ var request = require('request')
   , syncSubject = require('../../api/subject/subject.service.js')
   , errors = require('../../components/errors');
 
+module.exports.getUserKeyFromSession = function (session){
+  return session.access.accessToken;
+};
+
+/*
+ {
+ "firstName" : "Костянтин",
+ "secondName" : "Анатолійович",
+ "lastName" : "Ребров",
+ "email" : "user@example.com",
+ "activeCard" : "2300273165600897",
+ "personNumber" : "0100483165600018"
+ }
+ */
+module.exports.convertToCanonical = function (customer) {
+  customer.type = 'physical';
+  customer.middleName = customer.secondName;
+  delete customer.secondName;
+  customer.inn = customer.personNumber;
+  delete customer.personNumber;
+  customer.isAuthTypeFromBankID = false;
+  return customer;
+};
+
 module.exports.getUser = function (accessToken, callback) {
   var infoURL = soccardUtil.getInfoURL(config);
 
