@@ -2760,7 +2760,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
       volunteers.cities = [];
         angular.forEach(volunteers, function (volunteer) {
         var found = false;
-        for(i = 0; i < city.length; ++i) {
+        for(var i = 0; i < city.length; ++i) {
           if (city[i][0].cityName === volunteer.sGroup.type[0].region[0].city[0].sName) {
             city[i].push(volunteer);
             found = true;
