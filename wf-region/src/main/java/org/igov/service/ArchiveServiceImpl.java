@@ -85,7 +85,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     Long lastIteration;
     StringBuilder sb;
     SourceDB sourceDB;
-    
+
     AttributeType attributeTypeInteger;
     AttributeType attributeTypeStringShort;
     AttributeType attributeTypeStringLong;
@@ -125,20 +125,20 @@ public class ArchiveServiceImpl implements ArchiveService {
                 }
                 dateLastBackup = config.getsValue();
                 LOG.info("dateLastBackup:" + dateLastBackup);
-                Long start = System.currentTimeMillis();
-                beforeIteration = start;
                 ResultSet rs = stat.executeQuery(String.format(queryMinDate, dateLastBackup));
                 if (rs.next()) {
                     String date = rs.getString("minREGDATE");
-                    sb = new StringBuilder("date: ").append(date).append(" queryMinDate: ").append(getTimeDiff());
+                    //sb = new StringBuilder("date: ").append(date).append(" queryMinDate: ").append(getTimeDiff());
                     //LOG.info("date:" + date);
-                    getTimeDiff();
+                    //getTimeDiff();
                     for (rs = stat.executeQuery(String.format(queryListComplain, date)); rs.next();) {
-                        sb.append(" queryListComplain: ").append(getTimeDiff());
                         index++;
                         String sID_Complain = rs.getString("IDENTITY");
                         for (rsComplain = statComplain.executeQuery(String.format(queryComplaim, sID_Complain)); rsComplain.next();) {
                             LOG.info("index = " + index + " sID_Complain:" + sID_Complain + " rsComplain = " + rsComplain.getString("REGNUMBER"));
+                            Long start = System.currentTimeMillis();
+                            beforeIteration = start;
+                            sb.append(" queryComplaim: ").append(getTimeDiff());
                             getTimeDiff();
                             Optional<org.igov.analytic.model.process.Process> process = processDao.findBy("sID_Data", sID_Complain);
                             sb.append(" findProcess: ").append(getTimeDiff());
@@ -147,12 +147,11 @@ public class ArchiveServiceImpl implements ArchiveService {
                             } else {
                                 LOG.info("Already presented sID_Complain: " + sID_Complain);
                             }
-
                             //setProcess(rsComplain);
+                            sb.append(" allTime: ").append(System.currentTimeMillis() - start);
+                            LOG.info(sb.toString());
                         }
                     }
-                    sb.append(" allTime: ").append(System.currentTimeMillis() - start);
-                    LOG.info(sb.toString());
                     config.setsValue(date.trim());
                     configDao.saveOrUpdate(config);
                 } else {
@@ -294,7 +293,7 @@ public class ArchiveServiceImpl implements ArchiveService {
             attributeDao.saveOrUpdate(attribute);
             sb.append(" attributeDao: ").append(getTimeDiff());
             attributeValueDao.saveOrUpdate(attributeValueEntity);
-            sb.append(" attributeValueDao: ").append(getTimeDiff());       
+            sb.append(" attributeValueDao: ").append(getTimeDiff());
         }
     }
 }
