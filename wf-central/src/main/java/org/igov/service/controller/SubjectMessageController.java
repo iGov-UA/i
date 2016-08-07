@@ -511,14 +511,15 @@ public class SubjectMessageController {
             @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
             @ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
-            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nId
+            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nId,
+            @ApiParam(value = "ID чего-то там", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
 
         LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
         JSONObject responseObject = new JSONObject();
         try {
             SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
-                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nId);
+                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nId, nID_Subject);
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                     sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
