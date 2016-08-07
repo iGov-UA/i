@@ -292,14 +292,15 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 								}
 							}
 
-							/*String sType = formProperty.getType().getName();
+							String sType = formProperty.getType().getName();
 							if ("date".equals(sType)) {
 								if (formProperty.getValue() != null) {
+									LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
 									replacement = getFormattedDateS(formProperty.getValue());
 								} 
 							} else {
 								replacement = formProperty.getValue();
-							}*/
+							}
 
 						}
 					}
@@ -574,19 +575,19 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 	
-private String getFormattedDateS(String date) {
-		
-	DateTime dt = DateTime.parse(date);
-	Date d = dt.toDate();
-	return getFormattedDate(d);
-	}
+	private String getFormattedDateS(String date) {
+		DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("MM/dd/yyyy");
+	    DateTime dateTime = dateStringFormat.parseDateTime(date);
+		Date d = dateTime.toDate();
+		return getFormattedDate(d);
+		}
 
 	@Override
 	public void execute(DelegateExecution oExecution) throws Exception {
 	}
 
 	protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order) {
-		Map<String, String> params = new HashMap<>();
+		final Map<String, String> params = new HashMap<>();
 		params.put("sID_Order", sID_Order);
 		params.put("sHead", "Отправлено письмо");
 		params.put("sBody", sHead);

@@ -22,7 +22,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@Api(tags = {"ActionEscalationController — Действия эскалаций"})
+@Api(tags = {"с — Действия эскалаций"})
 @RequestMapping(value = "/action/escalation")
 public class ActionEscalationController {
 
