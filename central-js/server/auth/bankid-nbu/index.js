@@ -18,7 +18,8 @@ router.get('/callback', function (req, res, next) {
   passport.authenticate('nbu-oauth2', {
     session: false,
     code: req.query.code,
-    callbackURL: '/auth/bankid-nbu/callback'
+    callbackURL: '/auth/bankid-nbu/callback',
+    state: req.query.state
   }, function (err, user, info) {
     var error;
 

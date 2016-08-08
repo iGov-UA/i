@@ -38,7 +38,11 @@ exports.setup = function (config) {
   };
 
   NBUOAuth2Strategy.prototype.tokenParams = function (options) {
-    return {};
+    if (options.state) {
+      return {state: options.state}
+    } else {
+      return {};
+    }
   };
 
   NBUOAuth2Strategy.prototype.userProfile = function (accessToken, done) {
