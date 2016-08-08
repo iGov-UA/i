@@ -629,26 +629,22 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   // https://github.com/e-government-ua/i/issues/1326
-  $scope.getDataPaymentLiqpay = function (sID_Merchant) {
+  $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
     var incorrectLiqpayRequest = false;
     var paramsLiqPay = {
-      sID_Merchant: sID_Merchant
+      sID_Merchant: $scope.data.formData.params[sMerchantFieldID].value
     };
-    if(angular.isDefined($scope.data.formData.params.sSum.value)){
+    if($scope.data.formData.params.sSum && $scope.data.formData.params.sSum.value > 0){
       paramsLiqPay.sSum = $scope.data.formData.params.sSum.value;
     } else {
       console.warn("redirectPaymentLiqpay sSum value not found");
       incorrectLiqpayRequest = true;
     }
-    if(angular.isDefined($scope.data.formData.params.sID_Currency.value)){
-      if($scope.data.formData.params.sID_Currency.value.length > 0){
-        paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
-      }
+    if($scope.data.formData.params.sID_Currency && $scope.data.formData.params.sID_Currency.value !== null && $scope.data.formData.params.sID_Currency.value !== ""){
+      paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
     }
-    if(angular.isDefined($scope.data.formData.params.sDescription.value)){
-      if($scope.data.formData.params.sDescription.value.length > 0){
-        paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
-      }
+    if($scope.data.formData.params.sDescription && $scope.data.formData.params.sDescription.value !== null && $scope.data.formData.params.sDescription.value !== ""){
+      paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
     }
     paramsLiqPay.nID_Server = this.oServiceData.nID_Server;
     var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
