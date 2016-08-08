@@ -153,7 +153,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення №[sID_Order] щодо ${substance_3} lержавної реєстрації потужностей операторів ринку було зареєстровано у системі.<br/>
+<p> Ваше звернення №[sID_Order] щодо державної реєстрації потужностей операторів ринку було зареєстровано у системі.<br/>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 <br />
 ${sPhoneOrgan}<br />
@@ -327,7 +327,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow3" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -365,7 +365,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow5" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Відмова у прийнятті документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Відмова у прийнятті документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -379,7 +379,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Ваше звернення щодо ${substance_3} державної реєстрації потужностей операторів ринку було відхилено.</p>
+На жаль, Ваше звернення щодо державної реєстрації потужностей операторів ринку було відхилено.</p>
 <p>Причина в наступному: 
                                     </p>
 <p>${decisionComment}</p>
@@ -588,7 +588,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow9" name="status2 == 'attr4_finish'" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr4_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="У реєстрації відмовлено" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="У реєстрації відмовлено" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
