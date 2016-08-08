@@ -1643,12 +1643,15 @@ ${sNameOrgan09}&lt;br /&gt;
 		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan05') +")&lt;br&gt;"
 	per1 = per1 + 1
 
-    if (execution.getVariable('asEnum_decision_06') == 'accept')
-		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+    if (execution.getVariable('asEnumType_DneprRegistration') == 'sElement_InDnepr')
+	    if (execution.getVariable('asEnum_decision_06') == 'accept')
+			per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+		else
+			per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
 	else
-		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+		per2 = per2 + "Перевірка "+per1.toString()+". SKIP  (інший регіон, "+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
 	per1 = per1 + 1
-
+	
     if (execution.getVariable('asEnum_decision_07') == 'accept')
 		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan07') +")&lt;br&gt;"
 	else
@@ -1661,17 +1664,24 @@ ${sNameOrgan09}&lt;br /&gt;
 		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan08') +")&lt;br&gt;"
 	per1 = per1 + 1
 		
-    if (execution.getVariable('asEnum_decision_09') == 'accept')
-		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+    if (execution.getVariable('asEnumType_Stat') == 'sElement_Men')
+    	if (execution.getVariable('asEnum_decision_09') == 'accept')
+			per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+		else
+			per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
 	else
-		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+		per2 = per2 + "Перевірка "+per1.toString()+". SKIP  (жіноча стать, "+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
 	per1 = per1 + 1
 
-    if ((execution.getVariable('asEnum_decision_01') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_02') == 'accept') &amp;&amp;  
-    	(execution.getVariable('asEnum_decision_03') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_04') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_05') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_06') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_07') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_08') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_09') == 'accept') )
+    if ((execution.getVariable('asEnum_decision_01') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_02') == 'accept') &amp;&amp;  
+    	(execution.getVariable('asEnum_decision_03') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_04') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_05') == 'accept') &amp;&amp; 
+       	((execution.getVariable('asEnum_decision_06') == 'accept') || (execution.getVariable('asEnumType_DneprRegistration') == 'sElement_OutDnepr')) &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_07') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_08') == 'accept') &amp;&amp; 
+       	((execution.getVariable('asEnum_decision_09') == 'accept') || (execution.getVariable('asEnumType_Stat') == 'sElement_Women')) )
 		{
 			per3 = "Інформації, що перешкоджає зайняттю посади не виявлено!"
 			per4 = "itog perevirky - OK"
