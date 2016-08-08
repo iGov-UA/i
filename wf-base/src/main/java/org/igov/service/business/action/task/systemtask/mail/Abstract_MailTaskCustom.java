@@ -612,7 +612,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 					jsonServiceMessage = historyEventService.addServiceMessage(params);
 					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
 				} catch (Exception e) {
-					LOG.error("(saveServiceMessage error={})", e.getMessage());
+					LOG.error("( saveServiceMessage error={})", e.getMessage());
 				}
 			}
 		};
