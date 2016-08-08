@@ -3,7 +3,7 @@
   <process id="Zags_Dn987_Shlub" name="Повторна видача свідоцтва про шлюб" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -22,25 +22,16 @@
         <activiti:formProperty id="sDruz_Name" name="Ім'я дружини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDruz_MiddleName" name="По батькові дружини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/shlub.json')}"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" required="true"></activiti:formProperty>
-        
-        
-        
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
-        
-        
-        
-        
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" мерчанта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum2" name="сумма платежа" type="string" default="0,51"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription2" name="строка-описание платежа" type="string" default="державне мито за повторну видачу свідоцтва"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="сума платежу" type="string" default="0,51"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription2" name="опис платежу" type="string" default="державне мито за повторну видачу свідоцтва про шлюб"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
@@ -50,8 +41,8 @@
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPIBDruz" name="ПІБ Дружини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPIBChol" name="ПІБ Чоловіка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPIBOdrugenui" name="ПІБ Чоловіка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про народження"></activiti:formProperty>
+        <activiti:formProperty id="sPIBOdrugenui" name="Для принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про шлюб"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -124,7 +115,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sPIBChol" name="ПІБ Чоловіка" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIBOdrugenui" name="ПІБ Чоловіка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPIBOdrugenui" name="Для принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
