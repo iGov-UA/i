@@ -12,6 +12,8 @@
         <activiti:formProperty id="bankIdsID_Country" name="Громадянство" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Місце проживання" type="string" required="true"></activiti:formProperty>
+      
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РАГС згідно Вашого місця проживання" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="asFullName" name="Яку частину імені планується змінити?" type="enum" required="true">
           <activiti:value id="name" name="власне ім'я"></activiti:value>
@@ -36,7 +38,7 @@
           <activiti:value id="widow" name="вдова (вдівець)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocNoMarriage" name="Свідоцтво про розірвання шлюбу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="saChildren" name="Чи маєте дітей?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -136,6 +138,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPhoto" name="Фотокартка заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану попереджений(а)"></activiti:formProperty>
@@ -188,6 +191,7 @@
         <activiti:formProperty id="bankIdsID_Country" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFullName" name="Яку частину імені планується змінити?" type="enum" writable="false">
           <activiti:value id="name" name="власне ім'я"></activiti:value>
           <activiti:value id="surname" name="прізвище"></activiti:value>
@@ -340,12 +344,12 @@
         <activiti:formProperty id="markers23" name="якщо дев'ять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'||[sClient] == '9'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers24" name="якщо десять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;,&quot;sPlace10&quot;,&quot;sTime10&quot;,&quot;sWork10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'||[sClient] == '10'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;,&quot;markers11&quot;,&quot;markers12&quot;,&quot;markers13&quot;,&quot;markers14&quot;,&quot;markers15&quot;,&quot;markers16&quot;,&quot;markers17&quot;,&quot;markers18&quot;,&quot;markers19&quot;,&quot;markers20&quot;,&quot;markers21&quot;,&quot;markers22&quot;,&quot;markers23&quot;,&quot;markers24&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/common_zags_change_name_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${bankIdPassport},${sDocBirth},${sDocPhoto},${sDocPay}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${bankIdPassport},${sDocBirth},${sDocPhoto},${sDocPay}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -358,6 +362,7 @@
         <activiti:formProperty id="bankIdsID_Country" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFullName" name="Яку частину імені планується змінити?" type="enum" writable="false">
           <activiti:value id="name" name="власне ім'я"></activiti:value>
           <activiti:value id="surname" name="прізвище"></activiti:value>
@@ -511,8 +516,8 @@
         <activiti:formProperty id="markers23" name="якщо дев'ять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'||[sClient] == '9'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers24" name="якщо десять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;,&quot;sPlace10&quot;,&quot;sTime10&quot;,&quot;sWork10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'||[sClient] == '10'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;,&quot;markers11&quot;,&quot;markers12&quot;,&quot;markers13&quot;,&quot;markers14&quot;,&quot;markers15&quot;,&quot;markers16&quot;,&quot;markers17&quot;,&quot;markers18&quot;,&quot;markers19&quot;,&quot;markers20&quot;,&quot;markers21&quot;,&quot;markers22&quot;,&quot;markers23&quot;,&quot;markers24&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/common_zags_change_name_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -629,7 +634,7 @@ ${sNameOrgan}&lt;br /&gt;
 Ваше звернення оброблено.&lt;br /&gt;
 Вам призначено дату і час візиту для отримання оригіналу документу - ${sDateVisit2}.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
+Перелік документів, які під час візиту треба мати при собі:&lt;br /&gt;
 ${sListDocumentsLetter}
 &lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -652,36 +657,52 @@ ${sNameOrgan}&lt;br /&gt;
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = " "
-var per2 = " "
+var per1 = "&lt;li&gt;Документ, що посвідчує особу&lt;/li&gt;"
+var per2 = "&lt;li&gt;Роздрукована заява, яка була подана в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом&lt;/li&gt;"
 var per3 = " "
-var per4 = " "
-var per5 = " "
-var per6 = " "
-var per7 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом&lt;/li&gt;"
-var per8 = "&lt;li&gt;Фотокартки 3*4 (батьків та дітей віком з 6 років) по 1 шт&lt;/li&gt;"
+var per4 = "&lt;li&gt;Свідоцтво про народження&lt;/li&gt;"
+var per5 = "&lt;li&gt;Фотокартка 3*4&lt;/li&gt;"
+var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита&lt;/li&gt;"
+var per7 = " "
+var per8 = " "
+var per9 = " "
+var per10 = " "
+var per11 = " "
+var per12 = " "
+var per13 = " "
+var per14 = " "
 var res = 'res'
 var res2 = 'res2'
+if(execution.getVariable('bankId_scan_passport') != null){
+per3 = '&lt;li&gt;Сканований паспорт громадянина.&lt;/li&gt;'
+}
 if(execution.getVariable('sDocMarriage') != null){
-per1 = '&lt;li&gt;Копія свідоцтва про шлюб.&lt;/li&gt;'
+per7 = '&lt;li&gt;Свідоцтво про шлюб.&lt;/li&gt;'
 }
-if(execution.getVariable('sDocDovidka') != null){
-per2 = '&lt;li&gt;Довідка про те, що за місцем реєстрації батька або матері посвідчення не видавалися.&lt;/li&gt;'
+if(execution.getVariable('sDocNoMarriage') != null){
+per8 = '&lt;li&gt;Документ про розірвання шлюбу.&lt;/li&gt;'
 }
-if(execution.getVariable('sDocPassportFather') != null){
-per3 = "&lt;li&gt;Копія паспорту батька.&lt;/li&gt;"
+if(execution.getVariable('sDocChild1') != null){
+per9 = "&lt;li&gt;"Свідоцтво про народження"+execution.getVariable('sPibChild1')+"."&lt;/li&gt;"
 }
-if(execution.getVariable('sDocPassportMother') != null){
-per4 = "&lt;li&gt;Копія паспорту матері.&lt;/li&gt;"
+if(execution.getVariable('sDocChild2') != null){
+per10 = "&lt;li&gt;"Свідоцтво про народження"+execution.getVariable('sPibChild2')+"."&lt;/li&gt;"
 }
-if(execution.getVariable('sDocPassportChildren') != null){
-per5 = "&lt;li&gt;Копії свідоцтв про народження усіх дітей.&lt;/li&gt;"
+if(execution.getVariable('sDocChild3') != null){
+per11 = "&lt;li&gt;"Свідоцтво про народження"+execution.getVariable('sPibChild3')+"."&lt;/li&gt;"
 }
-if(execution.getVariable('sDocFamily') != null){
-per6 = "&lt;li&gt;Довідка про склад сім’ї.&lt;/li&gt;"
+if(execution.getVariable('sDocChild4') != null){
+per12 = "&lt;li&gt;"Свідоцтво про народження"+execution.getVariable('sPibChild4')+"."&lt;/li&gt;"
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per7+per8+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
+if(execution.getVariable('sDocChild5') != null){
+per13 = "&lt;li&gt;"Свідоцтво про народження"+execution.getVariable('sPibChild5')+"."&lt;/li&gt;"
+}
+if(execution.getVariable('sDocPrevious') != null){
+per14 = "&lt;li&gt;Документ, що підтверджує зміну імені.&lt;/li&gt;"
+}
+
+res = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
 	  </script>
