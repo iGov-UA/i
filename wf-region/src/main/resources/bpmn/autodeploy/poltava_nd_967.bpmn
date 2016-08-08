@@ -2,56 +2,59 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="poltava_nd_967" name="Звернення до народного депутата" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
+     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Отримання дати подання звернення" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <endEvent id="endevent1" name="End"></endEvent>
+      <scriptTask id="scripttask1" name="Отримання дати подання звернення" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Сповіщення про нове зверення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист- привітання громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask2" name="Сповіщення про нове зверення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask3" name="Лист- привітання громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних"></userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних"></userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Звернення до депутата. Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" name="відмова" sourceRef="exclusivegateway2" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Звернення до депутатаю Сповіщення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway2" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину"></userTask>
-    <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Звернення до депутата. Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask3" name="Запис на прийом. Перевірка данних"></userTask>
+    <sequenceFlow id="flow10" sourceRef="exclusivegateway2" targetRef="servicetask5"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Звернення до депутатаю Сповіщення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину"></userTask>
+    <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Запис на прийом. Перевірка данних"></userTask>
     <sequenceFlow id="flow15" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway3" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask6" name="Запис на прийом. Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Запис на прийом. Сповіщення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow23" sourceRef="exclusivegateway3" targetRef="servicetask6"></sequenceFlow>
-    <userTask id="usertask4" name="Запис на прийом. Візит громадянина"></userTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    
     <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="servicetask10"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask10" name="Запис на прийом. Сповіщення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
+    <userTask id="usertask4" name="Запис на прийом. Візит громадянина"></userTask>
     <sequenceFlow id="flow28" sourceRef="usertask4" targetRef="exclusivegateway4"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Запис на прийом. Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="servicetask11"></sequenceFlow>
-    <serviceTask id="servicetask12" name="Запис на прийом. Неявка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway4" targetRef="servicetask12"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
+    <serviceTask id="servicetask11" name="Запис на прийом. Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="exclusivegateway4" targetRef="servicetask12"></sequenceFlow>
+    <serviceTask id="servicetask12" name="Запис на прийом. Неявка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow33" sourceRef="servicetask12" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+        
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_poltava_nd_967">
     <bpmndi:BPMNPlane bpmnElement="poltava_nd_967" id="BPMNPlane_poltava_nd_967">
