@@ -1,4 +1,5 @@
-<script>
+
+ <script>
 function ParseUaID(id)
 {
   //id must contain 10 digits
@@ -62,125 +63,131 @@ function cl(){
   //"3088623536";
   var res1 = ParseUaID(myInn);
   
-  if(res1.valid){
-    
-    
-    document.getElementById("validRow").className = "alert alert-success";
-    document.getElementById("validRow").innerHTML = "Поздоровляємо! Ваш ІПН відповідає вимогам";
-  }else {
-    
-    document.getElementById("validRow").className = "alert alert-error";
-    document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
-  }
   document.getElementById("birthDay").innerHTML = res1.day +"." +res1.month +"."+ res1.year;
   document.getElementById("sex").innerHTML = res1.sex;
   
+  if(res1.valid){
+    document.getElementById("validRow").className = "alert alert-success";
+    document.getElementById("validRow").innerHTML = "Поздоровляємо! Ваш ІПН відповідає вимогам";
+    
+    document.getElementById("rBirthDay").style.visibility = 'visible';
+    document.getElementById("rSex").style.visibility = 'visible';
+    document.getElementById("rInfo").style.visibility = 'visible';
+    
+  }else {
+    
+    document.getElementById("validRow").className = "alert alert-danger";
+    document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
+    
+    document.getElementById("rBirthDay").style.visibility = 'hidden';
+    document.getElementById("rSex").style.visibility = 'hidden';
+    document.getElementById("rInfo").style.visibility = 'hidden';
+  }
+
+  document.getElementById("resFin").style.visibility = 'visible';
   
-  
-  $('#res1').collapse({
-    show: true
-  });
 }
 </script>
 
 
+    
+    
+    <div style="font-family: Open Sans, Arial, sans-serif; color:#333333;">
 
-<div style="font-family: Open Sans, Arial, sans-serif; color:#333333;">
-
-	<h1>Структура ИНН</h1>
-	<p>Ідентифікаційний номер складається з десяти цифр.</p>
+      
+      <h1>Структура ИНН</h1>
+      <p>Ідентифікаційний номер складається з десяти цифр.</p>
+      <p>Перші п'ять цифр кодують <strong>дату народження власника номера</strong> – зазвичай, 
+        це п'ятизначне число є кількістю днів від 31 грудня 1899 року до дати народження особи.
+        Однак, якщо однакову дату народження мають більше 5000 чоловіків (або жінок), 
+        то в деяких із них перші п'ять цифр будуть іншими.
+        Наприклад, для дати народження 1 січня 1947 року реєстраційний номер може починатися 
+        як із цифри «1», так і з цифри «8».</p>
+      <p>Наступні 4 цифри (включаючи передостанню) – означають порядковий номер людини, 
+        що народилася в цей день.</p>
+      <p>Передостання цифра позначає <strong>стать власника</strong>:</p>
+      <ul><li><p>
+        якщо цифра непарна, стать – чоловіча</p></li>
+        <li><p>парна – жіноча стать.</p></li>
+      </ul>
+      <p>Десята цифра – <strong>контрольна</strong>. 
+        Алгоритм для її розрахунку такий (вважатимемо, що код має вигляд <em>АБВГҐДЕЄЖЗ</em>):</p>
+      <p>Розраховуємо контрольну суму <br/>
+       <em> Х = А*(-1) + Б*5 + В*7 + Г*9 + Ґ*4 + Д*6 + Е*10 + Є*5 + Ж*7 </em><br/>
+        залишок від ділення контрольної суми на одинадцять і буде контрольним числом
+      </p> 
+	<hr>
+	
 	<p>
-		Перші п'ять цифр кодують <strong>дату народження власника номера</strong> – 
-		зазвичай, це п'ятизначне число є кількістю днів від 31
-		грудня 1899 року до дати народження особи. Однак, якщо однакову дату
-		народження мають більше 5000 чоловіків (або жінок), то в деяких із них
-		перші п'ять цифр будуть іншими. Наприклад, для дати народження 1 січня
-		1947 року реєстраційний номер може починатися як із цифри «1», так і з
-		цифри «8».
-	</p>
-	<p>Наступні 4 цифри (включаючи передостанню) – означають порядковий
-		номер людини, що народилася в цей день.</p>
-	<p>
-		Передостання цифра позначає <strong>стать власника</strong>:
-	</p>
-	<ul>
-		<li><p>якщо цифра непарна, стать – чоловіча</p></li>
-		<li><p>парна – жіноча стать.</p></li>
-	</ul>
-	<p>
-		Десята цифра – <strong>контрольна</strong>. Алгоритм для її розрахунку
-		такий (вважатимемо, що код має вигляд <em>АБВГҐДЕЄЖЗ</em>):
-	</p>
-	<p>
-		Розраховуємо контрольну суму <br /> 
-		<em> Х = А*(-1) + Б*5 + В*7 + Г*9 + Ґ*4 + Д*6 + Е*10 + Є*5 + Ж*7 </em><br /> 
-		залишок від ділення контрольної суми на одинадцять і буде контрольним числом
-	</p>
+		Якщо ви вже маєте ідентифікаційний номер, Ви можете його перевірити на відповідність:
+	</p>      
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="highlight">
+            <div class="row">
+              <div class="col-md-5">
+                Ваш ідентифікаційний персональний номер:
+              </div>
+
+              <div class="col-md-5">
+                <input id="inn" name="inn" type="text" placeholder="Введіть свій ІПН для перевірки" class="form-control">
+              </div>
+            </div>
+            
+
+            <div class="row accordion-group">
+              <div class="accordion-heading">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-3">
+                  <br>
+                  <button class="btn btn-info" onclick="cl()">
+                    Перевірити ІПН
+                  </button>
+                </div>
+                <div class="col-md-4">
+                </div>
+
+              </div>
+            </div>
 
 
 
-	<div class="row">
-    <div class="col-md-12">
-      <div class="highlight">
+            <hr/>
+            <div id="resFin" style="visibility:hidden">
+                <div  id="validRow">
 
-        <div class="row">
-          <div class="col-md-5">
-            Ваш ідентифікаційний персональний номер:
-          </div>
+                </div>
 
-          <div class="col-md-5">
-            <input id="inn" name="inn" type="text" placeholder="Введіть свій ІПН для перевірки" class="form-control">
+              <div class="row" id="rBirthDay">
+                <div class="col-md-5">
+                  День			народження:
+                </div>
+                <div class="col-md-5" id="birthDay">
+                </div>
+              </div>
+
+              <div class="row" id="rSex">
+                <div class="col-md-5">
+                  Стать:
+                </div>
+                <div class="col-md-5" id="sex">
+                </div>
+              </div>
+
+              <div class="row" id="rInfo">
+                <div class="alert alert-info">
+                  Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильсті надонного Вам персонального номеру
+                </div>
+              </div>
+
+            </div>
+
+
           </div>
         </div>
-        
-
-        <div class="row accordion-group">
-          <div class="accordion-heading">
-            <div class="col-md-5">
-            </div>
-            <div class="col-md-3">
-              <br>
-              <button class="btn btn-info" onclick="cl()">
-                Перевірити ІПН
-              </button>
-            </div>
-            <div class="col-md-4">
-            </div>
-          </div>
-        </div>
-        
-        <div id="res1" class="collapse">
-          <div class="row">        
-            <div id="validRow">
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-5">
-              День			народження:
-            </div>
-            <div class="col-md-5" id="birthDay">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-5">
-              Стать:
-            </div>
-            <div class="col-md-5" id="sex">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="alert alert-info">
-              Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильсті надонного Вам персонального номеру
-            </div>
-          </div>
-
-        </div>
-
-
       </div>
     </div>
-  </div>
-</div>
+    
+    
