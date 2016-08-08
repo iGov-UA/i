@@ -537,7 +537,7 @@
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -4778,6 +4778,16 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asChannelAppeals=='sEnumAppeal1'||asChannelAppeals=='sEnumAppeal2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow86" sourceRef="servicetask9" targetRef="exclusivegateway2"></sequenceFlow>
+    <scriptTask id="scripttask5" name="Script Task Number" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('bankIdlastName')
+var number=execution.getVariable('sID_Order_GovPublic')
+var firstLetter=src.substr(0,1)
+var fullNumber=firstLetter+'--'+number
+execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
+    </scriptTask>
+    <serviceTask id="servicetask10" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
+    <sequenceFlow id="flow87" sourceRef="servicetask10" targetRef="scripttask5"></sequenceFlow>
+    <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4904,13 +4914,19 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
         <omgdc:Bounds height="40.0" width="40.0" x="1401.0" y="677.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="477.0" y="22.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="22.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="81.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="438.0" y="158.0"></omgdi:waypoint>
-        <omgdi:waypoint x="477.0" y="158.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="113.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="77.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="428.0" y="204.0"></omgdi:waypoint>
@@ -5196,6 +5212,14 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdi:waypoint x="1564.0" y="637.0"></omgdi:waypoint>
         <omgdi:waypoint x="1633.0" y="637.0"></omgdi:waypoint>
         <omgdi:waypoint x="1633.0" y="677.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow87" id="BPMNEdge_flow87">
+        <omgdi:waypoint x="425.0" y="49.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="49.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
+        <omgdi:waypoint x="529.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="529.0" y="113.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
