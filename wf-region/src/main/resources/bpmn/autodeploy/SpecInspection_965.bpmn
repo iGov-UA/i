@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="SpecInspection_965" name="Запит про перевірку відомостей щодо особи, яка претендує на зайняття посади, яка передбачає зайняття відповідального або особливо відповідального становища, або посади з підвищеним корупційним ризиком" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 04.08.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 08.08.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіон органів державної влади" type="select" default="0" required="true"></activiti:formProperty>
@@ -29,6 +29,11 @@
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи;серія та номер паспорта, ким і коли виданий" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зарєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" required="true">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel03" name=" " type="label" default=" У зв'язку з тим, що територіальні органи Державної фіскальної служби України здійснюють перевірку щодо достовірності відомостей, зазначених у декларації, лише за місцем реєстрації особи, а послугу впроваджено лише в Дніпропетровської області, то для здійснення відповідної спеціальної перевірки Вам потрібно надіслати запит поштою або кур'єром до відповідного органу"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Post" name="Назва посади, на яку претендує особа" type="string" required="true"></activiti:formProperty>
