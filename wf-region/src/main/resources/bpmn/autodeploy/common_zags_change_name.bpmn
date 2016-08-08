@@ -5,12 +5,12 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РАГС згідно Вашого місця проживання" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name="Послуга є платною, Ви можете сплатити державне мито (0,51 грн + 1.8% коміссія) онлайн;після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="string" default="0.53"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="string" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string" default="державне мито за державну реєстрацію зміни імені фізичної особи"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="сумма платежа" type="string" default="0.53"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency2" name="ИД-строковой валюты" type="string" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription2" name="строка-описание платежа" type="string" default="державне мито за державну реєстрацію зміни імені фізичної особи"></activiti:formProperty>
         <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
        
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" required="true"></activiti:formProperty>
@@ -471,7 +471,6 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="наданно дозвіл на зміну імені"></activiti:value>
@@ -620,7 +619,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;Шановний(-а) ${sFullName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення оброблено.&lt;br /&gt;
 Вам призначено дату і час візиту для отримання оригіналу документу - ${sDateVisit2}.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -651,7 +650,7 @@ var per1 = "&lt;li&gt;Документ, що посвідчує особу&lt;/l
 var per2 = "&lt;li&gt;Роздрукована заява, яка була подана в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом&lt;/li&gt;"
 var per3 = " "
 var per4 = "&lt;li&gt;Свідоцтво про народження&lt;/li&gt;"
-var per5 = "&lt;li&gt;Фотокартка 3*4&lt;/li&gt;"
+var per5 = "&lt;li&gt;Фотокартка&lt;/li&gt;"
 var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита&lt;/li&gt;"
 var per7 = " "
 var per8 = " "
