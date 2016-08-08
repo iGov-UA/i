@@ -190,7 +190,6 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -324,10 +323,10 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sBody1" name="[pattern/print/ternopil/ternopil_vet_867.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Заяву прийнято до розгляду" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -365,7 +364,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow5" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Відмова у прийнятті документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Відмова у прийнятті документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -408,7 +407,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </sequenceFlow>
     <userTask id="usertask2" name="Надіння рішення щодо реєстрації" activiti:candidateGroups="dps_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-<activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="Найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Адреса потужності оператора ринку (місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця);(у форматі індекс, область, місто (село), вулиця, будинок, квартира)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону оператора ринку" type="string" default="+380" writable="false"></activiti:formProperty>
@@ -588,7 +587,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow9" name="status2 == 'attr4_finish'" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr4_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="У реєстрації відмовлено" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="У реєстрації відмовлено" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -640,6 +639,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </boundaryEvent>
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_vet_867">
     <bpmndi:BPMNPlane bpmnElement="ternopil_vet_867" id="BPMNPlane_ternopil_vet_867">
@@ -692,13 +692,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="262.0" y="85.0"></omgdi:waypoint>
         <omgdi:waypoint x="262.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="262.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="142.0" y="293.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="142.0" y="293.0"></omgdi:waypoint>
-        <omgdi:waypoint x="382.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="382.0" y="255.0"></omgdi:waypoint>
@@ -759,6 +755,10 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="75.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="315.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
