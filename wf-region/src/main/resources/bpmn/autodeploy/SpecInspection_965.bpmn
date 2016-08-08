@@ -28,12 +28,12 @@
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи;серія та номер паспорта, ким і коли виданий" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зарєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" required="true">
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" required="true">
           <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
           <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabel03" name=" " type="label" default=" У зв'язку з тим, що територіальні органи Державної фіскальної служби України здійснюють перевірку щодо достовірності відомостей, зазначених у декларації, лише за місцем реєстрації особи, а послугу впроваджено лише в Дніпропетровської області, то для здійснення відповідної спеціальної перевірки Вам потрібно надіслати запит поштою або кур'єром до відповідного органу "></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Post" name="Назва посади, на яку претендує особа" type="string" required="true"></activiti:formProperty>
@@ -44,6 +44,7 @@
         <activiti:formProperty id="nFile_Medicine" name="Копія медичної довідки (ф. 133/о)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Diplom" name="Копія документів про освіту, вчені звання та наукові ступені" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Military_ID" name="Копія військового квитка" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabel04" name=" " type="label" default=" У зв'язку з тим, що стать особи, яка претендує на зайняття посади, &lt;b&gt;жіноча &lt;/b&gt;, то спеціальна перевірка щодо відношення особи до військового обов'язку не здійснюється, документи до обласного військового комісаріату не подаються!"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sResultConclusion" name="Ітогове прийняте рішення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sResultConclusionSMS" name="Ітогове прийняте рішення (SMS)" type="invisible" default=" "></activiti:formProperty>
@@ -115,10 +116,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -163,10 +172,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -211,10 +228,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -259,10 +284,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -307,10 +340,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -355,10 +396,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -403,10 +452,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -451,10 +508,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -499,10 +564,18 @@
         <activiti:formProperty id="sLastName_Applicant" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName_Applicant" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMiddleName_Applicant" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Stat" name="Оберіть стать претендента на зайняття посади" type="enum" writable="false">
+          <activiti:value id="sElement_Men" name="Чоловіча"></activiti:value>
+          <activiti:value id="sElement_Women" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sINN__Applicant" name="Ідентифікаційний податковий номер особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth_Applicant" name="Дата народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth_Applicant" name="Місце народження особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport_Applicant" name="Паспортні дані особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_DneprRegistration" name="Чи зареєстрована особа, яка претендує на зайняття посади, в Дніпропетровської області?" type="enum" writable="false">
+          <activiti:value id="sElement_InDnepr" name="Так"></activiti:value>
+          <activiti:value id="sElement_OutDnepr" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressReestration_Applicant" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
@@ -1643,12 +1716,15 @@ ${sNameOrgan09}&lt;br /&gt;
 		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan05') +")&lt;br&gt;"
 	per1 = per1 + 1
 
-    if (execution.getVariable('asEnum_decision_06') == 'accept')
-		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+    if (execution.getVariable('asEnumType_DneprRegistration') == 'sElement_InDnepr')
+	    if (execution.getVariable('asEnum_decision_06') == 'accept')
+			per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+		else
+			per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
 	else
-		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
+		per2 = per2 + "Перевірка "+per1.toString()+". SKIP  (інший регіон, "+execution.getVariable('sNameOrgan06') +")&lt;br&gt;"
 	per1 = per1 + 1
-
+	
     if (execution.getVariable('asEnum_decision_07') == 'accept')
 		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan07') +")&lt;br&gt;"
 	else
@@ -1661,17 +1737,24 @@ ${sNameOrgan09}&lt;br /&gt;
 		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan08') +")&lt;br&gt;"
 	per1 = per1 + 1
 		
-    if (execution.getVariable('asEnum_decision_09') == 'accept')
-		per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+    if (execution.getVariable('asEnumType_Stat') == 'sElement_Men')
+    	if (execution.getVariable('asEnum_decision_09') == 'accept')
+			per2 = per2 + "Перевірка "+per1.toString()+". OK    ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+		else
+			per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
 	else
-		per2 = per2 + "Перевірка "+per1.toString()+". ERROR ("+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
+		per2 = per2 + "Перевірка "+per1.toString()+". SKIP  (жіноча стать, "+execution.getVariable('sNameOrgan09') +")&lt;br&gt;"
 	per1 = per1 + 1
 
-    if ((execution.getVariable('asEnum_decision_01') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_02') == 'accept') &amp;&amp;  
-    	(execution.getVariable('asEnum_decision_03') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_04') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_05') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_06') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_07') == 'accept') &amp;&amp; (execution.getVariable('asEnum_decision_08') == 'accept') &amp;&amp; 
-    	(execution.getVariable('asEnum_decision_09') == 'accept') )
+    if ((execution.getVariable('asEnum_decision_01') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_02') == 'accept') &amp;&amp;  
+    	(execution.getVariable('asEnum_decision_03') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_04') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_05') == 'accept') &amp;&amp; 
+       	((execution.getVariable('asEnum_decision_06') == 'accept') || (execution.getVariable('asEnumType_DneprRegistration') == 'sElement_OutDnepr')) &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_07') == 'accept') &amp;&amp; 
+    	(execution.getVariable('asEnum_decision_08') == 'accept') &amp;&amp; 
+       	((execution.getVariable('asEnum_decision_09') == 'accept') || (execution.getVariable('asEnumType_Stat') == 'sElement_Women')) )
 		{
 			per3 = "Інформації, що перешкоджає зайняттю посади не виявлено!"
 			per4 = "itog perevirky - OK"
