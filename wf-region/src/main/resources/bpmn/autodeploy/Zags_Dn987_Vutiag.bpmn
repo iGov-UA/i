@@ -66,16 +66,19 @@
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlase_born" name="Місце народження особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText2" name="Зверніть увагу!" type="label" default="Вкажіть повну адресу місця народження особи"></activiti:formProperty>
+        <activiti:formProperty id="AdressCountry_born" name="Країна" type="string" required="true" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="AdressOBL_born" name="Область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AdressRay_born" name="Район" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" required="true"></activiti:formProperty><activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan_Registr" name="Найменування органу що здійснив реєстрацію" type="string"></activiti:formProperty>
         
         
         
         
         
         
-        
-        <activiti:formProperty id="sText2" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн"></activiti:formProperty>
+        <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" мерчанта" type="string"></activiti:formProperty>
@@ -219,13 +222,15 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
         </activiti:formProperty>
         
-        
-        
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" required="true">
-          <activiti:value id="sEnamTato" name="Батько"></activiti:value>
-          <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
-          <activiti:value id="sEnamOpikun" name="Опікун"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressCountry_born" name="Країна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressOBL_born" name="Область" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressRay_born" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" required="true" writable="false"></activiti:formProperty><activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan_Registr" name="Найменування органу що здійснив реєстрацію" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -380,6 +385,7 @@ ${sNameOrgan}.&lt;br /&gt;
         var Vut11=' '
         var Vut12=' '
         var Vut13=' '
+        var Vut14=' '
         var xxx='X'
         execution.setVariable('O1', Os1)
         execution.setVariable('O2', Os2)
