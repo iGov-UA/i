@@ -50,8 +50,8 @@ exports.setup = function (config) {
   passport.use(new NBUOAuth2Strategy({
       authorizationURL: bankidNBUUtil.getAuthorizationURL(),
       tokenURL: bankidNBUUtil.getTokenURL(),
-      clientID: config.bankid.client_id,
-      clientSecret: config.bankid.client_secret
+      clientID: config.bankidnbu.client_id,
+      clientSecret: config.bankidnbu.client_secret
     },
     function (accessToken, refreshToken, subject, done) {
       done(null, subject, {

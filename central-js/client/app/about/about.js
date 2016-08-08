@@ -38,7 +38,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -67,7 +67,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -96,7 +96,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -125,7 +125,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -182,7 +182,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -239,7 +239,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -267,7 +267,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -325,7 +325,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "TOP волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -381,7 +381,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -437,7 +437,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -521,35 +521,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Інші регіони",
-                "city" : [
-                  {
-                    "sID":"other_zurich",
-                    "sName": "Цюріх",
-                    "sCityPassportURL":"",
-                    "sNewsGroupURL":"",
-                    "sVolunteersGroupURL":""
-                  },
-                  {
-                    "sID":"zurich_volunteer",
-                    "sName": "Волонтер"
-                  }
-                ]
-              }]
-            }]
-          },
-          "sFIO":"Самсонюк Юрій",
-          "sURL":"",
-          "sCity":"Цюріх"
-        },
-        {
-          "sGroup": {
-            "sID" : "region",
-            "sName" : "Регіональні Волонтери iGov",
-            "type" : [{
-              "sName" : "Регіональні волонтери iGov",
-              "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -605,7 +577,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -633,7 +605,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -661,7 +633,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -779,7 +751,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -835,7 +807,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -907,7 +879,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -935,35 +907,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Інші регіони",
-                "city" : [
-                  {
-                    "sID":"other_singapore",
-                    "sName": "Сингапур",
-                    "sCityPassportURL":"",
-                    "sNewsGroupURL":"",
-                    "sVolunteersGroupURL":""
-                  },
-                  {
-                    "sID":"singapore_volunteer",
-                    "sName": "Волонтер"
-                  }
-                ]
-              }]
-            }]
-          },
-          "sFIO":"Московцов Даниил",
-          "sURL":"",
-          "sCity":"Сингапур"
-        },
-        {
-          "sGroup": {
-            "sID" : "region",
-            "sName" : "Регіональні Волонтери iGov",
-            "type" : [{
-              "sName" : "Регіональні волонтери iGov",
-              "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1095,34 +1039,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Дубина Владимир",
           "sURL":"",
           "sCity":"Чернігів"
-        },
-        {
-          "sGroup": {
-            "sID" : "region",
-            "sName" : "Регіональні Волонтери iGov",
-            "type" : [{
-              "sName" : "Регіональні волонтери iGov",
-              "region" : [{
-                "sName": "Інші регіони",
-                "city" : [
-                  {
-                    "sID":"other_other",
-                    "sName": "",
-                    "sCityPassportURL":"",
-                    "sNewsGroupURL":"",
-                    "sVolunteersGroupURL":""
-                  },
-                  {
-                    "sID":"other_volunteer",
-                    "sName": "Волонтер"
-                  }
-                ]
-              }]
-            }]
-          },
-          "sFIO":"Яценко Антон",
-          "sURL":"",
-          "sCity":""
         },
         {
           "sGroup": {
@@ -1389,35 +1305,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Інші регіони",
-                "city" : [
-                  {
-                    "sID":"copenhagen_copenhagen",
-                    "sName": "Копенгаген",
-                    "sCityPassportURL":"",
-                    "sNewsGroupURL":"",
-                    "sVolunteersGroupURL":""
-                  },
-                  {
-                    "sID":"copenhagen_volunteer",
-                    "sName": "Волонтер"
-                  }
-                ]
-              }]
-            }]
-          },
-          "sFIO":"Катерина Бутенко",
-          "sURL":"https://www.facebook.com/ekaterina.butenko",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10888637_1009507575729643_6435584388863763113_n.jpg?oh=095e9eeef3fbe35039473674d2976a2f&oe=5825C574",
-          "sCity":"Копенгаген"
-        },
-        {
-          "sGroup": {
-            "sID" : "region",
-            "sName" : "Регіональні Волонтери iGov",
-            "type" : [{
-              "sName" : "Регіональні волонтери iGov",
-              "region" : [{
                 "sName": "Київська область",
                 "city" : [
                   {
@@ -1446,7 +1333,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1475,7 +1362,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1504,7 +1391,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1532,7 +1419,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1560,7 +1447,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1589,7 +1476,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1618,7 +1505,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1647,7 +1534,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1676,7 +1563,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1705,7 +1592,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1734,7 +1621,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1763,7 +1650,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1791,7 +1678,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -1819,7 +1706,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             "type" : [{
               "sName" : "Регіональні волонтери iGov",
               "region" : [{
-                "sName": "Дніпровська область",
+                "sName": "Дніпропетровська область",
                 "city" : [
                   {
                     "sID":"dnipro_dnipro",
@@ -2726,6 +2613,119 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"https://www.facebook.com/tanja.goncharova",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.41.160.160/p200x200/11891269_952001978206576_6268696842288680632_n.jpg?oh=19929ba17c9fa69635b0fbf1d76bc6a2&oe=58163EB2",
           "sCity":"Макаров"
+        },
+        {
+          "sGroup": {
+            "sID" : "region",
+            "sName" : "Регіональні Волонтери iGov",
+            "type" : [{
+              "sName" : "Регіональні волонтери iGov",
+              "region" : [{
+                "sName": "Інші регіони",
+                "city" : [
+                  {
+                    "sID":"other_zurich",
+                    "sName": "Цюріх",
+                    "sCityPassportURL":"",
+                    "sNewsGroupURL":"",
+                    "sVolunteersGroupURL":""
+                  },
+                  {
+                    "sID":"zurich_volunteer",
+                    "sName": "Волонтер"
+                  }
+                ]
+              }]
+            }]
+          },
+          "sFIO":"Самсонюк Юрій",
+          "sURL":"",
+          "sCity":"Цюріх"
+        },
+        {
+          "sGroup": {
+            "sID" : "region",
+            "sName" : "Регіональні Волонтери iGov",
+            "type" : [{
+              "sName" : "Регіональні волонтери iGov",
+              "region" : [{
+                "sName": "Інші регіони",
+                "city" : [
+                  {
+                    "sID":"other_singapore",
+                    "sName": "Сингапур",
+                    "sCityPassportURL":"",
+                    "sNewsGroupURL":"",
+                    "sVolunteersGroupURL":""
+                  },
+                  {
+                    "sID":"singapore_volunteer",
+                    "sName": "Волонтер"
+                  }
+                ]
+              }]
+            }]
+          },
+          "sFIO":"Московцов Даниил",
+          "sURL":"",
+          "sCity":"Сингапур"
+        },
+        {
+          "sGroup": {
+            "sID" : "region",
+            "sName" : "Регіональні Волонтери iGov",
+            "type" : [{
+              "sName" : "Регіональні волонтери iGov",
+              "region" : [{
+                "sName": "Інші регіони",
+                "city" : [
+                  {
+                    "sID":"other_other",
+                    "sName": "",
+                    "sCityPassportURL":"",
+                    "sNewsGroupURL":"",
+                    "sVolunteersGroupURL":""
+                  },
+                  {
+                    "sID":"other_volunteer",
+                    "sName": "Волонтер"
+                  }
+                ]
+              }]
+            }]
+          },
+          "sFIO":"Яценко Антон",
+          "sURL":"",
+          "sCity":""
+        },
+        {
+          "sGroup": {
+            "sID" : "region",
+            "sName" : "Регіональні Волонтери iGov",
+            "type" : [{
+              "sName" : "Регіональні волонтери iGov",
+              "region" : [{
+                "sName": "Інші регіони",
+                "city" : [
+                  {
+                    "sID":"copenhagen_copenhagen",
+                    "sName": "Копенгаген",
+                    "sCityPassportURL":"",
+                    "sNewsGroupURL":"",
+                    "sVolunteersGroupURL":""
+                  },
+                  {
+                    "sID":"copenhagen_volunteer",
+                    "sName": "Волонтер"
+                  }
+                ]
+              }]
+            }]
+          },
+          "sFIO":"Катерина Бутенко",
+          "sURL":"https://www.facebook.com/ekaterina.butenko",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10888637_1009507575729643_6435584388863763113_n.jpg?oh=095e9eeef3fbe35039473674d2976a2f&oe=5825C574",
+          "sCity":"Копенгаген"
         }
       ];
 
@@ -2760,7 +2760,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
       volunteers.cities = [];
         angular.forEach(volunteers, function (volunteer) {
         var found = false;
-        for(i = 0; i < city.length; ++i) {
+        for(var i = 0; i < city.length; ++i) {
           if (city[i][0].cityName === volunteer.sGroup.type[0].region[0].city[0].sName) {
             city[i].push(volunteer);
             found = true;

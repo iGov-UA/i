@@ -118,9 +118,9 @@ public class EscalationService {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
-                    BpServiceHandler.gaideTaskParamKey.put("processLink", "Ссылка: ");
+                    BpServiceHandler.gaideTaskParamKey.put("processLink", "Ссылка");
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
-                    BpServiceHandler.gaideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила: ");
+                    BpServiceHandler.gaideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
                     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
                     //send emails (or processing by other bean-handlers)
                     escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
@@ -159,7 +159,7 @@ public class EscalationService {
 
         Map<String, Object> result = new HashMap<>();
         result.put("sTaskId", taskId);
-        BpServiceHandler.gaideTaskParamKey.put("sTaskId", "ИД таски: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskId", "ИД таски");
 
         long nDiffMS = 0;
         if (oTask.getDueDate() != null) {
@@ -176,7 +176,7 @@ public class EscalationService {
         long nElapsedDays = nElapsedHours / 24;
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nElapsedDays", "Прошло дней: ");
+        BpServiceHandler.gaideTaskParamKey.put("nElapsedDays", "Прошло дней");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.gaideTaskParamKey.put("nDays", "Удалить");
         result.put("bSuspended", oTask.isSuspended());
@@ -203,7 +203,7 @@ public class EscalationService {
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.gaideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nDueElapsedDays", "ИД правила эскалации: ");
+        BpServiceHandler.gaideTaskParamKey.put("nDueElapsedDays", "ИД правила эскалации");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
@@ -224,7 +224,7 @@ public class EscalationService {
         result.put("nCreateElapsedHours", nCreateElapsedHours);
         BpServiceHandler.gaideTaskParamKey.put("nCreateElapsedHours", "Удалить");
         result.put("nCreateElapsedDays", nCreateElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nCreateElapsedDays", "Создание: ");
+        BpServiceHandler.gaideTaskParamKey.put("nCreateElapsedDays", "Создание");
         //m.put("nDueDays", nDueElapsedDays);
 
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
@@ -252,19 +252,19 @@ public class EscalationService {
         }
 
         result.put("sID_BP_full", oTask.getProcessDefinitionId());
-        BpServiceHandler.gaideTaskParamKey.put("sID_BP_full", "ИД БП (полный): ");
+        BpServiceHandler.gaideTaskParamKey.put("sID_BP_full", "ИД БП (полный)");
         result.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
-        BpServiceHandler.gaideTaskParamKey.put("sID_BP", "ИД БП: ");
+        BpServiceHandler.gaideTaskParamKey.put("sID_BP", "ИД БП");
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.gaideTaskParamKey.put("nID_task_activiti", "ИД таски активити: ");
+        BpServiceHandler.gaideTaskParamKey.put("nID_task_activiti", "ИД таски активити");
         result.put("sTaskName", oTask.getName());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя  таски: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя  таски");
         result.put("sTaskDescription", oTask.getDescription());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описание: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
-        BpServiceHandler.gaideTaskParamKey.put("sProcessInstanceId", "ИД процесса: ");
+        BpServiceHandler.gaideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
         result.put("sLoginAssigned", oTask.getAssignee());
-        BpServiceHandler.gaideTaskParamKey.put("sLoginAssigned", "Логин сотрудника: ");
+        BpServiceHandler.gaideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
         List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
@@ -289,21 +289,21 @@ public class EscalationService {
                 .processDefinitionId(oTask.getProcessDefinitionId()).singleResult();
 
         result.put("sServiceType", processDefinition != null ? processDefinition.getName() : "");
-        BpServiceHandler.gaideTaskParamKey.put("sServiceType", "Услуга: ");
+        BpServiceHandler.gaideTaskParamKey.put("sServiceType", "Услуга");
         result.put("sTaskName", String.format("%s", oTask.getName()));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски"); 
         result.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskNumber", "Номер таски: ");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskNumber", "Номер  таски");
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
-        BpServiceHandler.gaideTaskParamKey.put("sElapsedInfo", "Прошедшая информация: ");
+        BpServiceHandler.gaideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
-        BpServiceHandler.gaideTaskParamKey.put("sResponsiblePersons", "Ответ гражданину: ");
+        BpServiceHandler.gaideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(oTask.getProcessInstanceId()).singleResult();
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         result.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
-        BpServiceHandler.gaideTaskParamKey.put("sDate_BP", "Дата БП: ");
+        BpServiceHandler.gaideTaskParamKey.put("sDate_BP", "Дата БП");
         result.putAll(processInstance.getProcessVariables());
 
         return result;

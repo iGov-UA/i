@@ -1,11 +1,12 @@
 package org.igov.service.business.action.item;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.action.item.*;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.Place;
+import org.igov.service.controller.ActionItemController;
 import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,16 +31,21 @@ public class ServiceTagService {
     @Autowired
     private CachedInvocationBean cachedInvocationBean;
 
+    @Autowired
+    GeneralConfig generalConfig;
+
     public List<ServiceTagTreeNodeVO> getCatalogTreeTag(Long nID_Category, String sFind,
                                                         List<String> asID_Place_UA, boolean bShowEmptyFolders,
                                                         boolean includeServices,
                                                         Long nID_ServiceTag_Root, Long nID_ServiceTag_Child) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
+        boolean includeTestEntities = generalConfig.isSelfTest();
+
         boolean hasRootIdFilter = nID_ServiceTag_Root != null;
         boolean hasChildIdFilter = nID_ServiceTag_Child != null;
 
-        ServiceTagTree tree = getServiceTagTreeCached();
-        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached();
+        ServiceTagTree tree = getServiceTagTreeCached(includeTestEntities);
+        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached(includeTestEntities);
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
             final ServiceTag parentTag = rootTagNode.getTag();
@@ -160,17 +166,17 @@ public class ServiceTagService {
         return source != null && source.toLowerCase().contains(target.toLowerCase());
     }
 
-    private ServiceTagTree getServiceTagTreeCached() {
+    private ServiceTagTree getServiceTagTreeCached(boolean includeTestEntities) {
         return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<ServiceTagTree>(
-                GET_SERVICE_TAG_TREE_CACHE_KEY) {
+                GET_SERVICE_TAG_TREE_CACHE_KEY, includeTestEntities) {
             @Override
             public ServiceTagTree execute() {
-                return getServiceTagTree();
+                return getServiceTagTree(includeTestEntities);
             }
         });
     }
 
-    private ServiceTagTree getServiceTagTree() {
+    private ServiceTagTree getServiceTagTree(boolean includeTestEntities) {
         List<ServiceTagRelation> relations = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
         Map<ServiceTag, ServiceTagTreeNode> tagToNodeMap = new HashMap<>();
 
@@ -180,6 +186,10 @@ public class ServiceTagService {
         for (ServiceTagRelation relation : relations) {
             final ServiceTag parent = relation.getServiceTag_Parent();
             final ServiceTag child = relation.getServiceTag_Child();
+
+            if (isExcludeTestEntity(includeTestEntities, parent) || isExcludeTestEntity(includeTestEntities, child)) {
+                continue;
+            }
 
             ServiceTagTreeNode parentNode = null;
             if (parent.getId() != FAKE_ROOT_TAG_ID) {
@@ -211,30 +221,50 @@ public class ServiceTagService {
         return new ServiceTagTree(rootTagNodes);
     }
 
-    private Map<Long, List<Service>> getTagIdToServicesMapCached() {
+    private boolean isExcludeTestEntity(boolean includeTestEntity, ServiceTag serviceTag) {
+        return isExcludeTestEntity(includeTestEntity, serviceTag.getsID());
+    }
+
+    private Map<Long, List<Service>> getTagIdToServicesMapCached(boolean includeTestEntities) {
         return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<Map<Long, List<Service>>>(
-                GET_TAG_ID_TO_SERVICES_CACHE_KEY) {
+                GET_TAG_ID_TO_SERVICES_CACHE_KEY, includeTestEntities) {
             @Override
             public Map<Long, List<Service>> execute() {
-                return getTagIdToServicesMap();
+                return getTagIdToServicesMap(includeTestEntities);
             }
         });
     }
 
-    private Map<Long, List<Service>> getTagIdToServicesMap() {
+    private Map<Long, List<Service>> getTagIdToServicesMap(boolean includeTestEntities) {
         Map<Long, List<Service>> res = new HashMap<>();
 
         List<ServiceTagLink> links = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
         for (ServiceTagLink link : links) {
-            final Long serviceTagId = link.getServiceTag().getId();
+            final ServiceTag serviceTag = link.getServiceTag();
+            final Service service = link.getService();
+
+            if (isExcludeTestEntity(includeTestEntities, serviceTag) ||
+                    isExcludeTestEntity(includeTestEntities, service)) {
+                continue;
+            }
+
+            final Long serviceTagId = serviceTag.getId();
             List<Service> services = res.get(serviceTagId);
             if (services == null) {
                 services = new ArrayList<>();
                 res.put(serviceTagId, services);
             }
-            services.add(link.getService());
+            services.add(service);
         }
 
         return res;
+    }
+
+    private boolean isExcludeTestEntity(boolean includeTestEntity, Service service) {
+        return isExcludeTestEntity(includeTestEntity, service.getName());
+    }
+
+    private boolean isExcludeTestEntity(boolean includeTestEntity, String nameOrId) {
+        return !includeTestEntity && nameOrId.startsWith(ActionItemController.SERVICE_NAME_TEST_PREFIX);
     }
 }
