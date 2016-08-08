@@ -1,20 +1,4 @@
 	<style>
-    div{
-      border: 1px solid red;
-    }
-	</style>
-	
-<div style="font-family: Open Sans, Arial, sans-serif; color:#333333;">
-<input type="text" id="inn" />
-	<input type="button" value="проверить" onclick="cl()" />
-	<br />
-	<div id="res">
-		<b>Перевірка на валідність: </b> <span id="valid"></span> <br /> 
-		<b>День			народження: </b> <span id="birthDay"></span> <br /> 
-		<b>Стать: 					</b> <span id="sex"></span> <br />
-	</div>
-	
-	<style>
 	.r {
 		color: #FF0000;
 	}
@@ -23,6 +7,55 @@
 		color: #008000;
 	}
 	</style>
+	
+<div style="font-family: Open Sans, Arial, sans-serif; color:#333333;">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="highlight">
+				<form class="ng-pristine ng-invalid ng-invalid-tel ng-invalid-required">
+
+                <div class="row ng-scope">
+                    <div class="col-md-5 ng-binding ng-scope">
+                        <label style="color: red" class="ng-scope">*</label>
+                         Ваш ІПН:
+                        <div class="s-field-notes ng-binding ng-scope">
+                            Введіть свій ідентифікаційний персональний номер для перевірки на валідність
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 ng-scope">
+                        <input id="inn" name="inn" class="form-control ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                    </div>
+                    <div class="col-md-3">
+                        <br>
+                        <button class="btn btn-info"  onclick="cl()">
+                            Перевірити ІПН
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<br />
+	<div id="res">
+		<b>Перевірка на валідність: </b> <span id="valid"></span> <br /> 
+		<b>День			народження: </b> <span id="birthDay"></span> <br /> 
+		<b>Стать: 					</b> <span id="sex"></span> <br />
+	</div>
+	
+
 	<script>
 	function ParseUaID(id)
 {
