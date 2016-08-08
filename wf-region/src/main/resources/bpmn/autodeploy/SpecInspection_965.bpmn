@@ -786,7 +786,7 @@ ${sResultConclusion} &lt;br /&gt;
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="parallelgateway1" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask9" name="2. Повідомлення співробітника Сектор з питань запобігання і виявлення корупції Головного територіального управління юстиції" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask9" name="2. Повідомлення співробітника Сектор з питань запобігання і виявлення корупції Головного територіального управління юстиції" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk02}</activiti:expression>
@@ -803,7 +803,7 @@ ${sResultConclusion} &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="3. Повідомлення співробітника Управління кадрової роботи та державної служби Головного територіального управління юстиції" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask10" name="3. Повідомлення співробітника Управління кадрової роботи та державної служби Головного територіального управління юстиції" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk03}</activiti:expression>
@@ -1080,7 +1080,7 @@ ${sNameOrgan04}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask17" name="4. Повідомлення співробітника Департамент освіти і науки обласної  державної адміністрації" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask17" name="4. Повідомлення співробітника Департамент освіти і науки обласної  державної адміністрації" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk04}</activiti:expression>
@@ -1107,7 +1107,7 @@ ${sNameOrgan04}&lt;br /&gt;
     <sequenceFlow id="flow64" name="Перевірку не пройдено" sourceRef="exclusivegateway4" targetRef="servicetask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_04=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask18" name="5. Повідомлення співробітника Департамент охорони здоров’я обласної державної адміністрації" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask18" name="5. Повідомлення співробітника Департамент охорони здоров’я обласної державної адміністрації" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk05}</activiti:expression>
@@ -1295,7 +1295,7 @@ ${sNameOrgan06}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask23" name="6. Повідомлення співробітника Територіальні органи Державної фіскальної служби України за місцем реєстрації особи щодо якої проводиться спеціальна перевірка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask23" name="6. Повідомлення співробітника Територіальні органи Державної фіскальної служби України за місцем реєстрації особи щодо якої проводиться спеціальна перевірка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk06}</activiti:expression>
@@ -1321,7 +1321,7 @@ ${sNameOrgan06}&lt;br /&gt;
     <sequenceFlow id="flow74" name="Перевірку не пройдено" sourceRef="exclusivegateway6" targetRef="servicetask22">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_06=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask24" name="7. Повідомлення співробітника Управління інформаційного  забезпечення ГУ НП " activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask24" name="7. Повідомлення співробітника Управління інформаційного  забезпечення ГУ НП " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk07}</activiti:expression>
@@ -1419,7 +1419,7 @@ ${sNameOrgan07}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask27" name="8. Повідомлення співробітника Територіального управління Державної судової адміністрації України" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask27" name="8. Повідомлення співробітника Територіального управління Державної судової адміністрації України" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk08}</activiti:expression>
@@ -2461,7 +2461,7 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdi:waypoint x="2000.0" y="374.0"></omgdi:waypoint>
         <omgdi:waypoint x="2001.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1910.0" y="383.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="79.0" x="1910.0" y="383.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow131" id="BPMNEdge_flow131">
@@ -2471,14 +2471,14 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdi:waypoint x="2133.0" y="827.0"></omgdi:waypoint>
         <omgdi:waypoint x="2053.0" y="827.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="2019.0" y="334.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="68.0" x="2019.0" y="334.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow132" id="BPMNEdge_flow132">
         <omgdi:waypoint x="1278.0" y="363.0"></omgdi:waypoint>
         <omgdi:waypoint x="1278.0" y="385.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1222.0" y="362.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="32.0" x="1222.0" y="362.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow133" id="BPMNEdge_flow133">
