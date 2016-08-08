@@ -565,9 +565,9 @@ public class SubjectMessageController {
         JSONObject oJSONObject = new JSONObject();
         try {
             SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
-            if (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token())) {
+            if (sID_Token!=null && sID_Token.equals(oSubjectMessageFeedback.getsID_Token())) {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "sID_Token not equal or absant! sID_Token="+sID_Token+", nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback, HttpStatus.NOT_FOUND);
+                    "sID_Token not equal! sID_Token="+sID_Token+", nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback, HttpStatus.NOT_FOUND);
             }
             SubjectMessageFeedbackAnswer oSubjectMessageFeedbackAnswer=null;
             if (isEmpty(sAnswer)) {
