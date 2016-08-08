@@ -586,7 +586,7 @@ private String getFormattedDateS(String date) {
 	}
 
 	protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order) {
-		Map<String, String> params = new HashMap<>();
+		final Map<String, String> params = new HashMap<>();
 		params.put("sID_Order", sID_Order);
 		params.put("sHead", "Отправлено письмо");
 		params.put("sBody", sHead);
