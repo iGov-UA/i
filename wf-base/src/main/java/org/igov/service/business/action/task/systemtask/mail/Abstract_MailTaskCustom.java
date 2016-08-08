@@ -212,7 +212,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
 		List<String> previousUserTaskId = getPreviousTaskId(execution);
 		int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-		LOG.info("Found {} enum occurrences in the text", nLimit);
+		LOG.info("Found {} enum occurrences in the text ", nLimit);
 		Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
 		int foundIndex = 0;
 		while (nLimit > 0) {
