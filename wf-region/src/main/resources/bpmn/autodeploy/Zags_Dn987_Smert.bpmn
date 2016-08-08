@@ -3,7 +3,7 @@
   <process id="Zags_Dn987_Smert" name="Повторна видача свідоцтва про смерть" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -28,12 +28,12 @@
         <activiti:formProperty id="sRegistr_smert" name="Вкажіть місце і дату реєстрації смерті особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject_2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_2" name=" мерчанта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сумма платежа" type="string" default="0,51"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="string" default="державне мито за повторну видачу свідоцтва"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant2" name=" мерчанта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="сума платежу" type="string" default="0,51"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription2" name="опис платежу" type="string" default="державне мито за повторну видачу свідоцтва про смерть"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
@@ -105,7 +105,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" required="true">
+        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" writable="false">
           <activiti:value id="sEnamRodich1" name="Один з подружжя (дружина/чоловік)"></activiti:value>
           <activiti:value id="sEnamRodich2" name="Син/донька"></activiti:value>
           <activiti:value id="sEnamRodich3" name="Близький родич (брат/сестра/онук/дід/бабуся)"></activiti:value>
@@ -222,43 +222,6 @@ ${sNameOrgan}.&lt;br /&gt;
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
         var Z_LastName=''
-        var Z_FirstName=''
-        var Z_MiddleName=''
-        var M_LastName=''
-        var M_FirstName=''
-        var M_MiddleName=''
-        var D_LastName=''
-        var D_FirstName=''
-        var D_MiddleName=''
-        var M_PIB=''
-        var D_PIB=''
-        Z_LastName=execution.getVariable('bankIdlastName')
-        Z_FirstName=execution.getVariable('bankIdfirstName')
-        Z_MiddleName=execution.getVariable('bankIdmiddleName')
-        M_LastName=execution.getVariable('sMom_LastName')
-        M_FirstName=execution.getVariable('sMom_Name')
-        M_MiddleName=execution.getVariable('sMom_MiddleName')
-        D_LastName=execution.getVariable('sDad_LastName')
-        D_FirstName=execution.getVariable('sDad_Name')
-        D_MiddleName=execution.getVariable('sDad_MiddleName')
-        
-        if(execution.getVariable('asRodich') == 'sEnamTato')
-          {
-          D_PIB=Z_LastName+''+Z_FirstName+''+Z_MiddleName
-          M_PIB=M_LastName+''+M_FirstName+''+M_MiddleName
-          }
-        if(execution.getVariable('asRodich') == 'sEnamMatu')
-          {
-          M_PIB=Z_LastName+''+Z_FirstName+''+Z_MiddleName
-          D_PIB=D_LastName+''+D_FirstName+''+D_MiddleName
-          }
-        if(execution.getVariable('asRodich') == 'sEnamOpikun')
-          {
-          D_PIB=D_LastName+''+D_FirstName+''+D_MiddleName
-          M_PIB=M_LastName+''+M_FirstName+''+M_MiddleName
-          }
-        execution.setVariable('sPIBMom', M_PIB)
-        execution.setVariable('sPIBDad', D_PIB)
       </script>
     </scriptTask>
     <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>

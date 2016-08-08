@@ -28,7 +28,7 @@ public class Liqpay {
     private static final String sURL_Liqpay = "https://www.liqpay.com/api/checkout";
     private static final String version = "3";
     private static final String sandbox = "1";
-    private static final String payButtonHTML = new StringBuilder()
+    private static final String sHTML_PayButton = new StringBuilder()
             .append("<form method=\"POST\" action=\"")
             .append(sURL_Liqpay)
             .append("\" ")
@@ -59,24 +59,23 @@ public class Liqpay {
             oLanguage = DEFAULT_LANG;
         }
 
-        String URI = "/wf/service/finance/getMerchant";
+        String sURL = "/wf/service/finance/getMerchant";
         Map<String, String> paramMerchant = new HashMap<String, String>();
         paramMerchant.put("sID", sID_Merchant);
-        
-        String soJSON_Merchant = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI, paramMerchant);
+        String soJSON_Merchant = httpRequester.getInside(generalConfig.getSelfHostCentral() + sURL, paramMerchant);
         LOG.info("(soJSON_Merchant={})", soJSON_Merchant);
 
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(soJSON_Merchant);
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject oJSONObject = (JSONObject) oJSONParser.parse(soJSON_Merchant);
 
-        String publicKey = sID_Merchant;
-        privateKey = (String) jsonObject.get("sPrivateKey");
+        String sPublicKey = sID_Merchant;
+        privateKey = (String) oJSONObject.get("sPrivateKey");
         if (privateKey == null) {
             privateKey = "test";
         }
         if (sURL_CallbackStatusNew == null) {
-            if (jsonObject.get("sURL_CallbackStatusNew") != null) {
-                sURL_CallbackStatusNew = (String) jsonObject.get("sURL_CallbackStatusNew");
+            if (oJSONObject.get("sURL_CallbackStatusNew") != null) {
+                sURL_CallbackStatusNew = (String) oJSONObject.get("sURL_CallbackStatusNew");
             } else {
                 sURL_CallbackStatusNew = "";
             }
@@ -84,15 +83,15 @@ public class Liqpay {
         LOG.info("(sURL_CallbackStatusNew={})", sURL_CallbackStatusNew);
 
         if (sURL_CallbackPaySuccess == null) {
-            if (jsonObject.get("sURL_CallbackPaySuccess") != null) {
-                sURL_CallbackPaySuccess = (String) jsonObject.get("sURL_CallbackPaySuccess");
+            if (oJSONObject.get("sURL_CallbackPaySuccess") != null) {
+                sURL_CallbackPaySuccess = (String) oJSONObject.get("sURL_CallbackPaySuccess");
             } else {
                 sURL_CallbackPaySuccess = generalConfig.getSelfHostCentral(); //"https://igov.org.ua";
             }
         }
         LOG.info("(sURL_CallbackPaySuccess={})", sURL_CallbackPaySuccess);
 
-        if (sURL_CallbackStatusNew != null) {
+        if (sURL_CallbackStatusNew != null && !"".equals(sURL_CallbackStatusNew)) {
             LOG.info("(nID_Subject={})", nID_Subject);
             if (nID_Subject == null) {
                 nID_Subject = new Long(0);
@@ -101,10 +100,10 @@ public class Liqpay {
             LOG.info("(snID_Subject={})", snID_Subject);
             String delimiter = sURL_CallbackStatusNew.indexOf("?") > -1 ? "&" : "?";
             String queryParam = delimiter + "nID_Subject=" + nID_Subject;
-            URI = ToolWeb.deleteContextFromURL(sURL_CallbackStatusNew) + queryParam;
-            LOG.info("(URI={})", URI);
+            sURL = ToolWeb.deleteContextFromURL(sURL_CallbackStatusNew) + queryParam;
+            LOG.info("(URI={})", sURL);
             //String sAccessKey = accessDataDao.setAccessData(URI);
-            String sAccessKey = accessCover.getAccessKey(URI);
+            String sAccessKey = accessCover.getAccessKey(sURL);
             //            sURL_CallbackStatusNew = sURL_CallbackStatusNew + queryParam + "&sAccessContract=Request" + "&sAccessKey=" + sAccessKey;
             sURL_CallbackStatusNew = sURL_CallbackStatusNew + queryParam
                     + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
@@ -123,7 +122,7 @@ public class Liqpay {
         params.put("order_id", sID_Order);
         params.put("server_url", sURL_CallbackStatusNew);
         params.put("result_url", sURL_CallbackPaySuccess);
-        params.put("public_key", publicKey);
+        params.put("public_key", sPublicKey);
 
         if (bTest) {
             params.put("sandbox", sandbox);
@@ -144,15 +143,15 @@ public class Liqpay {
             sID_Order, sURL_CallbackStatusNew,
             sURL_CallbackPaySuccess, nID_Subject, bTest);
 
-        String result = getForm(mParam, privateKey, oLanguage);
-        LOG.info("getPayButtonHTML LiqPay ok!: {}", result);
-        return result;
+        String sHTML = getForm(mParam, privateKey, oLanguage);
+        LOG.info("ok! (sHTML={})", sHTML);
+        return sHTML;
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         String sSignature = getSignature(sData, sPrivateKey);
-        return String.format(payButtonHTML, sData, sSignature, oLanguage.getShortName());
+        return String.format(sHTML_PayButton, sData, sSignature, oLanguage.getShortName());
     }
 
     public Map<String, String> getPayDataRequest(String sID_Merchant, String sSum,
@@ -175,7 +174,7 @@ public class Liqpay {
         mReturn.put("data", sData);
         mReturn.put("signature", sSignature);
         
-        LOG.info("ok!: mReturn={}", mReturn);
+        LOG.info("ok! (mReturn={})", mReturn);
         return mReturn;
     }
 }
