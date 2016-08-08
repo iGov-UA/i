@@ -291,9 +291,9 @@ public class EscalationService {
         result.put("sServiceType", processDefinition != null ? processDefinition.getName() : "");
         BpServiceHandler.gaideTaskParamKey.put("sServiceType", "Услуга");
         result.put("sTaskName", String.format("%s", oTask.getName()));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски"); 
         result.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskNumber", "Номер таски");
+        BpServiceHandler.gaideTaskParamKey.put("sTaskNumber", "Номер  таски");
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
         BpServiceHandler.gaideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));

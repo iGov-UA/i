@@ -360,7 +360,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
-        $rootScope.data.email = $scope.data.formData.params.email.value;
+        if($scope.data.formData.params.email){
+          $rootScope.data.email = $scope.data.formData.params.email.value;
+        }
 
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
