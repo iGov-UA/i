@@ -580,7 +580,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	    DateTime dateTime = dateStringFormat.parseDateTime(date);
 		Date d = dateTime.toDate();
 		return getFormattedDate(d);
-		}
+	}
 
 	@Override
 	public void execute(DelegateExecution oExecution) throws Exception {
