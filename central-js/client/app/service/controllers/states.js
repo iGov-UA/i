@@ -85,7 +85,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -147,6 +147,16 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   var tag = $scope.category.oServiceTag_Root.sName_UA;
   var title = situation + ' / ' + tag;
   TitleChangeService.setTitle(title);
+
+  $scope.gotoAnchor = function(x) {
+    var newHash = 'anchor' + x;
+    if ($location.hash() !== newHash) {
+      $location.hash('anchor' + x);
+    } else {
+      $anchorScroll();
+    }
+  };
+
   $anchorScroll();
 });
 
