@@ -290,7 +290,7 @@ public class SubjectMessageService {
     }
 
     public SubjectMessageFeedbackAnswer setSubjectMessageFeedbackAnswer(Long nID_SubjectMessageFeedback, String sBody,
-                                                                        Long nID_Subject){
+                                                                        Long nID_Subject, Boolean bSelf){
 
         SubjectMessageFeedbackAnswer answer = new SubjectMessageFeedbackAnswer();
         SubjectMessageFeedback messageFeedback = subjectMessageFeedbackDao
@@ -305,7 +305,9 @@ public class SubjectMessageService {
         subjectMessage.setId_subject(nID_Subject);
 
         answer.setoSubjectMessageFeedback(messageFeedback);
+        answer.setbSelf(bSelf);
         answer.setoSubjectMessage(subjectMessage);
+        
         return subjectMessageFeedbackAnswerDao.save(answer);
     }
 

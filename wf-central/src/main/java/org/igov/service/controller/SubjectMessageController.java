@@ -497,6 +497,7 @@ public class SubjectMessageController {
     @ApiOperation(value = "Сохранить отзыв по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackExternal(
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source", required = true) String sID_Source,
             @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO", required = true) String sAuthorFIO,
             @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail", required = true) String sMail,
@@ -518,6 +519,10 @@ public class SubjectMessageController {
             SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
                     sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
                     nID_Subject);
+            if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
+            }
 
             /*if (!isEmpty(sAnswer)) {
                 SubjectMessageFeedbackAnswer answer = oSubjectMessageService
@@ -548,25 +553,22 @@ public class SubjectMessageController {
     @ApiOperation(value = "Сохранить ответ об отзыве по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackAnswerExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackAnswerExternal(
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "Тело ответа", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "ID отзыва, ответ на который надо сохранить", required = true) @RequestParam(value = "nID_SubjectMessageFeedback", required = true) Long nID_SubjectMessageFeedback,
+            @ApiParam(value = "Собственный контр-ответ автора фидбека", required = false) @RequestParam(value = "bSelf", required = true) Boolean bSelf,
             @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
 
-        //String sID_Source=null;
-        //String sAuthorFIO="(Администратор)";
-        //String sMail=null;
-        //String sHead="Ответ об отзыве";
-        //String sPlace=null;
-        //String sEmployeeFIO=null;
-        //Long nID_Rate=null;
-        //Long nID_Service=null;
         String sAnswer=sBody;
-        
         LOG.info("Started! (nID_SubjectMessageFeedback={}, sBody={})", nID_SubjectMessageFeedback, sBody);
         JSONObject oJSONObject = new JSONObject();
         try {
             SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
+            if (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token())) {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "sID_Token not equal or absant! sID_Token="+sID_Token+", nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback, HttpStatus.NOT_FOUND);
+            }
             SubjectMessageFeedbackAnswer oSubjectMessageFeedbackAnswer=null;
             if (isEmpty(sAnswer)) {
                 LOG.warn("sBody is empty!, nID_SubjectMessageFeedback={}", nID_SubjectMessageFeedback);
@@ -575,7 +577,7 @@ public class SubjectMessageController {
                 LOG.warn("oSubjectMessageFeedback==null! (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
                 throw new CommonServiceException("oSubjectMessageFeedback==null!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
             }else{
-                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject);
+                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject, bSelf);
 
                 List<SubjectMessageFeedbackAnswer> aSubjectMessageFeedbackAnswer = oSubjectMessageFeedback.getoSubjectMessageFeedbackAnswers();
                 aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
