@@ -1,0 +1,135 @@
+	<style>
+	.r {
+		color: #FF0000;
+	}
+	
+	.g {
+		color: #008000;
+	}
+	</style>
+	
+<div style="font-family: Open Sans, Arial, sans-serif; color:#333333;">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="highlight">
+				<form class="ng-pristine ng-invalid ng-invalid-tel ng-invalid-required">
+
+                <div class="row ng-scope">
+                    <div class="col-md-5 ng-binding ng-scope">
+                        <label style="color: red" class="ng-scope">*</label>
+                         Ваш ІПН:
+                        <div class="s-field-notes ng-binding ng-scope">
+                            Введіть свій ідентифікаційний персональний номер для перевірки на валідність
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 ng-scope">
+                        <input id="inn" name="inn" class="form-control ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                    </div>
+                    <div class="col-md-3">
+                        <br>
+                        <button class="btn btn-info"  onclick="cl()">
+                            Перевірити ІПН
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<br />
+	<div id="res">
+		<b>Перевірка на валідність: </b> <span id="valid"></span> <br /> 
+		<b>День			народження: </b> <span id="birthDay"></span> <br /> 
+		<b>Стать: 					</b> <span id="sex"></span> <br />
+	</div>
+	
+
+	<script>
+	function ParseUaID(id)
+{
+  //id must contain 10 digits
+  //if (!preg_match('/^\d{10}/',id) || (id==0)) return false;
+  //var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
+  
+  
+  var result = {};
+  var daysOfMouth = [31,28,31,30,31,30,31,31,30,31,30,31];
+  
+  //sex
+  result.sex = (id.substr(8,1) % 2) ? 'Чоловіча' : 'Жіноча';
+  
+  //birthdate
+  var days = id.substr(0,5);
+  var year = 1900; 
+  var day = 01; 
+  var month = 01;
+  while (days > 0)
+  {
+    var daysInYear = ( (((year%4)==0) && ((year%100)!=0)) || ((year%400)==0) ) ? 366 : 365;
+    if (days > daysInYear)
+    {
+      days -= daysInYear;
+      year ++;
+    }
+    else{
+      //break;
+      if(daysInYear==366){
+        daysOfMouth[1]=29;
+      }
+      for(var i=0; i<12;i++){
+        if (days > daysOfMouth[i]){
+          days -= daysOfMouth[i];
+          month ++;
+        }else{
+          day = days;
+		  days = 0;
+          break;
+        }       
+      }
+    }
+  }
+  result.year = year;
+  result.month = month;
+  result.day = day;
+  
+  //control Sum
+  var validMas = [-1,5,7,9,4,6,10,5,7];  
+  var sumValid=0;
+  for(var i=0;i<9;i++){
+	sumValid += Number(id[i])*validMas[i];
+  }
+  result.valid = (Number(id[9])==(sumValid%11)%10);  
+  
+  return result;
+}
+
+function cl(){
+var myInn = document.getElementById("inn").value;
+//"3088623536";
+var res1 = ParseUaID(myInn);
+
+if(res1.valid){
+	document.getElementById("valid").innerHTML = "вірний";
+	document.getElementById("valid").className = 'g';
+}else {
+	document.getElementById("valid").innerHTML = "не вірний";
+	document.getElementById("valid").className = 'r';
+}
+document.getElementById("birthDay").innerHTML = res1.day +"." +res1.month +"."+ res1.year;
+document.getElementById("sex").innerHTML = res1.sex;
+}
+  </script>
+
+</div>
