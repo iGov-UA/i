@@ -1,102 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head lang="ua">
-<title>INN</title>
+<head lang="ru">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<input type="text" id="inn" />
-	<input type="button" value="проверить" onclick="cl()" />
-	<br />
-	<div id="res">
-		<b>Перевірка на валідність: </b> <span id="valid"></span> <br /> 
-		<b>День			народження: </b> <span id="birthDay"></span> <br /> 
-		<b>Стать: 					</b> <span id="sex"></span> <br />
-	</div>
-	
-	<style>
-	.r {
-		color: #FF0000;
-	}
-	
-	.g {
-		color: #008000;
-	}
-	</style>
-	<script>
-	function ParseUaID(id)
-{
-  //id must contain 10 digits
-  //if (!preg_match('/^\d{10}/',id) || (id==0)) return false;
-  //var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
-  
-  
-  var result = {};
-  var daysOfMouth = [31,28,31,30,31,30,31,31,30,31,30,31];
-  
-  //sex
-  result.sex = (id.substr(8,1) % 2) ? 'Чоловіча' : 'Жіноча';
-  
-  //birthdate
-  var days = id.substr(0,5);
-  var year = 1900; 
-  var day = 01; 
-  var month = 01;
-  while (days > 0)
-  {
-    var daysInYear = ( (((year%4)==0) && ((year%100)!=0)) || ((year%400)==0) ) ? 366 : 365;
-    if (days > daysInYear)
-    {
-      days -= daysInYear;
-      year ++;
-    }
-    else{
-      //break;
-      if(daysInYear==366){
-        daysOfMouth[1]=29;
-      }
-      for(var i=0; i<12;i++){
-        if (days > daysOfMouth[i]){
-          days -= daysOfMouth[i];
-          month ++;
-        }else{
-          day = days;
-		  days = 0;
-          break;
-        }       
-      }
-    }
-  }
-  result.year = year;
-  result.month = month;
-  result.day = day;
-  
-  //control Sum
-  var validMas = [-1,5,7,9,4,6,10,5,7];  
-  var sumValid=0;
-  for(var i=0;i<9;i++){
-	sumValid += Number(id[i])*validMas[i];
-  }
-  result.valid = (Number(id[9])==(sumValid%11)%10);  
-  
-  return result;
-}
-
-function cl(){
-var myInn = document.getElementById("inn").value;
-//"3088623536";
-var res1 = ParseUaID(myInn);
-
-if(res1.valid){
-	document.getElementById("valid").innerHTML = "вірний";
-	document.getElementById("valid").className = 'g';
-}else {
-	document.getElementById("valid").innerHTML = "не вірний";
-	document.getElementById("valid").className = 'r';
-}
-document.getElementById("birthDay").innerHTML = res1.day +"." +res1.month +"."+ res1.year;
-document.getElementById("sex").innerHTML = res1.sex;
-}
-  </script>
+	<p>
+	Послуга безкоштовна і надається на протязі 5-ти робочих днів
+		<br>
+	</p>
+	<h3>Крок 1</h3>
+	<p>Увійдіть в систему через BankID (увівши дані Інтернет-банку,
+		який під’єднаний до системи) або електронно-цифровий підпис
+		(наприклад, ЕЦП податкової, мінюсту та ін.).</p>
+	<h3>Крок 2</h3>
+	<p>
+		Заповніть коротку форму:<br>
+	<ul>
+		<li>Ваші контактні дані (email, телефон, адреса);</li>
+		<li>Прізвище, імя, по батькові;</li>
+		<li>День народження;</li>
+		<li>Адресу проживання.</li>
+	</ul>
+	</p>
+	<h3>Крок 3</h3>
+	<p>Співробітник податкової обробить Ваше заявку, 
+	внесе дані в реєстр, про що ви будете окремо повідомлені через e-mail та sms.
+	</p>
+	<h3>Крок 4</h3>
+	<p>За результатом Вам буде надано довідку про присвоєння Вам ідентифікаційного персонального номера, яку ви зможете отримати за адресою вказаною в електронному листі.</p>
 </body>
 </html>
