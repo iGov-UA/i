@@ -627,23 +627,23 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   // https://github.com/e-government-ua/i/issues/1326
-  $scope.redirectPaymentLiqpay = function (sID_Merchant) {
+  $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
     var incorrectLiqpayRequest = false;
     var paramsLiqPay = {
-      sID_Merchant: sID_Merchant
+      sID_Merchant: $scope.data.formData.params[sMerchantFieldID].value
     };
-    if(angular.isDefined($scope.data.formData.params.sSum.value)){
+    if($scope.data.formData.params.sSum.value){
       paramsLiqPay.sSum = $scope.data.formData.params.sSum.value;
     } else {
       console.warn("redirectPaymentLiqpay sSum value not found");
       incorrectLiqpayRequest = true;
     }
-    if(angular.isDefined($scope.data.formData.params.sID_Currency.value)){
+    if($scope.data.formData.params.sID_Currency.value){
       if($scope.data.formData.params.sID_Currency.value.length > 0){
         paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
       }
     }
-    if(angular.isDefined($scope.data.formData.params.sDescription.value)){
+    if($scope.data.formData.params.sDescription.value){
       if($scope.data.formData.params.sDescription.value.length > 0){
         paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
       }
@@ -652,7 +652,42 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
     paramsLiqPay.sID_Order = this.oService.nID + "--" + this.oServiceData.oData.processDefinitionId.split(':')[0] + "--" + sCurrDateTime;
     if(!incorrectLiqpayRequest){
-      ServiceService.getRedirectPaymentLiqpay(paramsLiqPay);
+      $http.get('api/payment-liqpay', {
+        params: angular.copy(paramsLiqPay)
+      }).
+      success(function(data) {
+        openUrl(data.sURL, {
+          data: data.data,
+          signature: data.signature
+        });
+      })
+    }
+  };
+
+  // отправка POST-запроса и открытие страницы в новой вкладке
+  function openUrl(url, post) {
+    if ( post ) {
+      var form = $('<form/>', {
+        action: url,
+        method: 'POST',
+        target: '_blank',
+        style: {
+          display: 'none'
+        }
+      });
+
+      for(var key in post) if (post.hasOwnProperty(key)) {
+        form.append($('<input/>',{
+          type: 'hidden',
+          name: key,
+          value: post[key]
+        }));
+      }
+
+      form.appendTo(document.body); // Необходимо для некоторых браузеров
+      form.submit();
+    } else {
+      window.open( url, '_blank' );
     }
   }
 
