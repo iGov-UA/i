@@ -120,11 +120,11 @@ public class ActionEscalationController {
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public void removeEscalationRuleFunction(
-            @ApiParam(value = "номер-ИД функции эскалации", required = true) @RequestParam(value = "nID") Long nID)
+            @ApiParam(value = "номер-ИД функции  эскалации", required = true) @RequestParam(value = "nID") Long nID)
             throws CommonServiceException {
 
         try {
-            escalationRuleFunctionDao.delete(nID);
+            escalationRuleFunctionDao.delete(nID); 
         } catch (EntityNotFoundException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,

@@ -212,7 +212,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
 		List<String> previousUserTaskId = getPreviousTaskId(execution);
 		int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-		LOG.info("Found {} enum occurrences in the text", nLimit);
+		LOG.info("Found {} enum occurrences in the text ", nLimit);
 		Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
 		int foundIndex = 0;
 		while (nLimit > 0) {
@@ -580,7 +580,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	    DateTime dateTime = dateStringFormat.parseDateTime(date);
 		Date d = dateTime.toDate();
 		return getFormattedDate(d);
-		}
+	}
 
 	@Override
 	public void execute(DelegateExecution oExecution) throws Exception {
@@ -612,7 +612,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 					jsonServiceMessage = historyEventService.addServiceMessage(params);
 					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
 				} catch (Exception e) {
-					LOG.error("(saveServiceMessage error={})", e.getMessage());
+					LOG.error("( saveServiceMessage error={})", e.getMessage());
 				}
 			}
 		};

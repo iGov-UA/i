@@ -85,7 +85,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -147,7 +147,31 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   var tag = $scope.category.oServiceTag_Root.sName_UA;
   var title = situation + ' / ' + tag;
   TitleChangeService.setTitle(title);
+
+  $scope.gotoAnchor = function(x) {
+    var newHash = 'anchor' + x;
+    if ($location.hash() !== newHash) {
+      $location.hash('anchor' + x);
+    } else {
+      $anchorScroll();
+    }
+  };
+
   $anchorScroll();
+});
+
+angular.module('app').directive('compileTemplate', function($compile, $parse){
+return {
+  link: function(scope, element, attr){
+    var parsed = $parse(attr.ngBindHtml);
+    function getStringValue() { return (parsed(scope) || '').toString(); }
+
+    //Recompile if the template changes
+    scope.$watch(getStringValue, function() {
+      $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
+    });
+  }
+}
 });
 
 angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
