@@ -631,20 +631,24 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   // https://github.com/e-government-ua/i/issues/1326
   $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
     var incorrectLiqpayRequest = false;
+    var sSuffix = sMerchantFieldID.substring('sID_Merchant'.length - 1);
     var paramsLiqPay = {
       sID_Merchant: $scope.data.formData.params[sMerchantFieldID].value
     };
-    if($scope.data.formData.params.sSum && $scope.data.formData.params.sSum.value > 0){
-      paramsLiqPay.sSum = $scope.data.formData.params.sSum.value;
+    var merchantId = "sSum" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value > 0){
+      paramsLiqPay.sSum = $scope.data.formData.params[merchantId].value;
     } else {
       console.warn("redirectPaymentLiqpay sSum value not found");
       incorrectLiqpayRequest = true;
     }
-    if($scope.data.formData.params.sID_Currency && $scope.data.formData.params.sID_Currency.value !== null && $scope.data.formData.params.sID_Currency.value !== ""){
-      paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
+    merchantId = "sID_Currency" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value !== null && $scope.data.formData.params[merchantId].value !== ""){
+      paramsLiqPay.sID_Currency = $scope.data.formData.params[merchantId].value;
     }
-    if($scope.data.formData.params.sDescription && $scope.data.formData.params.sDescription.value !== null && $scope.data.formData.params.sDescription.value !== ""){
-      paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
+    merchantId = "sDescription" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value !== null && $scope.data.formData.params[merchantId].value !== ""){
+      paramsLiqPay.sDescription = $scope.data.formData.params[merchantId].value;
     }
     paramsLiqPay.nID_Server = this.oServiceData.nID_Server;
     var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
