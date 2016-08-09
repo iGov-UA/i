@@ -36,7 +36,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           sName: "Регіональні волонтери iGov",
           a:[{
               sID:"volyn",
-              nOrder: 2,
               sName: "Волинська область",
                 a:[{
                   sID:"lutsk",
@@ -48,7 +47,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           },
             {
               sID:"dnipro",
-              nOrder: 2,
               sName: "Дніпропетровська область",
                 a: [{
                   sID: "dnipro",
@@ -61,7 +59,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"kyiv",
               sName: "Київська область",
-              nOrder: 9,
                 a:[{
                   sID: "kyiv",
                   sName: "Київ",
@@ -101,7 +98,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"kharkiv",
               sName: "Харківська область",
-              nOrder: 19,
                 a: [{
                   sID: "kharkiv",
                   sName: "Харків",
@@ -113,7 +109,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"lviv",
               sName: "Львівська область",
-              nOrder: 12,
                 a: [{
                   sID: "lviv",
                   sName: "Львів",
@@ -132,7 +127,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"odesa",
               sName: "Одеська область",
-              nOrder: 14,
                 a: [{
                   sID: "odesa",
                   sName: "Одеса",
@@ -144,7 +138,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"mykolaiv",
               sName: "Миколаївська область",
-              nOrder: 13,
                 a: [{
                   sID: "mykolaiv",
                   sName: "Миколаїв",
@@ -156,7 +149,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"chernigiv",
               sName: "Чернігівська область",
-              nOrder: 23,
                 a: [{
                   sID: "chernigiv",
                   sName: "Чернігів",
@@ -167,7 +159,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             },
             {
               sID:"donetsk",
-              nOrder: 4,
               sName: "Донецька область",
                 a: [{
                   sID: "donetsk",
@@ -180,7 +171,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"sumy",
               sName: "Сумська область",
-              nOrder: 17,
                 a: [{
                   sID: "sumy",
                   sName: "Суми",
@@ -199,7 +189,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"zhytomyr",
               sName: "Житомирська область",
-              nOrder: 5,
                 a: [{
                   sID: "zhytomyr",
                   sName: "Житомир",
@@ -211,7 +200,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"ternopil",
               sName: "Тернопільська область",
-              nOrder: 18,
                 a: [{
                   sID: "ternopil",
                   sName: "Тернопіль",
@@ -223,7 +211,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"ivano-frankivsk",
               sName: "Івано-Франківська область",
-              nOrder: 8,
                 a: [{
                   sID: "ivano-frankivsk",
                   sName: "Івано-Франківськ",
@@ -242,7 +229,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"cherkasy",
               sName: "Черкаська область",
-              nOrder: 22,
                 a: [{
                   sID: "cherkasy",
                   sName: "Черкаси",
@@ -254,7 +240,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"poltava",
               sName: "Полтавська область",
-              nOrder: 15,
                 a: [{
                   sID: "poltava",
                   sName: "Полтава",
@@ -273,7 +258,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"rivne",
               sName: "Рівненська область",
-              nOrder: 16,
                 a: [{
                   sID: "rivne",
                   sName: "Рівне",
@@ -299,7 +283,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"kherson",
               sName: "Херсонська область",
-              nOrder: 20,
                 a: [{
                   sID: "kherson",
                   sName: "Херсон",
@@ -311,7 +294,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"zaporizhya",
               sName: "Запорізька область",
-              nOrder: 7,
                 a: [{
                   sID: "zaporizhya",
                   sName: "Запоріжжя",
@@ -323,7 +305,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"lugansk",
               sName: "Луганська область",
-              nOrder: 11,
                 a: [{
                   sID: "severodonetsk",
                   sName: "Сєвєродонецьк",
@@ -342,7 +323,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"zakarpattya",
               sName: "Закарпатська область",
-              nOrder: 6,
                 a: [{
                   sID: "uzhgorod",
                   sName: "Ужгород",
@@ -354,7 +334,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"vinnytsia",
               sName: "Вінницька область",
-              nOrder: 1,
                 a: [{
                   sID: "vinnytsia",
                   sName: "Вінниця",
@@ -366,7 +345,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"khmelnytskiy",
               sName: "Хмельницька область",
-              nOrder: 21,
                 a: [{
                   sID: "khmelnytskiy",
                   sName: "Хмельницький",
@@ -378,7 +356,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"kirovograd",
               sName: "Кіровоградська область",
-              nOrder: 10,
                 a: [{
                   sID: "kirovograd",
                   sName: "Кіровоград",
@@ -390,7 +367,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"chernivtsi",
               sName: "Чернівецька область",
-              nOrder: 24,
               a: [{
                 sID: "chernivtsi",
                 sName: "Чернівці",
@@ -402,7 +378,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
             {
               sID:"other",
               sName: "Інші регіони",
-              nOrder: 25,
                 a: [{
                   sID: "zurich",
                   sName: "Цюріх",
