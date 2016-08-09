@@ -63,6 +63,8 @@ public class EscalationService {
     private EscalationHelper escalationHelper;
     @Autowired
     private EscalationRuleFunctionDao escalationRuleFunctionDao;
+    @Autowired
+    private RuntimeService runtimeService;
 
     private int nFailsTotal = 0;
     private int nFails = 0;
@@ -232,25 +234,25 @@ public class EscalationService {
         //m.put("nDueDays", nDueElapsedDays);
 
         StartFormData startFormData = formService.getStartFormData(oTask.getProcessDefinitionId());
-        for (FormProperty oFormProperty : startFormData.getFormProperties()) {
-            String sType = oFormProperty.getType().getName();
-            String sValue = null;
-            LOG.info(String.format("Matching start form property %s:%s:%s with fieldNames", oFormProperty.getId(),
-                    oFormProperty.getName(), sType));
-            if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
-                    && StringUtils.isNumeric(oFormProperty.getValue())) {
-                result.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
-                BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-            } else {
-                if ("enum".equalsIgnoreCase(sType)) {
-                    sValue = ActionTaskService.parseEnumProperty(oFormProperty);
-                } else {
-                    sValue = oFormProperty.getValue();
-                }
-                LOG.info("id:{} sValue: {}", oFormProperty.getId(), sValue);
-                if (sValue != null) {
-                    result.put(oFormProperty.getId(), sValue);
-                    BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
+        Map<String, Object> variables = runtimeService.getVariables(oTask.getProcessInstanceId());
+        if (startFormData != null) {
+            List<FormProperty> aFormProperty = startFormData.getFormProperties();
+            if (!aFormProperty.isEmpty()) {
+                for (FormProperty oFormProperty : aFormProperty) {
+                    String sType = oFormProperty.getType().getName();
+                    if (variables.containsKey(oFormProperty.getId())) {
+                        if ("enum".equals(sType)) {
+                            Object variable = variables.get(oFormProperty.getId());
+                            if (variable != null) {
+                                String sID_Enum = variable.toString();
+                                LOG.info("execution.getVariable()(sID_Enum={})", sID_Enum);
+                                String sValue = ActionTaskService.parseEnumProperty(oFormProperty, sID_Enum);
+                                result.put(oFormProperty.getId(), sValue);
+                            }
+                        } else {
+                        	result.put(oFormProperty.getId(), variables.get(oFormProperty.getId()) != null ? String.valueOf(variables.get(oFormProperty.getId())) : null);
+                        }
+                    }
                 }
             }
         }
