@@ -38,6 +38,7 @@ import org.igov.service.business.action.task.bp.BpService;
 @Service
 public class BpServiceHandler {
 
+    public static Map<String, String> mGuideTaskParamKey = new TreeMap<>();
     public static final String PROCESS_ESCALATION = "system_escalation";
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
@@ -163,10 +164,15 @@ public class BpServiceHandler {
         Set<String> organ = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         //asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, asCandidateCroupToCheck.toString().length() - 1)
         mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
-        mParam.put("saField", new JSONObject(mTaskParam).toString());
+        Map mTaskParamConverted = convertTaskParam(mTaskParam);
+        String sField = convertTaskParamToString(mTaskParamConverted);
+        mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
+//        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
+//        mGuideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
+//        mGuideTaskParamKey.put("area", "Район");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
@@ -335,5 +341,37 @@ public class BpServiceHandler {
             }
         }
         return sbContact.toString(); //
+    }
+        public static String convertTaskParamToString(Map<String, Object> mTaskParam) {
+
+        // Получаем набор элементов
+        Set<Map.Entry<String, Object>> aTaskParamEntrySet = mTaskParam.entrySet();
+        String result = " ";
+
+        // Отобразим набор
+        for (Map.Entry<String, Object> taskParam : aTaskParamEntrySet) {
+            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
+        }
+        LOG.info(result);
+        return result;
+
+    }
+
+    public static Map<String, Object> convertTaskParam(Map<String, Object> mTaskParam) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> taskParam : mTaskParam.entrySet()) {
+            String taskParamKey = taskParam.getKey();
+            Object taskParamValue = taskParam.getValue();
+
+            if (mGuideTaskParamKey.get(taskParamKey) != null) {
+                String newKeyTaskParam = mGuideTaskParamKey.get(taskParamKey);
+                if (!"Удалить".equalsIgnoreCase(newKeyTaskParam)) {
+                    result.put(newKeyTaskParam, taskParamValue);
+                }
+            } else {
+                result.put(taskParamKey, taskParamValue);
+            }
+        }
+        return result;
     }
 }
