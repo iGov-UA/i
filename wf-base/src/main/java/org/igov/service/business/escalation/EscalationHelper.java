@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+import static org.igov.service.business.action.task.bp.handler.BpServiceHandler.mGuideTaskParamKey;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
@@ -54,7 +55,8 @@ public class EscalationHelper implements ApplicationContextAware {
                         //LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
                         String[] asRecipientMail = null;
                         BasicDBList basicDBList = (BasicDBList) mTaskParam.get("asRecipientMail");
-                        BpServiceHandler.gaideTaskParamKey.put("asRecipientMail", "Почта получателя"); 
+                        BpServiceHandler.mGuideTaskParamKey.put("asRecipientMail", "Почта получателя"); 
+                        BpServiceHandler.mGuideTaskParamKey.put("nDaysLimit", "Лимит дней");
                         if (basicDBList != null && !basicDBList.isEmpty()) {
                             asRecipientMail = new String[basicDBList.size()];
                             for (int i = 0; i < basicDBList.size(); i++) {
