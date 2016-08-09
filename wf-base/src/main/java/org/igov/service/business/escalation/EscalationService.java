@@ -247,6 +247,7 @@ public class EscalationService {
                 } else {
                     sValue = oFormProperty.getValue();
                 }
+                LOG.info("id:{} sValue: {}", oFormProperty.getId(), sValue);
                 if (sValue != null) {
                     result.put(oFormProperty.getId(), sValue);
                     BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
