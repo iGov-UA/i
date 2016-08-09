@@ -629,7 +629,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   // https://github.com/e-government-ua/i/issues/1326
   $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
     var incorrectLiqpayRequest = false;
-    var sSuffix = sMerchantFieldID.substring('sID_Merchant'.length - 1);
+    var sSuffix = sMerchantFieldID.substring('sID_Merchant'.length);
     var paramsLiqPay = {
       sID_Merchant: $scope.data.formData.params[sMerchantFieldID].value
     };
