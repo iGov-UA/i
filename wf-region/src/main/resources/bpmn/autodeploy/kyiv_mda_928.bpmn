@@ -3,51 +3,43 @@
   <process id="kyiv_mda_928" name="Декларація про готовність об'єкта до експлуатації" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення" type="enum" default="fiz" required="true">
+        <activiti:formProperty id="sLabel10" name=" " type="label" default="&lt;b&gt;Інформація про об’єкт:&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування закінченого будівництвом об’єкта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCode" name="Код об’єкта (за класифікатором)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCategory" name="Категорія складності" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення" type="enum" required="true">
           <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Замовник - фізична особа&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація про замовника:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Замовник - юридична особа&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInnCompany" name="Податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCompany" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneCompany" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChiefPib" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChiefPassport" name="Серія та номер паспорта, ким і коли виданий керівника замовника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChiefAddress" name="Місце проживанння керівника замовника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChiefInn" name="ІПН керівника замовника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChiefPhone" name="Номер телефону керівника замовника" type="string" default="+380" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sLabel3" name=" " type="label" default="&lt;b&gt;Головний архітектор&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPib" name="ПІБ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel6" name=" " type="label" default="&lt;b&gt;Інформація про відповідальну особу - інженера з технічного нагляду&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisionPib" name="ПІБ технічного наглядача" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisionPosition" name="Посада технічного наглядача" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisionPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisionNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisionCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sLabel4" name=" " type="label" default="&lt;b&gt;Проектна організація&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asProjectEntity" name="Оберіть суб'єкт, який розробляв проект" type="enum" required="true">
-          <activiti:value id="sEnumProjectCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumProjectIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sProjectPib" name="ПІБ фізособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectPassport" name="Серія та номер паспорта підрядника, де і коли виданий" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectInn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectAddress" name="Місце проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationName" name="Найменування юрособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationAddress" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationInn" name="Податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="sLabel5" name=" " type="label" default="&lt;b&gt;Підрядник&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel5" name=" " type="label" default="&lt;b&gt;Інформація про генерального підрядника (підрядника - у разі, коли будівельні роботи виконуються без залучення субпідрядників)&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asContractorEntity" name="Оберіть суб'єкт підрядника" type="enum" required="true">
           <activiti:value id="sEnumContractorCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumContractorIndividual" name="фізична особа"></activiti:value>
@@ -62,25 +54,54 @@
         <activiti:formProperty id="sContractorOrganizationPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContractorName" name="Підрядник" type="invisible"></activiti:formProperty>
         
-        <activiti:formProperty id="sLabel6" name=" " type="label" default="&lt;b&gt;Інформація про відповідальну особу - інженера з технічного нагляду&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPib" name="ПІБ технічного наглядача" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPosition" name="Посада технічного наглядача" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="sLabel7" name=" " type="label" default="&lt;b&gt;Страхова організація&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceName" name="Найменування страхової організації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceAddress" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceInn" name="Код платника податків" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel7" name=" " type="label" default="&lt;b&gt;Інформація про страхову організацію (за наявності)&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sInsuranceName" name="Найменування страхової організації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInsuranceAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInsuranceInn" name="Код платника податків згідно з ЄДРПУО" type="string"></activiti:formProperty>
         <activiti:formProperty id="sInsuranceContract" name="Реквізити договору страхування" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="sLabel8" name=" " type="label" default="&lt;b&gt;Відповідальний за виконання робіт&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel8" name=" " type="label" default="&lt;b&gt;Інформація про осіб, відповідальних за виконання робіт&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sResponsiblePib" name="ПІБ відповідального" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sResponsiblePosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sResponsiblePhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sResponsibleNumberID" name="Нзва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sResponsibleType" name="Види виконаних під керівництвом відповідальної особи робіт" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabel4" name=" " type="label" default="&lt;b&gt;Інформація про генерального проектувальника:&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asProjectEntity" name="Оберіть суб'єкт, який розробляв проект" type="enum" required="true">
+          <activiti:value id="sEnumProjectCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumProjectIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sProjectPib" name="ПІБ фізособи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectPassport" name="Серія та номер паспорта підрядника, де і коли виданий" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectInn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectAddress" name="Місце проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectOrganizationName" name="Найменування юрособи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectOrganizationAddress" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectOrganizationInn" name="Податковий номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProjectOrganizationPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        
+    
+        <activiti:formProperty id="sLabel3" name=" " type="label" default="&lt;b&gt;Інформація про відповідальних осіб генерального проектувальника (проектувальника): головного архітектора (інженера) проекту, особи, що здійснює авторський нагляд (за наявності)&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPib" name="ПІБ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabel11" name=" " type="label" default="&lt;b&gt;Інформація про проектну документацію:&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPib" name="ПІБ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArchitectCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
+        
+        
+        
+        
+        
+        
+        
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
       </extensionElements>
@@ -135,7 +156,7 @@
           <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name="Замовник - фізична особа:" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="Замовник - фізична особа:" type="label" default="_"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
