@@ -19,10 +19,8 @@
         <activiti:formProperty id="nFile_Agreement" name="Копія згоди особи на проведення спеціальної перевірки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Autobiography" name="Копія автобіографії" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Declaration" name="Копія декларації про майно, доходи, витрати і зобов’язання фінансового характеру за попередній рік" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Medicine" name="Копія медичної довідки (ф. 133/о)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Diplom" name="Копія документів про освіту, вчені звання та наукові ступені" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Military_ID" name="Копія військового квитка" type="file"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sResultConclusion" name="Ітогове прийняте рішення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sResultConclusionSMS" name="Ітогове прийняте рішення (SMS)" type="invisible" default=" "></activiti:formProperty>
@@ -159,23 +157,6 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask5" name="1. Повідомлення співробітника Управління державної реєстрації Головного територіального управління юстиції " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${sMailClerk01}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Новий запит про перевірку відомостей щодо особи, яка претендує на зайняття посади]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
-          	[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask4" name="1.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -340,23 +321,6 @@ ${sResultConclusion} &lt;br /&gt;
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask9" name="2. Повідомлення співробітника Сектор з питань запобігання і виявлення корупції Головного територіального управління юстиції" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${sMailClerk02}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Новий запит про перевірку відомостей щодо особи, яка претендує на зайняття посади]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
-          	[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask11" name="2.1. Повідомлення про успішну перевірку + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -621,9 +585,6 @@ ${sNameOrgan02}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="usertask11" id="BPMNShape_usertask11">
         <omgdc:Bounds height="70.0" width="105.0" x="239.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="133.0" width="117.0" x="116.0" y="331.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="96.0" width="111.0" x="-45.0" y="680.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -644,9 +605,6 @@ ${sNameOrgan02}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="171.0" y="240.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="133.0" width="117.0" x="410.0" y="331.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
         <omgdc:Bounds height="96.0" width="111.0" x="196.0" y="680.0"></omgdc:Bounds>
