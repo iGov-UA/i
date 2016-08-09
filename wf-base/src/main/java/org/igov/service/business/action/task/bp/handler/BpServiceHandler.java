@@ -173,7 +173,7 @@ public class BpServiceHandler {
         mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mGuideTaskParamKey.put("nDaysLimit", "Лимит дней");
+       
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mGuideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
@@ -347,6 +347,7 @@ public class BpServiceHandler {
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
+                
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
