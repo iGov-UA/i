@@ -4,10 +4,12 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної вторинної допомоги" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="label1" name="Юрисдикція центру:" type="label" default="Дніпропетровський, Синельниківський райони, м.Синельникове, Ленінський, Красногвардійський райони м. Дніпропетровська"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
@@ -28,13 +30,38 @@
           <activiti:value id="sEnumTrust" name="законним представником"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Паспорт або інший документ, що посвідчує особу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFamily" name="Довідка про склад сім’ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nIncome" name="Довідка про доходи кожного члена сім’ї за останні 6 місяців" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nEmployee" name="Довідка про перебування на обліку в центрі зайнятості та проведені виплати; у разі звернення до місцевого центру осіб, зареєстрованих у встановленому порядку, як безробітні" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nTax" name="Довідка про подану декларацію про майновий стан і доходи (про сплату податку на доходи фізичних осіб та про відсутність податкових зобов'язань з такого податку), видана відповідним центром обслуговування платників ДФС; у разі звернення до місцевого центру фізичних осіб - підприємців, самозайнятих осіб." type="file"></activiti:formProperty>
+        <activiti:formProperty id="nPensioner" name="Пенсійне посвідчення або посвідчення, що підтверджує призначення соціальної допомоги, або довідка медико-соціальної експертної комісії (МСЕК) про встановлення інвалідності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPensionSum" name="Довідка про розмір пенсії; або довідка про розмір соціальної допомоги, що призначається замість пенсії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPowers" name="Документ, що підтверджує повноваження особи як законного представника; крім випадків, коли законними представниками є батьки " type="file"></activiti:formProperty>
+        <activiti:formProperty id="nINN" name="Реєстраційний номер облікової картки платника податків дитини-сироти, дитини, позбавленої батьківського піклування, безпритульної дитини, дитини, яка може стати або стала жертвою насильства в сім'ї " type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOrphan" name="Рішення про надання статусу дитини-сироти або дитини, позбавленої батьківського піклування; у разі звернення до місцевого центру законних представників дітей-сиріт, дітей, позбавлених батьківського піклування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nViolence" name="Заява або повідомлення про вчинення насильства в сім'ї або реальну загрозу його вчинення; складені в довільній формі - у разі звернення до місцевого центру законних представників дітей, які можуть стати або стали жертвами насильства в сім'ї" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nRecord" name="Спеціальна картка обліку факту вчинення насильства в сім'ї; (за наявності)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nCertificate" name="Посвідчення встановленого зразка" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWork" name="Посвідчення встановленого зразка Героя Соціалістичної Праці, Героя України, орденська книжка повного кавалера ордена Трудової Слави або інші документи, що підтверджують присвоєння відповідного звання;  у разі звернення до місцевого центру осіб, які мають особливі трудові заслуги перед Батьківщиною" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nNazi" name="Посвідчення жертви нацистських переслідувань встановленого зразка" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRehabilit" name="Посвідчення про право на пільги реабілітованих" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassportRight" name="Паспорт або інший документ, що посвідчує особу суб'єкта права на безоплатну вторинну правову допомогу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nInnRight" name="реєстраційний номер облікової картки платника податків суб'єкта права на безоплатну вторинну правову допомогу " type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nGuardian" name="Посвідчення про призначення опікуном (піклувальником)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nCourt" name="Рішення суду про визнання особи недієздатною або про обмеження цивільної дієздатності фізичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDecree" name="Копія ухвали суду про відкриття провадження у справі про поновлення цивільної дієздатності фізичної особи ; у разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nPasspRefugee" name="Паспорт або інший документ, що посвідчує особу; у разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nProtect" name="Довідка про звернення за захистом в Україні" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDenyRefugee" name="Рішення про задоволення/відхилення/залишення без розгляду скарги на рішення органу міграційної служби про відмову в прийнятті заяви про визнання біженцем або особою, яка потребує додаткового захисту, або про відмову в оформленні документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту; у разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nOther" name="Інші документи, що підтверджують порушене право особи та необхідність його захисту; декілька сторінок об'єднайте у один pdf файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker_Trust" name="Довіреність" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTrust&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asTrust&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumTrust'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -88,13 +115,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Розгляд документів"  activiti:candidateGroups="bvpd_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="bvpd_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sFIO" name="Заявник" type="string" default="${bankIdlastName}${bankIdfirstName}${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Категорія заявника" type="enum" writable="false">
           <activiti:value id="sEnumPoor" name="Малозабезпечені (особи, сукупний дохід сім'ї яких в розрахунку на одну особу нижче суми 1 прожиткового мінімуму)"></activiti:value>
