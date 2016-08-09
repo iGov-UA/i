@@ -130,6 +130,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
