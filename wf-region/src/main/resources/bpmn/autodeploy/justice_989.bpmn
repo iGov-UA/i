@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="justice_989" name="Звернення про надання безоплатної вторинної правової допомоги" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{fileTaskUpload}">
-     <extensionElements>
-     <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть територіальний орган ДВС" type="select" default="0" required="true"></activiti:formProperty>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної вторинної допомоги" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string"  default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Категорія заявника" type="enum" required="true">
           <activiti:value id="sEnumPoor" name="Малозабезпечені (особи, сукупний дохід сім'ї яких в розрахунку на одну особу нижче суми 1 прожиткового мінімуму)"></activiti:value>
           <activiti:value id="sEnumInvalid" name="Інваліди (якщо  пенсія або допомога  менше двох прожиткових мінімумів для непрацездатних осіб)"></activiti:value>
@@ -30,17 +27,19 @@
           <activiti:value id="sEnumPerson" name="особисто"></activiti:value>
           <activiti:value id="sEnumTrust" name="законним представником"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Trust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-     </extensionElements>
-    </serviceTask>
+        <activiti:formProperty id="marker_Trust" name="Довіреність" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sTrust&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asTrust&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumTrust'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Лист службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-     <extensionElements>
+      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -48,16 +47,16 @@
           <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-     </serviceTask>
+    </serviceTask>
     <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-     <extensionElements>
-      <activiti:field name="sPhone_SMS">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -73,12 +72,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення №[sID_Order] щодо Довідки про неотримання аліментів або розмір аліментів було зареєстровано у системі.&lt;br/&gt;
+			&lt;p&gt; Ваше звернення №[sID_Order] щодо Звернення про надання безоплатної вторинної правової допомоги було зареєстровано у системі.&lt;br/&gt;
 			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
@@ -87,22 +86,17 @@
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-       </extensionElements>
-      </serviceTask>
-    <userTask id="usertask1" name="Розгляд документів" activiti:async="true">
-    <extensionElements>
-     <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть територіальний орган ДВС" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string"  default="+380" required="true"></activiti:formProperty>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="usertask1" name="Розгляд документів"  activiti:candidateGroups="bvpd_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sFIO" name="Заявник" type="string" default="${bankIdlastName}${bankIdfirstName}${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Категорія заявника" type="enum" required="true">
+        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Категорія заявника" type="enum" writable="false">
           <activiti:value id="sEnumPoor" name="Малозабезпечені (особи, сукупний дохід сім'ї яких в розрахунку на одну особу нижче суми 1 прожиткового мінімуму)"></activiti:value>
           <activiti:value id="sEnumInvalid" name="Інваліди (якщо  пенсія або допомога  менше двох прожиткових мінімумів для непрацездатних осіб)"></activiti:value>
           <activiti:value id="sEnumChild" name="Діти-сироти, діти, які позбавлені батьківського піклування, діти,  які  перебувають  у складних життєвих обставинах, діти, які постраждали внаслідок воєнних дій та збройних конфліктів"></activiti:value>
@@ -113,23 +107,20 @@
           <activiti:value id="sEnumCapacity" name="Особи, щодо яких суд розглядає справу про поновлення цивільної дієздатності фізичної особи"></activiti:value>
           <activiti:value id="sEnumRefugee" name="Особи, які претендують на статус біженців (до моменту прийняття рішення про надання такого статусу)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTrust" name="Звернення подається" type="enum" required="true">
+        <activiti:formProperty id="asTrust" name="Звернення подається" type="enum" writable="false">
           <activiti:value id="sEnumPerson" name="особисто"></activiti:value>
           <activiti:value id="sEnumTrust" name="законним представником"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Trust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-     </extensionElements>
-     </userTask>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask4" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    <extensionElements>
-      <activiti:field name="sPhone_SMS">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -142,18 +133,17 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 			&lt;p&gt;
-			Довідка про неотримання аліментів або розмір аліментів - готова&lt;br /&gt;
+			Звенення №[sID_Order] щодо надання безоплатної вторинної правової допомоги - схвалене&lt;br /&gt;
 			&lt;/p&gt;
-			Скан-копію довідки з накладеним ЕЦП (електронно-цифровим підписом) прикріплено до цього листа.&lt;br /&gt;
-			Ви можете використати її для подання до державних органів соціального захисту населення.
+			
 			&lt;p&gt;
-			Оригінал довідки можете отримати за адресою:
+			Зверніться до Вашого центру з надання безоплатної вторинної правової допомоги:
 			&lt;br /&gt;
 			&lt;br /&gt;
 			${sAddress}&lt;br /&gt;
@@ -164,17 +154,16 @@
 			${sNameOrgan}&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]
-			</activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1},${file2}</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
-      </serviceTask>
+    </serviceTask>
     <serviceTask id="servicetask5" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-     <extensionElements>
-      <activiti:field name="sPhone_SMS">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -190,12 +179,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів було відхилено.&lt;/p&gt;
+			На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було відхилено.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному:&lt;/p&gt;
 			&lt;p&gt;${sComment}&lt;/p&gt;
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -206,8 +195,8 @@
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-       </extensionElements>
-      </serviceTask>
+      </extensionElements>
+    </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
@@ -224,13 +213,16 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_justice_989">
+    <bpmndi:BPMNPlane bpmnElement="justice_989" id="BPMNPlane_justice_989">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="240.0"></omgdc:Bounds>
@@ -252,9 +244,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="860.0" y="250.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="217.0" y="330.0"></omgdc:Bounds>
