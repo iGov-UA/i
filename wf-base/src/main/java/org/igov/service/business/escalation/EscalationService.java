@@ -204,7 +204,7 @@ public class EscalationService {
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "ИД правила эскалации");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
