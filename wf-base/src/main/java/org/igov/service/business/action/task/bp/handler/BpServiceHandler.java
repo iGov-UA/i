@@ -130,6 +130,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
@@ -156,9 +157,9 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mGuideTaskParamKey.put("bankIdfirstName", "Имя"); 
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
-        mGuideTaskParamKey.put("bankIdfirstName", "Отчество");
+        mGuideTaskParamKey.put("bankIdmiddleName", "Отчество");
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mGuideTaskParamKey.put("bankIdfirstName", "Фамилия");
+        mGuideTaskParamKey.put("bankIdlastName", "Фамилия");
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Телефон");
         mParam.put("email", mTaskParam.get("email"));
@@ -173,7 +174,7 @@ public class BpServiceHandler {
         mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mGuideTaskParamKey.put("nDaysLimit", "Лимит дней");
+       
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mGuideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
@@ -347,6 +348,7 @@ public class BpServiceHandler {
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
+                
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
