@@ -345,7 +345,7 @@ public class BpServiceHandler {
                     String accountContacts = getContact((List<Map>) subject.get("aSubjectAccountContact"));
                     sb.append(" ").append(label).append(" (").append(accountContacts).append(")");
                 }
-                LOG.info("sEmployeeContacts: " + sb.toString());
+                LOG.info("sEmployeeContacts: " + sb.toString()); 
                 mParam.put("sEmployeeContacts", sb.toString());
                 
             }
