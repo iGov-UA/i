@@ -166,6 +166,7 @@ public class BpServiceHandler {
         mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
+        LOG.info("saField: "+sField);
         mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
 //        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
