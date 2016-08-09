@@ -324,6 +324,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="markers2" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/ternopil_vet_867_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopil_vet_867.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/ternopil/ternopil_vet_867.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+        <activiti:field name="aFieldInheritedAttachmentID">
+        <activiti:expression>${fAppWithECP}</activiti:expression>
+        </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
