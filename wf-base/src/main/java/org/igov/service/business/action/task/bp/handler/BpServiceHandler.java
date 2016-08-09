@@ -1,35 +1,31 @@
 package org.igov.service.business.action.task.bp.handler;
 
-import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.escalation.EscalationHistory;
-import org.igov.util.ToolLuna;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.bp.BpService;
+import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.exchange.SubjectCover;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-import javax.security.auth.Subject;
-
-import org.activiti.engine.TaskService;
-import org.activiti.engine.task.Task;
-import org.igov.service.exchange.SubjectCover;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.core.NamedEntity;
-import org.igov.service.business.action.task.bp.BpService;
 
 /**
  * @author OlgaPrylypko
@@ -161,9 +157,9 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
-        Set<String> organ = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        //asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, asCandidateCroupToCheck.toString().length() - 1)
-        mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
+        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        String organ = trimGroups(organs);
+        mParam.put("organ", organ);
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("saField: "+sField);
@@ -186,6 +182,29 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         return snID_ProcessEscalation;
+    }
+
+    /**
+     * organise groups into single string
+     * @param organs
+     * @return
+     */
+    private String trimGroups(Set<String> organs) {
+        if (organs.isEmpty()) {
+            return "";
+        }
+        final String DELIMITER = ", ";
+
+        StringBuilder result = new StringBuilder();
+        for (String group : organs) {
+            result.append(group);
+            result.append(DELIMITER);
+        }
+        String res = result.toString();
+        if (res.endsWith(DELIMITER)) {
+            res = StringUtils.removeEnd(res, DELIMITER);
+        }
+        return res;
     }
 
     private String getPlaceForProcess(String sID_Process) {
