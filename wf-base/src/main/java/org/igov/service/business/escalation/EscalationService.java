@@ -3,6 +3,7 @@ package org.igov.service.business.escalation;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -31,6 +33,7 @@ import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.escalation.EscalationRuleFunction;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+
 import static org.igov.service.business.action.task.bp.handler.BpServiceHandler.mGuideTaskParamKey;
 
 @Service
@@ -60,6 +63,8 @@ public class EscalationService {
     private EscalationHelper escalationHelper;
     @Autowired
     private EscalationRuleFunctionDao escalationRuleFunctionDao;
+    @Autowired
+    private RuntimeService runtimeService;
 
     private int nFailsTotal = 0;
     private int nFails = 0;
@@ -204,7 +209,7 @@ public class EscalationService {
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "ИД правила эскалации");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
@@ -228,11 +233,21 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("nCreateElapsedDays", "Создание");
         //m.put("nDueDays", nDueElapsedDays);
 
+        StartFormData startFormData = formService.getStartFormData(oTask.getProcessDefinitionId());
+        Map<String, Object> variables = runtimeService.getVariables(oTask.getProcessInstanceId());
+        
+        result.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        result.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        result.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
-            LOG.debug(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
+            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
                     oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
                     && StringUtils.isNumeric(oFormProperty.getValue())) {
@@ -247,7 +262,6 @@ public class EscalationService {
                 if (sValue != null) {
                     result.put(oFormProperty.getId(), sValue);
                     BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-
                 }
             }
         }
@@ -307,6 +321,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         result.putAll(processInstance.getProcessVariables());
 
+        LOG.info("Result with parameters for the escalation {}", result);
         return result;
     }
 
