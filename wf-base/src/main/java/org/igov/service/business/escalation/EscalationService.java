@@ -232,7 +232,7 @@ public class EscalationService {
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
-            LOG.debug(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
+            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
                     oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
                     && StringUtils.isNumeric(oFormProperty.getValue())) {
@@ -247,7 +247,6 @@ public class EscalationService {
                 if (sValue != null) {
                     result.put(oFormProperty.getId(), sValue);
                     BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-
                 }
             }
         }
@@ -307,6 +306,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         result.putAll(processInstance.getProcessVariables());
 
+        LOG.info("Result with parameters for the escalation {}", result);
         return result;
     }
 
