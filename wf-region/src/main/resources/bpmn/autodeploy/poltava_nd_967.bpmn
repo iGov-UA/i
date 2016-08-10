@@ -118,6 +118,7 @@
      
          </extensionElements>  
       </startEvent>
+      
      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
@@ -196,7 +197,7 @@
         <conditionExpression xsi:type="tFormalExpression"> <![CDATA[${asKind =='sAddressing'}]]> </conditionExpression>
     </sequenceFlow>
     
-    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних">
+    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
           <extensionElements>
          <!-->ЮЗЕРТАСКА 1 ЗВЕРНЕННЯ-->  
          
@@ -393,7 +394,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину">
+    
+    
+    
+    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
         <!--ЮЗЕРТАСКА 2 гілка звернення ПОЧАТОК--> 
         
      <extensionElements>
@@ -447,6 +451,9 @@
        </extensionElements>  
        <!--ЮЗЕРТАСКА 2 гілка звернення КІНЕЦЬ-->   
     </userTask>
+    
+    
+    
     <sequenceFlow id="flow34" sourceRef="usertask2" targetRef="servicetask13"></sequenceFlow>
     <serviceTask id="servicetask13" name="Звернення до депутата. Відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
               <extensionElements>
@@ -497,7 +504,9 @@
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="usertask3">
        <conditionExpression xsi:type="tFormalExpression"> <![CDATA[${asKind != 'sAddressing'}]]> </conditionExpression> 
     </sequenceFlow>
-    <userTask id="usertask3" name="Запис на прийом. Перевірка данних">
+    
+    
+    <userTask id="usertask3" name="Запис на прийом. Перевірка данних" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
          <!--ЗАПИС НА ПРИЙОМ ПОЧАТОК ПРОЦЕСУ--> 
         <extensionElements>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
@@ -569,6 +578,8 @@
   
       </extensionElements>  
     </userTask>
+    
+    
     
     <sequenceFlow id="flow15" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -653,7 +664,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask4" name="Запис на прийом. Візит громадянина">
+    
+    
+    
+    <userTask id="usertask4" name="Запис на прийом. Візит громадянина" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
         <extensionElements>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
