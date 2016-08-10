@@ -16,12 +16,26 @@ module.exports.authorize = function (req, res, next) {
 
 module.exports.token = function (req, res, next) {
   if (!req.session.prepare) {
-    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "session preparation should be initialized"));
+    res.status(400).send(errors.createInputParameterError(
+      "session preparation should be initialized"));
+    return;
   }
   if (req.session.prepare && req.session.prepare.type !== 'bankid-nbu') {
-    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "bankid-nbu type should be specified in session preparation"));
+    res.status(400).send(errors.createInputParameterError(
+      "bankid-nbu type should be specified in session preparation"));
+    return;
   }
-
+  if(!req.session.prepare.data ){
+    res.status(400).send(errors.createInputParameterError(
+      "session preparation data for bankid-nbu session type should exist"));
+    return;
+  }
+  if(req.session.prepare.data && !req.session.prepare.data.link){
+    res.status(400).send(errors.createInputParameterError(
+      "session preparation data for bankid-nbu session type doesn't contain link"));
+    return;
+  }
+  
   passport.authenticate('nbu-oauth2', {
     session: false,
     code: req.query.code,
