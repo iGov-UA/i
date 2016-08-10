@@ -425,7 +425,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         {
           "sFIO":"Мерило Яніка",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c1.0.160.160/p160x160/10620554_10204503241759783_5791407653897428363_n.jpg?oh=c75d263d5ab1d1f920b42d4aa10b9e9c&oe=585B9330",
-          "sURL":"",
+          "sURL":"https://www.facebook.com/jaanika.merilo",
           "sCity":"Київ"
         },
         {
