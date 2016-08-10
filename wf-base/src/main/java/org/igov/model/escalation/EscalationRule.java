@@ -15,7 +15,7 @@ public class EscalationRule extends AbstractEntity {
      */
     @JsonProperty(value = "sID_BP")
     @Column
-    private String sID_BP;
+    private String sID_BP; 
 
     /**
      * ИД-строка юзертаски бизнеспроцесса

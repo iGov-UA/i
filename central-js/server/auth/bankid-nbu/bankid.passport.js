@@ -1,4 +1,5 @@
-var passport = require('passport')
+var Buffer = require('buffer').Buffer
+  , passport = require('passport')
   , OAuth2Strategy = require('passport-oauth2')
   , OAuth2 = require('oauth').OAuth2
   , util = require('util')
@@ -29,7 +30,11 @@ exports.setup = function (config) {
   util.inherits(NBUOAuth2Strategy, OAuth2Strategy);
 
   NBUOAuth2Strategy.prototype.authorizationParams = function (options) {
-    return {};
+    if (options.link) {
+      return {state: new Buffer(options.link).toString('base64')}
+    } else {
+      return {};
+    }
   };
 
   NBUOAuth2Strategy.prototype.tokenParams = function (options) {
@@ -45,8 +50,8 @@ exports.setup = function (config) {
   passport.use(new NBUOAuth2Strategy({
       authorizationURL: bankidNBUUtil.getAuthorizationURL(),
       tokenURL: bankidNBUUtil.getTokenURL(),
-      clientID: config.bankid.client_id,
-      clientSecret: config.bankid.client_secret
+      clientID: config.bankidnbu.client_id,
+      clientSecret: config.bankidnbu.client_secret
     },
     function (accessToken, refreshToken, subject, done) {
       done(null, subject, {

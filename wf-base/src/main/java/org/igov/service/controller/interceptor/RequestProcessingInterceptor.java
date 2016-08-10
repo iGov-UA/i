@@ -65,7 +65,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
-    private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
+    private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswerEscalation = 11L; 
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
     @Autowired
@@ -455,12 +455,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
 
         
-        LOG.debug("Попытка записи комментария эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswer);
+        LOG.debug("Попытка записи комментария эскалации. sID_Order={}, sComment={}, SubjectMessageType={}", sID_Order, sComment, SubjectMessageType_ServiceCommentEmployeeAnswerEscalation);
 
         Map<String, String> mParamComment = new HashMap<String, String>();
         mParamComment.put("sID_Order", sID_Order);
         mParamComment.put("sBody", sComment);
-        mParamComment.put("nID_SubjectMessageType", Long.toString(SubjectMessageType_ServiceCommentEmployeeAnswer));
+        mParamComment.put("nID_SubjectMessageType", Long.toString(SubjectMessageType_ServiceCommentEmployeeAnswerEscalation));
         
         String sURL = generalConfig.getSelfHostCentral() + URI_SET_SERVICE_MESSAGE;
         

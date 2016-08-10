@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function ($http, $q) {
+angular.module('app').service('ServiceService', function ($http, $q, ErrorsFactory) {
 
   var self = this;
 
@@ -292,4 +292,5 @@ angular.module('app').service('ServiceService', function ($http, $q) {
         return response.data;
       });
   };
+
 });

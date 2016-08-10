@@ -5,6 +5,7 @@
  */
 package org.igov.analytic.model.process;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -53,23 +54,25 @@ public class ProcessTask extends AbstractEntity{
     @Column
     private DateTime    oDateFinish ;
     
-    @JsonProperty(value = "sID_Data")
+    /*@JsonProperty(value = "sID_Data")
     @Column
-    private String sID_Data;	
+    private String sID_Data;*/	
     
-    @JsonProperty(value = "oProcess")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
     
     @JsonProperty(value = "aAttribute")
-    @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Attribute> aAttribute = new ArrayList();
     
+    @JsonProperty(value = "aAccessGroup")
     @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
     private List<AccessGroup> aAccessGroup = new ArrayList();
     
+    @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
     private List<AccessUser> aAccessUser = new ArrayList();
 
@@ -98,13 +101,13 @@ public class ProcessTask extends AbstractEntity{
         this.oDateFinish = oDateFinish;
     }
 
-    public String getsID_Data() {
+    /*public String getsID_Data() {
         return sID_Data;
     }
 
     public void setsID_Data(String sID_Data) {
         this.sID_Data = sID_Data;
-    }
+    }*/
 
     public Process getoProcess() {
         return oProcess;
