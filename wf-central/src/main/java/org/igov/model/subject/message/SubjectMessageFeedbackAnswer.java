@@ -1,5 +1,6 @@
 package org.igov.model.subject.message;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.igov.model.core.AbstractEntity;
@@ -11,12 +12,13 @@ import javax.persistence.*;
 public class SubjectMessageFeedbackAnswer extends AbstractEntity {
 
     @JsonProperty(value = "oSubjectMessage")
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "nID_SubjectMessage", nullable = true)
     @Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private SubjectMessage oSubjectMessage;
 
     @JsonProperty(value = "oSubjectMessageFeedback")
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "nID_SubjectMessageFeedback", nullable = true)
     private SubjectMessageFeedback oSubjectMessageFeedback;
