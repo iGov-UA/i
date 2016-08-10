@@ -415,7 +415,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         {
           "sFIO":"Белявцев Владимир",
           "sURL":"https://www.facebook.com/profile.php?id=100001410629235",
-          "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11057271_968842949839383_8290049245673140145_n.jpg?oh=d41f1a6305b3ce826d5e291fe8f22406&oe=585CCD55",
           "sCity":"Дніпро"
         },
         {
@@ -745,8 +744,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Волобуев Дмитрий",
-          "sURL":"https://www.facebook.com/profile.php?id=100007298923596&fref=ts",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13230318_1706937276226220_178858746065393251_n.jpg?oh=8588f01290a823de793b63d9ca488b19&oe=5818D6EC",
+          "sURL":"https://www.facebook.com/profile.php?id=100007298923596",
           "sCity":"Дніпро"
         },
         {
@@ -877,7 +875,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sID_Group":"zhytomyr.zhytomyr.rada",
           "sFIO":"Савінова Ванда",
           "sURL":"https://www.facebook.com/profile.php?id=100001353020712",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12803084_999314373456987_4051702712675174187_n.jpg?oh=796ae04bcda575f63867384f11ae4808&oe=58241C1B",
           "sCity":"Житомир"
         },
         {
@@ -890,7 +887,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sID_Group":"zakarpattya.uzhgorod.rada",
           "sFIO":"Лук'янчук Микола",
           "sURL":"https://www.facebook.com/profile.php?id=100007826441900",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11146563_1588005888136944_6434735988339732415_n.jpg?oh=bc8600b3151428674798075dc1eb9c7e&oe=58286C47",
           "sCity":"Ужгород"
         },
         {
@@ -903,7 +899,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sID_Group":"cherkasy.cherkasy.rada",
           "sFIO":"Колодіч Олена",
           "sURL":"https://www.facebook.com/profile.php?id=100011166150937",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12540537_103723173343221_6396342699887234434_n.jpg?oh=13586283b1cc4c2cb3983891028b0296&oe=582026E4",
           "sCity":"Черкаси"
         },
         {
@@ -999,6 +994,15 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
     aVolunteers : []
   };
   angular.forEach(aSubject, function(volunteer) {
+
+    //check for pics in fb accounts
+    if(volunteer.sURL) {
+      var id = volunteer.sURL.split('id=')[1];
+      if(id) {
+        volunteer.sPhoto = 'https://graph.facebook.com/' + id + '/picture?type=large';
+      }
+    }
+    
     // TOP
     if(!volunteer.sID_Group) {
       oAllVolunteers.aTop.push(volunteer);
