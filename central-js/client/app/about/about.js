@@ -458,21 +458,88 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Дніпро"
         },
         {
+          "sFIO":"Боровик Дмитрий",
+          "sURL":"https://www.facebook.com/dmitry.borovik.39",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c32.0.160.160/p160x160/10599674_678591012230665_7844095113786179561_n.jpg?oh=f96e99efd0e18c178bbf70f4314dde29&oe=58180A80",
+          "sCity":"Дніпро"
+        },
+        {
           "sFIO":"Домаш Алексей",
           "sPhoto":"https://avatars2.githubusercontent.com/u/1484619?v=3&s=460",
           "sURL":"",
           "sCity":"Дніпро"
         },
         {
+          "sFIO":"Забрудский Дмитрий",
+          "sURL":"https://www.facebook.com/dmitrij.zabrudskij",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c37.56.465.465/s160x160/48134_10201214484668290_1678936328_n.jpg?oh=776e6b7d79db6671ebfd1e7dd673cdc1&oe=582393CE",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Жиган Роман",
+          "sURL":"https://www.facebook.com/roman.zhigan.1",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11891155_1482232562095454_7875554608302750847_n.jpg?oh=00f42b7f50927134427a36381867078c&oe=5854A23F",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Грек Дарья",
+          "sURL":"https://www.facebook.com/darja.grek",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12046987_969763873087888_5887983526328644721_n.jpg?oh=ccdc6260583f719fa7f61ff1b13ab31b&oe=5824EFAC",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Свидрань Максим",
+          "sURL":"https://www.facebook.com/maksim.svidran",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/1655880_10203085452998391_1162874664_n.jpg?oh=8979ec2ee3494428820cfd8e2a434ea9&oe=5824A775",
+          "sCity":"Дніпро"
+        },
+  		{
+          "sFIO":"Ставицький Валерій",
+          "sURL":"https://www.facebook.com/valery.stavitsky",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11224861_870685936332468_2045742132617793708_n.jpg?oh=1b29b4b5d3d9047fc949a7fa671c7153&oe=5812E599",
+          "sCity":"Харків"
+        },
+  		{
+          "sFIO":"Золотова Татьяна",
+          "sURL":"https://www.facebook.com/agraell",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13669845_1756498947958107_6398366836813663529_n.jpg?oh=8c8ca823c9cb770b5107363f86824b13&oe=5850F618",
+          "sCity":"Дніпро"
+        },
+  		{
+          "sFIO":"Смоктий Кирилл",
+          "sURL":"https://www.facebook.com/smoktii",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12933003_567888636711685_9122203894998038314_n.jpg?oh=2f60ddab0abb663ddb2ae7b4af823cd1&oe=58126829",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Продан Юлія",
+          "sURL":"https://www.facebook.com/klimkovichy",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10268438_1477001455911660_5539510016470161228_n.jpg?oh=3791f2651b792617423001a164cfa986&oe=581F4D6A",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Столбова Анна",
+          "sURL":"https://www.facebook.com/insanniyou",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=57bdc0968e8b24ffc6b83a6eaf1bcb0d&oe=5823E139",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Герман Август",
+          "sURL":"https://www.facebook.com/profile.php?id=100005136618550",
+          "sCity":"Дніпро"
+        },
+        {
+          "sFIO":"Куліш Андрій",
+          "sURL":"https://www.facebook.com/andriy.kylish",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c28.28.352.352/s160x160/421576_111660178962768_1443552158_n.jpg?oh=da3c9218fcc6b4a34980b32009f3ac24&oe=5829C6E1",
+          "sCity":"Дніпро"
+        },
+        
+        {
           "sFIO":"Вадим Волос",
           "sURL":"https://www.facebook.com/vadymvolos",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/969077_563076740410432_913138478_n.jpg?oh=5816e4ea9ae61095dbd571ae33763ada&oe=581E1A89",
           "sCity":"Київ"
-        },
-        {
-          "sFIO":"Боровик Дмитрий",
-          "sURL":"",
-          "sCity":"Дніпро"
         },
         {
           "sID_Group":"kyiv.kyiv",
@@ -696,78 +763,9 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         },
         {
           "sID_Group":"dnipro.dnipro",
-          "sFIO":"Жиган Роман",
-          "sURL":"https://www.facebook.com/roman.zhigan.1",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11891155_1482232562095454_7875554608302750847_n.jpg?oh=00f42b7f50927134427a36381867078c&oe=5854A23F",
+          "sFIO":"Нижник Олександр",
+          "sURL":"https://www.facebook.com/profile.php?id=100009085920321",
           "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Грек Дарья",
-          "sURL":"https://www.facebook.com/darja.grek",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12046987_969763873087888_5887983526328644721_n.jpg?oh=ccdc6260583f719fa7f61ff1b13ab31b&oe=5824EFAC",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Свидрань Максим",
-          "sURL":"https://www.facebook.com/maksim.svidran",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/1655880_10203085452998391_1162874664_n.jpg?oh=8979ec2ee3494428820cfd8e2a434ea9&oe=5824A775",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Забрудский Дмитрий",
-          "sURL":"https://www.facebook.com/dmitrij.zabrudskij",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c37.56.465.465/s160x160/48134_10201214484668290_1678936328_n.jpg?oh=776e6b7d79db6671ebfd1e7dd673cdc1&oe=582393CE",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Смоктий Кирилл",
-          "sURL":"https://www.facebook.com/smoktii",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12933003_567888636711685_9122203894998038314_n.jpg?oh=2f60ddab0abb663ddb2ae7b4af823cd1&oe=58126829",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Продан Юлія",
-          "sURL":"https://www.facebook.com/klimkovichy",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10268438_1477001455911660_5539510016470161228_n.jpg?oh=3791f2651b792617423001a164cfa986&oe=581F4D6A",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Столбова Анна",
-          "sURL":"https://www.facebook.com/insanniyou",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=57bdc0968e8b24ffc6b83a6eaf1bcb0d&oe=5823E139",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Герман Август",
-          "sURL":"https://www.facebook.com/profile.php?id=100005136618550",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Золотова Татьяна",
-          "sURL":"https://www.facebook.com/agraell",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Куліш Андрій",
-          "sURL":"https://www.facebook.com/andriy.kylish",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c28.28.352.352/s160x160/421576_111660178962768_1443552158_n.jpg?oh=da3c9218fcc6b4a34980b32009f3ac24&oe=5829C6E1",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"kharkiv.kharkiv",
-          "sFIO":"Ставицький Валерій",
-          "sURL":"https://www.facebook.com/valery.stavitsky",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11224861_870685936332468_2045742132617793708_n.jpg?oh=1b29b4b5d3d9047fc949a7fa671c7153&oe=5812E599",
-          "sCity":"Харків"
         },
         {
           "sID_Group":"ternopil.ternopil",
