@@ -159,19 +159,20 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
-        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        String organ = trimGroups(organs);
-        mParam.put("organ", organ);
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("temporary logging, mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
         LOG.info("temporary logging, sField={}", sField);
-        mParam.put("saField", sField);
+        mParam.put("saField", sField+".");
+
+        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        String organ = trimGroups(organs);
+        mParam.put("organ", organ);
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
-        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);        
+        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
         try {
@@ -337,9 +338,9 @@ public class BpServiceHandler {
                     String accountContacts = getContact((List<Map>) subject.get("aSubjectAccountContact"));
                     sb.append(" ").append(label).append(" (").append(accountContacts).append(")");
                 }
-                LOG.info("sEmployeeContacts: " + sb.toString()); 
+                LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
-                
+
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
