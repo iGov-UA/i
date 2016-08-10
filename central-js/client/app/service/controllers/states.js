@@ -124,6 +124,8 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   //     $scope.spinner = false;
   //   }
   // });
+
+  // hypercomments
   var HC_LOAD_INIT = false;
   window._hcwp = window._hcwp || [];
   window._hcwp.push({
@@ -148,6 +150,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   var title = situation + ' / ' + tag;
   TitleChangeService.setTitle(title);
 
+  // якорь для содержания "жизненной ситуации"
   $scope.gotoAnchor = function(x) {
     var newHash = 'anchor' + x;
     if ($location.hash() !== newHash) {
@@ -160,6 +163,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $anchorScroll();
 });
 
+// данная директива нужна для работы контроллера в data-ng-bind-html
 angular.module('app').directive('compileTemplate', function($compile, $parse){
 return {
   link: function(scope, element, attr){

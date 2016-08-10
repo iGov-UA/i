@@ -678,7 +678,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Волобуев Дмитрий",
-          "sURL":"https://www.facebook.com/profile.php?id=100007298923596&fref=ts",
+          "sURL":"https://www.facebook.com/profile.php?id=100007298923596",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13230318_1706937276226220_178858746065393251_n.jpg?oh=8588f01290a823de793b63d9ca488b19&oe=5818D6EC",
           "sCity":"Дніпро"
         },
@@ -1008,6 +1008,14 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
       var found = false;
       var options = volunteer.sID_Group.split('.');
       var count = 0;
+
+      //check for pics in fb accounts
+      if(volunteer.sURL) {
+        var id = volunteer.sURL.split('id=')[1];
+        if(id) {
+          volunteer.sPhoto = 'https://graph.facebook.com/' + id + '/picture?type=large';
+        }
+      }
 
       // volunteers
       for(var i=0; i<oAllVolunteers.aVolunteers.length; i++) {
