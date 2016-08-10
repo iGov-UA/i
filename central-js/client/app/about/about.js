@@ -381,30 +381,18 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                 a: [{
                   sID: "zurich",
                   sName: "Цюріх",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
                 },
                 {
                   sID: "singapore",
                   sName: "Сингапур",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
                 },
                 {
                   sID: "copenhagen",
                   sName: "Копенгаген",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
                 },
                 {
                   sID: "none",
                   sName: "",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
                 }]
             }
           ]
@@ -418,58 +406,59 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Дубилет Дмитрий",
+          "sFIO":"Дубілет Дмитро",
           "sURL":"https://www.facebook.com/dubilet",
           "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11406895_10153457089428552_7046977239850441618_n.jpg?oh=da0b48378043d6a27b385ec916710239&oe=5857AFE6",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Туренко (Кузьминова) Ольга",
+          "sFIO":"Туренко (Кузьмінова) Ольга",
           "sURL":"https://www.linkedin.com/in/olga-turenko-65860999",
           "sPhoto" : "https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/8/005/0a3/010/2873119.jpg",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Шимкив Дмитрий",
+          "sFIO":"Шимків Дмитро",
           "sURL":"",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Мерило Яника",
+          "sFIO":"Мерило Яніка",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c1.0.160.160/p160x160/10620554_10204503241759783_5791407653897428363_n.jpg?oh=c75d263d5ab1d1f920b42d4aa10b9e9c&oe=585B9330",
           "sURL":"",
           "sCity":"Київ"
         },
         {
-          "sFIO":"Курбацкий Павел",
+          "sFIO":"Курбацький Павло",
           "sURL":"https://www.facebook.com/kyrbatsky",
           "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/14948_717710254976581_8444143412921572127_n.jpg?oh=eadeb8ea15640de0d90ec54477e6737e&oe=582A0FB6",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Кельнер Ирина",
-          "sURL":"",
+          "sFIO":"Кельнер Ірина",
+          "sURL":"https://www.facebook.com/IraKelner",
+          "sPhoto" : "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.0.160.160/p160x160/12642654_1012837938763164_3246634087482743284_n.jpg?oh=edc2d0da483bd6d0a187fc1a6ec5053c&oe=581165DA",
           "sCity":"Тернопіль"
         },
         {
-          "sFIO":"Заболотний Дмитрий",
+          "sFIO":"Заболотній Дмитро",
           "sURL":"",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Боровик Дмитрий",
+          "sFIO":"Боровик Дмитро",
           "sURL":"https://www.facebook.com/dmitry.borovik.39",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c32.0.160.160/p160x160/10599674_678591012230665_7844095113786179561_n.jpg?oh=f96e99efd0e18c178bbf70f4314dde29&oe=58180A80",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Домаш Алексей",
+          "sFIO":"Домаш Олексій",
           "sPhoto":"https://avatars2.githubusercontent.com/u/1484619?v=3&s=460",
           "sURL":"",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Забрудский Дмитрий",
+          "sFIO":"Забрудський Дмитро",
           "sURL":"https://www.facebook.com/dmitrij.zabrudskij",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c37.56.465.465/s160x160/48134_10201214484668290_1678936328_n.jpg?oh=776e6b7d79db6671ebfd1e7dd673cdc1&oe=582393CE",
           "sCity":"Дніпро"
@@ -481,13 +470,13 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Грек Дарья",
+          "sFIO":"Грек Дар'я",
           "sURL":"https://www.facebook.com/darja.grek",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12046987_969763873087888_5887983526328644721_n.jpg?oh=ccdc6260583f719fa7f61ff1b13ab31b&oe=5824EFAC",
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Свидрань Максим",
+          "sFIO":"Свідрань Максим",
           "sURL":"https://www.facebook.com/maksim.svidran",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/1655880_10203085452998391_1162874664_n.jpg?oh=8979ec2ee3494428820cfd8e2a434ea9&oe=5824A775",
           "sCity":"Дніпро"
@@ -499,13 +488,13 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Харків"
         },
   		{
-          "sFIO":"Золотова Татьяна",
+          "sFIO":"Золотова Тетяна",
           "sURL":"https://www.facebook.com/agraell",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13669845_1756498947958107_6398366836813663529_n.jpg?oh=8c8ca823c9cb770b5107363f86824b13&oe=5850F618",
           "sCity":"Дніпро"
         },
   		{
-          "sFIO":"Смоктий Кирилл",
+          "sFIO":"Смоктій Кирило",
           "sURL":"https://www.facebook.com/smoktii",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12933003_567888636711685_9122203894998038314_n.jpg?oh=2f60ddab0abb663ddb2ae7b4af823cd1&oe=58126829",
           "sCity":"Дніпро"
@@ -517,7 +506,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Столбова Анна",
+          "sFIO":"Столбова Ганна",
           "sURL":"https://www.facebook.com/insanniyou",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=57bdc0968e8b24ffc6b83a6eaf1bcb0d&oe=5823E139",
           "sCity":"Дніпро"
@@ -533,25 +522,34 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c28.28.352.352/s160x160/421576_111660178962768_1443552158_n.jpg?oh=da3c9218fcc6b4a34980b32009f3ac24&oe=5829C6E1",
           "sCity":"Дніпро"
         },
+        {
+          "sFIO":"Данілевич Софія",
+          "sURL":"https://www.facebook.com/sophia.danylevich",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13315586_1051012694987834_4701805118846809487_n.jpg?oh=98e4dcfe7e578c77da8a6f6476400d8d&oe=58597FC5",
+          "sCity":"Тернопіль"
+        },
         
-        {
-          "sFIO":"Вадим Волос",
-          "sURL":"https://www.facebook.com/vadymvolos",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/969077_563076740410432_913138478_n.jpg?oh=5816e4ea9ae61095dbd571ae33763ada&oe=581E1A89",
-          "sCity":"Київ"
-        },
-        {
-          "sID_Group":"kyiv.kyiv",
-          "sFIO":"Руднев Вадим",
-          "sURL":"",
-          "sCity":"Київ"
-        },
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Боборицкий Денис",
           "sURL":"",
           "sCity":"Дніпро"
         },
+        {
+          "sID_Group":"kyiv.kyiv",
+          "sFIO":"Вадим Волос",
+          "sURL":"https://www.facebook.com/vadymvolos",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/969077_563076740410432_913138478_n.jpg?oh=5816e4ea9ae61095dbd571ae33763ada&oe=581E1A89",
+          "sCity":"Київ"
+        },
+        
+        {
+          "sID_Group":"kyiv.kyiv",
+          "sFIO":"Руднев Вадим",
+          "sURL":"",
+          "sCity":"Київ"
+        },
+      
         {
           "sID_Group":"kyiv.kyiv",
           "sFIO":"Кащенко Александр",
@@ -765,12 +763,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"https://www.facebook.com/profile.php?id=100009085920321",
           "sCity":"Дніпро"
         },
-        {
-          "sID_Group":"ternopil.ternopil",
-          "sFIO":"Данілевич Софія",
-          "sURL":"https://www.facebook.com/sophia.danylevich",
-          "sCity":"Тернопіль"
-        },
+       
         {
           "sID_Group":"ivano-frankivsk.ivano-frankivsk",
           "sFIO":"Озорович Андрій",
