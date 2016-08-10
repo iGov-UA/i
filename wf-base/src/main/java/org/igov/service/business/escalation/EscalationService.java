@@ -63,6 +63,8 @@ public class EscalationService {
     private EscalationHelper escalationHelper;
     @Autowired
     private EscalationRuleFunctionDao escalationRuleFunctionDao;
+    @Autowired
+    private RuntimeService runtimeService;
 
     private int nFailsTotal = 0;
     private int nFails = 0;
@@ -232,28 +234,14 @@ public class EscalationService {
         //m.put("nDueDays", nDueElapsedDays);
 
         StartFormData startFormData = formService.getStartFormData(oTask.getProcessDefinitionId());
-        for (FormProperty oFormProperty : startFormData.getFormProperties()) {
-            String sType = oFormProperty.getType().getName();
-            String sValue = null;
-            LOG.info(String.format("Matching start form property %s:%s:%s with fieldNames", oFormProperty.getId(),
-                    oFormProperty.getName(), sType));
-            if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
-                    && StringUtils.isNumeric(oFormProperty.getValue())) {
-                result.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
-                BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-            } else {
-                if ("enum".equalsIgnoreCase(sType)) {
-                    sValue = ActionTaskService.parseEnumProperty(oFormProperty);
-                } else {
-                    sValue = oFormProperty.getValue();
-                }
-                LOG.info("id:{} sValue: {}", oFormProperty.getId(), sValue);
-                if (sValue != null) {
-                    result.put(oFormProperty.getId(), sValue);
-                    BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-                }
-            }
-        }
+        Map<String, Object> variables = runtimeService.getVariables(oTask.getProcessInstanceId());
+        
+        result.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        result.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        result.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
         
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
