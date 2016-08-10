@@ -996,6 +996,15 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
     aVolunteers : []
   };
   angular.forEach(aSubject, function(volunteer) {
+
+    //check for pics in fb accounts
+    if(volunteer.sURL) {
+      var id = volunteer.sURL.split('id=')[1];
+      if(id) {
+        volunteer.sPhoto = 'https://graph.facebook.com/' + id + '/picture?type=large';
+      }
+    }
+    
     // TOP
     if(!volunteer.sID_Group) {
       oAllVolunteers.aTop.push(volunteer);
@@ -1003,14 +1012,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
       var found = false;
       var options = volunteer.sID_Group.split('.');
       var count = 0;
-
-      //check for pics in fb accounts
-      if(volunteer.sURL) {
-        var id = volunteer.sURL.split('id=')[1];
-        if(id) {
-          volunteer.sPhoto = 'https://graph.facebook.com/' + id + '/picture?type=large';
-        }
-      }
 
       // volunteers
       for(var i=0; i<oAllVolunteers.aVolunteers.length; i++) {
