@@ -98,6 +98,10 @@ public class ArchiveServiceImpl implements ArchiveService {
             //SimpleDateFormat dateFormatFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
             //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DriverManager.registerDriver(new com.sybase.jdbc3.jdbc.SybDriver());
+            //conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
+            //String DB_PATH = configDao.findByExpected("name", "DB_PATH").getsValue();
+            //String DB_USR = configDao.findByExpected("name", "DB_USR").getsValue();
+            //String DB_PSWD = configDao.findByExpected("name", "DB_PSWD").getsValue();
             conn = DriverManager.getConnection(DB_PATH, DB_USR, DB_PSWD);
             stat = conn.createStatement();
             statComplain = conn.createStatement();

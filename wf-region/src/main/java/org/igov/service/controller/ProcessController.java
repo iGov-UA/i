@@ -182,28 +182,14 @@ public class ProcessController {
         LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         List<Process> result = new ArrayList();
         try {
-            if ("1".equalsIgnoreCase(sID_.trim())) {
-                result.add(creatStub());
-            } else {
+            //if ("1".equalsIgnoreCase(sID_.trim())) {
+            //   result.add(creatStub());
+            //} else {
                 LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
                 List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
                 LOG.info("processes: " + processes.size());
-                Optional<Process> process = processDao.findBy("sID_", sID_.trim());
-                if (process.isPresent()) {
-                    result.add(process.get());
-                }
-                /*for (Process process : processes) {
-                 for (Attribute attribute : process.getaAttribute()) {
-                 if (attribute.getoAttributeType().getId() == 7) { //file
-                 Optional<Attribute_File> attribute_File = attribute_FileDao.findBy("oAttribute.id", attribute.getId());
-                 if (attribute_File.isPresent()) {
-                 attribute.setoAttribute_File(attribute_File.get());
-                 }
-                 }
-                 }
-                 }*/
                 result.addAll(processes);
-            }
+            //}
         } catch (Exception ex) {
             LOG.error("ex: ", ex);
             Process process = creatStub();
