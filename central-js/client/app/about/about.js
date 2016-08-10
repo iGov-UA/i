@@ -401,7 +401,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
 
     var aSubject = [
         {
-          "sFIO":"Белявцев Владимир",
+          "sFIO":"Білявцев Володимир",
           "sURL":"https://www.facebook.com/profile.php?id=100001410629235",
           "sCity":"Дніпро"
         },
