@@ -825,22 +825,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
      * size of query params.
-     * @param snID_Process
-     * @param sKey
-     * @param sValue
+     * @param allRequestParams
      * @return
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(
-            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
-            @RequestParam(value = "key", required = true) String sKey,
-            @RequestParam(value = "value", required = true) String sValue
+    public String setVariableToProcessInstanceUsingPost(@RequestParam Map<String,String> allRequestParams
+//                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+//            @RequestParam(value = "key", required = true) String sKey,
+//            @RequestParam(value = "value", required = true) String sValue
     ) {
         try {
-            runtimeService.setVariable(snID_Process, sKey, sValue);
+            LOG.info("allRequestParams:{}", allRequestParams);
+            runtimeService.setVariable(allRequestParams.get("processInstanceId"),
+                                        allRequestParams.get("key"),
+                                        allRequestParams.get("value"));
         } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(),
+                    allRequestParams.get("processInstanceId"),
+                    allRequestParams.get("key"),
+                    allRequestParams.get("value"));
         }
         return "";
     }
