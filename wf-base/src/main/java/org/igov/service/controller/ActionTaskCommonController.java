@@ -23,7 +23,6 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
@@ -830,16 +829,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(@RequestParam Map<String,String> allRequestParams
-//                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
-//            @RequestParam(value = "key", required = true) String sKey,
-//            @RequestParam(value = "value", required = true) String sValue
+    public String setVariableToProcessInstanceUsingPost(@RequestParam Map<String, Object> allRequestParams
+            //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            //            @RequestParam(value = "key", required = true) String sKey,
+            //            @RequestParam(value = "value", required = true) String sValue
     ) {
         try {
             LOG.info("allRequestParams:{}", allRequestParams);
-            runtimeService.setVariable(allRequestParams.get("processInstanceId"),
-                                        allRequestParams.get("key"),
-                                        allRequestParams.get("value"));
+            runtimeService.setVariable(allRequestParams.get("processInstanceId").toString(),
+                    allRequestParams.get("key").toString(),
+                    allRequestParams.get("value"));
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(),
                     allRequestParams.get("processInstanceId"),

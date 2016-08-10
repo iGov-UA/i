@@ -52,7 +52,6 @@ public class HttpRequester {
         
         String saParam = "";
         if (mParam != null) {
-            saParam = "?";
             for (Map.Entry<String, Object> entry : mParam.entrySet()) {
                 if (entry.getValue() != null) {
                     String entryValue;
