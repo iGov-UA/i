@@ -107,9 +107,9 @@
         
         
         <!--гілка запис ПОЧАТОК--> 
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Вам зателефонують напередодні прийому народного депутата"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="«Вам зателефонують напередодні, коли буде прийом народного депутата"></activiti:formProperty>
         <!--гілка запис КІНЕЦЬ--> 
          
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="invisible"></activiti:formProperty>
@@ -118,6 +118,7 @@
      
          </extensionElements>  
       </startEvent>
+      
      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
@@ -196,7 +197,7 @@
         <conditionExpression xsi:type="tFormalExpression"> <![CDATA[${asKind =='sAddressing'}]]> </conditionExpression>
     </sequenceFlow>
     
-    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних">
+    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
           <extensionElements>
          <!-->ЮЗЕРТАСКА 1 ЗВЕРНЕННЯ-->  
          
@@ -393,7 +394,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину">
+    
+    
+    
+    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
         <!--ЮЗЕРТАСКА 2 гілка звернення ПОЧАТОК--> 
         
      <extensionElements>
@@ -445,8 +449,11 @@
           </activiti:field>
         </activiti:taskListener>  
        </extensionElements>  
-       <!--ЮЗЕРТАСКА 2 гілка звернення ПОЧАТОК-->   
+       <!--ЮЗЕРТАСКА 2 гілка звернення КІНЕЦЬ-->   
     </userTask>
+    
+    
+    
     <sequenceFlow id="flow34" sourceRef="usertask2" targetRef="servicetask13"></sequenceFlow>
     <serviceTask id="servicetask13" name="Звернення до депутата. Відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
               <extensionElements>
@@ -490,10 +497,16 @@
     <sequenceFlow id="flow12" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <!--ЗВЕРНЕННЯ КІНЕЦЬ ПРОЦЕСУ--> 
+    
+    
+    
+    
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="usertask3">
        <conditionExpression xsi:type="tFormalExpression"> <![CDATA[${asKind != 'sAddressing'}]]> </conditionExpression> 
     </sequenceFlow>
-    <userTask id="usertask3" name="Запис на прийом. Перевірка данних">
+    
+    
+    <userTask id="usertask3" name="Запис на прийом. Перевірка данних" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
          <!--ЗАПИС НА ПРИЙОМ ПОЧАТОК ПРОЦЕСУ--> 
         <extensionElements>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
@@ -566,6 +579,8 @@
       </extensionElements>  
     </userTask>
     
+    
+    
     <sequenceFlow id="flow15" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow23" name="Запис на прийом. Відмова у реєстрації звернення" sourceRef="exclusivegateway3" targetRef="servicetask6">
@@ -610,17 +625,187 @@
         
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="servicetask10"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Запис на прийом. Сповіщення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="servicetask10">
+         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]> </conditionExpression>  
+    </sequenceFlow>
+    <serviceTask id="servicetask10" name="Запис на прийом. Сповіщення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення на тему: Запис на прийом до депутата.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+            <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+            <p>Ваше звернення щодо запису на прийом до народного депутата розглянуте.<br>
+               Вам зателефонують напередодні прийому народного депутата.
+            </p>
+            <p>
+           </p>
+            [pattern/mail/_common_signature_start.html]
+            ${sNameOrgan},<br>
+            [pattern/mail/_common_signature_end.html]
+            [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno.Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask4" name="Запис на прийом. Візит громадянина"></userTask>
+    
+    
+    
+    <userTask id="usertask4" name="Запис на прийом. Візит громадянина" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
+        <extensionElements>
+        <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_reg" name="Ваша адреса реєстрації;індекс, місто, вулиця, номер будинку та номер квартири" type="string" writable="false"></activiti:formProperty>
+        
+         <activiti:formProperty id="asSpecialStatus" name="Чи маєте Ви особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" default="sNo1" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+         <!--загальна інформація про громадянина КІНЕЦЬ-->
+           
+         <activiti:formProperty id="asKind" name="Ви бажаєте" type="enum" writable="false">
+          <activiti:value id="sAddressing" name="залишити звернення"></activiti:value>
+          <activiti:value id="sAppointment" name="записатись на прийом"></activiti:value>
+         </activiti:formProperty>
+        
+        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asResult" name="Результат розгляду" type="enum">
+          <activiti:value id="sPositively" name="Вирішено позитивно"></activiti:value>
+          <activiti:value id="sClarifications" name="Надано роз’яснення"></activiti:value>
+          <activiti:value id="sDenied" name="Відмовлено"></activiti:value>
+          <activiti:value id="sNonAppearance" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        </extensionElements>  
+    </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask4" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="servicetask11"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Запис на прийом. Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="servicetask11">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide != 'sNonAppearance'}]]> </conditionExpression>  
+    </sequenceFlow>
+    <serviceTask id="servicetask11" name="Запис на прийом. Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+     <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення на тему: Запис на прийом до посадовця.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+            <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+            <p>
+            Ви отримали послугу "Запис на прийом до депутата".<br>
+            Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+            Дякуємо.
+            </p>
+            [pattern/mail/_common_signature_start.html]
+            ${sNameOrgan},<br>
+            [pattern/mail/_common_signature_end.html]   
+            [pattern/mail/_common_feedback.html]
+            [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>   
+        
+    </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway4" targetRef="servicetask12"></sequenceFlow>
-    <serviceTask id="servicetask12" name="Запис на прийом. Неявка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow30" sourceRef="exclusivegateway4" targetRef="servicetask12">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'sNonAppearance'}]]> </conditionExpression>   
+    </sequenceFlow>
+    <serviceTask id="servicetask12" name="Запис на прийом. Неявка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+        <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення на тему: Запис на прийом до депутата.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+             <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+             <p>
+             На жаль, Ви не з'явились на прийом призначений день і час.<br>
+             При необхідності нового запису Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+             </p>
+             [pattern/mail/_common_signature_start.html]
+             ${sNameOrgan}</p>
+             [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Na zhal', Vy ne z'iavylys' na pryiom u pryznachenyi den'. Vy mozhete podaty sche odnu zaiavku na portali https://igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow33" sourceRef="servicetask12" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
   
