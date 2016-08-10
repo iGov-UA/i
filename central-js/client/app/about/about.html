@@ -198,9 +198,15 @@
                 <span style="font-size: 24px" ng-if="city.sName !== 'Сингапур' && city.sName !== ''">м. </span>
                 {{city.sName}}
               </h3>
-              <a href="{{city.sCityPassportURL || '#'}}">Паспорт iGov міста</a><br>
-              <a href="{{city.sNewsGroupURL || '#'}}">Група з новинами iGov міста - {{city.sName}}</a><br>
-              <a href="{{city.sVolunteersGroupURL || '#'}}">Група волонтерів iGov міста - {{city.sName}}</a><br>
+              <div ng-if="city.sCityPassportURL">
+                <a href="{{city.sCityPassportURL}}">Паспорт iGov міста</a><br>
+              </div>
+              <div ng-if="city.sNewsGroupURL">
+                <a href="{{city.sNewsGroupURL}}">Група з новинами iGov міста - {{city.sName}}</a><br>
+              </div>
+              <div ng-if="city.sVolunteersGroupURL">
+                <a href="{{city.sVolunteersGroupURL}}">Група волонтерів iGov міста - {{city.sName}}</a><br>
+              </div>
             </div>
 
             <div>
