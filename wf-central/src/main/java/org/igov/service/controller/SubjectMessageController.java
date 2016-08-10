@@ -1,14 +1,11 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
-
 import io.swagger.annotations.*;
-
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
@@ -16,9 +13,7 @@ import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessageFeedback;
-import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.model.subject.message.*;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
@@ -36,19 +31,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 @Controller
@@ -77,6 +71,8 @@ public class SubjectMessageController {
     private SubjectMessageService oSubjectMessageService;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
 
     @ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -443,7 +439,7 @@ public class SubjectMessageController {
                 }
 //            }*/
 
-            if (StringUtils.isNotBlank(sID_File)) {
+            if (isNotBlank(sID_File)) {
                 LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
                 byte[] aByte_FileContent = null;
                 try {
@@ -498,9 +494,10 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
     }
 
-    @ApiOperation(value = "Отправить отзыв по услуге от сторонней организации")
+    @ApiOperation(value = "Сохранить отзыв по услуге от сторонней организации")
     @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
     public ResponseEntity<String> setFeedbackExternal(
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source", required = true) String sID_Source,
             @ApiParam(value = "ФИО автора отзыва", required = true) @RequestParam(value = "sAuthorFIO", required = true) String sAuthorFIO,
             @ApiParam(value = "e-mail автора отзыва", required = true) @RequestParam(value = "sMail", required = true) String sMail,
@@ -510,32 +507,92 @@ public class SubjectMessageController {
             @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
             @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-            @ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
-            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nId,
-            @ApiParam(value = "ID чего-то там", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+            //@ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
+            @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
 
-        LOG.info("setFeedbackExternal started for the sID_Source: {}, nID_Service: {} ", sID_Source, nID_Service);
-        JSONObject responseObject = new JSONObject();
+        LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        JSONObject oJSONObject = new JSONObject();
         try {
-            SubjectMessageFeedback feedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
-                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nId, nID_Subject);
+            String sAnswer=null;
+            SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
+                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
+                    nID_Subject);
+            if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
+            }
+
+            /*if (!isEmpty(sAnswer)) {
+                SubjectMessageFeedbackAnswer answer = oSubjectMessageService
+                        .setSubjectMessageFeedbackAnswer(feedback.getId(), sAnswer, nID_Subject);
+
+                List<SubjectMessageFeedbackAnswer> answers = feedback.getoSubjectMessageFeedbackAnswers();
+                answers.add(answer);
+                feedback.setoSubjectMessageFeedbackAnswers(answers);
+                subjectMessageFeedbackDao.update(feedback);
+            }*/
 
             LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
-                    sID_Source, nID_Service, feedback.getId(), feedback.getsID_Token());
+                    sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
             String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
-                    generalConfig.getSelfHost(), nID_Service, feedback.getId(), feedback.getsID_Token());
+                    generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
-            responseObject.put("sURL", responseMessage);
-            return new ResponseEntity<>(responseObject.toString(), HttpStatus.CREATED);
+            oJSONObject.put("sURL", responseMessage);
+            return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
 
         } catch (Exception e) {
-            LOG.info("Exception caught at setFeedbackExternal, message: {}", e.getMessage());
+            LOG.error("/setFeedbackExternal, nID={}, message={}", nID, e.getMessage());
             throw new CommonServiceException(e.getMessage(), e);
         }
     }
 
+    
+    @ApiOperation(value = "Сохранить ответ об отзыве по услуге от сторонней организации")
+    @RequestMapping(value = "/setFeedbackAnswerExternal", method = RequestMethod.POST)
+    public ResponseEntity<String> setFeedbackAnswerExternal(
+            @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
+            @ApiParam(value = "Тело ответа", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+            @ApiParam(value = "ID отзыва, ответ на который надо сохранить", required = true) @RequestParam(value = "nID_SubjectMessageFeedback", required = true) Long nID_SubjectMessageFeedback,
+            @ApiParam(value = "Собственный контр-ответ автора фидбека", required = false) @RequestParam(value = "bSelf", required = true) Boolean bSelf,
+            @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+    ) throws CommonServiceException {
+
+        String sAnswer=sBody;
+        LOG.info("Started! (nID_SubjectMessageFeedback={}, sBody={})", nID_SubjectMessageFeedback, sBody);
+        JSONObject oJSONObject = new JSONObject();
+        try {
+            SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
+            if (oSubjectMessageFeedback==null) {
+                LOG.warn("SubjectMessageFeedback not found! (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
+                throw new CommonServiceException("oSubjectMessageFeedback==null!", "(nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback+"):oSubjectMessageFeedback==null!");
+            }
+            if (sID_Token!=null && sID_Token.equals(oSubjectMessageFeedback.getsID_Token())) {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "sID_Token not equal! sID_Token="+sID_Token+", nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback, HttpStatus.NOT_FOUND);
+            }
+            SubjectMessageFeedbackAnswer oSubjectMessageFeedbackAnswer=null;
+            if (isEmpty(sAnswer)) {
+                LOG.warn("sBody is empty!, nID_SubjectMessageFeedback={}", nID_SubjectMessageFeedback);
+                throw new CommonServiceException("sBody is empty!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
+            }else{
+                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject, bSelf);
+                List<SubjectMessageFeedbackAnswer> aSubjectMessageFeedbackAnswer = oSubjectMessageFeedback.getoSubjectMessageFeedbackAnswers();
+                aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
+                oSubjectMessageFeedback.setoSubjectMessageFeedbackAnswers(aSubjectMessageFeedbackAnswer);
+                subjectMessageFeedbackDao.update(oSubjectMessageFeedback);
+            }
+            LOG.info("successfully saved answer to feedback (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
+            oJSONObject.put("nID", oSubjectMessageFeedbackAnswer.getId());
+            return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            LOG.error("/setFeedbackAnswerExternal, message: {}", e.getMessage());
+            throw new CommonServiceException(e.getMessage(), e);
+        }
+    }    
+    
     @ApiOperation(value = "Получить отзыв по услуге от сторонней организации по номеру отзыва и паролю или все отзывы по сервису")
     @RequestMapping(value = "/getFeedbackExternal", method = RequestMethod.GET)
     public ResponseEntity<String> getFeedbackExternal(
@@ -816,7 +873,7 @@ public class SubjectMessageController {
 	                throw newErr;
 	    		}    	    	
 	    		LOG.info("Message is recieved by nID_Message {}", nID_Message);    		
-	    		if (StringUtils.isNotBlank(sID_Order)){
+	    		if (isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
                                 LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
@@ -831,7 +888,7 @@ public class SubjectMessageController {
 	                	}
 	                }
 	    		}
-	    		if (StringUtils.isNotBlank(message.getData())){
+	    		if (isNotBlank(message.getData())){
 	    			LOG.info("Field sData in message is not null");	    			
 	    	        JSONArray sDataArrayJson = (new JSONObject(message.getData())).getJSONArray("aFile");
 	    			String sFileName = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sFileName");
@@ -882,14 +939,14 @@ public class SubjectMessageController {
 	            if(bAuth && oHistoryEvent_Service.isPresent()){
 	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
 	            }
-	    		if(message == null || StringUtils.isBlank(message.getsID_DataLink())){
+	    		if(message == null || isBlank(message.getsID_DataLink())){
 	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
 	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
 	                throw newErr;
 	    		}    	    	
 	    		LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);    		
 	    		
-	    		if (StringUtils.isNotBlank(message.getsID_DataLink())){
+	    		if (isNotBlank(message.getsID_DataLink())){
 	    			LOG.info("Field sID_DataLink in message is not null");	    			
 	    	        
 	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());

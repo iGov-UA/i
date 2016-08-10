@@ -1402,8 +1402,44 @@
 
     </changeSet>
 
+    <changeSet id="issue-1321-2" author="taaraora" failOnError="false">
+        <createTable tableName="SubjectMessageFeedbackAnswer">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+
+            <column name="nID_SubjectMessage" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectMessageFeedbackAnswer_SubjectMessage"
+                             referencedTableName    ="SubjectMessage"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_SubjectMessageFeedback" type="bigint">
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedbackAnswer_SubjectMessageFeedback"
+                             referencedTableName    ="SubjectMessageFeedback"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="false"/>
+            </column>
+            <column name="bSelf" type="boolean" defaultValue="false" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            DROP TABLE SubjectMessageFeedbackAnswer;
+        </rollback>
+    </changeSet>
+
     <changeSet id="issue-1321" author="taaraora">
         <addColumn tableName="SubjectMessageFeedback">
+            <column name="nID_SubjectMessageFeedbackAnswers" type="bigint" >
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedback_SubjectMessageFeedbackAnswers"
+                             referencedTableName    ="SubjectMessageFeedbackAnswer"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
             <column name="nID_SubjectMessage" type="bigint" >
                 <constraints nullable               ="true"
                              foreignKeyName         ="FK_SubjectMessageFeedback_SubjectMessage"

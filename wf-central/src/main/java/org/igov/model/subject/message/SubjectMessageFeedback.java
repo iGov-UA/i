@@ -1,12 +1,15 @@
 package org.igov.model.subject.message;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.*;
 import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "SubjectMessageFeedback")
@@ -57,10 +60,25 @@ public class SubjectMessageFeedback extends AbstractEntity {
     private String sAnswer;
 
     @JsonProperty(value = "oSubjectMessage")
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "nID_SubjectMessage", nullable = true)
     @Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private SubjectMessage oSubjectMessage;
+
+    @JsonProperty(value = "oSubjectMessageFeedbackAnswers")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "oSubjectMessageFeedback", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<SubjectMessageFeedbackAnswer> oSubjectMessageFeedbackAnswers;
+
+    public List<SubjectMessageFeedbackAnswer> getoSubjectMessageFeedbackAnswers() {
+        return oSubjectMessageFeedbackAnswers;
+    }
+
+    public void setoSubjectMessageFeedbackAnswers(
+            List<SubjectMessageFeedbackAnswer> oSubjectMessageFeedbackAnswers) {
+        this.oSubjectMessageFeedbackAnswers = oSubjectMessageFeedbackAnswers;
+    }
 
     public SubjectMessage getoSubjectMessage() {
         return oSubjectMessage;

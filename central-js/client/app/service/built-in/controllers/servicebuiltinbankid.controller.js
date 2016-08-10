@@ -360,7 +360,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
-        $rootScope.data.email = $scope.data.formData.params.email.value;
+        if($scope.data.formData.params.email){
+          $rootScope.data.email = $scope.data.formData.params.email.value;
+        }
 
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
@@ -627,44 +629,40 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   // https://github.com/e-government-ua/i/issues/1326
-  $scope.getDataPaymentLiqpay = function (sID_Merchant) {
+  $scope.redirectPaymentLiqpay = function (sMerchantFieldID) {
     var incorrectLiqpayRequest = false;
+    var sSuffix = sMerchantFieldID.substring('sID_Merchant'.length);
     var paramsLiqPay = {
-      sID_Merchant: sID_Merchant
+      sID_Merchant: $scope.data.formData.params[sMerchantFieldID].value
     };
-    if(angular.isDefined($scope.data.formData.params.sSum.value)){
-      paramsLiqPay.sSum = $scope.data.formData.params.sSum.value;
+    var merchantId = "sSum" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value > 0){
+      paramsLiqPay.sSum = $scope.data.formData.params[merchantId].value;
     } else {
       console.warn("redirectPaymentLiqpay sSum value not found");
       incorrectLiqpayRequest = true;
     }
-    if(angular.isDefined($scope.data.formData.params.sID_Currency.value)){
-      if($scope.data.formData.params.sID_Currency.value.length > 0){
-        paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
-      }
+    merchantId = "sID_Currency" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value !== null && $scope.data.formData.params[merchantId].value !== ""){
+      paramsLiqPay.sID_Currency = $scope.data.formData.params[merchantId].value;
     }
-    if(angular.isDefined($scope.data.formData.params.sDescription.value)){
-      if($scope.data.formData.params.sDescription.value.length > 0){
-        paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
-      }
+    merchantId = "sDescription" + sSuffix;
+    if($scope.data.formData.params[merchantId] && $scope.data.formData.params[merchantId].value !== null && $scope.data.formData.params[merchantId].value !== ""){
+      paramsLiqPay.sDescription = $scope.data.formData.params[merchantId].value;
     }
     paramsLiqPay.nID_Server = this.oServiceData.nID_Server;
     var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
     paramsLiqPay.sID_Order = this.oService.nID + "--" + this.oServiceData.oData.processDefinitionId.split(':')[0] + "--" + sCurrDateTime;
     if(!incorrectLiqpayRequest){
-      //ServiceService.getRedirectPaymentLiqpay(paramsLiqPay);
       $http.get('api/payment-liqpay', {
         params: angular.copy(paramsLiqPay)
       }).
-      success(function(data, status, headers, config) {
+      success(function(data) {
         openUrl(data.sURL, {
           data: data.data,
           signature: data.signature
         });
-      }).
-      error(function(data, status, headers, config) {
-
-      });
+      })
     }
   };
 
@@ -690,7 +688,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
       form.appendTo(document.body); // Необходимо для некоторых браузеров
       form.submit();
-
     } else {
       window.open( url, '_blank' );
     }

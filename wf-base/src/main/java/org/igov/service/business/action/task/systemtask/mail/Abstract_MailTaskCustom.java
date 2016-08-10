@@ -212,7 +212,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
 		List<String> previousUserTaskId = getPreviousTaskId(execution);
 		int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-		LOG.info("Found {} enum occurrences in the text", nLimit);
+		LOG.info("Found {} enum occurrences in the text ", nLimit);
 		Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
 		int foundIndex = 0;
 		while (nLimit > 0) {
@@ -295,6 +295,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 							String sType = formProperty.getType().getName();
 							if ("date".equals(sType)) {
 								if (formProperty.getValue() != null) {
+									LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
 									replacement = getFormattedDateS(formProperty.getValue());
 								} 
 							} else {
@@ -574,11 +575,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 	
-private String getFormattedDateS(String date) {
-		
-	DateTime dt = DateTime.parse(date);
-	Date d = dt.toDate();
-	return getFormattedDate(d);
+	private String getFormattedDateS(String date) {
+		DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("MM/dd/yyyy");
+	    DateTime dateTime = dateStringFormat.parseDateTime(date);
+		Date d = dateTime.toDate();
+		return getFormattedDate(d);
 	}
 
 	@Override
@@ -586,9 +587,9 @@ private String getFormattedDateS(String date) {
 	}
 
 	protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order) {
-		Map<String, String> params = new HashMap<>();
+		final Map<String, String> params = new HashMap<>();
 		params.put("sID_Order", sID_Order);
-		params.put("sHead", "Отправлено письмо");
+		params.put("sHead", "Відправлено листа");
 		params.put("sBody", sHead);
 		params.put("sMail", sTo);
 		params.put("nID_SubjectMessageType", "" + 10L);
@@ -611,7 +612,7 @@ private String getFormattedDateS(String date) {
 					jsonServiceMessage = historyEventService.addServiceMessage(params);
 					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
 				} catch (Exception e) {
-					LOG.error("(saveServiceMessage error={})", e.getMessage());
+					LOG.error("( saveServiceMessage error={})", e.getMessage());
 				}
 			}
 		};
