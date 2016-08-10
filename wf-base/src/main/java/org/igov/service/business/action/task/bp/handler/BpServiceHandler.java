@@ -160,19 +160,16 @@ public class BpServiceHandler {
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-//        mGuideTaskParamKey.put("sTaskId", "ИД таски");
         String organ = trimGroups(organs);
         mParam.put("organ", organ);
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
+        LOG.info("temporary logging, mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("temporary logging, sField={}", sField);
         mParam.put("saField", sField);
         mParam.put("data", mTaskParam.get("sDate_BP"));
-//        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-       
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-//        mGuideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
-//        mGuideTaskParamKey.put("area", "Район");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);        
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
