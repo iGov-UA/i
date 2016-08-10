@@ -565,6 +565,10 @@ public class SubjectMessageController {
         JSONObject oJSONObject = new JSONObject();
         try {
             SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
+            if (oSubjectMessageFeedback==null) {
+                LOG.warn("SubjectMessageFeedback not found! (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
+                throw new CommonServiceException("oSubjectMessageFeedback==null!", "(nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback+"):oSubjectMessageFeedback==null!");
+            }
             if (sID_Token!=null && sID_Token.equals(oSubjectMessageFeedback.getsID_Token())) {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "sID_Token not equal! sID_Token="+sID_Token+", nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback, HttpStatus.NOT_FOUND);
@@ -573,12 +577,8 @@ public class SubjectMessageController {
             if (isEmpty(sAnswer)) {
                 LOG.warn("sBody is empty!, nID_SubjectMessageFeedback={}", nID_SubjectMessageFeedback);
                 throw new CommonServiceException("sBody is empty!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
-            }else if (oSubjectMessageFeedback==null) {
-                LOG.warn("oSubjectMessageFeedback==null! (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
-                throw new CommonServiceException("oSubjectMessageFeedback==null!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
             }else{
                 oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject, bSelf);
-
                 List<SubjectMessageFeedbackAnswer> aSubjectMessageFeedbackAnswer = oSubjectMessageFeedback.getoSubjectMessageFeedbackAnswers();
                 aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
                 oSubjectMessageFeedback.setoSubjectMessageFeedbackAnswers(aSubjectMessageFeedbackAnswer);
