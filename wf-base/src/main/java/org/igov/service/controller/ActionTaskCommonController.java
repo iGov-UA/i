@@ -829,7 +829,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(@RequestParam Map<String, Object> allRequestParams
+    public String setVariableToProcessInstanceUsingPost(@RequestBody Map<String, Object> allRequestParams
             //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             //            @RequestParam(value = "key", required = true) String sKey,
             //            @RequestParam(value = "value", required = true) String sValue
