@@ -35,7 +35,9 @@ module.exports.token = function (req, res, next) {
       "session preparation data for bankid-nbu session type doesn't contain link"));
     return;
   }
-  
+
+  var link = req.session.prepare.data.link;
+
   passport.authenticate('nbu-oauth2', {
     session: false,
     code: req.query.code,
@@ -43,8 +45,6 @@ module.exports.token = function (req, res, next) {
     state: req.query.state
   }, function (err, user, info) {
     var error;
-
-    var link = req.session.prepare.data.link;
 
     if (err) {
       error = {error: JSON.stringify(err)};
