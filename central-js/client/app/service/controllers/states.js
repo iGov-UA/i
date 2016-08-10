@@ -160,7 +160,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService) {
+angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -185,7 +185,17 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
   function activate() {
 
-    $scope.feedback.isAdmin = AdminService.isAdmin();
+    UserService.isLoggedIn().then(function (result) {
+      if (result) {
+        UserService.fio().then(function (res) {
+          if(res.subjectID ===20049){
+            $scope.feedback.isAdmin = true;
+          }
+        });
+      }
+    });
+    //TODO fix AdminServ isAdmin
+    //$scope.feedback.isAdmin = AdminService.isAdmin();
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
@@ -194,9 +204,12 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     if ($scope.nID && $scope.sID_Token) {
       $scope.feedback.allowLeaveFeedback = true;
     }
+    refreshList();
+  }
 
+  function refreshList(){
     $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
-        FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
+      FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
       .then(function (response) {
         var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
         ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
@@ -230,8 +243,8 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
             break;
         }
       }).finally(function () {
-      $scope.loaded = true;
-    });
+        $scope.loaded = true;
+      });
   }
 
   function rateFunction(rating) {
@@ -243,14 +256,20 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       sMail = $scope.feedback.currentFeedback.sMail,
       sHead = $scope.feedback.currentFeedback.sHead;
 
-    FeedbackService.postFeedbackForService($scope.nID,
-      ServiceService.oService.nID,
-      $scope.sID_Token,
-      $scope.feedback.messageBody,
-      sAuthorFIO,
-      sMail,
-      sHead,
-      $scope.feedback.raiting);
+    var feedbackParams = {
+      'sToken': $scope.sID_Token,
+      'sBody': $scope.feedback.messageBody,
+      'sID_Source': $scope.nID,
+      'sAuthorFIO': sAuthorFIO,
+      'sMail': sMail,
+      'sHead': sHead,
+      'nID_Rate': $scope.feedback.raiting,
+      'nID_Service': ServiceService.oService.nID
+    };
+
+    FeedbackService.postFeedbackForService(feedbackParams).then(function(){
+      refreshList();
+    });
 
     $state.go('index.service.feedback', {
       nID: null,
@@ -261,16 +280,18 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
   function sendAnswer(data){
     var sHead = '';
 
-    FeedbackService.postFeedbackForService(data.nID,
-      data.nID_Service,
-      $scope.sID_Token,
-      data.sBody,
-      data.sAuthorFIO,
-      data.sMail,
-      sHead,
-      data.nID_Rate,
-      data.sAnswer);
+    var feedbackParams = {
+      'sID_Token': $scope.sID_Token,
+      'sBody': data.sAnswer.sText,
+      'nID_SubjectMessageFeedback': data.nID,
+      'sAuthorFIO': data.sAuthorFIO,
+      'nID_Service': data.nID_Service,
+      'nID_Subject': $state.nID_Subject
+    };
 
+    FeedbackService.postFeedbackAnswerForService(feedbackParams).then(function(){
+      refreshList();
+    });
     hideAnswer();
   }
 

@@ -73,6 +73,15 @@
                     current-feedback="item"
                     on-send="feedback.sendAnswer(answerData)"
                     ></feedback-answer>
+
+                  <div class="feedback-answers" ng-repeat="answ in item.oSubjectMessageFeedbackAnswers">
+                      <p>
+                        <small class="feedback-info-list-author">{{::answ.oSubjectMessage.sDate}}</small>
+                      </p>
+                      <div class="feedback-answers-body">
+                        <p>{{::answ.oSubjectMessage.sBody}}</p>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
