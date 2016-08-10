@@ -3,7 +3,7 @@
   <process id="poltava_nd_967" name="Звернення до народного депутата. Надання выдповыды." isExecutable="true">
     <startEvent id="startevent1" name="Start">
        <extensionElements>
-           <!--загальна інформація про громадянина ПОЧАТОК-->
+           <!--СТАРТЕВЕНТ загальна інформація про громадянина ПОЧАТОК-->
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть округ та депутата, до якого  подається звернення" type="select" default="0"></activiti:formProperty>
            
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -74,6 +74,7 @@
           <activiti:value id="propozicia" name="пропозиція"></activiti:value>
           <activiti:value id="skarga" name="скарга"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="asTema" name="Тема звернення" type="enum" required="true">
           <activiti:value id="prompol" name="Промислова політика"></activiti:value>
           <activiti:value id="agrar" name="Аграрна політика і земельні відносини"></activiti:value>
@@ -101,7 +102,7 @@
           <activiti:value id="other" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTema_det" name="Деталізація теми" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMessageTextAddressing" name="Текст Заяви" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="addFile" name="Додати документ; Якщо документів більше 1-го - об'єднайте їх у pdf-файл або ZIP-архів" type="file"></activiti:formProperty>
         <!--гілка звернення КІНЕЦЬ--> 
         
@@ -114,8 +115,10 @@
          
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk967" name="електронна пошта; для тестування залиштесвою пошту" type="string"></activiti:formProperty>
-     
+        <activiti:formProperty id="sMailClerk967" name="електронна пошта; для тестування залиште свою пошту" type="string"></activiti:formProperty>
+        
+         <activiti:formProperty id="markers2" name="showFields" type="markers" default="${markerService.loadFromFile('poltava_nd_967')}"></activiti:formProperty>
+        
          </extensionElements>  
       </startEvent>
       
@@ -296,7 +299,7 @@
           <activiti:value id="other" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTema_det" name="Деталізація теми" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageTextAddressing" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
         
          <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
                 <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
@@ -310,7 +313,7 @@
             <activiti:expression>${addFile}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <!--ЮЗЕРТАСКА гілка звернення КІНЕЦЬ--> 
+        <!--ЮЗЕРТАСКА 1 гілка звернення КІНЕЦЬ--> 
         </extensionElements> 
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -439,7 +442,7 @@
           <activiti:value id="other" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTema_det" name="Деталізація теми" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageTextAddressing" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
          <activiti:formProperty id="nDocFile" name="Додайте сканований результат відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -567,8 +570,8 @@
           <activiti:value id="sAppointment" name="записатись на прийом"></activiti:value>
          </activiti:formProperty>
         
-        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
         
          <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
                 <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
@@ -725,8 +728,8 @@
           <activiti:value id="sAppointment" name="записатись на прийом"></activiti:value>
          </activiti:formProperty>
         
-        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="asResult" name="Результат розгляду" type="enum">
           <activiti:value id="sPositively" name="Вирішено позитивно"></activiti:value>
