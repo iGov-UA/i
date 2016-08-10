@@ -85,13 +85,13 @@ public class BpServiceImpl implements BpService {
     public void setVariableToProcessInstance(Integer nID_Server, String instanceId, String key, Object value) {
         if (value != null && !"null".equals(value.toString())) {
             LOG.info(String.format("set value [%s] to [%s] in process with id=%s", key, value, instanceId));
-            Map<String, String> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             String url = getServerUrl(nID_Server) + uriSetProcessVariable;
             params.put("processInstanceId", instanceId);
             params.put("key", key);
             params.put("value", value.toString());
             try {
-                String jsonProcessInstance = httpRequester.getInside(url, params);
+                String jsonProcessInstance = httpRequester.postInside(url, params);
             } catch (Exception oException) {
                 LOG.warn("error!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);

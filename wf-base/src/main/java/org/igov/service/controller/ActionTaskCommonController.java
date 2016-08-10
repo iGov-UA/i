@@ -823,6 +823,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
+     * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
+     * size of query params.
+     * @param snID_Process
+     * @param sKey
+     * @param sValue
+     * @return
+     */
+    @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
+    @ResponseBody
+    public String setVariableToProcessInstanceUsingPost(
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "key", required = true) String sKey,
+            @RequestParam(value = "value", required = true) String sValue
+    ) {
+        try {
+            runtimeService.setVariable(snID_Process, sKey, sValue);
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
+        return "";
+    }
+
+    /**
      * Загрузка каталога сервисов из Activiti:
      *
      * // * @param nID_Subject ID авторизированого субъекта (добавляется в

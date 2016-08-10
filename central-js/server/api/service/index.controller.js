@@ -1,6 +1,7 @@
 'use strict';
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var oUtil = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
 //var environmentConfig = require('../../config');
 
@@ -89,7 +90,34 @@ module.exports.postServiceFeedback = function (req, res) {
       'sHead': data.sHead || ' ',
       'sBody': data.sBody,
       'nID_Rate': data.nID_Rate,
-      'nID_Service': req.params.nID
+      'nID_Service': req.params.nID,
+      'sAnswer': data.sAnswer || ''
+    }
+  }, callback);
+};
+
+module.exports.postServiceFeedbackAnswer = function (req, res) {
+  var url = sHost + '/subject/message/setFeedbackAnswerExternal';
+  var data = req.body;
+  var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+//TODO review sID_Token
+  return request.post({
+    'url': url,
+    'auth': {
+      'username': config.username,
+      'password': config.password
+    },
+    'qs': {
+      'sID_Token': null,//data.sID_Token,
+      'sBody': data.sBody,
+      'nID_SubjectMessageFeedback': data.nID_SubjectMessageFeedback,
+      'nID_Subject': nID_Subject,
+      'bSelf': false
     }
   }, callback);
 };
