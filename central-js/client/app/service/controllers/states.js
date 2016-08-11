@@ -251,9 +251,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
           return -o.nID;
         });
 
-        $scope.feedback.exist = $scope.feedback.messageList.some(function (item) {
-          return $scope.nID == item.nID && item.sBody !== '';
-        });
+        $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return o.nID != $scope.nID;
