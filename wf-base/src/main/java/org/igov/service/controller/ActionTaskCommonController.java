@@ -825,12 +825,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
      * size of query params.
-     * @param httpEntity
+     * @param allRequestParamsStr
      * @return
      */
-    @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
+    @RequestMapping(value = "/setVariable", method = RequestMethod.POST, consumes = "text/plain")
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(HttpEntity<String> httpEntity
+    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
             //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             //            @RequestParam(value = "key", required = true) String sKey,
             //            @RequestParam(value = "value", required = true) String sValue
@@ -839,7 +839,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String key = null;
         String value = null;
         try {
-            String allRequestParamsStr = httpEntity.getBody();
             LOG.info("allRequestParams:{}", allRequestParamsStr);
             String[] paramsKeyValues = allRequestParamsStr.split("&");
             HashMap<String, String> params = new HashMap<>();
