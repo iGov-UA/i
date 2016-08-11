@@ -824,26 +824,36 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
      * size of query params.
-     * @param allRequestParams
+     * @param allRequestParamsStr
      * @return
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(@RequestBody Map<String, Object> allRequestParams
+    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
             //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             //            @RequestParam(value = "key", required = true) String sKey,
             //            @RequestParam(value = "value", required = true) String sValue
     ) {
+        String processInstanceId = null;
+        String key = null;
+        String value = null;
         try {
-            LOG.info("allRequestParams:{}", allRequestParams);
-            runtimeService.setVariable(allRequestParams.get("processInstanceId").toString(),
-                    allRequestParams.get("key").toString(),
-                    allRequestParams.get("value"));
+            LOG.info("allRequestParams:{}", allRequestParamsStr);
+            String[] paramsKeyValues = allRequestParamsStr.split("&");
+            HashMap<String, String> params = new HashMap<>();
+            for (String item : paramsKeyValues) {
+                String[] result = item.split("=");
+                String k = result[0];
+                String v = result.length > 1 ? item.split("=")[1] : "";
+                params.put(k, v);
+            }
+            processInstanceId = params.get("processInstanceId");
+            key = params.get("key");
+            value = params.get("value");
+
+            runtimeService.setVariable(processInstanceId, key, value);
         } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(),
-                    allRequestParams.get("processInstanceId"),
-                    allRequestParams.get("key"),
-                    allRequestParams.get("value"));
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), processInstanceId, key, value);
         }
         return "";
     }
