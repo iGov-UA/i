@@ -1,7 +1,6 @@
 'use strict';
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
-var oUtil = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
 //var environmentConfig = require('../../config');
 
@@ -99,7 +98,7 @@ module.exports.postServiceFeedback = function (req, res) {
 module.exports.postServiceFeedbackAnswer = function (req, res) {
   var url = sHost + '/subject/message/setFeedbackAnswerExternal';
   var data = req.body;
-  var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+  var nID_Subject = (activiti.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
   var callback = function(error, response, body) {
     res.send(body);
