@@ -66,17 +66,21 @@
             <label for="sName">Джерело:</label><span id="sName"> {{archive.oSourceDB.sName}}</span><br>
             <label for="oDateStart">Дата початку:</label><span id="oDateStart"> {{archive.oDateStart}}</span><br>
             <label for="oDateFinish">Дата закінчення:</label><span id="oDateFinish"> {{archive.oDateFinish}}</span><br>
-            <div ng-repeat="attr in archive.aAttribute">
-              <br>
-              <label for="sFieldID">ІД поля:</label><span id="sFieldID"> {{attr.sID_}}</span><br>
-              <label for="sFieldName">Назва поля:</label><span id="sFieldName"> {{attr.sName}}</span><br>
-              <span ng-repeat="attrValue in attr">{{attrValue.sValue}}</span><br>
-              <a href="/api/tasks/getFile/{{attr.oAttribute_File.nID}}"
-                 target="_blank"
-                 ng-if="attr.oAttribute_File.sID_Data">
-                <b>Завантажити</b>
-              </a>
-            </div>
+            <table>
+            <tr ng-repeat="attr in archive.aAttribute">
+              <td style="width: 50%; text-align: right; padding-right: 5px">
+                <label for="sFieldValue">{{attr.sName}} </label>
+              </td>
+              <td style="width: 50%; text-align: left; padding-left: 5px">
+                <span id="sFieldValue" ng-repeat="attrValue in attr">{{attrValue.sValue || attrValue.nValue || attrValue.oValue || attrValue.bValue}}</span><br>
+                <a href="/api/tasks/getFile/{{attr.oAttribute_File.nID}}"
+                   target="_blank"
+                   ng-if="attr.oAttribute_File.sID_Data">
+                  <b>Завантажити</b>
+                </a>
+              </td>
+            </tr>
+            </table>
           </div>
           <div>
           </div>
