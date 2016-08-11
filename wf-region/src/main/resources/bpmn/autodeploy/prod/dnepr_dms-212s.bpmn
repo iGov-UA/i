@@ -150,7 +150,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWorkerDecision" name="Рішення держслужбовця" type="enum" required="true">
+        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -172,7 +172,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" name="${sWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sWorkerDecision=='sDecline'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sDecline'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
