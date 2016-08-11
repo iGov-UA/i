@@ -50,17 +50,38 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
               sName: "Дніпропетровська область",
                 a: [{
                   sID: "dnipro",
-                  sName: "Дніпро",
+                  sName: "м.Дніпро",
                   sCityPassportURL:"https://docs.google.com/spreadsheets/d/1W9hv0Mc5OKSlyHG7aTQgX6lSxY1NINLmz5k8FWe2bYM/edit?ts=56570e49#gid=1409053144",
                   sNewsGroupURL:"https://www.facebook.com/igovdnepr/",
                   sVolunteersGroupURL:"https://www.facebook.com/groups/512450418935430/"
                 },
                 {
                   sID: "govtivodi",
-                  sName: "Жовті Води",
+                  sName: "м.Жовті Води",
                   sCityPassportURL:"https://docs.google.com/spreadsheets/d/1RZSqK7MkvKT5oRpOCZwuWTDly6m2ouYK3toy1Ia4lDQ/edit?ts=56b2284c#gid=1409053144",
                   sNewsGroupURL:"https://www.facebook.com/igovzv/",
                   sVolunteersGroupURL:"https://www.facebook.com/groups/igovzhovtivody/"
+                },
+                {
+                  sID: "nikopol",
+                  sName: "м.Нікополь",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1pEQzgwXL9JWVd5sl8m1h2Z27l3gXQ6LaX1xfp6BGf20/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovnikopol/",
+                  sVolunteersGroupURL:""
+                },
+                {
+                  sID: "vilnogirsk",
+                  sName: "м.Вільногірськ",
+                  sCityPassportURL:"",
+                  sNewsGroupURL:"",
+                  sVolunteersGroupURL:""
+                },
+                {
+                  sID: "kamenske",
+                  sName: "м.Кам'янське",
+                  sCityPassportURL:"",
+                  sNewsGroupURL:"",
+                  sVolunteersGroupURL:""
                 }]
             },
             {
@@ -535,14 +556,97 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13315586_1051012694987834_4701805118846809487_n.jpg?oh=98e4dcfe7e578c77da8a6f6476400d8d&oe=58597FC5",
           "sCity":"Тернопіль"
         },
-        
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Корчагин Павел",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Боборицкий Денис",
           "sURL":"",
           "sCity":"Дніпро"
         },
-        
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Феденишин Андрей",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+  		{
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Туренко Сергей",
+          "sURL":"https://www.linkedin.com/in/sergey-turenko-b8708a94",
+          "sPhoto":"https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0a3/012/1f8218c.jpg",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Волобуев Дмитрий",
+          "sURL":"https://www.facebook.com/profile.php?id=100007298923596",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Горбань Сергей",
+          "sURL":"https://github.com/sergeygorban",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Марченко Игорь",
+          "sURL":"https://github.com/djekildp",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Нижник Олександр",
+          "sURL":"https://www.facebook.com/profile.php?id=100009085920321",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Будник Дмитрий",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Ладик Денис",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro;",
+          "sFIO":"Терещенко Максим",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Гулич Вадим",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Макаренко Валерий",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Дашенко Инни",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
+        {
+          "sID_Group":"dnipro.dnipro",
+          "sFIO":"Воронюк Евгений",
+          "sURL":"",
+          "sCity":"Дніпро"
+        },
         {
           "sID_Group":"dnipro.govtivodi.rada",
           "sFIO":"Гончар Володимир",
@@ -562,7 +666,29 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11987147_10203560073880837_2297829304350196503_n.jpg?oh=a99c19c8573621d6473cc6aa2291a158&oe=581BE5DA",
           "sCity":"Жовті Води"
         },
-        
+        {
+          "sID_Group":"dnipro.nikopol.rada",
+          "sFIO":"Ященко Ірина",
+          "sURL":"https://www.facebook.com/iyaschenko",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12122659_999176800103778_2978037555071706320_n.jpg?oh=2b99d91e6d28576c577342528394f56d&oe=585CFF0A",
+          "sCity":"Нікополь"
+        },
+        {
+          "sID_Group":"dnipro.nikopol.rada",
+          "sFIO":"Колодіч Євген",
+          "sCity":"Нікополь"
+        },
+        {
+          "sID_Group":"dnipro.vilnogirsk.rada",
+          "sFIO":"Татьяна Глиняная",
+          "sURL":"https://www.facebook.com/profile.php?id=100009432326885",
+          "sCity":"Вільногірськ"
+        },
+        {
+          "sID_Group":"dnipro.kamenske.rada",
+          "sFIO":"Кравцов Михайло",
+          "sCity":"Кам'янське"
+        },
         
         {
           "sID_Group":"kyiv.kyiv",
@@ -585,12 +711,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Київ"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Гулич Вадим",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+       
         {
           "sID_Group":"kharkiv.kharkiv",
           "sFIO":"Большуткин Владимир",
@@ -603,36 +724,14 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Червоноград"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Корчагин Павел",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+        
         {
           "sID_Group":"odesa.odesa",
           "sFIO":"Сафроненков Андрей",
           "sURL":"",
           "sCity":"Одеса"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Будник Дмитрий",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Ладик Денис",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro;",
-          "sFIO":"Терещенко Максим",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+      
         {
           "sID_Group":"kyiv.kyiv",
           "sFIO":"Великотский Вячеслав",
@@ -645,42 +744,21 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Одеса"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Воронюк Евгений",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+      
         {
           "sID_Group":"mykolaiv.mykolaiv",
           "sFIO":"Лущан Владислав",
           "sURL":"",
           "sCity":"Миколаїв"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Феденишин Андрей",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+       
         {
           "sID_Group":"lviv.lviv",
           "sFIO":"Глеб Жебраков",
           "sURL":"",
           "sCity":"Львів"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Макаренко Валерий",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Дашенко Инни",
-          "sURL":"",
-          "sCity":"Дніпро"
-        },
+      
         {
           "sID_Group":"kharkiv.kharkiv",
           "sFIO":"Педич Максим",
@@ -761,37 +839,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Київ"
         },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Туренко Сергей",
-          "sURL":"https://www.linkedin.com/in/sergey-turenko-b8708a94",
-          "sPhoto":"https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0a3/012/1f8218c.jpg",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Волобуев Дмитрий",
-          "sURL":"https://www.facebook.com/profile.php?id=100007298923596",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Горбань Сергей",
-          "sURL":"https://github.com/sergeygorban",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Марченко Игорь",
-          "sURL":"https://github.com/djekildp",
-          "sCity":"Дніпро"
-        },
-        {
-          "sID_Group":"dnipro.dnipro",
-          "sFIO":"Нижник Олександр",
-          "sURL":"https://www.facebook.com/profile.php?id=100009085920321",
-          "sCity":"Дніпро"
-        },
+       
        
         {
           "sID_Group":"ivano-frankivsk.ivano-frankivsk",
