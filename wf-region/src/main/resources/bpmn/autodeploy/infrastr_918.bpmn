@@ -172,7 +172,7 @@ execution.setVariable('sTypeBiz', res)
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Орієнтовна дата найближчого засідання комісії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="date"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/sea_license.html" type="file"></activiti:formProperty>
@@ -258,7 +258,7 @@ execution.setVariable('sTypeBiz', res)
 			</ul>
 			</p> 
 			<p>
-			Орієнтовна дата засідання найближчої комісії: ${sDate}<br>
+			Дата засідання найближчої комісії: value{[sDate]}<br>
 			У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sCompAdress}
 			</p> 
 			[pattern/mail/_common_signature_start.html]
