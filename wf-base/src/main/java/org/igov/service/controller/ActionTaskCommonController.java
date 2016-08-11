@@ -48,7 +48,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -61,6 +60,7 @@ import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -850,7 +850,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             processInstanceId = params.get("processInstanceId");
             key = params.get("key");
+            key = URLDecoder.decode(key, "UTF-8");
             value = params.get("value");
+            value = URLDecoder.decode(value, "UTF-8");
 
             runtimeService.setVariable(processInstanceId, key, value);
         } catch (Exception oException) {
