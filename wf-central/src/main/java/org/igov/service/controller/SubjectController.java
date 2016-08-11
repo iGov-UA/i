@@ -804,7 +804,7 @@ public class SubjectController {
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Error! SubjectAccountType not found for id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
         } else {
-            result.put("aSubjectAccount", getSubjectBy(saAccount, subjectAccountType.getId(), nID_Server, bSkipDetails));
+            result.put("aSubjectAccount", getSubjectBy(saAccount, subjectAccountType.getId(), Long.valueOf(nID_Server), bSkipDetails));
             return result;
         }
     }
