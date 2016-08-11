@@ -63,7 +63,7 @@
         <activiti:formProperty id="nDenyRefugee" name="Рішення про задоволення/відхилення/залишення без розгляду скарги на рішення органу міграційної служби про відмову в прийнятті заяви про визнання біженцем або особою, яка потребує додаткового захисту, або про відмову в оформленні документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту; у разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Інші документи, що підтверджують порушене право особи та необхідність його захисту; декілька сторінок об'єднайте у один pdf файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
@@ -147,6 +147,21 @@
           <activiti:value id="sEnumTrust" name="законним представником"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTrust" name="Прізвище, ім’я, по батькові клієнта, законним представником якого є особа-заявник; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
+          <activiti:value id="accept" name="звернення прийняте"></activiti:value>
+          <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/justice_989_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/minust/justice_989_print2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/minust/justice_989_print1.html]" type="invisible" default="Звернення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/minust/justice_989_print2.html]" type="invisible" default="Згода" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nPassport},${nFamily},${nIncome},${nEmployee},${nTax},${nPensioner},${nPensionSum},${nPowers},${nOrphan},${nViolence},${nRecord},${nCertificate},${nWork},${nNazi},${nRehabilit},${nPassportRight},${nGuardian},${nCourt},${nDecree},${nPasspRefugee},${nProtect},${nDenyRefugee}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
@@ -176,7 +191,7 @@
 			&lt;p&gt;
 			Звенення №[sID_Order] щодо надання безоплатної вторинної правової допомоги - схвалене&lt;br /&gt;
 			&lt;/p&gt;
-			
+			Коментар держслужбовців (за наявності): ${comment}
 			&lt;p&gt;
 			Зверніться до Вашого центру з надання безоплатної вторинної правової допомоги:
 			&lt;br /&gt;
@@ -221,7 +236,7 @@
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 			На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було відхилено.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному:&lt;/p&gt;
-			&lt;p&gt;${sComment}&lt;/p&gt;
+			${comment}
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
