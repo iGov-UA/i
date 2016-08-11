@@ -667,7 +667,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Гончар Володимир",
           "sURL":"https://www.facebook.com/gonvf",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12512535_944078765672226_2942303036351434166_n.jpg?oh=68ad81a88b8125219cbe6c20b2ea40e3&oe=581E4051",
-          "sCity":"Жовті Води"
+          "sCity":"Жовті Води",
        	  "sInfo":"Координатор міста"
         },
         {
@@ -687,7 +687,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Ященко Ірина",
           "sURL":"https://www.facebook.com/iyaschenko",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12122659_999176800103778_2978037555071706320_n.jpg?oh=2b99d91e6d28576c577342528394f56d&oe=585CFF0A",
-          "sCity":"Нікополь"
+          "sCity":"Нікополь",
        	  "sInfo":"Координатор міста"
         },
         {
@@ -712,7 +712,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Вербіцький Олександр",
           "sURL":"https://www.facebook.com/verbitskyi.aleksandr",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/21496_912289115556824_4265952439936957757_n.jpg?oh=480d850b7c82768e0de1f6ee2ccbd680&oe=581812A3",
-          "sCity":"Хмельницький"
+          "sCity":"Хмельницький",
       	  "sInfo":"Координатор міста"
         },
         {
@@ -802,7 +802,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Матросова Олена",
           "sURL":"https://www.facebook.com/olena.matrosova",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12274290_1653296344913498_2188353526296878343_n.jpg?oh=dac4869999d25d17ad5b93a3439c863d&oe=58513EAE",
-          "sCity":"Нетішин"
+          "sCity":"Нетішин",
       	  "sInfo":"Координатор міста"
         },
         {
@@ -836,7 +836,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Шарапов Єгор",
           "sURL":"https://www.facebook.com/egorsha",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.10.160.160/p160x160/1966850_10203490579085516_348411029_n.jpg?oh=7a30398a86e7b0cddcfd23a7ca13238d&oe=581915B3",
-          "sCity":"Київ"
+          "sCity":"Київ",
           "sInfo":"Координатор міста"
         }, 
         {
@@ -846,8 +846,13 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13498_856418117766324_769692464734795539_n.jpg?oh=7b8e326ffa4933f41ced888ce7190e9b&oe=585BC6A1",
           "sCity":"Київ"
         }, 
-        
-        
+        {
+          "sID_Group":"kyiv.kyiv.rada",
+          "sFIO":"Вадим Волос",
+          "sURL":"https://www.facebook.com/vadymvolos",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/969077_563076740410432_913138478_n.jpg?oh=5816e4ea9ae61095dbd571ae33763ada&oe=581E1A89",
+          "sCity":"Київ"
+        },
         {
           "sID_Group":"kyiv.kyiv",
           "sFIO":"Зора Борис",
@@ -878,13 +883,16 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Київ"
         },
+        
         {
-          "sID_Group":"kyiv.kyiv",
-          "sFIO":"Вадим Волос",
-          "sURL":"https://www.facebook.com/vadymvolos",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/969077_563076740410432_913138478_n.jpg?oh=5816e4ea9ae61095dbd571ae33763ada&oe=581E1A89",
-          "sCity":"Київ"
-        },
+            "sID_Group":"kyiv.kyiv",
+            "sFIO":"Наталія Гуран",
+            "sURL":"https://www.facebook.com/nata.guran",
+            "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12654289_1021099344596205_3061116787172874678_n.jpg?oh=22042f798df097d1065ffe1a0b420a16&oe=585474CF",
+            "sCity":"Київ"
+          },  
+          
+        
         {
           "sID_Group":"kyiv.vyshgorod.rada",
           "sFIO":"Сокиржинський Олександр",
