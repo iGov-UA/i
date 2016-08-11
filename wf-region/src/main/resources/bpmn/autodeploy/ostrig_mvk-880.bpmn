@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ostrig_mvk-880" name="Довідка про склад сім'ї (Форма 2)" isExecutable="true">
+  <process id="ostrig_mvk-880" name="Довідка про склад сім'ї (форма 2)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -60,7 +60,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>middayka@yandex.ru</activiti:expression>
+          <activiti:expression><![CDATA[middayka@yandex.ru]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -69,7 +69,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -77,7 +77,7 @@
     <serviceTask id="servicetask3" name="E-Mail про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -86,19 +86,19 @@
           <activiti:string><![CDATA[Звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
 										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+								    </p>
+									<p>
 										Спеціалісти міськвиконкому оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням завітати до міськвиконкому у обраний час. 
-									&lt;/p&gt;
-									&lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+									<p>[cancelTask]</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -144,7 +144,7 @@
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -153,19 +153,19 @@
           <activiti:string><![CDATA[Звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.&lt;br&gt;
-										При необхідності отримання довідки про склад сім'ї Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.<br>
+										При необхідності отримання довідки про склад сім'ї Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+											<b><i>${decisionComment}</i></b>
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan},&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    ${sNameOrgan},</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -179,7 +179,7 @@
     <serviceTask id="servicetask6" name="E-Mail про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -188,33 +188,33 @@
           <activiti:string><![CDATA[Звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти міськвиконкому успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру отримання довідки про склад сім'ї необхідно звернутись до уповноваженого органу:&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти міськвиконкому успішно опрацювли Вашу заяву.<br>
+										Для того щоб закінчити процедуру отримання довідки про склад сім'ї необхідно звернутись до уповноваженого органу:<br>
 										${sAddress}.
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+									</p>
+									<p>
+										<b>Деталі зустрічі:</b><br>
 										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести для отримання довідки про склад сім'ї:&lt;/b&gt;&lt;br /&gt;
-										&lt;ul&gt;
-											&lt;li&gt;паспорт громадянина України;&lt;/li&gt;
-											&lt;li&gt;оригінал домової книги;&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести для отримання довідки про склад сім'ї:</b><br />
+										<ul>
+											<li>паспорт громадянина України;</li>
+											<li>оригінал домової книги;</li>
+										</ul>
+									</p>
+									<p>
+										Коментар Державного службовця:<br />
+										<b><i>${decisionComment}</i></b>
+									</p>
+									<p>[cancelTask]</p>
 									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -266,7 +266,7 @@
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -275,18 +275,18 @@
           <activiti:string><![CDATA[Звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Довідка про склад сім'ї".&lt;br&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Довідка про склад сім'ї".<br>
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -298,7 +298,7 @@
     <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -307,15 +307,15 @@
           <activiti:string><![CDATA[Звернення на тему: Довідка про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, Ви не з'явились у призначений день і час або скасували заявку.&lt;br&gt;
-                                        При необхідності отримання довідки про склад сім'ї Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль, Ви не з'явились у призначений день і час або скасували заявку.<br>
+                                        При необхідності отримання довідки про склад сім'ї Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
 									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									${sNameOrgan}.</p>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
