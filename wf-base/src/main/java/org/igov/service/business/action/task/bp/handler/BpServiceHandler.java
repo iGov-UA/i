@@ -1,31 +1,32 @@
 package org.igov.service.business.action.task.bp.handler;
 
+import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.escalation.EscalationHistory;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.bp.BpService;
-import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.exchange.SubjectCover;
-import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolLuna;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
+import org.igov.service.exchange.SubjectCover;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.service.business.action.task.bp.BpService;
 
 /**
  * @author OlgaPrylypko
@@ -129,6 +130,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
@@ -157,19 +159,18 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
+        Map mTaskParamConverted = convertTaskParam(mTaskParam);
+        String sField = convertTaskParamToString(mTaskParamConverted);
+        LOG.info("temporary logging, mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("temporary logging, sField={}", sField);
+        mParam.put("saField", sField+".");
+
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs);
         mParam.put("organ", organ);
-        Map mTaskParamConverted = convertTaskParam(mTaskParam);
-        String sField = convertTaskParamToString(mTaskParamConverted);
-        LOG.info("saField: " + sField);
-        mParam.put("saField", sField + ".");
         mParam.put("data", mTaskParam.get("sDate_BP"));
-//        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-//        mGuideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
-//        mGuideTaskParamKey.put("area", "Район");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
@@ -186,6 +187,7 @@ public class BpServiceHandler {
 
     /**
      * organise groups into single string
+     *
      * @param organs
      * @return
      */
@@ -208,24 +210,24 @@ public class BpServiceHandler {
     }
 
     private String getPlaceForProcess(String sID_Process) {
-    	Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-    	String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
+        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
         try {
             soResponse = httpRequester.getInside(sURL, param);
-            Map res = JsonRestUtils.readObject(soResponse, Map.class); 
+            Map res = JsonRestUtils.readObject(soResponse, Map.class);
             soResponse = (String) res.get("place");
         } catch (Exception ex) {
-        	 LOG.error("[getPlaceForProcess]: ", ex);
+            LOG.error("[getPlaceForProcess]: ", ex);
         }
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
-	}
+    }
 
-	private Set<String> getCurrentCadidateGroup(final String sProcessName) {
+    private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
         BpmnModel oBpmnModel = repositoryService.getBpmnModel(sProcessName);
         for (FlowElement oFlowElement : oBpmnModel.getMainProcess().getFlowElements()) {
@@ -320,7 +322,7 @@ public class BpServiceHandler {
         try {
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            if(task.getAssignee() != null){
+            if (task.getAssignee() != null) {
                 accounts.add(task.getAssignee());
             }
             accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables, ""));
@@ -332,12 +334,13 @@ public class BpServiceHandler {
                 List<Map<String, Object>> aSubjectAccount = (List<Map<String, Object>>) result.get("aSubjectAccount");
                 for (Map<String, Object> subjectAccount : aSubjectAccount) {
                     Map<String, Object> subject = (Map<String, Object>) subjectAccount.get("oSubject");
-                    String label = (String)subject.get("sLabel");
+                    String label = (String) subject.get("sLabel");
                     String accountContacts = getContact((List<Map>) subject.get("aSubjectAccountContact"));
                     sb.append(" ").append(label).append(" (").append(accountContacts).append(")");
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
+
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
@@ -350,7 +353,7 @@ public class BpServiceHandler {
         if (aSubjectAccountContact != null && !aSubjectAccountContact.isEmpty()) {
             for (Map subjectAccountContact : aSubjectAccountContact) {
                 LOG.info("!!!subjectAccountContact: " + subjectAccountContact);
-                if (subjectAccountContact != null && !subjectAccountContact.isEmpty() 
+                if (subjectAccountContact != null && !subjectAccountContact.isEmpty()
                         && subjectAccountContact.get("sValue") != null
                         && !"".equals(subjectAccountContact.get("sValue"))
                         && subjectAccountContact.get("oSubjectContactType") != null
@@ -362,7 +365,8 @@ public class BpServiceHandler {
         }
         return sbContact.toString(); //
     }
-        public static String convertTaskParamToString(Map<String, Object> mTaskParam) {
+
+    public static String convertTaskParamToString(Map<String, Object> mTaskParam) {
 
         // Получаем набор элементов
         Set<Map.Entry<String, Object>> aTaskParamEntrySet = mTaskParam.entrySet();
