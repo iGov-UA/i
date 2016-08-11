@@ -4,6 +4,8 @@ var should = require('should')
 , appTest = require('../../app.spec')
 , testRequest = appTest.testRequest;
 
+require('./bankid.nbu.nock');
+
 describe('bankidNBUController initialization test', function () {
   appTest.runModuleInitializationTest('bankidNBUController', function () {
     return require('./bankid.controller');
