@@ -20,7 +20,7 @@
         <activiti:formProperty id="other" name="Дозвіл необхідно на: (введіть на виконання яких робіт необхідно дозвіл)" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;topic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum4'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Info11" name="Увага" type="label" default="Вам необхідно вибрати день візиту не раніше, ніж через 30 календарних днів від дня подачі заяви"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
@@ -31,8 +31,8 @@
         <activiti:formProperty id="file3" name="Топографічний знімок місцевості (М 1:500) з прив'язкою місця розташування об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Паспорт з прив'язкою об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Акт відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Рішення власника дороги" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Технічні умови власника дороги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Рішення власника дороги" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file7" name="Технічні умови власника дороги" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -126,10 +126,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="net" name="Відмовити у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="fileresult" name="Додайте,будь ласка, файл з рішенням" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення(Наприклад, пояснення)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення (Причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_458.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -243,7 +242,6 @@ ${sNameOrgan}.&lt;br /&gt;
       <extensionElements>
         <activiti:formProperty id="Info1" name="На цьому етапі:" type="label" default="Громадянин приносить оригінали документів та документ про оплату послуги"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;) " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
