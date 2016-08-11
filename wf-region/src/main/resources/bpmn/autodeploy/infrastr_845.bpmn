@@ -99,9 +99,9 @@
           <activiti:value id="sTen" name="десять"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sManPositive" name="Прізвища та ініціали осіб, які готові для видачі посвідчення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManNegative" name="Прізвища та ініціали осіб, по яких треба внести зауваження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManNegative" name="Прізвища та ініціали осіб, по яких треба внести зауваження" type="string" required="true" default="вісутні"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Додайте у цьому полі зміст зауважень, або параметри необхідні для подання заявки" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nCount" name="Кількість штук для сплати" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nCount" name="Кількість посвідчень для сплати" type="long"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="e-mail фінансового відділу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/air_dovidka.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Завантажте підписану ЕЦП довідку для фінансового відділу" type="file"></activiti:formProperty>
@@ -142,7 +142,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow45" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Перевірка вхідних даних" activiti:candidateGroups="infr_air_1">
+    <userTask id="usertask2" name="Очікування рахунку" activiti:candidateGroups="infr_air_1">
       <extensionElements>
         <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
@@ -197,9 +197,9 @@
 			<li>Протягом 3-х робочіх днів відвідати Державіаслужбу за адресою: <b>м. Київ, пр. Перемоги, 14</b> та принести оригінал подання та завірені копії документів членів екіпажу.</li>
 			</ul>
 			</p> 
-			<p>Докумети в порядку у ${sManPositive}
+			<p>Докумети в порядку: ${sManPositive}
 			</p> 
-			<p>Наявні помилки в документах у ${sManNegative}
+			<p>Наявні помилки в документах: ${sManNegative}
 			${comment}
 			</p>
             [pattern/mail/_common_signature_start.html]
