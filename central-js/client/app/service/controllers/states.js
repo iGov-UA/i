@@ -5,7 +5,7 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
   $scope.bAdmin = AdminService.isAdmin();
   var sServiceName = $scope.service.sName;
   var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
-    if(res.length !== 0) {
+    if (res.length !== 0) {
       var tag = res[0].oServiceTag_Root.sName_UA;
       var situation = res[0].aServiceTag_Child[0].sName_UA;
       TitleChangeService.setTitle(sServiceName + ' / ' + situation + ' / ' + tag);
@@ -28,11 +28,11 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $rootScope.fullCatalog = data;
     $scope.catalog = data;
     $scope.spinner = false;
-    $rootScope.rand = (Math.random()*10).toFixed(2);
+    $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
 
-  $scope.$on('$destroy', function() {
-    subscriptions.forEach(function(item) {
+  $scope.$on('$destroy', function () {
+    subscriptions.forEach(function (item) {
       messageBusService.unsubscribe(item);
     });
   });
@@ -59,11 +59,11 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
     $scope.catalog = data;
     $rootScope.busSpinner = false;
     $scope.spinner = false;
-    $rootScope.rand = (Math.random()*10).toFixed(2);
+    $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
 
-  $scope.$on('$destroy', function() {
-    subscriptions.forEach(function(item) {
+  $scope.$on('$destroy', function () {
+    subscriptions.forEach(function (item) {
       messageBusService.unsubscribe(item);
     });
   });
@@ -80,7 +80,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
     }
   });
   $rootScope.$watch('catalog', function () {
-    if($scope.catalog.length !== 0) $scope.spinner = false;
+    if ($scope.catalog.length !== 0) $scope.spinner = false;
   });
   $anchorScroll();
 });
@@ -98,7 +98,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       $scope.category = null;
     }
     $scope.spinner = false;
-    $rootScope.rand = (Math.random()*10).toFixed(2);
+    $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
 
   if ($scope.catalog
@@ -111,7 +111,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   if (!$scope.catalog) {
     $scope.category = $scope.catalog;
   }
-  $scope.trustAsHtml = function(string) {
+  $scope.trustAsHtml = function (string) {
     return $sce.trustAsHtml(string);
   };
   $scope.$on('$stateChangeStart', function (event, toState) {
@@ -151,7 +151,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   TitleChangeService.setTitle(title);
 
   // якорь для содержания "жизненной ситуации"
-  $scope.gotoAnchor = function(x) {
+  $scope.gotoAnchor = function (x) {
     var newHash = 'anchor' + x;
     if ($location.hash() !== newHash) {
       $location.hash('anchor' + x);
@@ -164,18 +164,21 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
 });
 
 // данная директива нужна для работы контроллера в data-ng-bind-html
-angular.module('app').directive('compileTemplate', function($compile, $parse){
-return {
-  link: function(scope, element, attr){
-    var parsed = $parse(attr.ngBindHtml);
-    function getStringValue() { return (parsed(scope) || '').toString(); }
+angular.module('app').directive('compileTemplate', function ($compile, $parse) {
+  return {
+    link: function (scope, element, attr) {
+      var parsed = $parse(attr.ngBindHtml);
 
-    //Recompile if the template changes
-    scope.$watch(getStringValue, function() {
-      $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
-    });
+      function getStringValue() {
+        return (parsed(scope) || '').toString();
+      }
+
+      //Recompile if the template changes
+      scope.$watch(getStringValue, function () {
+        $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
+      });
+    }
   }
-}
 });
 
 angular.module('app').controller('ServiceGeneralController', function ($state, $scope, ServiceService, PlacesService) {
@@ -216,7 +219,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     UserService.isLoggedIn().then(function (result) {
       if (result) {
         UserService.fio().then(function (res) {
-          if(res.subjectID ===20049){
+          if (res.subjectID === 20049) {
             $scope.feedback.isAdmin = true;
           }
         });
@@ -235,7 +238,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     refreshList();
   }
 
-  function refreshList(){
+  function refreshList() {
     $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
       FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
       .then(function (response) {
@@ -247,6 +250,11 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
         $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
           return -o.nID;
         });
+
+        $scope.feedback.exist = $scope.feedback.messageList.some(function (item) {
+          return $scope.nID == item.nID;
+        });
+
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return o.nID != $scope.nID;
         });
@@ -280,7 +288,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
   }
 
   function postFeedback() {
-    var sAuthorFIO =  $scope.feedback.currentFeedback.sAuthorFIO,
+    var sAuthorFIO = $scope.feedback.currentFeedback.sAuthorFIO,
       sMail = $scope.feedback.currentFeedback.sMail,
       sHead = $scope.feedback.currentFeedback.sHead;
 
@@ -295,7 +303,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       'nID_Service': ServiceService.oService.nID
     };
 
-    FeedbackService.postFeedbackForService(feedbackParams).then(function(){
+    FeedbackService.postFeedbackForService(feedbackParams).then(function () {
       refreshList();
     });
 
@@ -305,7 +313,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     });
   }
 
-  function sendAnswer(data){
+  function sendAnswer(data) {
     var sHead = '';
 
     var feedbackParams = {
@@ -317,17 +325,17 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       'nID_Subject': $state.nID_Subject
     };
 
-    FeedbackService.postFeedbackAnswerForService(feedbackParams).then(function(){
+    FeedbackService.postFeedbackAnswerForService(feedbackParams).then(function () {
       refreshList();
     });
     hideAnswer();
   }
 
-  function answer(commentID){
+  function answer(commentID) {
     $scope.feedback.commentToShowAnswer = commentID;
   }
 
-  function hideAnswer(){
+  function hideAnswer() {
     $scope.feedback.commentToShowAnswer = -1;
   }
 
@@ -369,44 +377,44 @@ angular.module('app').controller('ServiceStatisticsController', function ($scope
   };
 
   ServiceService.getStatisticsForService(ServiceService.oService.nID).then(function (response) {
-      $scope.stats = response.data;
-      $scope.nRate = 0;
-      var nRate = 0;
-      angular.forEach(response.data, function (entry) {
-        if (entry.nRate !== null && entry.nRate > 0) {
-          //nRate=nRate+(entry.nRate/20);
-          nRate = nRate + entry.nRate;
-          //nRate=nRate/20;
-        }
-        //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
-        //>=5 && <=20 - родовий множина
-        //якщо закінч на - то 2,3,4 називний інакше родовий множина
-        function getWord(num, odnina, rodovii_plural, nazivnii_plural) {
-          if (num == 1 || (num > 20 && num % 10 == 1))
-            return odnina;
-          else if ((num < 5 || num > 20) && _.contains([2, 3, 4], num % 10))
-            return nazivnii_plural;
-          else
-            return rodovii_plural;
-        }
+    $scope.stats = response.data;
+    $scope.nRate = 0;
+    var nRate = 0;
+    angular.forEach(response.data, function (entry) {
+      if (entry.nRate !== null && entry.nRate > 0) {
+        //nRate=nRate+(entry.nRate/20);
+        nRate = nRate + entry.nRate;
+        //nRate=nRate/20;
+      }
+      //1 - однина, якщо складений (>=20) і закінч на 1 - то однина
+      //>=5 && <=20 - родовий множина
+      //якщо закінч на - то 2,3,4 називний інакше родовий множина
+      function getWord(num, odnina, rodovii_plural, nazivnii_plural) {
+        if (num == 1 || (num > 20 && num % 10 == 1))
+          return odnina;
+        else if ((num < 5 || num > 20) && _.contains([2, 3, 4], num % 10))
+          return nazivnii_plural;
+        else
+          return rodovii_plural;
+      }
 
-        entry['timing'] = '';
-        var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = Math.floor(entry.nTimeMinutes / 60) % 24,
-          minutes = entry.nTimeMinutes % 60;
-        var daysw = getWord(days, 'день', 'днів', 'дні'),
-          hoursw = getWord(hours, 'година', 'годин', 'години'),
-          minutesw = getWord(minutes, 'хвилина', 'хвилин', 'хвилини');
-        if (days > 0) entry.timing = days + ' ' + daysw;
-        if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
-        if (minutes > 0) entry.timing += (entry.timing ? ', ' : '') + minutes + ' ' + minutesw;
-        if (!entry.timing) entry.timing = '0 годин'
-      });
-      $scope.nRate = nRate;
+      entry['timing'] = '';
+      var days = Math.floor(entry.nTimeMinutes / 60 / 24), hours = Math.floor(entry.nTimeMinutes / 60) % 24,
+        minutes = entry.nTimeMinutes % 60;
+      var daysw = getWord(days, 'день', 'днів', 'дні'),
+        hoursw = getWord(hours, 'година', 'годин', 'години'),
+        minutesw = getWord(minutes, 'хвилина', 'хвилин', 'хвилини');
+      if (days > 0) entry.timing = days + ' ' + daysw;
+      if (hours > 0) entry.timing += (entry.timing ? ', ' : '') + hours + ' ' + hoursw;
+      if (minutes > 0) entry.timing += (entry.timing ? ', ' : '') + minutes + ' ' + minutesw;
+      if (!entry.timing) entry.timing = '0 годин'
+    });
+    $scope.nRate = nRate;
 
 
-    }, function (response) {
-      console.log(response.status + ' ' + response.statusText + '\n' + response.data);
-    })
+  }, function (response) {
+    console.log(response.status + ' ' + response.statusText + '\n' + response.data);
+  })
     .finally(function () {
       $scope.loaded = true;
     });
@@ -538,11 +546,7 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
 
 angular.module('app').controller('TitleChange', function ($scope, TitleChangeService) {
   $scope.$on('$stateChangeSuccess', function (event, toState) {
-    if(!$state.is('index.situation') ||
-      !$state.is('index.newsubcategory') ||
-      !$state.is('index.service') ||
-      !$state.is('index.oldbusiness') ||
-      !$state.is('index.subcategory')){
+    if (!$state.is('index.situation') || !$state.is('index.newsubcategory') || !$state.is('index.service') || !$state.is('index.oldbusiness') || !$state.is('index.subcategory')) {
       TitleChangeService.defaultTitle();
     }
   })
