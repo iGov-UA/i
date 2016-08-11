@@ -277,12 +277,31 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsAnswer(sAnswer );
             subjectMessage = messageFeedback.getoSubjectMessage();
-            subjectMessage.setHead(sHead);
-            subjectMessage.setBody(sBody);
+            if(subjectMessage==null){
+                SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
+                subjectMessage = new SubjectMessage();
+                subjectMessage.setHead(sHead==null?"":sHead);
+                subjectMessage.setBody(sBody==null?"":sBody);
+                subjectMessage.setSubjectMessageType(subjectMessageType);
+                //subjectMessage.setDate(new DateTime());
+                //subjectMessage.setsSubjectInfo(sAuthorFIO);
+                subjectMessage.setMail(sMail==null?"":sMail);
+                subjectMessage.setId_subject(nID_Subject);
+            }
+            if(sHead!=null){
+                subjectMessage.setHead(sHead);
+            }
+            if(sBody!=null){
+                subjectMessage.setBody(sBody);
+            }
             subjectMessage.setDate(new DateTime());
             subjectMessage.setsSubjectInfo(sAuthorFIO);
-            subjectMessage.setMail(sMail);
-            subjectMessage.setId_subject(nID_Subject);
+            if(sMail!=null){
+                subjectMessage.setMail(sMail);
+            }
+            if(nID_Subject!=null){
+                subjectMessage.setId_subject(nID_Subject);
+            }
             messageFeedback.setoSubjectMessage(subjectMessage);
         }
 
