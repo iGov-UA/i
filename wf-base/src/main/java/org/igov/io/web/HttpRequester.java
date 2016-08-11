@@ -52,7 +52,6 @@ public class HttpRequester {
         
         String saParam = "";
         if (mParam != null) {
-            saParam = "?";
             for (Map.Entry<String, Object> entry : mParam.entrySet()) {
                 if (entry.getValue() != null) {
                     String entryValue;
@@ -78,9 +77,7 @@ public class HttpRequester {
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
-            oConnection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
-            oConnection.setRequestProperty( "charset", "utf-8");
-            oConnection.setRequestProperty( "Content-Length", Integer.toString(saParam.getBytes().length));
+            oConnection.setRequestProperty("Content-Type", "text/plain");
             oConnection.setDoOutput(true);
             DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
             // Send post request

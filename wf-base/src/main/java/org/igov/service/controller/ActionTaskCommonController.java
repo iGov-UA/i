@@ -23,7 +23,6 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
@@ -61,6 +60,7 @@ import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -825,22 +825,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
      * size of query params.
-     * @param snID_Process
-     * @param sKey
-     * @param sValue
+     * @param allRequestParamsStr
      * @return
      */
-    @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
+    @RequestMapping(value = "/setVariable", method = RequestMethod.POST, consumes = "text/plain")
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(
-            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
-            @RequestParam(value = "key", required = true) String sKey,
-            @RequestParam(value = "value", required = true) String sValue
+    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
+            //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            //            @RequestParam(value = "key", required = true) String sKey,
+            //            @RequestParam(value = "value", required = true) String sValue
     ) {
+        String processInstanceId = null;
+        String key = null;
+        String value = null;
         try {
-            runtimeService.setVariable(snID_Process, sKey, sValue);
+            LOG.info("allRequestParams:{}", allRequestParamsStr);
+            String[] paramsKeyValues = allRequestParamsStr.split("&");
+            HashMap<String, String> params = new HashMap<>();
+            for (String item : paramsKeyValues) {
+                String[] result = item.split("=");
+                String k = result[0];
+                String v = result.length > 1 ? item.split("=")[1] : "";
+                params.put(k, v);
+            }
+            processInstanceId = params.get("processInstanceId");
+            key = params.get("key");
+            key = URLDecoder.decode(key, "UTF-8");
+            value = params.get("value");
+            value = URLDecoder.decode(value, "UTF-8");
+
+            runtimeService.setVariable(processInstanceId, key, value);
         } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), processInstanceId, key, value);
         }
         return "";
     }
