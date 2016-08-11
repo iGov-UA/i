@@ -83,6 +83,7 @@ module.exports.postServiceFeedback = function (req, res) {
       'password': config.password
     },
     'qs': {
+      'nID': data.nID,
       'sID_Source': data.sID_Source,
       'sAuthorFIO': data.sAuthorFIO,
       'sMail': data.sMail || ' ',
