@@ -51,9 +51,16 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                 a: [{
                   sID: "dnipro",
                   sName: "Дніпро",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1W9hv0Mc5OKSlyHG7aTQgX6lSxY1NINLmz5k8FWe2bYM/edit?ts=56570e49#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovdnepr/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/512450418935430/"
+                },
+                {
+                  sID: "govtivodi",
+                  sName: "Жовті Води",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1RZSqK7MkvKT5oRpOCZwuWTDly6m2ouYK3toy1Ia4lDQ/edit?ts=56b2284c#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovzv/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/igovzhovtivody/"
                 }]
             },
             {
@@ -535,6 +542,28 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Дніпро"
         },
+        
+        {
+          "sID_Group":"dnipro.govtivodi.rada",
+          "sFIO":"Гончар Володимир",
+          "sURL":"https://www.facebook.com/gonvf",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12512535_944078765672226_2942303036351434166_n.jpg?oh=68ad81a88b8125219cbe6c20b2ea40e3&oe=581E4051",
+          "sCity":"Жовті Води"
+        },
+        {
+          "sID_Group":"dnipro.govtivodi.rada",
+          "sFIO":"Усов Олександр",
+          "sCity":"Жовті Води"
+        },
+        {
+          "sID_Group":"dnipro.govtivodi.rada",
+          "sFIO":"Чорний Дмитро",
+          "sURL":"https://www.facebook.com/bm.ukraine",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11987147_10203560073880837_2297829304350196503_n.jpg?oh=a99c19c8573621d6473cc6aa2291a158&oe=581BE5DA",
+          "sCity":"Жовті Води"
+        },
+        
+        
         {
           "sID_Group":"kyiv.kyiv",
           "sFIO":"Вадим Волос",
