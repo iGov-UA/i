@@ -213,7 +213,35 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                   sNewsGroupURL:"https://www.facebook.com/groups/469918746528216/",
                   sVolunteersGroupURL:""
                    }]
-            },     
+            },  
+            {
+                sID:"poltava",
+                sName: "Полтавська область",
+                a: [{
+                  sID: "poltava",
+                  sName: "м. Полтава",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/10TPLqRLlMF4qoxhCnB3fhiTZwbfTqPj8FYSkV9j9bmc/edit#gid=0",
+                  sNewsGroupURL:"https://www.facebook.com/groups/1716236748590982/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/844645305657268/"
+                 },
+                {
+                  sID: "myrgorod",
+                  sName: "м. Миргород",
+                  sCityPassportURL:"",
+                  sNewsGroupURL:"",
+                  sVolunteersGroupURL:""
+                },
+                {
+                  sID: "kremenchug",
+                  sName: "м. Кременчуг",
+                  sCityPassportURL:"",
+                  sNewsGroupURL:"",
+                  sVolunteersGroupURL:""
+                  }]
+              },
+              
+            
+            
             {
               sID:"kharkiv",
               sName: "Харківська область",
@@ -346,25 +374,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                   sVolunteersGroupURL:""
                 }]
             },
-            {
-              sID:"poltava",
-              sName: "Полтавська область",
-                a: [{
-                  sID: "poltava",
-                  sName: "Полтава",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
-                },
-                {
-                  sID: "myrgorod",
-                  sName: "Миргород",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
-                }]
-            },
-            
+           
             {
               sID:"kherson",
               sName: "Херсонська область",
@@ -1175,7 +1185,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Дюг Юрій",
           "sURL":"https://www.facebook.com/yuriy.dyug",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10923531_1000018706694178_455606146826939393_n.jpg?oh=92dd846cda22cb5df1c9bd86efbb6131&oe=5822EDA5",
-          "sCity":"Рівне"
+          "sCity":"Рівне",
           "sInfo":"Координатор міста"
         },   
         {
@@ -1225,7 +1235,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Поремчук Євгеній",
           "sURL":"https://www.facebook.com/e.poremchuk",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11866439_10206601466262607_2800248533852732931_n.jpg?oh=2dfad633f47ada22b9677862b52628ef&oe=584C2EF6",
-          "sCity":"Вараш"
+          "sCity":"Вараш",
        	  "sInfo":"Координатор міста"
         },
         {
@@ -1240,11 +1250,17 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sFIO":"Галич Сергій",
           "sURL":"https://www.facebook.com/serhiy.halich",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11903710_1016467491743026_2145437931467083079_n.jpg?oh=cd457b4bc836e270fb9f3a89082691fe&oe=5813239B",
-          "sCity":"Острог"
+          "sCity":"Острог",
        	  "sInfo":"Координатор міста"
         },
-  		  
-        
+  	    {
+          "sID_Group":"poltava.poltava.rada",
+          "sFIO":"Городчаніна Юлія",
+          "sURL":"https://www.facebook.com/yuliya.bobur",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13310494_1800267660195875_4333125623057871212_n.jpg?oh=50394e7533a4d91c1c06399a781f014c&oe=5815EACA",
+          "sCity":"Полтава",
+          "sInfo":"Координатор міста"
+        }, 
         
         
         
@@ -1487,12 +1503,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12144677_439030329635978_6939953702971035626_n.jpg?oh=d5032677cc3f4997ed2658a1cdd0ab38&oe=582818AD",
           "sCity":"Калуш"
         },
-        {
-          "sID_Group":"poltava.poltava.rada",
-          "sFIO":"Городчаніна Юлія",
-          "sURL":"https://www.facebook.com/yuliya.bobir",
-          "sCity":"Полтава"
-        },
+       
        
         
         
