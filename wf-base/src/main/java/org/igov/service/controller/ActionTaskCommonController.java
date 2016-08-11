@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -824,12 +825,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
      * size of query params.
-     * @param allRequestParamsStr
+     * @param httpEntity
      * @return
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST)
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
+    public String setVariableToProcessInstanceUsingPost(HttpEntity<String> httpEntity
             //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             //            @RequestParam(value = "key", required = true) String sKey,
             //            @RequestParam(value = "value", required = true) String sValue
@@ -838,6 +839,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String key = null;
         String value = null;
         try {
+            String allRequestParamsStr = httpEntity.getBody();
             LOG.info("allRequestParams:{}", allRequestParamsStr);
             String[] paramsKeyValues = allRequestParamsStr.split("&");
             HashMap<String, String> params = new HashMap<>();
