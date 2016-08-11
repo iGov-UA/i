@@ -509,7 +509,9 @@ public class SubjectMessageController {
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
             //@ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
             @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nID,
-            @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+            @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "булевый параметр bSelf", required = false) @RequestParam(value = "bSelf", required = false) boolean bSelf,
+            HttpServletResponse oResponse
     ) throws CommonServiceException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
@@ -540,6 +542,9 @@ public class SubjectMessageController {
             String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
                     generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
+            if(bSelf){
+            	oResponse.sendRedirect(responseMessage);
+            }
             oJSONObject.put("sURL", responseMessage);
             return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
 

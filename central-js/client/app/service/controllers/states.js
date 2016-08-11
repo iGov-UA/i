@@ -251,9 +251,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
           return -o.nID;
         });
 
-        $scope.feedback.exist = $scope.feedback.messageList.some(function (item) {
-          return $scope.nID == item.nID;
-        });
+        $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return o.nID != $scope.nID;
@@ -295,7 +293,8 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     var feedbackParams = {
       'sToken': $scope.sID_Token,
       'sBody': $scope.feedback.messageBody,
-      'sID_Source': $scope.nID,
+      'sID_Source': 'iGov',
+      'nID': $scope.nID,
       'sAuthorFIO': sAuthorFIO,
       'sMail': sMail,
       'sHead': sHead,
@@ -303,7 +302,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       'nID_Service': ServiceService.oService.nID
     };
 
-    FeedbackService.postFeedbackForService(feedbackParams).then(function () {
+    FeedbackService.postFeedbackForService(feedbackParams).finally(function () {
       refreshList();
     });
 

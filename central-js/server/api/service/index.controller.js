@@ -70,6 +70,7 @@ module.exports.getServiceFeedback = function (req, res) {
 module.exports.postServiceFeedback = function (req, res) {
   var url = sHost + '/subject/message/setFeedbackExternal';
   var data = req.body;
+  var nID_Subject = (activiti.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
   var callback = function(error, response, body) {
     res.send(body);
@@ -83,6 +84,9 @@ module.exports.postServiceFeedback = function (req, res) {
       'password': config.password
     },
     'qs': {
+      'nID': data.nID,
+      'nID_Subject':  nID_Subject || 0,
+      'sID_Token': data.sID_Token,
       'sID_Source': data.sID_Source,
       'sAuthorFIO': data.sAuthorFIO,
       'sMail': data.sMail || ' ',
