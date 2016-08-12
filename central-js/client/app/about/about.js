@@ -1421,7 +1421,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         {
           "sID_Group":"mykolaiv.pervomaysk.rada",
           "sFIO":"Кухаренко Всеволод",
-          "sURL":"https://www.facebook.com/profile.php?id=100001700035596&fref=pb&hc_location=friends_tab&pnref=friends.all",
+          "sURL":"https://www.facebook.com/profile.php?id=100001700035596",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c142.54.675.675/s160x160/199980_409589752441022_1256854001_n.jpg?oh=a4ebb70a5dd4ae22b83888aa18b814a4&oe=585D0C40",
           "sCity":"Первомайськ"
         },
