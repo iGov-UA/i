@@ -37,13 +37,13 @@ public class AssignGroupListener implements TaskListener {
         Group group;
         try {
             if (organ != null && !"".equals(organ)) {
-                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organ.split(",")));
+                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organ.replaceAll(" ", "").split(",")));
                 IdentityService identityService = execution.getEngineServices().getIdentityService();
                 for (String groupNew : groupsNew) {
                     group = identityService.createGroupQuery().groupId(groupNew).singleResult();
                     if (group == null) {
-                        group = identityService.newGroup(organ);
-                        group.setName(organ);
+                        group = identityService.newGroup(groupNew);
+                        group.setName(groupNew);
                         group.setType("assignment");
                         identityService.saveGroup(group);
                         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organ);
