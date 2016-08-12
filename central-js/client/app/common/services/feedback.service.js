@@ -54,6 +54,7 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
       var data = {
         'sID_Token': feedbackParams.sID_Token,
         'sBody': feedbackParams.sBody,
+        'nID': feedbackParams.nID,
         'sID_Source': feedbackParams.sID_Source,
         'sAuthorFIO': feedbackParams.sAuthorFIO,
         'sMail': feedbackParams.sMail,
