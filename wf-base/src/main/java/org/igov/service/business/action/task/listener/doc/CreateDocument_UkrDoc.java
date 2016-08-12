@@ -22,7 +22,6 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
@@ -32,7 +31,6 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 
 import org.igov.service.business.action.task.systemtask.ProcessCountTaskListener;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
-import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

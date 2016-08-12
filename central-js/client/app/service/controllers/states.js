@@ -248,13 +248,13 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
         }
 
         $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
-          return -o.nID;
+          return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
 
         $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          return o.nID != $scope.nID;
+          return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
         });
 
         $scope.feedback.currentFeedback = angular.copy(response[1].data);
@@ -289,6 +289,10 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     var sAuthorFIO = $scope.feedback.currentFeedback.sAuthorFIO,
       sMail = $scope.feedback.currentFeedback.sMail,
       sHead = $scope.feedback.currentFeedback.sHead;
+
+    if (!((typeof $scope.feedback.messageBody) === 'string' ? !!$scope.feedback.messageBody.trim() : false)) {
+      return;
+    }
 
     var feedbackParams = {
       'sToken': $scope.sID_Token,

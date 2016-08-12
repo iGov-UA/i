@@ -161,12 +161,13 @@ public class BpServiceHandler {
         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
-        LOG.info("temporary logging, mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
-        LOG.info("temporary logging, sField={}", sField);
+        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("sField={}", sField);
         mParam.put("saField", sField+".");
 
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs);
+        LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
