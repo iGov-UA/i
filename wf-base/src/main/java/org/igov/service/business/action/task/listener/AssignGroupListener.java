@@ -34,7 +34,7 @@ public class AssignGroupListener implements TaskListener {
     @Override
     public void notify(DelegateTask task) {
         DelegateExecution execution = task.getExecution();
-        //String organ = (String) execution.getVariable("organ");
+        //String organ = (String) execution.getVariable("organ"); 
         String organValue = getStringFromFieldExpression(this.organ, execution);
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organValue: " + organValue);
         Group group;
