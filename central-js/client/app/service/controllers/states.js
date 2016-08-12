@@ -290,6 +290,10 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       sMail = $scope.feedback.currentFeedback.sMail,
       sHead = $scope.feedback.currentFeedback.sHead;
 
+    if (!((typeof $scope.feedback.messageBody) === 'string' ? !!$scope.feedback.messageBody.trim() : false)) {
+      return;
+    }
+
     var feedbackParams = {
       'sToken': $scope.sID_Token,
       'sBody': $scope.feedback.messageBody,
