@@ -29,18 +29,17 @@ import org.springframework.stereotype.Component;
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
-    private Expression organ;
+    private Expression sOrgan;
 
     @Override
-    public void notify(DelegateTask task) {
-        DelegateExecution execution = task.getExecution();
-        //String organ = (String) execution.getVariable("organ"); 
-        String organValue = getStringFromFieldExpression(this.organ, execution);
+    public void notify(DelegateTask delegateTask) {
+        DelegateExecution execution = delegateTask.getExecution();
+        String organValue = getStringFromFieldExpression(this.sOrgan, execution);
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organValue: " + organValue);
         Group group;
         try {
             if (organValue != null && !"".equals(organValue)) {
-                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organValue.replaceAll(" ", "").split(",")));
+                List<String> groupsNew = new ArrayList<>(Arrays.asList(organValue.replaceAll(" ", "").split(",")));
                 IdentityService identityService = execution.getEngineServices().getIdentityService();
                 for (String groupNew : groupsNew) {
                     group = identityService.createGroupQuery().groupId(groupNew).singleResult();
@@ -52,11 +51,11 @@ public class AssignGroupListener implements TaskListener {
                         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organValue);
                     }
                 }
-                Set<IdentityLink> groupsOld = task.getCandidates();
-                for (IdentityLink groupOld : groupsOld) {
+                Set<IdentityLink> groupsOld = delegateTask.getCandidates();
+                groupsOld.stream().forEach((groupOld) -> {
                     groupsNew.add(groupOld.getGroupId());
-                }
-                task.addCandidateGroups(groupsNew);
+                });
+                delegateTask.addCandidateGroups(groupsNew);
             }
         } catch (Exception ex) {
             LOG.error("!!!!!!!!!!!!!!!!", ex);
