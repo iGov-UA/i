@@ -1057,7 +1057,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         List<String> headers = new ArrayList<>();
         String[] headersMainField = {"nID_Process", "sLoginAssignee",
-            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName"};
+            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName","sAssignee"};
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("(headers={})", headers);
         Set<String> headersExtra = oActionTaskService.findExtraHeaders(bDetail, foundResults,
