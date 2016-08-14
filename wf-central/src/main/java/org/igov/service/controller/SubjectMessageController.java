@@ -495,7 +495,7 @@ public class SubjectMessageController {
     }
 
     @ApiOperation(value = "Сохранить отзыв по услуге от сторонней организации")
-    @RequestMapping(value = "/setFeedbackExternal", method = RequestMethod.POST)
+    @RequestMapping(value = "/setFeedbackExternal", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity<String> setFeedbackExternal(
             @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "ID источника", required = true) @RequestParam(value = "sID_Source", required = true) String sID_Source,
