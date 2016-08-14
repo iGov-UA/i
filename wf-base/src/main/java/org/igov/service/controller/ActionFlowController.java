@@ -822,7 +822,7 @@ public class ActionFlowController {
     }
 
 	@ApiOperation(value = "Получение списка тайм слотов", notes = "##### Пример:\n"
-			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/getFlowsByPlace\n\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/getSlots\n\n"
 			+ "nID_Service_Private - 428"
 			+ "nDays - 2"
 			+ "Пример результата\n\n"
@@ -968,10 +968,10 @@ public class ActionFlowController {
 			+ "  \"2016-08-14\": []\n"
 			+ "}"
 			+ "\n```\n" )
-	@RequestMapping(value = "/DMS/getFlowsByPlace", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/DMS/getSlots", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	public
 	@ResponseBody
-	String getFlowsByPlace(
+	String getSlots(
 			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
 			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
 	) throws Exception {
@@ -993,7 +993,7 @@ public class ActionFlowController {
 	}
 
 	@ApiOperation(value = "Резервирование тайм слота.", notes = "##### Пример:\n"
-			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setFlowsByPlace\n\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setSlotHold\n\n"
 			+ "nID_Service_Private - 428"
 			+ "sDateTime - 2016-08-17 14:05:00"
 			+ "sSubjectFamily - Sidorov"
@@ -1009,10 +1009,10 @@ public class ActionFlowController {
 			+ "  \"interval\": \"15\"\n"
 			+ "}"
 			+ "\n```\n" )
-	@RequestMapping(value = "/DMS/setFlowsByPlace", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/DMS/setSlotHold", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	public
 	@ResponseBody
-	String setFlowsByPlace(
+	String setSlotHold(
 			@ApiParam(value = "ИД услуги", required = true) @RequestParam(value = "nID_Service_Private") String sID_Service_Private,
 			@ApiParam(value = "Дата и время в формате \"YYYY-MM-DD hh:ii:ss\"", required = true) @RequestParam(value = "sDateTime") String sDateTime,
 			@ApiParam(value = "Фамилия клиента", required = true) @RequestParam(value = "sSubjectFamily") String sSubjectFamily,
@@ -1035,8 +1035,8 @@ public class ActionFlowController {
 	}
 
 	@ApiOperation(value = "Подтверждение резервации тайм слота.", notes = "##### Пример:\n"
-			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/confirmFlow\n\n"
-			+ "nReservationId - 18573"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setSlot\n\n"
+			+ "nID_SlotHold - 18573"
 			+ "Пример результата\n\n"
 			+ "\n```json\n"
 			+ "{\n"
@@ -1049,15 +1049,15 @@ public class ActionFlowController {
 			+ "  \"lastname\": \"Sidorov\"\n"
 			+ "}"
 			+ "\n```\n" )
-	@RequestMapping(value = "/DMS/confirmFlow", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/DMS/setSlot", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	public
 	@ResponseBody
-	String confirmFlow(
-			@ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nReservationId") String nReservationId
+	String setSlot(
+			@ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold
 	) throws Exception {
 		JSONObject result;
 
-		result = cherg.confirmReserve(nReservationId);
+		result = cherg.confirmReserve(nID_SlotHold);
 
 		return result.toString();
 	}
