@@ -851,11 +851,11 @@ public class ActionFlowController {
 	String setFlowsByPlace(
 			@ApiParam(value = "ИД услуги", required = true) @RequestParam(value = "nID_Service_Private") String sID_Service_Private,
 			@ApiParam(value = "Дата и время в формате \"YYYY-MM-DD hh:ii:ss\"", required = true) @RequestParam(value = "sDateTime") String sDateTime,
-			@ApiParam(value = "Фамилия клиента") @RequestParam(value = "sSubjectFamily") String sSubjectFamily,
-			@ApiParam(value = "Имя клиента") @RequestParam(value = "sSubjectName") String sSubjectName,
-			@ApiParam(value = "Отчество клиента") @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
-			@ApiParam(value = "Последние 4 цифры паспорта") @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
-			@ApiParam(value = "Номер телефона клиента") @RequestParam(value = "sSubjectPhone") String sSubjectPhone
+			@ApiParam(value = "Фамилия клиента", required = true) @RequestParam(value = "sSubjectFamily") String sSubjectFamily,
+			@ApiParam(value = "Имя клиента", required = true) @RequestParam(value = "sSubjectName") String sSubjectName,
+			@ApiParam(value = "Отчество клиента", required = true) @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
+			@ApiParam(value = "Последние 4 цифры паспорта", required = true) @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
+			@ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
 	) throws Exception {
 		JSONObject result;
 
@@ -866,6 +866,19 @@ public class ActionFlowController {
 				sSubjectFamily,
 				sSubjectName,
 				sSubjectSurname);
+
+		return result.toString();
+	}
+
+	@RequestMapping(value = "/DMS/confirmFlow", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String confirmFlow(
+			@ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nReservationId") String nReservationId
+	) throws Exception {
+		JSONObject result;
+
+		result = cherg.confirmReserve(nReservationId);
 
 		return result.toString();
 	}

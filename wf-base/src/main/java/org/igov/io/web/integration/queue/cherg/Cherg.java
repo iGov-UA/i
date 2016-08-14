@@ -40,6 +40,7 @@ public class Cherg {
     private String urlBasePart;
     private String urlFreeTime = "/freetime";
     private String urlSetReserve = "/set_reserve";
+    private String urlConfirmReserve = "/confirm_reserve";
     private String login;
     private String password;
     private String basicAuthHeader;
@@ -161,4 +162,46 @@ public class Cherg {
 
     }
 
+    public JSONObject confirmReserve(String nReservationId) throws Exception {
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+
+        mParam.add("reserve_id", nReservationId);
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlConfirmReserve)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlFreeTime,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser parser = new JSONParser();
+        JSONObject response = (JSONObject) parser.parse(sReturn);
+        if (!response.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response=" +
+                    response.get("status-code") + " " + response.get("status-detail"));
+        }
+        JSONArray dates = (JSONArray) response.get("data");
+        JSONObject result;
+        Iterator<JSONObject> datesIterator = dates.iterator();
+        if (datesIterator.hasNext()) {
+            result = datesIterator.next();
+        } else {
+            result = new JSONObject();
+        }
+
+        LOG.info("Result:{}", dates);
+        return result;
+
+    }
 }
