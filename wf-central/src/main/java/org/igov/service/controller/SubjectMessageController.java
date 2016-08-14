@@ -505,7 +505,8 @@ public class SubjectMessageController {
             @ApiParam(value = "Тело отзыва", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Место", required = false) @RequestParam(value = "sPlace", required = false) String sPlace,
             @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
-            @ApiParam(value = "ID оценки", required = true) @RequestParam(value = "nID_Rate", required = true) Long nID_Rate,
+            @ApiParam(value = "ID оценки", required = false) @RequestParam(value = "nID_Rate", required = false) Long nID_Rate,
+            @ApiParam(value = "ID оценки (old compatibility)", required = false) @RequestParam(value = "sID_Rate", required = false) Long sID_Rate,
             @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
             //@ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
             @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -515,6 +516,11 @@ public class SubjectMessageController {
     ) throws CommonServiceException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        
+        if(nID_Rate==null){
+            sID_Rate=sID_Rate;
+        }
+        
         JSONObject oJSONObject = new JSONObject();
         try {
             String sAnswer=null;
