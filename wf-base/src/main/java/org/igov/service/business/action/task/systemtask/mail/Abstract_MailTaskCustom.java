@@ -557,6 +557,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 					+ "&sBody=" + ""
 					+ "&nID_Server=" + nID_Server
 					+ "&nID_Rate="+ prefix.replaceAll("_", "")
+					+ "&nID_Service=0"
 					+ "&bSelf="+ true;
 
 			String sQueryParam = String.format(sQueryParamPattern);

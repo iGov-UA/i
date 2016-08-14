@@ -507,7 +507,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Имя сотрудника", required = false) @RequestParam(value = "sEmployeeFIO", required = false) String sEmployeeFIO,
             @ApiParam(value = "ID оценки", required = false) @RequestParam(value = "nID_Rate", required = false) Long nID_Rate,
             @ApiParam(value = "ID оценки (old compatibility)", required = false) @RequestParam(value = "sID_Rate", required = false) Long sID_Rate,
-            @ApiParam(value = "ID сервиса", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false, defaultValue = "0") Long nID_Service,
             //@ApiParam(value = "комментарий для отзыва", required = false) @RequestParam(value = "sAnswer", required = false) String sAnswer,
             @ApiParam(value = "ID отзыва, который надо отредактировать", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
