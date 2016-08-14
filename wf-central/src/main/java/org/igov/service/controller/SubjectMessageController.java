@@ -518,7 +518,7 @@ public class SubjectMessageController {
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
         
         if(nID_Rate==null){
-            sID_Rate=sID_Rate;
+            nID_Rate=sID_Rate;
         }
         
         JSONObject oJSONObject = new JSONObject();
