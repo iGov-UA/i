@@ -837,7 +837,6 @@ public class ActionFlowController {
 
 		JSONArray slots = null;
 		for (int i = 0; i < nDays; i++) {
-			oDate = skipWeekand(oDate);
 			slots = cherg.getFreeTime(oDate, nID_Service_Private);
 			result.put(dateTimeFormatter.print(oDate), slots);
 			oDate = oDate.plusDays(1);
@@ -846,14 +845,28 @@ public class ActionFlowController {
 		return result.toString();
 	}
 
-	private DateTime skipWeekand(DateTime oDate) {
-		int dayOfWeek = oDate.getDayOfWeek();
-		if (dayOfWeek == 6) {
-			oDate = oDate.plusDays(2);
-		}
-		if (dayOfWeek == 7) {
-			oDate = oDate.plusDays(1);
-		}
-		return oDate;
+	@RequestMapping(value = "/DMS/setFlowsByPlace", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String setFlowsByPlace(
+			@ApiParam(value = "ИД услуги", required = true) @RequestParam(value = "nID_Service_Private") String sID_Service_Private,
+			@ApiParam(value = "Дата и время в формате \"YYYY-MM-DD hh:ii:ss\"", required = true) @RequestParam(value = "sDateTime") String sDateTime,
+			@ApiParam(value = "Фамилия клиента") @RequestParam(value = "sSubjectFamily") String sSubjectFamily,
+			@ApiParam(value = "Имя клиента") @RequestParam(value = "sSubjectName") String sSubjectName,
+			@ApiParam(value = "Отчество клиента") @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
+			@ApiParam(value = "Последние 4 цифры паспорта") @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
+			@ApiParam(value = "Номер телефона клиента") @RequestParam(value = "sSubjectPhone") String sSubjectPhone
+	) throws Exception {
+		JSONObject result;
+
+		result = cherg.setReserve(sID_Service_Private,
+				sDateTime,
+				sSubjectPhone,
+				sSubjectPassport,
+				sSubjectFamily,
+				sSubjectName,
+				sSubjectSurname);
+
+		return result.toString();
 	}
 }
