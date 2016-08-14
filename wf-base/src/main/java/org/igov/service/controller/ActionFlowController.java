@@ -1,10 +1,7 @@
 package org.igov.service.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.subject.SubjectOrganDepartment;
@@ -18,6 +15,10 @@ import org.igov.util.JSON.JsonDateSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolQuartz;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,9 @@ public class ActionFlowController {
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
 	@Autowired
     private FlowService oFlowService;
+
+	@Autowired
+	Cherg cherg;
 
 
     /**
@@ -816,4 +820,40 @@ public class ActionFlowController {
         LOG.info("Result:{}", jsonRes);
         return jsonRes;
     }
+
+	@RequestMapping(value = "/DMS/getFlowsByPlace", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String getFlowsByPlace(
+			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
+			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
+	) throws Exception {
+		if (nDays > 7) {
+			nDays = 7;
+		}
+		DateTime oDate = DateTime.now();
+		JSONObject result = new JSONObject();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+
+		JSONArray slots = null;
+		for (int i = 0; i < nDays; i++) {
+			oDate = skipWeekand(oDate);
+			slots = cherg.getFreeTime(oDate, nID_Service_Private);
+			result.put(dateTimeFormatter.print(oDate), slots);
+			oDate = oDate.plusDays(1);
+		}
+
+		return result.toString();
+	}
+
+	private DateTime skipWeekand(DateTime oDate) {
+		int dayOfWeek = oDate.getDayOfWeek();
+		if (dayOfWeek == 6) {
+			oDate = oDate.plusDays(2);
+		}
+		if (dayOfWeek == 7) {
+			oDate = oDate.plusDays(1);
+		}
+		return oDate;
+	}
 }

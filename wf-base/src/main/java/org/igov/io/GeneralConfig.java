@@ -118,7 +118,13 @@ public class GeneralConfig {
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
-    
+    @Value("${general.queue.cherg.sURL}")
+    private String queueManagementSystemAddress;
+    @Value("${general.queue.cherg.sLogin}")
+    private String queueManagementSystemLogin;
+    @Value("${general.queue.cherg.sPassword}")
+    private String queueManagementSystemPassword;
+
     public boolean isSelfTest() {
         boolean b = true;
         try {
@@ -360,5 +366,16 @@ public class GeneralConfig {
 	LOG.info("----------------------------------------------------");
 	
     }
-    
+
+    public String getQueueManagementSystemAddress() {
+        return queueManagementSystemAddress;
+    }
+
+    public String getQueueManagementSystemLogin() {
+        return queueManagementSystemLogin;
+    }
+
+    public String getQueueManagementSystemPassword() {
+        return queueManagementSystemPassword;
+    }
 }
