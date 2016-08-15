@@ -47,14 +47,13 @@
       var currDate = $filter('date')(new Date(), "yyyy-MM-dd HH:mm:ss");
 
       var answer = {
-        "sFIO":userName || ''
+        "sAuthorFIO":userName || ''
         ,"bSelf":false
         ,"sDate":currDate
         ,"sText":vm.answerBody
       };
 
       angular.extend(currentFeedbackDraft, {sAnswer: answer, nID_Service: vm.currentFeedback.nID_Service});
-
       vm.sendHandler({answerData: currentFeedbackDraft});
     }
 

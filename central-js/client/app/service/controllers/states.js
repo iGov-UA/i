@@ -205,11 +205,13 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
     sendAnswer: sendAnswer,
     answer: answer,
     hideAnswer: hideAnswer,
-    raiting: 3,
+    rating: 3,
     exist: false,
     readonly: true,
     isAdmin: false,
-    showAnswer: false
+    showAnswer: false,
+    relativeTime: relativeTime,
+    relativeSimpleTime: relativeSimpleTime
   };
 
   activate();
@@ -259,6 +261,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
           return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
 
+        $scope.feedback.rating = response[1].data.nID_Rate || 5;
         $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
@@ -290,7 +293,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
   }
 
   function rateFunction(rating) {
-    $scope.feedback.raiting = rating;
+    $scope.feedback.rating = rating;
   }
 
   function postFeedback() {
@@ -331,7 +334,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
       'sID_Token': $scope.sID_Token,
       'sBody': data.sAnswer.sText,
       'nID_SubjectMessageFeedback': data.nID,
-      'sAuthorFIO': data.sAuthorFIO,
+      'sAuthorFIO': data.sAnswer.sAuthorFIO,
       'nID_Service': data.nID_Service,
       'nID_Subject': $state.nID_Subject
     };
@@ -359,6 +362,61 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
      });*/
   }
 
+  function relativeSimpleTime(dateStr) {
+    if (!dateStr) {
+      return;
+    }
+
+    dateStr = $.trim(dateStr);
+    dateStr = dateStr.replace(/\.\d\d\d+/,"");
+    dateStr = dateStr.replace(/\:\d\d+/,"");
+    return dateStr;
+  }
+
+  function relativeTime(dateStr) {
+    if (!dateStr) {
+      return;
+    }
+
+    dateStr = $.trim(dateStr);
+    dateStr = dateStr.replace(/\.\d\d\d+/,"");
+    dateStr = dateStr.replace(/-/,"/").replace(/-/,"/");
+    dateStr = dateStr.replace(/T/," ").replace(/Z/," UTC");
+    dateStr = dateStr.replace(/([\+\-]\d\d)\:?(\d\d)/," $1$2");
+
+    var parsed_date = new Date(dateStr);
+    var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
+    var delta = parseInt((relative_to.getTime()-parsed_date)/1000);
+
+    console.log(relative_to);
+    console.log('getTime ',parsed_date+ ':' + relative_to.getDay());
+
+    delta=(delta<2)?2:delta;
+
+    var result = '';
+    //if (delta < 60) {
+    //  result = delta + ' seconds ago';
+    //} else if(delta < 120) {
+    //  result = 'a minute ago';
+    //} else if(delta < (45*60)) {
+    //  result = (parseInt(delta / 60, 10)).toString() + ' minutes ago';
+    //} else if(delta < (2*60*60)) {
+    //  result = 'an hour ago';
+    //} else
+    //if(delta < (24*60*60) ) {
+      if(parseInt(delta / 86400, 10) == 0){
+      //result = 'сьогодні ' + (parseInt(delta / 3600, 10)).toString() + ' hours ago';
+      result = 'сьогодні ' + parsed_date.getHours()+ ':' + parsed_date.getMinutes();
+    //} else if(delta < (48*60*60)) {
+      } else if(parseInt(delta / 86400, 10) == 1) {
+      result = ' вчора ' + parsed_date.getHours()+ ':' + parsed_date.getMinutes();
+    } else if(parseInt(delta / 86400, 10) <= 4){
+      result = (parseInt(delta / 86400, 10)).toString() + ' дні назад ' + parsed_date.getHours()+ ':' + parsed_date.getMinutes();
+    } else {
+      result = (parseInt(delta / 86400, 10)).toString() + ' днів назад ' + parsed_date.getHours()+ ':' + parsed_date.getMinutes();
+    }
+    return result;
+  }
 });
 
 angular.module('app').controller('ServiceLegislationController', function ($state, $rootScope, $scope) {
