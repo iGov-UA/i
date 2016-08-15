@@ -35,7 +35,11 @@
         <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар за результатами контакту з адміністративним органом" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignGroup}">
+          <activiti:field name="organ">
+            <activiti:expression><![CDATA[${organ}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -97,14 +101,14 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="347.0" y="122.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="122.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="339.0" y="122.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="339.0" y="122.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="327.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="327.0" y="77.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="330.0" y="83.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="74.0" x="330.0" y="83.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
