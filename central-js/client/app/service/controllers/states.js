@@ -191,7 +191,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
+angular.module('app').controller('ServiceFeedbackController', function (SimpleErrorsFactory, $state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -215,6 +215,14 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
   activate();
 
   function activate() {
+
+    if(!ServiceService.oService.nID){
+      SimpleErrorsFactory.push({
+        type: "denger",
+        oData: {sHead:'Послуга не існує!',
+          sBody:'Виберіть, будьласка, існуючу послугу.'}});
+      return;
+    }
 
     UserService.isLoggedIn().then(function (result) {
       if (result) {
@@ -340,6 +348,15 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
 
   function hideAnswer() {
     $scope.feedback.commentToShowAnswer = -1;
+  }
+
+  function pushError(sErrorText){
+    $scope.messageError = true;
+    ErrorsFactory.logWarn({sBody:sErrorText});
+    /*ErrorsFactory.push({
+     type: "danger",
+     text:  sErrorText
+     });*/
   }
 
 });
