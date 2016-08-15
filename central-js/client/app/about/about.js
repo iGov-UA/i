@@ -1572,7 +1572,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
          {
           "sID_Group":"kharkiv.bogoduhiv.rada",
           "sFIO":"Коваленко Андрій",
-          "sURL":"https://www.facebook.com/profile.php?id=100001691240388&fref=pb_other",
+          "sURL":"https://www.facebook.com/profile.php?id=100001691240388",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/550732_443438539055850_140973306_n.jpg?oh=ab3f677dfad0d2e0cfa727d12d2e7b20&oe=5812D755",
           "sCity":"Богодухів"
         },
