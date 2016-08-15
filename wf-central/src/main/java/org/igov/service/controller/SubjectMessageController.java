@@ -566,6 +566,7 @@ public class SubjectMessageController {
     public ResponseEntity<String> setFeedbackAnswerExternal(
             @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
             @ApiParam(value = "Тело ответа", required = true) @RequestParam(value = "sBody", required = true) String sBody,
+            @ApiParam(value = "ФИО автора ответа", required = true) @RequestParam(value = "sAuthorFIO", required = true) String sAuthorFIO,
             @ApiParam(value = "ID отзыва, ответ на который надо сохранить", required = true) @RequestParam(value = "nID_SubjectMessageFeedback", required = true) Long nID_SubjectMessageFeedback,
             @ApiParam(value = "Собственный контр-ответ автора фидбека", required = false) @RequestParam(value = "bSelf", required = true) Boolean bSelf,
             @ApiParam(value = "ID субъекта создавшего сообщение", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
@@ -589,7 +590,7 @@ public class SubjectMessageController {
                 LOG.warn("sBody is empty!, nID_SubjectMessageFeedback={}", nID_SubjectMessageFeedback);
                 throw new CommonServiceException("sBody is empty!", "nID_SubjectMessageFeedback="+nID_SubjectMessageFeedback);
             }else{
-                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject, bSelf);
+                oSubjectMessageFeedbackAnswer = oSubjectMessageService.setSubjectMessageFeedbackAnswer(nID_SubjectMessageFeedback, sAnswer, nID_Subject, bSelf, sAuthorFIO);
                 List<SubjectMessageFeedbackAnswer> aSubjectMessageFeedbackAnswer = oSubjectMessageFeedback.getoSubjectMessageFeedbackAnswers();
                 aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
                 oSubjectMessageFeedback.setoSubjectMessageFeedbackAnswers(aSubjectMessageFeedbackAnswer);
