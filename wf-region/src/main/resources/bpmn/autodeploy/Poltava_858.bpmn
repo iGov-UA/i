@@ -64,6 +64,8 @@
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Запит до державного архіву"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -185,7 +187,10 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Obl_arch_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Obl_arch_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;Posl1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl1'&quot;},&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;Posl2&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl2'&quot;},&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;Posl3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl3'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -312,8 +317,22 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-     <script>
-       var xxx=' '
+      <script>
+       var vv3PM=execution.getVariable('email')
+       var vv3F=execution.getVariable('sFax')
+       var xxx2='на електронну адресу'+vv3PM
+       var xxx3='на номер факсу №'+vv3F
+       
+       
+       
+       if(execution.getVariable('asPosluga') == 'sEnamposl1'){execution.setVariable('sShap_Pro', 'Про надання інформації')}
+       if(execution.getVariable('asPosluga') == 'sEnamposl2'){execution.setVariable('sShap_Pro', 'Про замовлення справ в читальному залі')}
+       if(execution.getVariable('asPosluga') == 'sEnamposl3'){execution.setVariable('sShap_Pro', 'Про науково-технічне опрацювання документа')}
+       
+       if(execution.getVariable('asVidpovid') == 'sEnamPost'){execution.setVariable('sDost', 'у паперовому вигляді, листом на вказану у заяві адресу')}
+       if(execution.getVariable('asVidpovid') == 'sEnamE_mail'){execution.setVariable('sDost', xxx2)}
+       if(execution.getVariable('asVidpovid') == 'sEnamFax'){execution.setVariable('sDost', xxx3)}
+       
      </script>
     </scriptTask>
     <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
