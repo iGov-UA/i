@@ -338,20 +338,75 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
               sName: "Львівська область",
                 a: [{
                   sID: "lviv",
-                  sName: "Львів",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
+                  sName: "м. Львів",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1WJfk3RP4rZVdPYobECePzuDZkTh2BFRSJiCDUlde1Fo/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/IGov-Lviv-801495843309925/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/1034876896574452/"
                 },
                 {
                   sID: "chervonograd",
-                  sName: "Червоноград",
+                  sName: "м. Червоноград",
                   sCityPassportURL:"",
                   sNewsGroupURL:"",
                   sVolunteersGroupURL:""
+                  },
+                {
+                  sID: "ctriy",
+                  sName: "м. Стрий",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1CljcwEbEhVCBvu1nShzGMriBglkjtEpHOanPhi-K2_0/edit?ts=56dac750#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/IGovStryi/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/467415000125415/"
                 }]
             },
             
+            {       
+              sID:"vinnytsia",
+              sName: "Вінницька область",
+                a: [{
+                  sID: "vinnytsia",
+                  sName:"м. Вінниця",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1lXzaAnDLB7YpMroevHmX6DOJ_LxzB9wVuIEu0uRpjxo/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/IGov-%D0%92%D1%96%D0%BD%D0%BD%D0%B8%D1%86%D1%8F-933138393390720/",
+                  sVolunteersGroupURL:"https://www.facebook.com/groups/1531056573877513/"
+                }]
+            },
+
+            {
+              sID:"sumy",
+              sName: "Сумська область",
+                a: [{
+                  sID: "sumy",
+                  sName: "м. Суми",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1JInu_kMhMYshfrYLMXF2HiOZqtomxUcnfef7UKgTuNQ/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovsumy",
+                  sVolunteersGroupURL:"https://groups.google.com/forum/m/?hl=ru#!forum/igov-sumy"
+                },
+                
+                {
+                  sID: "ohtirka",
+                  sName: "м. Охтирка",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1UHyTH4Bu-Lu9uexin9m6B8CyQYArue7yfzJ_vfWei1A/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovsumy",
+                  sVolunteersGroupURL:"https://groups.google.com/forum/m/?hl=ru#!forum/igov-sumy"
+                },
+                
+                {
+                  sID: "gluhiv",
+                  sName: "м. Глухів",
+                  sCityPassportURL:"https://www.facebook.com/igovsumy",
+                  sNewsGroupURL:"",
+                  sVolunteersGroupURL:"https://groups.google.com/forum/#!forum/igov--hlukhiv"
+                  },
+                  
+                  {
+                  sID: "shostka",
+                  sName: "м. Шостка",
+                  sCityPassportURL:"https://docs.google.com/spreadsheets/d/1is0yFCnTkZR32afHjTqrNWRVxvhlvtEV7zjM-j8TH2c/edit#gid=1409053144",
+                  sNewsGroupURL:"https://www.facebook.com/igovsumy",
+                  sVolunteersGroupURL:"https://groups.google.com/forum/m/?hl=ru#!forum/igov-sumy"
+                  
+                }]
+            },
             
             {
               sID:"chernigiv",
@@ -375,24 +430,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                   sVolunteersGroupURL:""
                 }]
             },
-            {
-              sID:"sumy",
-              sName: "Сумська область",
-                a: [{
-                  sID: "sumy",
-                  sName: "Суми",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
-                },
-                {
-                  sID: "gluhiv",
-                  sName: "Глухів",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
-                }]
-            },
+            
             {
               sID:"zhytomyr",
               sName: "Житомирська область",
@@ -471,17 +509,6 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
                 a: [{
                   sID: "uzhgorod",
                   sName: "Ужгород",
-                  sCityPassportURL:"",
-                  sNewsGroupURL:"",
-                  sVolunteersGroupURL:""
-                }]
-            },
-            {
-              sID:"vinnytsia",
-              sName: "Вінницька область",
-                a: [{
-                  sID: "vinnytsia",
-                  sName: "Вінниця",
                   sCityPassportURL:"",
                   sNewsGroupURL:"",
                   sVolunteersGroupURL:""
@@ -641,7 +668,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Дніпро"
         },
         {
-          "sFIO":"Столбова Ганна",
+          "sFIO":"Столбова Анна",
           "sURL":"https://www.facebook.com/insanniyou",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1743652_594673260603466_1655652539_n.jpg?oh=57bdc0968e8b24ffc6b83a6eaf1bcb0d&oe=5823E139",
           "sCity":"Дніпро"
@@ -1617,20 +1644,42 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Богодухів"
         },
         
-        
-        
-        
         {
-          "sID_Group":"lviv.chervonograd",
-          "sFIO":"Квасній Артур",
-          "sURL":"",
-          "sCity":"Червоноград"
+          "sID_Group":"lviv.lviv.rada",
+          "sFIO":"Стець Ольга",
+          "sURL":"https://www.facebook.com/olga.kuk.7?fref=ts",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13118949_1090622227657248_4317645524507437859_n.jpg?oh=f0c3d5f3088405f3749a349ef9bb04e6&oe=581BC784",
+          "sCity":"Львів",
+          "sInfo":"Координатор міста"
         },
 
-
+        {
+          "sID_Group":"lviv.lviv.rada",
+          "sFIO":"Ємельянов Андрій",
+          "sURL":"https://www.facebook.com/andriy.emelyanov?fref=ts",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12348008_10206321727654894_12572916702785949_n.jpg?oh=f7da99b2f9e33032d8df2ea675225fbe&oe=584D9EEC",
+          "sCity":"Львів"
+        },
+        
+        {
+          "sID_Group":"lviv.lviv.rada",
+          "sFIO":"Мочан Анна",
+          "sURL":"https://www.facebook.com/anna.mochan?fref=ts",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13876370_1745329249041968_2174109669241323848_n.jpg?oh=4ca9f37e6610d7b05cd4eb3b32674417&oe=581B3E37",
+          "sCity":"Львів"
+        },
+        
+        {
+          "sID_Group":"lviv.lviv.rada",
+          "sFIO":"Драбик Ігор ",
+          "sURL":"https://www.facebook.com/ihor.drabyk?fref=pb_other",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c40.0.160.160/p160x160/10363399_675226872559570_7903489327376029821_n.jpg?oh=42583f01faa83c932816502f86661d0d&oe=581DAE6D",
+          "sCity":"Львів"
+        },
+        
         {
           "sID_Group":"lviv.lviv",
-          "sFIO":"Глеб Жебраков",
+          "sFIO":"Жебраков Глеб",
           "sURL":"",
           "sCity":"Львів"
         },
@@ -1642,6 +1691,209 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sURL":"",
           "sCity":"Львів"
         },
+        
+  {
+          "sID_Group":"lviv.lviv",
+          "sFIO":"Гуцуляк Олександр",
+          "sURL":"",
+          "sCity":"Львів"
+        },
+ 
+        {
+          "sID_Group":"lviv.chervonograd.rada",
+          "sFIO":"Квасній Артур",
+          "sURL":"https://www.facebook.com/artur.kvasnii?fref=ts",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c34.0.133.133/58409_157035217656511_6964268_n.jpg?oh=179867c9a2114cf6a336e0d129b8b8fa&oe=5812CCB7",
+          "sCity":"Червоноград",
+          "sInfo":"Координатор міста"
+        },
+
+        {
+          "sID_Group":"lviv.ctriy.rada",
+          "sFIO":"Тиченко Євген",
+          "sURL":"https://www.facebook.com/profile.php?id=100002165937951",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12065719_887088831373306_4523486344892046187_n.jpg?oh=462d4a5de01c44616869804e7f888fa2&oe=584E6AF8",
+          "sCity":"Стрий"
+        },
+
+
+        {
+          "sID_Group":"lviv.ctriy.rada",
+          "sFIO":"Сікора Олександр",
+          "sURL":"https://www.facebook.com/Aleksandr.Sikora",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c6.0.160.160/p160x160/10441202_10203658374090326_4714475090803473129_n.jpg?oh=ffd889a2d372ac5b48345ca35f03099a&oe=584F148E",
+          "sCity":"Стрий"
+        },
+
+        {
+          "sID_Group":"vinnytsia.vinnytsia.rada",
+          "sFIO":"Мукомол Вадим",
+          "sURL":"https://www.facebook.com/vadim.munin",
+          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13322177_1128005340575202_2101175329914658142_n.jpg?oh=5f1cc91ede0ea2075becc8e315b435f4&oe=5818D3A5",
+          "sCity":"Вінниця"
+        },
+
+        {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Горкуша Михайло",
+          "sURL":"https://www.facebook.com/mgorkusha",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c2.0.565.565/s160x160/10505527_970637849630121_6526722851659838624_n.jpg?oh=367c93a7a8f8c8380f5d63e264ac5dd5&oe=581622CD",
+          "sCity":"Суми",
+          "sInfo":"Координатор міста"
+        },
+
+        {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Бузок Лана",
+          "sURL":"https://www.facebook.com/lana.buzok",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c127.37.466.466/s160x160/215757_102699656485327_2355595_n.jpg?oh=f9d9f3c1fb081ae70369c14dd78f5b3a&oe=585679E8",
+          "sCity":"Суми"
+        },
+
+         {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Летюга Юлія",
+          "sURL":"https://www.facebook.com/profile.php?id=100004160319984",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13529112_680275798787758_1602275812019151041_n.jpg?oh=03fe97ecb4647dc5c06cbc46925d28eb&oe=5857DAA1",
+          "sCity":"Суми"
+        },
+
+         {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Кузьмичов Євген",
+          "sURL":"https://www.facebook.com/ekuzmichov",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13895484_1086443681448198_7218521654132330425_n.jpg?oh=1ed6aa95a93906fec1361cb919ab2065&oe=5852E391",
+          "sCity":"Суми"
+        },
+        
+         {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Сахно Валентина",
+          "sURL":"https://www.facebook.com/valenta.sakhno",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c121.118.229.229/s160x160/13626961_1058169447603344_948595910807164841_n.jpg?oh=9e79d9a18e32b4b6e32d3286261ea208&oe=585B4705",
+          "sCity":"Суми"
+        },
+        
+        {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Сидоренко Наталія",
+          "sURL":"https://www.facebook.com/natalya.sydorenko.5",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/10629740_752913151447449_6676359151058605651_n.jpg?oh=088b6e9560b47e9aa5ef369a6b3ad847&oe=58149FC4",
+          "sCity":"Суми"
+        },
+        
+         {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Бєломар Віктор",
+          "sURL":"https://www.facebook.com/testovy.zapys",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/10410814_623836591048905_358311601518934968_n.jpg?oh=03f415738e290aeb38a6fd05ef53fd00&oe=5819DC49",
+          "sCity":"Суми"
+        },
+        
+         {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Губа Антон",
+          "sURL":"https://www.facebook.com/anton.guba.988?fref=ufi",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c0.40.160.160/p160x160/13321836_1553826794924853_7488945860080742_n.jpg?oh=0319ec6cfbdfc8cc5474f0b2590b9fb0&oe=584F9E14",
+          "sCity":"Суми"
+        },
+        
+        {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Шкурат Іван",
+          "sURL":"https://www.facebook.com/profile.php?id=100007617124826",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13658953_1696985720565316_3094432700811893823_n.jpg?oh=9d9813305e1dd5bf9bbcafa248d00133&oe=584C91D6",
+          "sCity":"Суми"
+        },
+        
+        {
+          "sID_Group":"sumy.sumy.rada",
+          "sFIO":"Бунаас Людмила",
+          "sURL":"https://www.facebook.com/liudmyla.bounaas",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c65.0.160.160/p160x160/375713_640394686024997_1866618190_n.jpg?oh=873c0cfc72f5685d5190ccdbfa0b215e&oe=585C8AB2",
+          "sCity":"Суми"
+        },
+        
+                {
+          "sID_Group":"sumy.sumy",
+          "sFIO":"Дубинка Юрій",
+          "sURL":"https://ua.linkedin.com/pub/yurii-dubinka/b9/16/45b",
+          "sPhoto":"https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAALQAAAAJDY1YWIxNGRlLTEyZmItNGY4OC1iOWIxLWFlYTFjOTQ3MWU5Nw.jpg",
+          "sCity":"Суми"
+        },
+        
+        {
+          "sID_Group":"sumy.sumy",
+          "sFIO":"Олексій Сердюк",
+          "sURL":"",
+          "sCity":"Суми"
+        },
+        
+        {
+          "sID_Group":"sumy.ohtirka.rada",
+          "sFIO":"Горкуша Михайло",
+          "sURL":"https://www.facebook.com/mgorkusha",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c2.0.565.565/s160x160/10505527_970637849630121_6526722851659838624_n.jpg?oh=367c93a7a8f8c8380f5d63e264ac5dd5&oe=581622CD",
+          "sCity":"Охтирка",
+          "sInfo":"Координатор міста"
+        },
+        
+         {
+          "sID_Group":"sumy.ohtirka.rada",
+          "sFIO":"Сидоренко Наталія",
+          "sURL":"https://www.facebook.com/natalya.sydorenko.5",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/10629740_752913151447449_6676359151058605651_n.jpg?oh=088b6e9560b47e9aa5ef369a6b3ad847&oe=58149FC4",
+          "sCity":"Охтирка"
+        },
+        
+        {
+          "sID_Group":"sumy.ohtirka.rada",
+          "sFIO":"Марченко Руслан",
+          "sURL":"https://www.facebook.com/ruslan.marchenko.5",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12994398_681239742015638_999233168024556913_n.jpg?oh=5e9d3472e07b34ae77e7eb95a3be2701&oe=5857F879",
+          "sCity":"Охтирка"
+        },
+        
+        {
+          "sID_Group":"sumy.gluhiv.rada",
+          "sFIO":"Павловець Ілля",
+          "sURL":"https://www.facebook.com/Freedom.hl",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10955798_832812253442342_8854510801972688533_n.jpg?oh=095a285238be1dee3f04fce4bee726f3&oe=58485628",
+          "sCity":"Глухів",
+          "sInfo":"Координатор міста"
+        },
+        
+        
+        {
+          "sID_Group":"sumy.shostka.rada",
+          "sFIO":"Горкуша Михайло",
+          "sURL":"https://www.facebook.com/mgorkusha",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c2.0.565.565/s160x160/10505527_970637849630121_6526722851659838624_n.jpg?oh=367c93a7a8f8c8380f5d63e264ac5dd5&oe=581622CD",
+          "sCity":"Шостка",
+          "sInfo":"Координатор міста"
+        },
+        
+        {
+          "sID_Group":"sumy.shostka.rada",
+          "sFIO":"Сидоренко Наталія",
+          "sURL":"https://www.facebook.com/natalya.sydorenko.5",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c27.0.160.160/p160x160/10629740_752913151447449_6676359151058605651_n.jpg?oh=088b6e9560b47e9aa5ef369a6b3ad847&oe=58149FC4",
+          "sCity":"Шостка"
+        },
+        
+        {
+          "sID_Group":"sumy.shostka.rada",
+          "sFIO":"Москаленко Галина",
+          "sURL":"https://www.facebook.com/halyna.moskalenko",
+          "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1525098_424658800995496_376116867_n.jpg?oh=968b84cf3150d83fd3ea4b2a65a67744&oe=581E810F",
+          "sCity":"Шостка"
+        },
+        
+        
+        
+        
+        
+        
         {
           "sID_Group":"chernigiv.chernigiv",
           "sFIO":"Дубина Владимир",
@@ -1649,37 +1901,21 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Чернігів"
         },
        
-        {
-          "sID_Group":"sumy.sumy",
-          "sFIO":"Дубинка Юрій",
-          "sURL":"https://ua.linkedin.com/pub/yurii-dubinka/b9/16/45b",
-          "sPhoto":"https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAALQAAAAJDY1YWIxNGRlLTEyZmItNGY4OC1iOWIxLWFlYTFjOTQ3MWU5Nw.jpg",
-          "sCity":"Суми"
-        },
+
         {
           "sID_Group":"chernigiv.chernigiv",
           "sFIO":"Голуб Олексій",
           "sURL":"",
           "sCity":"Чернігів"
         },
-        {
-          "sID_Group":"lviv.lviv",
-          "sFIO":"Гуцуляк Олександр",
-          "sURL":"",
-          "sCity":"Львів"
-        },
+       
         {
           "sID_Group":"chernigiv.chernigiv",
           "sFIO":"Олександр Скосир",
           "sURL":"",
           "sCity":"Чернігів"
         },
-        {
-          "sID_Group":"sumy.sumy",
-          "sFIO":"Олексій Сердюк",
-          "sURL":"",
-          "sCity":"Суми"
-        },
+   
         {
           "sID_Group":"zhytomyr.zhytomyr",
           "sFIO":"Ольга Прилипко",
@@ -1710,14 +1946,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sCity":"Миргород"
         },
 
-        {
-          "sID_Group":"sumy.gluhiv.rada",
-          "sFIO":"Павловець Ілля",
-          "sURL":"https://www.facebook.com/Freedom.hl",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/10955798_832812253442342_8854510801972688533_n.jpg?oh=c0c7f062f3e78d9960bb31fda11f47c9&oe=5820C928",
-          "sCity":"Глухів"
-        },
-       
+   
       
         {
           "sID_Group":"zaporizhya.zaporizhya.rada",
@@ -1733,19 +1962,8 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13938389_1072424572833636_7000621191111350534_n.jpg?oh=243827ba07364e597756c121af22c903&oe=581B1239",
           "sCity":"Сєвєродонецьк"
         },
-        {
-          "sID_Group":"sumy.sumy.rada",
-          "sFIO":"Горкуша Михайло",
-          "sURL":"https://www.facebook.com/mgorkusha",
-          "sCity":"Суми"
-        },
-        {
-          "sID_Group":"lviv.lviv.rada",
-          "sFIO":"Стець Ольга",
-          "sURL":"https://www.facebook.com/olga.kuk.7?fref=ts",
-          "sCity":"Львів"
-        },
 
+      
         {
           "sID_Group":"zhytomyr.zhytomyr.rada",
           "sFIO":"Савінова Ванда",
@@ -1784,13 +2002,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c170.50.621.621/s160x160/314832_161708137251710_572795340_n.jpg?oh=1281bc05c206e60ce5130bdee326c731&oe=58566C61",
           "sCity":"Новопсков"
         },
-        {
-          "sID_Group":"vinnytsia.vinnytsia.rada",
-          "sFIO":"Мукомол Вадим",
-          "sURL":"https://www.facebook.com/vadim.munin",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13322177_1128005340575202_2101175329914658142_n.jpg?oh=5f1cc91ede0ea2075becc8e315b435f4&oe=5818D3A5",
-          "sCity":"Вінниця"
-        },
+  
 
         {
           "sID_Group":"ivano-frankivsk.kalush.rada",
