@@ -311,7 +311,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
 
-
             });
         }
       }catch(sError){
@@ -326,14 +325,49 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
     $scope.fixForm(form, aFormProperties);
+    var queueDataDMS = '';
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
                 $scope.data.formData.params[oProperty.id].value=null;
             }
+            if(oProperty.type === 'queueData' && oProperty.id.indexOf('_DMS') > 0 && queueDataDMS === ''){
+              queueDataDMS = oProperty.id;
+            }
         });
     }
 
+    if(queueDataDMS === '') {
+      submitActivitiForm(aFormProperties);
+    } else {
+      var reserve = JSON.parse($scope.data.formData.params[queueDataDMS].value);
+      $http.post('/api/service/flow/DMS/setSlot', {
+        nID_Server: oServiceData.nID_Server,
+        nID_SlotHold: parseInt(reserve.reserve_id)
+      }).
+      success(function(data, status, headers, config) {
+        console.log(data);
+        $scope.data.formData.params[queueDataDMS].value = JSON.stringify({
+          date_time: data.date_time,
+          service_id: data.service_id,
+          ticket_number: data.ticket_number,
+          ticket_code: data.ticket_code
+        });
+
+        submitActivitiForm(aFormProperties);
+      }).
+      error(function(data, status, headers, config) {
+        console.error(data);
+        ErrorsFactory.push({
+          type: 'danger',
+          text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
+        })
+      });
+    }
+
+  };
+
+  function submitActivitiForm(aFormProperties) {
     ActivitiService
       .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
       .then(function(oReturn) {
@@ -345,12 +379,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
         if(!oReturn){
-            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
-            return;
+          ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
+          return;
         }
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
-            return;
+          ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
+          return;
         }
 
         var nCRC = ValidationService.getLunaValue(oReturn.id);
@@ -367,12 +401,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
         }catch(sError){
-            console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
+          console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
         }
 
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
-  };
+  }
 
   $scope.cantSubmit = function(form) {
     return $scope.isSending

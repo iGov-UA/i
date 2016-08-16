@@ -46,17 +46,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               $http.post('/api/service/flow/DMS/setSlotHold', data).
               success(function(data, status, headers, config) {
                 scope.ngModel = JSON.stringify({
-                  oReservedSlot: data
+                  reserved_to: data.reserved_to,
+                  reserve_id: data.reserve_id,
+                  interval: data.interval
                 });
-                //debugger;
-                console.log(data);
+                console.info('Reserved slot: ' + angular.toJson(data));
               }).
               error(function(data, status, headers, config) {
-                console.error(data);
+                console.error('Error reserved slot ' + angular.toJson(data));
               });
             }
           } else {
-            //debugger;
             if (newValue) {
               var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
               if (nSlotsParam) {
@@ -172,13 +172,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       }
 
       scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
 
       scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
