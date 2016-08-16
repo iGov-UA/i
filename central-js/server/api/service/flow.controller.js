@@ -87,3 +87,13 @@ module.exports.setSlotHoldDMS = function (req, res) {
     }, null, sHost);
   });
 };
+
+module.exports.setSlotDMS = function (req, res) {
+  var nID_Server = req.body.nID_Server;
+  var oData = req.body;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlot', {
+      nID_SlotHold: oData.nID_SlotHold
+    }, null, sHost);
+  });
+};
