@@ -64,7 +64,7 @@ public class PaymentProcessorService {
         		for (Map.Entry<String, String> currElem : currPayment.entrySet()){
         			oTaskService.setVariable(task.getId(), currElem.getKey(), currElem.getValue());
         		}
-        		runtimeService.setVariable(task.getId(), "sID_Payment", currPayment.get("NUM"));
+        		oTaskService.setVariable(task.getId(), "sID_Payment", currPayment.get("NUM"));
         		task.getTaskLocalVariables().put("sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the task {}:{}", currPayment, task.getId(), task.getName());
         		LOG.info("Set variable sID_Payment:{} to the task {}", currPayment.get("NUM"), task.getId());
