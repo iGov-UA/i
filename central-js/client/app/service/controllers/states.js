@@ -370,18 +370,18 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
         date = $.trim(dateStr),
         parsedDate = new Date(date),
         time = parsedDate.getHours()+ ':' + parsedDate.getMinutes(),
-        today = moment(),
+        today = moment().startOf('day'),
         releaseDate = moment(date),
-        diffDays = today.diff(releaseDate, 'days');
+        diffDays = today.diff(releaseDate, 'days', true);
 
-    if(diffDays == 0){
+    if(diffDays < 0){
       result = 'сьогодні ' + time;
-    } else if(diffDays == 1) {
+    } else if(diffDays < 1) {
       result = ' вчора ' + time;
-    } else if(diffDays <= 4){
-      result = diffDays.toString() + ' дні назад ' + time;
+    } else if(Math.floor(diffDays) <= 4){
+      result = Math.floor(diffDays) + ' дні назад ' + time;
     } else {
-      result = diffDays.toString() + ' днів назад ' + time;
+      result = Math.floor(diffDays) + ' днів назад ' + time;
     }
 
     return result;
