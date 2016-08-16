@@ -65,10 +65,25 @@ module.exports.getSlotsDMS = function (req, res) {
   var nID_Server = req.query.nID_Server;
   var nID_Service_Private = req.query.nID_Service_Private;
   activiti.getServerRegionHost(nID_Server, function(sHost){
- //   debugger;
     activiti.sendPostRequest(req, res, '/service/action/flow/DMS/getSlots', {
       nID_Service_Private: nID_Service_Private,
       nDays: 7
+    }, null, sHost);
+  });
+};
+
+module.exports.setSlotHoldDMS = function (req, res) {
+  var nID_Server = req.body.nID_Server;
+  var oData = req.body;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlotHold', {
+      nID_Service_Private: oData.nID_Service_Private,
+      sDateTime: oData.sDateTime,
+      sSubjectFamily: oData.sSubjectFamily,
+      sSubjectName: oData.sSubjectName,
+      sSubjectSurname: oData.sSubjectSurname,
+      sSubjectPassport: oData.sSubjectPassport,
+      sSubjectPhone: oData.sSubjectPhone
     }, null, sHost);
   });
 };
