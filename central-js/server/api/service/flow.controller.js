@@ -60,3 +60,16 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
         }, null, sHost);
     });
 };
+
+module.exports.getDMSslots = function (req, res) {
+ // debugger;
+  var nID_Server = req.body.nID_Server;
+  var nID_Service_Private = req.body.nID_Service_Private;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+ //   debugger;
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/getSlots', {
+      nID_Service_Private: nID_Service_Private,
+      nDays: 7
+    }, null, sHost);
+  });
+};
