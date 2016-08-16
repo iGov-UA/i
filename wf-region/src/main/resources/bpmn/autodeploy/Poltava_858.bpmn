@@ -67,12 +67,12 @@
         <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr2" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr3" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr4" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr5" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr6" name="Справа1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSpr7" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Запит до державного архіву"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -179,13 +179,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnam66" name="6"></activiti:value>
           <activiti:value id="sEnam77" name="7"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSprava11" name="Вкажіть характеристики справи №1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava22" name="Вкажіть характеристики справи №2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava33" name="Вкажіть характеристики справи №3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava44" name="Вкажіть характеристики справи №4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava55" name="Вкажіть характеристики справи №5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava66" name="Вкажіть характеристики справи №6" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava77" name="Вкажіть характеристики справи №7" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava11" name="Характеристики справи №1" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava22" name="Характеристики справи №2" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava33" name="Характеристики справи №3" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava44" name="Характеристики справи №4" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava55" name="Характеристики справи №5" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava66" name="Характеристики справи №6" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava77" name="Характеристики справи №7" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker11" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('poltava/Arhiv_obl.json')}"></activiti:formProperty>
         <activiti:formProperty id="asRishenja" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="sEnam_ok" name="Прийняти заяву"></activiti:value>
@@ -198,6 +198,19 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
