@@ -54,7 +54,9 @@ public class PaymentProcessorService {
             
             Long nID_Process = ToolLuna.getOriginalNumber(nID_Protected);
             
+            LOG.info("Original process ID {}", nID_Process);
         	List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(nID_Process.toString()).active().list();
+        	LOG.info("Found {} tasks for the process ID {}", tasks != null ? tasks.size() : 0, nID_Process);
         	for (Task task : tasks){
         		task.getTaskLocalVariables().putAll(currPayment);
         		task.getProcessVariables().putAll(currPayment);
