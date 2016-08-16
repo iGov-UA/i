@@ -2,6 +2,7 @@ var nock = require('nock')
   , url = require('url')
   , urlencode = require('urlencode')
   , appData = require('./../../app.data.spec')
+  , bankidNBUData = require('./bankid.data.spec')
   , bankidNBUUtil = require('./bankid.util');
 
 var baseUrls = bankidNBUUtil.getBaseURLs();
@@ -49,10 +50,7 @@ var bankidNBUMock = nock(baseUrls.access.base)
   .query(true)
   .reply(200, appData.token, headers)
   .post(baseUrls.resource.path.info)
-  .reply(200, {
-      "state": "ok",
-      "customer": appData.customer
-    }, headers);
+  .reply(200, bankidNBUData.customerData, headers);
 
 
 module.exports.bankidNBUMock = bankidNBUMock;
