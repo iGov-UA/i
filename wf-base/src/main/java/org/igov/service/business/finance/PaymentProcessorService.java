@@ -68,7 +68,7 @@ public class PaymentProcessorService {
     private String loadOrderId(Map<String, String> currPayment) {
 		if (currPayment.containsKey(VARIABLE_WITH_ORDER_ID)){
 			String cutSring = StringUtils.substringAfter(currPayment.get(VARIABLE_WITH_ORDER_ID), "=");
-			return StringUtils.substringBefore(cutSring, " ");
+			return StringUtils.substringBefore(cutSring, ";");
 		}
 		return null;
 	}
