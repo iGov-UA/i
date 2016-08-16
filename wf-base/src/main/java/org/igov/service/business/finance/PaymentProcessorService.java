@@ -77,7 +77,7 @@ public class PaymentProcessorService {
 		String fileName = loadFileFromServer();
 
 		try {
-			CSVReader reader = new CSVReader(new FileReader(fileName));
+			CSVReader reader = new CSVReader(new FileReader(fileName), ';');
 			String[] headerArr = reader.readNext();
 			LOG.info("Parsed header {}:{}", headerArr.toString(), headerArr.length);
 
