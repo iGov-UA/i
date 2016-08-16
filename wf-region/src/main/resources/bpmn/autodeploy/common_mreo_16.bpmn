@@ -68,8 +68,8 @@
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія договору купівлі-продажу;додається  за наявності договору" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія доручення;додається  за наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія рішення суду" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -244,7 +244,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу]]></activiti:string>
+          <activiti:string><![CDATA[Реєстрацiя ТЗ за рішенням суду]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
@@ -265,8 +265,7 @@ ${sWork_Time}
 2. Оригінал довідки про отримання ІПН &lt;br /&gt;
 3. Документи на володіння транспортним засобом та реєстраційні документи &lt;br /&gt;
 4. Оригінали квитанцій про сплату послуги з відміткою банку&lt;br /&gt;
-5. Копія доручення завірена нотаріально (за наявності) &lt;br /&gt;
-6. Договір купівлі-продажу &lt;br /&gt;
+5. Рішення суду &lt;br /&gt;
 6. Транспортний засіб
 
 &lt;/p&gt;
@@ -301,7 +300,7 @@ ${sMail_Signature}
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу]]></activiti:string>
+          <activiti:string><![CDATA[Реєстрацiя ТЗ за рішенням суду]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
@@ -339,7 +338,7 @@ ${sMail_Signature}
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу: Оцінювання якості наданя послуги.]]></activiti:string>
+          <activiti:string><![CDATA[Реєстрацiя ТЗ за рішенням суду]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
@@ -364,7 +363,7 @@ ${sMail_Signature}
           <activiti:expression>${sMail_Employee},kurbpa@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення. Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу.(Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
+          <activiti:expression>Нове звернення.Реєстрацiя ТЗ за рішенням суду(Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
