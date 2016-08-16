@@ -62,7 +62,6 @@ module.exports.getServiceFeedback = function (req, res) {
       'sID_Token': data.sID_Token || 123,
       'nID_Service': req.params.nID,
       'nID': data.sID_Order
-
     }
   }, callback);
 };
@@ -120,7 +119,8 @@ module.exports.postServiceFeedbackAnswer = function (req, res) {
       'sBody': data.sBody,
       'nID_SubjectMessageFeedback': data.nID_SubjectMessageFeedback,
       'nID_Subject': nID_Subject,
-      'bSelf': false
+      'bSelf': false,
+      'sAuthorFIO': data.sAuthorFIO
     }
   }, callback);
 };

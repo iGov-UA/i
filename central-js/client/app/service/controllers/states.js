@@ -205,11 +205,12 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
     sendAnswer: sendAnswer,
     answer: answer,
     hideAnswer: hideAnswer,
-    raiting: 3,
+    rating: 3,
     exist: false,
     readonly: true,
     isAdmin: false,
-    showAnswer: false
+    showAnswer: false,
+    relativeTime: relativeTime
   };
 
   activate();
@@ -259,6 +260,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
           return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
 
+        $scope.feedback.rating = response[1].data.nID_Rate || 5;
         $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
@@ -290,7 +292,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
   }
 
   function rateFunction(rating) {
-    $scope.feedback.raiting = rating;
+    $scope.feedback.rating = rating;
   }
 
   function postFeedback() {
@@ -331,7 +333,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
       'sID_Token': $scope.sID_Token,
       'sBody': data.sAnswer.sText,
       'nID_SubjectMessageFeedback': data.nID,
-      'sAuthorFIO': data.sAuthorFIO,
+      'sAuthorFIO': data.sAnswer.sAuthorFIO,
       'nID_Service': data.nID_Service,
       'nID_Subject': $state.nID_Subject
     };
@@ -359,6 +361,31 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
      });*/
   }
 
+  function relativeTime(dateStr) {
+    if (!dateStr) {
+      return;
+    }
+
+    var result = '',
+        date = $.trim(dateStr),
+        parsedDate = new Date(date),
+        time = parsedDate.getHours()+ ':' + parsedDate.getMinutes(),
+        today = moment().startOf('day'),
+        releaseDate = moment(date),
+        diffDays = today.diff(releaseDate, 'days', true);
+
+    if(diffDays < 0){
+      result = 'сьогодні ' + time;
+    } else if(diffDays < 1) {
+      result = ' вчора ' + time;
+    } else if(Math.floor(diffDays) <= 4){
+      result = Math.floor(diffDays) + ' дні назад ' + time;
+    } else {
+      result = Math.floor(diffDays) + ' днів назад ' + time;
+    }
+
+    return result;
+  }
 });
 
 angular.module('app').controller('ServiceLegislationController', function ($state, $rootScope, $scope) {

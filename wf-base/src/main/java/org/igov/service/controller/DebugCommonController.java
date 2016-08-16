@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Attachment;
@@ -28,12 +29,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.Flow_ServiceData;
+import org.igov.service.business.finance.PaymentProcessorService;
 import org.igov.service.business.flow.FlowService;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.Day;
@@ -74,6 +78,9 @@ public class DebugCommonController {
 
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private PaymentProcessorService paymentProcessorService;
 
     @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/task/delete-processTest", method = RequestMethod.GET)
@@ -313,6 +320,15 @@ public class DebugCommonController {
             LOG.info(" Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
         }
         return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
+    }
+    
+    @ApiOperation(value = "/test/action/loadPayments", notes = "#####  DebugCommonController: \n")
+    @RequestMapping(value = "/test/action/loadPayments", method = RequestMethod.GET)
+    public @ResponseBody
+    String loadPayments() {
+    	paymentProcessorService.loadPaymentInformation();
+        return "successfull";
+
     }
 
 }
