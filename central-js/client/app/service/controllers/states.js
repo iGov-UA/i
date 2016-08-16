@@ -191,7 +191,7 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   });
 });
 
-angular.module('app').controller('ServiceFeedbackController', function ($state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
+angular.module('app').controller('ServiceFeedbackController', function (SimpleErrorsFactory, $state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
 
   $scope.nID = null;
   $scope.sID_Token = null;
@@ -205,16 +205,25 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     sendAnswer: sendAnswer,
     answer: answer,
     hideAnswer: hideAnswer,
-    raiting: 3,
+    rating: 3,
     exist: false,
     readonly: true,
     isAdmin: false,
-    showAnswer: false
+    showAnswer: false,
+    relativeTime: relativeTime
   };
 
   activate();
 
   function activate() {
+
+    if(!ServiceService.oService.nID){
+      SimpleErrorsFactory.push({
+        type: "denger",
+        oData: {sHead:'Послуга не існує!',
+          sBody:'Виберіть, будьласка, існуючу послугу.'}});
+      return;
+    }
 
     UserService.isLoggedIn().then(function (result) {
       if (result) {
@@ -248,13 +257,14 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
         }
 
         $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
-          return -o.nID;
+          return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
 
+        $scope.feedback.rating = response[1].data.nID_Rate || 5;
         $scope.feedback.exist = response[1].data.oSubjectMessage;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          return o.nID != $scope.nID;
+          return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
         });
 
         $scope.feedback.currentFeedback = angular.copy(response[1].data);
@@ -282,13 +292,17 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
   }
 
   function rateFunction(rating) {
-    $scope.feedback.raiting = rating;
+    $scope.feedback.rating = rating;
   }
 
   function postFeedback() {
     var sAuthorFIO = $scope.feedback.currentFeedback.sAuthorFIO,
       sMail = $scope.feedback.currentFeedback.sMail,
       sHead = $scope.feedback.currentFeedback.sHead;
+
+    if (!((typeof $scope.feedback.messageBody) === 'string' ? !!$scope.feedback.messageBody.trim() : false)) {
+      return;
+    }
 
     var feedbackParams = {
       'sToken': $scope.sID_Token,
@@ -319,7 +333,7 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
       'sID_Token': $scope.sID_Token,
       'sBody': data.sAnswer.sText,
       'nID_SubjectMessageFeedback': data.nID,
-      'sAuthorFIO': data.sAuthorFIO,
+      'sAuthorFIO': data.sAnswer.sAuthorFIO,
       'nID_Service': data.nID_Service,
       'nID_Subject': $state.nID_Subject
     };
@@ -338,6 +352,40 @@ angular.module('app').controller('ServiceFeedbackController', function ($state, 
     $scope.feedback.commentToShowAnswer = -1;
   }
 
+  function pushError(sErrorText){
+    $scope.messageError = true;
+    ErrorsFactory.logWarn({sBody:sErrorText});
+    /*ErrorsFactory.push({
+     type: "danger",
+     text:  sErrorText
+     });*/
+  }
+
+  function relativeTime(dateStr) {
+    if (!dateStr) {
+      return;
+    }
+
+    var result = '',
+        date = $.trim(dateStr),
+        parsedDate = new Date(date),
+        time = parsedDate.getHours()+ ':' + parsedDate.getMinutes(),
+        today = moment().startOf('day'),
+        releaseDate = moment(date),
+        diffDays = today.diff(releaseDate, 'days', true);
+
+    if(diffDays < 0){
+      result = 'сьогодні ' + time;
+    } else if(diffDays < 1) {
+      result = ' вчора ' + time;
+    } else if(Math.floor(diffDays) <= 4){
+      result = Math.floor(diffDays) + ' дні назад ' + time;
+    } else {
+      result = Math.floor(diffDays) + ' днів назад ' + time;
+    }
+
+    return result;
+  }
 });
 
 angular.module('app').controller('ServiceLegislationController', function ($state, $rootScope, $scope) {

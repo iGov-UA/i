@@ -1305,10 +1305,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
+            
+            LOG.info("headers"+headers);
         }
 
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
+       
+        
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
