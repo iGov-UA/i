@@ -370,9 +370,9 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
         date = $.trim(dateStr),
         parsedDate = new Date(date),
         time = parsedDate.getHours()+ ':' + parsedDate.getMinutes(),
-        today = moment().startOf('day'),
+        today = moment(),
         releaseDate = moment(date),
-        diffDays = today.diff(releaseDate, 'days') + 1;
+        diffDays = today.diff(releaseDate, 'days');
 
     if(diffDays == 0){
       result = 'сьогодні ' + time;
@@ -383,7 +383,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
     } else {
       result = diffDays.toString() + ' днів назад ' + time;
     }
-    
+
     return result;
   }
 });
