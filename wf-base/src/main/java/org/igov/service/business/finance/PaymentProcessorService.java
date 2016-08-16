@@ -79,9 +79,11 @@ public class PaymentProcessorService {
 		try {
 			CSVReader reader = new CSVReader(new FileReader(fileName));
 			String[] headerArr = reader.readNext();
+			LOG.info("Parsed header {}:{}", headerArr.toString(), headerArr.length);
 
 			String[] nextLine = null;
 			while ((nextLine = reader.readNext()) != null) {
+				LOG.info("Parsing array {}:{}", nextLine.toString(), nextLine.length);
 				Map<String, String> currElem = new HashMap<String, String>();
 				for (int i = 0; i < nextLine.length; i++) {
 					currElem.put(headerArr[i], nextLine[i]);
