@@ -59,7 +59,7 @@
           <activiti:value id="sCaptain3rd" name="капітан ІІІ рангу"></activiti:value>
           <activiti:value id="sCaptain2nd" name="капітан ІІ рангу"></activiti:value>
           <activiti:value id="sCaptain1st" name="капітан І рангу"></activiti:value>
-          <activiti:value id="sRearAdmiral" name=контр-адмірал"></activiti:value>
+          <activiti:value id="sRearAdmiral" name="контр-адмірал"></activiti:value>
           <activiti:value id="sViceAdmiral" name="віце-адмірал"></activiti:value>
           <activiti:value id="sAdmiral" name="адмірал"></activiti:value>
         </activiti:formProperty>
@@ -77,6 +77,8 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRozklad" name="Розклад роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRekvVoen" name="Реквізити" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -150,7 +152,10 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea_1" name="РВК" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
@@ -158,6 +163,7 @@
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -254,6 +260,9 @@
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
+									Розклад прийому громадян: ${sRozklad}
+									&lt;/p&gt;
+									&lt;p&gt;
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
@@ -289,21 +298,41 @@
           <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка №[sID_Order] з постановки на військовий облік та посади успішно опрацьована.<br>
-			Зміни внесено до бази даних РВК.<br>
-			За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.<br>
-			${comment}
-			</p>
-            <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;Дані за Вашою заявкою №[sID_Order] перевірені.&lt;br&gt;
+			Для того щоб закінчити постановки на військовий облік необхідно:&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;Прийти до ${sArea} за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
+										&lt;li&gt;Отримати відмітку у військовообліковому документі.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+									За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.&lt;br&gt;
+									Реквізити для сплати: ${sRekvVoen}
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sArea} при постановці на військовий облік:&lt;/b&gt;&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію довідки про присвоєння ІПН;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал довідки про проходження ВЛК;&lt;/li&gt;
+										&lt;li&gt;оригінал військовооблікового документу;&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+									Розклад прийому громадян: ${sRozklad}
+									&lt;/p&gt;
+									&lt;p&gt;
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-			</p>
+			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan},<br>
+			${sNameOrgan},&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
