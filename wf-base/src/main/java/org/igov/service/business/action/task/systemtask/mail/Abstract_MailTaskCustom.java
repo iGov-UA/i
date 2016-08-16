@@ -260,60 +260,65 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		StringBuffer outputTextBuffer = new StringBuffer();
 		String replacement = "";
 		Matcher matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
-		if (matcher.find()) {
-			matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
-			List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
-			Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
-			loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
-			while (matcher.find()) {
-				String tag_Payment_CONTENT_CATALOG = matcher.group();
-				LOG.info("Found tag catalog group:{}", matcher.group());
-				if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
-					String prefix;
-					Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
-					if (matcherPrefix.find()) {
-						prefix = matcherPrefix.group();
-						LOG.info("Found double bracket tag group: {}", matcherPrefix.group());
-						String form_ID = StringUtils.replace(prefix, "{[", "");
-						form_ID = StringUtils.replace(form_ID, "]}", "");
-						LOG.info("(form_ID={})", form_ID);
-						FormProperty formProperty = mProperty.get(form_ID);
-						LOG.info("Found form property : {}", formProperty);
-						if (formProperty != null) {
-							if (formProperty.getValue() != null) {
-								replacement = formProperty.getValue();
-							} else {
-								List<String> aID = new ArrayList<String>();
-								aID.add(formProperty.getId());
-								List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
-								LOG.info("(proccessVariable={})", proccessVariable);
-								if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
-									replacement = proccessVariable.get(0);
-								}
-							}
+                try{
+                    if (matcher.find()) {
+                            matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
+                            List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
+                            Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
+                            loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
+                            while (matcher.find()) {
+                                    String tag_Payment_CONTENT_CATALOG = matcher.group();
+                                    LOG.info("Found tag catalog group:{}", matcher.group());
+                                    if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
+                                            String prefix;
+                                            Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
+                                            if (matcherPrefix.find()) {
+                                                    prefix = matcherPrefix.group();
+                                                    LOG.info("Found double bracket tag group: {}", matcherPrefix.group());
+                                                    String form_ID = StringUtils.replace(prefix, "{[", "");
+                                                    form_ID = StringUtils.replace(form_ID, "]}", "");
+                                                    LOG.info("(form_ID={})", form_ID);
+                                                    FormProperty formProperty = mProperty.get(form_ID);
+                                                    LOG.info("Found form property : {}", formProperty);
+                                                    if (formProperty != null) {
+                                                            if (formProperty.getValue() != null) {
+                                                                    replacement = formProperty.getValue();
+                                                            } else {
+                                                                    List<String> aID = new ArrayList<String>();
+                                                                    aID.add(formProperty.getId());
+                                                                    List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
+                                                                    LOG.info("(proccessVariable={})", proccessVariable);
+                                                                    if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
+                                                                            replacement = proccessVariable.get(0);
+                                                                    }
+                                                            }
 
-							String sType = formProperty.getType().getName();
-							if ("date".equals(sType)) {
-								if (formProperty.getValue() != null) {
-									LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
-									replacement = getFormattedDateS(formProperty.getValue());
-								} 
-							} else {
-								replacement = formProperty.getValue();
-							}
+                                                            String sType = formProperty.getType().getName();
+                                                            if ("date".equals(sType)) {
+                                                                    if (formProperty.getValue() != null) {
+                                                                            LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
+                                                                            replacement = getFormattedDateS(formProperty.getValue());
+                                                                    } 
+                                                            } else {
+                                                                    replacement = formProperty.getValue();
+                                                            }
 
-						}
-					}
-				}
-                                if(replacement!=null){
-                                    LOG.info("Replacement for pattern : {}", replacement);
-                                    matcher.appendReplacement(outputTextBuffer, replacement);
-                                }else{
-                                    LOG.warn("Replacement for pattern : {}", replacement);
-                                }
-				replacement = "";
-			}
-		}
+                                                    }
+                                            }
+                                    }
+                                    if(replacement!=null){
+                                        LOG.info("Replacement for pattern : {}", replacement);
+                                        matcher.appendReplacement(outputTextBuffer, replacement);
+                                    }else{
+                                        LOG.warn("Replacement for pattern : {}", replacement);
+                                    }
+                                    replacement = "";
+                            }
+                    }                    
+                }catch(Exception oException){
+                    LOG.error("FAIL: ", oException);
+                    throw oException;
+                }
 		return matcher.appendTail(outputTextBuffer).toString();
 	}
 
