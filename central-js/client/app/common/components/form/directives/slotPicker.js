@@ -46,8 +46,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               $http.post('/api/service/flow/DMS/setSlotHold', data).
               success(function(data, status, headers, config) {
                 scope.ngModel = JSON.stringify({
-                  nID_FlowSlotTicket: data.reserve_id,
-                  sDate: data.reserved_to + '.00'
+                  oReservedSlot: data
                 });
                 //debugger;
                 console.log(data);
@@ -86,12 +85,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         return str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0].match(new RegExp(/\d{4,4}$/))[0];
       }
 
-      scope.readyRequestDMS = function () {
+      scope.unreadyRequestDMS = function () {
         if (this.property.id.indexOf('_DMS') > 0){
-          if(!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') return false;
-          if(!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') return false;
+          return this.$parent.$parent.$parent.$parent.$parent.form.phone.$invalid ||
+            (!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') ||
+            (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') ||
+            (getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value).length != 4);
         } else {
-          return true;
+          return false;
         }
       };
 
