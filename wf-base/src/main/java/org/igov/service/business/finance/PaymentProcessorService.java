@@ -59,7 +59,9 @@ public class PaymentProcessorService {
         	LOG.info("Found {} tasks for the process ID {}", tasks != null ? tasks.size() : 0, nID_Process);
         	for (Task task : tasks){
         		task.getTaskLocalVariables().putAll(currPayment);
+        		task.getTaskLocalVariables().put("sID_Payment", currPayment.get("NUM"));
         		task.getProcessVariables().putAll(currPayment);
+        		task.getProcessVariables().put("sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the task {}:{}", currPayment, task.getId(), task.getName());
         	}
         }
