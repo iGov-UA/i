@@ -66,6 +66,13 @@
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Запит до державного архіву"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -172,13 +179,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnam66" name="6"></activiti:value>
           <activiti:value id="sEnam77" name="7"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSprava11" name="Вкажіть характеристики справи №1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava22" name="Вкажіть характеристики справи №2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava33" name="Вкажіть характеристики справи №3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava44" name="Вкажіть характеристики справи №4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava55" name="Вкажіть характеристики справи №5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava66" name="Вкажіть характеристики справи №6" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava77" name="Вкажіть характеристики справи №7" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava11" name="Характеристики справи №1" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava22" name="Характеристики справи №2" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava33" name="Характеристики справи №3" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava44" name="Характеристики справи №4" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava55" name="Характеристики справи №5" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava66" name="Характеристики справи №6" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava77" name="Характеристики справи №7" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker11" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('poltava/Arhiv_obl.json')}"></activiti:formProperty>
         <activiti:formProperty id="asRishenja" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="sEnam_ok" name="Прийняти заяву"></activiti:value>
@@ -191,6 +198,19 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -321,9 +341,8 @@ ${sNameOrgan}.&lt;br /&gt;
        var vv3PM=execution.getVariable('email')
        var vv3F=execution.getVariable('sFax')
        var xxx2='на електронну адресу'+vv3PM
-       var xxx3='на номер факсу №'+vv3F
-       
-       
+       var xxx3='на факс №'+vv3F
+            
        
        if(execution.getVariable('asPosluga') == 'sEnamposl1'){execution.setVariable('sShap_Pro', 'Про надання інформації')}
        if(execution.getVariable('asPosluga') == 'sEnamposl2'){execution.setVariable('sShap_Pro', 'Про замовлення справ в читальному залі')}
@@ -332,6 +351,72 @@ ${sNameOrgan}.&lt;br /&gt;
        if(execution.getVariable('asVidpovid') == 'sEnamPost'){execution.setVariable('sDost', 'у паперовому вигляді, листом на вказану у заяві адресу')}
        if(execution.getVariable('asVidpovid') == 'sEnamE_mail'){execution.setVariable('sDost', xxx2)}
        if(execution.getVariable('asVidpovid') == 'sEnamFax'){execution.setVariable('sDost', xxx3)}
+       
+       var www='11111'
+       var s1=execution.getVariable('sSprava11')
+       var s2=execution.getVariable('sSprava22')
+       var s3=execution.getVariable('sSprava33')
+       var s4='22222************'
+       var s5=execution.getVariable('sSprava55')
+       var s6=execution.getVariable('sSprava66')
+       var s7=execution.getVariable('sSprava77')
+       execution.setVariable('sSpr1', www)
+       execution.setVariable('sSpr2', www)
+       execution.setVariable('sSpr3', www)
+       execution.setVariable('sSpr4', www)
+       execution.setVariable('sSpr5', www)
+       execution.setVariable('sSpr6', www)
+       execution.setVariable('sSpr7', www)
+       
+       if(execution.getVariable('asKilk_sprav') == '1')
+         {
+         execution.setVariable('sSpr1', s1)
+         }
+       if(execution.getVariable('asKilk_sprav') == '2')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         }
+       if(execution.getVariable('asKilk_sprav') == '3')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         }
+       if(execution.getVariable('asKilk_sprav') == '4')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         }
+       if(execution.getVariable('asKilk_sprav') == '5')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         }
+       if(execution.getVariable('asKilk_sprav') == '6')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         execution.setVariable('sSpr6', s6)
+         } 
+       if(execution.getVariable('asKilk_sprav') == '7')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         execution.setVariable('sSpr6', s6)
+         execution.setVariable('sSpr7', s7)
+         }
        
      </script>
     </scriptTask>

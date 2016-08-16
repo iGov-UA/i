@@ -1,32 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rvk_935" name="Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади" isExecutable="true">
+  <process id="rvk_1047" name="Постановка на військовий облік" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWorkType" name="Місце роботи" type="enum" required="true">
-          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="sLasy" name="тимчасово не працюю"></activiti:value>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArea1" name="З якого РВК Ви прибули" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої нової реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" required="true">
+          <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
+          <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
+          <activiti:value id="sYong" name="призовник"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи АБО ФОП" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAirEarth" name="Військове звання" type="enum" required="true" default="sNo1">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sPrivateE1" name="солдат"></activiti:value>
+          <activiti:value id="sPrivateE2" name="старший солдат"></activiti:value>
+          <activiti:value id="sCorporal" name="молодший сержант"></activiti:value>
+          <activiti:value id="sSerg" name="сержант"></activiti:value>
+          <activiti:value id="sSergFClass" name="старший сержант"></activiti:value>
+          <activiti:value id="sMastSerg" name="старшина"></activiti:value>
+          <activiti:value id="sPrapor" name="прапорщик"></activiti:value>
+          <activiti:value id="sChiefPrapor" name="старший прапорщик"></activiti:value>
+          <activiti:value id="sJunLieutenant" name="молодший лейтенант"></activiti:value>
+          <activiti:value id="sLieutenant" name="лейтенант"></activiti:value>
+          <activiti:value id="sSeniorLieutenant" name="старший лейтенант"></activiti:value>
+          <activiti:value id="sCaptain" name="капітан"></activiti:value>
+          <activiti:value id="sMajor" name="майор"></activiti:value>
+          <activiti:value id="sLieutenantColonel" name="підполковник"></activiti:value>
+          <activiti:value id="sColonel" name="полковник"></activiti:value>
+          <activiti:value id="sMajorGeneral" name="генерал-майор"></activiti:value>
+          <activiti:value id="sLieutenantGeneral" name="генерал-лейтенант"></activiti:value>
+          <activiti:value id="sColonelGeneral" name="генерал-полковник"></activiti:value>
+          <activiti:value id="sGeneral" name="генерал армії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSea" name="Військове звання" type="enum" required="true" default="sNo2">
+          <activiti:value id="sNo2" name=" "></activiti:value>
+          <activiti:value id="sMatros" name="матрос"></activiti:value>
+          <activiti:value id="sStMatros" name="старший матрос"></activiti:value>
+          <activiti:value id="sStarshina2nd" name="старшина II статті"></activiti:value>
+          <activiti:value id="sStarshina1st" name="старшина I статті"></activiti:value>
+          <activiti:value id="sGlStarshina" name="головний старшина"></activiti:value>
+          <activiti:value id="sGlShipStarshina" name="головний корабельний старшина"></activiti:value>
+          <activiti:value id="sMichman" name="мічман"></activiti:value>
+          <activiti:value id="sChiefMichman" name="старший мічман"></activiti:value>
+          <activiti:value id="sJunLieutenant" name="молодший лейтенант"></activiti:value>
+          <activiti:value id="sLieutenant" name="лейтенант"></activiti:value>
+          <activiti:value id="sSeniorLieutenant" name="старший лейтенант"></activiti:value>
+          <activiti:value id="sCaptainLieutenant" name="капітан-лейтенант"></activiti:value>
+          <activiti:value id="sCaptain3rd" name="капітан ІІІ рангу"></activiti:value>
+          <activiti:value id="sCaptain2nd" name="капітан ІІ рангу"></activiti:value>
+          <activiti:value id="sCaptain1st" name="капітан І рангу"></activiti:value>
+          <activiti:value id="sRearAdmiral" name="контр-адмірал"></activiti:value>
+          <activiti:value id="sViceAdmiral" name="віце-адмірал"></activiti:value>
+          <activiti:value id="sAdmiral" name="адмірал"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="nDocWedding" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocDivorce" name="Копія свідоцтва про розірвання шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocChild" name="Копія свідоцтва про народження дитини" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія паспорта зі сторінкою реєстрації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocMed" name="Копія довідки з МСЕК" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; Усі заповнені сторінки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocInn" name="Копія довідки про присвоєння ІПН" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocVlk" name="Копія довідки про проходження ВЛК" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія документу про освіту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Назва РВК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRozklad" name="Розклад роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRekvVoen" name="Реквізити" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -47,7 +98,7 @@
           <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нова заявка з надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:expression>
+          <activiti:expression><![CDATA[Нова заявка з постановки на військовий облік]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -64,13 +115,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:expression>
+          <activiti:expression><![CDATA[Постановка на військовий облік]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
-            						Ваша заявка про надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади успішно зареєстрована №[sID_Order].<br>
+            						Ваша заявка про постановку на військовий облік успішно зареєстрована №[sID_Order].<br>
 									Спеціалісти Вашого РВК повинні дати відповідь найближчим часом.
                                 </p>
                                 <p>
@@ -96,16 +147,62 @@
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="rvk_${sID_Public_SubjectOrganJoin}_1">
       <extensionElements>
         <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asWorkType" name="Місце роботи" type="enum" writable="false">
-          <activiti:value id="sCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="sLasy" name="тимчасово не працюю"></activiti:value>
+        <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea_1" name="З якого РВК прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" required="true">
+          <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
+          <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
+          <activiti:value id="sYong" name="призовник"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи АБО ФОП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sJob" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asAirEarth" name="Військове звання" type="enum" required="true" default="sNo1">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sPrivateE1" name="солдат"></activiti:value>
+          <activiti:value id="sPrivateE2" name="старший солдат"></activiti:value>
+          <activiti:value id="sCorporal" name="молодший сержант"></activiti:value>
+          <activiti:value id="sSerg" name="сержант"></activiti:value>
+          <activiti:value id="sSergFClass" name="старший сержант"></activiti:value>
+          <activiti:value id="sMastSerg" name="старшина"></activiti:value>
+          <activiti:value id="sPrapor" name="прапорщик"></activiti:value>
+          <activiti:value id="sChiefPrapor" name="старший прапорщик"></activiti:value>
+          <activiti:value id="sJunLieutenant" name="молодший лейтенант"></activiti:value>
+          <activiti:value id="sLieutenant" name="лейтенант"></activiti:value>
+          <activiti:value id="sSeniorLieutenant" name="старший лейтенант"></activiti:value>
+          <activiti:value id="sCaptain" name="капітан"></activiti:value>
+          <activiti:value id="sMajor" name="майор"></activiti:value>
+          <activiti:value id="sLieutenantColonel" name="підполковник"></activiti:value>
+          <activiti:value id="sColonel" name="полковник"></activiti:value>
+          <activiti:value id="sMajorGeneral" name="генерал-майор"></activiti:value>
+          <activiti:value id="sLieutenantGeneral" name="генерал-лейтенант"></activiti:value>
+          <activiti:value id="sColonelGeneral" name="генерал-полковник"></activiti:value>
+          <activiti:value id="sGeneral" name="генерал армії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSea" name="Військове звання" type="enum" required="true" default="sNo2">
+          <activiti:value id="sNo2" name=" "></activiti:value>
+          <activiti:value id="sMatros" name="матрос"></activiti:value>
+          <activiti:value id="sStMatros" name="старший матрос"></activiti:value>
+          <activiti:value id="sStarshina2nd" name="старшина II статті"></activiti:value>
+          <activiti:value id="sStarshina1st" name="старшина I статті"></activiti:value>
+          <activiti:value id="sGlStarshina" name="головний старшина"></activiti:value>
+          <activiti:value id="sGlShipStarshina" name="головний корабельний старшина"></activiti:value>
+          <activiti:value id="sMichman" name="мічман"></activiti:value>
+          <activiti:value id="sChiefMichman" name="старший мічман"></activiti:value>
+          <activiti:value id="sJunLieutenant" name="молодший лейтенант"></activiti:value>
+          <activiti:value id="sLieutenant" name="лейтенант"></activiti:value>
+          <activiti:value id="sSeniorLieutenant" name="старший лейтенант"></activiti:value>
+          <activiti:value id="sCaptainLieutenant" name="капітан-лейтенант"></activiti:value>
+          <activiti:value id="sCaptain3rd" name="капітан ІІІ рангу"></activiti:value>
+          <activiti:value id="sCaptain2nd" name="капітан ІІ рангу"></activiti:value>
+          <activiti:value id="sCaptain1st" name="капітан І рангу"></activiti:value>
+          <activiti:value id="sRearAdmiral" name="контр-адмірал"></activiti:value>
+          <activiti:value id="sViceAdmiral" name="віце-адмірал"></activiti:value>
+          <activiti:value id="sAdmiral" name="адмірал"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
@@ -113,12 +210,15 @@
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocWedding},${nDocDivorce},${nDocChild},${nDocPass},${nDocMed}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${nDocInn},${nDocVlk},${nDocEdu},${nDocMilit},${nDocReestr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -140,7 +240,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:string>
+          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -185,22 +285,40 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:string>
+          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка №[sID_Order] про надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади успішно опрацьована.<br>
-			Зміни внесено до бази даних РВК
-			</p>
-            <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;Дані за Вашою заявкою №[sID_Order] перевірені.&lt;br&gt;
+			Для того щоб закінчити постановки на військовий облік необхідно:&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;Прийти до ${sArea} за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
+										&lt;li&gt;Отримати відмітку у військовообліковому документі.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sArea} при постановці на військовий облік:&lt;/b&gt;&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію довідки про присвоєння ІПН;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал довідки про проходження ВЛК;&lt;/li&gt;
+										&lt;li&gt;оригінал військовооблікового документу;&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+									Розклад прийому громадян: ${sRozklad}
+									&lt;/p&gt;
+									&lt;p&gt;
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-			</p>
+			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan},<br>
+			${sNameOrgan},&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -226,24 +344,44 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:string>
+          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваша заявка №[sID_Order] про надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади успішно опрацьована.<br>
-			Зміни внесено до бази даних РВК.<br>
-			За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.<br>
-			${comment}
-			</p>
-            <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;Дані за Вашою заявкою №[sID_Order] перевірені.&lt;br&gt;
+			Для того щоб закінчити постановки на військовий облік необхідно:&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;Прийти до ${sArea} за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
+										&lt;li&gt;Отримати відмітку у військовообліковому документі.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+									За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.&lt;br&gt;
+									Реквізити для сплати: ${sRekvVoen}
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sArea} при постановці на військовий облік:&lt;/b&gt;&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію довідки про присвоєння ІПН;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію документу про освіту;&lt;/li&gt;
+										&lt;li&gt;оригінал довідки про проходження ВЛК;&lt;/li&gt;
+										&lt;li&gt;оригінал військовооблікового документу;&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+									Розклад прийому громадян: ${sRozklad}
+									&lt;/p&gt;
+									&lt;p&gt;
 			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-			</p>
+			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan},<br>
+			${sNameOrgan},&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -258,8 +396,8 @@
     </serviceTask>
     <sequenceFlow id="flow49" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_rvk_935">
-    <bpmndi:BPMNPlane bpmnElement="rvk_935" id="BPMNPlane_rvk_935">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rvk_1047">
+    <bpmndi:BPMNPlane bpmnElement="rvk_1047" id="BPMNPlane_rvk_1047">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
