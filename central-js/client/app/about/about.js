@@ -2049,7 +2049,7 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
          
         {
           "sID_Group":"lugansk.novopskov.rada",
-          "sFIO":"Малетін Віктор",
+          "sFIO":"Малєтін Віктор",
           "sURL":"https://www.facebook.com/v.maletin",
           "sPhoto":"https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/c170.50.621.621/s160x160/314832_161708137251710_572795340_n.jpg?oh=8f004b301b43d91ce7d764f58dd5320d&oe=58566C61",
           "sCity":"Новопсков",
