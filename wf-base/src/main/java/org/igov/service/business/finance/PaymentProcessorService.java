@@ -3,7 +3,6 @@ package org.igov.service.business.finance;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +15,11 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
-import org.igov.run.schedule.JobPaymentProcessor;
 import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.Channel;
@@ -32,6 +31,21 @@ import com.jcraft.jsch.SftpException;
 
 @Service
 public class PaymentProcessorService {
+	
+    @Value("${scheduler.paymentprocessor.host}")
+    private String host;
+
+    @Value("${scheduler.paymentprocessor.port}")
+    private String port;
+
+    @Value("${scheduler.paymentprocessor.user}")
+    private String user;
+
+    @Value("${scheduler.paymentprocessor.password}")
+    private String password;
+
+    @Value("${scheduler.paymentprocessor.filename}")
+    private String filename;
 
 	private static final String VARIABLE_WITH_ORDER_ID = "PURPOSE";
 
@@ -125,16 +139,17 @@ public class PaymentProcessorService {
         Session session = null;
         File file = null;
         try {
+        	LOG.info("Loading file from the server {}:{} with parameters. Login:{} password:{} fileName:{}", host, port, user, password, filename);
         	file = File.createTempFile("11082016", ".csv");
-            session = jsch.getSession("sftpuser", "alpha.test.igov.org.ua", 22);
+            session = jsch.getSession(user, host, Integer.valueOf(port));
             session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword("zaqxswcde");
+            session.setPassword(password);
             session.connect();
 
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            sftpChannel.get("./logs/11082016.csv", file.getAbsolutePath());
+            sftpChannel.get(filename, file.getAbsolutePath());
             sftpChannel.exit();
             session.disconnect();
         } catch (JSchException e) {
