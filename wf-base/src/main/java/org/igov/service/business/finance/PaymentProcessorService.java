@@ -64,11 +64,13 @@ public class PaymentProcessorService {
         		task.getTaskLocalVariables().putAll(currPayment);
         		task.getTaskLocalVariables().put("sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the task {}:{}", currPayment, task.getId(), task.getName());
+        		LOG.info("Set variable sID_Payment:{} to the task {}", currPayment.get("NUM"), task.getId());
         	}
         	for (ProcessInstance processInstance : processes){
         		processInstance.getProcessVariables().putAll(currPayment);
         		processInstance.getProcessVariables().put("sID_Payment", currPayment.get("NUM"));
-        		LOG.info("Set variables {} to the process instance {}:{}", currPayment, processInstance.getId(), processInstance.getName());
+        		LOG.info("Set variables {} to the process instance {}", currPayment, processInstance.getId());
+        		LOG.info("Set variable sID_Payment:{} to the process instance {}", currPayment.get("NUM"), processInstance.getId());
         	}
         }
     }
