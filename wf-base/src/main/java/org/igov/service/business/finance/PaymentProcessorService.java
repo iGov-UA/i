@@ -61,14 +61,19 @@ public class PaymentProcessorService {
         	LOG.info("Found {} process for the process ID {}", processes != null ? processes.size() : 0, nID_Process);
         	LOG.info("Found {} tasks for the process ID {}", tasks != null ? tasks.size() : 0, nID_Process);
         	for (Task task : tasks){
-        		task.getTaskLocalVariables().putAll(currPayment);
+        		for (Map.Entry<String, String> currElem : currPayment.entrySet()){
+        			oTaskService.setVariable(task.getId(), currElem.getKey(), currElem.getValue());
+        		}
+        		runtimeService.setVariable(task.getId(), "sID_Payment", currPayment.get("NUM"));
         		task.getTaskLocalVariables().put("sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the task {}:{}", currPayment, task.getId(), task.getName());
         		LOG.info("Set variable sID_Payment:{} to the task {}", currPayment.get("NUM"), task.getId());
         	}
         	for (ProcessInstance processInstance : processes){
-        		processInstance.getProcessVariables().putAll(currPayment);
-        		processInstance.getProcessVariables().put("sID_Payment", currPayment.get("NUM"));
+        		for (Map.Entry<String, String> currElem : currPayment.entrySet()){
+        			runtimeService.setVariable(nID_Process.toString(), currElem.getKey(), currElem.getValue());
+        		}
+        		runtimeService.setVariable(nID_Process.toString(), "sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the process instance {}", currPayment, processInstance.getId());
         		LOG.info("Set variable sID_Payment:{} to the process instance {}", currPayment.get("NUM"), processInstance.getId());
         	}
