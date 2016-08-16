@@ -75,10 +75,9 @@ public class PaymentProcessorService {
 		List<Map<String, String>> res = new LinkedList<Map<String, String>>();
 
 		String fileName = loadFileFromServer();
-		File file = new File(fileName);
 
 		try {
-			CSVReader reader = new CSVReader(new FileReader("yourfile.csv"));
+			CSVReader reader = new CSVReader(new FileReader(fileName));
 			String[] headerArr = reader.readNext();
 
 			String[] nextLine = null;
@@ -89,10 +88,13 @@ public class PaymentProcessorService {
 				}
 				res.add(currElem);
 			}
+			reader.close();
 		} catch (Exception e) {
 			LOG.error("Exception occured while parsing csv file {}",
 					e.getMessage(), e);
 		}
+
+		File file = new File(fileName);
 
 		file.delete();
 
