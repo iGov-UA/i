@@ -13,6 +13,7 @@ import liquibase.util.csv.CSVReader;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.run.schedule.JobPaymentProcessor;
@@ -56,11 +57,18 @@ public class PaymentProcessorService {
             
             LOG.info("Original process ID {}", nID_Process);
         	List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(nID_Process.toString()).active().list();
+        	List<ProcessInstance> processes = runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process.toString()).active().list();
+        	LOG.info("Found {} process for the process ID {}", processes != null ? processes.size() : 0, nID_Process);
         	LOG.info("Found {} tasks for the process ID {}", tasks != null ? tasks.size() : 0, nID_Process);
         	for (Task task : tasks){
         		task.getTaskLocalVariables().putAll(currPayment);
-        		task.getProcessVariables().putAll(currPayment);
+        		task.getTaskLocalVariables().put("sID_Payment", currPayment.get("NUM"));
         		LOG.info("Set variables {} to the task {}:{}", currPayment, task.getId(), task.getName());
+        	}
+        	for (ProcessInstance processInstance : processes){
+        		processInstance.getProcessVariables().putAll(currPayment);
+        		processInstance.getProcessVariables().put("sID_Payment", currPayment.get("NUM"));
+        		LOG.info("Set variables {} to the process instance {}:{}", currPayment, processInstance.getId(), processInstance.getName());
         	}
         }
     }
@@ -68,7 +76,7 @@ public class PaymentProcessorService {
     private String loadOrderId(Map<String, String> currPayment) {
 		if (currPayment.containsKey(VARIABLE_WITH_ORDER_ID)){
 			String cutSring = StringUtils.substringAfter(currPayment.get(VARIABLE_WITH_ORDER_ID), "=");
-			return StringUtils.substringBefore(cutSring, " ");
+			return StringUtils.substringBefore(cutSring, ";");
 		}
 		return null;
 	}
