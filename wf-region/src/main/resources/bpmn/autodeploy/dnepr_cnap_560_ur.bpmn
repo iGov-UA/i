@@ -732,7 +732,7 @@
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-з кодом опису)" activiti:expression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -749,7 +749,7 @@
 Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+Через одну-дві доби у будь-який час Ви зможете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
@@ -776,7 +776,7 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+Через одну-дві доби у будь-який час Ви зможете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
@@ -822,7 +822,7 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення &lt;strong&gt;№[sID_Order]&lt;/strong&gt; на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+Через одну-дві доби у будь-який час Ви зможете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
@@ -902,7 +902,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask9" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask9" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-без коду опису)" activiti:class="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>

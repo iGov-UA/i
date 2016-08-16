@@ -81,7 +81,8 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
       'sID_Token': feedbackParams.sID_Token,
       'sBody': feedbackParams.sBody,
       'nID_SubjectMessageFeedback': feedbackParams.nID_SubjectMessageFeedback,
-      'nID_Subject': feedbackParams.nID_Subject
+      'nID_Subject': feedbackParams.nID_Subject,
+      'sAuthorFIO': feedbackParams.sAuthorFIO
     };
 
     $http.post('./api/service/'+feedbackParams.nID_Service+'/feedbackAnswer', data).then(function(response) {

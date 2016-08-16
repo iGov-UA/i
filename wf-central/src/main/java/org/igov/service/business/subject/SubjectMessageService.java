@@ -309,7 +309,7 @@ public class SubjectMessageService {
     }
 
     public SubjectMessageFeedbackAnswer setSubjectMessageFeedbackAnswer(Long nID_SubjectMessageFeedback, String sBody,
-                                                                        Long nID_Subject, Boolean bSelf){
+                                                                        Long nID_Subject, Boolean bSelf, String sAuthorFIO){
 
         SubjectMessageFeedbackAnswer answer = new SubjectMessageFeedbackAnswer();
         SubjectMessageFeedback messageFeedback = subjectMessageFeedbackDao
@@ -322,6 +322,8 @@ public class SubjectMessageService {
         subjectMessage.setSubjectMessageType(subjectMessageType);
         subjectMessage.setDate(new DateTime());
         subjectMessage.setId_subject(nID_Subject);
+        subjectMessage.setsSubjectInfo(sAuthorFIO);
+        
 
         answer.setoSubjectMessageFeedback(messageFeedback);
         answer.setbSelf(bSelf);

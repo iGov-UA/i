@@ -143,18 +143,6 @@ public class HttpRequester {
 
     public String getInside(String sURL, Map<String, String> mParam) throws Exception {
         
-        /*javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
-        new javax.net.ssl.HostnameVerifier(){
-
-            public boolean verify(String sss,
-                    javax.net.ssl.SSLSession sslSession) {
-                return true;
-            }
-        });*/
-        ///Boolean bSkip
-        //generalConfig.getAuthLogin()
-        
-        
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
         simplifySSLConnection(bSkipValidationSSL);
         

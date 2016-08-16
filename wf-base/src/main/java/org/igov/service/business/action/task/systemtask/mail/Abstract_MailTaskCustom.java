@@ -539,12 +539,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 				sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " "
 						+ bankIdmiddleName;
 			}
-			Integer nID_Server = generalConfig.getSelfServerId();
+			Long nID_Service = 0L;
 			try {
 	            String jsonHistoryEvent = historyEventService.getHistoryEvent(generalConfig.getOrderId_ByOrder(nID_Order));
 	            LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
 	            JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
-	            nID_Server = historyEvent.getInt("nID_Server");
+	            nID_Service = historyEvent.getLong("nID_Service");
 	        } catch (Exception oException) {
 	            LOG.error("ex!: {}", oException.getMessage());
 	            LOG.debug("FAIL:", oException);
@@ -555,8 +555,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 					+ "&sAuthorFIO=" + sAuthorFIO
 					+ "&sMail=" + sMail
 					+ "&sBody=" + ""
-					+ "&nID_Server=" + nID_Server
-					+ "&sID_Rate="+ prefix.replaceAll("_", "")
+					+ "&nID_Rate="+ prefix.replaceAll("_", "")
+					+ "&nID_Service="+nID_Service
 					+ "&bSelf="+ true;
 
 			String sQueryParam = String.format(sQueryParamPattern);
