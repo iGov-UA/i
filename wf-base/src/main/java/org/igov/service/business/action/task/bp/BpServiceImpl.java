@@ -40,7 +40,7 @@ public class BpServiceImpl implements BpService {
     @Override
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
-        String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
+        String organ = (variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null);
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
@@ -52,8 +52,10 @@ public class BpServiceImpl implements BpService {
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
-                Object value = variables.get(keyValue);
-                setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
+                if(!"organ".equalsIgnoreCase(keyValue)){
+                    Object value = variables.get(keyValue);
+                    setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
+                }
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
