@@ -29,9 +29,15 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     var innToCheck;
 
     if (disableDecryption) {
-      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
-      innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
-      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      if(body.customerCrypto){
+        console.log("---------------  client data is encrypted but decryption is disabled !!!! " + body.customerCrypto);
+        callback({ message : "client data is encrypted but decryption is disabled" }, response, null);
+        return;
+      } else {
+        console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+        innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
+        console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      }
     } else {
       innToCheck = body.customer.inn;
       console.log("--------------- nodecrption of inn !!!!");
