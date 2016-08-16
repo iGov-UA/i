@@ -15,6 +15,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,21 +33,6 @@ import com.jcraft.jsch.SftpException;
 @Service
 public class PaymentProcessorService {
 	
-    @Value("${scheduler.paymentprocessor.host}")
-    private String host;
-
-    @Value("${scheduler.paymentprocessor.port}")
-    private String port;
-
-    @Value("${scheduler.paymentprocessor.user}")
-    private String user;
-
-    @Value("${scheduler.paymentprocessor.password}")
-    private String password;
-
-    @Value("${scheduler.paymentprocessor.filename}")
-    private String filename;
-
 	private static final String VARIABLE_WITH_ORDER_ID = "PURPOSE";
 
 	private final static Logger LOG = LoggerFactory.getLogger(PaymentProcessorService.class);
@@ -56,6 +42,9 @@ public class PaymentProcessorService {
     
     @Autowired
     private TaskService oTaskService;
+    
+    @Autowired
+    private GeneralConfig generalConfig;
     
     public void loadPaymentInformation(){
     	List<Map<String, String>> paymentsList = loadPayments();
@@ -139,17 +128,20 @@ public class PaymentProcessorService {
         Session session = null;
         File file = null;
         try {
-        	LOG.info("Loading file from the server {}:{} with parameters. Login:{} password:{} fileName:{}", host, port, user, password, filename);
+        	LOG.info("Loading file from the server {}:{} with parameters. Login:{} password:{} fileName:{}", 
+        			generalConfig.getPayYuzhnyFTPsHost(), generalConfig.getPayYuzhnyFTPnPort(), 
+        			generalConfig.getPayYuzhnyFTPsUser(), generalConfig.getPayYuzhnyFTPsPassword(), 
+        			generalConfig.getPayYuzhnyFTPsFileName());
         	file = File.createTempFile("11082016", ".csv");
-            session = jsch.getSession(user, host, Integer.valueOf(port));
+            session = jsch.getSession(generalConfig.getPayYuzhnyFTPsUser(), generalConfig.getPayYuzhnyFTPsHost(), Integer.valueOf(generalConfig.getPayYuzhnyFTPnPort()));
             session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword(password);
+            session.setPassword(generalConfig.getPayYuzhnyFTPsPassword());
             session.connect();
 
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            sftpChannel.get(filename, file.getAbsolutePath());
+            sftpChannel.get(generalConfig.getPayYuzhnyFTPsFileName(), file.getAbsolutePath());
             sftpChannel.exit();
             session.disconnect();
         } catch (JSchException e) {

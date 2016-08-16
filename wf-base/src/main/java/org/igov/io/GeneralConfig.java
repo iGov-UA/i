@@ -125,6 +125,18 @@ public class GeneralConfig {
     @Value("${general.queue.cherg.sPassword}")
     private String queueManagementSystemPassword;
 
+    @Value("${general.Pay.Yuzhny.FTP.sHost}")
+    private String payYuzhnyFTPsHost;
+    @Value("${general.Pay.Yuzhny.FTP.nPort}")
+    private String payYuzhnyFTPnPort;
+    @Value("${general.Pay.Yuzhny.FTP.sUser}")
+    private String payYuzhnyFTPsUser;
+    @Value("${general.Pay.Yuzhny.FTP.sPassword}")
+    private String payYuzhnyFTPsPassword;
+    @Value("${general.Pay.Yuzhny.FTP.sFileName}")
+    private String payYuzhnyFTPsFileName;
+
+    
     public boolean isSelfTest() {
         boolean b = true;
         try {
@@ -378,4 +390,21 @@ public class GeneralConfig {
     public String getQueueManagementSystemPassword() {
         return queueManagementSystemPassword;
     }
+	public String getPayYuzhnyFTPsHost() {
+		return payYuzhnyFTPsHost;
+	}
+	public String getPayYuzhnyFTPnPort() {
+		return payYuzhnyFTPnPort;
+	}
+	public String getPayYuzhnyFTPsUser() {
+		return payYuzhnyFTPsUser;
+	}
+	public String getPayYuzhnyFTPsPassword() {
+		return payYuzhnyFTPsPassword;
+	}
+	public String getPayYuzhnyFTPsFileName() {
+		return payYuzhnyFTPsFileName;
+	}
+    
+    
 }
