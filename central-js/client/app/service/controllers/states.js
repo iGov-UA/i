@@ -261,7 +261,8 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
         });
 
         $scope.feedback.rating = response[1].data.nID_Rate || 5;
-        $scope.feedback.exist = response[1].data.oSubjectMessage;
+        $scope.feedback.exist = !!response[1].data.oSubjectMessage;
+        $scope.feedback.messageBody = response[1].data.oSubjectMessage ? response[1].data.oSubjectMessage.sBody : null;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
@@ -312,7 +313,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
       'sAuthorFIO': sAuthorFIO,
       'sMail': sMail,
       'sHead': sHead,
-      'nID_Rate': $scope.feedback.raiting,
+      'nID_Rate': $scope.feedback.rating,
       'nID_Service': ServiceService.oService.nID
     };
 
