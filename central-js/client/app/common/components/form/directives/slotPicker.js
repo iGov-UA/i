@@ -1,4 +1,5 @@
-angular.module('app').directive('slotPicker', function($http, dialogs) {
+angular.module('app').directive('slotPicker', function($http, dialogs, $rootScope) {
+
   return {
     restrict: 'EA',
     templateUrl: 'app/common/components/form/directives/slotPicker.html',
@@ -30,31 +31,97 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       var nSlotsKey = 'nSlots_' + scope.property.id;
       var nSlotsParam = scope.formData.params[nSlotsKey];
       scope.$watch('selected.slot', function(newValue) {
-        if(scope.property.id.indexOf('_DMS') > 0){
-          //debugger;
-        } else {
-          //debugger;
-          if (newValue) {
-            var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
-            if (nSlotsParam) {
-              var nSlots = parseInt(nSlotsParam.value) || 0;
-              if (nSlots > 1)
-                setFlowUrl += '&nSlots=' + nSlots;
-            }
-            //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
-            $http.post(setFlowUrl).then(function(response) {
-              scope.ngModel = JSON.stringify({
-                nID_FlowSlotTicket: response.data.nID_Ticket,
-                sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
+          if (scope.property.id.indexOf('_DMS') > 0) {
+            if(newValue){
+              var data = {
+                nID_Server: scope.serviceData.nID_Server,
+                nID_Service_Private: scope.formData.params.nID_Service_Private.value,
+                sDateTime: scope.selected.date.sDate + " " + newValue.sTime,
+                sSubjectFamily: scope.formData.params.bankIdlastName.value,
+                sSubjectName: scope.formData.params.bankIdfirstName.value,
+                sSubjectSurname: scope.formData.params.bankIdmiddleName.value || '',
+                sSubjectPassport: getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value),
+                sSubjectPhone: scope.formData.params.phone.value || ''
+              };
+              $http.post('/api/service/flow/DMS/setSlotHold', data).
+              success(function(data, status, headers, config) {
+                scope.ngModel = JSON.stringify({
+                  reserved_to: data.reserved_to,
+                  reserve_id: data.reserve_id,
+                  interval: data.interval
+                });
+                console.info('Reserved slot: ' + angular.toJson(data));
+              }).
+              error(function(data, status, headers, config) {
+                console.error('Error reserved slot ' + angular.toJson(data));
               });
-            }, function() {
-              scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
-              scope.selected.slot = null;
-              dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
-            });
+            }
+          } else {
+            if (newValue) {
+              var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
+              if (nSlotsParam) {
+                var nSlots = parseInt(nSlotsParam.value) || 0;
+                if (nSlots > 1)
+                  setFlowUrl += '&nSlots=' + nSlots;
+              }
+              //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
+              $http.post(setFlowUrl).then(function (response) {
+                scope.ngModel = JSON.stringify({
+                  nID_FlowSlotTicket: response.data.nID_Ticket,
+                  sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
+                });
+              }, function () {
+                scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
+                scope.selected.slot = null;
+                dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
+              });
+            }
           }
-        }
+
       });
+
+      function getPasportLastFourNumbers(str) {
+        if(!str || str === "") return "";
+        return str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0].match(new RegExp(/\d{4,4}$/))[0];
+      }
+
+      scope.$on('setSlotDMS', function (self) {
+        var reserve = JSON.parse(self.currentScope.ngModel);
+        $http.post('/api/service/flow/DMS/setSlot', {
+          nID_Server: scope.serviceData.nID_Server,
+          nID_SlotHold: parseInt(reserve.reserve_id)
+        }).
+        success(function(data, status, headers, config) {
+          console.log(data);
+          scope.ngModel = JSON.stringify({
+            date_time: data.date_time,
+            service_id: data.service_id,
+            ticket_number: data.ticket_number,
+            ticket_code: data.ticket_code
+          });
+
+          $rootScope.$broadcast('continueSubmitForm');
+        }).
+        error(function(data, status, headers, config) {
+          console.error(data);
+          scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
+          scope.selected.slot = null;
+          dialogs.error('Помилка', 'Неможливо зарезервувати час в електронній черзі ДМС. Спробуйте обрати інший або пізніше, будь ласка');
+
+        });
+
+      });
+
+      scope.unreadyRequestDMS = function () {
+        if (this.property.id.indexOf('_DMS') > 0){
+          return this.$parent.$parent.$parent.$parent.$parent.form.phone.$invalid ||
+            (!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') ||
+            (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') ||
+            (getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value).length != 4);
+        } else {
+          return false;
+        }
+      };
 
       scope.slotsData = {};
       scope.slotsLoading = true;
@@ -63,36 +130,25 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       var departmentParam = scope.formData.params[departmentProperty];
 
       scope.loadList = function(){
-        
+
         scope.slotsLoading = true;
         var data = {};
+        var sURL = '';
 
         if (this.property.id.indexOf('_DMS') > 0){
+
           data = {
             nID_Server: scope.serviceData.nID_Server,
             nID_Service_Private: this.formData.params.nID_Service_Private.value
           };
-          //debugger;
-          return $http.post('/api/service/flow/DMS/getSlots', data).
-          success(function(data, status, headers, config) {
-            debugger;
-            scope.slotsData = data;
-          }).
-          error(function(data, status, headers, config) {
-            alert(data.message);
-            debugger;
-          }).
-          finally(function (callback) {
-            debugger;
-            scope.slotsLoading = false;
-          })
+          sURL = '/api/service/flow/DMS/getSlots';
+
         } else {
-          //debugger;
+
           data = {
             nID_Server: scope.serviceData.nID_Server,
             nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
           };
-
           if (departmentParam) {
             if (!departmentParam.value) {
               return false;
@@ -100,31 +156,54 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               data.nID_SubjectOrganDepartment = departmentParam.value;
             }
           }
-
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
             data.nSlots = nSlotsParam.value;
           }
-
-          return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
-            //debugger;
-            scope.slotsData = response.data;
-            scope.slotsLoading = false;
-          });
+          sURL = '/api/service/flow/' + scope.serviceData.nID;
 
         }
 
-
-
+        return $http.get(sURL, {params:data}).then(function(response) {
+          if (scope.property.id.indexOf('_DMS') > 0){
+            scope.slotsData = convertSlotsDataDMS(response.data);
+          } else {
+            scope.slotsData = response.data;
+          }
+          scope.slotsLoading = false;
+        });
       };
 
+      function convertSlotsDataDMS(data) {
+        var result = {
+          aDay: []
+        };
+        var nSlotID = 1;
+        for (var sDate in data) if (data.hasOwnProperty(sDate)) {
+          result.aDay.push({
+            aSlot: [],
+            //bHasFree : true,
+            sDate: sDate
+          });
+          angular.forEach(data[sDate], function (slot) {
+            result.aDay[result.aDay.length - 1].aSlot.push({
+              bFree: true,
+              nID: nSlotID,
+              nMinutes: slot.t_length,
+              sTime: slot.time
+            });
+            nSlotID++;
+          });
+          result.aDay[result.aDay.length - 1].bHasFree = result.aDay[result.aDay.length - 1].aSlot.length > 0;
+        }
+        return result;
+      }
+
       scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
 
       scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
@@ -132,4 +211,4 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       scope.loadList();
     }
   }
-})
+});

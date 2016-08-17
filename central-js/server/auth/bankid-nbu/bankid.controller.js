@@ -59,7 +59,9 @@ module.exports.token = function (req, res, next) {
     }
 
     if (error) {
-      res.redirect(link + '?error=' + JSON.stringify(error));
+      var errorString = JSON.stringify(error);
+      console.log(errorString);//TODO replace with real logger
+      res.redirect(link + '?error=' + errorString);
     } else {
       req.session = authService.createSessionObject('bankid-nbu', user, info);
       delete req.session.prepare;
