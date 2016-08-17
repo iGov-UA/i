@@ -29,12 +29,13 @@ import org.springframework.stereotype.Component;
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
-    private Expression organ;
+    //private Expression organ;
 
     @Override
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
-        String organValue = getStringFromFieldExpression(organ, execution);
+        //String organValue = getStringFromFieldExpression(organ, execution);
+        String organValue = (String) execution.getVariable("organ");
         LOG.info("organValue: " + organValue);
         Group group;
         try {
