@@ -27,7 +27,7 @@ describe('authorize with bankid nbu', function () {
     }, bankidNBUData.codes.forCustomerDataResponse);
   });
 
-  it('should go without error and with non-encrypted customer data', function (done) {
+  it('should go without error and with encrypted customer data', function (done) {
     var agent;
     appTest.loginWithBankIDNBU(function (error, loginAgent) {
       if (error) {
