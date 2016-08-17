@@ -306,12 +306,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                                     }
                                             }
                                     }
-                                    if(replacement!=null){
+                                    //if(replacement!=null){
                                         LOG.info("Replacement for pattern : {}", replacement);
                                         matcher.appendReplacement(outputTextBuffer, replacement);
-                                    }else{
+                                    /*}else{
                                         LOG.warn("Replacement for pattern : {}", replacement);
-                                    }
+                                    }*/
                                     replacement = "";
                             }
                     }                    
