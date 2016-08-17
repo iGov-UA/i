@@ -340,6 +340,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if(queueDataDMS === '') {
       submitActivitiForm(aFormProperties);
     } else {
+      $rootScope.$broadcast('setSlotDMS', queueDataDMS);
+      /*
       var reserve = JSON.parse($scope.data.formData.params[queueDataDMS].value);
       $http.post('/api/service/flow/DMS/setSlot', {
         nID_Server: oServiceData.nID_Server,
@@ -363,9 +365,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
           text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
         })
       });
+      */
     }
 
   };
+
+  $scope.$on('continueSubmitForm', function (self) {
+    submitActivitiForm(self.currentScope.activitiForm.formProperties);
+  });
+
 
   function submitActivitiForm(aFormProperties) {
     ActivitiService
