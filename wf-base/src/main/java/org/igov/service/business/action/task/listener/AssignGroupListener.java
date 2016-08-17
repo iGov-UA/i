@@ -12,12 +12,13 @@ import java.util.Set;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.task.IdentityLink;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,32 +29,33 @@ import org.springframework.stereotype.Component;
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
+    private Expression organ;
 
     @Override
-    public void notify(DelegateTask task) {
-        DelegateExecution execution = task.getExecution();
-        String organ = (String) execution.getVariable("organ");
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organ: " + organ);
+    public void notify(DelegateTask delegateTask) {
+        DelegateExecution execution = delegateTask.getExecution();
+        String organValue = getStringFromFieldExpression(organ, execution);
+        LOG.info("organValue: " + organValue);
         Group group;
         try {
-            if (organ != null && !"".equals(organ)) {
-                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organ.split(",")));
+            if (organValue != null && !"".equals(organValue)) {
+                List<String> groupsNew = new ArrayList<>(Arrays.asList(organValue.replaceAll(" ", "").split(",")));
                 IdentityService identityService = execution.getEngineServices().getIdentityService();
                 for (String groupNew : groupsNew) {
                     group = identityService.createGroupQuery().groupId(groupNew).singleResult();
                     if (group == null) {
-                        group = identityService.newGroup(organ);
-                        group.setName(organ);
+                        group = identityService.newGroup(groupNew);
+                        group.setName(groupNew);
                         group.setType("assignment");
                         identityService.saveGroup(group);
-                        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organ);
+                        LOG.info("created group: " + organValue);
                     }
                 }
-                Set<IdentityLink> groupsOld = task.getCandidates();
-                for (IdentityLink groupOld : groupsOld) {
+                Set<IdentityLink> groupsOld = delegateTask.getCandidates();
+                groupsOld.stream().forEach((groupOld) -> {
                     groupsNew.add(groupOld.getGroupId());
-                }
-                task.addCandidateGroups(groupsNew);
+                });
+                delegateTask.addCandidateGroups(groupsNew);
             }
         } catch (Exception ex) {
             LOG.error("!!!!!!!!!!!!!!!!", ex);
