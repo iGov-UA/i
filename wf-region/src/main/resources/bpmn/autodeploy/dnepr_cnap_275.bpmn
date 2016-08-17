@@ -243,6 +243,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_275_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
@@ -366,6 +367,7 @@
           <activiti:value id="reject" name="відмовлено у наданні спеціального дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
@@ -425,7 +427,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] perevireno i peredano na podalshiy rozglyad. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
