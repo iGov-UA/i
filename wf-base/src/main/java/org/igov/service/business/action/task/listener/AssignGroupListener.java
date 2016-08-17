@@ -12,11 +12,9 @@ import java.util.Set;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.task.IdentityLink;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,12 +27,13 @@ import org.springframework.stereotype.Component;
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
-    private Expression organ;
+    //private Expression organ;
 
     @Override
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
-        String organValue = getStringFromFieldExpression(organ, execution);
+        //String organValue = getStringFromFieldExpression(organ, execution);
+        String organValue = (String) execution.getVariable("organ");
         LOG.info("organValue: " + organValue);
         Group group;
         try {

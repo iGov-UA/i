@@ -35,11 +35,7 @@
         <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар за результатами контакту з адміністративним органом" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${assignGroup}">
-          <activiti:field name="organ">
-            <activiti:expression>${organ}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>

@@ -2,7 +2,7 @@
 
   <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
-    <div class="row container" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <div class="row container" >
       <div class="col-md-6 col-sm-6 feedback-padding0">
 
         <div class="feedback-assessment">
@@ -17,11 +17,15 @@
         <div>
           <div class="feedback-form-group">
               <textarea rows="5" ng-model="feedback.messageBody"
+                        ng-disabled="feedback.exist"
                         class="form-control pull-right feedback-textarea feedback-margin-bottom"
                         placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
           </div>
           <div class="">
-            <input type="button" class="feedback-btn btn pull-right" value="Надіслати"
+            <input type="button"
+                   class="feedback-btn btn pull-right"
+                   ng-disabled="feedback.exist"
+                   value="Надіслати"
                    ng-click="feedback.postFeedback()"/>
           </div>
         </div>
