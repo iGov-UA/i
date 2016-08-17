@@ -7,7 +7,7 @@ var nock = require('nock')
 
 var baseUrls = bankidNBUUtil.getBaseURLs();
 
-var queryStringToObject = function (urlString) {
+function queryStringToObject(urlString) {
   return urlString.split(/&|\?/g)
     .filter(function (item, i) {
       return i > 0
@@ -18,13 +18,17 @@ var queryStringToObject = function (urlString) {
     }, {});
 };
 
-var pathFromURL = function (urlString) {
+function pathFromURL(urlString) {
   return urlString.split(/\?/).filter(function (item, i) {
     return i == 0
   }).reduce(function (previous, item) {
     return item
   })
 };
+
+function extractAccessToken(authHeaderValue) {
+  return authHeaderValue && authHeaderValue.split(/Bearer /)[1]
+}
 
 var headers = {
   'content-type': 'application/json;charset=UTF-8'
@@ -45,12 +49,46 @@ var bankidNBUMock = nock(baseUrls.access.base)
       var path = url.parse(result).path;
       return 'http://localhost:9000' + path;
     }
+  });
+
+bankidNBUMock
+  .post(baseUrls.access.path.token, function (body) {
+    return body && body.code === bankidNBUData.codes.forCustomerDataResponse;
   })
-  .post(baseUrls.access.path.token)
-  .query(true)
-  .reply(200, appData.token, headers)
+  .reply(200, bankidNBUData.createToken(bankidNBUData.accessTokens.forCustomerDataResponse), headers)
+  .post(baseUrls.access.path.token, function (body) {
+    return body && body.code === bankidNBUData.codes.forCustomerDataCryptoResponse;
+  })
+  .reply(200, bankidNBUData.createToken(bankidNBUData.accessTokens.forCustomerDataCryptoResponse), headers)
+  .post(baseUrls.access.path.token, function (body) {
+    return body && body.code === bankidNBUData.codes.forErrorResponse406;
+  })
+  .reply(200, bankidNBUData.createToken(bankidNBUData.accessTokens.forErrorResponse406), headers)
+  .post(baseUrls.access.path.token, function (body) {
+    return body && body.code === bankidNBUData.codes.forErrorResponse501;
+  })
+  .reply(200, bankidNBUData.createToken(bankidNBUData.accessTokens.forErrorResponse501), headers)
+
   .post(baseUrls.resource.path.info)
-  .reply(200, bankidNBUData.customerData, headers);
+  .matchHeader('Authorization', function (val) {
+    return extractAccessToken(val) === bankidNBUData.accessTokens.forCustomerDataResponse;
+  })
+  .reply(200, bankidNBUData.customerData, headers)
+  .post(baseUrls.resource.path.info)
+  .matchHeader('Authorization', function (val) {
+    return extractAccessToken(val) === bankidNBUData.accessTokens.forCustomerDataCryptoResponse;
+  })
+  .reply(200, bankidNBUData.customerDataCrypto, headers)
+  .post(baseUrls.resource.path.info)
+  .matchHeader('Authorization', function (val) {
+    return extractAccessToken(val) === bankidNBUData.accessTokens.forErrorResponse406;
+  })
+  .reply(406)
+  .post(baseUrls.resource.path.info)
+  .matchHeader('Authorization', function (val) {
+    return extractAccessToken(val) === bankidNBUData.accessTokens.forErrorResponse501;
+  })
+  .reply(501);
 
 
 module.exports.bankidNBUMock = bankidNBUMock;
