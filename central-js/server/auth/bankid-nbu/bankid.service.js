@@ -26,12 +26,21 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
 
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
+    if (body) {
+      console.log("--------------- client data response body !!!!" + JSON.stringify(body));
+    }
     var innToCheck;
 
     if (disableDecryption) {
-      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
-      innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
-      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      if (body.customerCrypto) {
+        console.log("---------------  client data is encrypted but decryption is disabled !!!! " + body.customerCrypto);
+        callback({message: "client data is encrypted but decryption is disabled"}, response, null);
+        return;
+      } else {
+        console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+        innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
+        console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      }
     } else {
       innToCheck = body.customer.inn;
       console.log("--------------- nodecrption of inn !!!!");

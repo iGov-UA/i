@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, dialogs) {
+angular.module('app').directive('slotPicker', function($http, dialogs, $rootScope) {
 
   return {
     restrict: 'EA',
@@ -46,18 +46,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               $http.post('/api/service/flow/DMS/setSlotHold', data).
               success(function(data, status, headers, config) {
                 scope.ngModel = JSON.stringify({
-                  nID_FlowSlotTicket: data.reserve_id,
-                  sDate: data.reserved_to + '.00'
+                  reserved_to: data.reserved_to,
+                  reserve_id: data.reserve_id,
+                  interval: data.interval
                 });
-                //debugger;
-                console.log(data);
+                console.info('Reserved slot: ' + angular.toJson(data));
               }).
               error(function(data, status, headers, config) {
-                console.error(data);
+                console.error('Error reserved slot ' + angular.toJson(data));
               });
             }
           } else {
-            //debugger;
             if (newValue) {
               var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
               if (nSlotsParam) {
@@ -86,12 +85,41 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         return str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0].match(new RegExp(/\d{4,4}$/))[0];
       }
 
-      scope.readyRequestDMS = function () {
+      scope.$on('setSlotDMS', function (self) {
+        var reserve = JSON.parse(self.currentScope.ngModel);
+        $http.post('/api/service/flow/DMS/setSlot', {
+          nID_Server: scope.serviceData.nID_Server,
+          nID_SlotHold: parseInt(reserve.reserve_id)
+        }).
+        success(function(data, status, headers, config) {
+          console.log(data);
+          scope.ngModel = JSON.stringify({
+            date_time: data.date_time,
+            service_id: data.service_id,
+            ticket_number: data.ticket_number,
+            ticket_code: data.ticket_code
+          });
+
+          $rootScope.$broadcast('continueSubmitForm');
+        }).
+        error(function(data, status, headers, config) {
+          console.error(data);
+          scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
+          scope.selected.slot = null;
+          dialogs.error('Помилка', 'Неможливо зарезервувати час в електронній черзі ДМС. Спробуйте обрати інший або пізніше, будь ласка');
+
+        });
+
+      });
+
+      scope.unreadyRequestDMS = function () {
         if (this.property.id.indexOf('_DMS') > 0){
-          if(!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') return false;
-          if(!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') return false;
+          return this.$parent.$parent.$parent.$parent.$parent.form.phone.$invalid ||
+            (!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') ||
+            (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') ||
+            (getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value).length != 4);
         } else {
-          return true;
+          return false;
         }
       };
 
@@ -171,13 +199,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       }
 
       scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
 
       scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue) {
-        //debugger;
         resetData();
         scope.loadList();
       });
