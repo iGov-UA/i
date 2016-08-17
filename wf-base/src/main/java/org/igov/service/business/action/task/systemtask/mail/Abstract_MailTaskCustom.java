@@ -260,7 +260,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		StringBuffer outputTextBuffer = new StringBuffer();
 		String replacement = "";
 		Matcher matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
-                try{
+                //try{
                     if (matcher.find()) {
                             matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
                             List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
@@ -315,10 +315,10 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                     replacement = "";
                             }
                     }                    
-                }catch(Exception oException){
+                /*}catch(Exception oException){
                     LOG.error("FAIL: ", oException);
                     throw oException;
-                }
+                }*/
 		return matcher.appendTail(outputTextBuffer).toString();
 	}
 
