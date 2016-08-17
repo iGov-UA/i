@@ -36,11 +36,11 @@ public class AccessUser extends AbstractEntity{
     private List<ProcessTask> aProcessTask = new ArrayList<>();
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
     @JoinTable(name = "AccessUser_Process",
             joinColumns = @JoinColumn(name = "nID_AccessUser"),
             inverseJoinColumns = @JoinColumn(name = "nID_Process"))
-    private List<Process> aProcess = new ArrayList<>();
+    private List<org.igov.analytic.model.process.Process> aProcess = new ArrayList<>();
 
     public String getsID() {
         return sID;
@@ -58,11 +58,11 @@ public class AccessUser extends AbstractEntity{
         this.aProcessTask = aProcessTask;
     }
 
-    public List<Process> getaProcess() {
+    public List<org.igov.analytic.model.process.Process> getaProcess() {
         return aProcess;
     }
 
-    public void setaProcess(List<Process> aProcess) {
+    public void setaProcess(List<org.igov.analytic.model.process.Process> aProcess) {
         this.aProcess = aProcess;
     }
     

@@ -20,6 +20,8 @@
     <changeSet id="Add colum access" author="olga" runOnChange="false">
         
         <dropPrimaryKey tableName="AccessGroup_ProcessTask"/>
+        
+        <dropNotNullConstraint columnDataType="bigint" columnName="nID_ProcessTask" tableName="AccessGroup_ProcessTask"/>
        
         <addColumn tableName="AccessGroup_ProcessTask">
             <column name="nID_Process" type="bigint">
@@ -27,11 +29,13 @@
             </column>
         </addColumn>
         
-        <addPrimaryKey constraintName="PK_AccessGroup_Process_ProcessTask"
+        <!--addPrimaryKey constraintName="PK_AccessGroup_Process_ProcessTask"
                              columnNames="nID_AccessGroup, nID_Process, nID_ProcessTask"
-                             tableName="AccessGroup_ProcessTask"/>
+                             tableName="AccessGroup_ProcessTask"/-->
         
         <dropPrimaryKey tableName="AccessUser_ProcessTask"/>
+        
+        <dropNotNullConstraint columnDataType="bigint" columnName="nID_ProcessTask" tableName="AccessUser_ProcessTask"/>
        
         <addColumn tableName="AccessUser_ProcessTask">
             <column name="nID_Process" type="bigint">
@@ -39,9 +43,9 @@
             </column>
         </addColumn>
         
-        <addPrimaryKey constraintName="PK_AccessUser_Process_ProcessTask"
+        <!--addPrimaryKey constraintName="PK_AccessUser_Process_ProcessTask"
                              columnNames="nID_AccessUser, nID_Process, nID_ProcessTask"
-                             tableName="AccessUser_ProcessTask"/>
+                             tableName="AccessUser_ProcessTask"/-->
         
     </changeSet>
         
