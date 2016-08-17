@@ -29,14 +29,14 @@ import org.springframework.stereotype.Component;
 public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
-    private Expression organ;
+    //private Expression organ;
 
     @Override
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organ getExpressionText: " + organ.getExpressionText());
-        String organValue = getStringFromFieldExpression(organ, execution);
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organValue: " + organValue);
+        //String organValue = getStringFromFieldExpression(organ, execution);
+        String organValue = (String) execution.getVariable("organ");
+        LOG.info("organValue: " + organValue);
         Group group;
         try {
             if (organValue != null && !"".equals(organValue)) {
@@ -49,7 +49,7 @@ public class AssignGroupListener implements TaskListener {
                         group.setName(groupNew);
                         group.setType("assignment");
                         identityService.saveGroup(group);
-                        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organValue);
+                        LOG.info("created group: " + organValue);
                     }
                 }
                 Set<IdentityLink> groupsOld = delegateTask.getCandidates();

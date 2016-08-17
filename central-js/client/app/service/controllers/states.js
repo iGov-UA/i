@@ -312,7 +312,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
       'sAuthorFIO': sAuthorFIO,
       'sMail': sMail,
       'sHead': sHead,
-      'nID_Rate': $scope.feedback.raiting,
+      'nID_Rate': $scope.feedback.rating,
       'nID_Service': ServiceService.oService.nID
     };
 
