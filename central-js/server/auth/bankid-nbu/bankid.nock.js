@@ -78,7 +78,7 @@ bankidNBUMock
   .matchHeader('Authorization', function (val) {
     return extractAccessToken(val) === bankidNBUData.accessTokens.forCustomerDataCryptoResponse;
   })
-  .reply(200, bankidNBUData.customerDataCrypto, headers)
+  .reply(200, bankidNBUData.createEncryptedCustomer(bankidNBUData.customerData), headers)
   .post(baseUrls.resource.path.info)
   .matchHeader('Authorization', function (val) {
     return extractAccessToken(val) === bankidNBUData.accessTokens.forErrorResponse406;
