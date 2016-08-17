@@ -525,7 +525,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
@@ -551,10 +551,14 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.<br/>
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p> Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.<br>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
-Телефон для довідок: 0-800-501-174<br />
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
 [pattern/mail/_common_signature_start.html]
 Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
@@ -1078,7 +1082,6 @@
           <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible" default="10"></activiti:formProperty>
@@ -1128,7 +1131,7 @@
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
@@ -1720,7 +1723,7 @@
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:expression><![CDATA[PA210891BVS1]]></activiti:expression>
@@ -1922,18 +1925,20 @@ p {font-size: 14px;}
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p>
-Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br ><br>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
 Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
 Номер документа: ${sID_Document_UkrDoc}<br>
-
-
 </p>
-Телефон для довідок: 0-800-501-174<br />
-<br />
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
+<br>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,<br />
+Дніпропетровська міська рада,<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -2488,7 +2493,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="enum" required="true">
           <activiti:value id="Successfull" name="Ответ по заявке предоставлен"></activiti:value>
@@ -3062,7 +3067,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
@@ -4132,14 +4137,14 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
 <p>Відповідь:<br>
 <i>${sDocument_Body_UkrDoc}</i>
 </p>
 <p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,<br />
+Дніпропетровська міська рада,<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -4719,7 +4724,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -4750,14 +4755,14 @@ execution.setVariable('sStatusAppRGA', per3)</script>
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а) колего!</strong><br /><br />
 <p>
-Відповідь на звернення № ${sRegistrationNumberRGA}<br ><br>
+Відповідь на звернення № ${sRegistrationNumberRGA}<br><br>
 Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
 Номер документа: ${sID_Document_UkrDoc}<br>
 </p>
-Гарного дня!<br />
+Гарного дня!<br>
 <br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,<br />
+Дніпропетровська міська рада,<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>

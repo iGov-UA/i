@@ -16,14 +16,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи АБО ФОП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
         <activiti:formProperty id="nDocWedding" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocDivorce" name="Копія свідоцтва про розірвання шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocChild" name="Копія свідоцтва про народження дитини" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія паспорта зі сторінкою реєстрації" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocMed" name="Копія довідки з МСЕК" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
-      </extensionElements> 
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -69,10 +74,10 @@
 									Спеціалісти Вашого РВК повинні дати відповідь найближчим часом.
                                 </p>
                                 <p>
-										При вниникненні питань Ви можете звернутися: телефон РВК
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 								</p>
 								[pattern/mail/_common_signature_start.html]
-								Міністерство оборони України,<br>
+								${sNameOrgan},<br>
 								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -88,7 +93,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="rvk_1">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="rvk_${sID_Public_SubjectOrganJoin}_1">
       <extensionElements>
         <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -103,10 +108,14 @@
         <activiti:formProperty id="sJob" name="Посада" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
+          <activiti:value id="sPenalty" name="Повідомити громадянина про необхідність сплаті штрафу"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
+          <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty><activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nDocWedding},${nDocDivorce},${nDocChild},${nDocPass},${nDocMed}]]></activiti:expression>
@@ -116,6 +125,9 @@
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow47" sourceRef="exclusivegateway3" targetRef="usertask1">
+     <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'sMistake'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -142,10 +154,10 @@
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			<p>
-			При вниникненні питань Ви можете звернутися: телефон РВК
+			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			</p>
 			[pattern/mail/_common_signature_start.html]
-			Міністерство оборони України.</p>
+			${sNameOrgan}.</p>
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -182,10 +194,10 @@
 			Зміни внесено до бази даних РВК
 			</p>
             <p>
-			При вниникненні питань Ви можете звернутися: телефон РВК
+			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 			</p>
 			[pattern/mail/_common_signature_start.html]
-			Міністерство оборони України,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -201,13 +213,64 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow44" sourceRef="servicetask4" targetRef="endevent6"></sequenceFlow>
-    <endEvent id="endevent6" name="End"></endEvent>
+    <sequenceFlow id="flow50" sourceRef="servicetask4" targetRef="endevent5"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway3" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'sPenalty'}]]></conditionExpression>    
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Відправка відповіді штраф" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваша заявка №[sID_Order] про надання РВК документів для внесення змін про стан здоровья, сімейний стан, місце роботи та посади успішно опрацьована.<br>
+			Зміни внесено до бази даних РВК.<br>
+			За несвоєчасне інформування про зміну облікових даних Вам потрібно сплатити штраф у розмірі ${sSum}.<br>
+			${comment}
+			</p>
+            <p>
+			При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+			</p>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rvk_935">
     <bpmndi:BPMNPlane bpmnElement="rvk_935" id="BPMNPlane_rvk_935">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="171.0" y="122.0"></omgdc:Bounds>
@@ -230,21 +293,20 @@
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="75.0" width="111.0" x="691.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="841.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="694.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="51.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="276.0" y="157.0"></omgdi:waypoint>
@@ -277,17 +339,26 @@
           <omgdc:Bounds height="14.0" width="87.0" x="597.0" y="219.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="591.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="486.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="486.0" y="122.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="591.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="694.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="799.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="858.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="858.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="802.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="841.0" y="247.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="859.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="858.0" y="175.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
