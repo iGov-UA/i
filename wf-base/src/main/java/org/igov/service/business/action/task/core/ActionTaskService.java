@@ -645,6 +645,7 @@ public class ActionTaskService {
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, 
     		Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
+        LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
@@ -663,6 +664,7 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
+            LOG.info("!!!!!!!!!!!!!!!variablessb= "+variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -678,13 +680,18 @@ public class ActionTaskService {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < headers.length; i++) {
                     sb.append(headers[i]);
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                     sb.append(";");
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 }
                 LOG.info("(headers={})", sb.toString());
                 sb = new StringBuilder();
+                LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 for (int i = 0; i < values.length; i++) {
                     sb.append(values[i]);
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                     sb.append(";");
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 }
                 LOG.info("(values={})", sb.toString());
             }
@@ -693,6 +700,8 @@ public class ActionTaskService {
                 currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
+            LOG.info("csvLines= " + csvLines);
+            LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_end---------------------------------------------------------->");
         }
     }
 
@@ -936,13 +945,17 @@ public class ActionTaskService {
     }
 
     private String replaceReportFields(SimpleDateFormat sDateCreateDF, HistoricTaskInstance curTask, String currentRow) {
+        LOG.info("<--------------------------------replaceReportFields_begin-------------------------------------------->");
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
+                LOG.info("!!!!!!!!!!res: "+res);
             }
         }
+         LOG.info("<--------------------------------replaceReportFields_end-------------------------------------------->");
         return res;
+        
     }
 
     /*private String createTable(String soData) throws UnsupportedEncodingException {
@@ -1097,7 +1110,12 @@ public class ActionTaskService {
             String sRow = pattern;
             LOG.trace("Process task - {}", oTask);
             TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
+            oTaskFormData.getTask().getAssignee();
+//            if(oTaskFormData || "*" == saFields){
+//              sRow = replaceFormProperties(sRow, oTaskFormData);  
+//            }
             sRow = replaceFormProperties(sRow, oTaskFormData);
+            LOG.info("!!!!!!!!!!!!!!!!!!!!!!fillTheCSVMap!_!sRows= "+sRow);
             if (saFieldsCalc != null) {
                 sRow = addCalculatedFields(saFieldsCalc, oTask, sRow);
             }
