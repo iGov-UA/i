@@ -1311,7 +1311,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
-       
+       LOG.info("<----------------oActionTaskService.fillTheCSVMap_begin--------------------->");
+            LOG.info("sID_BP: "+sID_BP);
+            LOG.info("dBeginDate: "+dBeginDate);
+            LOG.info("dEndDate: "+dEndDate);
+            LOG.info("foundResults: "+foundResults);
+            LOG.info("sDateCreateDF: "+sDateCreateDF);
+            LOG.info("csvLines: "+csvLines);
+            LOG.info("saFields: "+saFields);
+            LOG.info("saFieldsCalc: "+saFieldsCalc);
+            LOG.info("headers: "+headers);
+            LOG.info("<----------------oActionTaskService.fillTheCSVMap_end--------------------->");
         
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
@@ -1321,9 +1331,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
+            LOG.info("<----------------oActionTaskService.fillTheCSVMapHistoricTasks_begin--------------------->");
+            LOG.info("sID_BP: "+sID_BP);
+            LOG.info("dBeginDate: "+dBeginDate);
+            LOG.info("dEndDate: "+dEndDate);
+            LOG.info("foundHistoricResults: "+foundHistoricResults);
+            LOG.info("sDateCreateDF: "+sDateCreateDF);
+            LOG.info("csvLines: "+csvLines);
+            LOG.info("saFields: "+saFields);
+            LOG.info("tasksIdToExclude: "+tasksIdToExclude);
+            LOG.info("saFieldsCalc: "+saFieldsCalc);
+            LOG.info("headers: "+headers);
+            LOG.info("sID_State_BP: "+sID_State_BP);
+             LOG.info("<----------------oActionTaskService.fillTheCSVMapHistoricTasks_end--------------------->");
         }
-
+LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
         if (saFieldSummary != null) {
+            
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new ToolCellSum()
@@ -1334,6 +1358,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                     List<String> line = stringResults.get(i);
                     printWriter.writeNext(line.toArray(new String[line.size()]));
+                    LOG.info("!!!!!!!!!!!!!!line"+line);
                 }
             } catch (Exception e) {
                 List<String> errorList = new LinkedList<>();
@@ -1349,6 +1374,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
             for (Map<String, Object> currLine : csvLines) {
                 String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
+                LOG.info("!!!!oActionTaskService.createStringArray_line"+line);
                 printWriter.writeNext(line);
             }
         }
