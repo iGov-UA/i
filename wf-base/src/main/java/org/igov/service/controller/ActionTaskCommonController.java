@@ -784,8 +784,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (organ != null) {
             Map<String, Object> variables = new HashMap<String, Object>();
             variables.put("organ", organ);
-            pi = runtimeService.startProcessInstanceByKey(key);
-            runtimeService.setVariables(pi.getId(), variables);
+            pi = runtimeService.startProcessInstanceByKey(key, variables);
         } else {
             pi = runtimeService.startProcessInstanceByKey(key);
         }
