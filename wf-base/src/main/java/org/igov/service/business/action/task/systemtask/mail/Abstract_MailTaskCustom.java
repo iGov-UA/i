@@ -300,7 +300,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                                                             replacement = getFormattedDateS(formProperty.getValue());
                                                                     } 
                                                             } else {
-                                                                    replacement = formProperty.getValue();
+                                                                    //replacement = formProperty.getValue();
                                                             }
 
                                                     }
