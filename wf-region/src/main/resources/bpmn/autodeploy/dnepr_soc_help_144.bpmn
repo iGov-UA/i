@@ -29,21 +29,22 @@
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія рішення органу опіки та піклування або суду про встановлення опіки чи піклування над дитиною-сиротою або дитиною, позбавленою батьківського піклування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія свідоцтва про народження дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Довідка з місця проживання заявника про склад сім'ї;(для дітей, над якими встановлено опіку чи піклування і є вихованцями дитячих навчальних закладів, що фінансуються не за рахунок бюджетних  коштів, - видана органом реєстрації довідка, у якій зазначаються статус дитячогонавчального закладу і за які кошти він фінансується, а також підтверджується факт перебування у ньому дітей)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідки про місячні розміри пенсії, аліментів, стипендії, державної допомоги, що одержує на дитину опікун чи піклувальник" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідка, видана органом праці та соціального захисту населення за місцем реєстрації опікуна чи піклувальника про те, що він не перебуває на обліку як одержувач допомоги на дітей, над якими встановлено опіку чи піклування, і не одержує зазначеної допомоги;(якщо опікун чи піклувальник проживає за місцем проживання дитини, яка перебуває під його опікою чи піклуванням)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер р-на соцзащиты" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFile_1" name="Копія рішення органу опіки та піклування або суду про встановлення опіки чи піклування над дитиною-сиротою або дитиною, позбавленою батьківського піклування" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_2" name="Копія свідоцтва про народження дитини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_3" name="Довідка з місця проживання заявника про склад сім'ї;(для дітей, над якими встановлено опіку чи піклування і є вихованцями дитячих навчальних закладів, що фінансуються не за рахунок бюджетних  коштів, - видана органом реєстрації довідка, у якій зазначаються статус дитячогонавчального закладу і за які кошти він фінансується, а також підтверджується факт перебування у ньому дітей)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_4" name="Довідки про місячні розміри пенсії, аліментів, стипендії, державної допомоги, що одержує на дитину опікун чи піклувальник" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_5" name="Довідка, видана органом праці та соціального захисту населення за місцем реєстрації опікуна чи піклувальника про те, що він не перебуває на обліку як одержувач допомоги на дітей, над якими встановлено опіку чи піклування, і не одержує зазначеної допомоги;(якщо опікун чи піклувальник проживає за місцем проживання дитини, яка перебуває під його опікою чи піклуванням)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sKrokodil" name="номер р-на соцзащиты" type="string"  default="698"></activiti:formProperty>
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Звернення (первинне, вторинне)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_1'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Звернення (первинне, вторинне)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;nFile_1&quot;,&quot;nFile_2&quot;,&quot;nFile_3&quot;,&quot;nFile_4&quot;,&quot;nFile_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_1'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;nFile_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Обробка Управлінням (1 етап)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="sKrokodil" name="номер р-на соцзащиты" type="string"></activiti:formProperty>
         <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -72,7 +73,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
+            <activiti:expression>${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -94,6 +95,7 @@
     <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка Управлінням (2 етап)" activiti:candidateGroups="${group}">
       <extensionElements>
+        <activiti:formProperty id="sKrokodil" name="номер р-на соцзащиты" type="string"></activiti:formProperty>
         <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -147,10 +149,10 @@
 На жаль, Вам відмовлено у призначенні допомоги на дітей, які перебувають під опікою чи піклуванням.&lt;br /&gt; 
 &lt;p&gt;Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -183,10 +185,10 @@
 Ви отримали схвалення щодо свого звернення про призначення допомоги на дітей, які перебувають під опікою чи піклуванням.&lt;br /&gt;
 &lt;p&gt;Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -253,10 +255,10 @@
 &lt;p&gt;Причина: ${decision_comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -286,13 +288,13 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо призначення державної соціальної допомоги  на дітей, які перебувають під опікою чи піклуванням в очикуванні недостатніх документів. Протягом трьох місяців Ви повині донести іх в [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
+&lt;p&gt;Ваше звернення щодо призначення державної соціальної допомоги  на дітей, які перебувають під опікою чи піклуванням в очикуванні недостатніх документів. Протягом трьох місяців Ви повині донести іх в [pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:3] або заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
 &lt;p&gt;Коментар спеціаліста: ${decision_comment}&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2],&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -324,7 +326,7 @@ var per2 = no[i]
 var per3 = region[i]
 break}}
 execution.setVariable('group', per1)
-execution.setVariable('rName', per2)
+execution.setVariable('sKrokodil', per2)
 execution.setVariable('area', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -345,9 +347,9 @@ execution.setVariable('area', per3)</script>
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br&gt;
 &lt;p&gt;Ваше звернення  щодо призначення допомоги на дітей, які перебувають під опікою чи піклуванням зареєстровано у системі.&lt;br&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]&lt;br&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:5]&lt;br&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],&lt;br&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[sKrokodil]}:2],&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
