@@ -1470,13 +1470,47 @@ angular.module('about').controller('aboutController', function ($scope, $http) {
         
         {
           "sID_Group":"poltava.lubni.rada",
-          "sFIO":"",
-          "sURL":"",
-          "sPhoto":"",
+          "sFIO":"Богаєвський Юрій",
+          "sURL":"https://www.facebook.com/profile.php?id=100006495822797",
           "sCity":"Лубни",
           "sInfo":"Координатор міста"
         },
         
+        {
+          "sID_Group":"poltava.lubni.rada",
+          "sFIO":"Ляшенко Валентина",
+          "sURL":"https://www.facebook.com/profile.php?id=100007737824290&fref=ts",
+          "sCity":"Лубни"
+        },
+        
+        {
+          "sID_Group":"poltava.lubni.rada",
+          "sFIO":"Грищенко Андрій",
+          "sURL":"https://www.facebook.com/profile.php?id=100001990108532&fref=ts",
+          "sCity":"Лубни"
+        },
+        
+        {
+          "sID_Group":"poltava.lubni.rada",
+          "sFIO":"Гузь Анатолій",
+          "sURL":"https://www.facebook.com/anatoly.guz",
+          "sCity":"Лубни"
+        },
+        
+         {
+          "sID_Group":"poltava.lubni.rada",
+          "sFIO":"Ладика Руслан",
+          "sURL":"https://www.facebook.com/profile.php?id=100001276076777",
+          "sCity":"Лубни"
+        },
+        
+        {
+          "sID_Group":"poltava.lubni.rada",
+          "sFIO":"Павловський Ілля",
+          "sURL":"https://www.facebook.com/profile.php?id=100003296871105&fref=ts",
+          "sCity":"Лубни"
+        },
+                
         {
           "sID_Group":"poltava.kobelyaki.rada",
           "sFIO":"Безкібальний Олег",

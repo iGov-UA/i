@@ -75,10 +75,12 @@ public class Process extends AbstractEntity{
     
     @JsonProperty(value = "aAccessGroup")
     @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcess")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<AccessGroup> aAccessGroup = new ArrayList();
     
     @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcess")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<AccessUser> aAccessUser = new ArrayList();
 
     public String getsID_() {
