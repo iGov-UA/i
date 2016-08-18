@@ -325,52 +325,62 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
     $scope.fixForm(form, aFormProperties);
-    var queueDataDMS = '';
+    var aReservedSlotsDMS = [];
     if(aFormProperties && aFormProperties!==null){
       angular.forEach(aFormProperties, function(oProperty){
         if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
           $scope.data.formData.params[oProperty.id].value=null;
         }
-        if(oProperty.type === 'queueData' && oProperty.id.indexOf('_DMS') > 0 && queueDataDMS === ''){
-          queueDataDMS = oProperty.id;
+        if(oProperty.type === 'queueData'){
+          angular.forEach(aFormProperties, function (checkField) {
+            if(checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'DMS'){
+              aReservedSlotsDMS.push(oProperty.id);
+            }
+          });
         }
       });
     }
 
-    if(queueDataDMS === '') {
-      submitActivitiForm(aFormProperties);
+    if(aReservedSlotsDMS.length > 0) {
+      setSlotsDMS(aReservedSlotsDMS, 0, aFormProperties);
     } else {
-      var reserve = JSON.parse($scope.data.formData.params[queueDataDMS].value);
-      $http.post('/api/service/flow/DMS/setSlot', {
-        nID_Server: oServiceData.nID_Server,
-        nID_SlotHold: parseInt(reserve.reserve_id)
-      }).
-      success(function(data, status, headers, config) {
-        console.log(data);
-
-        $scope.data.formData.params[queueDataDMS].value = JSON.stringify({
-          nID_FlowSlotTicket: parseInt(data.ticket_code),
-          sDate: data.date_time + '.00'
-          //date_time: data.date_time,
-          //service_id: data.service_id,
-          //ticket_number: data.ticket_number,
-          //ticket_code: data.ticket_code
-        });
-
-        //$scope.data.formData.params[queueDataDMS].value = data.service_id + '-' + data.ticket_number + '-' + data.ticket_code;
-
-        submitActivitiForm(aFormProperties);
-      }).
-      error(function(data, status, headers, config) {
-        console.error(data);
-        ErrorsFactory.push({
-          type: 'danger',
-          text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
-        })
-      });
+      submitActivitiForm(aFormProperties);
     }
-
   };
+
+  function setSlotsDMS(aQueueIDs, iteration, aFormProperties) {
+    var reserve = JSON.parse($scope.data.formData.params[aQueueIDs[iteration]].value);
+    
+    $http.post('/api/service/flow/DMS/setSlot', {
+      nID_Server: oServiceData.nID_Server,
+      nID_SlotHold: parseInt(reserve.reserve_id)
+    }).
+    success(function(data, status, headers, config) {
+      console.log(data);
+
+      $scope.data.formData.params[aQueueIDs[iteration]].value = JSON.stringify({
+        sID_Type: "DMS",
+        sDate: data.date_time + '.00',
+        nID_ServiceCustomPrivate: parseInt(data.service_id),
+        ticket_number: data.ticket_number,
+        ticket_code: data.ticket_code
+      });
+
+      if(iteration < aQueueIDs.length - 1){
+        setSlotsDMS(aQueueIDs, iteration + 1, aFormProperties);
+      } else {
+        submitActivitiForm(aFormProperties);
+      }
+    }).
+    error(function(data, status, headers, config) {
+      console.error(data);
+      debugger;
+      ErrorsFactory.push({
+        type: 'danger',
+        text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
+      })
+    });
+  }
 
   function submitActivitiForm(aFormProperties) {
     ActivitiService
