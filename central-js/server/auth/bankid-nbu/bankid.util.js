@@ -81,7 +81,7 @@ module.exports.getAuthorizationURL = function () {
 };
 
 module.exports.getAuth = function (accessToken) {
-  return 'Bearer ' + accessToken + ', Id ' + config.bankidnbu.client_id;
+  return 'Bearer ' + accessToken;
 };
 
 module.exports.decryptField = function (value, privateKey) {
