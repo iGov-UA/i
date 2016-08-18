@@ -504,20 +504,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
-                        //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        if (!generalConfig.isSelfTest()) {
+                        //if (!generalConfig.isSelfTest()) {
+                        if (false) { //временное отключение генерации процессов по фидбекам
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                            LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})",
+                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
                                     sProcessName,
                                     snID_Proccess_Feedback);
                         } else {
-                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+                            LOG.info("SKIPED(test)!!! Create Feedback process! (sProcessName={})", sProcessName);
                         }
                     }
                 } catch (Exception e) {
-                    LOG.error("Can't create escalation process: {}", e.getMessage());
+                    LOG.error("Can't create Feedback process: {}", e.getMessage());
                     LOG.trace("FAIL:", e);
                 }
                 try {
