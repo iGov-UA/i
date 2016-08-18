@@ -350,7 +350,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   function setSlotsDMS(aQueueIDs, iteration, aFormProperties) {
     var reserve = JSON.parse($scope.data.formData.params[aQueueIDs[iteration]].value);
-    
+
     $http.post('/api/service/flow/DMS/setSlot', {
       nID_Server: oServiceData.nID_Server,
       nID_SlotHold: parseInt(reserve.reserve_id)
@@ -374,7 +374,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }).
     error(function(data, status, headers, config) {
       console.error(data);
-      debugger;
       ErrorsFactory.push({
         type: 'danger',
         text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
