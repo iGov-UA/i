@@ -14,6 +14,7 @@ public class QueueDataFormType extends AbstractFormType {
     public static final String TYPE_NAME = "queueData";
     public static final String sDate = "sDate";
     public static final String nID_FlowSlotTicket = "nID_FlowSlotTicket";
+    public static final String Flow_sID_Type = "sID_Type";
     //public static final String nSlots = "nSlots";
     private static final long serialVersionUID = 1L;
 
@@ -21,8 +22,11 @@ public class QueueDataFormType extends AbstractFormType {
         return new Gson().fromJson(queueData, HashMap.class);
     }
 
-    public static long get_nID_FlowSlotTicket(Map<String, Object> queueDataMap) {
-        return ((Number) queueDataMap.get(nID_FlowSlotTicket)).longValue();
+    public static Long get_nID_FlowSlotTicket(Map<String, Object> queueDataMap) {
+        return !queueDataMap.containsKey(nID_FlowSlotTicket) ? null : ((Number) queueDataMap.get(nID_FlowSlotTicket)).longValue();
+    }
+    public static String get_sID_Type(Map<String, Object> queueDataMap) {
+        return !queueDataMap.containsKey(Flow_sID_Type) ? "iGov" : ((String) queueDataMap.get(Flow_sID_Type));
     }
 
     /*public static int get_nSlots(Map<String, Object> queueDataMap) {
