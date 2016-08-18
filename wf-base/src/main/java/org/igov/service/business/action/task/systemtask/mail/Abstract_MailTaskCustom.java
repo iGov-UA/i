@@ -346,7 +346,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 											.getValue());
 								}
 							} else {
-								replacement = formProperty.getValue();
+								//replacement = formProperty.getValue();
 							}
 
 						}
