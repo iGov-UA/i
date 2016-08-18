@@ -31,7 +31,7 @@
         SocialPay.prototype.CurPay = function () {
             var nDate = new Date();
             for (var i = 0; i < this.Pays.length; i++) {
-                if (this.Pays[i].endDate.getTime() == null) {
+                if (this.Pays[i].endDate == null) {
                     return this.Pays[i].pay;
                 } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() > nDate.getTime()) {
                     return this.Pays[i].pay;
@@ -48,7 +48,7 @@
             this.inf = (inf === undefined) ? "" : inf;
         }
         Allowance.prototype.Money = function () {
-            return this.sum * (this.percent / 100);
+            return +(this.sum * (this.percent / 100)).toFixed(2);
         }
         Allowance.prototype.Info = function () {
             return (this.percent).toString() + this.inf;
@@ -364,25 +364,6 @@
                     <br />
 
 
-
-<!-- 
-                    <div class="row accordion-group">
-                        <div class="accordion-heading">
-                            <div class="col-md-5">
-                            </div>
-                            <div class="col-md-3">
-                                <br>
-                                <button class="btn btn-info" onclick="cl()">
-                                    Провести розрахунок
-                                </button>
-                            </div>
-                            <div class="col-md-4">
-                            </div>
-                        </div>
-                    </div>
- -->
-
-
                     <hr />
                     <div id="resFin" style="display:none;">
                         <div class="row">
@@ -448,20 +429,20 @@
 
                         <div class="row" id="rInfoCareAboutChild">
                             <div class="alert alert-info col-md-8"><strong>Зверніть увагу!</strong>
-                                Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику), і вони фактично здійснюють догляд за дитиною-інвалідом:
-                                <ol>
+                                Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику), 
+                                і вони фактично здійснюють догляд за дитиною-інвалідом, при цьому:
+                                <ul>
                                     <li>не працюють;</li>
                                     <li>не навчаються (крім заочної форми навчання);</li>
                                     <li>не проходять службу;</li>
                                     <li>не займають виборну посаду;</li>
-                                    <li>
-                                        перебувають у відпустці:
-                                        <ol>
+                                    <li>перебувають у відпустці:
+                                        <ul>
                                             <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
                                             <li>без збереження заробітної плати;</li>
-                                        </ol>
+                                        </ul>
                                     </li>
-                                </ol>
+                                </ul>
                                 Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
                             </div>
                             <br />
@@ -469,7 +450,8 @@
 
                         <div class="row" id="rInfo">
                             <div class="alert alert-info col-md-8">
-                                Даний калькулятор розраховує соціальну допомогу на основі закону України  
+                                Даний калькулятор розраховує соціальну допомогу  згідно <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам'>Закону України</a>. <br />
+                                Якщо ви маєте сумніви, щодо правильності розрахунку, ви можете замовити <em>"Довідку про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"</em> через портал iGov.org.ua за <a href='https://igov.org.ua/service/1437/general'>посиланням</a>, чи звернутись до відділу управління праці та соціального захисту населення за місцем проживання.                                    
                             </div>
                             <br />
                         </div>
