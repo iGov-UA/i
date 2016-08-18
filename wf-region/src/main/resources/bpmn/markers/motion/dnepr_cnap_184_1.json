@@ -4,7 +4,7 @@
 		"ShowFieldsOnCondition_0":
 		{
 			"sNote":				["For Hide Invisible"],
-			"aField_ID":			["asPurpose", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184", "nFile_Rekvizity", "nFile_Dogovor"],
+			"aField_ID":			["asPurpose", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184", "nFile_Rekvizity", "nFile_Dogovor","date_today"],
 			"asID_Field":			{"sClient":"asSubect"},
 			"sCondition":			"[sClient] == 'Not_Correct'"
 		},
@@ -35,11 +35,11 @@
 			"asID_Field":	{"sClient":"asSubect"},
 			"sCondition":	"[sClient] == 'fiz'"
 		},
-		"RequiredFieldsOnCondition_21": 
+		"RequiredFieldsOnCondition_22": 
 		{
-			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
-			"asID_Field":	{"sClient":"asSubect"},
-			"sCondition":	"[sClient] == 'fiz'"
+			"aField_ID":	["nFile_Roztashuvannya_M1_500"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
+			"sCondition":	"[sClient] == 'mvk_lug_NovopskovskT' || ([sReason] == 'first_permission' && [sClient]!= 'nik_pervomayskT' && [sClient]!= 'mvk_chernT' && [sClient]!= 'novomoskT' && [sClient]!= 'tern_Kremenets')"
 		},
 		"ShowFieldsOnCondition_3":
 		{
