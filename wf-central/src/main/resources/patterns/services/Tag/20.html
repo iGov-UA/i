@@ -1,5 +1,27 @@
+    <style>
+        .attention-block {
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+            .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+            .attention-block p:last-child {
+                margin-bottom: 0;
+            }
 
-    <!-- Описание сущностей -->
+        .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+            .attention-block-info h4 {
+                color: #5bc0de;
+            }
+    </style>
+
+<!-- Описание сущностей -->
     <script>
         //класс Платеж
         function PayDate(startDatePr, payPr, endDatePr) {
@@ -40,6 +62,27 @@
             return 0;
             console.log("проблема со структурой входних данных");
         }
+        //метод отображающий текущий период
+        SocialPay.prototype.Period = function () {
+            var nDate = new Date();
+            for (var i = 0; i < this.Pays.length; i++) {
+                if (this.Pays[i].endDate == null) {
+                    return "з " + formatDate(this.Pays[i].startDate);
+                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() > nDate.getTime()) {
+                    return "з " + formatDate(this.Pays[i].startDate) + " по " + formatDate(this.Pays[i].endDate);
+                }
+            }
+            return 0;
+            console.log("проблема со структурой входних данных");
+        }
+        //преобразование даты в строку
+        function formatDate(d) {
+            var curr_date = (d.getDate() <= 9) ? '0' + d.getDate() : d.getDate();
+            var curr_month = ((d.getMonth() + 1) <= 9) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);                
+            var curr_year = d.getFullYear();
+            return curr_date + "." + curr_month + "." + curr_year;
+        }
+        
 
         //класс надбавки
         function Allowance(sum, percent, inf) {
@@ -106,9 +149,9 @@
     <!-- События на форме-->
     <script>
         //константы
-        var PayAbilityWork = new SocialPay("01.05.2016", 1130, "01.11.2016", 1208);
-        var PayChildUnder6Yar = new SocialPay("01.05.2016", 1228, "01.11.2016", 1313);
-        var PayChildOver6Yar = new SocialPay("01.05.2016", 1531, "01.11.2016", 1637);
+        var PayAbilityWork = new SocialPay("01.05.2016", 1130, "01.12.2016", 1208);
+        var PayChildUnder6Yar = new SocialPay("01.05.2016", 1228, "01.12.2016", 1313);
+        var PayChildOver6Yar = new SocialPay("01.05.2016", 1531, "01.12.2016", 1637);
 
 
 
@@ -147,11 +190,11 @@
             var careSocPay = new Allowance();
             var sumSocPay = new Allowance(0, 100);
             var allowSocPay = new Allowance(0, 100);
-            
+
             if (categotyPay === "over18") {
                 //інваліди з дитинства
                 careSocPay.sum = PayAbilityWork.CurPay();
-                careSocPay.inf =  "% від прожиткового мінімуму для осіб, які втратили працездатність";
+                careSocPay.inf = "% від прожиткового мінімуму для осіб, які втратили працездатність";
 
                 switch (nInvalidGroup) {
                     case 0: { //Группа 1А
@@ -204,7 +247,7 @@
                     //процент надбавки
                     if (nInvalidGroup == 0) { careSocPay.percent = 100; }
                     else { careSocPay.percent = 50; }
-                    
+
                     //надбавка по догляду
                     if (childAgePay === "under6") {
                         careSocPay.sum = PayChildUnder6Yar.CurPay();
@@ -225,12 +268,13 @@
             } else {
                 document.getElementById("validRow").className = "alert alert-danger";
                 TextBlock("validRow", "Помилка! Перевірте правильність вводу");
-                VisionBlock("rPaySocHelp", false, false);
-                VisionBlock("rPayInvalidCHAES", false, false);
-                VisionBlock("rInfoSurchargeCare", false, false);
-                VisionBlock("rInfoSumSocHelp", false, false);
-                VisionBlock("rInfoAllow", false, false);
-            }            
+                VisionBlock("rPaySocHelp", false);
+                VisionBlock("rPayInvalidCHAES", false);
+                VisionBlock("rInfoSurchargeCare", false);
+                VisionBlock("rInfoSumSocHelp", false);
+                VisionBlock("rInfoAllow", false);
+                VisionBlock("rInfoPeriod", false);
+            }
 
             sumSocPay.sum = mainSocPay.Money() + chaesSocPay.Money() + careSocPay.Money() + allowSocPay.Money();
 
@@ -242,6 +286,9 @@
             }
 
             //отобрвжение инфы
+
+            TextBlock("infoPeriod", PayAbilityWork.Period());
+            
 
             TextBlock("infoSocHelp", mainSocPay.Money() + " грн");
             TextBlock("infoSocHelpDescr", mainSocPay.Info());
@@ -361,16 +408,26 @@
                             </label>
                         </div>
                     </div>
-                    <br />
-
-
+                    <br />                    
                     <hr />
+                    
+                    <!--  Інформаційний блок  -->
                     <div id="resFin" style="display:none;">
                         <div class="row">
                             <div id="validRow">
 
                             </div>
                             <br />
+                        </div>
+
+                        <div class="row" id="rInfoPeriod">
+                            <div class="col-md-5">
+                                Період:
+                                <span class="help-block" id="infoPeriodDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoPeriod">
+                            </div>
                         </div>
 
                         <div class="row" id="rInfoSocHelp">
@@ -428,30 +485,37 @@
 
 
                         <div class="row" id="rInfoCareAboutChild">
-                            <div class="alert alert-info col-md-8"><strong>Зверніть увагу!</strong>
-                                Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику), 
-                                і вони фактично здійснюють догляд за дитиною-інвалідом, при цьому:
-                                <ul>
-                                    <li>не працюють;</li>
-                                    <li>не навчаються (крім заочної форми навчання);</li>
-                                    <li>не проходять службу;</li>
-                                    <li>не займають виборну посаду;</li>
-                                    <li>перебувають у відпустці:
-                                        <ul>
-                                            <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
-                                            <li>без збереження заробітної плати;</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
+                            <div class="attention-block attention-block-info">
+                                <h4>Зверніть увагу!</h4>
+                                <p>
+                                    Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику),
+                                    і вони фактично здійснюють догляд за дитиною-інвалідом, при цьому:
+                                </p>
+                                    <ul style="margin-top: -10px;">
+                                        <li>не працюють;</li>
+                                        <li>не навчаються (крім заочної форми навчання);</li>
+                                        <li>не проходять службу;</li>
+                                        <li>не займають виборну посаду;</li>
+                                        <li>
+                                            перебувають у відпустці:
+                                            <ul>
+                                                <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
+                                                <li>без збереження заробітної плати;</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                <p>
+                                    Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
+                                </p>
                             </div>
-                            <br />
                         </div>
 
                         <div class="row" id="rInfo">
-                            <div class="alert alert-info col-md-8">
-                                Даний калькулятор розраховує соціальну допомогу  згідно <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам'>Закону України</a>. <br />
-                                Якщо ви маєте сумніви, щодо правильності розрахунку, ви можете замовити <em>"Довідку про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"</em> через портал iGov.org.ua за <a href='https://igov.org.ua/service/1437/general'>посиланням</a>, чи звернутись до відділу управління праці та соціального захисту населення за місцем проживання.                                    
+                            <div class="attention-block attention-block-info">
+                                <p>
+                                    Даний калькулятор розраховує соціальну допомогу для дітей-інвалідів та інвалідів з дитинства згідно <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам'>Закону України</a>. <br />
+                                    Якщо ви маєте сумніви, щодо правильності розрахунку, ви можете замовити <em>"Довідку про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"</em> через портал iGov.org.ua за <a href='https://igov.org.ua/service/1437/general'>посиланням</a>, чи звернутись до відділу управління праці та соціального захисту населення за місцем проживання.
+                                </p>
                             </div>
                             <br />
                         </div>
@@ -462,6 +526,8 @@
             </div>
         </div>
     </div>
+
+
 
 
 
