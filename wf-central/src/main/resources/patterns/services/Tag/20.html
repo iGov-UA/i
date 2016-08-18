@@ -1,0 +1,501 @@
+
+    <!-- Описание сущностей -->
+    <script>
+        //класс Платеж
+        function PayDate(startDatePr, payPr, endDatePr) {
+            this.startDate = startDatePr;
+            this.pay = payPr;
+            this.endDate = endDatePr;
+        }
+
+
+        //Класс социальный платеж
+        function SocialPay() {
+            this.Pays = new Array();
+            for (var i = 0; i < arguments.length; i += 2) {
+                var masStartDate = (arguments[i] != null) ? arguments[i].split(".") : null;
+                var masEndDate = (arguments[i + 2] != null) ? arguments[i + 2].split(".") : null;
+
+                var startDate = masStartDate != null ? masStartDate.length == 3 ? new Date(masStartDate[2], masStartDate[1] - 1, masStartDate[0]) : null : null;
+                var endDate = masEndDate != null ? (masEndDate.length == 3) ? new Date(masEndDate[2], masEndDate[1] - 1, masEndDate[0]) : null : null;
+
+                if (arguments[i + 1] != null && startDate != null) {
+                    this.Pays.push(new PayDate(startDate, arguments[i + 1], endDate));
+                } else {
+                    console.log("проверьте входные данные");
+                    break;
+                }
+            }
+        }
+        //метод текущие выплата
+        SocialPay.prototype.CurPay = function () {
+            var nDate = new Date();
+            for (var i = 0; i < this.Pays.length; i++) {
+                if (this.Pays[i].endDate.getTime() == null) {
+                    return this.Pays[i].pay;
+                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() > nDate.getTime()) {
+                    return this.Pays[i].pay;
+                }
+            }
+            return 0;
+            console.log("проблема со структурой входних данных");
+        }
+
+        //класс надбавки
+        function Allowance(sum, percent, inf) {
+            this.sum = (sum === undefined) ? 0 : sum;
+            this.percent = (percent === undefined) ? 0 : percent;
+            this.inf = (inf === undefined) ? "" : inf;
+        }
+        Allowance.prototype.Money = function () {
+            return this.sum * (this.percent / 100);
+        }
+        Allowance.prototype.Info = function () {
+            return (this.percent).toString() + this.inf;
+        }
+
+    </script>
+
+    <!-- Доп функционал на форме-->
+    <script>
+        //тестирование работы функционала
+        function Diagnostic() {
+            console.log("категория інвалидности - ", invalidCategory[invalidCategory.selectedIndex].value);
+
+            for (var i = 0; i < invalidGroup.length; i++) {
+                if (invalidGroup[i].checked) {
+                    console.log("Группа інвалидности - ", i);
+                    break;
+                }
+            }
+            console.log("постраждали ЧАЕС - ", invalidCHAES.checked);
+            console.log("Надбавка за догляд - ", SurchargeCare.checked);
+            console.log("Лица, утратившие трудоспособность - ", PayAbilityWork.CurPay());
+            console.log("Дети в возрасте до 6 лет - ", PayChildUnder6Yar.CurPay());
+            console.log("Дети в возрасте от 6 до 18 лет - ", PayChildOver6Yar.CurPay());
+        }
+        //вписать текст в блок
+        function TextBlock(id, text, flag) {
+            this.flag = (flag === undefined) ? false : flag;
+            if (flag) {
+                document.getElementById(id).innerHTML += text;
+            } else {
+                document.getElementById(id).innerHTML = text;
+            }
+        }
+        //отобразить/спрятать блок
+        function VisionBlock(id, flag, disp) {
+            this.flag = (flag === undefined) ? true : flag;
+            this.disp = (disp === undefined) ? true : disp;
+            if (document.getElementById(id) !== null) {
+                var obj = document.getElementById(id).style;
+                if (this.disp) {
+                    if (this.flag) { obj.display = 'block'; }
+                    else { obj.display = 'none'; }
+                } else {
+                    if (this.flag) { obj.visibility = 'visible'; }
+                    else { obj.visibility = 'hidden'; }
+                }
+            } else {
+                console.log("проверьте ID - ", id);
+            }
+        }
+    </script>
+
+
+    <!-- События на форме-->
+    <script>
+        //константы
+        var PayAbilityWork = new SocialPay("01.05.2016", 1130, "01.11.2016", 1208);
+        var PayChildUnder6Yar = new SocialPay("01.05.2016", 1228, "01.11.2016", 1313);
+        var PayChildOver6Yar = new SocialPay("01.05.2016", 1531, "01.11.2016", 1637);
+
+
+
+        //проверка на выбор категории
+        function chCategory() {
+            var flag = (invalidCategory[invalidCategory.selectedIndex].value == "under18");
+            VisionBlock("rInvalidCHAES", flag);
+            VisionBlock("rInvalidChildAge", flag);
+            VisionBlock("rInfoInvalidCHAES", flag);
+        }
+
+
+
+        //собитие на клик
+        function cl() {
+
+            var nInvalidGroup;
+            for (var i = 0; i < invalidGroup.length; i++) {
+                if (invalidGroup[i].checked) {
+                    nInvalidGroup = i;
+                    break;
+                }
+            }
+            //если не выбрана ни одна группа инвалидности
+            if (nInvalidGroup == null) {
+                return 0;
+            }
+
+            //расчет показателей
+
+            var categotyPay = invalidCategory[invalidCategory.selectedIndex].value;
+            var childAgePay = invalidChildAge[invalidChildAge.selectedIndex].value;
+
+            var mainSocPay = new Allowance(PayAbilityWork.CurPay(), 0, "% від прожиткового мінімуму для осіб, які втратили працездатність");
+            var chaesSocPay = new Allowance();
+            var careSocPay = new Allowance();
+            var sumSocPay = new Allowance(0, 100);
+            var allowSocPay = new Allowance(0, 100);
+            
+            if (categotyPay === "over18") {
+                //інваліди з дитинства
+                careSocPay.sum = PayAbilityWork.CurPay();
+                careSocPay.inf =  "% від прожиткового мінімуму для осіб, які втратили працездатність";
+
+                switch (nInvalidGroup) {
+                    case 0: { //Группа 1А
+                        mainSocPay.percent = 100;
+
+                        if (SurchargeCare.checked) {
+                            careSocPay.percent = 70;
+                            allowSocPay.sum = PayChildOver6Yar.CurPay() - mainSocPay.Money();
+                            allowSocPay.inf = "доплата до прожиткового мінімуму для дітей-інвалідів підгрупи А віком від 6 до 18 років, згідно ст.18 <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам'>Закону України</a>";
+                        } else {
+                            careSocPay.percent = 0;
+                            allowSocPay.sum = 0;
+                            allowSocPay.sum = "";
+                        }
+
+
+                        break;
+                    }
+                    case 1: { //Группа 1Б
+                        mainSocPay.percent = 100;
+                        careSocPay.percent = SurchargeCare.checked ? 50 : 0;
+                        break;
+                    }
+                    case 2: { //Группа 2
+                        mainSocPay.percent = 80;
+                        careSocPay.percent = SurchargeCare.checked ? 15 : 0;
+                        break;
+                    }
+                    case 3: { //Группа 3
+                        mainSocPay.percent = 60;
+                        careSocPay.percent = SurchargeCare.checked ? 15 : 0;
+                        break;
+                    }
+
+                    default: {
+                        mainSocPay.percent = 0;
+                        chaesSocPay.percent = 0;
+                        break;
+                    }
+                }
+            } else if (categotyPay === "under18") {
+                //діти інваліди
+
+                mainSocPay.percent = 70;
+                //постраждалим від ЧАЕС
+                chaesSocPay.sum = mainSocPay.Money();
+                chaesSocPay.percent = invalidCHAES.checked ? 50 : 0;
+
+                if (SurchargeCare.checked) {
+                    //процент надбавки
+                    if (nInvalidGroup == 0) { careSocPay.percent = 100; }
+                    else { careSocPay.percent = 50; }
+                    
+                    //надбавка по догляду
+                    if (childAgePay === "under6") {
+                        careSocPay.sum = PayChildUnder6Yar.CurPay();
+                        careSocPay.inf = "% від прожиткового мінімуму для дітей до 6 років";
+                    } else if (childAgePay === "over6") {
+                        careSocPay.sum = PayChildOver6Yar.CurPay();
+                        careSocPay.inf = "% від прожиткового мінімуму для дітей від 6 до 18 років";
+                    } else {
+                        careSocPay.inf = "";
+                        careSocPay.percent = 0;
+                        careSocPay.sum = 0;
+                    }
+                } else {
+                    careSocPay.inf = "";
+                    careSocPay.percent = 0;
+                    careSocPay.sum = 0;
+                }
+            } else {
+                document.getElementById("validRow").className = "alert alert-danger";
+                TextBlock("validRow", "Помилка! Перевірте правильність вводу");
+                VisionBlock("rPaySocHelp", false, false);
+                VisionBlock("rPayInvalidCHAES", false, false);
+                VisionBlock("rInfoSurchargeCare", false, false);
+                VisionBlock("rInfoSumSocHelp", false, false);
+                VisionBlock("rInfoAllow", false, false);
+            }            
+
+            sumSocPay.sum = mainSocPay.Money() + chaesSocPay.Money() + careSocPay.Money() + allowSocPay.Money();
+
+            //меньше прожиточного минимума
+            if (sumSocPay.sum < PayAbilityWork.CurPay()) {
+                allowSocPay.sum = PayAbilityWork.CurPay() - sumSocPay.sum;
+                sumSocPay.sum += allowSocPay.sum;
+                allowSocPay.inf = "до прожиткового мінімуму для осіб, які втратили працездатність";
+            }
+
+            //отобрвжение инфы
+
+            TextBlock("infoSocHelp", mainSocPay.Money() + " грн");
+            TextBlock("infoSocHelpDescr", mainSocPay.Info());
+
+            TextBlock("infoInvalidCHAES", chaesSocPay.Money() + " грн");
+            VisionBlock("rInfoInvalidCHAES", ((categotyPay === "under18") && (invalidCHAES.checked)));
+
+            TextBlock("infoSurchargeCare", careSocPay.Money() + " грн");
+            TextBlock("infoSurchargeCareDescr", careSocPay.Info());
+            VisionBlock("rInfoSurchargeCare", SurchargeCare.checked);
+
+            VisionBlock("rInfoAllow", allowSocPay.Money() > 0);
+            TextBlock("infoAllow", allowSocPay.Money() + " грн");
+            TextBlock("infoAllowDescr", allowSocPay.inf);
+
+            TextBlock("infoSumSocHelp", sumSocPay.sum + " грн");
+
+            //Блок о том кому положена надбавка за присмотр
+            VisionBlock("rInfoCareAboutChild", ((categotyPay === "under18") && (SurchargeCare.checked)));
+
+
+            VisionBlock("resFin", true, false);
+        }
+
+
+    </script>
+
+
+
+
+    <div>
+
+        <p>
+            В приведенному нижче калькуляторі можна дізнатись сумму соціальної допомоги.
+        </p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="highlight">
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            Категорія:
+                        </div>
+                        <div class="col-md-3">
+                            <select id="invalidCategory" name="invalidCategory" class="form-control" onchange="chCategory()">
+                                <option value="under18">дітина-інвалід</option>
+                                <option value="over18">інвалід з дитинства</option>
+                            </select>
+                            <br />
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            Група інвалідності:
+                        </div>
+                        <div class="col-md-3">
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="1A" value="1A">1 А
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="1B" value="1B">1 Б
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="2" value="2">2
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="3" value="3">3
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row" id="rInvalidChildAge">
+                        <div class="col-md-5">
+                            Вік дитини:
+                            <br />
+                        </div>
+                        <div class="col-md-3">
+                            <select id="invalidChildAge" name="invalidChildAge" class="form-control">
+                                <option value="under6">до 6 років</option>
+                                <option value="over6">від 6 до 18 років</option>
+                            </select>
+                            <br />
+                        </div>
+                    </div>
+
+
+                    <div class="row" id="rInvalidCHAES">
+                        <div class="col-md-5">
+                            Інвалідність повязана з катастрофою на ЧАЕС:
+                        </div>
+                        <div class="col-md-3">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="invalidCHAES" value="yes">
+                            </label>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            Надбавка на догляд:
+                        </div>
+                        <div class="col-md-3">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="SurchargeCare" value="yes">
+                            </label>
+                        </div>
+                    </div>
+                    <br />
+
+
+
+
+                    <div class="row accordion-group">
+                        <div class="accordion-heading">
+                            <div class="col-md-5">
+                            </div>
+                            <div class="col-md-3">
+                                <br>
+                                <button class="btn btn-info" onclick="cl()">
+                                    Провести розрахунок
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <hr />
+                    <div id="resFin" style="visibility:hidden">
+                        <div class="row">
+                            <div id="validRow">
+
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="row" id="rInfoSocHelp">
+                            <div class="col-md-5">
+                                Соціальна допомога:
+                                <span class="help-block" id="infoSocHelpDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSocHelp">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoInvalidCHAES">
+                            <div class="col-md-5">
+                                Якщо захворювання пов’язане з катастрофою на ЧАЕС:
+                                <span class="help-block" id="infoInvalidCHAESDescr">соціальна допомога збільшується, на 50%</span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoInvalidCHAES">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoSurchargeCare">
+                            <div class="col-md-5">
+                                Надбавка на догляд:
+                                <span class="help-block" id="infoSurchargeCareDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSurchargeCare">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoAllow">
+                            <div class="col-md-5">
+                                Доплата:
+                                <span class="help-block" id="infoAllowDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoAllow">
+                            </div>
+                        </div>
+
+                        <div class="row" style="border-top: solid 1px black" id="rInfoSumSocHelp">
+                            <div class="col-md-5">
+                                Всього:
+                                <span class="help-block" id="infoSumSocHelpDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSumSocHelp">
+                            </div>
+                        </div>
+
+
+                        <div class="row col-md-8" id="rInfoCareAboutChild">
+                            <div class="alert alert-info"><strong>Зверніть увагу!</strong>
+                                Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику), і вони фактично здійснюють догляд за дитиною-інвалідом:
+                                <ol>
+                                    <li>не працюють;</li>
+                                    <li>не навчаються (крім заочної форми навчання);</li>
+                                    <li>не проходять службу;</li>
+                                    <li>не займають виборну посаду;</li>
+                                    <li>
+                                        перебувають у відпустці:
+                                        <ol>
+                                            <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
+                                            <li>без збереження заробітної плати;</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                                Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="row col-md-8" id="rInfo">
+                            <div class="alert alert-info">
+                                Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильсті надонного Вам персонального номеру
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+        var invalidCategory = document.getElementById("invalidCategory");
+        var invalidGroup = document.getElementsByName("invalidGroup");
+        var invalidCHAES = document.getElementById("invalidCHAES");
+        var SurchargeCare = document.getElementById("SurchargeCare");
+
+        chCategory();
+
+
+        //var app = angular.module('App', []);
+
+
+    </script>
