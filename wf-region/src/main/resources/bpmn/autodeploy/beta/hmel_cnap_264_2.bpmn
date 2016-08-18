@@ -45,19 +45,19 @@
           <activiti:value id="student" name="у зв'язку з навчанням дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="new_child" name="у зв'язку з народженням дитини"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="позитивне рішення - запросити громадянина для подовження посвідчень"></activiti:value>
-          <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="reject" name="відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину, у разі потреби - додаткові відомості щодо візиту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за дублікатом, у разі потреби - додаткові відомості щодо візиту" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'позитивне рішення - запросити громадянина для подовження посвідчень'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_264_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_264_2_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${sDocStudent},${sDocFamily},${sDocPassportChildren}</activiti:expression>
