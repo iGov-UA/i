@@ -37,7 +37,7 @@ public class AccessGroup extends AbstractEntity {
     
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
-    @JoinTable(name = "AccessGroup_Process",
+    @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_Process"))
     private List<org.igov.analytic.model.process.Process> aProcess = new ArrayList<>();
