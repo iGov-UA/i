@@ -41,7 +41,8 @@
 
                 var startDate = masStartDate != null ? masStartDate.length == 3 ? new Date(masStartDate[2], masStartDate[1] - 1, masStartDate[0]) : null : null;
                 var endDate = masEndDate != null ? (masEndDate.length == 3) ? new Date(masEndDate[2], masEndDate[1] - 1, masEndDate[0]) : null : null;
-
+                if (endDate) { endDate.setDate(endDate.getDate() - 1); }
+                
                 if (arguments[i + 1] != null && startDate != null) {
                     this.Pays.push(new PayDate(startDate, arguments[i + 1], endDate));
                 } else {
@@ -56,7 +57,7 @@
             for (var i = 0; i < this.Pays.length; i++) {
                 if (this.Pays[i].endDate == null) {
                     return this.Pays[i].pay;
-                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() > nDate.getTime()) {
+                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
                     return this.Pays[i].pay;
                 }
             }
@@ -69,7 +70,7 @@
             for (var i = 0; i < this.Pays.length; i++) {
                 if (this.Pays[i].endDate == null) {
                     return "з " + formatDate(this.Pays[i].startDate);
-                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() > nDate.getTime()) {
+                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
                     return "з " + formatDate(this.Pays[i].startDate) + " по " + formatDate(this.Pays[i].endDate);
                 }
             }
