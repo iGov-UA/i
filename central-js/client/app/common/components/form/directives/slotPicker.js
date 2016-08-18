@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, dialogs) {
+angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory) {
 
   return {
     restrict: 'EA',
@@ -28,14 +28,32 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         scope.ngModel = null;
       };
 
+      var sID_Type_ID = 'sID_Type_' + scope.property.id;
+      var nID_ServiceCustomPrivate_ID = 'nID_ServiceCustomPrivate_' + scope.property.id;
+      var isQueueDataType = {
+        iGov: !scope.formData.params[sID_Type_ID] || (scope.formData.params[sID_Type_ID] && (scope.formData.params[sID_Type_ID].value === 'iGov' || scope.formData.params[sID_Type_ID].value === '')),
+        DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS'
+      };
+
+      function isInvalidServiceCustomPrivate() {
+        if (!scope.formData.params[nID_ServiceCustomPrivate_ID] ||
+          scope.formData.params[nID_ServiceCustomPrivate_ID].value === null ||
+          scope.formData.params[nID_ServiceCustomPrivate_ID].value === ''){
+          console.warn('Field ' + nID_ServiceCustomPrivate_ID + ' is EMPTY');
+          return true;
+        }
+        return false;
+      }
+
       var nSlotsKey = 'nSlots_' + scope.property.id;
       var nSlotsParam = scope.formData.params[nSlotsKey];
       scope.$watch('selected.slot', function(newValue) {
-        if (scope.property.id.indexOf('_DMS') > 0) {
+        if (isQueueDataType.DMS) {
           if(newValue){
+            if (isInvalidServiceCustomPrivate()) return;
             var data = {
               nID_Server: scope.serviceData.nID_Server,
-              nID_Service_Private: scope.formData.params.nID_Service_Private.value,
+              nID_Service_Private: scope.formData.params[nID_ServiceCustomPrivate_ID].value,
               sDateTime: scope.selected.date.sDate + " " + newValue.sTime,
               sSubjectFamily: scope.formData.params.bankIdlastName.value,
               sSubjectName: scope.formData.params.bankIdfirstName.value,
@@ -56,7 +74,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               console.error('Error reserved slot ' + angular.toJson(data));
             });
           }
-        } else {
+        } else if (isQueueDataType.iGov) {
           if (newValue) {
             var setFlowUrl = '/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
             if (nSlotsParam) {
@@ -64,9 +82,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
               if (nSlots > 1)
                 setFlowUrl += '&nSlots=' + nSlots;
             }
-            //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
             $http.post(setFlowUrl).then(function (response) {
               scope.ngModel = JSON.stringify({
+                sID_Type: "iGov",
                 nID_FlowSlotTicket: response.data.nID_Ticket,
                 sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
               });
@@ -77,7 +95,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
             });
           }
         }
-
       });
 
       function getPasportLastFourNumbers(str) {
@@ -86,7 +103,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       }
 
       scope.unreadyRequestDMS = function () {
-        if (this.property.id.indexOf('_DMS') > 0){
+        if (isQueueDataType.DMS){
           return this.$parent.$parent.$parent.$parent.$parent.form.phone.$invalid ||
             (!scope.formData.params.bankIdlastName || scope.formData.params.bankIdlastName.value === '') ||
             (!scope.formData.params.bankIdfirstName || scope.formData.params.bankIdfirstName.value === '') ||
@@ -108,15 +125,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         var data = {};
         var sURL = '';
 
-        if (this.property.id.indexOf('_DMS') > 0){
+        if (isQueueDataType.DMS){
+
+          if (isInvalidServiceCustomPrivate()) return;
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
-            nID_Service_Private: this.formData.params.nID_Service_Private.value
+            nID_Service_Private: this.formData.params[nID_ServiceCustomPrivate_ID].value
           };
           sURL = '/api/service/flow/DMS/getSlots';
 
-        } else {
+        } else if (isQueueDataType.iGov) {
 
           data = {
             nID_Server: scope.serviceData.nID_Server,
@@ -134,12 +153,20 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
           }
           sURL = '/api/service/flow/' + scope.serviceData.nID;
 
+        } else {
+          scope.slotsLoading = false;
+          ErrorsFactory.push({
+            type: 'danger',
+            text: 'В полі ' + sID_Type_ID + ' прописаний непыдтримуэмий тип для поля queueData: ' + scope.formData.params[sID_Type_ID].value
+          });
+          console.error('slotsData for field id [' + this.property.id + '] not loading');
+          return;
         }
 
         return $http.get(sURL, {params:data}).then(function(response) {
-          if (scope.property.id.indexOf('_DMS') > 0){
+          if (isQueueDataType.DMS){
             scope.slotsData = convertSlotsDataDMS(response.data);
-          } else {
+          } else if (isQueueDataType.iGov) {
             scope.slotsData = response.data;
           }
           scope.slotsLoading = false;

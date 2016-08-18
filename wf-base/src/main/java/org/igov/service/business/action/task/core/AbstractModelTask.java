@@ -417,61 +417,75 @@ public abstract class AbstractModelTask {
                 LOG.info("sValue is present, so queue is filled");
                 long nID_FlowSlotTicket = 0;
                 Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
-                nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-                LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+                
                 String sDate = (String) m.get(QueueDataFormType.sDate);
                 LOG.info("(sDate={})", sDate);
-                //int nSlots = QueueDataFormType.get_nSlots(m);
-                String snSlots = getVariableValue(oExecution, "nSlots_"+sID);
-                int nSlots = snSlots!=null?Integer.valueOf(snSlots):1;
-
-                try {
-
-                    long nID_Task_Activiti = 1; //TODO set real ID!!!
-
+                String sID_Type = QueueDataFormType.get_sID_Type(m);
+                LOG.info("(sID_Type={})", sID_Type);
+                
+                if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
+                    Long nID_ServiceCustomPrivate = (Long) m.get("nID_ServiceCustomPrivate");
+                    LOG.info("(nID_ServiceCustomPrivate={})", nID_ServiceCustomPrivate);
+                    String sTicket_Number = (String) m.get("ticket_number");
+                    LOG.info("(sTicket_Number={})", sTicket_Number);
+                    String sTicket_Code = (String) m.get("ticket_code");
+                    LOG.info("(sTicket_Code={})", sTicket_Code);
+                //}else if("iGov".equals(sID_Type)){
+                }else{
+                    nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+                    LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+                    //int nSlots = QueueDataFormType.get_nSlots(m);
+                    String snSlots = getVariableValue(oExecution, "nSlots_"+sID);
+                    int nSlots = snSlots!=null?Integer.valueOf(snSlots):1;
                     try {
-                        nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
-                        LOG.info("nID_Task_Activiti:Ok!");
-                    } catch (Exception oException) {
-                        LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
-                        LOG.debug("FAIL:", oException);
-                    }
-                    LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
-                    FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
-                    if (oFlowSlotTicket == null) {
-                        String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
-                        LOG.error(sError);
-                        throw new Exception(sError);
-                    } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
-                        if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
-                            String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
-                                    + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                            LOG.warn(sWarn);
-                        } else {
-                            String sError
-                                    = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
-                                    + oFlowSlotTicket.getnID_Task_Activiti();
+                        long nID_Task_Activiti = 1; //TODO set real ID!!!
+
+                        try {
+                            nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
+                            LOG.info("nID_Task_Activiti:Ok!");
+                        } catch (Exception oException) {
+                            LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
+                            LOG.debug("FAIL:", oException);
+                        }
+                        LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+
+                        FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
+                        if (oFlowSlotTicket == null) {
+                            String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
                             LOG.error(sError);
                             throw new Exception(sError);
-                        }
-                    } else {
-                        LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
-                                oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
-                        long nID_Subject = oFlowSlotTicket.getnID_Subject();
-                        LOG.info("(nID_Subject={})", nID_Subject);
+                        } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
+                            if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
+                                String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
+                                        + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+                                LOG.warn(sWarn);
+                            } else {
+                                String sError
+                                        = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
+                                        + oFlowSlotTicket.getnID_Task_Activiti();
+                                LOG.error(sError);
+                                throw new Exception(sError);
+                            }
+                        } else {
+                            LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
+                                    oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
+                            long nID_Subject = oFlowSlotTicket.getnID_Subject();
+                            LOG.info("(nID_Subject={})", nID_Subject);
 
-                        oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-                        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                        LOG.info("(JSON={})", JsonRestUtils
-                                .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
-                        oExecution.setVariable("date_of_visit", sDate);
-                        LOG.info("(date_of_visit={})", sDate);
-                    }
-                } catch (Exception oException) {
-                    LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
-                    LOG.debug("FAIL:", oException);
-                }                
+                            oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
+                            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+                            LOG.info("(JSON={})", JsonRestUtils
+                                    .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
+                            oExecution.setVariable("date_of_visit", sDate);
+                            LOG.info("(date_of_visit={})", sDate);
+                        }
+                    } catch (Exception oException) {
+                        LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                        LOG.debug("FAIL:", oException);
+                    }                    
+                }
+
             }
         }
 

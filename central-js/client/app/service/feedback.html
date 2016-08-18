@@ -2,12 +2,12 @@
 
   <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
-    <div class="row container" >
+    <div class="row container" ng-if="sID_Token">
       <div class="col-md-6 col-sm-6 feedback-padding0">
 
         <div class="feedback-assessment">
           <div class="feedback-assessment-header feedback-font14">Ваша оцінка</div>
-          <div star-rating class="feedback-assessment-body fa-custom-edit" ng-model="feedback.rating" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
+          <div star-rating showonly="feedback.exist" class="feedback-assessment-body fa-custom-edit" ng-model="feedback.rating" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
         </div>
 
         <div>
@@ -24,7 +24,7 @@
           <div class="">
             <input type="button"
                    class="feedback-btn btn pull-right"
-                   ng-disabled="feedback.exist"
+                   ng-if="!feedback.exist"
                    value="Надіслати"
                    ng-click="feedback.postFeedback()"/>
           </div>
