@@ -1,3 +1,26 @@
+module.exports.createToken = function (accessToken) {
+  return {
+    access_token: accessToken,
+    token_type: "bearer",
+    refresh_token: "5fd85cd8-2e71-4921-b102-eecfb0024e1a",
+    expires_in: 179
+  }
+};
+
+module.exports.codes = {
+  forErrorResponse406 : 'code406',
+  forErrorResponse501 : 'code501',
+  forCustomerDataResponse : 'codeCustomerData',
+  forCustomerDataCryptoResponse : 'codeCustomerDataCrypto'
+};
+
+module.exports.accessTokens = {
+  forErrorResponse406 : 'error token 406',
+  forErrorResponse501 : 'error token 501',
+  forCustomerDataResponse : 'customer data token',
+  forCustomerDataCryptoResponse : 'customer data crypto token'
+};
+
 module.exports.customerData = {
   "state": "ok",
   "customer": {
@@ -42,4 +65,6 @@ module.exports.customerData = {
   }
 };
 
-module.exports.customerDataCrypto = {};
+module.exports.createEncryptedCustomer = function (customerData) {
+
+};

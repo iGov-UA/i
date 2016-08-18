@@ -1,8 +1,9 @@
 'use strict';
 
 var should = require('should')
-, appTest = require('../../app.spec')
-, testRequest = appTest.testRequest;
+  , appTest = require('../../app.spec')
+  , bankidNBUData = require('./bankid.data.spec')
+  , testRequest = appTest.testRequest;
 
 require('./bankid.nock.js');
 
@@ -12,9 +13,9 @@ describe('bankidNBUController initialization test', function () {
   });
 });
 
-describe('authorize and check session with bankid nbu', function () {
-  var agent;
-  before(function (done) {
+describe('authorize with bankid nbu', function () {
+  it('should go without error and with non-encrypted customer data', function (done) {
+    var agent;
     appTest.loginWithBankIDNBU(function (error, loginAgent) {
       if (error) {
         done(error)
@@ -23,19 +24,19 @@ describe('authorize and check session with bankid nbu', function () {
       }
     }, function (loginAgent) {
       agent = loginAgent;
-    });
+    }, bankidNBUData.codes.forCustomerDataResponse);
   });
 
-  it('should respond with 200 and remove cookie session', function (done) {
-    var logout = testRequest.post('/auth/logout');
-    agent.attachCookies(logout);
-    logout.expect(200)
-      .then(function (res) {
-        console.log('result!!!');
-        //TODO check why cookies are not removed
+  it('should go without error and with encrypted customer data', function (done) {
+    var agent;
+    appTest.loginWithBankIDNBU(function (error, loginAgent) {
+      if (error) {
+        done(error)
+      } else {
         done();
-      }).catch(function (err) {
-      done(err)
-    });
+      }
+    }, function (loginAgent) {
+      agent = loginAgent;
+    }, bankidNBUData.codes.forCustomerDataCryptoResponse);
   });
 });
