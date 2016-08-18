@@ -331,7 +331,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
           $scope.data.formData.params[oProperty.id].value=null;
         }
-        if(oProperty.type === 'queueData'){
+        if(oProperty.type === 'queueData' && $scope.data.formData.params[oProperty.id].value){
           angular.forEach(aFormProperties, function (checkField) {
             if(checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'DMS'){
               aReservedSlotsDMS.push(oProperty.id);
