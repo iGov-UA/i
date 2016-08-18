@@ -10,16 +10,19 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sPlaceLive" name="Місце реєстрації;(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування);(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sYear" name="Вкажіть потрібний рік (роки) витягу з господарської книги" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpouse" name="Для чого необхідний витяг?" type="string" required="true"></activiti:formProperty>
+       
         <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканована копія ІПН" type="file" required="true"></activiti:formProperty>
+      
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -35,7 +38,7 @@
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sYear" name="Вкажіть потрібний рік (роки) витягу з господарської книги; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPurpouse" name="Для чого необхідний витяг?; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
+            <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="запросити людину для отримання витягу"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
@@ -52,7 +55,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>darja.grek@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Видача витягів з господарської книги]]></activiti:string>
