@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-89sd" name="Зняття з реєстрації у зв'язку зі смертю" isExecutable="true">
+  <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Якщо Ви будете реєструвати нове місце проживання у межах міста,у якому вже працює послуга &lt;a href=&quot;https://igov.org.ua/service/184/general&quot;&gt;реєстрації місця проживання&lt;/a&gt;, рекомендуємо Вам замовити реєстрацію із одночасним зняттям. Це зменшить кількість візитів і збереже Ваш час."></activiti:formProperty>
@@ -81,7 +81,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -98,7 +98,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -186,14 +186,14 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.&lt;br&gt;
-										При необхідності зняття з реєстрації місця проживання дитини молодшe 14 років Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+										При необхідності зняття з реєстрації особи у зв'язку зі смертю Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
@@ -233,7 +233,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -259,18 +259,12 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;оригінал та копію паспорту одного з батьків (того, хто подавав заяву);&lt;/li&gt;
+										&lt;li&gt;оригінал та копію паспорту того, хто подавав заяву;&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;	
+										&lt;li&gt;оригінал та копію свідоцтва про смерть;&lt;/li&gt;	
+										&lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК або ОСМД;&lt;/li&gt;	
 										&lt;li&gt;заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;									
 									&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;при проживанні батьків за різними адресами для зняття з реєстрації місця проживання дитини, яка не досягла 14 років потрібна присутність обох батьків з паспортами, або нотаріально завірена згода на зняття з реєстрації місця проживання дитини.&lt;/li&gt;
-										&lt;li&gt;якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;&lt;/li&gt;			
-										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br&gt;
@@ -309,7 +303,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -335,16 +329,11 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;оригінал та копію паспорту одного з батьків (того, хто подавав заяву);&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;										
-									&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 										&lt;ul&gt;
-										&lt;li&gt;при проживанні батьків за різними адресами для зняття з реєстрації місця проживання дитини, яка не досягла 14 років потрібна присутність обох батьків з паспортами, або нотаріально завірена згода на зняття з реєстрації місця проживання дитини.&lt;/li&gt;
-										&lt;li&gt;якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;&lt;/li&gt;			
+										&lt;li&gt;оригінал та копію паспорту того, хто подавав заяву;&lt;/li&gt;
+										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію свідоцтва про смерть;&lt;/li&gt;	
+										&lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК або ОСМД;&lt;/li&gt;	
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -436,13 +425,13 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації у зв'язку зі смертю]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Зняття з реєстрації у зв'язку зі смертю".&lt;br&gt;
+                              		Ви отримали послугу "Зняття з реєстрації особи у зв'язку зі смертю".&lt;br&gt;
                               		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
