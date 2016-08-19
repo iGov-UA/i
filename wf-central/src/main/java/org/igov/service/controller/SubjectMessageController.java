@@ -159,8 +159,11 @@ public class SubjectMessageController {
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         
-        Boolean bExist = false;
-        String sURL_Redirect = initOrderMessageFeedback(bExist, sID_Order, nRate);
+        //Boolean bExist = false;
+        Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, nRate);
+        String sURL_Redirect = (String)m.get("sURL_Redirect");
+        //bExist = (Boolean) m.get("bExist");
+        //String sURL_Redirect = initOrderMessageFeedback(sID_Order, nRate);
         oResponse.sendRedirect(sURL_Redirect);
         String sReturn = "Ok!";
         
@@ -197,7 +200,8 @@ public class SubjectMessageController {
         return sReturn;//"Ok!";
     }
 
-    private String initOrderMessageFeedback(Boolean bExist, String sID_Order, Integer nID_Rate) throws CommonServiceException{
+    private Map<String,Object> mInitOrderMessageFeedback(String sID_Order, Integer nID_Rate) throws CommonServiceException{
+        Map<String,Object> m = new HashMap();
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! (sID_Order={})", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
@@ -225,7 +229,8 @@ public class SubjectMessageController {
 
             String sToken = null;
             Integer nRateWas = oHistoryEvent_Service.getnRate();
-            bExist = nRateWas != null && nRateWas > 0;
+            Boolean bExist = nRateWas != null && nRateWas > 0;
+            m.put("bExist", bExist);
             if (bExist) {
                 //throw new CommonServiceException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
 //                sReturn = "Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - already has nRateWas=" + nRateWas;
@@ -269,6 +274,7 @@ public class SubjectMessageController {
                 }
             }
             sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+            m.put("sURL_Redirect", sURL_Redirect);
             LOG.info("Redirecting to URL:{}", sURL_Redirect);
         } catch (CommonServiceException oActivitiRestException) {
             LOG.error("FAIL: {}", oActivitiRestException.getMessage());
@@ -278,7 +284,7 @@ public class SubjectMessageController {
             LOG.trace("FAIL:", e);
             throw new CommonServiceException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nID_Rate + "): Unknown exception: " + e.getMessage());
         }
-        return sURL_Redirect;
+        return m;//sURL_Redirect
     }
     
     @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "")
@@ -532,11 +538,13 @@ public class SubjectMessageController {
         /*if(nID_Rate==null){
             nID_Rate=sID_Rate;
         }*/
-        String sURL_Redirect = null;
+        //String sURL_Redirect = null;
         JSONObject oJSONObject = new JSONObject();
         Boolean bExist = false;
         if(sID_Order!=null){
-            sURL_Redirect = initOrderMessageFeedback(bExist, sID_Order, Integer.valueOf(""+nID_Rate));
+            Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
+            //sURL_Redirect = m.get("sURL_Redirect");
+            bExist = (Boolean) m.get("bExist");
         }//sID_Order!=null && 
         if(bExist){//sURL_Redirect==null
             /*    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -582,7 +590,7 @@ public class SubjectMessageController {
                 }
 
             } catch (Exception e) {
-                LOG.error("/setFeedbackExternal, nID={}, message={}", nID, e.getMessage());
+                LOG.error("(nID={}, message={})", nID, e.getMessage());
                 throw new CommonServiceException(e.getMessage(), e);
             }
         }
