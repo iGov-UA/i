@@ -2082,14 +2082,14 @@ public class ActionTaskService {
         LOG.info("(sID_Type={})", sID_Type);
         if("DMS".equals(sID_Type)){
         //}else if("iGov".equals(sID_Type)){
-            Long nID_ServiceCustomPrivate = (Long) m.get("nID_ServiceCustomPrivate");
-            LOG.info("(nID_ServiceCustomPrivate={})", nID_ServiceCustomPrivate);
+            String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
+            LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
             String sTicket_Number = (String) m.get("ticket_number");
             LOG.info("(sTicket_Number={})", sTicket_Number);
             String sTicket_Code = (String) m.get("ticket_code");
             LOG.info("(sTicket_Code={})", sTicket_Code);
             //element.put("nID_FlowSlotTicket", sTicket_Number);
-            mPropertyReturn.put("nID_ServiceCustomPrivate", nID_ServiceCustomPrivate);
+            mPropertyReturn.put("snID_ServiceCustomPrivate", snID_ServiceCustomPrivate);
             mPropertyReturn.put("sTicket_Number", sTicket_Number);
             mPropertyReturn.put("sTicket_Code", sTicket_Code);
         }else{
