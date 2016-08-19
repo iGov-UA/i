@@ -674,14 +674,21 @@ public class FlowService implements ApplicationContextAware {
      *
      * @param sLogin имя пользователя для которого необходимо вернуть тикеты
      * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
-     * @param sDateSelect опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * @param sDateFilter опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
      * @return возвращает активные тикеты, отсортированные по startDate
      * @throws ParseException
      */
-    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDateSelect)
+    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDateFilter)
             throws ParseException {
         List<Map<String, String>> mReturn = new LinkedList<>();
         SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date oDateFilter = null;
+        if (sDateFilter != null) {
+            //LOG.info("Checking for flow spot tickets for the date:(sDate={}) ", sDateFilter);
+            oDateFilter = new SimpleDateFormat("yyyy-MM-dd").parse(sDateFilter);
+            //LOG.info("Checking for flow spot tickets for the date:(oDateSelect={}) ", oDateFilter);
+            LOG.info("Converted sDateFilter to oDateFilter! (sDateFilter={},oDateFilter:{})", sDateFilter, oDateFilter);
+        }
 
         List<Task> aTask = actionTaskService.getTasksForChecking(sLogin, bEmployeeUnassigned);
 
@@ -709,6 +716,7 @@ public class FlowService implements ApplicationContextAware {
                             String sID_Type = QueueDataFormType.get_sID_Type(m);
                             LOG.info("(sID_Type={})", sID_Type);
                             if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
+                                LOG.info("Found DMS flow slot tickets.");
                                 String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
                                 LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
                                 String sTicket_Number = (String) m.get("ticket_number");
@@ -716,7 +724,16 @@ public class FlowService implements ApplicationContextAware {
                                 String sTicket_Code = (String) m.get("ticket_code");
                                 LOG.info("(sTicket_Code={})", sTicket_Code);
                             //}else if("iGov".equals(sID_Type)){
-                                addFlowSlowTicketToResult_DMS(mReturn, oDateFormat, sTicket_Number, sTicket_Code, sDate, oTask);
+                                Date oDate = null;
+                                if (sDate != null) {
+                                    //LOG.info("Converting sDate to oDate! (sDate={}) ", sDate);
+                                    oDate = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+                                    LOG.info("Converted sDate to oDate! (sDate={},oDate:{})", sDate, oDate);
+                                }
+                                //Filtering:
+                                if (oDate==null || oDateFilter == null || (DateUtils.isSameDay(oDate, oDateFilter))) {
+                                    addFlowSlowTicketToResult_DMS(mReturn, oDateFormat, sTicket_Number, sTicket_Code, sDate, oTask);
+                                }                            
                             }
                         }
                     }
@@ -726,23 +743,11 @@ public class FlowService implements ApplicationContextAware {
                     mTask.put(nID_Task, oTask);
                     ///mTaskProperty.put(nID_Task, aProperty);
                 }
-                //oTask.
-        /*List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
-        List<Map<String,Object>> aReturn = new LinkedList();
-        Map<String,Object> mReturn;
-        //a.get(1).getType().getInformation()
-        for (FormProperty oProperty : a) {*/
-                
-                
-                /*for (Entry<String,Object> oProperty : oTask.getTaskLocalVariables().entrySet()) {
-                    //oProperty.getValue()
-                }*/
-                
             } else {
                 LOG.info("Task with ID:{} has null process instance id value", oTask.getId());
             }
         }
-        LOG.info("Will check tasks which belong to process definition IDs:{}", mTask.keySet());
+        //LOG.info("Will check tasks which belong to process definition IDs:{}", mTask.keySet());
 
         if(mTask.isEmpty()){
             LOG.info("mTask.isEmpty()");
@@ -757,30 +762,22 @@ public class FlowService implements ApplicationContextAware {
                     }
                 });
 
-                Date oDateSelect = null;
-                if (sDateSelect != null) {
-                    LOG.info("Checking for flow spot tickets for the date:(sDate={}) ", sDateSelect);
-                    oDateSelect = new SimpleDateFormat("yyyy-MM-dd").parse(sDateSelect);
-                }
-
                 for (FlowSlotTicket oFlowSlotTicket : aFlowSlowTicket) {
                     if (mTask.keySet().contains(oFlowSlotTicket.getnID_Task_Activiti())) {
                         Task oTask = mTask.get(oFlowSlotTicket.getnID_Task_Activiti());
-
-                        if (oDateSelect != null) {
-                            LOG.info("Comparing two dates:{} and {}", oFlowSlotTicket.getsDateStart().toDate(), oDateSelect);
-                        }
-                        if (oDateSelect == null || (DateUtils.isSameDay(oFlowSlotTicket.getsDateStart().toDate(), oDateSelect))) {
+                        /*if (oDateFilter != null) {
+                            LOG.info("Comparing two dates:{} and {}", oFlowSlotTicket.getsDateStart().toDate(), oDateFilter);
+                        }*/
+                        //Filtering:
+                        if (oDateFilter == null || (DateUtils.isSameDay(oFlowSlotTicket.getsDateStart().toDate(), oDateFilter))) {
                             addFlowSlowTicketToResult(mReturn, oDateFormat, oFlowSlotTicket, oTask);
-                        } else {
+                        /*} else {
                             LOG.info("Skipping flowSlot {} for task:{} as they have not valid  start-end date {}:{}",
                                     oFlowSlotTicket.getId(), oFlowSlotTicket.getnID_Task_Activiti(),
-                                    oFlowSlotTicket.getsDateStart().toString(), oFlowSlotTicket.getsDateFinish());
+                                    oFlowSlotTicket.getsDateStart().toString(), oFlowSlotTicket.getsDateFinish());*/
                         }
                     }
                 }
-
-                //mTaskProperty.put(nID_Task, aProperty);
             }            
         }
         return mReturn;
