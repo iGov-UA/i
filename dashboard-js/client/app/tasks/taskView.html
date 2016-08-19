@@ -125,31 +125,22 @@
       </div>
 
       <!--редактируемые поля для чиновника-->
-      <hr class="hr-divider">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+      <hr class="hr-divider" ng-if="!inUnassigned() && isUnDisabledFields()">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)">
         <!--поле типа simple-field-->
-        <div ng-if="!isFormPropertyDisabled(item)">
-          <simple-field></simple-field>
-        </div>
+        <simple-field></simple-field>
 
         <!--поле типа date-->
-        <div ng-if="!isFormPropertyDisabled(item)">
-          <date-field></date-field>
-        </div>
+        <date-field></date-field>
 
         <!--поле типа text-area-->
-        <div ng-if="!isFormPropertyDisabled(item)">
-          <textarea-field></textarea-field>
-        </div>
+        <textarea-field></textarea-field>
 
         <!--поле типа enum-->
-
-        <div ng-if="!isFormPropertyDisabled(item)">
-          <enum-field></enum-field>
-        </div>
+        <enum-field></enum-field>
 
         <!--поле типа file-->
-        <span ng-if="item.type == 'file' && !isFormPropertyDisabled(item) && item.id.indexOf('PrintForm') === -1"
+        <span ng-if="item.type == 'file' && item.id.indexOf('PrintForm') === -1"
               ng-class="{submitted:item.required && isTaskSubmitted()}"
               class="col-sm-12">
           <span class="col-sm-6 task-form-title">
@@ -172,8 +163,8 @@
         </div>
 
         <div>
-          <div ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
-            <div class="like-modal">
+          <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
+            <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.description}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
                  target="_blank"
@@ -189,9 +180,10 @@
             <button style="position:relative;"
                     ng-if="item.description !== ' '"
                     type="button"
-                    class="btn btn-link attach-btn"
-                    ng-model="some"
-                    ng-click="openModalWindow($event)">
+                    class="btn btn-link attach-btn dropdown-toggle"
+                    data-toggle="dropdown"
+                    ng-model="some">
+                    <!--ng-click="openModalWindow($event)">-->
               {{item.description | cut : true : 25}}
             </button>
           </div>
@@ -214,17 +206,20 @@
             </div>
           </div>
 
-          <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all' || selectedTask.processDefinitionId.indexOf('system') == 0" style="padding-top:5px; display: inline-block; position:relative;">
-            <div class="print-form-div" style="position:absolute; display: none;">
-              <div ng-repeat="item in printTemplateList">
-                <a href="#" ng-click="newPrint(form, item)">{{item.displayTemplate}}</a>
+          <div ng-hide="selectedTask.assignee === null
+           || sSelectedTask === 'finished'
+           || sSelectedTask === 'all'
+           || selectedTask.processDefinitionId.indexOf('system') == 0" style="padding-top:5px; display: inline-block; position:relative;">
+              <div class="dropup">
+                <div class="print-form-div dropdown-menu drop-up" role="menu">
+                  <div ng-repeat="item in printTemplateList">
+                    <a href="#" ng-click="newPrint(form, item)">{{item.displayTemplate}}</a>
+                  </div>
+                </div>
+                <button ng-if="printTemplateList.length > 0" class="btn btn-link dropdown-toggle" data-toggle="dropdown">Роздрукувати <i style="font-size: 11px" class="glyphicon glyphicon-chevron-down"></i></button>
+                <button ng-if="printTemplateList.length === 0" ng-click="print()" class="btn btn-link dropdown-toggle" data-toggle="dropdown">Роздрукувати</button>
               </div>
             </div>
-            <button ng-if="printTemplateList.length > 0" ng-click="openModalWindow($event)" class="btn btn-link">Роздрукувати <i style="font-size: 11px" class="glyphicon glyphicon-chevron-down"></i></button>
-            <button ng-if="printTemplateList.length === 0" ng-click="print()" class="btn btn-link">Роздрукувати</button>
-            <!--<select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >-->
-            <!--</select>-->
-          </div>
 
           <div style="display: inline-block;">
             <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
@@ -246,8 +241,9 @@
     </form>
   </div>
 
+  <!--зауваження-->
   <div ng-if="clarify">
-    <clarify-directive></clarify-directive>
+    <clarify-directive style="overflow:hidden;"></clarify-directive>
   </div>
 
   <div class="task-form-history" ng-if="tabHistoryAppeal === 'history'">

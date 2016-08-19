@@ -437,6 +437,7 @@
         };
 
         $scope.getMessageFileUrl = function (oMessage, oFile) {
+          if(oMessage && oFile)
           return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
         };
 
@@ -514,17 +515,6 @@
           return $stateParams.type === "unassigned";
         };
 
-        $scope.openModalWindow = function (element) {
-          if(element.currentTarget.previousElementSibling.style.display === '' ||
-             element.currentTarget.previousElementSibling.style.display === 'none') {
-            element.currentTarget.previousElementSibling.style.display = 'inline-block';
-            element.currentTarget.lastChild.className = 'glyphicon glyphicon-chevron-up';
-          } else {
-            element.currentTarget.previousElementSibling.style.display = 'none';
-            element.currentTarget.lastChild.className = 'glyphicon glyphicon-chevron-down';
-          }
-        };
-
         $scope.tabHistoryAppealChange = function (param) {
           $scope.tabHistoryAppeal = param;
         };
@@ -537,8 +527,21 @@
         $scope.isClarify = function (name) {
           return name.indexOf('writable=false') !== -1 ;
         };
-        console.log($scope)
-        console.log(tasks.getTask(21000820))
+
+        var activeFieldsList = [];
+        angular.forEach($scope.taskForm, function (item) {
+          if($scope.isFieldVisible(item)
+            && !$scope.isFormPropertyDisabled(item)
+            && item.type !== 'invisible'
+            && item.type !== 'label'
+            && item.type !== 'markers') {
+            activeFieldsList.push(item);
+          }
+        });
+
+        $scope.isUnDisabledFields = function () {
+          return activeFieldsList.length > 0;
+        };
       }
 
     ])
@@ -562,8 +565,7 @@
     })
   .filter('fixDate', function () {
     return function (value) {
-      var corrected = value.split('.')[0];
-      return corrected;
+      return  value.split('.')[0];
     }
   })
 
