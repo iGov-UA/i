@@ -82,8 +82,8 @@
     <p>{{item.sHead}}</p>
 
     <p ng-bind-html="item.sMessage || item.sBody" class="hide-table"></p>
-    <div ng-repeat="oFile in item.osData.aFile">
-      Прикріплено файл: "{{::oFile.sFileName}}"
+    <div ng-repeat="oFile in item.osData.aFile" style="margin-top: 10px; margin-left: 5px">
+      <b>Прикріплено файл: </b><a href="{{getMessageFileUrl(oMessage, oFile)}}" target="_blank">{{oFile.sFileName}}</a>
     </div>
     <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
       <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">

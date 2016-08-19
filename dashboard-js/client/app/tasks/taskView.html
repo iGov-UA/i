@@ -2,6 +2,10 @@
   label {
     margin-bottom: 0;
   }
+  .empty-modal {
+    width: 150px;
+    height: 34px;
+  }
 </style>
 
 <div class="tasks-form-view">
@@ -161,6 +165,7 @@
         </span>
       </div>
 
+      <!--атачи-->
       <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0 && !inUnassigned()">
         <div class="addition-hr">
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
@@ -182,6 +187,7 @@
               </button>
             </div>
             <button style="position:relative;"
+                    ng-if="item.description !== ' '"
                     type="button"
                     class="btn btn-link attach-btn"
                     ng-model="some"
