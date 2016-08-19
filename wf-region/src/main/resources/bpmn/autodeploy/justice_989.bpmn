@@ -20,7 +20,12 @@
         <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asKind" name="Вид правової послуги" type="enum" required="true">
+          <activiti:value id="sEnumAdvice" name="надання консультації, розяснення"></activiti:value>
+          <activiti:value id="sEnumDocument" name="складання процесуальних документів"></activiti:value>
+          <activiti:value id="sEnumCourt" name="представництво інтересів в суді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfo" name="Коротка суть питання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Категорія заявника" type="enum" required="true">
           <activiti:value id="sEnumPoor" name="Малозабезпечені (особи, сукупний дохід сім'ї яких в розрахунку на одну особу нижче суми 1 прожиткового мінімуму)"></activiti:value>
           <activiti:value id="sEnumInvalid" name="Інваліди (якщо  пенсія або допомога  менше двох прожиткових мінімумів для непрацездатних осіб)"></activiti:value>
@@ -130,7 +135,12 @@
         <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Вид правової послуги, коротка суть питання, консультації, надання правової інформації, допомога у складанні процесуальних документів тощо; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asKind" name="Вид правової послуги" type="enum" writable="false">
+          <activiti:value id="sEnumAdvice" name="надання консультації, розяснення"></activiti:value>
+          <activiti:value id="sEnumDocument" name="складання процесуальних документів"></activiti:value>
+          <activiti:value id="sEnumCourt" name="представництво інтересів в суді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfo" name="Коротка суть питання; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Категорія заявника" type="enum" writable="false">
           <activiti:value id="sEnumPoor" name="Малозабезпечені (особи, сукупний дохід сім'ї яких в розрахунку на одну особу нижче суми 1 прожиткового мінімуму)"></activiti:value>
           <activiti:value id="sEnumInvalid" name="Інваліди (якщо  пенсія або допомога  менше двох прожиткових мінімумів для непрацездатних осіб)"></activiti:value>
