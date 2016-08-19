@@ -353,6 +353,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="accept" name="відправлені запити, очікують відповіді"></activiti:value>
           <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_zayava_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_1.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -372,7 +374,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Vashe zvernennya [sID_Order] obroblyaetsya. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -393,6 +395,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;/p&gt;
+(Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -409,7 +412,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
@@ -423,6 +426,7 @@ ${sNameOrgan}&lt;br /&gt;
 &lt;p&gt;На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено через недостатню або неправильну інформацію.&lt;/p&gt;
 &lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+(Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;
 [pattern/mail/_common_signature_end.html]
@@ -612,6 +616,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;
 &lt;p&gt;На жаль, Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено.&lt;/p&gt;
 &lt;p&gt;Причина вказана у файлі, який прикріплено до цього листа.&lt;/p&gt;
 &lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment1}&lt;/p&gt;
+(Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -621,7 +626,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
           <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${decision}</activiti:expression>
+          <activiti:expression>${decision},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -634,7 +639,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
           <activiti:expression>Za Vashym zvernennyam  [sID_Order]  pryznacheno subsidiyu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${decision}</activiti:expression>
+          <activiti:expression>${decision},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
@@ -651,6 +656,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення  №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.&lt;/p&gt;
 &lt;p&gt;Розмір субсидії вказаний у файлі, який прикріплено до цього листа.&lt;/p&gt;
 &lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment1}&lt;/p&gt;
+(Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -673,7 +679,7 @@ ${sNameOrgan}&lt;br /&gt;&lt;br /&gt;
           <activiti:expression>Za Vashym zvernennyam  [sID_Order]  pryznacheno rozglyad komisieyu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
