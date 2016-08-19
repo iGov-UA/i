@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-sm-offset-2 col-sm-8" style="background: #EFF6F9;
+                                             margin-bottom: 10px;
+                                             font-style: italic;
+                                             padding: 10px">
+    <ol>
+      <li>Оберіть поле або поля, що потребують уточнення</li>
+      <li>Зазначте запитання або коментар до кожного обраного поля</li>
+      <li>Якщо потрібно зазначте загальне зауваження</li>
+      <li>Натисніть кнопку "Відправити зауваження"</li>
+    </ol>
+  </div>
+</div>
+
+<form name="form" novalidate>
+  <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+
+    <!--поле типа simple-field-->
+    <div ng-if="isClarify(item.name)" class="row">
+      <div ng-if="['string', 'long'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+          <span class="col-sm-3 task-form-title" style="padding-right: 0">
+            <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
+          </span>
+        <div class="col-sm-1" style="padding-right: 0;">
+            <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
+              <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+            </div>
+        </div>
+          <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
+            <div ng-if="isFormPropertyDisabled(item)">
+                <span class="task-form-written-right-sight"
+                      name="{{item.id}}"
+                      ng-readonly="isFormPropertyDisabled(item)"
+                      ng-required="{{item.required}}">{{item.value}}
+                </span>
+            </div>
+
+          </div>
+
+        <div class="col-sm-4" style="padding-right: 0">
+          <div ng-if="clarifyFields[item.id].clarify">
+            <input type="text" style="width:100%; font-style: italic; font-size: 12px; padding: 3px" ng-model="clarifyFields[item.id].text" placeholder="Вкажіть зауваження до цього поля">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--поле типа date-->
+    <div ng-if="isClarify(item.name)" class="row">
+      <div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
+            <span class="col-sm-6 task-form-title">
+              <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
+            </span>
+        <div class="col-sm-6">
+          <div class="input-group" ng-if="!isFormPropertyDisabled(item)">
+            <input datetimepicker
+                   class="form-control date-picker"
+                   name="{{item.id}}"
+                   ng-readonly="isFormPropertyDisabled(item)"
+                   ng-required="{{item.required}}"
+                   ng-model="item.value"
+                   format="DD/MM/YYYY"
+                   ng-class="{submitted:item.required && isTaskSubmitted()}"/>
+
+            <span class="input-group-addon"
+                  ng-if="isFormPropertyDisabled(item)"
+                  clip-copy="item.value">
+                  <i class="glyphicon glyphicon-copy"></i>
+                </span>
+          </div>
+          <div ng-if="isFormPropertyDisabled(item) && item.value">
+              <span class="task-form-written-right-sight"
+                    name="{{item.id}}"
+                    ng-model="item.value">
+                {{item.value}}
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--поле типа text-area-->
+    <div ng-if="isClarify(item.name)" class="row">
+      <div ng-if="item.type == 'textArea'" class="col-sm-12 form-field">
+        <div class="col-sm-6 task-form-title">
+          <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
+        </div>
+        <div class="col-sm-6">
+              <textarea ng-if="!isFormPropertyDisabled(item)"
+                        ng-readonly="isFormPropertyDisabled(item)"
+                        name="{{item.id}}"
+                        ng-required="isRequired(item)"
+                        ng-model="item.value"
+                        style="width:100%;"
+                        ng-class="{submitted:item.required && isTaskSubmitted()}">
+              </textarea>
+          <span class="task-form-written-right-sight"
+                ng-if="isFormPropertyDisabled(item) && item.value"
+                name="{{item.id}}"
+                ng-model="item.value">{{item.value}}
+              </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="control-form-fields" ng-if="!inUnassigned()">
+    <hr class="hr-divider">
+    <div>
+      <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
+        <button ng-if="!clarify" type="button" class="btn btn-link" ng-click="clarifyToggle()">Внести зауваження</button>
+        <div ng-if="clarify" style="padding-top:5px;">
+          <div class="row" style="margin-right: 0">
+            <div class="col-sm-3" style="padding-right: 0">
+              <label style="font-weight: normal; text-align: right" for="clarify-general">Загальне зауваження або запитання до заявника:</label>
+            </div>
+            <div class="col-sm-9">
+              <textarea id="clarify-general" style="width:100%;" ng-model="clarifyModel.sBody"></textarea>
+            </div>
+          </div>
+          <div class="row" style="margin-right: 0">
+            <div class="col-sm-offset-3 col-sm-6" style="margin-top: 10px; margin-bottom: 20px">
+              <button type="button" style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</button>
+              <button type="button" class="btn btn-link attach-btn" ng-click="clarifyToggle()">Скасувати</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+</form>

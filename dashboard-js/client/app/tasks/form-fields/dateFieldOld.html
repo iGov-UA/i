@@ -1,0 +1,37 @@
+<div class="input-group">
+  <input datetimepicker
+    class="form-control date-picker"
+    name="{{item.id}}"
+    ng-readonly="isFormPropertyDisabled(item)"
+    ng-required="{{item.required}}"
+    ng-model="item.value"
+    format="DD/MM/YYYY"
+    ng-class="{submitted:item.required && isTaskSubmitted()}"
+  />
+  <!--     format="{{'dd/MM/yyyy'}}" -->
+    <!--format="{{item.datePattern ? item.datePattern : 'DD.MM.YYYY'}}"-->
+  <span class="input-group-addon"
+    ng-if="isFormPropertyDisabled(item)"
+    clip-copy="item.value">
+    <i class="glyphicon glyphicon-copy"></i>
+  </span>
+
+</div>
+
+<div class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+  <div ng-message="required">Необхідно заповнити.</div>
+  <div ng-message="pattern">Значення має бути числом.</div>
+  <div ng-message="email">Помилка в email.</div>
+  <div ng-message="tel">Помилка в номері телефону.</div>
+  <div ng-message="autovin">Помилка у VIN-номері авто.</div>
+  <div ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</div>
+  <div ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</div>
+  <div ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</div>
+  <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
+    х-місяців, х-років.
+  </div>
+  <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
+  <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
+  <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
+  <div ng-message="FileSign">Підпис не валідний або відсутній</div>
+</div>

@@ -34,6 +34,7 @@
         $scope.sSelectedTask = $stateParams.type;
         $scope.selectedTask = oTask;
         $scope.taskId = oTask.id;
+        $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
 
@@ -506,6 +507,66 @@
           return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
               FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
         };
+
+        $scope.creationDateFormatted = function (date) {
+          var unformatted = date.split(' ')[0];
+          var splittedDate = unformatted.split('-');
+          return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
+        };
+
+        $scope.inUnassigned = function () {
+          return $stateParams.type === "unassigned";
+        };
+
+        $scope.openModalWindow = function (element) {
+          if(element.currentTarget.previousElementSibling.style.display === '' ||
+             element.currentTarget.previousElementSibling.style.display === 'none') {
+            element.currentTarget.previousElementSibling.style.display = 'inline-block';
+          } else {
+            element.currentTarget.previousElementSibling.style.display = 'none';
+          }
+        };
+
+        $scope.tabHistoryAppealChange = function (param) {
+          $scope.tabHistoryAppeal = param;
+        };
+
+        $scope.tryToPrint = function (form, id) {
+          $scope.model.printTemplate = id;
+          $scope.print(form);
+        };
+
+        $scope.isClarify = function (name) {
+          return name.indexOf('writable=false') !== -1 ;
+        };
+        console.log($scope)
+        console.log(tasks.getTask(21000820))
       }
-    ]);
+
+    ])
+    .filter('cut', function () {
+      return function (value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+          var lastspace = value.lastIndexOf(' ');
+          if (lastspace != -1) {
+            value = value.substr(0, lastspace);
+          }
+        }
+        return value + (tail || '…');
+      };
+    })
+  .filter('fixDate', function () {
+    return function (value) {
+      var corrected = value.split('.')[0];
+      return corrected;
+    }
+  })
+
 })();

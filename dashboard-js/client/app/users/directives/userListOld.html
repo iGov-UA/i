@@ -1,0 +1,65 @@
+<style>
+  thead {
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(236,236,236,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(236,236,236,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(236,236,236,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(236,236,236,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(236,236,236,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ececec', GradientType=0 );
+  }
+  thead tr th {
+    text-align: center;
+  }
+  tbody tr td {
+    text-align: center;
+  }
+</style>
+
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-1 control-label" for="searchCtrl">Пошук</label>
+    <div class="col-sm-5">
+      <input id="searchCtrl" class="form-control" type="text" ng-model="search">
+    </div>
+    <div class="col-sm-4"></div>
+    <button class="btn btn-primary pull-right col-sm-2" ng-click="add()">Додати користувача</button>
+  </div>
+</div>
+<div ng-init="init()" >
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>LDAP</th>
+      <th>Ім'я співробітника</th>
+      <!--<th>Email</th>-->
+      <th>Операції</th>
+    </tr>
+    </thead>
+    <tbody ng-if="!model.inProgress">
+    <tr ng-repeat="user in get() | filter: search">
+      <td>{{$index + 1}}</td>
+      <td>{{user.sLogin}}</td>
+      <td>{{user.FirstName}}  {{user.LastName}}</td>
+      <!--<td>{{user.Email}}</td>-->
+      <td class="col-md-4">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" ng-click="edit(user)">
+            <i class="glyphicon glyphicon-edit"></i> Редагувати
+          </button>
+          <button type="button" class="btn btn-danger" ng-click="delete(user)"
+                  tooltip="Видалити" tooltip-trigger="mouseenter" tooltip-placement="top"  tooltip-append-to-body="true">
+            <i class="fa fa-trash-o"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-center" ng-show="model.inProgress">
+    <img class="text-center"
+         src="assets/images/loading.gif"
+         alt="Loading"/>
+  </div>
+</div>
