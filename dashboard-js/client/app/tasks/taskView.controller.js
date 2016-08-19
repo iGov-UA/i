@@ -253,10 +253,6 @@
 
         $scope.print = function () {
           if ($scope.selectedTask && $scope.taskForm) {
-            if ($scope.hasUnPopulatedFields()) {
-              Modal.inform.error()('Не всі поля заповнені!');
-              return;
-            }
             rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
           }
@@ -522,8 +518,10 @@
           if(element.currentTarget.previousElementSibling.style.display === '' ||
              element.currentTarget.previousElementSibling.style.display === 'none') {
             element.currentTarget.previousElementSibling.style.display = 'inline-block';
+            element.currentTarget.lastChild.className = 'glyphicon glyphicon-chevron-up';
           } else {
             element.currentTarget.previousElementSibling.style.display = 'none';
+            element.currentTarget.lastChild.className = 'glyphicon glyphicon-chevron-down';
           }
         };
 
@@ -531,7 +529,7 @@
           $scope.tabHistoryAppeal = param;
         };
 
-        $scope.tryToPrint = function (form, id) {
+        $scope.newPrint = function (form, id) {
           $scope.model.printTemplate = id;
           $scope.print(form);
         };
