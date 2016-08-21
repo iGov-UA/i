@@ -44,17 +44,21 @@
 
 
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="3"></activiti:formProperty>        
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="invisible" default="5"></activiti:formProperty>
+
 
         <activiti:formProperty id="cc_1_4" name="Категорія компенсацій (галочка на формі)" type="invisible" default="true"></activiti:formProperty>
 
 		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Звернення (первинне, вторинне)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;nFile_1&quot;,&quot;nFile_2&quot;,&quot;nFile_3&quot;,&quot;nFile_4&quot;,&quot;nFile_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asNumberApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sFirst'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;nFile_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asNumberApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sSecond'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markers2" name="Звернення (первинне, вторинне)" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_144.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -275,15 +279,15 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення.  Допомога на дітей, які перебувають під опікою чи піклуванням]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<strong>Шановний(-а) колего!</strong><br /><br />
-			У Вас в черзі на обробку зареєстровано нове звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> щодо допомоги на дітей,
+			<h3>Шановний(-а) колего!</h3>
+			У Вас в черзі на обробку зареєстровано нове звернення № [sID_Order] щодо допомоги на дітей,
 			які перебувають під опікою чи піклуванням.<br />
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 			Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
@@ -321,7 +325,7 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -356,19 +360,20 @@
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> щодо призначення державної соціальної допомоги на дітей,
-				які перебувають під опікою чи піклуванням в очикуванні недостатніх документів.
+				які перебувають під опікою чи піклуванням в очикуванні недостатніх документів.<br>
 				
-				Протягом трьох місяців Ви повині донести їх в ${sNameOrgan} 
-				за адресою: ${sAddress} 
+				Протягом трьох місяців Ви повині донести їх в ${sNameOrgan} <br>
+				${sAddress} <br><br>
 				
-				або заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/774/general">iGov.org.ua</a>, враховуючи коментар нижче.</p>
+				або заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/774/general">iGov.org.ua</a>, враховуючи коментар нижче.<br>
+			</p>
 			<p>
 				Коментар спеціаліста: ${decision_comment}
 			</p><br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -412,7 +417,7 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
