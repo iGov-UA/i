@@ -130,7 +130,7 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних данних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -182,10 +182,10 @@
           <activiti:value id="ukraine" name="так"></activiti:value>
           <activiti:value id="not_ukraine" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asNumberApplication" name="Чи отримували Ви ці виплати раніше?; ;writable=false" type="enum">
+        <activiti:formProperty id="asNumberApplication" name="Це перше звернення?; ;writable=false" type="enum">
           <activiti:value id="sFirst" name="ні"></activiti:value>
           <activiti:value id="sSecond" name="так"></activiti:value>
-        </activiti:formProperty>
+        </activiti:formProperty>  
         <activiti:formProperty id="transfer_type" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -222,7 +222,7 @@
     </userTask>
     <userTask id="usertask2" name="прийняття рішення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -273,10 +273,6 @@
         <activiti:formProperty id="nationality" name="Чи маєте Ви українське громадянство?; ;writable=false" type="enum">
           <activiti:value id="ukraine" name="так"></activiti:value>
           <activiti:value id="not_ukraine" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asNumberApplication" name="Чи отримували Ви ці виплати раніше?; ;writable=false" type="enum">
-          <activiti:value id="sFirst" name="ні"></activiti:value>
-          <activiti:value id="sSecond" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
