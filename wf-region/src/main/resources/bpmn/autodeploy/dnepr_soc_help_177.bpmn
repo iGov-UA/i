@@ -34,32 +34,24 @@
           <activiti:value id="other_funeral" name="призначення допомоги на поховання"></activiti:value>
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
         </activiti:formProperty>
-        
-        
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        
-        
-        
+                
         <activiti:formProperty id="sOrganName" name="sOrganName" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="invisible"></activiti:formProperty>
-        
-        
+
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>       
         
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
@@ -154,14 +146,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${remail}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове  звернення. Видача довідкок про отримання/неотримання усіх видів державних соціальних допомог]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-			[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			Шановний(-а) колего!<br /><br />
 			У Вас в черзі на обробку зареєстровано нове звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> щодо видачі довідки:<br />
 			enum{[content]} <br />
