@@ -12,11 +12,18 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі, щодо якої запитується свідоцтво" type="enum" required="true">
-          <activiti:value id="sEnamRodich1" name="Один з подружжя (дружина/чоловік)"></activiti:value>
-          <activiti:value id="sEnamRodich2" name="Син/донька"></activiti:value>
-          <activiti:value id="sEnamRodich3" name="Близький родич (брат/сестра/онук/дід/бабуся)"></activiti:value>
-          <activiti:value id="sEnamRodich4" name="Спадкоємець за законом чи заповітом"></activiti:value>
-          <activiti:value id="sEnamRodich5" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
+          <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
+          <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
+          <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
+          <activiti:value id="sEnamRodich4" name="Донька"></activiti:value>
+          <activiti:value id="sEnamRodich5" name="Брат"></activiti:value>
+          <activiti:value id="sEnamRodich6" name="Сестра"></activiti:value>
+          <activiti:value id="sEnamRodich7" name="Дід"></activiti:value>
+          <activiti:value id="sEnamRodich8" name="Бабуся"></activiti:value>
+          <activiti:value id="sEnamRodich9" name="Онук"></activiti:value>
+          <activiti:value id="sEnamRodich10" name="Онучка"></activiti:value>
+          <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
+          <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="file_Rodich" name="Сканкопія документа, що підтверджує родинний зв'язок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця" type="file" required="true"></activiti:formProperty>
@@ -27,13 +34,12 @@
         <activiti:formProperty id="sZap_MiddleName" name="По батькові померлого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_smert" name="Вкажіть місце і дату реєстрації смерті особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Послуга платна, сплатіть державне мито в сумі 0,51 грн (0,53 з комісією)"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant2" name=" мерчанта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum2" name="сума платежу" type="invisible" default="0,53"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription2" name="опис платежу" type="string" default="державне мито за повторну видачу свідоцтва про смерть"></activiti:formProperty>
+        <activiti:formProperty id="sDescription2" name="опис платежу" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
@@ -106,11 +112,18 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" writable="false">
-          <activiti:value id="sEnamRodich1" name="Один з подружжя (дружина/чоловік)"></activiti:value>
-          <activiti:value id="sEnamRodich2" name="Син/донька"></activiti:value>
-          <activiti:value id="sEnamRodich3" name="Близький родич (брат/сестра/онук/дід/бабуся)"></activiti:value>
-          <activiti:value id="sEnamRodich4" name="Спадкоємець за законом чи заповітом"></activiti:value>
-          <activiti:value id="sEnamRodich5" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
+          <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
+          <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
+          <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
+          <activiti:value id="sEnamRodich4" name="Донька"></activiti:value>
+          <activiti:value id="sEnamRodich5" name="Брат"></activiti:value>
+          <activiti:value id="sEnamRodich6" name="Сестра"></activiti:value>
+          <activiti:value id="sEnamRodich7" name="Дід"></activiti:value>
+          <activiti:value id="sEnamRodich8" name="Бабуся"></activiti:value>
+          <activiti:value id="sEnamRodich9" name="Онук"></activiti:value>
+          <activiti:value id="sEnamRodich10" name="Онучка"></activiti:value>
+          <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
+          <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="DeathFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_smert" name="Місце і дата реєстрації смерті особи" type="string" writable="false"></activiti:formProperty>

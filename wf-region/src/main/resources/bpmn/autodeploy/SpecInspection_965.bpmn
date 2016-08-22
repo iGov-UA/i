@@ -37,6 +37,7 @@
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Post" name="Назва посади, на яку претендує особа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zapit" name="Копія Запиту про перевірку відомостей щодо особи з накладеним ЕЦП керівника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Agreement" name="Копія згоди особи на проведення спеціальної перевірки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Autobiography" name="Копія автобіографії" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
@@ -48,7 +49,8 @@
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sResultConclusion" name="Ітогове прийняте рішення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sResultConclusionSMS" name="Ітогове прийняте рішення (SMS)" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk01" name="пошта оргструктури 01" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk02" name="пошта оргструктури 02" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk03" name="пошта оргструктури 03" type="string"></activiti:formProperty>
@@ -94,12 +96,28 @@
         <activiti:formProperty id="sWorkTime07" name="Графік роботи оргструктури 07" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime08" name="Графік роботи оргструктури 08" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime09" name="Графік роботи оргструктури 09" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid01" name="Копiя висновка за результатами розгляду звернення на етапе 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid02" name="Копiя висновка за результатами розгляду звернення на етапе 02" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid03" name="Копiя висновка за результатами розгляду звернення на етапе 03" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid04" name="Копiя висновка за результатами розгляду звернення на етапе 04" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid05" name="Копiя висновка за результатами розгляду звернення на етапе 05" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid06" name="Копiя висновка за результатами розгляду звернення на етапе 06" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid07" name="Копiя висновка за результатами розгляду звернення на етапе 07" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid08" name="Копiя висновка за результатами розгляду звернення на етапе 08" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid09" name="Копiя висновка за результатами розгляду звернення на етапе 09" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="Перевірка ЕЦП" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_1_ESP.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/skv/SpecInspection_965_Common_print.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <userTask id="usertask10" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_grp01">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="bankIdlastName" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <userTask id="usertask1" name="[Етап I.1] Перевірка щодо корпоративних прав" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_grp01">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan01" name="Орган, що здійснює спеціальної перевірку" type="string" writable="false"></activiti:formProperty>
@@ -145,13 +163,14 @@
         <activiti:formProperty id="sAddress01" name="Адрес оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan01" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime01" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="markers01" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/SpecInspection_965_01_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/SpecInspection_965_01_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -201,13 +220,14 @@
         <activiti:formProperty id="sAddress02" name="Адрес оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan02" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime02" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="markers02" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/SpecInspection_965_02_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/skv/SpecInspection_965_02_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -257,13 +277,14 @@
         <activiti:formProperty id="sAddress03" name="Адрес оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan03" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime03" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="markers03" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/SpecInspection_965_03_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/skv/SpecInspection_965_03_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -314,12 +335,12 @@
         <activiti:formProperty id="sPhoneOrgan04" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime04" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers04" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/SpecInspection_965_04_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/skv/SpecInspection_965_04_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Diplom},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Diplom},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -370,12 +391,12 @@
         <activiti:formProperty id="sPhoneOrgan05" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime05" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers05" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_5" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/SpecInspection_965_05_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_5" name="File label;File title;pattern/print/skv/SpecInspection_965_05_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Medicine},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Medicine},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -426,12 +447,12 @@
         <activiti:formProperty id="sPhoneOrgan06" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime06" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers06" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_6" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_6" name="[pattern/print/skv/SpecInspection_965_06_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_6" name="File label;File title;pattern/print/skv/SpecInspection_965_06_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Declaration},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Declaration},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -482,12 +503,12 @@
         <activiti:formProperty id="sPhoneOrgan07" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime07" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers07" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_7" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/skv/SpecInspection_965_07_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_7" name="File label;File title;pattern/print/skv/SpecInspection_965_07_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -538,12 +559,12 @@
         <activiti:formProperty id="sPhoneOrgan08" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime08" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers08" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_8" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/skv/SpecInspection_965_08_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_8" name="File label;File title;pattern/print/skv/SpecInspection_965_08_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -594,12 +615,12 @@
         <activiti:formProperty id="sPhoneOrgan09" name="Телефон оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime09" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers09" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_9" name="[pattern/print/skv/SpecInspection_965_Common_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_9" name="File label;File title;pattern/print/skv/SpecInspection_965_Common_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_9" name="[pattern/print/skv/SpecInspection_965_09_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_9" name="File label;File title;pattern/print/skv/SpecInspection_965_09_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Military_ID},${form_signed}</activiti:expression>
+            <activiti:expression>${nFile_Agreement},${nFile_Autobiography},${nFile_Passport},${nFile_Military_ID},${form_signed},${nFile_Zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -782,7 +803,7 @@ ${sResultConclusion} &lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow47" sourceRef="scripttask2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="scripttask2" targetRef="usertask10"></sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow49" sourceRef="parallelgateway1" targetRef="servicetask5"></sequenceFlow>
@@ -1852,6 +1873,13 @@ ${sNameOrgan09}&lt;br /&gt;
     <sequenceFlow id="flow133" name="Реєстрація не в Дніпрі" sourceRef="exclusivegateway11" targetRef="scripttask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumType_DneprRegistration=='sElement_OutDnepr'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow134" sourceRef="usertask10" targetRef="servicetask7"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask10" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow135" sourceRef="escalationTimer1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_SpecInspection_965">
     <bpmndi:BPMNPlane bpmnElement="SpecInspection_965" id="BPMNPlane_SpecInspection_965">
@@ -1863,6 +1891,9 @@ ${sNameOrgan09}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="106.0" y="79.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
+        <omgdc:Bounds height="67.0" width="132.0" x="547.0" y="38.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="111.0" width="105.0" x="20.0" y="489.0"></omgdc:Bounds>
@@ -2059,6 +2090,9 @@ ${sNameOrgan09}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
         <omgdc:Bounds height="40.0" width="40.0" x="1258.0" y="323.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="649.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="55.0" y="71.0"></omgdi:waypoint>
         <omgdi:waypoint x="73.0" y="71.0"></omgdi:waypoint>
@@ -2091,8 +2125,8 @@ ${sNameOrgan09}&lt;br /&gt;
         <omgdi:waypoint x="230.0" y="71.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="445.0" y="99.0"></omgdi:waypoint>
-        <omgdi:waypoint x="446.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="71.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="361.0" y="71.0"></omgdi:waypoint>
@@ -2490,6 +2524,15 @@ ${sNameOrgan09}&lt;br /&gt;
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1301.0" y="303.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow134" id="BPMNEdge_flow134">
+        <omgdi:waypoint x="613.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="446.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow135" id="BPMNEdge_flow135">
+        <omgdi:waypoint x="664.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="663.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

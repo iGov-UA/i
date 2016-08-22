@@ -57,7 +57,7 @@ import static org.igov.util.Tool.sCut;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC";
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889";
 	private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     //private static final Logger LOG_BIG = LoggerFactory.getLogger('APP');
@@ -543,7 +543,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        if (!generalConfig.isSelfTest()) {
+                        //if (!generalConfig.isSelfTest()) {
+                        if (false) {
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
