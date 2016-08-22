@@ -160,8 +160,8 @@ angular.module('app')
           if (regionIsChosen && cityIsChosen && sa.someCity) {
           }
 
-          // якщо адмін обрав регіон та місто
-          if ($scope.bAdmin && regionIsChosen && cityIsChosen) {
+          // якщо обрано регіон та місто
+          if (regionIsChosen && cityIsChosen) {
             return true;
           }
 
