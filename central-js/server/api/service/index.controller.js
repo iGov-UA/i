@@ -62,7 +62,6 @@ module.exports.getServiceFeedback = function (req, res) {
       'sID_Token': data.sID_Token || 123,
       'nID_Service': req.params.nID,
       'nID': data.sID_Order
-
     }
   }, callback);
 };
@@ -70,6 +69,7 @@ module.exports.getServiceFeedback = function (req, res) {
 module.exports.postServiceFeedback = function (req, res) {
   var url = sHost + '/subject/message/setFeedbackExternal';
   var data = req.body;
+  var nID_Subject = (activiti.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
   var callback = function(error, response, body) {
     res.send(body);
@@ -83,13 +83,44 @@ module.exports.postServiceFeedback = function (req, res) {
       'password': config.password
     },
     'qs': {
+      'nID': data.nID,
+      'nID_Subject':  nID_Subject || 0,
+      'sID_Token': data.sID_Token,
       'sID_Source': data.sID_Source,
       'sAuthorFIO': data.sAuthorFIO,
       'sMail': data.sMail || ' ',
       'sHead': data.sHead || ' ',
       'sBody': data.sBody,
       'nID_Rate': data.nID_Rate,
-      'nID_Service': req.params.nID
+      'nID_Service': req.params.nID,
+      'sAnswer': data.sAnswer || ''
+    }
+  }, callback);
+};
+
+module.exports.postServiceFeedbackAnswer = function (req, res) {
+  var url = sHost + '/subject/message/setFeedbackAnswerExternal';
+  var data = req.body;
+  var nID_Subject = (activiti.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+//TODO review sID_Token
+  return request.post({
+    'url': url,
+    'auth': {
+      'username': config.username,
+      'password': config.password
+    },
+    'qs': {
+      'sID_Token': null,//data.sID_Token,
+      'sBody': data.sBody,
+      'nID_SubjectMessageFeedback': data.nID_SubjectMessageFeedback,
+      'nID_Subject': nID_Subject,
+      'bSelf': false,
+      'sAuthorFIO': data.sAuthorFIO
     }
   }, callback);
 };

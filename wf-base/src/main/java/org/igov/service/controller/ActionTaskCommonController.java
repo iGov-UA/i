@@ -23,7 +23,6 @@ import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
@@ -61,6 +60,7 @@ import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -129,6 +129,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private Mail oMail;
+
 
     /**
      * Загрузка задач из Activiti:
@@ -784,8 +785,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (organ != null) {
             Map<String, Object> variables = new HashMap<String, Object>();
             variables.put("organ", organ);
-            pi = runtimeService.startProcessInstanceByKey(key);
-            runtimeService.setVariables(pi.getId(), variables);
+            pi = runtimeService.startProcessInstanceByKey(key, variables);
         } else {
             pi = runtimeService.startProcessInstanceByKey(key);
         }
@@ -818,6 +818,45 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             runtimeService.setVariable(snID_Process, sKey, sValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
+        return "";
+    }
+
+    /**
+     * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
+     * size of query params.
+     * @param allRequestParamsStr
+     * @return
+     */
+    @RequestMapping(value = "/setVariable", method = RequestMethod.POST, consumes = "text/plain")
+    @ResponseBody
+    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
+            //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            //            @RequestParam(value = "key", required = true) String sKey,
+            //            @RequestParam(value = "value", required = true) String sValue
+    ) {
+        String processInstanceId = null;
+        String key = null;
+        String value = null;
+        try {
+            LOG.info("allRequestParams:{}", allRequestParamsStr);
+            String[] paramsKeyValues = allRequestParamsStr.split("&");
+            HashMap<String, String> params = new HashMap<>();
+            for (String item : paramsKeyValues) {
+                String[] result = item.split("=");
+                String k = result[0];
+                String v = result.length > 1 ? item.split("=")[1] : "";
+                params.put(k, v);
+            }
+            processInstanceId = params.get("processInstanceId");
+            key = params.get("key");
+            key = URLDecoder.decode(key, "UTF-8");
+            value = params.get("value");
+            value = URLDecoder.decode(value, "UTF-8");
+
+            runtimeService.setVariable(processInstanceId, key, value);
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), processInstanceId, key, value);
         }
         return "";
     }
@@ -1018,7 +1057,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         List<String> headers = new ArrayList<>();
         String[] headersMainField = {"nID_Process", "sLoginAssignee",
-            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName"};
+            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName","sAssignee"};
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("(headers={})", headers);
         Set<String> headersExtra = oActionTaskService.findExtraHeaders(bDetail, foundResults,
@@ -1224,13 +1263,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
+LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!"+saFields);
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
-        	// we need to call runtime query only when non completed tasks are selected.
-            // if only completed tasks are selected - results of historic query will be used
+        // we need to call runtime query only when non completed tasks are selected.
+        // if only completed tasks are selected - results of historic query will be used
             foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1266,21 +1306,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
+            
+            LOG.info("headers"+headers);
         }
 
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers);
+                csvLines, saFields, saFieldsCalc, headers); 
+        
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
+            
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
-
+LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
         if (saFieldSummary != null) {
+            
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new ToolCellSum()
@@ -1291,6 +1336,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                     List<String> line = stringResults.get(i);
                     printWriter.writeNext(line.toArray(new String[line.size()]));
+                    LOG.info("!!!!!!!!!!!!!!line"+line);
                 }
             } catch (Exception e) {
                 List<String> errorList = new LinkedList<>();
@@ -1306,6 +1352,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
             for (Map<String, Object> currLine : csvLines) {
                 String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
+                LOG.info("!!!!oActionTaskService.createStringArray_line"+line);
                 printWriter.writeNext(line);
             }
         }

@@ -2,12 +2,12 @@
 
   <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
-    <div class="row container" ng-if="feedback.allowLeaveFeedback && !feedback.exist">
+    <div class="row container" ng-if="sID_Token">
       <div class="col-md-6 col-sm-6 feedback-padding0">
 
         <div class="feedback-assessment">
           <div class="feedback-assessment-header feedback-font14">Ваша оцінка</div>
-          <div star-rating class="feedback-assessment-body fa-custom-edit" ng-model="feedback.raiting" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
+          <div star-rating showonly="feedback.exist" class="feedback-assessment-body fa-custom-edit" ng-model="feedback.rating" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
         </div>
 
         <div>
@@ -17,11 +17,15 @@
         <div>
           <div class="feedback-form-group">
               <textarea rows="5" ng-model="feedback.messageBody"
+                        ng-disabled="feedback.exist"
                         class="form-control pull-right feedback-textarea feedback-margin-bottom"
                         placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
           </div>
           <div class="">
-            <input type="button" class="feedback-btn btn pull-right" value="Надіслати"
+            <input type="button"
+                   class="feedback-btn btn pull-right"
+                   ng-if="!feedback.exist"
+                   value="Надіслати"
                    ng-click="feedback.postFeedback()"/>
           </div>
         </div>
@@ -73,6 +77,15 @@
                     current-feedback="item"
                     on-send="feedback.sendAnswer(answerData)"
                     ></feedback-answer>
+
+                  <div class="feedback-answers" ng-repeat="answ in item.oSubjectMessageFeedbackAnswers">
+                      <p>
+                        <small class="feedback-info-list-author">{{::answ.oSubjectMessage.sSubjectInfo}} {{::feedback.relativeTime(answ.oSubjectMessage.sDate)}} {{::item.sAuthorFIO}}</small>
+                      </p>
+                      <div class="feedback-answers-body">
+                        <p>{{::answ.oSubjectMessage.sBody}}</p>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>

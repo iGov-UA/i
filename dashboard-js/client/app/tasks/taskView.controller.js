@@ -26,6 +26,11 @@
         $scope.printTemplateList = [];
         $scope.model = stateModel;
         $scope.model.printTemplate = null;
+        $scope.date = {
+          options: {
+            timePicker:false
+          }
+        };
 
         $scope.taskForm = null;
         $scope.error = null;

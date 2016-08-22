@@ -191,7 +191,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("bAssigned", "Удалить");
         //m.put("isSuspended", oTask.getAssignee()isSuspended());
 
-        long nDueElapsedHours = -1;
+        long nDueElapsedHours = -1; 
         long nDueElapsedDays = -1;
         if (oTask.getDueDate() != null) {
             long nDueDiffMS = 0;

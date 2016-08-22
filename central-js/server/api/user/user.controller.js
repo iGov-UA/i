@@ -45,7 +45,9 @@ var finishRequest = function (req, res, err, result, type) {
 
 module.exports.fio = function (req, res) {
   var account = req.session.account;
-  res.send({firstName: account.firstName, middleName: account.middleName, lastName: account.lastName});
+  var subjectID = req.session.subject.nID;
+  //TODO remove subject from fio object
+  res.send({firstName: account.firstName, middleName: account.middleName, lastName: account.lastName, subjectID: subjectID});
 };
 
 module.exports.tryCache = function (req, res, next) {

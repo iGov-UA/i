@@ -70,7 +70,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAreabirthNotUkr" name="Країна народження українською" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirthEng" name="Країна народження англійською" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNationalityUkr" name="Громадянство українською" type="string" required="true" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sNationalityEn" name="Громадянство  англійською" type="string" required="true" default="Ukraine"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
           <activiti:value id="sMan" name="Чоловіча"></activiti:value>
           <activiti:value id="sWoman" name="Жіноча"></activiti:value>
@@ -110,6 +111,7 @@
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEyeColor" name="Колір очей" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPortRekv" name="Реквізити порту" type="invisible"></activiti:formProperty>
@@ -139,6 +141,8 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+var nat=execution.getVariable('sAreabirthNotUkr')+" / "+execution.getVariable('sAreabirthEng')
+execution.setVariable('sNationality', nat)
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
 if (place=='sNull'){
@@ -389,7 +393,7 @@ execution.setVariable('sID_Payment', Pay)
           <activiti:string><![CDATA[Нове звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[${sNameOrgan}<br>[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -445,7 +449,7 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth1" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
           <activiti:value id="sMan" name="Чоловіча"></activiti:value>
           <activiti:value id="sWoman" name="Жіноча"></activiti:value>
@@ -478,6 +482,8 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -559,7 +565,7 @@ execution.setVariable('sID_Payment', Pay)
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										${slabelSum}<br>
-										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
@@ -617,7 +623,7 @@ execution.setVariable('sID_Payment', Pay)
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										${slabelSum}<br>
-										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
@@ -732,6 +738,8 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Назва порту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Назва порту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення (вводити без пробілу)" type="string" default="AB" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -761,7 +769,7 @@ for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
 if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
-per2 = per2+&amp;#60"}
+per2 = per2+"&amp;#60"}
 else {
 per2 = per2+fname}}
 else{
@@ -879,7 +887,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
@@ -974,7 +982,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
@@ -1073,7 +1081,7 @@ for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
 if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
-per2 = per2+&amp;#60"}
+per2 = per2+"&amp;#60"}
 else {
 per2 = per2+fname}}
 else{
@@ -1191,7 +1199,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
@@ -1260,7 +1268,7 @@ for (var i = 0; i&lt;50; i++){
 var fname=src.substr(i,1)
 if((fname != "null") || (fname != "")){
 if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
-per2 = per2+&amp;#60"}
+per2 = per2+"&amp;#60"}
 else {
 per2 = per2+fname}}
 else{
@@ -1378,7 +1386,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">

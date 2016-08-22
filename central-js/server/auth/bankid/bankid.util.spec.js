@@ -10,7 +10,6 @@ var keypair = require('keypair')
   , should = require('should')
   , assert = require('assert')
   , config = require('../../config/environment');
-  //, config = require('../../config');
 
 describe('decrypt object fields', function () {
   before(function (done) {

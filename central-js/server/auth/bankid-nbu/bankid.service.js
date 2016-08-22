@@ -21,17 +21,40 @@ var createError = function (error, error_description, response) {
   };
 };
 
+function responseContractValidation(callback, nextCallback) {
+  return function (error, response, body) {
+    if(response.statusCode === 200 && (body.customer || body.customerCrypto)){
+      nextCallback(error, response, body);
+    } else if (response.statusCode === 200 && body.error) {
+      // HTTP/1.1 406 Not Acceptable , якщо у запиті не задано ідентифікатор ПАП ,
+      // HTTP/1.1 501 Not Implemented , якщо у банку відсутній сертифікат ПАП.
+      callback(error, response, body);
+    } else {
+      callback(error, response, body);
+    }
+  }
+}
+
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidNBUUtil.getInfoURL(config);
 
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
+    if (body) {
+      console.log("--------------- client data response body !!!!" + JSON.stringify(body));
+    }
     var innToCheck;
 
     if (disableDecryption) {
-      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
-      innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
-      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      if (body.customerCrypto) {
+        console.log("---------------  client data is encrypted but decryption is disabled !!!! " + body.customerCrypto);
+        callback({message: "client data is encrypted but decryption is disabled"}, response, null);
+        return;
+      } else {
+        console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+        innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
+        console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+      }
     } else {
       innToCheck = body.customer.inn;
       console.log("--------------- nodecrption of inn !!!!");
@@ -96,7 +119,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, resultCallback);
+  }, responseContractValidation(callback, resultCallback));
 };
 
 module.exports.scansRequest = function (accessToken, callback) {

@@ -31,7 +31,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   ParameterFactory,
   $modal
   ,ErrorsFactory
-    ) {
+) {
 
   'use strict';
 
@@ -225,98 +225,97 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.fixForm = function(form, aFormProperties) {
-      try{
-        if(aFormProperties && aFormProperties!==null){
-            angular.forEach(aFormProperties, function(oProperty){
-                if((oProperty.id === "sVarLastName_0001" || oProperty.id === "sVarLastName_0002" || oProperty.id === "sVarLastName_0003")
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdlastName"].value;
-                }
-                if((oProperty.id === "sVarFirstName_0001" || oProperty.id === "sVarFirstName_0002" || oProperty.id === "sVarFirstName_0003")
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdfirstName"].value;
-                }
-                if((oProperty.id === "sVarMiddleName_0001" || oProperty.id === "sVarMiddleName_0002" || oProperty.id === "sVarMiddleName_0003")
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdmiddleName"].value;
-                }
-                if((oProperty.id === "sVarDatDenN_0001" || oProperty.id === "sVarDatDenN_0002" || oProperty.id === "sVarDatDenN_0003")
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdbirthDay"].value;
-                }
-                if((oProperty.id === "sReestrNum_0001" || oProperty.id === "sReestrNum_0002" || oProperty.id === "sReestrNum_0003")
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdinn"].value;
-                }
+    try{
+      if(aFormProperties && aFormProperties!==null){
+        angular.forEach(aFormProperties, function(oProperty){
+          if((oProperty.id === "sVarLastName_0001" || oProperty.id === "sVarLastName_0002" || oProperty.id === "sVarLastName_0003")
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdlastName"].value;
+          }
+          if((oProperty.id === "sVarFirstName_0001" || oProperty.id === "sVarFirstName_0002" || oProperty.id === "sVarFirstName_0003")
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdfirstName"].value;
+          }
+          if((oProperty.id === "sVarMiddleName_0001" || oProperty.id === "sVarMiddleName_0002" || oProperty.id === "sVarMiddleName_0003")
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdmiddleName"].value;
+          }
+          if((oProperty.id === "sVarDatDenN_0001" || oProperty.id === "sVarDatDenN_0002" || oProperty.id === "sVarDatDenN_0003")
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdbirthDay"].value;
+          }
+          if((oProperty.id === "sReestrNum_0001" || oProperty.id === "sReestrNum_0002" || oProperty.id === "sReestrNum_0003")
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdinn"].value;
+          }
 
-                var s="";
+          var s="";
 
-                s="sVarPostIndex";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarPostIndex";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarOblNam";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarOblNam";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarRajOblNam";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarRajOblNam";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarPlaceNam";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarPlaceNam";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarRajCityNam";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarRajCityNam";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarVulNam";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarVulNam";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarBudNum";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarBudNum";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarKvNum";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarKvNum";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarTypePom";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarTypePom";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-                s="sVarPomNum";
-                if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
-                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
-                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
-                }
+          s="sVarPomNum";
+          if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
+            && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+            $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
+          }
 
-
-            });
-        }
-      }catch(sError){
-        console.log('[submitForm.fixForm]sError='+ sError);
+        });
       }
+    }catch(sError){
+      console.log('[submitForm.fixForm]sError='+ sError);
+    }
 
   };
 
@@ -326,14 +325,63 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
 
     $scope.fixForm(form, aFormProperties);
+    var aReservedSlotsDMS = [];
     if(aFormProperties && aFormProperties!==null){
-        angular.forEach(aFormProperties, function(oProperty){
-            if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
-                $scope.data.formData.params[oProperty.id].value=null;
+      angular.forEach(aFormProperties, function(oProperty){
+        if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
+          $scope.data.formData.params[oProperty.id].value=null;
+        }
+        if(oProperty.type === 'queueData' && $scope.data.formData.params[oProperty.id].value){
+          angular.forEach(aFormProperties, function (checkField) {
+            if(checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'DMS'){
+              aReservedSlotsDMS.push(oProperty.id);
             }
-        });
+          });
+        }
+      });
     }
 
+    if(aReservedSlotsDMS.length > 0) {
+      setSlotsDMS(aReservedSlotsDMS, 0, aFormProperties);
+    } else {
+      submitActivitiForm(aFormProperties);
+    }
+  };
+
+  function setSlotsDMS(aQueueIDs, iteration, aFormProperties) {
+    var reserve = JSON.parse($scope.data.formData.params[aQueueIDs[iteration]].value);
+
+    $http.post('/api/service/flow/DMS/setSlot', {
+      nID_Server: oServiceData.nID_Server,
+      nID_SlotHold: parseInt(reserve.reserve_id)
+    }).
+    success(function(data, status, headers, config) {
+      console.log(data);
+
+      $scope.data.formData.params[aQueueIDs[iteration]].value = JSON.stringify({
+        sID_Type: "DMS",
+        sDate: data.date_time + '.00',
+        nID_ServiceCustomPrivate: parseInt(data.service_id),
+        ticket_number: data.ticket_number,
+        ticket_code: data.ticket_code
+      });
+
+      if(iteration < aQueueIDs.length - 1){
+        setSlotsDMS(aQueueIDs, iteration + 1, aFormProperties);
+      } else {
+        submitActivitiForm(aFormProperties);
+      }
+    }).
+    error(function(data, status, headers, config) {
+      console.error(data);
+      ErrorsFactory.push({
+        type: 'danger',
+        text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
+      })
+    });
+  }
+
+  function submitActivitiForm(aFormProperties) {
     ActivitiService
       .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
       .then(function(oReturn) {
@@ -345,12 +393,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
 
         if(!oReturn){
-            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
-            return;
+          ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
+          return;
         }
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
-            return;
+          ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
+          return;
         }
 
         var nCRC = ValidationService.getLunaValue(oReturn.id);
@@ -367,12 +415,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
         }catch(sError){
-            console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
+          console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
         }
 
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
-  };
+  }
 
   $scope.cantSubmit = function(form) {
     return $scope.isSending
@@ -409,22 +457,22 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         //if (field.id.startsWith('bankId') && field.type !== 'file'){
         if (field.id.startsWith('bankId')){
           $scope.data.formData.params[field.id].value="";
-            /*if (field.type === 'file'){
-                $scope.data.formData.params[field.id].upload = true;
-                $scope.data.formData.params[field.id].scan = null;
-            }*/
+          /*if (field.type === 'file'){
+           $scope.data.formData.params[field.id].upload = true;
+           $scope.data.formData.params[field.id].scan = null;
+           }*/
         }
         if (field.type === 'file'){
-            $scope.data.formData.params[field.id].value="";
-            //$scope.data.formData.params[field.id].upload = true;
-            $scope.data.formData.params[field.id].scan = null;
+          $scope.data.formData.params[field.id].value="";
+          //$scope.data.formData.params[field.id].upload = true;
+          $scope.data.formData.params[field.id].scan = null;
         }
       });
 
       /*if ($scope.data.formData.params['bankId_scan_passport']){
-        $scope.data.formData.params['bankId_scan_passport'].upload = true;
-        $scope.data.formData.params['bankId_scan_passport'].scan = null;
-      }*/
+       $scope.data.formData.params['bankId_scan_passport'].upload = true;
+       $scope.data.formData.params['bankId_scan_passport'].scan = null;
+       }*/
 
       $scope.data.formData.initializeParamsOnly($scope.activitiForm);
 
@@ -457,13 +505,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       return !FieldMotionService.isFieldWritable(property.id, $scope.data.formData.params);
     //property.type !== 'file'
     return (
-      $scope.data.formData.fields[property.id] && p.fieldES === p.ES.NOT_SET
+        $scope.data.formData.fields[property.id] && p.fieldES === p.ES.NOT_SET
       ) || p.fieldES === p.ES.READ_ONLY ;
   };
 
   $scope.isFieldVisible = function(property) {
     return property.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(property.id) ?
-      FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
+        FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
   };
 
   $scope.isFieldRequired = function(property) {
@@ -524,8 +572,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.isFormDataEmpty = function() {
     for (var param in $scope.data.formData.params ) {
       if ($scope.data.formData.params.hasOwnProperty(param) &&
-          $scope.data.formData.params[param].hasOwnProperty('value') &&
-          $scope.data.formData.params[param]['value'] != null) {
+        $scope.data.formData.params[param].hasOwnProperty('value') &&
+        $scope.data.formData.params[param]['value'] != null) {
         return false;
       }
     }
@@ -548,55 +596,55 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         //if (field.type === 'file'){
         //    $scope.data.formData.params[field.id].value="";
         try{
-            console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
-            var key = oField.id;
-            var property = $scope.data.formData.params[key];
-            console.log("SET:property="+property);
+          console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
+          var key = oField.id;
+          var property = $scope.data.formData.params[key];
+          console.log("SET:property="+property);
           //angular.forEach($scope.data.formData.params, function (property, key) {
-            if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
-             //&& property.value && property.value!==null && property.value !== undefined
-                //var oFormProperty = $scope.activitiForm.formProperties[key];
-                if(oField && oField!==null
-                    && oField.type !== "file"
-                    && oField.type !== "label"
-                    && oField.type !== "invisible"
-                    && oField.type !== "markers"
-                    && oField.type !== "queueData"
-                    && oField.type !== "select"
-                    ){
-                    if(!bFilled){
-                          //angular.forEach($scope.activitiForm.formProperties, function(field) {
-                            $scope.paramsBackup[key] = property.value;
-                        //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
-                    }
-                    property.value = response.data[key];
-                }
-            //console.log("SET:property.value="+property.value);
+          if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
+            //&& property.value && property.value!==null && property.value !== undefined
+            //var oFormProperty = $scope.activitiForm.formProperties[key];
+            if(oField && oField!==null
+              && oField.type !== "file"
+              && oField.type !== "label"
+              && oField.type !== "invisible"
+              && oField.type !== "markers"
+              && oField.type !== "queueData"
+              && oField.type !== "select"
+            ){
+              if(!bFilled){
+                //angular.forEach($scope.activitiForm.formProperties, function(field) {
+                $scope.paramsBackup[key] = property.value;
+                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+              }
+              property.value = response.data[key];
             }
+            //console.log("SET:property.value="+property.value);
+          }
         }catch(_){
-            console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
+          console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
         }
       });
     });
   };
 
   $scope.bFilledSelfPrevious = function () {
-      return $scope.paramsBackup !== null;
+    return $scope.paramsBackup !== null;
 
   };
 
   $scope.fillSelfPreviousBack = function () {
-      if($scope.bFilledSelfPrevious()){
-        angular.forEach($scope.data.formData.params, function (property, key) {
-            // && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined
-            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup.hasOwnProperty(key)){
-                //console.log("RESTORE:property.value="+property.value);
-                property.value = $scope.paramsBackup[key];
-                //console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
-            }
-        });
-        $scope.paramsBackup = null;
-      }
+    if($scope.bFilledSelfPrevious()){
+      angular.forEach($scope.data.formData.params, function (property, key) {
+        // && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined
+        if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup.hasOwnProperty(key)){
+          //console.log("RESTORE:property.value="+property.value);
+          property.value = $scope.paramsBackup[key];
+          //console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+        }
+      });
+      $scope.paramsBackup = null;
+    }
   };
 
 
