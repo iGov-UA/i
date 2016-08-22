@@ -28,6 +28,7 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання витягу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVudVutiagu" name="Вид витягу" type="enum" required="true">
+          <activiti:value id="sEnamVutiag" name="Звичайний витяг"></activiti:value>
           <activiti:value id="sEnamNE_Povn" name="Витяг з реєстру про внесення до актового запису змін, доповнень"></activiti:value>
           <activiti:value id="sEnamPovn" name="Повний витяг"></activiti:value>
         </activiti:formProperty>
@@ -53,8 +54,12 @@
           <activiti:value id="sEnamSutZminUs" name="Про внесення змін у зв’язку з усиновленням (удочерінням)"></activiti:value>
           <activiti:value id="sEnamSutResBat" name="Про реєстрацію встановлення батьківства"></activiti:value>
           <activiti:value id="sEnamSutNarDop" name="Про реєстрацію народження згідно з ч. 1 ст. 135 СКУ для отримання допомоги"></activiti:value>
-          <activiti:value id="sEnamSutNarVup" name="Про народження для виплати у зв’язку з народженням дитини"></activiti:value>
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRod_zvjazok" name="Ступінь родинного зв'язку" type="enum" required="true">
+          <activiti:value id="sEnamR1" name="Близький родич"></activiti:value>
+          <activiti:value id="sEnamR2" name="Далекий родич"></activiti:value>
+          <activiti:value id="sEnamR3" name="Опікун з довіреністю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
@@ -71,10 +76,10 @@
         <activiti:formProperty id="sSvid_Dat" name="Дата видачі свідоцтва" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSvid_PorN" name="Порядкови номер запису в реєстрі" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSvid_AktN" name="Номер актового запису в реєстрі" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (73 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sSum2" name="сумма платежа" type="invisible" default="0.53"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="сумма платежа" type="invisible" default="74.31"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
@@ -183,6 +188,7 @@ ${sNameOrgan}.&lt;br /&gt;
                 
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVudVutiagu" name="Вид витягу" type="enum" writable="false">
+          <activiti:value id="sEnamVutiag" name="Звичайний витяг"></activiti:value>
           <activiti:value id="sEnamNE_Povn" name="Витяг з реєстру про внесення до актового запису змін, доповнень"></activiti:value>
           <activiti:value id="sEnamPovn" name="Повний витяг"></activiti:value>
         </activiti:formProperty>
@@ -208,10 +214,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamSutZminUs" name="Про внесення змін у зв’язку з усиновленням (удочерінням)"></activiti:value>
           <activiti:value id="sEnamSutResBat" name="Про реєстрацію встановлення батьківства"></activiti:value>
           <activiti:value id="sEnamSutNarDop" name="Про реєстрацію народження згідно з ч. 1 ст. 135 СКУ для отримання допомоги"></activiti:value>
-          <activiti:value id="sEnamSutNarVup" name="Про народження для виплати у зв’язку з народженням дитини"></activiti:value>
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
         </activiti:formProperty>
-        
+        <activiti:formProperty id="asRod_zvjazok" name="Ступінь родинного зв'язку" type="enum" writable="false">
+          <activiti:value id="sEnamR1" name="Близький родич"></activiti:value>
+          <activiti:value id="sEnamR2" name="Далекий родич"></activiti:value>
+          <activiti:value id="sEnamR3" name="Опікун з довіреністю"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
