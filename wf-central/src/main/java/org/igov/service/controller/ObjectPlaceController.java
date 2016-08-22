@@ -1,10 +1,15 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
+
 import io.swagger.annotations.*;
+
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
@@ -16,8 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
@@ -50,6 +58,9 @@ public class ObjectPlaceController {
 
     @Autowired
     private CountryDao countryDao;
+    
+    @Autowired
+    private HistoryEvent_ServiceDao historyEventServiceDao;
 
     private static boolean positive(Long value) {
         return value != null && value > 0;
@@ -942,5 +953,37 @@ public class ObjectPlaceController {
             response.setHeader("Reason", e.getMessage());
         }
     }
+        
+        @ApiOperation(value = "Возвращает название сущности Place исходной заявки", notes = ""
+                + "Возвращает название сущности Place исходной заявки или кидает ошибку 403. Record not found!.\n")
+        @ApiResponses(value = {
+            @ApiResponse(code = 403, message = "Record not found")})
+        @RequestMapping(value = "/getOrderPlaces", method = RequestMethod.GET)
+        public @ResponseBody
+        ResponseEntity<String> getOrderPlaces(
+                @ApiParam(value = "ИД-номер, идентификатор заявки", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                @ApiParam(value = "ИД-номер сервера", required = true) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
+                HttpServletResponse response) {
+
+        	ResponseEntity<String> result = null;
+        	
+            try {
+            	HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            	LOG.info("Found history event by process ID {}", nID_Process);
+            	Optional<Place> place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
+                if (place.isPresent()) {
+                	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
+                	Map<String, String> resMap = new HashMap<String, String>();
+                	resMap.put("place", place.get().getName());
+                	result = JsonRestUtils.toJsonResponse(resMap);
+                }
+            } catch (RuntimeException e) {
+                LOG.warn("Error: {}", e.getMessage());
+                LOG.trace("FAIL:",  e);
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setHeader("Reason", e.getMessage());
+            } 
+            return result;
+        }
 
 }

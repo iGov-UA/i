@@ -77,6 +77,7 @@ public class HttpRequester {
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
             oConnection.setRequestMethod(RequestMethod.POST.name());
+            oConnection.setRequestProperty("Content-Type", "text/plain");
             oConnection.setDoOutput(true);
             DataOutputStream oDataOutputStream = new DataOutputStream(oConnection.getOutputStream());
             // Send post request

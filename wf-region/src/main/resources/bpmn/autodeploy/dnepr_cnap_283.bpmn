@@ -323,7 +323,7 @@ ${sNameOrgan}.<br />
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='hard'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
@@ -396,15 +396,11 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" writable="false">
-           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
-           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
            <activiti:value id="ok" name="Довідку надано"></activiti:value>
            <activiti:value id="bad" name="У видачі довідки відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr283.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr283.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
@@ -435,7 +431,7 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
        </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="usertask3" targetRef="servicetask11"></sequenceFlow>
-    <userTask id="usertask4" name="User Task">
+    <userTask id="usertask4" name="Обробка працівником ЦНАП після ДГК" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
     <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>

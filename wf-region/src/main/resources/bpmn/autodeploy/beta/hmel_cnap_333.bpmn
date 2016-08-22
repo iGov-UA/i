@@ -43,6 +43,12 @@
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_1'&quot;}}}"></activiti:formProperty>
@@ -51,7 +57,7 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -84,6 +90,7 @@
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_333_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_333_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
@@ -98,7 +105,7 @@
     </userTask>
     <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -140,7 +147,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>middayka@yandex.ru</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -176,9 +183,9 @@
 Ваше звернення щодо постановки на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів отримано та буде опрацьовано протягом 7 робочих днів.&lt;br /&gt;
 Згідно законодавчо визначеної процедури буде проводитись обстеження житлово-побутових умов. Ви отримаєте додаткове повідомлення про дату його проведення.&lt;br /&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -203,9 +210,9 @@ ${comment_3}&lt;br /&gt;
 До візиту підготуйте, будь ласка, оригінали документів, які Ви подали в електроному вигляді:
 ${list_documents}
 Також роздрукуйте і підпишіть заяву, яку Ви подавали в електронному вигляді (знаходиться у додатку до листа).&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -231,9 +238,9 @@ ${list_documents}
 На жаль, Ваше звернення щодо постановки на облік потенційних опікунів, піклувальників, прийомних батьків та батьків-вихователів відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -260,12 +267,12 @@ ${comment_1}&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія довідки знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку особисто під підпис у центрі надання адміністративних послуг за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
 Графік роботи:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -293,12 +300,12 @@ ${comment_1}&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія відмови знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис у центрі надання адміністративних послуг за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;&lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
 Графік роботи:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -323,7 +330,7 @@ var per13 = ' '
 var per14 = ' '
 var res = 'res'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
-per1 = 'cnap32@rada.khmelnytsky.com'
+per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
 }

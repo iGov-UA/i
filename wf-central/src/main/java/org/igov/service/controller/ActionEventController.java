@@ -1,14 +1,33 @@
 package org.igov.service.controller;
 
-import com.google.common.base.Optional;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import liquibase.util.csv.CSVWriter;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.HistoryEvent;
 import org.igov.model.action.event.HistoryEventDao;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.task.core.entity.ActionProcessCount;
+import org.igov.model.action.task.core.entity.ActionProcessCountDao;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
@@ -34,10 +53,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.base.Optional;
 
 @Controller
 @Api(tags = { "ActionEventController -- События по действиям и статистика" })
@@ -61,6 +77,8 @@ public class ActionEventController {
     private SubjectMessagesDao subjectMessagesDao; 
     @Autowired    
     private DocumentDao documentDao;
+    @Autowired
+    private ActionProcessCountDao actionProcessCountDao;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -602,5 +620,69 @@ public class ActionEventController {
 		} catch (Exception e) {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
+    }
+    
+    @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
+    @RequestMapping(value = "/getActionProcessCount", method = RequestMethod.GET)
+    public @ResponseBody
+    String getActionProcessCount(
+            @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
+            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
+            HttpServletResponse httpResponse) {
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+    	
+    	Map<String, Integer> resMap = new HashMap<String, Integer>();
+    	
+    	if (res != null){
+    		resMap.put("nCountYear", res.getnCountYear().intValue());
+    	} else {
+    		resMap.put("nCountYear", 0);
+    	}
+    	return JSONValue.toJSONString(resMap);
+    }
+    
+    @ApiOperation(value = "setActionProcessCount", notes = "getActionProcessCount")
+    @RequestMapping(value = "/setActionProcessCount", method = RequestMethod.GET)
+    public @ResponseBody
+    String setActionProcessCount(
+            @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+            @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
+            @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
+            HttpServletResponse httpResponse) {
+    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+    	
+    	LOG.info("Found ActionProcessCount {}", res);
+    	if (res == null){
+    		ActionProcessCount newElem = new ActionProcessCount();
+    		newElem.setsID_BP(sID_BP);
+    		newElem.setnCountYear(0);
+    		newElem.setnID_Service(nID_Service);
+    		newElem.setnYear(nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+    		res = newElem;
+    	} else {
+    		res.setnCountYear(res.getnCountYear() + 1);
+    	}
+    	res = actionProcessCountDao.saveOrUpdate(res);
+    	LOG.info("Saved updated info {}: {}", res, res.getId());
+    	
+    	List<ActionProcessCount> list = actionProcessCountDao.findAll();
+    	LOG.info("Total number of elements: {}", list);
+    	Map<String, Integer> resMap = new HashMap<String, Integer>();
+    	
+    	if (res != null){
+    		resMap.put("nCountYear", res.getnCountYear());
+    	} else {
+    		resMap.put("nCountYear", 0);
+    	}
+    	return JSONValue.toJSONString(resMap);
+    }
+    
+    @ApiOperation(value = "cleanActionProcessCount", notes = "cleanActionProcessCount")
+    @RequestMapping(value = "/cleanActionProcessCount", method = RequestMethod.GET)
+    public void setActionProcessCount(
+            @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
+    	int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
+    	LOG.info("Removed {} entities", res);
     }
 }

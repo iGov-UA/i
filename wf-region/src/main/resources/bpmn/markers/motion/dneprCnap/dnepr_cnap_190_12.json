@@ -6,26 +6,26 @@
 			"sNote":			["doc_Show_nFile_DPI_DovidkaProVidsutnistDolgaArendi"],
 			"aField_ID":		["nFile_DPI_DovidkaProVidsutnistDolgaArendi"],
 			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
-			"sCondition":		"[sClient] == 'hmel_hmelT'"
+			"sCondition":		"[sClient] == 'hmel_hmelT' || [sClient] == 'hmel_netishT'"
 		},
 		"RequiredFieldsOnCondition_52": 
 		{
 			"aField_ID":		["nFile_DPI_DovidkaProVidsutnistDolgaArendi"],
 			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
-			"sCondition":		"[sClient] == 'hmel_hmelT'"
+			"sCondition":		"[sClient] == 'hmel_hmelT' || [sClient] == 'hmel_netishT'"
 		},
 		"ShowFieldsOnCondition_61":
 		{
 			"sNote":			["doc_Show_nFile_UstanovchiDocumenti"],
 			"aField_ID":		["nFile_UstanovchiDocumenti"],
-			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
-			"sCondition":		"[sClient] == 'nikopolT'"
+			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin","sTypeContragent":"asEnumSelectTypeContragent"},
+			"sCondition":		"[sTypeContragent] == 'sEnumElement_Company' && ([sClient] == 'nikopolT' || [sClient] == 'novomoskT')"
 		},
 		"RequiredFieldsOnCondition_62": 
 		{
 			"aField_ID":		["nFile_UstanovchiDocumenti"],
-			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
-			"sCondition":		"[sClient] == 'nikopolT'"
+			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin","sTypeContragent":"asEnumSelectTypeContragent"},
+			"sCondition":		"[sTypeContragent] == 'sEnumElement_Company' && ([sClient] == 'nikopolT' || [sClient] == 'novomoskT')"
 		},
 		"ShowFieldsOnCondition_71":
 		{
@@ -52,6 +52,19 @@
 			"aField_ID":		["sTargetDestination"],
 			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
 			"sCondition":		"[sClient] == 'novomoskT'"
+		},
+		"ShowFieldsOnCondition_83":
+		{
+			"sNote":			["Show hmel_netishT"],
+			"aField_ID":		["sBaseReason"],
+			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":		"[sClient] == 'hmel_netishT'"
+		},
+		"RequiredFieldsOnCondition_83": 
+		{
+			"aField_ID":		["sBaseReason"],
+			"asID_Field":		{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":		"[sClient] == 'hmel_netishT'"
 		}
 	}
 }

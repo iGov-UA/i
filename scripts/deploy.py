@@ -18,6 +18,7 @@ parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', dest='jenkin
 parser.add_argument('-d', '--docker', help='Build with docker', default='false')
 parser.add_argument('-do', '--dockerOnly', help='Only build with docker', default='false')
 parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
+parser.add_argument('-bic', '--bBuildInContainer', help='Build in container', default='false')
 args = parser.parse_args()
 
 commandArr = ["bash", "scripts/deploy_private.sh"]
@@ -25,16 +26,11 @@ commandArr = ["bash", "scripts/deploy_private.sh"]
 for arg in vars(args):
     commandArr.append('--'+arg)
     commandArr.append(getattr(args, arg))
-print commandArr
 
 if os.path.exists("iSystem"):
     subprocess.call("rm -rf iSystem", shell=True)
 
-#subprocess.call("ssh-agent bash -c 'ssh-add /sybase/.secret/id_rsa_iSystem; git clone git@github.com:e-government-ua/iSystem.git'", shell=True)
-subprocess.call("git clone git@github.com:e-government-ua/iSystem.git", shell=True)
-#if 'project' in args:
-#    subprocess.call(["rsync","-rt","iSystem/config/" + args.version + "/" + args.project + "/", "./" + args.project + "/"])
-
+subprocess.call("git clone git@iSystem.github.com:e-government-ua/iSystem.git", shell=True)
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)

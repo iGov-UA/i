@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dndz_cnap_190" name="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 01.06.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 11.07.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
@@ -43,6 +43,7 @@
           <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
           <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBaseReason" name="Підстава для розірвання договору" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності; формат: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
@@ -105,6 +106,7 @@
           <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
           <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBaseReason" name="Підстава для розірвання договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -167,6 +169,7 @@
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBaseReason" name="Підстава для розірвання договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>

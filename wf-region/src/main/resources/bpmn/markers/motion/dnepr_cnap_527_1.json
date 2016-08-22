@@ -4,7 +4,7 @@
 		"ShowFieldsOnCondition_0":
 		{
 			"sNote":				["For Hide Invisible"],
-			"aField_ID":			["sShapka527", "sShapka527_rishennyaOrgan", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime"],
+			"aField_ID":			["sShapka527", "sShapka527_rishennyaOrgan", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime","sAddPrintSpisok"],
 			"asID_Field":			{"sClient":"sEnumSubect"},
 			"sCondition":			"[sClient] == 'Not_Correct'"
 		},
@@ -18,28 +18,41 @@
 		"ShowFieldsOnCondition_1":
 		{
 			"sNote":		["Ur-osoba"],
-			"aField_ID":	["sName_ur", "edrpou","nFile_AdvertLicense","nFile_ConstituentDocuments","sAdres_1"],
+			"aField_ID":	["sName_ur", "edrpou","nFile_AdvertLicense","sAdres_1"],
 			"asID_Field":	{"sClient":"sEnumSubect"},
 			"sCondition":	"[sClient] == 'sEnumElement_ur'"
+		},
+		"RequiredFieldsOnCondition_1": 
+		{
+			"aField_ID":	["sName_ur", "edrpou","nFile_AdvertLicense","sAdres_1"],
+			"asID_Field":	{"sClient":"sEnumSubect"},
+			"sCondition":	"[sClient] == 'sEnumElement_ur'"
+		},
+		"ShowFieldsOnCondition_11":
+		{
+			"sNote":		["Show nFile_ConstituentDocuments"],
+			"aField_ID":	["nFile_ConstituentDocuments"],
+			"asID_Field":	{"sClient":"sEnumSubect","sOrgan":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'sEnumElement_ur' && [sOrgan] != 'zak_uzgT'"
 		},
 		"RequiredFieldsOnCondition_11": 
 		{
-			"aField_ID":	["sName_ur", "edrpou","nFile_AdvertLicense","nFile_ConstituentDocuments","sAdres_1"],
-			"asID_Field":	{"sClient":"sEnumSubect"},
-			"sCondition":	"[sClient] == 'sEnumElement_ur'"
+			"aField_ID":	["nFile_ConstituentDocuments"],
+			"asID_Field":	{"sClient":"sEnumSubect","sOrgan":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'sEnumElement_ur' && [sOrgan] != 'zak_uzgT'"
 		},
 		"ShowFieldsOnCondition_2":
 		{
-			"sNote":		["Del_Rishennya"],
-			"aField_ID":	["sDel_NomerPunkta"],
+			"sNote":		["Use_New_Edit_Punkt"],
+			"aField_ID":	["sNewText"],
 			"asID_Field":	{"sClient":"asTypeAction"},
-			"sCondition":	"[sClient] == 'sEnumElement_Drop'"
+			"sCondition":	"[sClient] == 'sEnumElement_Edit'"
 		},
-		"RequiredFieldsOnCondition_21": 
+		"RequiredFieldsOnCondition_2": 
 		{
-			"aField_ID":	["sDel_NomerPunkta"],
+			"aField_ID":	["sNewText"],
 			"asID_Field":	{"sClient":"asTypeAction"},
-			"sCondition":	"[sClient] == 'sEnumElement_Drop'"
+			"sCondition":	"[sClient] == 'sEnumElement_Edit'"
 		},
 		"ShowFieldsOnCondition_3":
 		{
@@ -53,6 +66,32 @@
 			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
 			"asID_Field":	{"sClient":"asHow"},
 			"sCondition":	"[sClient] == 'confidant'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"sNote":		["Use for Pervomayskiy (Kharkov)"],
+			"aField_ID":	["asRelationLand"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'khark_perv'"
+		},
+		"RequiredFieldsOnCondition_4": 
+		{
+			"aField_ID":	["asRelationLand"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'khark_perv'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Use for Pervomayskiy (Kharkov)"],
+			"aField_ID":	["nFile_LandManagment"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sRelLand":"asRelationLand"},
+			"sCondition":	"[sClient] == 'khark_perv' && [sRelLand]=='sEnumElement_Tak'"
+		},
+		"RequiredFieldsOnCondition_5": 
+		{
+			"aField_ID":	["nFile_LandManagment"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sRelLand":"asRelationLand"},
+			"sCondition":	"[sClient] == 'khark_perv' && [sRelLand]=='sEnumElement_Tak'"
 		}
 	}
 }

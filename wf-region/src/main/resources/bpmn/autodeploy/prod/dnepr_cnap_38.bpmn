@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_38" name="Копії рішення міської ради про передачу в оренду земельних ділянок державної або комунальної власності" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 01.06.2016</documentation>
+  <process id="dnepr_cnap_38" name="Копії рішення міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 13.07.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -12,17 +12,23 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської ради" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Вкажіть номер, дату та назву рішення міської (селищної) ради" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="Зазначте у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис у листі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -32,7 +38,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow8" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -42,7 +48,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -59,21 +65,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                                      Ваше звернення [sID_Order] щодо копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності успішно зареєстроване.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                      Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності успішно зареєстроване.&lt;br&gt;
                                       Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.
-									</p>
+									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
+									${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -93,14 +99,14 @@
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської (селищної) ради" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="decision" name="Рішення адміністратора" type="enum">
+        <activiti:formProperty id="decision" name="Рішення адміністратора" type="enum">
           <activiti:value id="accept" name="Взяти в роботу і відправити опис документів"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -111,6 +117,11 @@
         <activiti:formProperty id="kopi" name="копія рішення" type="invisible" default="передачу в оренду земельних ділянок державної або комунальної власності"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_36.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Set Print" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -129,23 +140,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
                                         На жаль, змушені Вам відмовити в реєстрації звернення [sID_Order].
-                                    </p>
-									<p>
-									   	Причина в наступному:<br>
+                                    &lt;/p&gt;
+									&lt;p&gt;
+									   	Причина в наступному:&lt;br&gt;
                                     	${comment}
-									</p>
+									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.</p>   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									${sNameOrgan}.&lt;/p&gt;   
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -170,21 +181,21 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                                      Ваше звернення [sID_Order] щодо копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності передане на опрацювання.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                      Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності передане на опрацювання.&lt;br&gt;
                                       Спеціалісти державного Органу повинні дати відповідь у відведений Законом термін.
-									</p>
+									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
+									${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -204,7 +215,7 @@
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської ради" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjName" name="Номер, дата та назва рішення міської (селищної) ради" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjAdress" name="місцезнаходження (адреса) об’єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDavName" name="у давальному відмінку повне найменування юридичної особи / П.І.Б. фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
@@ -212,11 +223,14 @@
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kopi" name="Рішення державного органу" type="enum" required="true">
-          <activiti:value id="dozv" name="Копія рішень міської ради готова"></activiti:value>
-          <activiti:value id="decline" name="Неможливо видати копію рішень міської ради"></activiti:value>
+          <activiti:value id="dozv" name="Копія рішень міської (селищної) ради готова"></activiti:value>
+          <activiti:value id="decline" name="Неможливо видати копію рішень міської (селищної) ради"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Коментар адміністратора у разі неможливості видати копію рішень міської ради" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Коментар адміністратора у разі неможливості видати копію рішень міської (селищної) ради" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -234,35 +248,36 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                             		Ваша копія рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності готова (звернення [sID_Order]).
-                             		</p>
-									<p>
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.<br>
-									При собі треба мати:<br>
-									1. Документ, що посвідчує особу.<br>
-									2. Для уповоноваженої особи - довіренність.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                             		Ваша копія рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності готова (звернення [sID_Order]).
+                             		&lt;/p&gt;
+									&lt;p&gt;
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.&lt;br&gt;
+									При собі треба мати:&lt;br&gt;
+									1. Документ, що посвідчує особу.&lt;br&gt;
+									2. Для уповоноваженої особи - довіренність.&lt;br&gt;
 									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
-									</p>
-									<p>
-                             		Отримати документ можна:<br>
-                             		${sAddress}<br>${sWorkTime}
-                             		</p>
+									&lt;/p&gt;
+									&lt;p&gt;
+                             		Отримати документ можна:&lt;br&gt;
+                             		${sAddress}&lt;br&gt;
+                             		${sWorkTime}&lt;br&gt;
+									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
                             		[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -283,37 +298,38 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                             		На жаль, неможливо видати Вам копію рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності (звернення [sID_Order]).
-                             		&lt;br /&gt;
-									Підстава: ${comment1}&lt;br /&gt;
-                             		</p>
-									<p>
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.<br>
-									При собі треба мати:<br>
-									1. Документ, що посвідчує особу.<br>
-									2. Для уповоноваженої особи - довіренність.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                             		На жаль, неможливо видати Вам копію рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності (звернення [sID_Order]).
+                             		&amp;lt;br /&amp;gt;
+									Підстава: ${comment1}&amp;lt;br /&amp;gt;
+                             		&lt;/p&gt;
+									&lt;p&gt;
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.&lt;br&gt;
+									При собі треба мати:&lt;br&gt;
+									1. Документ, що посвідчує особу.&lt;br&gt;
+									2. Для уповоноваженої особи - довіренність.&lt;br&gt;
 									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
-									</p>
-									<p>
-									Отримати документ можна:<br>
-                             		${sAddress}<br>${sWorkTime}
-                             		</p>
+									&lt;/p&gt;
+									&lt;p&gt;
+									Отримати документ можна:&lt;br&gt;
+                             		${sAddress}&lt;br&gt;
+                             		${sWorkTime}&lt;br&gt;
+									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
                             		[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -322,6 +338,30 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="true">
+      <script>
+      		execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())
+      	</script>
+    </scriptTask>
+    <scriptTask id="scripttask2" name="Script Task (javascript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+		var per1 = ' '
+		var per2 = ' '
+		if (execution.getVariable('sShapkaGolova') == null)
+		{
+			per1 = 'Міському голові' 
+			execution.setVariable('sShapkaGolova', per1)
+		}
+		if (execution.getVariable('sIsSelo') == 'True')
+			per2= 'сільської' 
+		else
+		
+			per2= 'міської' 
+		execution.setVariable('sTypeRadi', per2)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_38">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_38" id="BPMNPlane_dnepr_cnap_38">
@@ -338,7 +378,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="39.0" y="197.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="67.0" width="105.0" x="234.0" y="24.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="234.0" y="231.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="65.0" width="111.0" x="231.0" y="125.0"></omgdc:Bounds>
@@ -373,6 +413,12 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="62.0" width="105.0" x="790.0" y="273.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="70.0" width="105.0" x="88.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="69.0" width="105.0" x="234.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="80.0" y="157.0"></omgdi:waypoint>
@@ -382,12 +428,12 @@
         <omgdi:waypoint x="56.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="140.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="320.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="286.0" y="91.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="342.0" y="157.0"></omgdi:waypoint>
@@ -443,6 +489,14 @@
         <omgdi:waypoint x="842.0" y="335.0"></omgdi:waypoint>
         <omgdi:waypoint x="842.0" y="377.0"></omgdi:waypoint>
         <omgdi:waypoint x="904.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="193.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="234.0" y="354.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="286.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="298.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

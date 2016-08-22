@@ -29,9 +29,10 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -53,557 +54,583 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 
 import org.igov.util.ToolWeb;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
-    static final transient Logger LOG = LoggerFactory
-            .getLogger(Abstract_MailTaskCustom.class);
-    private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern.compile("\\[paymentButton_LiqPay(.*?)\\]");
-    private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern.compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
-    private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
-    private static final Pattern TAG_PATTERN_DOUBLE_BRACKET = Pattern.compile("\\{\\[(.*?)\\]\\}");
-    private static final String TAG_CANCEL_TASK = "[cancelTask]";
-    private static final String TAG_CANCEL_TASK_SIMPLE = "[cancelTaskSimple]";
-    private static final String TAG_nID_Protected = "[nID_Protected]";
-    private static final String TAG_sID_Order = "[sID_Order]";
-    private static final String TAG_nID_SUBJECT = "[nID_Subject]";
-    private static final String TAG_sDateCreate = "[sDateCreate]";
-    //private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
-    private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
-    private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern.compile("\\[pattern/(.*?)\\]");
-    private static final String TAG_Function_AtEnum = "enum{[";
-    private static final String TAG_Function_To = "]}";
-    private static final String PATTERN_MERCHANT_ID = "sID_Merchant%s";
-    private static final String PATTERN_SUM = "sSum%s";
-    private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
-    private static final String PATTERN_DESCRIPTION = "sDescription%s";
-    private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
-    @Autowired
-    public TaskService taskService;
-    @Autowired
-    public HistoryService historyService;
-    @Value("${general.Mail.sHost}")
-    public String mailServerHost;
-    @Value("${general.Mail.nPort}")
-    public String mailServerPort;
-    @Value("${general.Mail.sAddressDefaultFrom}")
-    public String mailServerDefaultFrom;
-    @Value("${general.Mail.sUsername}")
-    public String mailServerUsername;
-    @Value("${general.Mail.sPassword}")
-    public String mailServerPassword;
-    @Value("${general.Mail.sAddressNoreply}")
-    public String mailAddressNoreplay;
+	static final transient Logger LOG = LoggerFactory.getLogger(Abstract_MailTaskCustom.class);
+	private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern.compile("\\[paymentButton_LiqPay(.*?)\\]");
+	private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern.compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
+	private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("_[0-9]+");
+	private static final Pattern TAG_PATTERN_DOUBLE_BRACKET = Pattern.compile("\\{\\[(.*?)\\]\\}");
+	private static final String TAG_CANCEL_TASK = "[cancelTask]";
+	private static final String TAG_CANCEL_TASK_SIMPLE = "[cancelTaskSimple]";
+	private static final String TAG_nID_Protected = "[nID_Protected]";
+	private static final String TAG_sID_Order = "[sID_Order]";
+	private static final String TAG_nID_SUBJECT = "[nID_Subject]";
+	private static final String TAG_sDateCreate = "[sDateCreate]";
+	// private static final String TAG_sURL_SERVICE_MESSAGE =
+	// "[sURL_ServiceMessage]";
+	private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
+	private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern.compile("\\[pattern/(.*?)\\]");
+	private static final String TAG_Function_AtEnum = "enum{[";
+	private static final String TAG_Function_To = "]}";
+	private static final String PATTERN_MERCHANT_ID = "sID_Merchant%s";
+	private static final String PATTERN_SUM = "sSum%s";
+	private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
+	private static final String PATTERN_DESCRIPTION = "sDescription%s";
+	private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
 
-    @Value("${general.Mail.bUseSSL}")
-    private boolean bSSL;
-    @Value("${general.Mail.bUseTLS}")
-    private boolean bTLS;
+	@Autowired
+	public TaskService taskService;
+	@Autowired
+	public HistoryService historyService;
+	@Value("${general.Mail.sHost}")
+	public String mailServerHost;
+	@Value("${general.Mail.nPort}")
+	public String mailServerPort;
+	@Value("${general.Mail.sAddressDefaultFrom}")
+	public String mailServerDefaultFrom;
+	@Value("${general.Mail.sUsername}")
+	public String mailServerUsername;
+	@Value("${general.Mail.sPassword}")
+	public String mailServerPassword;
+	@Value("${general.Mail.sAddressNoreply}")
+	public String mailAddressNoreplay;
 
-    public Expression from;
-    public Expression to;
-    public Expression subject;
-    public Expression text;
-    
-    protected Expression sID_Merchant;
-    protected Expression sSum;
-    protected Expression sID_Currency;
-    protected Expression sLanguage;
-    protected Expression sDescription;
-    protected Expression nID_Subject;
-    //private static final String PATTERN_DELIMITER = "_";
-    
-    @Autowired
-    public ManagerOTP oManagerOTP;
-    
-    @Autowired
-    public ManagerSMS oManagerSMS;
+	@Value("${general.Mail.bUseSSL}")
+	private boolean bSSL;
+	@Value("${general.Mail.bUseTLS}")
+	private boolean bTLS;
 
-    @Autowired
-    AccessKeyService accessCover;
-    @Autowired
-    GeneralConfig generalConfig;
-    @Autowired
-    private ApplicationContext context;
-    //@Autowired
-    //AccessDataService accessDataDao;
-    @Autowired
-    Liqpay liqBuy;
-    @Autowired
-    private CancelTaskUtil cancelTaskUtil;
-    
-    @Autowired
-    private HistoryEventService historyEventService;
-    @Autowired
-    private IBytesDataStorage durableBytesDataStorage;
+	public Expression from;
+	public Expression to;
+	public Expression subject;
+	public Expression text;
 
-    protected String replaceTags(String sTextSource, DelegateExecution execution)
-            throws Exception {
+	protected Expression sID_Merchant;
+	protected Expression sSum;
+	protected Expression sID_Currency;
+	protected Expression sLanguage;
+	protected Expression sDescription;
+	protected Expression nID_Subject;
+	// private static final String PATTERN_DELIMITER = "_";
 
-        if (sTextSource == null) {
-            return null;
-        }
+	@Autowired
+	public ManagerOTP oManagerOTP;
 
-        LOG.debug("sTextSource=" + sTextSource);
+	@Autowired
+	public ManagerSMS oManagerSMS;
 
-        String sTextReturn = sTextSource;
+	@Autowired
+	AccessKeyService accessCover;
+	@Autowired
+	GeneralConfig generalConfig;
+	@Autowired
+	private ApplicationContext context;
+	// @Autowired
+	// AccessDataService accessDataDao;
+	@Autowired
+	Liqpay liqBuy;
+	@Autowired
+	private CancelTaskUtil cancelTaskUtil;
 
-        sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
+	@Autowired
+	private HistoryEventService historyEventService;
+	@Autowired
+	private IBytesDataStorage durableBytesDataStorage;
 
-        sTextReturn = populatePatternWithContent(sTextReturn);
+	protected String replaceTags(String sTextSource, DelegateExecution execution) throws Exception {
 
-        sTextReturn = replaceTags_Enum(sTextReturn, execution);
+		if (sTextSource == null) {
+			return null;
+		}
 
-        sTextReturn = replaceTags_Catalog(sTextReturn, execution);
+		LOG.debug("sTextSource=" + sTextSource);
 
-        sTextReturn = new FileSystemDictonary().replaceMVSTagWithValue(sTextReturn);
+		String sTextReturn = sTextSource;
 
-        Long nID_Order = getProtectedNumber(Long.valueOf(execution
-                .getProcessInstanceId()));
+		sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
 
-        if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:(nID_Order={})", nID_Order);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Order);
-        }
+		sTextReturn = populatePatternWithContent(sTextReturn);
 
-        if (sTextReturn.contains(TAG_sID_Order)) {
-            String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
-            LOG.info("TAG_sID_Order:(sID_Order={})", sID_Order);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
-        }
+		sTextReturn = replaceTags_Enum(sTextReturn, execution);
 
-        if (sTextReturn.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:(nID_Protected={})", nID_Order);
-            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, false);
-            sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
-        }
-        
-        if (sTextReturn.contains(TAG_CANCEL_TASK_SIMPLE)) {
-            LOG.info("TAG_CANCEL_TASK_SIMPLE:(nID_Protected={})", nID_Order);
-            String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, true);
-            sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK_SIMPLE, sHTML_CancelTaskButton);
-        }
+		sTextReturn = replaceTags_Catalog(sTextReturn, execution);
 
+		sTextReturn = new FileSystemDictonary().replaceMVSTagWithValue(sTextReturn);
 
-        if (sTextReturn.contains(TAG_nID_SUBJECT)) {
-            LOG.info("TAG_nID_SUBJECT: (nID_Subject={})", nID_Subject);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
-        }
+		Long nID_Order = getProtectedNumber(Long.valueOf(execution.getProcessInstanceId()));
 
-        if (sTextReturn.contains(TAG_sDateCreate)) {
-            Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(execution.getProcessInstanceId()).singleResult().getStartTime();
-            DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-            String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-            LOG.info("TAG_sDateCreate: (sDateCreate={})", sDateCreate);
-            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sDateCreate + "\\E", "" + sDateCreate);
-        }
+		if (sTextReturn.contains(TAG_nID_Protected)) {
+			LOG.info("TAG_nID_Protected:(nID_Order={})", nID_Order);
+			sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Order);
+		}
 
-        sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Order);
+		if (sTextReturn.contains(TAG_sID_Order)) {
+			String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
+			LOG.info("TAG_sID_Order:(sID_Order={})", sID_Order);
+			sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
+		}
 
-        return sTextReturn;
-    }
+		if (sTextReturn.contains(TAG_CANCEL_TASK)) {
+			LOG.info("TAG_CANCEL_TASK:(nID_Protected={})", nID_Order);
+			String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, false);
+			sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK, sHTML_CancelTaskButton);
+		}
 
-    private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
-        List<String> previousUserTaskId = getPreviousTaskId(execution);
-        int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
-        LOG.info("Found {} enum occurrences in the text", nLimit);
-        Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
-        int foundIndex = 0;
-        while (nLimit > 0) {
-            nLimit--;
-            int nAt = textWithoutTags.indexOf(TAG_Function_AtEnum, foundIndex);
-            LOG.info("sTAG_Function_AtEnum, (nAt={})", nAt);
-            foundIndex = nAt + 1;
-            int nTo = textWithoutTags.indexOf(TAG_Function_To, foundIndex);
-            foundIndex = nTo + 1;
-            LOG.info("sTAG_Function_ToEnum,(nTo={})", nTo);
-            String sTAG_Function_AtEnum = textWithoutTags.substring(nAt
-                    + TAG_Function_AtEnum.length(), nTo);
-            LOG.info("(sTAG_Function_AtEnum={})", sTAG_Function_AtEnum);
+		if (sTextReturn.contains(TAG_CANCEL_TASK_SIMPLE)) {
+			LOG.info("TAG_CANCEL_TASK_SIMPLE:(nID_Protected={})", nID_Order);
+			String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order, true);
+			sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK_SIMPLE, sHTML_CancelTaskButton);
+		}
 
-            if (aProperty.isEmpty()) {
-                loadPropertiesFromTasks(execution, previousUserTaskId,
-                        aProperty);
-            }
-            boolean bReplaced = false;
-            for (FormProperty property : aProperty.values()) {
-                String sType = property.getType().getName();
-                String snID = property.getId();
-                if (!bReplaced && "enum".equals(sType)
-                        && sTAG_Function_AtEnum.equals(snID)) {
-                    LOG.info(String
-                            .format("Found field! Matching property snID=%s:name=%s:sType=%s:sValue=%s with fieldNames",
-                                    snID, property.getName(), sType, property.getValue()));
+		if (sTextReturn.contains(TAG_nID_SUBJECT)) {
+			LOG.info("TAG_nID_SUBJECT: (nID_Subject={})", nID_Subject);
+			sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
+		}
 
-                    Object variable = execution.getVariable(property.getId());
-                    if (variable != null) {
-                        String sID_Enum = variable.toString();
-                        LOG.info("execution.getVariable()(sID_Enum={})", sID_Enum);
-                        String sValue = ActionTaskService.parseEnumProperty(property, sID_Enum);
-                        LOG.info("9sValue={})", sValue);
+		if (sTextReturn.contains(TAG_sDateCreate)) {
+			Date oProcessInstanceStartDate = historyService
+					.createProcessInstanceHistoryLogQuery(execution.getProcessInstanceId()).singleResult()
+					.getStartTime();
+			DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+			String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
+			LOG.info("TAG_sDateCreate: (sDateCreate={})", sDateCreate);
+			sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sDateCreate + "\\E", "" + sDateCreate);
+		}
 
-                        textWithoutTags = textWithoutTags.replaceAll("\\Q"
-                                + TAG_Function_AtEnum + sTAG_Function_AtEnum
-                                + TAG_Function_To + "\\E", sValue);
-                        bReplaced = true;
-                    }
-                }
-            }
+		sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Order);
 
-        }
-        return textWithoutTags;
-    }
+		return sTextReturn;
+	}
 
-    private String replaceTags_Catalog(String textStr, DelegateExecution execution) throws Exception {
-        StringBuffer outputTextBuffer = new StringBuffer();
-        String replacement = "";
-        Matcher matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
-        if (matcher.find()) {
-            matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
-            List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
-            Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
-            loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
-            while (matcher.find()) {
-                String tag_Payment_CONTENT_CATALOG = matcher.group();
-                LOG.info("Found tag catalog group:{}", matcher.group());
-                if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
-                    String prefix;
-                    Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
-                    if (matcherPrefix.find()) {
-                        prefix = matcherPrefix.group();
-                        LOG.info("Found double bracket tag group: {}", matcherPrefix.group());
-                        String form_ID = StringUtils.replace(prefix, "{[", "");
-                        form_ID = StringUtils.replace(form_ID, "]}", "");
-                        LOG.info("(form_ID={})", form_ID);
-                        FormProperty formProperty = mProperty.get(form_ID);
-                        LOG.info("Found form property : {}", formProperty);
-                        if (formProperty != null) {
-                            if (formProperty.getValue() != null) {
-                                replacement = formProperty.getValue();
-                            } else {
-                                List<String> aID = new ArrayList<String>();
-                                aID.add(formProperty.getId());
-                                List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
-                                LOG.info("(proccessVariable={})", proccessVariable);
-                                if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
-                                    replacement = proccessVariable.get(0);
-                                }
+	private String replaceTags_Enum(String textWithoutTags, DelegateExecution execution) {
+		List<String> previousUserTaskId = getPreviousTaskId(execution);
+		int nLimit = StringUtils.countMatches(textWithoutTags, TAG_Function_AtEnum);
+		LOG.info("Found {} enum occurrences in the text ", nLimit);
+		Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
+		int foundIndex = 0;
+		while (nLimit > 0) {
+			nLimit--;
+			int nAt = textWithoutTags.indexOf(TAG_Function_AtEnum, foundIndex);
+			LOG.info("sTAG_Function_AtEnum, (nAt={})", nAt);
+			foundIndex = nAt + 1;
+			int nTo = textWithoutTags.indexOf(TAG_Function_To, foundIndex);
+			foundIndex = nTo + 1;
+			LOG.info("sTAG_Function_ToEnum,(nTo={})", nTo);
+			String sTAG_Function_AtEnum = textWithoutTags.substring(nAt + TAG_Function_AtEnum.length(), nTo);
+			LOG.info("(sTAG_Function_AtEnum={})", sTAG_Function_AtEnum);
+
+			if (aProperty.isEmpty()) {
+				loadPropertiesFromTasks(execution, previousUserTaskId, aProperty);
+			}
+			boolean bReplaced = false;
+			for (FormProperty property : aProperty.values()) {
+				String sType = property.getType().getName();
+				String snID = property.getId();
+				if (!bReplaced && "enum".equals(sType) && sTAG_Function_AtEnum.equals(snID)) {
+					LOG.info(String.format(
+							"Found field! Matching property snID=%s:name=%s:sType=%s:sValue=%s with fieldNames", snID,
+							property.getName(), sType, property.getValue()));
+
+					Object variable = execution.getVariable(property.getId());
+					if (variable != null) {
+						String sID_Enum = variable.toString();
+						LOG.info("execution.getVariable()(sID_Enum={})", sID_Enum);
+						String sValue = ActionTaskService.parseEnumProperty(property, sID_Enum);
+						LOG.info("9sValue={})", sValue);
+
+						textWithoutTags = textWithoutTags.replaceAll(
+								"\\Q" + TAG_Function_AtEnum + sTAG_Function_AtEnum + TAG_Function_To + "\\E", sValue);
+						bReplaced = true;
+					}
+				}
+			}
+
+		}
+		return textWithoutTags;
+	}
+
+	private String replaceTags_Catalog(String textStr, DelegateExecution execution) throws Exception {
+		StringBuffer outputTextBuffer = new StringBuffer();
+		String replacement = "";
+		Matcher matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
+                //try{
+                    if (matcher.find()) {
+                            matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
+                            List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
+                            Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
+                            loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
+                            while (matcher.find()) {
+                                    String tag_Payment_CONTENT_CATALOG = matcher.group();
+                                    LOG.info("Found tag catalog group:{}", matcher.group());
+                                    if (!tag_Payment_CONTENT_CATALOG.startsWith(TAG_Function_AtEnum)) {
+                                            String prefix;
+                                            Matcher matcherPrefix = TAG_PATTERN_DOUBLE_BRACKET.matcher(tag_Payment_CONTENT_CATALOG);
+                                            if (matcherPrefix.find()) {
+                                                    prefix = matcherPrefix.group();
+                                                    LOG.info("Found double bracket tag group: {}", matcherPrefix.group());
+                                                    String form_ID = StringUtils.replace(prefix, "{[", "");
+                                                    form_ID = StringUtils.replace(form_ID, "]}", "");
+                                                    LOG.info("(form_ID={})", form_ID);
+                                                    FormProperty formProperty = mProperty.get(form_ID);
+                                                    LOG.info("Found form property : {}", formProperty);
+                                                    if (formProperty != null) {
+                                                            if (formProperty.getValue() != null) {
+                                                                    replacement = formProperty.getValue();
+                                                            } else {
+                                                                    List<String> aID = new ArrayList<String>();
+                                                                    aID.add(formProperty.getId());
+                                                                    List<String> proccessVariable = AbstractModelTask.getVariableValues(execution, aID);
+                                                                    LOG.info("(proccessVariable={})", proccessVariable);
+                                                                    if (!proccessVariable.isEmpty() && proccessVariable.get(0) != null) {
+                                                                            replacement = proccessVariable.get(0);
+                                                                    }
+                                                            }
+
+                                                            String sType = formProperty.getType().getName();
+                                                            if ("date".equals(sType)) {
+                                                                    if (formProperty.getValue() != null) {
+                                                                            LOG.info("formProperty.getValue() getFormattedDateS : {}", formProperty.getValue());
+                                                                            replacement = getFormattedDateS(formProperty.getValue());
+                                                                    } 
+                                                            } else {
+                                                                    //replacement = formProperty.getValue();
+                                                            }
+
+                                                    }
+                                            }
+                                    }
+                                    //if(replacement!=null){
+                                        LOG.info("Replacement for pattern : {}", replacement);
+                                        matcher.appendReplacement(outputTextBuffer, replacement);
+                                    /*}else{
+                                        LOG.warn("Replacement for pattern : {}", replacement);
+                                    }*/
+                                    replacement = "";
                             }
+                    }                    
+                /*}catch(Exception oException){
+                    LOG.error("FAIL: ", oException);
+                    throw oException;
+                }*/
+		return matcher.appendTail(outputTextBuffer).toString();
+	}
 
-                        }
-                    }
-                }
-                LOG.info("Replacement for pattern : {}", replacement);
-                matcher.appendReplacement(outputTextBuffer, replacement);
-                replacement = "";
-            }
+	private String replaceTags_LIQPAY(String textStr, DelegateExecution execution) throws Exception {
+		String LIQPAY_CALLBACK_URL = generalConfig.getSelfHost()
+				+ "/wf/service/finance/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
+
+		StringBuffer outputTextBuffer = new StringBuffer();
+		Matcher matcher = TAG_PAYMENT_BUTTON_LIQPAY.matcher(textStr);
+		while (matcher.find()) {
+
+			String tag_Payment_Button_Liqpay = matcher.group();
+			String prefix = "";
+			Matcher matcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_Payment_Button_Liqpay);
+			if (matcherPrefix.find()) {
+				prefix = matcherPrefix.group();
+			}
+
+			String pattern_merchant = String.format(PATTERN_MERCHANT_ID, prefix);
+			String pattern_sum = String.format(PATTERN_SUM, prefix);
+			String pattern_currency = String.format(PATTERN_CURRENCY_ID, prefix);
+			String pattern_description = String.format(PATTERN_DESCRIPTION, prefix);
+			String pattern_subject = String.format(PATTERN_SUBJECT_ID, prefix);
+
+			String sID_Merchant = execution.getVariable(pattern_merchant) != null
+					? execution.getVariable(pattern_merchant).toString()
+					: execution.getVariable(String.format(PATTERN_MERCHANT_ID, "")).toString();
+			LOG.info("{}={}", pattern_merchant, sID_Merchant);
+			String sSum = execution.getVariable(pattern_sum) != null ? execution.getVariable(pattern_sum).toString()
+					: execution.getVariable(String.format(PATTERN_SUM, "")).toString();
+			LOG.info("{}={}", pattern_sum, sSum);
+			if (sSum != null) {
+				sSum = sSum.replaceAll(",", ".");
+			}
+			String sID_Currency = execution.getVariable(pattern_currency) != null
+					? execution.getVariable(pattern_currency).toString()
+					: execution.getVariable(String.format(PATTERN_CURRENCY_ID, "")).toString();
+			LOG.info("{}={}", pattern_currency, sID_Currency);
+			Currency oID_Currency = Currency.valueOf(sID_Currency == null ? "UAH" : sID_Currency);
+
+			Language sLanguage = Liqpay.DEFAULT_LANG;
+			String sDescription = execution.getVariable(pattern_description) != null
+					? execution.getVariable(pattern_description).toString()
+					: execution.getVariable(String.format(PATTERN_DESCRIPTION, "")).toString();
+			LOG.info("{}={}", pattern_description, sDescription);
+
+			String sID_Order = "TaskActiviti_" + execution.getId().trim() + prefix;
+			String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL, sID_Order, "", prefix);
+			String sURL_CallbackPaySuccess = null;
+			Long nID_Subject = Long.valueOf(
+					execution.getVariable(pattern_subject) != null ? execution.getVariable(pattern_subject).toString()
+							: execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
+			nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
+			LOG.info("{}={}", pattern_subject, nID_Subject);
+			boolean bTest = generalConfig.isSelfTest();
+			String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant, sSum, oID_Currency, sLanguage,
+					sDescription, sID_Order, sURL_CallbackStatusNew, sURL_CallbackPaySuccess, nID_Subject, bTest);
+			matcher.appendReplacement(outputTextBuffer, htmlButton);
+		}
+		return matcher.appendTail(outputTextBuffer).toString();
+	}
+
+	private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags, DelegateExecution execution, Long nID_Order)
+			throws Exception {
+
+		StringBuffer outputTextBuffer = new StringBuffer();
+		Matcher matcher = TAG_sURL_SERVICE_MESSAGE.matcher(textWithoutTags);
+		while (matcher.find()) {
+			String tag_sURL_SERVICE_MESSAGE = matcher.group();
+			String prefix = "";
+			Matcher matcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_SERVICE_MESSAGE);
+			if (matcherPrefix.find()) {
+				prefix = matcherPrefix.group();
+			}
+			String URL_SERVICE_MESSAGE = generalConfig.getSelfHostCentral()
+					+ "/wf/service/subject/message/setMessageRate";
+
+			String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
+			/*
+			 * ProcessDefinition processDefinition =
+			 * execution.getEngineServices()
+			 * .getRepositoryService().createProcessDefinitionQuery()
+			 * .processDefinitionId(execution.getProcessDefinitionId())
+			 * .singleResult();
+			 */
+
+			String sQueryParamPattern = "?"
+					// + "sHead=Отзыв" + "&sMail= " + "&sData="
+					// + (processDefinition != null &&
+					// processDefinition.getName() != null ?
+					// processDefinition.getName().trim() : "")
+					+ "&sID_Rate=" + prefix.replaceAll("_", "")
+					// + "&nID_SubjectMessageType=1" + "&nID_Protected="+
+					// nID_Protected
+					+ "&sID_Order=" + generalConfig.getOrderId_ByOrder(nID_Order);
+
+			String sQueryParam = String.format(sQueryParamPattern);
+			if (nID_Subject != null) {
+				sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
+			}
+			sQueryParam = sQueryParam
+					// TODO: Need remove in future!!!
+					+ "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
+					+ AccessContract.RequestAndLoginUnlimited.name();
+			LOG.info("(sURI={},{})", sURI, sQueryParam);
+			String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam,
+					AccessContract.RequestAndLoginUnlimited);
+			String replacemet = URL_SERVICE_MESSAGE + sQueryParam + "&" + AuthenticationTokenSelector.ACCESS_KEY + "="
+					+ sAccessKey;
+			LOG.info("(replacemet URL={}) ", replacemet);
+			matcher.appendReplacement(outputTextBuffer, replacemet);
+		}
+		return matcher.appendTail(outputTextBuffer).toString();
+	}
+
+	private void loadPropertiesFromTasks(DelegateExecution execution, List<String> previousUserTaskId,
+			Map<String, FormProperty> aProperty) {
+		LOG.info("(execution.getId()={})", execution.getId());
+		LOG.info("(execution.getProcessDefinitionId()={})", execution.getProcessDefinitionId());
+		LOG.info("(execution.getProcessInstanceId()={})", execution.getProcessInstanceId());
+		String[] as = execution.getProcessDefinitionId().split("\\:");
+		String s = as[2];
+		LOG.info("(s={})", s);
+
+		for (String taskId : previousUserTaskId) {
+			try {
+				FormData oTaskFormData = null;
+				if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
+					oTaskFormData = execution.getEngineServices().getFormService().getTaskFormData(taskId);
+				}
+
+				if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
+					for (FormProperty property : oTaskFormData.getFormProperties()) {
+						aProperty.put(property.getId(), property);
+						LOG.info(
+								String.format("Matching property id=%s:name=%s:%s:%s with fieldNames", property.getId(),
+										property.getName(), property.getType().getName(), property.getValue()));
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error: {}, occured while looking for a form for task:{}", e.getMessage(), taskId);
+				LOG.debug("FAIL:", e);
+			}
+		}
+		try {
+			FormData oTaskFormData = execution.getEngineServices().getFormService()
+					.getStartFormData(execution.getProcessDefinitionId());
+			if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
+				for (FormProperty property : oTaskFormData.getFormProperties()) {
+					aProperty.put(property.getId(), property);
+					LOG.info(String.format("Matching property id=%s:name=%s:%s:%s with fieldNames", property.getId(),
+							property.getName(), property.getType().getName(), property.getValue()));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error: {}, occured while looking for a start form for a process.", e.getMessage());
+			LOG.debug("FAIL:", e);
+		}
+	}
+
+	private List<String> getPreviousTaskId(DelegateExecution execution) {
+		ExecutionEntity ee = (ExecutionEntity) execution;
+
+		List<String> tasksRes = new LinkedList<String>();
+		List<String> resIDs = new LinkedList<String>();
+
+		for (FlowElement flowElement : execution.getEngineServices().getRepositoryService()
+				.getBpmnModel(ee.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
+			if (flowElement instanceof UserTask) {
+				UserTask userTask = (UserTask) flowElement;
+				LOG.info("Checking user task with ID={} ", userTask.getId());
+				resIDs.add(userTask.getId());
+
+			}
+		}
+
+		for (String taskIdInBPMN : resIDs) {
+			List<Task> tasks = execution.getEngineServices().getTaskService().createTaskQuery()
+					.executionId(execution.getId()).taskDefinitionKey(taskIdInBPMN).list();
+			if (tasks != null) {
+				for (Task task : tasks) {
+					LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(),
+							task.getTaskDefinitionKey());
+					tasksRes.add(task.getId());
+				}
+			}
+		}
+		return tasksRes;
+	}
+
+	protected String getStringFromFieldExpression(Expression expression, DelegateExecution execution) {
+		if (expression != null) {
+			Object value = expression.getValue(execution);
+			if (value != null) {
+				return value.toString();
+			}
+		}
+		return null;
+	}
+
+	protected Long getLongFromFieldExpression(Expression expression, DelegateExecution execution) {
+		if (expression != null) {
+			Object value = expression.getValue(execution);
+			if (value != null) {
+				return Long.valueOf(value.toString());
+			}
+		}
+		return null;
+	}
+
+	protected String populatePatternWithContent(String inputText) throws IOException, URISyntaxException {
+		StringBuffer outputTextBuffer = new StringBuffer();
+		Matcher matcher = TAG_sPATTERN_CONTENT_COMPILED.matcher(inputText);
+		while (matcher.find()) {
+			matcher.appendReplacement(outputTextBuffer, getPatternContentReplacement(matcher));
+		}
+		matcher.appendTail(outputTextBuffer);
+		return outputTextBuffer.toString();
+	}
+
+	public Mail Mail_BaseFromTask(DelegateExecution oExecution) throws Exception {
+
+		String sFromMail = getStringFromFieldExpression(this.from, oExecution);
+		String saToMail = getStringFromFieldExpression(this.to, oExecution);
+		String sHead = getStringFromFieldExpression(this.subject, oExecution);
+		String sBodySource = getStringFromFieldExpression(this.text, oExecution);
+		String sBody = replaceTags(sBodySource, oExecution);
+
+		saveServiceMessage(sHead, saToMail, sBody,
+				generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())));
+
+		Mail oMail = context.getBean(Mail.class);
+
+		oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)._Body(sBody)._AuthUser(mailServerUsername)
+				._AuthPassword(mailServerPassword)._Host(mailServerHost)._Port(Integer.valueOf(mailServerPort))
+				// ._SSL(true)
+				// ._TLS(true)
+				._SSL(bSSL)._TLS(bTLS);
+
+		return oMail;
+	}
+
+	/*
+	 * Access modifier changed from private to default to enhance testability
+	 */
+	String getPatternContentReplacement(Matcher matcher) throws IOException, URISyntaxException {
+		String sPath = matcher.group(1);
+		LOG.info("Found content group! (sPath={})", sPath);
+		byte[] bytes = getFileData_Pattern(sPath);
+		String sData = Tool.sData(bytes);
+		LOG.debug("Loaded content from file:" + sData);
+		return sData;
+	}
+
+	private String getFormattedDate(Date date) {
+        if (date == null){
+            return StringUtils.EMPTY;
         }
-        return matcher.appendTail(outputTextBuffer).toString();
+
+        Calendar oCalendar = Calendar.getInstance();
+        oCalendar.setTime(date);
+        SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return oSimpleDateFormat.format(oCalendar.getTime());
     }
+	
+	private String getFormattedDateS(String date) {
+		DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("MM/dd/yyyy");
+	    DateTime dateTime = dateStringFormat.parseDateTime(date);
+		Date d = dateTime.toDate();
+		return getFormattedDate(d);
+		}
 
-    private String replaceTags_LIQPAY(String textStr, DelegateExecution execution) throws Exception {
-        String LIQPAY_CALLBACK_URL = generalConfig.getSelfHost()
-                + "/wf/service/finance/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
+	@Override
+	public void execute(DelegateExecution oExecution) throws Exception {
+	}
 
-        StringBuffer outputTextBuffer = new StringBuffer();
-        Matcher matcher = TAG_PAYMENT_BUTTON_LIQPAY.matcher(textStr);
-        while (matcher.find()) {
-
-            String tag_Payment_Button_Liqpay = matcher.group();
-            String prefix = "";
-            Matcher matcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_Payment_Button_Liqpay);
-            if (matcherPrefix.find()) {
-                prefix = matcherPrefix.group();
-            }
-
-            String pattern_merchant = String.format(PATTERN_MERCHANT_ID, prefix);
-            String pattern_sum = String.format(PATTERN_SUM, prefix);
-            String pattern_currency = String.format(PATTERN_CURRENCY_ID, prefix);
-            String pattern_description = String.format(PATTERN_DESCRIPTION, prefix);
-            String pattern_subject = String.format(PATTERN_SUBJECT_ID, prefix);
-
-            String sID_Merchant = execution.getVariable(pattern_merchant) != null
-                    ? execution.getVariable(pattern_merchant).toString()
-                    : execution.getVariable(String.format(PATTERN_MERCHANT_ID, "")).toString();
-            LOG.info("{}={}", pattern_merchant, sID_Merchant);
-            String sSum = execution.getVariable(pattern_sum) != null
-                    ? execution.getVariable(pattern_sum).toString()
-                    : execution.getVariable(String.format(PATTERN_SUM, "")).toString();
-            LOG.info("{}={}", pattern_sum, sSum);
-            if (sSum != null) {
-                sSum = sSum.replaceAll(",", ".");
-            }
-            String sID_Currency = execution.getVariable(pattern_currency) != null
-                    ? execution.getVariable(pattern_currency).toString()
-                    : execution.getVariable(String.format(PATTERN_CURRENCY_ID, "")).toString();
-            LOG.info("{}={}", pattern_currency, sID_Currency);
-            Currency oID_Currency = Currency
-                    .valueOf(sID_Currency == null ? "UAH" : sID_Currency);
-
-            Language sLanguage = Liqpay.DEFAULT_LANG;
-            String sDescription = execution.getVariable(pattern_description) != null
-                    ? execution.getVariable(pattern_description).toString()
-                    : execution.getVariable(String.format(PATTERN_DESCRIPTION, "")).toString();
-            LOG.info("{}={}", pattern_description, sDescription);
-
-            String sID_Order = "TaskActiviti_" + execution.getId().trim() + prefix;
-            String sURL_CallbackStatusNew = String.format(
-                    LIQPAY_CALLBACK_URL, sID_Order, "", prefix);
-            String sURL_CallbackPaySuccess = null;
-            Long nID_Subject = Long.valueOf(execution.getVariable(pattern_subject) != null
-                    ? execution.getVariable(pattern_subject).toString()
-                    : execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
-            nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
-            LOG.info("{}={}", pattern_subject, nID_Subject);
-            boolean bTest = generalConfig.isSelfTest();
-            String htmlButton = liqBuy.getPayButtonHTML_LiqPay(
-                    sID_Merchant, sSum, oID_Currency, sLanguage,
-                    sDescription, sID_Order, sURL_CallbackStatusNew,
-                    sURL_CallbackPaySuccess, nID_Subject, bTest);
-            matcher.appendReplacement(outputTextBuffer, htmlButton);
-        }
-        return matcher.appendTail(outputTextBuffer).toString();
-    }
-
-    private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags,
-            DelegateExecution execution, Long nID_Order) throws Exception {
-
-        StringBuffer outputTextBuffer = new StringBuffer();
-        Matcher matcher = TAG_sURL_SERVICE_MESSAGE.matcher(textWithoutTags);
-        while (matcher.find()) {
-            String tag_sURL_SERVICE_MESSAGE = matcher.group();
-            String prefix = "";
-            Matcher matcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_SERVICE_MESSAGE);
-            if (matcherPrefix.find()) {
-                prefix = matcherPrefix.group();
-            }
-            String URL_SERVICE_MESSAGE = generalConfig.getSelfHostCentral()
-                    + "/wf/service/subject/message/setMessageRate";
-
-            String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
-            /*ProcessDefinition processDefinition = execution.getEngineServices()
-             .getRepositoryService().createProcessDefinitionQuery()
-             .processDefinitionId(execution.getProcessDefinitionId())
-             .singleResult();*/
-
-            String sQueryParamPattern = "?"
-                    //+ "sHead=Отзыв" + "&sMail= " + "&sData="
-                    //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
-                    + "&sID_Rate=" + prefix.replaceAll("_", "")
-                    //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                    + "&sID_Order=" + generalConfig.getOrderId_ByOrder(nID_Order);
-
-            String sQueryParam = String.format(sQueryParamPattern);
-            if (nID_Subject != null) {
-                sQueryParam = sQueryParam
-                        + "&nID_Subject=" + nID_Subject;
-            }
-            sQueryParam = sQueryParam
-                    //TODO: Need remove in future!!!
-                    + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name();
-            LOG.info("(sURI={},{})", sURI, sQueryParam);
-            String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
-            String replacemet = URL_SERVICE_MESSAGE + sQueryParam
-                    + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-            LOG.info("(replacemet URL={}) ", replacemet);
-            matcher.appendReplacement(outputTextBuffer, replacemet);
-        }
-        return matcher.appendTail(outputTextBuffer).toString();
-    }
-
-    private void loadPropertiesFromTasks(DelegateExecution execution,
-            List<String> previousUserTaskId,
-            Map<String, FormProperty> aProperty) {
-        LOG.info("(execution.getId()={})", execution.getId());
-        LOG.info("(execution.getProcessDefinitionId()={})", execution.getProcessDefinitionId());
-        LOG.info("(execution.getProcessInstanceId()={})", execution.getProcessInstanceId());
-        String[] as = execution.getProcessDefinitionId().split("\\:");
-        String s = as[2];
-        LOG.info("(s={})", s);
-
-        for (String taskId : previousUserTaskId) {
-            try {
-                FormData oTaskFormData = null;
-                if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
-                    oTaskFormData = execution.getEngineServices()
-                            .getFormService()
-                            .getTaskFormData(taskId);
-                }
-
-                if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
-                    for (FormProperty property : oTaskFormData.getFormProperties()) {
-                        aProperty.put(property.getId(), property);
-                        LOG.info(String.format(
-                                "Matching property id=%s:name=%s:%s:%s with fieldNames",
-                                property.getId(), property.getName(), property
-                                .getType().getName(), property.getValue()));
-                    }
-                }
-            } catch (Exception e) {
-                LOG.error("Error: {}, occured while looking for a form for task:{}", e.getMessage(), taskId);
-                LOG.debug("FAIL:", e);
-            }
-        }
-        try {
-            FormData oTaskFormData = execution.getEngineServices()
-                    .getFormService()
-                    .getStartFormData(execution.getProcessDefinitionId());
-            if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {
-                for (FormProperty property : oTaskFormData.getFormProperties()) {
-                    aProperty.put(property.getId(), property);
-                    LOG.info(String.format(
-                            "Matching property id=%s:name=%s:%s:%s with fieldNames",
-                            property.getId(), property.getName(), property
-                            .getType().getName(), property.getValue()));
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("Error: {}, occured while looking for a start form for a process.", e.getMessage());
-            LOG.debug("FAIL:", e);
-        }
-    }
-
-    private List<String> getPreviousTaskId(DelegateExecution execution) {
-        ExecutionEntity ee = (ExecutionEntity) execution;
-
-        List<String> tasksRes = new LinkedList<String>();
-        List<String> resIDs = new LinkedList<String>();
-
-        for (FlowElement flowElement : execution.getEngineServices().getRepositoryService()
-                .getBpmnModel(ee.getProcessDefinitionId()).getMainProcess().getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                LOG.info("Checking user task with ID={} ", userTask.getId());
-                resIDs.add(userTask.getId());
-
-            }
-        }
-
-        for (String taskIdInBPMN : resIDs) {
-            List<Task> tasks = execution.getEngineServices().getTaskService().createTaskQuery()
-                    .executionId(execution.getId()).taskDefinitionKey(taskIdInBPMN).list();
-            if (tasks != null) {
-                for (Task task : tasks) {
-                    LOG.info("Task with (ID={}, name={}, taskDefinitionKey={})", task.getId(), task.getName(), task
-                            .getTaskDefinitionKey());
-                    tasksRes.add(task.getId());
-                }
-            }
-        }
-        return tasksRes;
-    }
-
-    protected String getStringFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return value.toString();
-            }
-        }
-        return null;
-    }
-
-    protected Long getLongFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return Long.valueOf(value.toString());
-            }
-        }
-        return null;
-    }
-
-    protected String populatePatternWithContent(String inputText) throws IOException, URISyntaxException {
-        StringBuffer outputTextBuffer = new StringBuffer();
-        Matcher matcher = TAG_sPATTERN_CONTENT_COMPILED.matcher(inputText);
-        while (matcher.find()) {
-            matcher.appendReplacement(outputTextBuffer, getPatternContentReplacement(matcher));
-        }
-        matcher.appendTail(outputTextBuffer);
-        return outputTextBuffer.toString();
-    }
-
-    public Mail Mail_BaseFromTask(DelegateExecution oExecution)
-            throws Exception {
-        
-        String sFromMail = getStringFromFieldExpression(this.from, oExecution);
-        String saToMail = getStringFromFieldExpression(this.to, oExecution);
-        String sHead = getStringFromFieldExpression(this.subject, oExecution);
-        String sBodySource = getStringFromFieldExpression(this.text, oExecution);
-        String sBody = replaceTags(sBodySource, oExecution);
-        
-        saveServiceMessage(sHead, saToMail, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())));
-
-        Mail oMail = context.getBean(Mail.class);
-
-        oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBody)._AuthUser(mailServerUsername)
-                ._AuthPassword(mailServerPassword)._Host(mailServerHost)
-                ._Port(Integer.valueOf(mailServerPort))
-                //._SSL(true)
-                //._TLS(true)
-                ._SSL(bSSL)
-                ._TLS(bTLS);
-
-        return oMail;
-    }
-
-    /*
-     * Access modifier changed from private to default to enhance testability
-     */
-    String getPatternContentReplacement(Matcher matcher) throws IOException, URISyntaxException {
-        String sPath = matcher.group(1);
-        LOG.info("Found content group! (sPath={})", sPath);
-        byte[] bytes = getFileData_Pattern(sPath);
-        String sData = Tool.sData(bytes);
-        LOG.debug("Loaded content from file:" + sData);
-        return sData;
-    }
-
-    @Override
-    public void execute(DelegateExecution oExecution) throws Exception {
-    }
-    
-    protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order){
-    	Map<String, String> params = new HashMap<>();
-    	params.put("sID_Order", sID_Order);
-        params.put("sHead","Отправлено письмо");
-        params.put("sBody", sHead);
-        params.put("sMail", sTo);
-        params.put("nID_SubjectMessageType", "" + 10L);
-        params.put("nID_Subject", "0");
-        params.put("sContacts", "0");
-        params.put("sData", "0");
-        params.put("RequestMethod", RequestMethod.GET.name());
-        String key;
+	protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order) {
+		final Map<String, String> params = new HashMap<>();
+		params.put("sID_Order", sID_Order);
+		params.put("sHead", "Отправлено письмо");
+		params.put("sBody", sHead);
+		params.put("sMail", sTo);
+		params.put("nID_SubjectMessageType", "" + 10L);
+		params.put("nID_Subject", "0");
+		params.put("sContacts", "0");
+		params.put("sData", "0");
+		params.put("RequestMethod", RequestMethod.GET.name());
+		String key;
 		key = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
 		params.put("sID_DataLink", key);
-        
+
 		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
- 		Runnable task = new Runnable() {
- 			
- 			@Override
- 			public void run() {
- 				LOG.info("try to save service message with params with a delay: (params={})", params);
- 		        String jsonServiceMessage;
- 				try {
- 					jsonServiceMessage = historyEventService.addServiceMessage(params);
- 					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
- 				} catch (Exception e) {
- 					LOG.error("(saveServiceMessage error={})", e.getMessage());
- 				}
- 			}
- 		};
- 		// run saving message in 10 seconds so history event will be in the database already by that time
- 		executor.schedule(task, 10, TimeUnit.SECONDS);
- 		executor.shutdown();
-		 		
- 		LOG.info("Configured thread to run in 10 seconds with params: (params={})", params);
-    }
+		Runnable task = new Runnable() {
+
+			@Override
+			public void run() {
+				LOG.info("try to save service message with params with a delay: (params={})", params);
+				String jsonServiceMessage;
+				try {
+					jsonServiceMessage = historyEventService.addServiceMessage(params);
+					LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
+				} catch (Exception e) {
+					LOG.error("( saveServiceMessage error={})", e.getMessage());
+				}
+			}
+		};
+		// run saving message in 10 seconds so history event will be in the
+		// database already by that time
+		executor.schedule(task, 10, TimeUnit.SECONDS);
+		executor.shutdown();
+
+		LOG.info("Configured thread to run in 10 seconds with params: (params={})", params);
+	}
 
 }

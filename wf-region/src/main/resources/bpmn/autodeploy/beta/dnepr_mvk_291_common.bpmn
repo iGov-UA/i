@@ -525,6 +525,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
@@ -1136,6 +1137,7 @@
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -1180,7 +1182,7 @@
     <sequenceFlow id="flow7" name="asStatusOperator=='sEnumSendEmail'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="dnepr_dmr_common">
+    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="group_UkrDoc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -1717,6 +1719,7 @@
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:expression><![CDATA[EO180277SMV]]></activiti:expression>
@@ -1862,7 +1865,7 @@ p {font-size: 14px;}
 </html>]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:string><![CDATA[ ]]></activiti:string>
+            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSourceChannel">
             <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
@@ -1922,12 +1925,14 @@ p {font-size: 14px;}
 <p>
 Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br ><br>
 Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
-Номер документа: ${sID_Document_UkrDoc}
+Номер документа: ${sID_Document_UkrDoc}<br>
+
+
 </p>
-Телефон для довідок: 0-800-501-174<br>
-<br>
+Телефон для довідок: 0-800-501-174<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -1962,7 +1967,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow28" name="sAnswerEmail=='noSendEmail'" sourceRef="exclusivegateway3" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="dnepr_dmr_common">
+    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="group_Corezoid">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
@@ -2486,6 +2491,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
             <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}","asAnonymousTr":"enum{[asAnonymousTr]}"}]]></activiti:expression>
@@ -2499,12 +2505,8 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow30" name="asStatusOperator=='sEnumSendInCallCenter'" sourceRef="exclusivegateway1" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInCallCenter'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfu&amp;&amp;'asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
@@ -3064,6 +3066,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
@@ -3091,6 +3094,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sOperator_24" name="Оператор 24"></activiti:value>
           <activiti:value id="sOperator_25" name="Оператор 25"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -3993,6 +3998,7 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumDep21" name="Управління майном колишнього селища міського типу Таромське"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -4009,9 +4015,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     </sequenceFlow>
     <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'&amp;&amp;asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
@@ -4720,6 +4723,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentLaw" name="Коментар юриста (причина відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChannelApplicant" name="Канал зв'язку з заявником" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -4767,8 +4771,8 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent11" name="End"></endEvent>
-    <sequenceFlow id="flow83" name="sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="endevent11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
+    <sequenceFlow id="flow83" name="sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'||sAnswerStatus=='Successfull'" sourceRef="exclusivegateway4" targetRef="endevent11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'||sAnswerStatus=='Successfull'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow84" sourceRef="exclusivegateway11" targetRef="exclusivegateway2">
@@ -4828,9 +4832,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="92.0" width="105.0" x="639.0" y="793.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="877.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="520.0" y="818.0"></omgdc:Bounds>
@@ -4902,7 +4903,7 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="1459.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="742.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="954.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
         <omgdc:Bounds height="40.0" width="40.0" x="1401.0" y="677.0"></omgdc:Bounds>
@@ -4971,13 +4972,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="639.0" y="839.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="838.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
-        <omgdi:waypoint x="377.0" y="877.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="434.0" y="859.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="852.0" y="677.0"></omgdi:waypoint>
@@ -5066,16 +5060,6 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         <omgdi:waypoint x="1112.0" y="839.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1335.0" y="823.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
-        <omgdi:waypoint x="539.0" y="924.0"></omgdi:waypoint>
-        <omgdi:waypoint x="959.0" y="924.0"></omgdi:waypoint>
-        <omgdi:waypoint x="959.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1007.0" y="839.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="812.0" y="891.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -5197,10 +5181,10 @@ execution.setVariable('sStatusAppRGA', per3)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="540.0" y="818.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="777.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="858.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="954.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="434.0" y="744.0"></omgdc:Bounds>
+          <omgdc:Bounds height="84.0" width="100.0" x="437.0" y="855.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">

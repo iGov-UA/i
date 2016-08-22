@@ -176,9 +176,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         nID_Server : oServiceData.nID_Server
       }
     }).then(function (oResponse) {
-        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
-            return oResponse.data;
-        }
+      if(oResponse.data){
+        return oResponse.data;
+      }
     }).catch(function (error) {
         if(!ErrorsFactory.bSuccessResponse(error.data)){
             return $q.reject(error.data);
