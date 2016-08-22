@@ -20,7 +20,7 @@ public class ObjectPlace_UADaoImpl extends GenericEntityDao<Long, ObjectPlace_UA
     public List<ObjectPlace_UA> getObjectPlace_UA(String sID, String sName_UA) {
 	Criteria criteria = getSession().createCriteria(ObjectPlace_UA.class);
 	if (sID != null) {
-	    criteria.add(Restrictions.ilike("sID", sID, MatchMode.ANYWHERE));
+	    criteria.add(Restrictions.ilike("sID", sID, MatchMode.START));
 	}
 	if (sName_UA != null) {
 	    criteria.add(Restrictions.ilike("sName_UA", sName_UA, MatchMode.ANYWHERE));
