@@ -172,11 +172,18 @@ angular.module('app')
 
           return bIsComplete;
         };
+        $scope.regionIsNull = function () {
+          if($scope.data && $scope.data.region){
+            $scope.data.region = null;
+          }
+          if($scope.data && $scope.data.city){
+            $scope.data.city = null;
+          }
+        };
 
         $scope.resetPlace = function(reInit) {
           $scope.resetPlaceData();
-          $scope.data.region = null;
-          $scope.data.city = null;
+          $scope.regionIsNull();
 
           $scope.regionList.reset();
           $scope.regionList.select(null);
