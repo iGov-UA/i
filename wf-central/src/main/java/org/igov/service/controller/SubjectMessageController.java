@@ -159,7 +159,11 @@ public class SubjectMessageController {
             throw new CommonServiceException(404, "Incorrect value of sID_Rate! It isn't number.");
         }
         
-        String sURL_Redirect = initOrderMessageFeedback(sID_Order, nRate);
+        //Boolean bExist = false;
+        Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, nRate);
+        String sURL_Redirect = (String)m.get("sURL_Redirect");
+        //bExist = (Boolean) m.get("bExist");
+        //String sURL_Redirect = initOrderMessageFeedback(sID_Order, nRate);
         oResponse.sendRedirect(sURL_Redirect);
         String sReturn = "Ok!";
         
@@ -196,7 +200,8 @@ public class SubjectMessageController {
         return sReturn;//"Ok!";
     }
 
-    private String initOrderMessageFeedback(String sID_Order, Integer nID_Rate) throws CommonServiceException{
+    private Map<String,Object> mInitOrderMessageFeedback(String sID_Order, Integer nID_Rate) throws CommonServiceException{
+        Map<String,Object> m = new HashMap();
         if (!sID_Order.contains("-")) {
             LOG.warn("Incorrect parameter! (sID_Order={})", sID_Order);
             throw new CommonServiceException(404, "Incorrect parameter! {sID_Order=" + sID_Order + "}");
@@ -207,7 +212,7 @@ public class SubjectMessageController {
         }
         
         String sURL_Redirect = null;
-        String sReturn = "Ok!";
+        String sReturn = null;
 
         Long nID_HistoryEvent_Service;
         Long nID_Subject;
@@ -224,12 +229,14 @@ public class SubjectMessageController {
 
             String sToken = null;
             Integer nRateWas = oHistoryEvent_Service.getnRate();
-            if (nRateWas != null && nRateWas > 0) {
+            Boolean bExist = nRateWas != null && nRateWas > 0;
+            m.put("bExist", bExist);
+            if (bExist) {
                 //throw new CommonServiceException(404, "(sID_Order: " + sID_Order + "): Record of HistoryEvent_Service, with sID_Order="+sID_Order+" - alredy has nRateWas="+nRateWas);
 //                sReturn = "Record of HistoryEvent_Service, with sID_Order=" + sID_Order + " - already has nRateWas=" + nRateWas;
-                LOG.warn("{} (nID_HistoryEvent_Service={}, nID_Subject={})", sReturn, nID_HistoryEvent_Service, nID_Subject);
+                LOG.warn("Alredy exist! {} (nID_HistoryEvent_Service={}, nID_Subject={})", sReturn, nID_HistoryEvent_Service, nID_Subject);
+                sReturn = "Alredy exist!";
             } else {
-
                 oHistoryEvent_Service.setnRate(nID_Rate);
                 //LOG.info(String.format("set nRate=%s in sID_Order=%s", nRate, sID_Order));
                 sToken = RandomStringUtils.randomAlphanumeric(15);
@@ -248,6 +255,7 @@ public class SubjectMessageController {
                     oSubjectMessage_Rate.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
                 }
                 subjectMessagesDao.setMessage(oSubjectMessage_Rate);
+                sReturn = "Ok!";
             }
 
             //сохранения сообщения с рейтингом, а на ррегиональном сервере, т.к. именно там хранится экземпляр БП.
@@ -266,6 +274,7 @@ public class SubjectMessageController {
                 }
             }
             sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+            m.put("sURL_Redirect", sURL_Redirect);
             LOG.info("Redirecting to URL:{}", sURL_Redirect);
         } catch (CommonServiceException oActivitiRestException) {
             LOG.error("FAIL: {}", oActivitiRestException.getMessage());
@@ -275,7 +284,7 @@ public class SubjectMessageController {
             LOG.trace("FAIL:", e);
             throw new CommonServiceException(404, "[setMessageRate](sID_Order: " + sID_Order + ", nRate: " + nID_Rate + "): Unknown exception: " + e.getMessage());
         }
-        return sURL_Redirect;
+        return m;//sURL_Redirect
     }
     
     @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "")
@@ -524,62 +533,70 @@ public class SubjectMessageController {
     ) throws CommonServiceException, IOException {
 
         LOG.info("Started! (sID_Source={}, nID_Service={}, nID={})", sID_Source, nID_Service, nID);
+        String responseMessage = null;
         
         /*if(nID_Rate==null){
             nID_Rate=sID_Rate;
         }*/
-        String sURL_Redirect = null;
+        //String sURL_Redirect = null;
+        JSONObject oJSONObject = new JSONObject();
+        Boolean bExist = false;
         if(sID_Order!=null){
-            sURL_Redirect = initOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
-        }
-        if(sID_Order!=null && sURL_Redirect==null){
+            Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
+            //sURL_Redirect = m.get("sURL_Redirect");
+            bExist = (Boolean) m.get("bExist");
+        }//sID_Order!=null && 
+        if(bExist){//sURL_Redirect==null
             /*    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Cant save feedback! sID_Order="+sID_Order, HttpStatus.NOT_FOUND);*/
             LOG.warn("Cant save feedback! (sID_Order={})", sID_Order);
             if(bSelf){
-                String responseMessage = String.format("%s/service/%d/feedback",
+                responseMessage = String.format("%s/service/%d/feedback",
                         generalConfig.getSelfHost(), nID_Service);
             	oResponse.sendRedirect(responseMessage);
-            }
-        }
-        
-        JSONObject oJSONObject = new JSONObject();
-        try {
-            String sAnswer=null;
-            SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
-                    sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
-                    nID_Subject);
-            if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
+            }else{
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
+                    "Cant save feedback! sID_Order="+sID_Order, HttpStatus.NOT_FOUND);
             }
+        }else{
+            try {
+                String sAnswer=null;
+                SubjectMessageFeedback oSubjectMessageFeedback = oSubjectMessageService.setSubjectMessageFeedback(sID_Source,
+                        sAuthorFIO, sMail, sHead, sBody, sPlace, sEmployeeFIO, nID_Rate, nID_Service, sAnswer, nID,
+                        nID_Subject);
+                if (nID!=null && (sID_Token==null || sID_Token.equals(oSubjectMessageFeedback.getsID_Token()))) {
+                    throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "sID_Token not equal or absant! sID_Token="+sID_Token+", nID="+nID, HttpStatus.NOT_FOUND);
+                }
 
-            /*if (!isEmpty(sAnswer)) {
-                SubjectMessageFeedbackAnswer answer = oSubjectMessageService
-                        .setSubjectMessageFeedbackAnswer(feedback.getId(), sAnswer, nID_Subject);
+                /*if (!isEmpty(sAnswer)) {
+                    SubjectMessageFeedbackAnswer answer = oSubjectMessageService
+                            .setSubjectMessageFeedbackAnswer(feedback.getId(), sAnswer, nID_Subject);
 
-                List<SubjectMessageFeedbackAnswer> answers = feedback.getoSubjectMessageFeedbackAnswers();
-                answers.add(answer);
-                feedback.setoSubjectMessageFeedbackAnswers(answers);
-                subjectMessageFeedbackDao.update(feedback);
-            }*/
+                    List<SubjectMessageFeedbackAnswer> answers = feedback.getoSubjectMessageFeedbackAnswers();
+                    answers.add(answer);
+                    feedback.setoSubjectMessageFeedbackAnswers(answers);
+                    subjectMessageFeedbackDao.update(feedback);
+                }*/
 
-            LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
-                    sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
+                LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
+                        sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
-            String responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
-                    generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
+                responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",
+                        generalConfig.getSelfHost(), nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
-            if(bSelf){
-            	oResponse.sendRedirect(responseMessage);
+                if(bSelf){
+                    oResponse.sendRedirect(responseMessage);
+                }
+
+            } catch (Exception e) {
+                LOG.error("(nID={}, message={})", nID, e.getMessage());
+                throw new CommonServiceException(e.getMessage(), e);
             }
-            oJSONObject.put("sURL", responseMessage);
-            return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
-
-        } catch (Exception e) {
-            LOG.error("/setFeedbackExternal, nID={}, message={}", nID, e.getMessage());
-            throw new CommonServiceException(e.getMessage(), e);
         }
+        oJSONObject.put("sURL", responseMessage);
+        return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
+        
     }
 
     
