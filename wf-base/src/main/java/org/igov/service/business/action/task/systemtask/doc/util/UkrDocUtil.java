@@ -79,7 +79,9 @@ public class UkrDocUtil {
             String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig,
             String sID_Order_GovPublicValue, String sSourceChannelValue, String shortFIO, String fullIO,
             String sDepartNameFull, String sSex, String sAddress,
-            String sZipCode, String sPlace, String sDateAppealValue) {
+            String sZipCode, String sPlace, String sDateAppealValue
+            , Boolean bOrganization, String sCompanyName,String sID_EDRPOU, String sBossFirstLastName, String sDateDocIncoming, String sNumberDocIncoming
+    ) {
 
         Map<String, Object> res = new LinkedHashMap<String, Object>();
 
@@ -105,6 +107,15 @@ public class UkrDocUtil {
         attributes.put("Дата заявки", sDateAppealValue);
         attributes.put("sHost", generalConfig.getSelfHost());
 
+        
+        attributes.put("Юридическое лицо", bOrganization+"");
+        attributes.put("Название юридического лица", sCompanyName);
+        attributes.put("ОКПО", sID_EDRPOU);
+        attributes.put("Имя, отчество должностного лица", sBossFirstLastName);
+        attributes.put("Дата документа юридического лица", sDateDocIncoming);
+        attributes.put("Номер документа юридического лица", sNumberDocIncoming);
+        
+        
         Map<String, Object> extensions = new HashMap<String, Object>();
         if (attachmentsIds != null && !attachmentsIds.isEmpty()) {
             Map<String, List<?>> tables = new HashMap<String, List<?>>();
