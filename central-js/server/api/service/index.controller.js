@@ -12,11 +12,11 @@ var NodeCache = require("node-cache");
 var nodeCache = new NodeCache({stdTTL: 10800, checkperiod: 11000});//Chache for 3 hours
 var sHost = config.protocol + '://' + config.hostname + config.path;
 
-var buildUrl = function(path){
+var buildUrl = function (path) {
   return sHost + path;
 };
 
-module.exports.index = function(req, res) {
+module.exports.index = function (req, res) {
   var apiURL = '/action/item/getService?nID=' + req.query.nID
     , callback = function (error, response, body) {
     if (error) {
@@ -29,21 +29,72 @@ module.exports.index = function(req, res) {
     }
   };
 
-  nodeCache.get(apiURL, function( err, value ){
-    if( !err ){
-      if(value == undefined){
+  nodeCache.get(apiURL, function (err, value) {
+    if (!err) {
+      if (value == undefined) {
         return activiti.sendGetRequest(req, res, apiURL, null, callback);
-      }else{
+      } else {
         return res.send(value);
       }
-    }else{
-      console.log('Error during get from cache the getService: ',err);
+    } else {
+      console.log('Error during get from cache the getService: ', err);
     }
   });
   //activiti.sendGetRequest(req, res, '/action/item/getService?nID=' + req.query.nID);
 };
 
-module.exports.getServiceStatistics = function(req, res) {
+module.exports.getServiceFeedback = function (req, res) {
+  var url = sHost + '/subject/message/getFeedbackExternal';
+  var data = req.query;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.get({
+    'url': url,
+    'auth': {
+      'username': config.username,
+      'password': config.password
+    },
+    'qs': {
+      'sID_Token': data.sID_Token || 123,
+      'nID_Service': req.params.nID,
+      'nID': data.sID_Order
+
+    }
+  }, callback);
+};
+
+module.exports.postServiceFeedback = function (req, res) {
+  var url = sHost + '/subject/message/setFeedbackExternal';
+  var data = req.body;
+
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  return request.post({
+    'url': url,
+    'auth': {
+      'username': config.username,
+      'password': config.password
+    },
+    'qs': {
+      'sID_Source': data.sID_Source,
+      'sAuthorFIO': data.sAuthorFIO,
+      'sMail': data.sMail || ' ',
+      'sHead': data.sHead || ' ',
+      'sBody': data.sBody,
+      'nID_Rate': data.nID_Rate,
+      'nID_Service': req.params.nID
+    }
+  }, callback);
+};
+
+module.exports.getServiceStatistics = function (req, res) {
   var apiURL = '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID
     , callback = function (error, response, body) {
     if (error) {
@@ -56,15 +107,15 @@ module.exports.getServiceStatistics = function(req, res) {
     }
   };
 
-  nodeCache.get(apiURL, function( err, value ){
-    if( !err ){
-      if(value == undefined){
+  nodeCache.get(apiURL, function (err, value) {
+    if (!err) {
+      if (value == undefined) {
         return activiti.sendGetRequest(req, res, apiURL, null, callback);
-      }else{
+      } else {
         return res.send(value);
       }
-    }else{
-      console.log('Error during get from cache the getStatisticServiceCounts: ',err);
+    } else {
+      console.log('Error during get from cache the getStatisticServiceCounts: ', err);
     }
   });
   //activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID, null, callback);
@@ -72,13 +123,13 @@ module.exports.getServiceStatistics = function(req, res) {
 };
 
 
-module.exports.getServiceHistoryReport = function(req, res) {
+module.exports.getServiceHistoryReport = function (req, res) {
   var params = req.params;
   params = _.extend(params);
   activiti.sendGetRequest(req, res, '/action/event/getServiceHistoryReport?sDateAt=', _.extend(req.query, params))
 };
 
-module.exports.setService = function(req, res) {
+module.exports.setService = function (req, res) {
   var callback = function (error, response, body) {
     catalogController.pruneCache();
     res.send(body);
@@ -104,7 +155,7 @@ module.exports.setService = function(req, res) {
   }, callback);
 };
 
-module.exports.removeServiceData = function(req, res) {
+module.exports.removeServiceData = function (req, res) {
 
   var callback = function (error, response, body) {
     catalogController.pruneCache();

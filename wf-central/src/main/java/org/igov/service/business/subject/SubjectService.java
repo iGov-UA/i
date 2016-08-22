@@ -8,6 +8,8 @@ package org.igov.service.business.subject;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectActionKVED;
+import org.igov.model.subject.SubjectActionKVEDDao;
 import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectContactType;
@@ -41,7 +43,9 @@ public class SubjectService {
     @Autowired
     private SubjectHumanDao subjectHumanDao;
     @Autowired
-    private SubjectContactTypeDao subjectContactTypeDao;
+    private SubjectContactTypeDao subjectContactTypeDao;    
+    @Autowired
+    private SubjectActionKVEDDao subjectActionKVEDDao; 
    
     
     public Subject syncSubject_Upload(String sID_Subject_Upload) {
@@ -329,5 +333,12 @@ public class SubjectService {
        
        return nID;
     } 
- 
+
+    public List<SubjectActionKVED> getSubjectActionKVED(String sID, String sNote) {
+	return subjectActionKVEDDao.getSubjectActionKVED(sID, sNote);
+    }
+    
+    public List<SubjectActionKVED> getSubjectActionKVED(String sFind ) {
+	return subjectActionKVEDDao.getSubjectActionKVED(sFind);
+    }
 }

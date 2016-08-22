@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    
+    <changeSet id="Init tables" author="olga" runOnChange="false">
+
+        <sql splitStatements="true" dbms="postgresql">
+            DROP TABLE IF EXISTS "Config" CASCADE;
+            DROP TABLE IF EXISTS "AccessGroup_ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "AccessUser_ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "AccessGroup" CASCADE;
+            DROP TABLE IF EXISTS "AccessUser" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Boolean" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Date" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_File" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Float" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_Integer" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_StringShort" CASCADE;
+            DROP TABLE IF EXISTS "Attribute_StringLong" CASCADE;
+            DROP TABLE IF EXISTS "Attribute" CASCADE;
+            DROP TABLE IF EXISTS "ProcessTask" CASCADE;
+            DROP TABLE IF EXISTS "Process" CASCADE;
+            DROP TABLE IF EXISTS "AttributeType" CASCADE;
+            DROP TABLE IF EXISTS "AttributeTypeCustom" CASCADE;
+            DROP TABLE IF EXISTS "SourceDB" CASCADE;
+        </sql>
+
+        <sql splitStatements="true" dbms="h2">
+            DROP TABLE IF EXISTS Config CASCADE;
+            DROP TABLE IF EXISTS AccessGroup_ProcessTask CASCADE;
+            DROP TABLE IF EXISTS AccessUser_ProcessTask CASCADE;
+            DROP TABLE IF EXISTS AccessGroup CASCADE;
+            DROP TABLE IF EXISTS AccessUser CASCADE;
+            DROP TABLE IF EXISTS Attribute_Boolean CASCADE;
+            DROP TABLE IF EXISTS Attribute_Date CASCADE;
+            DROP TABLE IF EXISTS Attribute_File CASCADE;
+            DROP TABLE IF EXISTS Attribute_Float CASCADE;
+            DROP TABLE IF EXISTS Attribute_Integer CASCADE;
+            DROP TABLE IF EXISTS Attribute_StringShort CASCADE;
+            DROP TABLE IF EXISTS Attribute_StringLong CASCADE;
+            DROP TABLE IF EXISTS Attribute CASCADE;
+            DROP TABLE IF EXISTS ProcessTask CASCADE;
+            DROP TABLE IF EXISTS Process CASCADE;
+            DROP TABLE IF EXISTS AttributeType CASCADE;
+            DROP TABLE IF EXISTS AttributeTypeCustom CASCADE;
+            DROP TABLE IF EXISTS SourceDB CASCADE;
+        </sql>
+
+
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence_analytic" startValue="20000"/>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="AttributeType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="AttributeTypeCustom">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="SourceDB">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="AccessGroup">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="AccessUser">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>  
+        
+        <createTable tableName="Process">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SourceDB" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Process_SourceDB"
+                             referencedTableName="SourceDB" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oDateStart" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oDateFinish" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Data" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="ProcessTask">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oDateStart" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oDateFinish" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ProcessTask_Process"
+                             referencedTableName="Process" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="AccessGroup_ProcessTask">
+
+            <column name="nID_ProcessTask" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_AccessGroup_ProcessTask"
+                             referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AccessGroup" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_AccessGroup"
+                             referencedTableName="AccessGroup" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <addPrimaryKey constraintName="PK_AccessGroup_ProcessTask"
+                             columnNames="nID_AccessGroup, nID_ProcessTask"
+                             tableName="AccessGroup_ProcessTask"/>
+        
+        <createTable tableName="AccessUser_ProcessTask">
+
+            <column name="nID_ProcessTask" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_AccessUser_ProcessTask"
+                             referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AccessUser" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_AccessUser"
+                             referencedTableName="AccessUser" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <addPrimaryKey constraintName="PK_AccessUser_ProcessTask"
+                             columnNames="nID_AccessUser, nID_ProcessTask"
+                             tableName="AccessUser_ProcessTask"/>
+        
+        <createTable tableName="Attribute">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="true" foreignKeyName="FKAttribute__Process"
+                             referencedTableName="Process" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_ProcessTask" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Attribute_ProcessTask"
+                             referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AttributeType" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Attribute_AttributeType"
+                             referencedTableName="AttributeType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AttributeTypeCustom" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Attribute_AttributeTypeCustom"
+                             referencedTableName="AttributeTypeCustom" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>  
+        
+        <createTable tableName="Attribute_Integer">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nValue" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeInteger_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Float">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nValue" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeFloat_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_StringShort"> 
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeStringShort_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_StringLong">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sValue" type="clob">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeStringLong_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Boolean">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="bValue" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeBoolean_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_Date">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="oValue" type="datetime with time zone">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeDate_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Attribute_File">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_Data" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeFile_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sFileName" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sExtName" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sContentType" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Config">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    
+    </changeSet>
+    
+    <changeSet id="Add auto increment for H2" author="olga" dbms="h2">
+        
+        <addAutoIncrement tableName="Attribute" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_Integer" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_Float" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_StringShort" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_StringLong" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_Boolean" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_Date" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AttributeType" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AttributeTypeCustom" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="SourceDB" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessGroup" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessUser" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Process" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Attribute_File" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Config" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        
+    </changeSet>
+    
+    <changeSet id="Create sequence" author="olga" runOnChange="false" failOnError="false">
+        <!--preconditions onFail="MARK_RAN"><not><sequenceExists/></not></preconditions-->
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
+    </changeSet>
+    
+</databaseChangeLog>

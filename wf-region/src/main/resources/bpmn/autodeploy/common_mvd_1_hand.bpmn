@@ -3,7 +3,7 @@
   <process id="common_mvd_1_hand" name="(загальна) - Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Обрана адреса" type="invisible"></activiti:formProperty>
@@ -89,7 +89,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -190,10 +189,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_usertask.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="markers4" name="fields for print" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_print.json')}"></activiti:formProperty>
-        
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -217,7 +213,7 @@
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
@@ -266,7 +262,7 @@ ${sMail_Signature}
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;br /&gt;
 На жаль, неможливо обробити Ваш запит щодо замовлення довідки про наявність або відсутність судимості.&lt;br /&gt;
@@ -303,7 +299,7 @@ ${sMail_Signature}
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
       &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                       

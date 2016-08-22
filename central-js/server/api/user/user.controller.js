@@ -1,12 +1,14 @@
 var async = require('async')
   , bankidUtil = require('./../../auth/bankid/bankid.util')
-  , bankidService = require('../../auth/bankid/bankid.service.js')
-  , soccardService = require('../../auth/soccard/soccard.service.js')
-  , emailService = require('../../auth/email/email.service.js')
+  , bankidService = require('../../auth/bankid/bankid.service')
+  , bankidNBUService = require('../../auth/bankid-nbu/bankid.service')
+  , soccardService = require('../../auth/soccard/soccard.service')
+  , emailService = require('../../auth/email/email.service')
   , userConvert = require('./user.convert')
   , activiti = require('../../components/activiti')
   , Admin = require('../../components/admin')
   , errors = require('../../components/errors');
+
 
 var finishRequest = function (req, res, err, result, type) {
   if (err) {
@@ -19,6 +21,14 @@ var finishRequest = function (req, res, err, result, type) {
 
     var customer = userConvert.convertToCanonical(type, result.customer);
     var admin = result.admin;
+
+    // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+    if(type === 'bankid' || type === 'bankid-nbu'){
+      customer.isAuthTypeFromBankID = true;
+    } else {
+      customer.isAuthTypeFromBankID = false;
+    }
+
     if (Admin.isAdminInn(customer.inn)) {
       admin = {
         inn: customer.inn,
@@ -40,7 +50,7 @@ module.exports.fio = function (req, res) {
 
 module.exports.tryCache = function (req, res, next) {
   var type = req.session.type;
-  if (type === 'bankid' || type === 'eds') {
+  if (type === 'bankid' || type === 'eds' || type === 'bankid-nbu') {
     if (req.session.usercacheid) {
       var callback = bankidUtil.decryptCallback(function (error, response, body) {
         var err = null;
@@ -68,12 +78,13 @@ module.exports.tryCache = function (req, res, next) {
 };
 
 module.exports.index = function (req, res) {
-  var config = require('../../config/environment');
-  //var config = require('../../config');
-
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds' || type === 'mpbds') {
     bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
+      finishRequest(req, res, err, result, type);
+    });
+  } else if (type === 'bankid-nbu') {
+    bankidNBUService.syncWithSubject(req.session.access.accessToken, function (err, result) {
       finishRequest(req, res, err, result, type);
     });
   } else if (type === 'soccard') {

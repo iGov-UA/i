@@ -13,7 +13,10 @@ angular.module('iGovMarkers')
             getMarkers: function () {
                 return markers;
             },
-            validateMarkers: function (obj) {
+            validateMarkers: function (obj, bTest) {
+                if (!bTest){
+                    bTest = false;
+                }
                 if (!obj) {
                     fieldIDs.inForm = [];
                     fieldIDs.inMarkers = [];
@@ -40,14 +43,28 @@ angular.module('iGovMarkers')
                     }
                 }
 
+                var aUndefinedFormFields = [];
+
                 for (i in fieldIDs.isPresent) if (fieldIDs.isPresent.hasOwnProperty(i)){
                     fieldIDs.nValidateFields++;
                     if(fieldIDs.isPresent[i] == false){
                         console.warn("Field " + i + " NOT found. Markers for this field is not working");
-                        fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + "Поле " + i + " - відсутнє на формі. ";
+                        aUndefinedFormFields.push(i);
                         fieldIDs.isFieldNotFound = true;
                     } else {
                         fieldIDs.nFieldTurnOn++;
+                    }
+                }
+
+                if(fieldIDs.isFieldNotFound){
+                    if(aUndefinedFormFields.length > 1){
+                        fieldIDs.sFieldNotFaundMessages = "На формі не виявлені поля з ідентифікаторами ";
+                        aUndefinedFormFields.forEach(function (field) {
+                            fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + field + ", ";
+                        });
+                        fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + "тому маркери для них не працюють!";
+                    } else {
+                        fieldIDs.sFieldNotFaundMessages = "Поле " + aUndefinedFormFields[0] + " не виявлено на формі, тому маркери для цього поля не працюють!";
                     }
                 }
 
@@ -66,9 +83,7 @@ angular.module('iGovMarkers')
                         if (data.valid && fieldIDs.isFieldNotFound == false) {
                             console.info('markers are valid');
                         } else {
-                            if (data.valid) {
-//                                alert(fieldIDs.sFieldNotFaundMessages);
-                            } else {
+                            if (!data.valid) {
                                 console.error('markers validation failed', data.errors);
                                 var errMessages = "Виникла помилка під час валідації маркерів: ";
                                 for (var ind = 0; ind < data.errors.length; ind++) {
@@ -82,8 +97,12 @@ angular.module('iGovMarkers')
                                         }
                                     }
                                 }
-//                                alert(fieldIDs.sFieldNotFaundMessages + errMessages);
+                                fieldIDs.sFieldNotFaundMessages = fieldIDs.sFieldNotFaundMessages + errMessages;
                             }
+                        }
+                        
+                        if(bTest){
+                            alert(fieldIDs.sFieldNotFaundMessages);
                         }
                     });
             },

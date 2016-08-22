@@ -95,8 +95,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
                     "З повагою,<br>" +
                     "команда порталу державних послу iGov";
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(saToMail)._Head(sHead)._Body(sBody);
-//                    ._ToName(sFIO)
+            oMail._To(saToMail)._Head(sHead)._Body(sBody)._ToName(sFIO);
             oMail.send();
         }
 

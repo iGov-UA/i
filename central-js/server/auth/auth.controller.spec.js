@@ -11,9 +11,10 @@ describe('auth service tests', function () {
       if (error) {
         done(error)
       } else {
-        agent = loginAgent;
         done();
       }
+    }, function (loginAgent) {
+      agent = loginAgent;
     });
   });
 

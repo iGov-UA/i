@@ -334,6 +334,15 @@ angular.module('dashboardJsApp')
           }
         );
       },
+      getProcesses: function (sID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/getProcesses',
+          params: {
+            sID: sID
+          }
+        });
+      },
       getPatternFile: function(sPathFile) {
         return simpleHttpPromise({
             method: 'GET',

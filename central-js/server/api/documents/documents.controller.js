@@ -182,7 +182,7 @@ module.exports.initialUpload = function (req, res) {
   });
 
   var uploadScan = function (documentScan, optionsForUploadContent, callback) {
-    bankIDService.scanContentRequest(documentScan.scan.type, documentScan.scan.link, accessToken, function (error, buffer) {
+    bankIDService.scanContentRequest(documentScan.type, documentScan.link, accessToken, function (error, buffer) {
       if(error){
         callback(error);
       } else {

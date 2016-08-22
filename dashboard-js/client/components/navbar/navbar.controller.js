@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state', 'tasks'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state, tasks) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -90,15 +90,34 @@
         $scope.tasksSearch.loading=true;
         $scope.tasksSearch.count=0;
         $scope.tasksSearch.submited=true;
-        tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
-          .then(function(aIds) {
-            $scope.tasksSearch.count = aIds.length;
+        if($scope.tasksSearch.archive) {
+          tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
+            var response = JSON.parse(res);
+            $scope.archive = response[0];
+            $scope.switchArchive = true;
           })
-          .finally(function() {
-            $scope.tasksSearch.loading=false;
-          });
+        } else {
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.tasksSearch.archive)
+            .then(function(res, aIds) {
+              $scope.tasksSearch.count = aIds.length;
+            })
+            .finally(function(res) {
+              $scope.tasksSearch.loading=false;
+           });
+        }
       }
-    }
+      if($event.keyCode === 8 || $event.keyCode === 46) {
+        $scope.switchArchive = false;
+      }
+    };
+
+    $scope.closeArchive = function () {
+      $scope.switchArchive = false;
+    };
+
+    $scope.archiveTextValue = function () {
+      return isNaN($scope.tasksSearch.value);
+    };
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
       return menuItem.state==$state.current.name;

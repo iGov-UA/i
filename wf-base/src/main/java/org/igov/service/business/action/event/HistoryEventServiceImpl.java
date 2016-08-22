@@ -63,6 +63,11 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
+    public String updateHistoryEvent(String sID_order, Map<String, String> mParam) throws Exception {
+        return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, mParam);
+    }
+
+    @Override
     public void addHistoryEvent(String sID_Order, String sUserTaskName, Map<String, String> params)
             throws Exception {
         doRemoteRequest(URI_ADD_HISTORY_EVENT, params, sID_Order, sUserTaskName);

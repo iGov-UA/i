@@ -32,7 +32,15 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "mvd": {
       "header": "mvd.header.html",
       "footer": "mvd.footer.html",
-      "placesID": ['3200000000', '8000000000']
+      "placesID": []
+      ,"asOrgan": []
+      ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
+    },
+    "alpha_mvd": {
+      "header": "mvd.header.html",
+      "footer": "mvd.footer.html",
+      "placesID": []
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
@@ -55,6 +63,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     ,"kharkiv": modeModel.kharkiv
     ,"kharkov": modeModel.kharkiv
     ,"mvd": modeModel.mvd
+    ,"alpha_mvd": modeModel.alpha_mvd
     ,"dfs": modeModel.dfs
   };
   this.init = function (domen) {
@@ -68,7 +77,11 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
-      } else if (domen.indexOf('mvs') >= 0) {
+      }else if (domen.indexOf('alpha-mvd') >= 0) {
+        //alpha-mvd.test.igov.org.ua
+        this.mode = 'alpha_mvd';
+        //this.mode = modes.kyiv;
+      }else if (domen.indexOf('mvd') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'mvd';
         //this.mode = modes.kyiv;
@@ -115,7 +128,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[mode]) {
       hdr = modes[mode].header;
     } else {
-      hdr = 'header.html';
+      hdr = 'new.header.html';
     }
     return 'app/header/' + hdr;
   };
@@ -140,7 +153,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'IndexController'
         },
         'main@': {
-          templateUrl: 'app/service/index/services.html',
+          templateUrl: 'app/service/index/new.services.html',
           controller: 'ServiceController'
         },
         footer: {

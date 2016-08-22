@@ -81,4 +81,33 @@ public class SubjectServerControllerScenario {
                 .andReturn().getResponse().getContentAsString();
         System.out.println(outputWithoutDetails);
     }
+    
+    @Ignore
+    @Test
+    public void shouldGetActionKVED() throws Exception {
+        String withDetails = mockMvc.perform(get("/subject/getActionKVED2")
+                .param("sID", "03"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(withDetails);
+
+        withDetails = mockMvc.perform(get("/subject/getActionKVED2")
+                .param("sID", "03")
+                .param("sNote", "Морське"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(withDetails);
+
+        withDetails = mockMvc.perform(get("/subject/getActionKVED2")
+                .param("sNote", "Вирощування"))
+                .andReturn().getResponse()                
+                .getContentAsString();
+        System.out.println(withDetails);
+
+        withDetails = mockMvc.perform(get("/subject/getActionKVED")
+                .param("sFind", "03"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(withDetails);
+
+    
+    }
+    
 }

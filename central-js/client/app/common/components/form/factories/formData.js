@@ -86,8 +86,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
   var fillAutoCompletes = function (property) {
     var match;
     if (((property.type == 'string' || property.type == 'select')
-      && (match = property.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country)(_(\d+))?/)))
-        ||((property.type == 'select' && (match = property.id.match(/^s(Country)(_(\d+))?/))))) {
+      && (match = property.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
+        ||(property.type == 'select' && (match = property.id.match(/^s(Country)(_(\d+))?/)))) {
       if (autocompletesDataFactory[match[1]]) {
         property.type = 'select';
         property.selectType = 'autocomplete';

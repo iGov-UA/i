@@ -9,7 +9,7 @@ var request = require('request')
   , syncSubject = require('../../api/subject/subject.service.js')
   , Admin = require('../../components/admin/index')
   , url = require('url')
-  , bankidUtil = require('./bankid.util.js')
+  , bankidUtil = require('../bankid/bankid.util.js')
   , activiti = require('../../components/activiti');
 
 var createError = function (error, error_description, response) {
@@ -118,6 +118,16 @@ module.exports.scansRequest = function (accessToken, callback) {
       }]
     }
   }, bankidUtil.decryptCallback(callback));
+};
+
+module.exports.getScanContentRequestOptions = function (documentScanLink, accessToken) {
+  return {
+    url: documentScanLink,
+    headers: {
+      Authorization: bankidUtil.getAuth(accessToken)
+    },
+    encoding: null
+  };
 };
 
 module.exports.getScanContentRequest = function (documentScanLink, accessToken) {
@@ -248,5 +258,22 @@ module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload,
  */
 module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
   return module.exports.getScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
+};
+
+
+module.exports.scanContentRequest = function (documentScanType, documentScanLink, accessToken, callback) {
+  var scanContentRequestOptions = this.getScanContentRequestOptions(documentScanLink, accessToken);
+  request.get(scanContentRequestOptions, function (error, response, buffer) {
+    if (!error && response.headers['content-type'].indexOf('application/octet-stream') > -1) {
+      callback(null, buffer);
+    } else if (!error &&
+      (response.headers['content-type'].indexOf('application/json') > -1
+      || response.headers['content-type'].indexOf('application/xml') > -1)) {
+      var decoder = new StringDecoder('utf8');
+      callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScanType, decoder.write(buffer)));
+    } else if (error) {
+      callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScanType, error));
+    }
+  });
 };
 

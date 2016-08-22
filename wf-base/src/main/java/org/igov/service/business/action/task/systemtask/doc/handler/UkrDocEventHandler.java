@@ -18,7 +18,7 @@ public class UkrDocEventHandler {
 
     public void processEvent(String event) {
         JSONObject eventJson = new JSONObject(event);
-        
+
         Object dataObj = eventJson.get("data");
 
         Object docStateEvent = ((JSONObject) dataObj).get("docStateEvent");
@@ -31,7 +31,7 @@ public class UkrDocEventHandler {
                 nID_DocumentTemplate = String.valueOf(((JSONObject) cardsDocument).get("IdXMLT"));
             }
         }
-        
+
         Object extensions = ((JSONObject) docStateEvent).get("extensions");
         if (extensions != null) {
             Object files = ((JSONObject) extensions).get("files");
@@ -41,7 +41,7 @@ public class UkrDocEventHandler {
                 bFile = false;
             }
         }
-        
+
         Object state = ((JSONObject) docStateEvent).get("state");
         if (state != null) {
             status = String.valueOf(((JSONObject) state).get("current"));

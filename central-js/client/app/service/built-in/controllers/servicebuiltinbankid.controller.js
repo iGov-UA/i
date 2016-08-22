@@ -8,9 +8,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $window,
   $rootScope,
   $http,
+  $filter,
   FormDataFactory,
   ActivitiService,
   ValidationService,
+  ServiceService,
   oService,
   oServiceData,
   BankIDAccount,
@@ -609,4 +611,49 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   if($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot){
     $scope.fillSelfPrevious();
   }
+
+  // відображення напису про необхідність перевірки реєстраційних данних, переданих від BankID
+  $scope.isShowMessageRequiringToValidateUserData = function(){
+    if($scope.isFormDataEmpty()){
+      return false;
+    } else {
+      return BankIDAccount.customer.isAuthTypeFromBankID;
+    }
+  };
+
+  // https://github.com/e-government-ua/i/issues/1325
+  $scope.getBpAndFieldID = function(field){
+    return this.oServiceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.id;
+  };
+
+  // https://github.com/e-government-ua/i/issues/1326
+  $scope.redirectPaymentLiqpay = function (sID_Merchant) {
+    var incorrectLiqpayRequest = false;
+    var paramsLiqPay = {
+      sID_Merchant: sID_Merchant
+    };
+    if(angular.isDefined($scope.data.formData.params.sSum.value)){
+      paramsLiqPay.sSum = $scope.data.formData.params.sSum.value;
+    } else {
+      console.warn("redirectPaymentLiqpay sSum value not found");
+      incorrectLiqpayRequest = true;
+    }
+    if(angular.isDefined($scope.data.formData.params.sID_Currency.value)){
+      if($scope.data.formData.params.sID_Currency.value.length > 0){
+        paramsLiqPay.sID_Currency = $scope.data.formData.params.sID_Currency.value;
+      }
+    }
+    if(angular.isDefined($scope.data.formData.params.sDescription.value)){
+      if($scope.data.formData.params.sDescription.value.length > 0){
+        paramsLiqPay.sDescription = $scope.data.formData.params.sDescription.value;
+      }
+    }
+    paramsLiqPay.nID_Server = this.oServiceData.nID_Server;
+    var sCurrDateTime = $filter('date')(new Date(), 'yyyy-MM-dd_HH:mm:ss.sss');
+    paramsLiqPay.sID_Order = this.oService.nID + "--" + this.oServiceData.oData.processDefinitionId.split(':')[0] + "--" + sCurrDateTime;
+    if(!incorrectLiqpayRequest){
+      ServiceService.getRedirectPaymentLiqpay(paramsLiqPay);
+    }
+  }
+
 });

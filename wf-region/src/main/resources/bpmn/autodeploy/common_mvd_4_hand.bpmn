@@ -27,11 +27,9 @@
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nUser" name="Users" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotice1" name="Зверніть увагу" type="label" default=" для обраного відділення поки що не працює обробка електроних звернень. Але Ви матимете можливість пізніше оцінити роботу співробітника і залишити свій відгук, якщо натиснете 'Замовити послугу' "></activiti:formProperty>
-        <activiti:formProperty id="bMedical" name="поддержка мед.осмотра" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bInsurance" name="поддержка страхования" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bExam" name="поддержка обучения" type="string"></activiti:formProperty>
-        
-        
+        <activiti:formProperty id="bMedical" name="поддержка мед.осмотра" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bInsurance" name="поддержка страхования" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bExam" name="поддержка обучения" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_1" name="show info" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_2" name="additional services" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_2.json')}"></activiti:formProperty>
@@ -51,9 +49,9 @@
           <activiti:value id="sEnum2" name="Ні, не бажаю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMedicalInfo" name="sMedicalInfo" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDay1" name="Оберіть бажаний час візиту до нарколога" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Оберіть бажаний час візиту до нарколога" type="string"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay1" name="департамент наркологии" type="string"></activiti:formProperty>
-        <activiti:formProperty id="visitDay2" name="Оберіть бажаний час візиту до психіатра" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="visitDay2" name="Оберіть бажаний час візиту до психіатра" type="string"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay2" name="департамент психиатрии" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -64,7 +62,6 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-<!--     <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="common_mvd_4_insurance_${sID_UA}"> -->
     <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="weapon_insurance">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -92,7 +89,6 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asInsurance=='sEnum2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
-<!--     <userTask id="usertask3" name="Отримання довідки  про правила експлуатації зброї" activiti:candidateGroups="common_mvd_4_exam_${sID_UA}"> -->
     <userTask id="usertask3" name="Отримання довідки  про правила експлуатації зброї" activiti:candidateGroups="weapon_exam">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -109,7 +105,6 @@
         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExamDate" name="З якої дати Ви маєте можливість почати навчання?" type="string"></activiti:formProperty>
         <activiti:formProperty id="sExamInfo" name="sExamInfo" type="invisible"></activiti:formProperty>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" name="Довідка потрібна" sourceRef="exclusivegateway2" targetRef="usertask3">
@@ -119,7 +114,6 @@
     <sequenceFlow id="flow15" name="Отримано раніше" sourceRef="exclusivegateway2" targetRef="parallelgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asExam=='sEnum2'}]]></conditionExpression>
     </sequenceFlow>
-<!--     <userTask id="usertask4" name="Отримання мед.довідки ф.127" activiti:candidateGroups="common_mvd_4_medical_${sID_UA}"> -->
     <userTask id="usertask4" name="Отримання мед.довідки ф.127" activiti:candidateGroups="weapon_medical">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -330,22 +324,14 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формування реквізитів для сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var lastName = execution.getVariable('bankIdlastName')
-var firstName = execution.getVariable('bankIdfirstName')
-var middleName = execution.getVariable('bankIdmiddleName')
-var inn = execution.getVariable('bankIdinn')
-var contract = execution.getVariable('sInsuranceContract')
-var descript = 'Страховий платіж за договором '+contract+'. Страхувальник '+lastName+' '+firstName+' '+middleName+' '+inn
-execution.setVariable('sID_Merchant_1','i38613227067')
-execution.setVariable('sSum_1','51.92')
-execution.setVariable('sDescription_1',descript)</script>
+      <script>execution.setVariable('sID_Merchant_1','i38613227067')
+execution.setVariable('sSum_1','51.92')</script>
     </scriptTask>
     <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="parallelgateway3"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="parallelgateway1" targetRef="exclusivegateway3"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow35" sourceRef="parallelgateway4" targetRef="usertask4"></sequenceFlow>
-<!--     <userTask id="usertask6" name="Огляд психіатра" activiti:candidateGroups="common_mvd_4_medical_ps_${sID_UA}"> -->
     <userTask id="usertask6" name="Огляд психіатра" activiti:candidateGroups="weapon_medical_ps">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -363,7 +349,6 @@ execution.setVariable('sDescription_1',descript)</script>
         <activiti:formProperty id="sMedicalInfo" name="sMedicalInfo" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
-<!--     <userTask id="usertask7" name="Огляд нарколога" activiti:candidateGroups="common_mvd_4_medical_drug_${sID_UA}"> -->
     <userTask id="usertask7" name="Огляд нарколога" activiti:candidateGroups="weapon_medical_drug">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>

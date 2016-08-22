@@ -14,7 +14,7 @@ public class QueueDataFormType extends AbstractFormType {
     public static final String TYPE_NAME = "queueData";
     public static final String sDate = "sDate";
     public static final String nID_FlowSlotTicket = "nID_FlowSlotTicket";
-    public static final String nSlots = "nSlots";
+    //public static final String nSlots = "nSlots";
     private static final long serialVersionUID = 1L;
 
     public static Map<String, Object> parseQueueData(String queueData) {
@@ -25,10 +25,10 @@ public class QueueDataFormType extends AbstractFormType {
         return ((Number) queueDataMap.get(nID_FlowSlotTicket)).longValue();
     }
 
-    public static int get_nSlots(Map<String, Object> queueDataMap) {
+    /*public static int get_nSlots(Map<String, Object> queueDataMap) {
         final int defaultNSlots = 1;
         return queueDataMap.containsKey(nSlots) ? ((Number) queueDataMap.get(nSlots)).intValue() : defaultNSlots;
-    }
+    }*/
 
     public String getName() {
         return TYPE_NAME;

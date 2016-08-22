@@ -1,11 +1,8 @@
 package org.igov.service.business.action.task.bp;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.igov.service.business.action.task.bp.BpService;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
@@ -17,9 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.io.web.HttpEntityCover;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
 /**
  * @author OlgaPrylypko
@@ -31,7 +25,7 @@ public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/action/task/start-process/%s?organ=%s";
+    private String uriStartProcess = "/service/action/task/start-process/%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
     private String uriSetTaskVariable = "/service/action/task/setVariable";
     private String uriGetProcessTasks = "/service/action/task/getTasks";
@@ -47,9 +41,10 @@ public class BpServiceImpl implements BpService {
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
         String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
-        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key, organ);
+        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
+        params.put("organ", organ);
         String jsonProcessInstance = "";
         try {
             jsonProcessInstance = httpRequester.getInside(url, params);
@@ -62,6 +57,7 @@ public class BpServiceImpl implements BpService {
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error stacktrace!: {}", ExceptionUtils.getStackTrace(oException));
             LOG.debug("FAIL:", oException);
         }
         return jsonProcessInstance;

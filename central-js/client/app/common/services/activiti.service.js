@@ -126,10 +126,23 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFuncNote = {sHead:"Збереження форми послуги", sFunc:"saveForm"};
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
+    var oFormDataPrintPdf = angular.copy(oFormData);
+    angular.forEach(activitiForm.formProperties, function (formProperty) {
+      if(formProperty.type === 'enum') {
+        if(formProperty.id in oFormDataPrintPdf.params) {
+          angular.forEach(formProperty.enumValues, function (enumValue) {
+            if(enumValue.id === oFormDataPrintPdf.params[formProperty.id]) {
+              oFormDataPrintPdf.params[formProperty.id] = enumValue.name;
+            }
+          })
+        }
+      }
+    });
     var aField = aFieldFormData(activitiForm.formProperties,formData);//activitiForm
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processName: '+processName, 'businessKey: '+businessKey, 'saField: '+JSON.stringify(aField)]});
     var oData = {
       formData : oFormData,
+      formDataPrintPdf : oFormDataPrintPdf,
       activitiForm: activitiForm,
       processName : processName,
       businessKey : businessKey
@@ -143,6 +156,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
     return $http.post('./api/process-form/save', oData, {params : oParams}).then(function (oResponse) {
         if(ErrorsFactory.bSuccessResponse(oResponse.data)){
+          if(oResponse.data.formDataPrintPdf){
+            delete oResponse.data.formDataPrintPdf;
+          }
             return oResponse.data;
         }
       /*if (/err/i.test(response.data.code)) {
@@ -176,9 +192,12 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         nID_Server : oServiceData.nID_Server
       }
     }).then(function (oResponse) {
-      if(oResponse.data){
-        return oResponse.data;
-      }
+        if(oResponse.data) {
+          return oResponse.data;
+        }
+        if(ErrorsFactory.bSuccessResponse(oResponse.data)){
+            return oResponse.data;
+        }
     }).catch(function (error) {
         if(!ErrorsFactory.bSuccessResponse(error.data)){
             return $q.reject(error.data);

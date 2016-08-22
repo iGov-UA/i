@@ -264,5 +264,21 @@
 
         <dropColumn tableName="FlowSlotTicket" columnName="nID_FlowSlot"/>
     </changeSet>
+    
+    <changeSet id="issue-1314-addTableActionProcessCount" author="askosyr">
+        <createTable tableName="ActionProcessCount">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_BP" type="varchar(30)">
+            </column>
+            <column name="nID_Service" type="bigint">
+            </column>
+            <column name="nCountYear" type="bigint">
+            </column>
+            <column name="nYear" type="bigint">
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

@@ -20,7 +20,7 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
   $scope.sSearch = '';
 
   $scope.getAuthMethods = function () {
-    return "BankID,EDS,mpbds,KK"
+    return "BankID,EDS,mpbds,KK,BankID-NBU"
   };
   $scope.searchOrder = function (sID_Order_New, sToken_New) {//arguments.callee.toString()
     var oFuncNote = {sHead: "Пошук заявки", sFunc: "searchOrder"};

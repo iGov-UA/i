@@ -19,6 +19,7 @@
       tasksSearch: {
         value: null,
         count: 0,
+        archive: false,
         loading: false,
         submited: false
       }

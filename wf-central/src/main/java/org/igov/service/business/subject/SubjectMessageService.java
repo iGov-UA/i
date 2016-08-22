@@ -5,10 +5,13 @@
  */
 package org.igov.service.business.subject;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.RandomStringUtils;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessageType;
+import org.igov.model.subject.message.*;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import org.igov.service.controller.ExceptionCommonController;
+
 import org.igov.service.exception.CommonServiceException;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 
 /**
  *
@@ -37,6 +45,8 @@ public class SubjectMessageService {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectContactTypeDao subjectContactTypeDao;
+    @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
@@ -65,8 +75,10 @@ public class SubjectMessageService {
         } else if (nID_SubjectMessageType == 8l) {
             sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 9l) {
-            sHead = "Выдповідь/коментар роюітника по заяві " + sID_Order;
-        } else if (nID_SubjectMessageType == 9l) {
+            sHead = "Відповідь/коментар робітника по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 11l) {
+            sHead = "Коментар служби підтримки за результатами контакту з відповідальним посадовцем по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 10l) {
             sHead = "Отправлено письмо";
         }
 
@@ -219,6 +231,51 @@ public class SubjectMessageService {
         }
 
         return message;
+    }
+
+    public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
+                                                            String sHead, String sBody, String sPlace, String sEmployeeFIO,
+                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId) {
+
+        SubjectMessageFeedback messageFeedback;
+        if (nId == null){
+            messageFeedback = new SubjectMessageFeedback();
+            messageFeedback.setsID_Source(sID_Source);
+            messageFeedback.setsAuthorFIO(sAuthorFIO);
+            messageFeedback.setsMail(sMail);
+            messageFeedback.setsHead(sHead);
+            messageFeedback.setsBody(sBody);
+            messageFeedback.setsPlace(sPlace);
+            messageFeedback.setsEmployeeFIO(sEmployeeFIO);
+            messageFeedback.setnID_Rate(nID_Rate);
+            messageFeedback.setnID_Service(nID_Service);
+            messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
+            messageFeedback.setsAnswer(sAnswer);
+
+            return subjectMessageFeedbackDao.save(messageFeedback);
+        }
+        messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
+
+        messageFeedback.setsID_Source(sID_Source);
+        messageFeedback.setsAuthorFIO(sAuthorFIO);
+        messageFeedback.setsMail(sMail);
+        messageFeedback.setsHead(sHead);
+        messageFeedback.setsBody(sBody);
+        messageFeedback.setsPlace(sPlace);
+        messageFeedback.setsEmployeeFIO(sEmployeeFIO);
+        messageFeedback.setnID_Rate(nID_Rate);
+        messageFeedback.setnID_Service(nID_Service);
+        messageFeedback.setsAnswer(sAnswer );
+
+       return subjectMessageFeedbackDao.update(messageFeedback);
+    }
+
+    public SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId) {
+        return subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
+    }
+
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service){
+        return subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_service);
     }
 
     //при параметре nID_Subject == null

@@ -133,6 +133,11 @@ module.exports.loginWithBankID = function (done, agentCallback) {
   getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
 };
 
+module.exports.loginWithBankIDNBU = function (done, agentCallback) {
+  getAuth('/auth/bankid-nbu/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
+};
+
+
 module.exports.loginWithEds = function (done, agentCallback) {
   getAuth('/auth/eds/callback?code=11223344&link=' + testAuthResultURL, agentCallback, done);
 };
@@ -209,6 +214,28 @@ module.exports.loginWithEmail = function (callback) {
   });
 };
 
+module.exports.runModuleInitializationTest = function (name, moduleRequireFunction) {
+  describe(name, function () {
+    var module;
+    before(function (done) {
+      try{
+        module = moduleRequireFunction();
+      } catch(e){
+        //assert is in next test
+      } finally {
+        done();
+      }
+    });
+
+    it(name + ' should be initialized', function (done) {
+      if (module) {
+        done();
+      } else {
+        done(name + ' is undefined')
+      }
+    });
+  });
+};
 
 module.exports.app = app;
 module.exports.bankidMock = bankidMock;

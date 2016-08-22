@@ -46,6 +46,8 @@ module.exports.convertToCanonical = function (type, data) {
       delete data.sPassportSeria;
       delete data.sPassportNumber;
     }
+  } else if (type === 'bankid-nbu') {
+    //TODO process data from this provider and convert to canonicla bankid view
   }
   return data;
 };

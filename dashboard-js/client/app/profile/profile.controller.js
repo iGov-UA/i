@@ -5,32 +5,34 @@
     .module('dashboardJsApp')
     .controller('ProfileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$scope', 'Auth','Profile','Modal'];
-  function profileCtrl($scope, Auth,Profile, Modal) {
-    // $scope.userName = "test";
+  profileCtrl.$inject = ['$scope', 'Auth','Profile','Modal', 'accountSubjects'];
+  function profileCtrl($scope, Auth,Profile, Modal, accountSubjects) {
     $scope.iGovTitle = "Профіль";
-    // $scope.login = "test";
-
 
     var user = Auth.getCurrentUser();
-    $scope.userName = user.firstName + ' ' + user.lastName;
-    $scope.login = user.id;
-    $scope.email = user.email;
+    $scope.user = user;
+    $scope.contacts = {
+      phone: '',
+      email: ''
+    };
 
     $scope.oldPassword = "";
     $scope.newPassword = "";
     $scope.newPassword2 = "";
 
-    Profile.getSubjects(user.id).then(function(data){
-      if (data.aSubjectAccount && data.aSubjectAccount.length > 0 ){
-        (data.aSubjectAccount[0].oSubject.aSubjectAccountContact).forEach(function(contact) {
-          if(contact.oSubjectContactType.nID==0){
-            $scope.phone=contact.sValue;
+    var subjectContactIdToPropertyMap = {
+      0: 'phone',
+      1: 'email'
+    };
+
+    angular.forEach(accountSubjects, function(subjects){
+      angular.forEach(subjects, function(subject) {
+        angular.forEach(subject.oSubject.aSubjectAccountContact, function(sac){
+          if (sac.sValue && subjectContactIdToPropertyMap.hasOwnProperty(sac.oSubjectContactType.nID)) {
+            $scope.contacts[subjectContactIdToPropertyMap[sac.oSubjectContactType.nID]] = sac.sValue;
           }
         });
-      }
-    }, function (err) {
-      console.log(err);
+      });
     });
 
     $scope.changePassword = function () {
@@ -51,9 +53,5 @@
       $scope.newPassword = "";
       $scope.newPassword2 = "";
     };
-
-    $scope.login = user.firstName;
-     // user.firstName + ' ' + user.lastName;
-
   }
 })();

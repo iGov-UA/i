@@ -16,6 +16,9 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
                .catch(function () {
                  return false;
                });
+          },
+          title: function (TitleChangeService) {
+            TitleChangeService.defaultTitle();
           }
         },
         onEnter: function ($state, $q, BankIDLogin) {
@@ -31,6 +34,9 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         resolve: {
           journal: function ($q, $state, ServiceService) {
             return ServiceService.getJournalEvents();
+          },
+          title: function (TitleChangeService) {
+            TitleChangeService.defaultTitle();
           }
         },
         views: {

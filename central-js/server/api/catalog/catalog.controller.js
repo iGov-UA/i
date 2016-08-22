@@ -88,8 +88,129 @@ module.exports.getServicesTree = function (req, res) {
         json: true,
         'qs': {
           'sFind': options.params.sFind,
-          'asID_Place_UA': options.params.asIDPlaceUA,
-          'bShowEmptyFolders': options.params.bShowEmptyFolders
+          'asID_Place_UA': options.params.asIDPlaceUA
+        }
+      }, callback);
+    }
+  });
+};
+
+// каталог услуг в главном меню
+
+module.exports.getCatalogTreeTag = function (req, res) {
+  var options = {
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password,
+    params: {
+      sFind: req.query.sFind || null,
+      asIDPlaceUA: req.query.asIDPlaceUA || null,
+      bShowEmptyFolders: req.query.bShowEmptyFolders || false,
+      nID_Category: req.query.nID_Category || 1,
+      bNew: req.query.bNew
+    }
+  };
+
+  cache.get(buildKey(options.params), function (error, value) {
+    if (value) {
+      res.json(value);
+    } else {
+      var callback = function (error, response, body) {
+        // set cache key for this particular request
+        if (!error) {
+          cache.set(buildKey(options.params), body, cacheTtl);
+          res.json(body);
+        } else {
+          res.json(errors.createExternalServiceError('Something went wrong', error));
+        }
+      };
+
+      // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
+      if(options.params.bNew) {
+        var url = buildUrl('/action/item/getCatalogTreeTag');
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_Category': options.params.nID_Category,
+            'sFind': options.params.sFind,
+            'asID_Place_UA': options.params.asIDPlaceUA,
+            'bShowEmptyFolders': options.params.bShowEmptyFolders,
+            'bNew': options.params.bNew
+          }
+        }, callback);
+      } else {
+        var url = buildUrl('/action/item/getCatalogTreeTag');
+        return request.get({
+          'url': url,
+          'auth': {
+            'username': options.username,
+            'password': options.password
+          },
+          json: true,
+          'qs': {
+            'nID_Category': options.params.nID_Category,
+            'sFind': options.params.sFind,
+            'asID_Place_UA': options.params.asIDPlaceUA,
+            'bShowEmptyFolders': options.params.bShowEmptyFolders
+          }
+        }, callback);
+      }
+    }
+  });
+};
+
+module.exports.getCatalogTreeTagService = function (req, res) {
+  var options = {
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password,
+    params: {
+      nID_ServiceTag_Root: req.query.nID_ServiceTag_Root,
+      nID_Category: req.query.nID_Category,
+      nID_ServiceTag_Child: req.query.nID_ServiceTag_Child || null,
+      sFind: req.query.sFind || null,
+      asIDPlaceUA: req.query.asIDPlaceUA || null
+    }
+  };
+
+  cache.get(buildKey(options.params), function (error, value) {
+    if (value) {
+      res.json(value);
+    } else {
+      var callback = function (error, response, body) {
+        if (!error) {
+          cache.set(buildKey(options.params), body, cacheTtl);
+          res.json(body);
+        } else {
+          res.json(errors.createExternalServiceError('Something went wrong', error));
+        }
+      };
+
+      var url = buildUrl('/action/item/getCatalogTreeTagService');
+      return request.get({
+        'url': url,
+        'auth': {
+          'username': options.username,
+          'password': options.password
+        },
+        json: true,
+        'qs': {
+          'nID_Category': options.params.nID_Category,
+          'nID_ServiceTag_Root': options.params.nID_ServiceTag_Root,
+          'nID_ServiceTag_Child': options.params.nID_ServiceTag_Child,
+          'sFind': options.params.sFind,
+          'asID_Place_UA': options.params.asIDPlaceUA
         }
       }, callback);
     }

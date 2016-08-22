@@ -34,7 +34,8 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
       activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots_ServiceData', {
         nID_Service: req.query.nID_Service,
         nID_ServiceData: req.params.nID,
-        nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
+        nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment,
+        nSlots: req.query.nSlots
       }, null, sHost);
     });
 };
@@ -45,6 +46,7 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
 //          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
 
     var nID_Server = req.query.nID_Server;
+    var nSlots = req.query.nSlots;
     activiti.getServerRegionHost(nID_Server, function(sHost){
         //var sURL = sHost+'/service/object/file/upload_file_to_redis';
         //console.log("sURL="+sURL);
@@ -53,7 +55,8 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
       //sHost = buildSHost(req.query.sURL);
     //	activiti.sendPostRequest(req, res, '/action/flow/setFlowSlot_ServiceData', {
         activiti.sendPostRequest(req, res, '/service/action/flow/setFlowSlot_ServiceData', {
-                nID_FlowSlot: req.params.nID
+                nID_FlowSlot: req.params.nID,
+                nSlots: nSlots
         }, null, sHost);
     });
 };

@@ -205,6 +205,7 @@ module.exports.signForm = function (req, res) {
 
     var createHtml = function (data, callback) {
       var formData = data.formData;
+      var printFormData = data.formDataPrintPdf;
 
       var templateData = {
         formProperties: data.activitiForm.formProperties,
@@ -231,11 +232,15 @@ module.exports.signForm = function (req, res) {
         //var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
         var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, sURL);
         request(reqParams, function (error, response, body) {
-          for (var key in formData.params) {
-            if (formData.params.hasOwnProperty(key)) {
-              body = body.replace('[' + key + ']', formData.params[key]);
+          for (var key in printFormData.params) {
+            if (printFormData.params.hasOwnProperty(key)) {
+              var keyValue = '[' + key + ']';
+              body = body.split(keyValue).join(printFormData.params[key]);
             }
           }
+          var dateCreate = new Date();
+          var formatedDateCreate = dateCreate.getFullYear() + '-' + ('0' + (dateCreate.getMonth() + 1)).slice(-2) + '-' + ('0' + dateCreate.getDate()).slice(-2);
+          body = body.split('[sDateCreateProcess]').join(formatedDateCreate);
           callback(body);
         });
       } else {

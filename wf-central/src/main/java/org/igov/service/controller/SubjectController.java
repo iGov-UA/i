@@ -787,8 +787,7 @@ public class SubjectController {
             + "https://test.igov.org.ua/wf/service/subject/getSubjectsBy\n\n"
             + "что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
             + " 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
-            + "Ответ:\n"
-            + "\n```\n")
+            + "Ответ:\n")
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
@@ -835,4 +834,57 @@ public class SubjectController {
         return newSubjectSet;
     }
 
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED?sFind=рибальство\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.11\",\n"
+            + "    \"sNote\": \"Морське рибальство \",\n"
+            + "    \"nID\": 36\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getActionKVED", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED(
+            @ApiParam(value = "sFind - кретерий поиска в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sFind); 
+    }
+
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED2?sID=03&sNote=Прісноводне\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.22\",\n"
+            + "    \"sNote\": \"Прісноводне рибництво (аквакультура) \",\n"
+            + "    \"nID\": 39\n"
+            + "  }\n"
+            + "]\n"            
+            + "\n```\n")
+    @RequestMapping(value = "/getActionKVED2", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED2(
+            @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+            @ApiParam(value = "sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sID, sNote); 
+    }
+    
 }

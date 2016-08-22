@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function ($http, $q) {
+angular.module('app').service('ServiceService', function ($http, $q, ErrorsFactory) {
 
   var self = this;
 
@@ -292,4 +292,30 @@ angular.module('app').service('ServiceService', function ($http, $q) {
         return response.data;
       });
   };
+
+  // https://github.com/e-government-ua/i/issues/1326
+  this.getRedirectPaymentLiqpay = function (paramsLiqPay) {
+    var req = {
+      params: angular.copy(paramsLiqPay)
+    };
+    $http.get('api/payment-liqpay', req).
+    success(function(data, status, headers, config) {
+      var sHTMLbody = '<HTML><form method="POST" action="' + data.sURL + '" accept-charset="utf-8">' +
+          '<input type="hidden" name="data" value="' + data.data + '"/> ' +
+        '<input type="hidden" name="signature" value="' + data.signature + '"/> ' +
+        '<input type="image" src="//static.liqpay.com/buttons/p1ru.radius.png"/>' +
+        '</form></HTML>';
+      var windowWithLetter = window.open("","LiqPay", "width=800,height=500,left=350,top=200,scrollbars=yes,resizable=yes,location=no");
+      try{
+        windowWithLetter.document.open();
+        windowWithLetter.document.write(sHTMLbody)
+      } catch (e) {
+        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно для платежу LiqPay. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте здійснити платіж ще раз."});
+      }
+    }).
+    error(function(data, status, headers, config) {
+      //debugger;
+      //alert("Status: " + status + ". Error: " + data.code + ". Messege: " + data.message);
+    });
+  }
 });

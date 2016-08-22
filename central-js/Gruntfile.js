@@ -501,7 +501,7 @@ module.exports = function (grunt) {
       mochaUnitTest: {
         options: {
           reporter: 'spec',
-          ui: 'tdd',
+          ui: 'tdd'
         },
         src: ['server/**/*.test.js']
       },
@@ -509,7 +509,7 @@ module.exports = function (grunt) {
       mochaTest: {
         options: {
           reporter: 'spec',
-          ui: 'bdd',
+          ui: 'bdd'
         },
         src: ['server/**/*.spec.js']
       }

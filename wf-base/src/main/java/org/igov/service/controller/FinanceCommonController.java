@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.io.BufferedReader;
 import java.net.URLDecoder;
+import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -24,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import org.igov.service.business.finance.Currency;
+import org.igov.service.business.finance.Liqpay;
 
 import static org.igov.service.business.finance.LiqpayService.TASK_MARK;
+import org.igov.service.business.object.Language;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Api(tags = { "FinanceCommonController -- Финансы общие (в т.ч. платежи)" })
@@ -43,6 +47,9 @@ public class FinanceCommonController {
     @Autowired
     AccessDataService accessDataDao;
 
+    @Autowired
+    Liqpay oLiqPuy;
+    
     @Autowired
     private LiqpayService oLiqpayService;
 
@@ -236,5 +243,64 @@ public class FinanceCommonController {
         return sData;
     }
 
+
+    @ApiOperation(value = "/finance/redirectPaymentLiqpay", notes = "##### Получение URL-а и параметров для отправки платежа через POST-запрос\n")
+    @RequestMapping(value = "/finance/redirectPaymentLiqpay", method = RequestMethod.GET, headers = {
+            "Accept=application/json" })
+    public
+    @ResponseBody
+    Map<String, String> getRedirectPaymentLiqpay(
+            //@ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam String sID_Order,
+        @ApiParam(value = "Строка-ИД Мерчанта", required = true) @RequestParam(value = "sID_Merchant", required = true) String sID_Merchant,
+        @ApiParam(value = "Сумма (разделитель копеек - точка)", required = false) @RequestParam(value = "sSum", required = false) String sSum,
+        @ApiParam(value = "Строка-ИД заявки-платежа", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+        @ApiParam(value = "Описание платежа", required = false) @RequestParam(value = "sDescription", required = false) String sDescription,
+        @ApiParam(value = "ИД валюты (3 символа)", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency,
+        //@ApiParam(value = "", required = true) @RequestParam Language oLanguage,
+        //@ApiParam(value = "", required = true) @RequestParam String sID_Order,
+        @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
+        @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
+        @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject
+        //@ApiParam(value = "", required = true) @RequestParam boolean bTest
+            
+            /*@ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam String sID_Order,
+	    @ApiParam(value = "Строка-ИД платежной системы", required = true) @RequestParam String sID_PaymentSystem,
+	    @ApiParam(value = "Строка со вспомогательными данными", required = true) @RequestParam String sData,
+	    @ApiParam(value = "Cтрока-префикс платежа (если их несколько в рамках заявки)", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
+	    @ApiParam(value = "Строка-ИД транзакции", required = true) @RequestParam String sID_Transaction,
+	    @ApiParam(value = "Строка-статуса платежа", required = true) @RequestParam String sStatus_Payment*/
+
+    ) throws Exception {
+
+        if (sSum != null) {
+            sSum = sSum.replaceAll(",", ".");
+        }else{
+            sSum="0";
+        }
+        /*if(sURL_CallbackStatusNew==null){
+            sURL_CallbackStatusNew="";
+        }
+        if(sURL_CallbackPaySuccess==null){
+            sURL_CallbackPaySuccess="";
+        }*/
+        if(sDescription==null){
+            sDescription="";
+        }
+        boolean bTest = generalConfig.isSelfTest();
+        sID_Order = (sID_Order == null ? "" : sID_Order);
+        Language oLanguage = Liqpay.DEFAULT_LANG;
+        Currency oID_Currency = Currency.valueOf(sID_Currency == null ? "UAH" : sID_Currency);
+        nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
+        
+        Map<String, String> mReturn = oLiqPuy.getPayDataRequest(sID_Merchant, sSum,  
+            oID_Currency, oLanguage, sDescription,
+            sID_Order, sURL_CallbackStatusNew,
+            sURL_CallbackPaySuccess, nID_Subject, bTest);
+        
+        return mReturn;
+    }
+    
+
+    
 
 }			

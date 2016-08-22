@@ -17,6 +17,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="rName" name="номер р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -47,12 +52,12 @@
 			Ви отримаєте відповідь протягом п'яти робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:&lt;/p&gt;
-			&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3]&lt;br /&gt;
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:4]&lt;br /&gt;
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]&lt;/p&gt;
+			&lt;p&gt;${sNameOrgan}.&lt;br /&gt;
+			${sAddress}&lt;br /&gt;
+			${sWorkTime}&lt;br /&gt;
+			${sPhoneOrgan}&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
+			${sNameOrgan}&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -122,7 +127,7 @@
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі.&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
+			&lt;p&gt;${sNameOrgan}&lt;br /&gt;
 			&lt;/p&gt;
             [pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
@@ -160,7 +165,7 @@
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення з приводу призначення субсидії знаходиться в опрацюванні.&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
+			&lt;p&gt;${sNameOrgan}&lt;br /&gt;
 			&lt;/p&gt;
             [pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
@@ -196,7 +201,7 @@
 			&lt;p&gt;За даними УПСЗН субсидія не призначалась.&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете подати дані на призначення субсидіі  на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;/p&gt;
+			&lt;p&gt;${sNameOrgan}&lt;br /&gt;&lt;/p&gt;
             [pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>

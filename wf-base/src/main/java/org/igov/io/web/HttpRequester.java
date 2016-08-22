@@ -102,13 +102,18 @@ public class HttpRequester {
             LOG.info("FINISHED! (nStatus={},sURL={},saParam(cuted)={},osReturn(cuted)={})", nStatus, sURL, sCut(100, saParam), sCut(100, osReturn.toString()));
             LOG_BIG.debug("FINISHED! (nStatus={},sURL={},saParam={},osReturn={})", nStatus, sURL, saParam, osReturn);
         } catch (Exception oException) {
-            new Log(this.getClass(), oException)
+            new Log(oException, LOG)
+                    ._Case("Web_PostSelf")
                     ._Head("[post]:BREAKED!")
+//                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("saParam", saParam)
-                    ._SendThrow();
+                    ._LogTransit()
+                    ._LogTrace()
+                    .save()
+                    ;
             LOG.error("BREAKED: {} (sURL={},saParam={})", oException.getMessage(), sURL, saParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},saParam={})",oException.getMessage(),sURL,saParam);
             LOG_BIG.error("BREAKED: {} (sURL={},saParam={})", oException.getMessage(), sURL, saParam);
@@ -116,7 +121,8 @@ public class HttpRequester {
             throw oException; //return null;
         }
         if (nStatus != 200) {
-            new Log(this.getClass(), null, LOG)
+            new Log(this.getClass(), LOG)
+                    ._Case("Web_PostSelfNo200")
                     ._Head("[post]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     ._StatusHTTP(nStatus)
@@ -124,7 +130,9 @@ public class HttpRequester {
                     ._Param("sURL", sURL)
                     ._Param("saParam", saParam)
                     ._Param("osReturn", osReturn)
-                    ._SendThrow();
+                    ._LogTransit()
+                    .save()
+                    ;
             if (bExceptionOnNorSuccess) {
                 throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "saParam=" + saParam + "osReturn=" + osReturn);
             }
@@ -215,13 +223,16 @@ public class HttpRequester {
             LOG.debug("FINISHED! (nStatus={},sURL={},mParam={},osReturn={})", nStatus, sURL, mParam, osReturn);
 
         } catch (Exception oException) {
-            new Log(this.getClass(), oException)
+            new Log(oException, LOG)
+                    ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
+//                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("mParam", mParam)
-                    ._Send();
+                    ._LogTrace()
+                    .save();
             LOG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
             LOG_BIG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
@@ -229,7 +240,8 @@ public class HttpRequester {
             throw oException; //return null;
         }
         if (nStatus != 200) {
-            new Log(this.getClass())
+            new Log(this.getClass(), LOG)
+                    ._Case("Web_GetSelfNo200")
                     ._Head("[get]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
@@ -237,7 +249,7 @@ public class HttpRequester {
                     ._Param("sURL", sURL)
                     ._Param("mParam", mParam)
                     ._Param("osReturn", osReturn)
-                    ._Send();
+                    .save();
             if (bExceptionOnNorSuccess) {
                 throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "osReturn=" + osReturn);
             }
@@ -377,13 +389,16 @@ public class HttpRequester {
             LOG.debug("FINISHED! (nStatus={},sURL={},mParam={},bytes size={})", nStatus, sURL, mParam, res.length);
 
         } catch (Exception oException) {
-            new Log(this.getClass(), oException)
+            new Log(oException, LOG)
+                    ._Case("Web_GetSelf")
                     ._Head("[get]:BREAKED!")
+//                    ._Body(oException.getMessage())
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("mParam", mParam)
-                    ._Send();
+                    ._LogTrace()
+                    .save();
             LOG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
             //oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
             LOG_BIG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
@@ -391,7 +406,8 @@ public class HttpRequester {
             throw oException; //return null;
         }
         if (nStatus != 200) {
-            new Log(this.getClass())
+            new Log(this.getClass(), LOG)
+                    ._Case("Web_GetSelfNo200")
                     ._Head("[get]:nStatus!=200")
                     ._Status(Log.LogStatus.ERROR)
                     //._StatusHTTP(nStatus)
@@ -399,7 +415,7 @@ public class HttpRequester {
                     ._Param("sURL", sURL)
                     ._Param("mParam", mParam)
                     ._Param("bytes", res != null ? res.length : "null")
-                    ._Send();
+                    .save();
             if (bExceptionOnNorSuccess) {
                 throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "bytes=" + res.length);
             }
