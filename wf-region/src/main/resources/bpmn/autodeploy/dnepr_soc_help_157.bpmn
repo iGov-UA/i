@@ -43,20 +43,17 @@
         <activiti:formProperty id="file9" name="Довідка про неотримання допомоги з іншого Управління праці та соціального захисту населення;(якщо заявник зареєстрований в іншому районі)" type="file"></activiti:formProperty>
 
 
-        <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
-
-
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="3"></activiti:formProperty>
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="invisible" default="5"></activiti:formProperty>
         
-        <activiti:formProperty id="cc_1_5" name="УПЗСН - Призначення допомоги на дітей одиноким матерям" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_1_5" name="УПЗСН - Призначення допомоги на дітей одиноким матерям" type="invisible" default="true"></activiti:formProperty>
+		<activiti:formProperty id="markersDecision" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
 
 
       </extensionElements>
@@ -64,7 +61,7 @@
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Перевірка документів в Управлінні праці та соціального захисту населення (1-й крок)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -88,16 +85,20 @@
         <activiti:formProperty id="mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRoomNumber" name="Номер кабінету, в який запросити громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення етап 1" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, запросити громадянина з оригіналами документів"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені неправильно, повідомити громадянина"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sRoomNumber" name="Номер кабінету, в який запросити громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
                 
-        <activiti:formProperty id="cc_1_5" name="УПЗСН - Призначення допомоги на дітей одиноким матерям" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_1_5" name="УПЗСН - Призначення допомоги на дітей одиноким матерям" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="markersDecision" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_user.json')}"></activiti:formProperty>
+		
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="11"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="invisible" default="13"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -117,7 +118,7 @@
     <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask7"></sequenceFlow>
     <userTask id="usertask2" name="Перевірка документів в Управлінні праці та соціального захисту населення (2-й крок)" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Відділення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
