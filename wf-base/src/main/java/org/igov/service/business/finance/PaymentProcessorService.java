@@ -29,6 +29,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class PaymentProcessorService {
@@ -126,13 +128,30 @@ public class PaymentProcessorService {
 	private String loadFileFromServer(){
 		JSch jsch = new JSch();
         Session session = null;
-        File file = null;
+        File oFile = null;
         try {
-        	LOG.info("Loading file from the server {}:{} with parameters. Login:{} password:{} fileName:{}", 
+            
+            //Date oDate = new Date();
+            Integer nOffsetDays=-1;
+            Date oDate = new Date(new Date().getTime() + (nOffsetDays * (24 * 60 * 60 * 1000)));
+            //SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            String sTag="[SuffixDate]";
+            String sPath= "./bank_yuzhny/";
+            String sFileNameMask = "pivd_"+sTag+".csv";
+            String sSuffixDateMask = "yyMMdd";
+            SimpleDateFormat oDateFormat = new SimpleDateFormat(sSuffixDateMask);
+            String sTagValue = oDateFormat.format(oDate);
+            String sFileName = sFileNameMask.replace(sTag, sTagValue);
+            String sPathFileName = sPath+sFileName;
+            //pivd_160823.csv
+        	LOG.info("Loading file from the server sHost={},nPort={},sLogin={},sPathFileName={},sTag={},sTagValue={},sSuffixDateMask={},sPath={},sFileNameMask={},sFileName={}", //password:{} 
         			generalConfig.getPayYuzhnyFTPsHost(), generalConfig.getPayYuzhnyFTPnPort(), 
-        			generalConfig.getPayYuzhnyFTPsUser(), generalConfig.getPayYuzhnyFTPsPassword(), 
-        			generalConfig.getPayYuzhnyFTPsFileName());
-        	file = File.createTempFile("11082016", ".csv");
+        			generalConfig.getPayYuzhnyFTPsUser(), //generalConfig.getPayYuzhnyFTPsPassword(), 
+        			//generalConfig.getPayYuzhnyFTPsFileName()
+        			sPathFileName,sTag,sTagValue,sSuffixDateMask,sPath,sFileNameMask,sFileName
+                );
+        	//file = File.createTempFile("11082016", ".csv");
+        	oFile = File.createTempFile(sFileName, null);
             session = jsch.getSession(generalConfig.getPayYuzhnyFTPsUser(), generalConfig.getPayYuzhnyFTPsHost(), Integer.valueOf(generalConfig.getPayYuzhnyFTPnPort()));
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword(generalConfig.getPayYuzhnyFTPsPassword());
@@ -141,7 +160,7 @@ public class PaymentProcessorService {
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            sftpChannel.get(generalConfig.getPayYuzhnyFTPsFileName(), file.getAbsolutePath());
+            sftpChannel.get(generalConfig.getPayYuzhnyFTPsFileName(), oFile.getAbsolutePath());
             sftpChannel.exit();
             session.disconnect();
         } catch (JSchException e) {
@@ -151,6 +170,6 @@ public class PaymentProcessorService {
         } catch (IOException e) {
         	LOG.error("Exception occured while getting file from sftp {}", e.getMessage(), e);  
 		}
-        return file != null ? file.getAbsolutePath() : null;
+        return oFile != null ? oFile.getAbsolutePath() : null;
 	}
 }
