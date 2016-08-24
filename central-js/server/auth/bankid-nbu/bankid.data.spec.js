@@ -8,17 +8,17 @@ module.exports.createToken = function (accessToken) {
 };
 
 module.exports.codes = {
-  forErrorResponse406 : 'code406',
-  forErrorResponse501 : 'code501',
-  forCustomerDataResponse : 'codeCustomerData',
-  forCustomerDataCryptoResponse : 'codeCustomerDataCrypto'
+  forErrorResponse406: 'code406',
+  forErrorResponse501: 'code501',
+  forCustomerDataResponse: 'codeCustomerData',
+  forCustomerDataCryptoResponse: 'codeCustomerDataCrypto'
 };
 
 module.exports.accessTokens = {
-  forErrorResponse406 : 'error token 406',
-  forErrorResponse501 : 'error token 501',
-  forCustomerDataResponse : 'customer data token',
-  forCustomerDataCryptoResponse : 'customer data crypto token'
+  forErrorResponse406: 'error token 406',
+  forErrorResponse501: 'error token 501',
+  forCustomerDataResponse: 'customer data token',
+  forCustomerDataCryptoResponse: 'customer data crypto token'
 };
 
 module.exports.customerData = {
@@ -65,6 +65,23 @@ module.exports.customerData = {
   }
 };
 
-module.exports.createEncryptedCustomer = function (customerData) {
+module.exports.createEncryptedCustomer = function (customerData, bankidNBUUtil, publicKeyPath) {
+  var customer = JSON.parse(JSON.stringify(customerData.customer));
 
+  delete customer.scans;
+  delete customer.addresses;
+  delete customer.documents;
+
+  var fs = require('fs');
+  var constants = require('constants');
+
+  var publicKey = {
+    key: fs.readFileSync(publicKeyPath),
+    padding: constants.RSA_PKCS1_PADDING
+  };
+
+  return {
+    state: "ok",
+    customerCrypto: bankidNBUUtil.encryptData(customer, publicKey)
+  };
 };

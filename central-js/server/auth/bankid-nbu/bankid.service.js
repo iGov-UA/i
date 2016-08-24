@@ -3,11 +3,11 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
-  , syncSubject = require('../../api/subject/subject.service.js')
+  , syncSubject = require('../../api/subject/subject.service')
   , Admin = require('../../components/admin/index')
   , url = require('url')
   , StringDecoder = require('string_decoder').StringDecoder
-  , bankidNBUUtil = require('./bankid.util.js')
+  , bankidNBUUtil = require('./bankid.util')
   , errors = require('../../components/errors')
   , activiti = require('../../components/activiti');
 
@@ -23,7 +23,7 @@ var createError = function (error, error_description, response) {
 
 function responseContractValidation(callback, nextCallback) {
   return function (error, response, body) {
-    if(response.statusCode === 200 && (body.customer || body.customerCrypto)){
+    if (response.statusCode === 200 && (body.customer || body.customerCrypto)) {
       nextCallback(error, response, body);
     } else if (response.statusCode === 200 && body.error) {
       // HTTP/1.1 406 Not Acceptable , якщо у запиті не задано ідентифікатор ПАП ,
@@ -45,27 +45,21 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     }
     var innToCheck;
 
-    if (disableDecryption) {
-      if (body.customerCrypto) {
-        console.log("---------------  client data is encrypted but decryption is disabled !!!! " + body.customerCrypto);
-        callback({message: "client data is encrypted but decryption is disabled"}, response, null);
-        return;
-      } else {
-        console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
-        innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
-        console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
-      }
-    } else {
+    if (body.customerCrypto && disableDecryption) {
+      innToCheck = bankidNBUUtil.decryptFieldInn(body.customerCrypto);
+    } else if (body.customerCrypto && !disableDecryption) {
+      console.log("--------------- client data should be decrypted on this step !!!! " + body.customerCrypto);
+      callback({message: "client data should be decrypted on this step"}, response, null);
+      return;
+    } else if (body.customer) {
       innToCheck = body.customer.inn;
       console.log("--------------- nodecrption of inn !!!!");
     }
 
     console.log("---------------  innToCheck in result !!!!" + innToCheck);
-
-    console.log("---------------  body.customer in result !!!!" + body.customer);
     console.log("---------------  Admin.isAdminInn(innToCheck) in result!!!! " + Admin.isAdminInn(innToCheck));
 
-    if (body.customer && Admin.isAdminInn(innToCheck)) {
+    if ((body.customer || body.customerCrypto) && Admin.isAdminInn(innToCheck)) {
       console.log("---------------  user with inn " + innToCheck + " is admin");
       body.admin = {
         inn: innToCheck,
@@ -196,19 +190,26 @@ module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
-        if (error || body.error || !body.customer) {
+        if (error || body.error || !body.customer || !body.customerCrypto) {
           callback(createError(error || body.error || body, body.error_description, response), null);
         } else {
-          callback(null, {
+          var customerAndAdmin = {
             customer: body.customer,
             admin: body.admin
-          });
+          };
+          if (body.customer) {
+            customerAndAdmin.customer = body.customer;
+          } else if (body.customerCrypto) {
+            customerAndAdmin.customerCrypto = body.customerCrypto;
+          }
+          callback(null, customerAndAdmin);
         }
       }, disableDecryption);
     },
 
     function (result, callback) {
-      syncSubject.sync(bankidNBUUtil.decryptField(result.customer.inn), function (error, response, body) {
+      var inn = result.customer ? result.customer.inn : bankidNBUUtil.decryptFieldInn(result.customerCrypto);
+      syncSubject.sync(inn, function (error, response, body) {
         if (error) {
           callback(createError(error, response), null);
         } else {
@@ -224,6 +225,11 @@ module.exports.syncWithSubject = function (accessToken, done) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
           result.usercacheid = body;
+
+          var inn = result.customer ? result.customer.inn : bankidNBUUtil.decryptFieldInn(result.customerCrypto);
+          var firstName = result.customer ? result.customer.firstName : bankidNBUUtil.decryptFieldFirstName(result.customerCrypto);
+          var middleName = result.customer ? result.customer.middleName : bankidNBUUtil.decryptFieldMiddleName(result.customerCrypto);
+          var lastName = result.customer ? result.customer.lastName : bankidNBUUtil.decryptFieldLastName(result.customerCrypto);
 
           if (result.customer.inn) {
             result.customer.inn = bankidNBUUtil.decryptField(result.customer.inn);

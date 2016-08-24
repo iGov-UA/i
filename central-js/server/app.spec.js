@@ -133,7 +133,7 @@ module.exports.loginWithBankID = function (done, agentCallback) {
   getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
 };
 
-module.exports.loginWithBankIDNBU = function (done, agentCallback) {
+module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
   testRequest
     .get('/auth/bankid-nbu?link=' + testAuthResultURL)
     .expect(302)
@@ -141,7 +141,7 @@ module.exports.loginWithBankIDNBU = function (done, agentCallback) {
       var loginAgent = superagent.agent();
       loginAgent.saveCookies(res);
 
-      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=11223344&?link=' + testAuthResultURL);
+      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&?link=' + testAuthResultURL);
       loginAgent.attachCookies(tokenRequest);
 
       tokenRequest
