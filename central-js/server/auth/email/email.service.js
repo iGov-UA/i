@@ -1,6 +1,5 @@
 var async = require('async')
-  , syncSubject = require('../../api/subject/subject.service.js')
-  , userConvert = require('../../api/user/user.convert')
+  , syncSubject = require('../../api/subject/subject.service')
   , activiti = require('../../components/activiti')
   , errors = require('../../components/errors');
 
@@ -103,7 +102,7 @@ module.exports.syncWithSubject = function (email, done) {
           if (error) {
             asyncCallback(error, null);
           } else {
-            user.customer = userConvert.convertToCanonical('email', subjectHuman);
+            user.customer = self.convertToCanonical('email', subjectHuman);
             asyncCallback(null, user);
           }
         });
