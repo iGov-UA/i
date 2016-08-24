@@ -100,17 +100,7 @@ var centralNock = nock('https://test.igov.org.ua')
 
 var regionMock = nock('https://test.region.igov.org.ua')
   .persist()
-  .log(console.log)
-  .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 1, nID_Subject: 11})
-  .reply(200, appData.signCheck, {
-    'Content-Type': 'application/json'
-  })
-  .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 2, nID_Subject: 11})
-  .reply(200, appData.signCheckError, {
-    'Content-Type': 'application/json'
-  });
+  .log(console.log);
 
 
 function getAuth(urlWithQueryParams, agentCallback, done) {
