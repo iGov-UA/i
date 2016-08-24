@@ -3,6 +3,7 @@ package org.igov.service.business.escalation;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -31,6 +33,8 @@ import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.escalation.EscalationRuleFunction;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+
+import static org.igov.service.business.action.task.bp.handler.BpServiceHandler.mGuideTaskParamKey;
 
 @Service
 public class EscalationService {
@@ -59,6 +63,8 @@ public class EscalationService {
     private EscalationHelper escalationHelper;
     @Autowired
     private EscalationRuleFunctionDao escalationRuleFunctionDao;
+    @Autowired
+    private RuntimeService runtimeService;
 
     private int nFailsTotal = 0;
     private int nFails = 0;
@@ -118,9 +124,9 @@ public class EscalationService {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
-                    BpServiceHandler.gaideTaskParamKey.put("processLink", "Ссылка");
+                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Ссылка");
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
-                    BpServiceHandler.gaideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
+                    BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
                     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
                     //send emails (or processing by other bean-handlers)
                     escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
@@ -159,7 +165,7 @@ public class EscalationService {
 
         Map<String, Object> result = new HashMap<>();
         result.put("sTaskId", taskId);
-        BpServiceHandler.gaideTaskParamKey.put("sTaskId", "ИД таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "ИД таски");
 
         long nDiffMS = 0;
         if (oTask.getDueDate() != null) {
@@ -172,20 +178,20 @@ public class EscalationService {
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
-        BpServiceHandler.gaideTaskParamKey.put("nElapsedHours", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nElapsedDays", "Прошло дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Прошло дней");
         result.put("nDays", nElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nDays", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
         result.put("bSuspended", oTask.isSuspended());
-        BpServiceHandler.gaideTaskParamKey.put("bSuspended", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
-        BpServiceHandler.gaideTaskParamKey.put("bAssigned", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("bAssigned", "Удалить");
         //m.put("isSuspended", oTask.getAssignee()isSuspended());
 
-        long nDueElapsedHours = -1;
+        long nDueElapsedHours = -1; 
         long nDueElapsedDays = -1;
         if (oTask.getDueDate() != null) {
             long nDueDiffMS = 0;
@@ -201,9 +207,9 @@ public class EscalationService {
             LOG.debug("(oTask.getDueDate() = null)");
         }
         result.put("nDueElapsedHours", nDueElapsedHours);
-        BpServiceHandler.gaideTaskParamKey.put("nDueElapsedHours", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nDueElapsedDays", "ИД правила эскалации");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
@@ -222,21 +228,31 @@ public class EscalationService {
             LOG.debug("(oTask.getCreateDate() = null)");
         }
         result.put("nCreateElapsedHours", nCreateElapsedHours);
-        BpServiceHandler.gaideTaskParamKey.put("nCreateElapsedHours", "Удалить");
+        BpServiceHandler.mGuideTaskParamKey.put("nCreateElapsedHours", "Удалить");
         result.put("nCreateElapsedDays", nCreateElapsedDays);
-        BpServiceHandler.gaideTaskParamKey.put("nCreateElapsedDays", "Создание");
+        BpServiceHandler.mGuideTaskParamKey.put("nCreateElapsedDays", "Создание");
         //m.put("nDueDays", nDueElapsedDays);
 
+        StartFormData startFormData = formService.getStartFormData(oTask.getProcessDefinitionId());
+        Map<String, Object> variables = runtimeService.getVariables(oTask.getProcessInstanceId());
+        
+        result.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        result.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        result.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
-            LOG.debug(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
+            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
                     oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
                     && StringUtils.isNumeric(oFormProperty.getValue())) {
                 result.put(oFormProperty.getId(), Long.valueOf(oFormProperty.getValue()));
-                BpServiceHandler.gaideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
+                BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
             } else {
                 if ("enum".equalsIgnoreCase(sType)) {
                     sValue = ActionTaskService.parseEnumProperty(oFormProperty);
@@ -245,26 +261,25 @@ public class EscalationService {
                 }
                 if (sValue != null) {
                     result.put(oFormProperty.getId(), sValue);
-                    BpServiceHandler.gaideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-
+                    BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
                 }
             }
         }
 
         result.put("sID_BP_full", oTask.getProcessDefinitionId());
-        BpServiceHandler.gaideTaskParamKey.put("sID_BP_full", "ИД БП (полный)");
+        BpServiceHandler.mGuideTaskParamKey.put("sID_BP_full", "ИД БП (полный)");
         result.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
-        BpServiceHandler.gaideTaskParamKey.put("sID_BP", "ИД БП");
+        BpServiceHandler.mGuideTaskParamKey.put("sID_BP", "ИД БП");
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.gaideTaskParamKey.put("nID_task_activiti", "ИД таски активити");
+        BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "ИД таски активити");
         result.put("sTaskName", oTask.getName());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя  таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         result.put("sTaskDescription", oTask.getDescription());
-        BpServiceHandler.gaideTaskParamKey.put("sTaskDescription", "Описание");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
-        BpServiceHandler.gaideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
+        BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
         result.put("sLoginAssigned", oTask.getAssignee());
-        BpServiceHandler.gaideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
         List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
@@ -289,23 +304,24 @@ public class EscalationService {
                 .processDefinitionId(oTask.getProcessDefinitionId()).singleResult();
 
         result.put("sServiceType", processDefinition != null ? processDefinition.getName() : "");
-        BpServiceHandler.gaideTaskParamKey.put("sServiceType", "Услуга");
+        BpServiceHandler.mGuideTaskParamKey.put("sServiceType", "Услуга");
         result.put("sTaskName", String.format("%s", oTask.getName()));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskName", "Имя таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя таски"); 
         result.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.gaideTaskParamKey.put("sTaskNumber", "Номер таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskNumber", "Номер  таски");
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
-        BpServiceHandler.gaideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
+        BpServiceHandler.mGuideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
-        BpServiceHandler.gaideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
+        BpServiceHandler.mGuideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
 
         HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(oTask.getProcessInstanceId()).singleResult();
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         result.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
-        BpServiceHandler.gaideTaskParamKey.put("sDate_BP", "Дата БП");
+        BpServiceHandler.mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         result.putAll(processInstance.getProcessVariables());
 
+        LOG.info("Result with parameters for the escalation {}", result);
         return result;
     }
 

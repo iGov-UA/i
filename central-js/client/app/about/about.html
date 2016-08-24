@@ -158,8 +158,8 @@
     <div class="container" style="margin-top: 50px">
       <h1>IT-волонтери iGov</h1>
       <div class="container">
-        <div class="col-sm-4 volunteer" ng-repeat="topVolunteer in topVolunteers">
-          <img style="opacity: 0.25;" ng-if="!topVolunteer.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+        <div class="col-sm-4 volunteer" ng-repeat="topVolunteer in volunteers.aTop">
+          <img style="opacity: 0.25;" ng-if="!topVolunteer.sPhoto" src="../../assets/images/about/no-pic.jpg" alt="img">
           <img ng-if="topVolunteer.sPhoto" ng-src="{{topVolunteer.sPhoto}}" alt="img">
           <div class="top-vol-text-container">
             <a ng-if="topVolunteer.sURL" href={{topVolunteer.sURL}}><h3>{{topVolunteer.sFIO}}</h3></a>
@@ -181,38 +181,43 @@
     <div class="container" style="margin-top: 50px">
       <h1>Регіональні Волонтери iGov</h1>
 
-      <div class="col-sm-12 region-container" ng-repeat="region in regionVolunteers">
+      <div class="col-sm-12 region-container" ng-repeat="region in volunteers.aVolunteers track by $index">
         <div class="row">
           <div class="col-sm-12 region-name">
             <div class="col-sm-4" style="padding-right: 0"><hr class="common-hr"></div>
             <div class="col-sm-4 text-center">
-              <span ng-if="region[0][0].regionName">{{region[0][0].regionName}}</span>
+              <span ng-if="region.sName">{{region.sName}}</span>
             </div>
             <div class="col-sm-4" style="padding-left: 0"><hr class="common-hr"></div>
           </div>
         </div>
         <div class="container">
-          <div ng-if="!volunteers[0].regionName" class="col-sm-4 volunteer-city" ng-repeat="volunteers in region">
+          <div class="col-sm-4 volunteer-city" ng-repeat="city in region.a track by $index">
             <div>
-              <h3><img src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/region.png" style="border-radius: 0; padding-bottom: 5px">
-                <span style="font-size: 24px" ng-if="volunteers[0].cityName !== 'Сингапур' && volunteers[0].cityName !== ''">м. </span>
-                {{volunteers[0].cityName}}
+              <h3><img src="../../assets/images/about/region.png" style="border-radius: 0; padding-bottom: 5px">
+                {{city.sName}}
               </h3>
-              <a href="{{volunteers[1].sGroup.type[0].region[0].city[0].sCityPassportURL || '#'}}">Паспорт iGov міста</a><br>
-              <a href="{{volunteers[1].sGroup.type[0].region[0].city[0].sNewsGroupURL || '#'}}">Група з новинами iGov міста - {{volunteers[0].cityName}}</a><br>
-              <a href="{{volunteers[1].sGroup.type[0].region[0].city[0].sVolunteersGroupURL || '#'}}">Група волонтерів iGov міста - {{volunteers[0].cityName}}</a><br>
+              <div ng-if="city.sCityPassportURL">
+                <a href="{{city.sCityPassportURL}}">Паспорт iGov міста</a><br>
+              </div>
+              <div ng-if="city.sNewsGroupURL">
+                <a href="{{city.sNewsGroupURL}}">Група з новинами iGov міста - {{city.sName}}</a><br>
+              </div>
+              <div ng-if="city.sVolunteersGroupURL">
+                <a href="{{city.sVolunteersGroupURL}}">Група волонтерів iGov міста - {{city.sName}}</a><br>
+              </div>
             </div>
 
             <div>
               <div>
                 <h4>Рада волонтерів міста</h4>
                 <ul class="content-ul">
-                  <li ng-init="checkForEmpty()" ng-if="rada.sGroup.type[0].region[0].city[1].sName === 'Рада волонтерів'" ng-repeat="rada in volunteers">
+                  <li ng-init="checkForEmpty()" ng-if="check(rada.sID_Group)" ng-repeat="rada in city.a track by $index">
                     <img ng-if="rada.sPhoto" ng-src="{{rada.sPhoto}}" alt="no-img">
-                    <img style="opacity: 0.25;" ng-if="!rada.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+                    <img style="opacity: 0.25;" ng-if="!rada.sPhoto" src="../../assets/images/about/no-pic.jpg" alt="img">
                     <a ng-if="rada.sURL" href="{{rada.sURL}}">{{rada.sFIO}}</a>
                     <span ng-if="!rada.sURL">{{rada.sFIO}}</span>
-                    <span ng-if="rada.prof">- {{rada.prof}}</span>
+                    <span ng-if="rada.sInfo"> - {{rada.sInfo}}</span>
                   </li>
                 </ul>
               </div>
@@ -220,9 +225,9 @@
               <div>
                 <h4>Волонтери міста</h4>
                 <ul class="content-ul">
-                  <li ng-init="checkForEmpty()" ng-if="volunteer.sGroup.type[0].region[0].city[1].sName === 'Волонтер'" ng-repeat="volunteer in volunteers">
+                  <li ng-init="checkForEmpty()" ng-if="!check(volunteer.sID_Group)" ng-repeat="volunteer in city.a track by $index">
                     <img ng-if="volunteer.sPhoto" ng-src="{{volunteer.sPhoto}}" alt="no-img">
-                    <img style="opacity: 0.25;" ng-if="!volunteer.sPhoto" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/about/no-pic.jpg" alt="img">
+                    <img style="opacity: 0.25;" ng-if="!volunteer.sPhoto" src="../../assets/images/about/no-pic.jpg" alt="img">
                     <a ng-if="volunteer.sURL" href="{{volunteer.sURL}}">{{volunteer.sFIO}}</a>
                     <span ng-if="!volunteer.sURL">{{volunteer.sFIO}}</span>
                   </li>

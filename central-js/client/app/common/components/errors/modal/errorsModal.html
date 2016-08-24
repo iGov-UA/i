@@ -13,19 +13,19 @@
   </b>
   <p ng-bind-html="error.sNote" class="text-{{error.sType}}">
   </p>
-  
+
   <br><!-- $filter('date')(new Date(error.sDate), 'dd.MM.yyyy HH:mm') -->
   <p class="text-{{error.sType}}" ng-if="error.sType!=='success'">
       <span>Час: {{error.sDate ? error.sDate : '(невідомо)'}}</span>
       <span ng-if="error.oData.sFunc">, Функція: {{error.oData.sFunc}}</span>
   </p>
   <p ng-if="error.oData.sError" class="text-{{error.sType}}">
-    Війняток: {{error.oData.sError}}
+    Виключна ситуація: {{error.oData.sError}}
   </p>
   <div ng-if="error.oData.oResponse" class="text-{{error.sType}}">
       <b>Відповідь сервера:</b><br>
     <label ng-if="error.oData.oResponse.sMessage" class="text-{{error.sType}}">
-        Повідомленя: {{error.oData.oResponse.sMessage}}
+        Повідомлення: {{error.oData.oResponse.sMessage}}
     </label>
     <label ng-if="error.oData.oResponse.sCode" class="text-{{error.sType}}">
         Код: {{error.oData.oResponse.sCode}}
@@ -40,11 +40,11 @@
   <div ng-if="error.oData.asParam && error.sType!='success'" class="text-{{error.sType}}">
       <b>Значення параметрів:</b><br>
     <label ng-repeat="sParam in error.oData.asParam" class="text-{{error.sType}}">
-      {{sParam}}, 
+      {{sParam}},
     </label><br>
   </div>
   <p ng-show="false && error.bSending" class="text-{{error.sType}}">
-      Дані відсілаються на сервер...
+      Дані відсилаються на сервер...
   </p>
 </div>
 

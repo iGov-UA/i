@@ -18,7 +18,7 @@ public class EscalationHandler_StartEscalationProcess implements EscalationHandl
     private static final Logger LOG = LoggerFactory.getLogger(EscalationHandler_StartEscalationProcess.class);
 
     @Autowired
-    GeneralConfig oGeneralConfig;
+    GeneralConfig oGeneralConfig; 
     
     @Autowired
     private BpServiceHandler bpHandler;

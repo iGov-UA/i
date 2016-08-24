@@ -7,6 +7,9 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAssigned" name="логін посадовця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sElapsedInfo" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+         
         <activiti:formProperty id="saField" name="Данные" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="processID" name="номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string"></activiti:formProperty>
@@ -21,20 +24,35 @@
     <userTask id="usertask1" name="Обробка волонтером" activiti:candidateGroups="volont_escalation">
       <extensionElements>
         <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAssigned" name="Логін посадовця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sElapsedInfo" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+               
         <activiti:formProperty id="saField" name="Данные" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processID" name="номер" type="string" writable="false"></activiti:formProperty>
+              
         <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="data" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Коментар за результатами контакту з адміністративним органом" type="textArea" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="info" name="речовий модуль" type="textArea" default="
+Доброго дня!
+Мене звуть %ім'я%, я один з координаторів порталу iGov в %назву% області.
+Кілька днів тому було відправлено звернення в електронному вигляді на порталі iGov в вашу службу.
+Ми отримали інформацію про те, що вона до сьогодні не взята в роботу, тому хотіли б уточнити у Вас, з якої саме причини? Можливо, у вас виникли проблеми в роботі з порталом?
+Можливо, я би міг допомогти вам у вирішенні даних питань?
+(Записуєте результат розмови в коментарі).
+Дякую за приділений час, на все добре, до побачення!
+" writable="false"></activiti:formProperty>
+       
+        <activiti:formProperty id="comment" name="Коментар для громадянина за результатами контакту з адміністративним органом" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="commentar" name="Внутрішній коментар волонтера" type="textArea"></activiti:formProperty>
+       
         <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
       </extensionElements>
     </userTask>

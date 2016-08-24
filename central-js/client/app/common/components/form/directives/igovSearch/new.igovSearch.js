@@ -91,6 +91,8 @@ angular.module('app')
               if(!$state.is('index')
                   && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
+              } else if($state.is("index.oldbusiness") && result.length === 1 && result[0].aSubcategory.length > 0) {
+                fullCatalog = result[0];
               } else {
                 fullCatalog = result;
               }

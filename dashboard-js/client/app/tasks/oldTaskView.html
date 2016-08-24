@@ -1,0 +1,49 @@
+<div class="tasks-form-view">
+  <show-error data="error" ng-show="error"></show-error>
+
+  <div class="task-view-info">
+    <h4 ng-show="sSelectedTask == 'all' && selectedTask.assignee">Призначено на: {{selectedTask.assignee}}</h4>
+    <h4 ng-show="sSelectedTask == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+    <button ng-show="sSelectedTask == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+    </button>
+  </div>
+
+  <div ng-if="!clarify">
+    <puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>
+
+    <a href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()">Відкрити повний профіль задачі</a>
+  </div>
+
+  <div ng-include="'app/tasks/taskForm.html'"></div>
+</div>
+
+<hr>
+
+<div class="tasks-form-buttons">
+
+  <!--<div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">-->
+    <!--<button ng-click="print()" class="btn btn-success">Роздрукувати</button>-->
+    <!--<select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >-->
+    <!--</select>-->
+  <!--</div>-->
+
+  <!--<div ng-if="!clarify" style="padding-top:5px;">-->
+    <!--<puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>-->
+    <!--<submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>-->
+  <!--</div>-->
+
+  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
+    <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+    <div ng-if="clarify" style="padding-top:5px;">
+      <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
+      <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
+      <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
+    </div>
+  </div>
+
+</div>
+
+<div ng-include="'app/tasks/taskFormHistory.html'"></div>
+
+<print-dialog></print-dialog>
+<sign-info-content-dialog></sign-info-content-dialog>

@@ -35,7 +35,7 @@ import org.igov.service.business.action.task.bp.BpService;
 @Service
 public class BpServiceHandler {
 
-    public static Map<String, Object> gaideTaskParamKey = new TreeMap<>();
+    public static Map<String, String> mGuideTaskParamKey = new TreeMap<>();
     public static final String PROCESS_ESCALATION = "system_escalation";
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
@@ -130,6 +130,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
@@ -154,32 +155,25 @@ public class BpServiceHandler {
         mParam.put("processName", sProcessName);
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
-        gaideTaskParamKey.put("bankIdfirstName", "Имя");
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
-        gaideTaskParamKey.put("bankIdfirstName", "Отчество");
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        gaideTaskParamKey.put("bankIdfirstName", "Фамилия");
         mParam.put("phone", "" + mTaskParam.get("phone"));
-        gaideTaskParamKey.put("phone", "Телефон");
         mParam.put("email", mTaskParam.get("email"));
-        gaideTaskParamKey.put("email", "Электронный адрес");
-
-        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        gaideTaskParamKey.put("sTaskId", "ИД таски");
-        String organ = trimGroups(organs);
-        mParam.put("organ", organ);
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
-        mParam.put("saField", sField);
+        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("sField={}", sField);
+        mParam.put("saField", sField+".");
+
+        Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        String organ = trimGroups(organs);
+        LOG.info("!!!organ: " + organ);
+        mParam.put("organ", organ);
         mParam.put("data", mTaskParam.get("sDate_BP"));
-        gaideTaskParamKey.put("sDate_BP", "Дата БП");
-        gaideTaskParamKey.put("nDaysLimit", "Лимит дней");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        gaideTaskParamKey.put("sServiceType", "Услуга ");
         mParam.put("sOrganName", mTaskParam.get("area"));
-        gaideTaskParamKey.put("area", "Район");
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
-        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);        
+        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
         try {
@@ -347,6 +341,7 @@ public class BpServiceHandler {
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
+
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
@@ -393,8 +388,8 @@ public class BpServiceHandler {
             String taskParamKey = taskParam.getKey();
             Object taskParamValue = taskParam.getValue();
 
-            if (gaideTaskParamKey.get(taskParamKey) != null) {
-                String newKeyTaskParam = (String) gaideTaskParamKey.get(taskParamKey);
+            if (mGuideTaskParamKey.get(taskParamKey) != null) {
+                String newKeyTaskParam = mGuideTaskParamKey.get(taskParamKey);
                 if (!"Удалить".equalsIgnoreCase(newKeyTaskParam)) {
                     result.put(newKeyTaskParam, taskParamValue);
                 }

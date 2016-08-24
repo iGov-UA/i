@@ -11,6 +11,7 @@ var nock = require('nock')
   , appData = require('./app.data.spec.js')
   , appTests = require('./app.tests.spec.js')(testRequest)
   , config = require('./config/environment')
+//, config = require('./config')
   , bankidUtil = require('./auth/bankid/bankid.util.js');
 
 
@@ -132,8 +133,29 @@ module.exports.loginWithBankID = function (done, agentCallback) {
   getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
 };
 
-module.exports.loginWithBankIDNBU = function (done, agentCallback) {
-  getAuth('/auth/bankid-nbu/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
+module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
+  testRequest
+    .get('/auth/bankid-nbu?link=' + testAuthResultURL)
+    .expect(302)
+    .then(function (res) {
+      var loginAgent = superagent.agent();
+      loginAgent.saveCookies(res);
+
+      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&?link=' + testAuthResultURL);
+      loginAgent.attachCookies(tokenRequest);
+
+      tokenRequest
+        .expect(302)
+        .then(function (res) {
+          loginAgent.saveCookies(res);
+          if (agentCallback) {
+            agentCallback(loginAgent);
+          }
+          done();
+        }).catch(function (err) {
+        done(err)
+      });
+    });
 };
 
 
@@ -217,9 +239,9 @@ module.exports.runModuleInitializationTest = function (name, moduleRequireFuncti
   describe(name, function () {
     var module;
     before(function (done) {
-      try{
+      try {
         module = moduleRequireFunction();
-      } catch(e){
+      } catch (e) {
         //assert is in next test
       } finally {
         done();

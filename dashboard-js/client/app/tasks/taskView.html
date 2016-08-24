@@ -22,17 +22,17 @@
 <div class="tasks-form-buttons">
 
   <!--<div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">-->
-    <!--<button ng-click="print()" class="btn btn-success">Роздрукувати</button>-->
-    <!--<select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >-->
-    <!--</select>-->
+  <!--<button ng-click="print()" class="btn btn-success">Роздрукувати</button>-->
+  <!--<select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >-->
+  <!--</select>-->
   <!--</div>-->
 
   <!--<div ng-if="!clarify" style="padding-top:5px;">-->
-    <!--<puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>-->
-    <!--<submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>-->
+  <!--<puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>-->
+  <!--<submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>-->
   <!--</div>-->
 
-  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0">
+  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
     <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
     <div ng-if="clarify" style="padding-top:5px;">
       <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
