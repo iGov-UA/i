@@ -126,16 +126,25 @@ public class GeneralConfig {
     private String queueManagementSystemPassword;
 
     @Value("${general.Pay.Yuzhny.FTP.sHost}")
-    private String payYuzhnyFTPsHost;
+    private String sHost_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.nPort}")
-    private String payYuzhnyFTPnPort;
-    @Value("${general.Pay.Yuzhny.FTP.sUser}")
-    private String payYuzhnyFTPsUser;
+    private String nPort_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sLogin}")
+    private String sLogin_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.sPassword}")
-    private String payYuzhnyFTPsPassword;
-    @Value("${general.Pay.Yuzhny.FTP.sFileName}")
-    private String payYuzhnyFTPsFileName;
-
+    private String sPassword_Pay_Yuzhny_FTP;
+    //@Value("${general.Pay.Yuzhny.FTP.sPathFileName}")
+    //private String sPathFileName_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sFileNameMask}")
+    private String sFileNameMask_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sPath}")
+    private String sPath_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sSuffixDateMask}")
+    private String sSuffixDateMask_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.nDaysOffset")
+    private String snDaysOffset_Pay_Yuzhny_FTP;
+   
+    
     
     public boolean isSelfTest() {
         boolean b = true;
@@ -390,21 +399,34 @@ public class GeneralConfig {
     public String getQueueManagementSystemPassword() {
         return queueManagementSystemPassword;
     }
-	public String getPayYuzhnyFTPsHost() {
-		return payYuzhnyFTPsHost;
-	}
-	public String getPayYuzhnyFTPnPort() {
-		return payYuzhnyFTPnPort;
-	}
-	public String getPayYuzhnyFTPsUser() {
-		return payYuzhnyFTPsUser;
-	}
-	public String getPayYuzhnyFTPsPassword() {
-		return payYuzhnyFTPsPassword;
-	}
-	public String getPayYuzhnyFTPsFileName() {
-		return payYuzhnyFTPsFileName;
-	}
     
+    
+	public String getHost_FTP_Yuzhny_Pay() {
+		return sHost_Pay_Yuzhny_FTP;
+	}
+	public String getPort_FTP_Yuzhny_Pay() {
+		return nPort_Pay_Yuzhny_FTP;
+	}
+	public String getLogin_FTP_Yuzhny_Pay() {
+		return sLogin_Pay_Yuzhny_FTP;
+	}
+	public String getPassword_FTP_Yuzhny_Pay() {
+		return sPassword_Pay_Yuzhny_FTP;
+	}
+	//public String getPathFileName_FTP_Yuzhny_Pay() {
+	//	return sPathFileName_Pay_Yuzhny_FTP;
+	//}
+	public String getFileNameMask_FTP_Yuzhny_Pay() {
+		return sFileNameMask_Pay_Yuzhny_FTP;
+	}
+	public String getPath_FTP_Yuzhny_Pay() {
+		return sPath_Pay_Yuzhny_FTP;
+	}
+	public String getSuffixDateMask_FTP_Yuzhny_Pay() {
+		return sSuffixDateMask_Pay_Yuzhny_FTP;
+	}
+	public Integer getDaysOffset_FTP_Yuzhny_Pay() {
+		return Integer.valueOf(snDaysOffset_Pay_Yuzhny_FTP);
+	}
     
 }
