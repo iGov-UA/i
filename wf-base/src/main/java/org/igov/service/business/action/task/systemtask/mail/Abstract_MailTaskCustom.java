@@ -1,7 +1,28 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.util.ToolLuna.getProtectedNumber;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
@@ -11,53 +32,33 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
-import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
+import org.igov.io.mail.Mail;
+import org.igov.io.sms.ManagerOTP;
+import org.igov.io.sms.ManagerSMS;
+import org.igov.service.business.access.AccessKeyService;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
+import org.igov.service.business.finance.Currency;
+import org.igov.service.business.finance.Liqpay;
+import org.igov.service.business.object.Language;
+import org.igov.service.controller.security.AccessContract;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
+import org.igov.util.Tool;
+import org.igov.util.ToolWeb;
+import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.service.business.finance.Currency;
-import org.igov.service.business.object.Language;
-import org.igov.service.business.access.AccessKeyService;
-import org.igov.service.business.finance.Liqpay;
-import org.igov.io.GeneralConfig;
-import org.igov.io.mail.Mail;
-import org.igov.util.Tool;
-
-import java.io.IOException;
-
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.activiti.engine.HistoryService;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
-
-import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-
-import org.igov.io.sms.ManagerOTP;
-import org.igov.io.sms.ManagerSMS;
-import org.igov.service.controller.security.AccessContract;
-import org.igov.util.JSON.JsonDateTimeSerializer;
-
-import static org.igov.util.ToolLuna.getProtectedNumber;
-
-import org.igov.util.ToolWeb;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -242,7 +243,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		int nLimit = StringUtils.countMatches(textWithoutTags,
 				TAG_Function_AtEnum);
 		LOG.info("Found {} enum occurrences in the text ", nLimit);
-		Map<String, FormProperty> aProperty = new HashMap<String, FormProperty>();
+		Map<String, FormProperty> aProperty = new HashMap<>();
 		int foundIndex = 0;
 		while (nLimit > 0) {
 			nLimit--;
@@ -300,7 +301,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		if (matcher.find()) {
 			matcher = TAG_sPATTERN_CONTENT_CATALOG.matcher(textStr);
 			List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
-			Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
+			Map<String, FormProperty> mProperty = new HashMap<>();
 			loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
 			while (matcher.find()) {
 				String tag_Payment_CONTENT_CATALOG = matcher.group();
@@ -323,7 +324,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 							if (formProperty.getValue() != null) {
 								replacement = formProperty.getValue();
 							} else {
-								List<String> aID = new ArrayList<String>();
+								List<String> aID = new ArrayList<>();
 								aID.add(formProperty.getId());
 								List<String> proccessVariable = AbstractModelTask
 										.getVariableValues(execution, aID);
@@ -345,7 +346,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 											.getValue());
 								}
 							} else {
-								replacement = formProperty.getValue();
+								//replacement = formProperty.getValue();
 							}
 
 						}
@@ -389,47 +390,47 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 					.getVariable(pattern_merchant).toString() : execution
 					.getVariable(String.format(PATTERN_MERCHANT_ID, ""))
 					.toString();
-			LOG.info("{}={}", pattern_merchant, sID_Merchant);
-			String sSum = execution.getVariable(pattern_sum) != null ? execution
-					.getVariable(pattern_sum).toString() : execution
-					.getVariable(String.format(PATTERN_SUM, "")).toString();
-			LOG.info("{}={}", pattern_sum, sSum);
-			if (sSum != null) {
-				sSum = sSum.replaceAll(",", ".");
-			}
-			String sID_Currency = execution.getVariable(pattern_currency) != null ? execution
-					.getVariable(pattern_currency).toString() : execution
-					.getVariable(String.format(PATTERN_CURRENCY_ID, ""))
-					.toString();
-			LOG.info("{}={}", pattern_currency, sID_Currency);
-			Currency oID_Currency = Currency
-					.valueOf(sID_Currency == null ? "UAH" : sID_Currency);
+					LOG.info("{}={}", pattern_merchant, sID_Merchant);
+					String sSum = execution.getVariable(pattern_sum) != null ? execution
+							.getVariable(pattern_sum).toString() : execution
+							.getVariable(String.format(PATTERN_SUM, "")).toString();
+							LOG.info("{}={}", pattern_sum, sSum);
+							if (sSum != null) {
+								sSum = sSum.replaceAll(",", ".");
+							}
+							String sID_Currency = execution.getVariable(pattern_currency) != null ? execution
+									.getVariable(pattern_currency).toString() : execution
+									.getVariable(String.format(PATTERN_CURRENCY_ID, ""))
+									.toString();
+									LOG.info("{}={}", pattern_currency, sID_Currency);
+									Currency oID_Currency = Currency
+											.valueOf(sID_Currency == null ? "UAH" : sID_Currency);
 
-			Language sLanguage = Liqpay.DEFAULT_LANG;
-			String sDescription = execution.getVariable(pattern_description) != null ? execution
-					.getVariable(pattern_description).toString() : execution
-					.getVariable(String.format(PATTERN_DESCRIPTION, ""))
-					.toString();
-			LOG.info("{}={}", pattern_description, sDescription);
+									Language sLanguage = Liqpay.DEFAULT_LANG;
+									String sDescription = execution.getVariable(pattern_description) != null ? execution
+											.getVariable(pattern_description).toString() : execution
+											.getVariable(String.format(PATTERN_DESCRIPTION, ""))
+											.toString();
+											LOG.info("{}={}", pattern_description, sDescription);
 
-			String sID_Order = "TaskActiviti_" + execution.getId().trim()
-					+ prefix;
-			String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL,
-					sID_Order, "", prefix);
-			String sURL_CallbackPaySuccess = null;
-			Long nID_Subject = Long.valueOf(execution
-					.getVariable(pattern_subject) != null ? execution
-					.getVariable(pattern_subject).toString() : execution
-					.getVariable(String.format(PATTERN_SUBJECT_ID, ""))
-					.toString());
-			nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
-			LOG.info("{}={}", pattern_subject, nID_Subject);
-			boolean bTest = generalConfig.isSelfTest();
-			String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
-					sSum, oID_Currency, sLanguage, sDescription, sID_Order,
-					sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-					nID_Subject, bTest);
-			matcher.appendReplacement(outputTextBuffer, htmlButton);
+											String sID_Order = "TaskActiviti_" + execution.getId().trim()
+													+ prefix;
+											String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL,
+													sID_Order, "", prefix);
+											String sURL_CallbackPaySuccess = null;
+											Long nID_Subject = Long.valueOf(execution
+													.getVariable(pattern_subject) != null ? execution
+															.getVariable(pattern_subject).toString() : execution
+															.getVariable(String.format(PATTERN_SUBJECT_ID, ""))
+															.toString());
+											nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
+											LOG.info("{}={}", pattern_subject, nID_Subject);
+											boolean bTest = generalConfig.isSelfTest();
+											String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
+													sSum, oID_Currency, sLanguage, sDescription, sID_Order,
+													sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
+													nID_Subject, bTest);
+											matcher.appendReplacement(outputTextBuffer, htmlButton);
 		}
 		return matcher.appendTail(outputTextBuffer).toString();
 	}
@@ -501,7 +502,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			Matcher matcherPrefix = TAG_PATTERN_PREFIX
 					.matcher(tag_sURL_FEEDBACK_MESSAGE);
 			List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
-			Map<String, FormProperty> mProperty = new HashMap<String, FormProperty>();
+			Map<String, FormProperty> mProperty = new HashMap<>();
 			loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
 			FormProperty formProperty = null;
 			if (matcherPrefix.find()) {
@@ -541,14 +542,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			}
 			Long nID_Service = 0L;
 			try {
-	            String jsonHistoryEvent = historyEventService.getHistoryEvent(generalConfig.getOrderId_ByOrder(nID_Order));
-	            LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
-	            JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
-	            nID_Service = historyEvent.getLong("nID_Service");
-	        } catch (Exception oException) {
-	            LOG.error("ex!: {}", oException.getMessage());
-	            LOG.debug("FAIL:", oException);
-	        }
+				String jsonHistoryEvent = historyEventService.getHistoryEvent(generalConfig.getOrderId_ByOrder(nID_Order));
+				LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
+				JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
+				nID_Service = historyEvent.getLong("nID_Service");
+			} catch (Exception oException) {
+				LOG.error("ex!: {}", oException.getMessage());
+				LOG.debug("FAIL:", oException);
+			}
 
 			String sQueryParamPattern = "?"
 					+ "&sID_Source=" + "self"
@@ -563,13 +564,20 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			if (nID_Subject != null) {
 				sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
 			}
+                        
+			String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
+			if (sID_Order != null) {
+				sQueryParam = sQueryParam + "&sID_Order=" + sID_Order;
+			}
 			sQueryParam = sQueryParam
 					// TODO: Need remove in future!!!
 					+ "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
 					+ AccessContract.RequestAndLoginUnlimited.name();
+//					+ AccessContract.RequestAndLogin.name();
 			LOG.info("(sURI={},{})", sURI, sQueryParam);
 			String sAccessKey = accessCover.getAccessKeyCentral(sURI
 					+ sQueryParam, AccessContract.RequestAndLoginUnlimited);
+//					+ sQueryParam, AccessContract.RequestAndLogin);
 			String replacemet = URL_FEEDBACK_MESSAGE + sQueryParam + "&"
 					+ AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
 			LOG.info("(replacemet URL={}) ", replacemet);
@@ -642,8 +650,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	private List<String> getPreviousTaskId(DelegateExecution execution) {
 		ExecutionEntity ee = (ExecutionEntity) execution;
 
-		List<String> tasksRes = new LinkedList<String>();
-		List<String> resIDs = new LinkedList<String>();
+		List<String> tasksRes = new LinkedList<>();
+		List<String> resIDs = new LinkedList<>();
 
 		for (FlowElement flowElement : execution.getEngineServices()
 				.getRepositoryService()
@@ -711,10 +719,10 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	public Mail Mail_BaseFromTask(DelegateExecution oExecution)
 			throws Exception {
 
-		String sFromMail = getStringFromFieldExpression(this.from, oExecution);
-		String saToMail = getStringFromFieldExpression(this.to, oExecution);
-		String sHead = getStringFromFieldExpression(this.subject, oExecution);
-		String sBodySource = getStringFromFieldExpression(this.text, oExecution);
+		String sFromMail = getStringFromFieldExpression(from, oExecution);
+		String saToMail = getStringFromFieldExpression(to, oExecution);
+		String sHead = getStringFromFieldExpression(subject, oExecution);
+		String sBodySource = getStringFromFieldExpression(text, oExecution);
 		String sBody = replaceTags(sBodySource, oExecution);
 
 		saveServiceMessage(sHead, saToMail, sBody,
@@ -724,12 +732,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		Mail oMail = context.getBean(Mail.class);
 
 		oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-				._Body(sBody)._AuthUser(mailServerUsername)
-				._AuthPassword(mailServerPassword)._Host(mailServerHost)
-				._Port(Integer.valueOf(mailServerPort))
-				// ._SSL(true)
-				// ._TLS(true)
-				._SSL(bSSL)._TLS(bTLS);
+		._Body(sBody)._AuthUser(mailServerUsername)
+		._AuthPassword(mailServerPassword)._Host(mailServerHost)
+		._Port(Integer.valueOf(mailServerPort))
+		// ._SSL(true)
+		// ._TLS(true)
+		._SSL(bSSL)._TLS(bTLS);
 
 		return oMail;
 	}
@@ -738,7 +746,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	 * Access modifier changed from private to default to enhance testability
 	 */
 	String getPatternContentReplacement(Matcher matcher) throws IOException,
-			URISyntaxException {
+	URISyntaxException {
 		String sPath = matcher.group(1);
 		LOG.info("Found content group! (sPath={})", sPath);
 		byte[] bytes = getFileData_Pattern(sPath);
@@ -760,7 +768,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
 	private String getFormattedDateS(String date) {
 		DateTimeFormatter dateStringFormat = DateTimeFormat
-				.forPattern("MM/dd/yyyy");
+				.forPattern("dd/MM/yyyy");
 		DateTime dateTime = dateStringFormat.parseDateTime(date);
 		Date d = dateTime.toDate();
 		return getFormattedDate(d);

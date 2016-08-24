@@ -130,6 +130,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private Mail oMail;
 
+
     /**
      * Загрузка задач из Activiti:
      *
@@ -1262,13 +1263,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
+LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!"+saFields);
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
-        	// we need to call runtime query only when non completed tasks are selected.
-            // if only completed tasks are selected - results of historic query will be used
+        // we need to call runtime query only when non completed tasks are selected.
+        // if only completed tasks are selected - results of historic query will be used
             foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1309,40 +1311,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers);
-       LOG.info("<----------------oActionTaskService.fillTheCSVMap_begin--------------------->");
-            LOG.info("sID_BP: "+sID_BP);
-            LOG.info("dBeginDate: "+dBeginDate);
-            LOG.info("dEndDate: "+dEndDate);
-            LOG.info("foundResults: "+foundResults);
-            LOG.info("sDateCreateDF: "+sDateCreateDF);
-            LOG.info("csvLines: "+csvLines);
-            LOG.info("saFields: "+saFields);
-            LOG.info("saFieldsCalc: "+saFieldsCalc);
-            LOG.info("headers: "+headers);
-            LOG.info("<----------------oActionTaskService.fillTheCSVMap_end--------------------->");
+                csvLines, saFields, saFieldsCalc, headers); 
         
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
+            
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
-            LOG.info("<----------------oActionTaskService.fillTheCSVMapHistoricTasks_begin--------------------->");
-            LOG.info("sID_BP: "+sID_BP);
-            LOG.info("dBeginDate: "+dBeginDate);
-            LOG.info("dEndDate: "+dEndDate);
-            LOG.info("foundHistoricResults: "+foundHistoricResults);
-            LOG.info("sDateCreateDF: "+sDateCreateDF);
-            LOG.info("csvLines: "+csvLines);
-            LOG.info("saFields: "+saFields);
-            LOG.info("tasksIdToExclude: "+tasksIdToExclude);
-            LOG.info("saFieldsCalc: "+saFieldsCalc);
-            LOG.info("headers: "+headers);
-            LOG.info("sID_State_BP: "+sID_State_BP);
-             LOG.info("<----------------oActionTaskService.fillTheCSVMapHistoricTasks_end--------------------->");
         }
 LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
         if (saFieldSummary != null) {
