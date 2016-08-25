@@ -35,7 +35,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -108,7 +108,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -139,7 +139,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -155,7 +155,6 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника дозвільного відділу" type="textArea"></activiti:formProperty>
-        
         <activiti:formProperty id="asChoiceDecision" name="Рішення" type="enum" required="true">
           <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
           <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
@@ -163,25 +162,145 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="Процес перевірки"></userTask>
+    <userTask id="usertask5" name="Процес перевірки">
+    <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum" writable="false">
+          <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
+          <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultChecking" name="Результат перевірки" type="enum">
+          <activiti:value id="sEnumResultThirdPerson" name="Залучити треті особи для проведення перевірки"></activiti:value>
+          <activiti:value id="sEnumResultGenerate" name="Сформувати результат перевірки"></activiti:value>
+          <activiti:value id="sEnumResultClose" name="Закриття перевірки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asNumberOfThirdPerson" name="Кількість третіх осіб" type="enum">
+          <activiti:value id="sEnumThirdPerson_1" name="1"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_2" name="2"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_3" name="3"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_4" name="4"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_5" name="5"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_6" name="6"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_7" name="7"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_8" name="8"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_9" name="9"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_10" name="10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_1" name="===== 1-ша особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_1" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_1" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_2" name="===== 2-га особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_2" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_2" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_3" name="===== 3-тя особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_3" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_3" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_4" name="===== 4-та особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_4" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_4" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_5" name="===== 5-та особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_5" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_5" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_6" name="===== 6-та особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_6" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_6" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_7" name="===== 7-ма особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_7" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_7" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_8" name="===== 8-ма особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_8" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_8" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_9" name="===== 9-та особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_9" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_9" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sLabelThirdPerson_10" name="===== 10-та особа =====" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLetter_10" name="Лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_10" name="Відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNoteEmployeeInspection" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nLetterClose" name="Лист-закриття перевірки" type="file"></activiti:formProperty>
+         
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow12" sourceRef="usertask5" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="exclusivegateway2" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="exclusivegateway3"></sequenceFlow>
-    <userTask id="usertask6" name="Друк акту перевірки за шаблоном та зберігання його в облівій системі з ЕЦП"></userTask>
+    <userTask id="usertask6" name="Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП"></userTask>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="usertask6"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="usertask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask7" name="Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора."></userTask>
+    <userTask id="usertask7" name="Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора.">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum">
+          <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
+          <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asHowDecisionRemark" name="Прийняте рішення" type="enum">
+          <activiti:value id="sEnumDecisionRemarkYes" name="Є зауваження"></activiti:value>
+          <activiti:value id="sEnumDecisionRemarkNo" name="Немає зауважень"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum">
+          <activiti:value id="sEnumTypeActNoVisit" name="Акт про недопуск на об’єкт"></activiti:value>
+          <activiti:value id="sEnumTypeActVisit" name="Акт проведення перевірки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateDraftingAct" name="Дата складання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceDraftingAct" name="Місце складання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextAudit" name="За результатами перевірки встановлено" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_4" name="Посада, ПІБ четвертої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_5" name="Посада, ПІБ п'ятої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="string" required="true"></activiti:formProperty>
+        
+        
+        
+        
+        
+        
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="usertask7"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow18" sourceRef="usertask7" targetRef="endevent3"></sequenceFlow>
@@ -193,7 +312,57 @@
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="Заповнення форми з вказуванням планова чи позапланова перевірка"></userTask>
+    <userTask id="usertask8" name="Заповнення форми з вказуванням планова чи позапланова перевірка">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum" required="true" default="sEnumUnscheduled">
+          <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
+          <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
+        </activiti:formProperty>
+        
+        <!-- Планова -->
+        <activiti:formProperty id="sOrderSchedule" name="Наказ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file"></activiti:formProperty>
+        
+        <!-- Позапланова -->
+        <activiti:formProperty id="sControlOrganizationName" name="Найменування органу державного архітектурно-будівельного контролю (місцезнаходження, телефон, електронна адреса)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFileDirection" name="Направлення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="asNumberOfPersons" name="Кількість осіб, які здійснюють перевірку" type="enum">
+          <activiti:value id="sEnumPersons_1" name="1"></activiti:value>
+          <activiti:value id="sEnumPersons_2" name="2"></activiti:value>
+          <activiti:value id="sEnumPersons_3" name="3"></activiti:value>
+          <activiti:value id="sEnumPersons_4" name="4"></activiti:value>
+          <activiti:value id="sEnumPersons_5" name="5"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_4" name="Посада, ПІБ четвертої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_5" name="Посада, ПІБ п'ятої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Місцезнаходження об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrderUnscheduled" name="На підставі наказу або розпорядження (Найменування органу державного архітектурно-будівельного контролю, дата та номер наказу)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBaseControl" name="Підстава" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року"></activiti:formProperty>
+        <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea"></activiti:formProperty>
+
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask8"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
@@ -232,6 +401,14 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow26" sourceRef="boundarytimer1" targetRef="servicetask5"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>Управління дозвільних документів</text>
+    </textAnnotation>
+    <association id="association1" sourceRef="textannotation1" targetRef="usertask4"></association>
+    <textAnnotation id="textannotation2">
+      <text>Інспекційний відділ</text>
+    </textAnnotation>
+    <association id="association2" sourceRef="textannotation2" targetRef="usertask3"></association>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kyiv_mda_1093">
     <bpmndi:BPMNPlane bpmnElement="kyiv_mda_1093" id="BPMNPlane_kyiv_mda_1093">
@@ -306,6 +483,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="69.0" width="105.0" x="360.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="50.0" width="100.0" x="976.0" y="275.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
+        <omgdc:Bounds height="50.0" width="100.0" x="1167.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="723.0" y="147.0"></omgdi:waypoint>
@@ -404,6 +587,14 @@
         <omgdi:waypoint x="304.0" y="122.0"></omgdi:waypoint>
         <omgdi:waypoint x="412.0" y="122.0"></omgdi:waypoint>
         <omgdi:waypoint x="412.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
+        <omgdi:waypoint x="976.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="265.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association2" id="BPMNEdge_association2">
+        <omgdi:waypoint x="1217.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1114.0" y="113.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
