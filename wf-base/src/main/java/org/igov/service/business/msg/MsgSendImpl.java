@@ -367,7 +367,7 @@ public class MsgSendImpl implements IMsgSend {
 	oMFilter.setDTM(new Timestamp(System.currentTimeMillis()));
 	oMFilter.setPatternReplaced(true)
                 .setBusId(sBusinessId_MSG)
-                .setMsgCode("REST_API")
+                .setMsgCode(sCode_MSG)
                 .setAttrMode(MsgAttrMode.SEND)
             ;
 	oMFilter.setLangFilter(oMsgLang.name());
