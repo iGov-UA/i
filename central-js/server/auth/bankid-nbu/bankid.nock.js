@@ -1,7 +1,6 @@
 var nock = require('nock')
   , url = require('url')
   , urlencode = require('urlencode')
-  , appData = require('./../../app.data.spec')
   , bankidNBUData = require('./bankid.data.spec')
   , bankidNBUUtil = require('./bankid.util');
 
@@ -78,7 +77,8 @@ bankidNBUMock
   .matchHeader('Authorization', function (val) {
     return extractAccessToken(val) === bankidNBUData.accessTokens.forCustomerDataCryptoResponse;
   })
-  .reply(200, bankidNBUData.createEncryptedCustomer(bankidNBUData.customerData), headers)
+  .reply(200, bankidNBUData.createEncryptedCustomer(bankidNBUData.customerData,
+    bankidNBUUtil, __dirname + '/../../../iGov_sgn_cert.pem'), headers)
   .post(baseUrls.resource.path.info)
   .matchHeader('Authorization', function (val) {
     return extractAccessToken(val) === bankidNBUData.accessTokens.forErrorResponse406;

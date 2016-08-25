@@ -3,12 +3,11 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
-//, config = require('../../config')
-  , syncSubject = require('../../api/subject/subject.service.js')
+  , syncSubject = require('../../api/subject/subject.service')
   , Admin = require('../../components/admin/index')
   , url = require('url')
   , StringDecoder = require('string_decoder').StringDecoder
-  , bankidUtil = require('./bankid.util.js')
+  , bankidUtil = require('./bankid.util')
   , errors = require('../../components/errors')
   , activiti = require('../../components/activiti');
 
@@ -20,6 +19,20 @@ var createError = function (error, error_description, response) {
       error_description: error_description
     }
   };
+};
+
+module.exports.decryptCallback = function (callback) {
+ return bankidUtil.decryptCallback(callback);
+};
+
+module.exports.convertToCanonical = function (customer) {
+  // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+  customer.isAuthTypeFromBankID = true;
+  return customer;
+};
+
+module.exports.getUserKeyFromSession = function (session){
+  return session.access.accessToken;
 };
 
 module.exports.index = function (accessToken, callback, disableDecryption) {

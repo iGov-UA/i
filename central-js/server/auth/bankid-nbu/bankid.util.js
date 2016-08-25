@@ -98,7 +98,8 @@ module.exports.decryptCallback = function (callback) {
 
   return function (error, response, body) {
     if (isCipherEnabled() && body && body.customerCrypto) {
-      self.decryptData(body.customerCrypto);
+      body.customer = self.decryptData(body.customerCrypto);
+      delete body.customerCrypto;
     }
     callback(error, response, body);
   }
@@ -115,13 +116,19 @@ function decryptValue(value, privateKey) {
 
 
 module.exports.encryptData = function (customerDataObject, publicKey) {
-  return crypto.publicEncrypt(publicKey, new Buffer(JSON.stringify(customerDataObject), 'utf-8')).toString('base64')
+  var stringData = JSON.stringify(customerDataObject);
+  console.log(stringData);
+  return crypto.publicEncrypt(publicKey, new Buffer(stringData, 'utf-8')).toString('base64')
 };
 
 module.exports.decryptData = function (customerDataString, privateKey) {
-  return JSON.parse(decryptValue(customerDataString, privateKey ? privateKey : privateKeyFromConfigs));
+  var decryptedString = decryptValue(customerDataString, privateKey ? privateKey : privateKeyFromConfigs);
+  return JSON.parse(decryptedString);
+};
+
+module.exports.decryptFieldInn = function (customerCrypto) {
+  var decryptedData = this.decryptData(customerCrypto);
+  return decryptedData.inn;
 };
 
 module.exports.initPrivateKey = initPrivateKey;
-
-
