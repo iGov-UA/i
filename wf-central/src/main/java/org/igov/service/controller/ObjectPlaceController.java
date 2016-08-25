@@ -977,8 +977,8 @@ public class ObjectPlaceController {
             	Optional<Place> place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
                 if (place.isPresent()) {
                 	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
-                	Map<String, String> resMap = new HashMap<String, String>();
-                	resMap.put("place", place.get().getName());
+                	Map<String, Place> resMap = new HashMap<>();
+                	resMap.put("place", place.get());
                 	result = JsonRestUtils.toJsonResponse(resMap);
                 }
             } catch (RuntimeException e) {
