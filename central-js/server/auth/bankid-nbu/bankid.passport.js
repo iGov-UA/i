@@ -8,7 +8,7 @@ var Buffer = require('buffer').Buffer
   , bankidNBUService = require('./bankid.service');
 
 
-exports.setup = function (config) {
+exports.setup = function (config, authProviderRegistry) {
   function NBUOAuth2(clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders) {
     OAuth2.call(this, clientId, clientSecret, baseSite, authorizePath, accessTokenPath, customHeaders);
   }
@@ -47,6 +47,7 @@ exports.setup = function (config) {
     });
   };
 
+  authProviderRegistry.use('bankid-nbu', bankidNBUService);
   passport.use(new NBUOAuth2Strategy({
       authorizationURL: bankidNBUUtil.getAuthorizationURL(),
       tokenURL: bankidNBUUtil.getTokenURL(),

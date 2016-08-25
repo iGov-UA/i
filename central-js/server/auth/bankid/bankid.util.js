@@ -1,7 +1,6 @@
 'use strict';
 
 var config = require('../../config/environment')
-//var config = require('../../config')
   , fs = require('fs')
   , crypto = require('crypto')
   , constants = require('constants')

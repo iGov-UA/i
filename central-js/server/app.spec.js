@@ -100,17 +100,7 @@ var centralNock = nock('https://test.igov.org.ua')
 
 var regionMock = nock('https://test.region.igov.org.ua')
   .persist()
-  .log(console.log)
-  .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 1, nID_Subject: 11})
-  .reply(200, appData.signCheck, {
-    'Content-Type': 'application/json'
-  })
-  .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 2, nID_Subject: 11})
-  .reply(200, appData.signCheckError, {
-    'Content-Type': 'application/json'
-  });
+  .log(console.log);
 
 
 function getAuth(urlWithQueryParams, agentCallback, done) {
@@ -133,7 +123,7 @@ module.exports.loginWithBankID = function (done, agentCallback) {
   getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
 };
 
-module.exports.loginWithBankIDNBU = function (done, agentCallback) {
+module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
   testRequest
     .get('/auth/bankid-nbu?link=' + testAuthResultURL)
     .expect(302)
@@ -141,7 +131,7 @@ module.exports.loginWithBankIDNBU = function (done, agentCallback) {
       var loginAgent = superagent.agent();
       loginAgent.saveCookies(res);
 
-      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=11223344&?link=' + testAuthResultURL);
+      var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&?link=' + testAuthResultURL);
       loginAgent.attachCookies(tokenRequest);
 
       tokenRequest

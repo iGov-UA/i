@@ -3,7 +3,8 @@
 var should = require('should')
   , appTest = require('../../app.spec')
   , bankidNBUData = require('./bankid.data.spec')
-  , testRequest = appTest.testRequest;
+  , bankidNBUUtil = require('./bankid.util')
+  , config = require('../../config/environment');
 
 require('./bankid.nock.js');
 
@@ -16,7 +17,7 @@ describe('bankidNBUController initialization test', function () {
 describe('authorize with bankid nbu', function () {
   it('should go without error and with non-encrypted customer data', function (done) {
     var agent;
-    appTest.loginWithBankIDNBU(function (error, loginAgent) {
+    appTest.loginWithBankIDNBU(function (error) {
       if (error) {
         done(error)
       } else {
@@ -26,10 +27,21 @@ describe('authorize with bankid nbu', function () {
       agent = loginAgent;
     }, bankidNBUData.codes.forCustomerDataResponse);
   });
+});
+
+describe('authorize with bankid nbu and encrypted customer data', function () {
+  var fs = require('fs')
+    , constants = require('constants');
+
+  before(function (done) {
+    config.bankidnbu.enableCipher = 'true';
+    bankidNBUUtil.initPrivateKey();
+    done();
+  });
 
   it('should go without error and with encrypted customer data', function (done) {
     var agent;
-    appTest.loginWithBankIDNBU(function (error, loginAgent) {
+    appTest.loginWithBankIDNBU(function (error) {
       if (error) {
         done(error)
       } else {
@@ -38,5 +50,10 @@ describe('authorize with bankid nbu', function () {
     }, function (loginAgent) {
       agent = loginAgent;
     }, bankidNBUData.codes.forCustomerDataCryptoResponse);
+  });
+
+  after(function (done) {
+    config.bankidnbu.enableCipher = 'false';
+    done();
   });
 });

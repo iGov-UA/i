@@ -3,14 +3,11 @@ var url = require('url')
   , request = require('request')
   , FormData = require('form-data')
   , config = require('../../config/environment')
-//, config = require('../../config')
-  , bankIDService = require('../../auth/bankid/bankid.service.js')
+  , authProviderRegistry = require('../../auth/auth.provider.registry')
   , _ = require('lodash')
-  , StringDecoder = require('string_decoder').StringDecoder
   , async = require('async')
   , formTemplate = require('./form.template')
   , activiti = require('../../components/activiti')
-  , region = require('../../components/region')
   , errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
@@ -76,17 +73,23 @@ module.exports.scanUpload = function (req, res) {
   var sHost = req.region.sHost;
   var accessToken = req.session.access.accessToken;
   var data = req.body;
-
   var sURL = sHost + '/service/object/file/upload_file_to_redis';
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
   console.log("[scanUpload]:sURL=" + sURL);
-
   var uploadURL = sURL; //data.url
   var documentScans = data.scanFields;
   console.log("[scanUpload]:data.scanFields=" + data.scanFields);
 
+  if(!userService.scanContentRequest){
+    res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
+      'type of authorization doesn\'t support documents and scan-copies'));
+    return;
+  }
+
   var uploadResults = [];
   var uploadScan = function (documentScan, callback) {
-    bankIDService.scanContentRequest(documentScan.scan.type, documentScan.scan.link, accessToken, function (error, buffer) {
+    userService.scanContentRequest(documentScan.scan.type, documentScan.scan.link, accessToken, function (error, buffer) {
       if (error) {
         callback(error);
       } else {
@@ -170,13 +173,16 @@ module.exports.signCheck = function (req, res) {
 module.exports.signForm = function (req, res) {
   var formID = req.session.formID;
   var oServiceDataNID = req.query.oServiceDataNID;
-
-//  this.getSignFormPath = function (oServiceData, formID, oService) {
-//    //return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL;
-//    //--//return '/api/process-form/sign?formID=' + formID + '&sURL=' + oServiceData.sURL + '&sName=' + oService.sName;
-//    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
-
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
   var nID_Server = req.query.nID_Server;
+
+  if(!userService.signHtmlForm){
+    res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
+      'type of authorization doesn\'t support html forms signing'));
+    return;
+  }
+
   activiti.getServerRegionHost(nID_Server, function (sHost) {
     var sURL = sHost + '/';
     console.log("sURL=" + sURL);
@@ -229,7 +235,6 @@ module.exports.signForm = function (req, res) {
       }
 
       if (patternFileName) {
-        //var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
         var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, sURL);
         request(reqParams, function (error, response, body) {
           for (var key in printFormData.params) {
@@ -261,7 +266,7 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          bankIDService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+          userService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
             if (error) {
               callback(error, null);
             } else {
@@ -287,6 +292,10 @@ module.exports.signFormCallback = function (req, res) {
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
 
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
+
+
   if (!codeValue) {
     codeValue = req.query['amp;code'];
   }
@@ -296,7 +305,13 @@ module.exports.signFormCallback = function (req, res) {
     sURL = '';
   }
 
-  var signedFormForUpload = bankIDService
+  if(!userService.prepareSignedContentRequest){
+    res.status(400).send(errors.createError(errors.codes.LOGIC_SERVICE_ERROR,
+      'type of authorization doesn\'t support html forms signing'));
+    return;
+  }
+
+  var signedFormForUpload = userService
     .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
 
   async.waterfall([
@@ -344,23 +359,10 @@ module.exports.saveForm = function (req, res) {
   var data = req.body;
   var oServiceDataNID = req.query.oServiceDataNID;
 
-//    var params = {
-//      //sURL : oServiceData.sURL
-//      nID_Server : nID_Server
-//    };
-//    data = angular.extend(data, {
-//      restoreFormUrl: restoreFormUrl
-//    });
-//
-//    return $http.post('./api/process-form/save', data, {params : params}).then(function (response) {
-
-
   var nID_Server = req.query.nID_Server;
   activiti.getServerRegionHost(nID_Server, function (sHost) {
     var sURL = sHost + '/';
     console.log("sURL=" + sURL);
-
-    //var sURL = req.query.sURL;
 
     if (oServiceDataNID) {
       //TODO fill sURL from oServiceData to use it below
@@ -395,17 +397,10 @@ module.exports.saveForm = function (req, res) {
 module.exports.loadForm = function (req, res) {
   var formID = req.query.formID;
 
-//  this.loadForm = function (oServiceData, formID) {
-//    //var data = {sURL: oServiceData.sURL, formID: formID};
-//    var data = {nID_Server: oServiceData.nID_Server, formID: formID};
-//    return $http.get('./api/process-form/load', {params: data}).then(function (response) {
-
   var nID_Server = req.query.nID_Server;
   activiti.getServerRegionHost(nID_Server, function (sHost) {
     var sURL = sHost + '/';
     console.log("sURL=" + sURL);
-
-    //  var sURL = req.query.sURL;
 
     var callback = function (error, response, body) {
       if (error) {
@@ -467,8 +462,7 @@ var originalURL = function (req, options) {
 
 function getOptions() {
   var config = require('../../config/environment');
-  //var config = require('../../config');
-
+  
   var oConfigServerExternal = config.activiti;
 
   return {

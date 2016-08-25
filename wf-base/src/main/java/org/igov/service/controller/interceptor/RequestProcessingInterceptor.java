@@ -147,16 +147,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sURL = oRequest.getRequestURL().toString();
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
+        String sRequestBody = osRequestBody.toString();
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!sRequestBody: "+sRequestBody+" oRequest.getRequestURL(): "+oRequest.getRequestURL()+" oRequest.getMethod(): "+oRequest.getMethod());
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!sRequestBody: "+sRequestBody+" oRequest.getRequestURL(): "+oRequest.getRequestURL()+" oRequest.getMethod(): "+oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
+            
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
             LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
+            
         }
 
         if (snTaskId != null && mRequestParam.get("taskId") == null) {
             mRequestParam.put("taskId", snTaskId);
         }
 
-        String sRequestBody = osRequestBody.toString();
+        
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
             LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
@@ -176,8 +181,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //https://region.igov.org.ua/wf/service/form/form-data
             if (sURL.endsWith("/service/action/item/getService")
                     || sURL.endsWith("/service/action/item/getServicesTree")
-                    || (sURL.endsWith("/service/form/form-data") && "GET"
-                    .equalsIgnoreCase(oRequest.getMethod().trim()))
+                    || (sURL.endsWith("/service/form/form-data") && 
+                    "GET".equalsIgnoreCase(oRequest.getMethod().trim()))
+                    
                     || sURL.endsWith("/service/repository/process-definitions")
                     || sURL.endsWith("/service/action/task/getStartFormData")
                     || sURL.endsWith("/service/action/task/getOrderMessages_Local")
