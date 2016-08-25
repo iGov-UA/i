@@ -962,24 +962,20 @@ public class ObjectPlaceController {
                 + "Возвращает название сущности Place исходной заявки или кидает ошибку 403. Record not found!.\n")
         @ApiResponses(value = {
             @ApiResponse(code = 403, message = "Record not found")})
-        @RequestMapping(value = "/getOrderPlaces", method = RequestMethod.GET)
+        @RequestMapping(value = "/getPlaceByProcess", method = RequestMethod.GET)
         public @ResponseBody
-        ResponseEntity<String> getOrderPlaces(
+        Place getPlaceByProcess(
                 @ApiParam(value = "ИД-номер, идентификатор заявки", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
                 @ApiParam(value = "ИД-номер сервера", required = true) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
                 HttpServletResponse response) {
-
-        	ResponseEntity<String> result = null;
-        	
+        	Place result = null;
             try {
             	HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
             	LOG.info("Found history event by process ID {}", nID_Process);
             	Optional<Place> place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
                 if (place.isPresent()) {
                 	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
-                	Map<String, Place> resMap = new HashMap<>();
-                	resMap.put("place", place.get());
-                	result = JsonRestUtils.toJsonResponse(resMap);
+                	result = place.get();
                 }
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
