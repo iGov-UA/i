@@ -143,7 +143,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         BufferedReader oReader = oRequest.getReader();
         String line; 
         if (oReader != null) {
-            while ((line = oReader.readLine()) != null) {
+            while ((line = oReader.readLine()) != null) { 
                 osRequestBody.append(line);
             }
             //mParamRequest.put("requestBody", buffer.toString()); 
