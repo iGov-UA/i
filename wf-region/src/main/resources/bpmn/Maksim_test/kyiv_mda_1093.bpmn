@@ -19,7 +19,27 @@
         </activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника"></userTask>
+    <userTask id="usertask1" name="Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceIspectionDepartment" name="Список начальників Інспекційного відділу" type="enum" required="true">
+          <activiti:value id="sEnumInspection_1" name="Inspection_1"></activiti:value>
+          <activiti:value id="sEnumInspection_2" name="Inspection_2"></activiti:value>
+          <activiti:value id="sEnumInspection_3" name="Inspection_3"></activiti:value>
+          <activiti:value id="sEnumInspection_4" name="Inspection_4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <serviceTask id="servicetask2" name="Лист заступнику директора ДАБК для ознайомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -72,13 +92,82 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="Ознайомлення з документом начальником управління дозвільних документів та визначення відповідального співробітника"></userTask>
+    <userTask id="usertask2" name="Ознайомлення з документом начальником управління дозвільних документів та визначення відповідального співробітника">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asChoicePermitDepartment" name="Список співробітників дозвільного відділу" type="enum" required="true">
+          <activiti:value id="sEnumPermit_1" name="Employee_1"></activiti:value>
+          <activiti:value id="sEnumPermit_2" name="Employee_2"></activiti:value>
+          <activiti:value id="sEnumPermit_3" name="Employee_3"></activiti:value>
+          <activiti:value id="sEnumPermit_4" name="Employee_4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="Ознайомлення з документом та визначення відповідального співробітника"></userTask>
+    <userTask id="usertask3" name="Ознайомлення з документом та визначення відповідального співробітника">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceIspectionDepartment" name="Начальник Інспекційного відділу" type="enum" writable="false">
+          <activiti:value id="sEnumInspection_1" name="Inspection_1"></activiti:value>
+          <activiti:value id="sEnumInspection_2" name="Inspection_2"></activiti:value>
+          <activiti:value id="sEnumInspection_3" name="Inspection_3"></activiti:value>
+          <activiti:value id="sEnumInspection_4" name="Inspection_4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар начальника Інспекційного відділу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceIspectionEmployee" name="Список співробітників Інспекційного відділу" type="enum" required="true">
+          <activiti:value id="sEnumInspectionEmpl_1" name="InspectionEmpl_1"></activiti:value>
+          <activiti:value id="sEnumInspectionEmpl_2" name="InspectionEmpl_2"></activiti:value>
+          <activiti:value id="sEnumInspectionEmpl_3" name="InspectionEmpl_3"></activiti:value>
+          <activiti:value id="sEnumInspectionEmpl_4" name="InspectionEmpl_4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask4" name="Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки"></userTask>
+    <userTask id="usertask4" name="Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника дозвільного відділу" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="asChoiceDecision" name="Рішення" type="enum" required="true">
+          <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
+          <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
     <userTask id="usertask5" name="Процес перевірки"></userTask>
