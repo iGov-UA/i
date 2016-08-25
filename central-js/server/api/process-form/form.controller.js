@@ -55,6 +55,7 @@ module.exports.submit = function (req, res) {
   var qs = {
     nID_Subject: nID_Subject,
     nID_Service: formData.nID_Service,
+    nID_ServiceData: formData.nID_ServiceData,
     nID_Region: formData.nID_Region,
     sID_UA: formData.sID_UA
   };
@@ -462,7 +463,7 @@ var originalURL = function (req, options) {
 
 function getOptions() {
   var config = require('../../config/environment');
-  
+
   var oConfigServerExternal = config.activiti;
 
   return {
