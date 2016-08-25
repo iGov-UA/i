@@ -289,30 +289,34 @@
 
             var unpopulatedFields = $scope.unpopulatedFields();
             if (unpopulatedFields.length > 0) {
-              var errorMessage = 'Будь ласка, заповніть поля: ';
+              // var errorMessage = 'Будь ласка, заповніть поля: ';
 
-              if (unpopulatedFields.length == 1) {
+              // if (unpopulatedFields.length == 1) {
+              //
+              //   var nameToAdd = unpopulatedFields[0].name;
+              //   if (nameToAdd.length > 50) {
+              //     nameToAdd = nameToAdd.substr(0, 50) + "...";
+              //   }
+              //
+              //   errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
+              // }
+              // else {
+              //   unpopulatedFields.forEach(function (field) {
+              //
+              //     var nameToAdd = field.name;
+              //     if (nameToAdd.length > 50) {
+              //       nameToAdd = nameToAdd.substr(0, 50) + "...";
+              //     }
+              //     errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
+              //   });
+              //   var comaIndex = errorMessage.lastIndexOf(',');
+              //   errorMessage = errorMessage.substr(0, comaIndex);
+              // }
+              // Modal.inform.error()(errorMessage);
+              setTimeout(function () {
+                angular.element('.submitted').first().focus();
+              },100);
 
-                var nameToAdd = unpopulatedFields[0].name;
-                if (nameToAdd.length > 50) {
-                  nameToAdd = nameToAdd.substr(0, 50) + "...";
-                }
-
-                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
-              }
-              else {
-                unpopulatedFields.forEach(function (field) {
-
-                  var nameToAdd = field.name;
-                  if (nameToAdd.length > 50) {
-                    nameToAdd = nameToAdd.substr(0, 50) + "...";
-                  }
-                  errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
-                });
-                var comaIndex = errorMessage.lastIndexOf(',');
-                errorMessage = errorMessage.substr(0, comaIndex);
-              }
-              Modal.inform.error()(errorMessage);
               return;
             }
 

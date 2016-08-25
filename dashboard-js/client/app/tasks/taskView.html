@@ -19,8 +19,8 @@
 
   <!--номер заявки и дата подачи-->
   <div class="task-number-date" style="margin-bottom: 30px">
-    <h3 ng-class="{'display-inline-block':!inUnassigned()}">{{nID_Process + lunaService.getLunaValue(nID_Process)}}</h3>
-    <span ng-class="{'float-right':!inUnassigned()}">від {{creationDateFormatted(taskData.sDateTimeCreate)}}</span>
+    <h3 class="display-inline-block">{{nID_Process + lunaService.getLunaValue(nID_Process)}}</h3>
+    <span class="float-right">від {{creationDateFormatted(taskData.sDateTimeCreate)}}</span>
   </div>
 
   <div class="btn-group task-form-tabs" ng-if="!inUnassigned()">
@@ -32,22 +32,9 @@
                 ng-click="tabHistoryAppealChange('history')">Історія діалогу</a>
   </div>
 
-  <div ng-if="!clarify">
-    <div ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'">
-      <button ng-click="assignTask()"
-              class="btn btn-info take-to-work-button"
-              style="background-color: #337ACF; outline: none; border: none"
-              ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()"
-              ng-show="selectedTask.assignee == null">Взяти в роботу
-      </button>
-      <label ng-show="isTaskInProcess() && !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
-      <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу направлено в роботу.</label>
-    </div>
-  </div>
-
   <!--форма заявки-->
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
-    <form name="form" novalidate>
+    <form name="form" novalidate style="padding-bottom: 70px">
       <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
 
         <!--поле типа simple-field-->
@@ -88,6 +75,16 @@
                ng-required="{{item.required}}"
                class="form-control_">{{item.value}}
         </label>
+
+        <!--тестовое поле line-->
+        <!--<div ng-if="item.type == 'line'">-->
+          <!--<div ng-if="item.value">-->
+            <!--<hr class="hr-divider">-->
+          <!--</div>-->
+          <!--<div ng-if="!item.value" class="addition-hr">-->
+            <!--<hr class="hr-divider side-left"><span>{{item.value}}</span><hr class="hr-divider side-right">-->
+          <!--</div>-->
+        <!--</div>-->
 
         <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
           <label>{{sFieldLabel(item.name)}} {{item.required && item.writable ? "*" : ""}}</label>
@@ -190,8 +187,7 @@
         </div>
       </div>
 
-      <div class="control-form-fields" ng-if="!inUnassigned()">
-        <hr class="hr-divider">
+      <div class="control-form-fields" ng-if="!inUnassigned()" style="position:fixed; bottom: 0; background: white; width: 100%;">
         <div class="main-form-controls" ng-init="checkForEmpty()">
           <div ng-if="!clarify" style="display: inline-block;">
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'">
