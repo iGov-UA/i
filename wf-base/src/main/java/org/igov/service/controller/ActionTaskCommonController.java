@@ -66,14 +66,6 @@ import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
-
-class Process{  
-    private String id;
-    
-    public Process(String id) {
-        this.id = id;
-    }
-}
 //import com.google.common.base.Optional;
 /**
  * @author BW
@@ -707,7 +699,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @Transactional
     public @ResponseBody
-    Process startProcessByKey(
+    ProcessI startProcessByKey(
             @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
             @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
 
