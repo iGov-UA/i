@@ -266,6 +266,7 @@ public class ProcessController {
                 }
             }
         } catch (Exception ex) {
+            LOG.error("!!!error: ", ex);
             result = result + "" + ex.getMessage();
         }
         return result;
