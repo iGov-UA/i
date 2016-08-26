@@ -247,23 +247,28 @@ public class ProcessController {
         //получение через дао из таблички с файлами файлов
         String result = null;
         LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        if (nID_Process == null && sID_Process_Def == null) {
-            throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
-        } else {
-            for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
-                String removeOldProcessQueryValue;
-                if (removeOldProcessQuery.getKey().startsWith("update")) {
-                    removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
-                    //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                } else {
-                    removeOldProcessQueryValue = removeOldProcessQuery.getValue();
+        try {
+            if (nID_Process == null && sID_Process_Def == null) {
+                throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
+            } else {
+                for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
+                    String removeOldProcessQueryValue;
+                    if (removeOldProcessQuery.getKey().startsWith("update")) {
+                        removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
+                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    } else {
+                        removeOldProcessQueryValue = removeOldProcessQuery.getValue();
+                    }
+                    result = result + " " + removeOldProcessQueryValue;
+                    LOG.info(removeOldProcessQueryValue + " ...");
+                    processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    LOG.info(removeOldProcessQueryValue + " success!");
                 }
-                result = result + " " + removeOldProcessQueryValue;
-                LOG.info(removeOldProcessQueryValue + " ...");
-                processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                LOG.info(removeOldProcessQueryValue + " success!");
+
             }
-            return result;
+        } catch (Exception ex) {
+            result = ex.getMessage();
         }
+        return result;
     }
 }
