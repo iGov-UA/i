@@ -11,6 +11,7 @@ import ru.qatools.properties.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -70,10 +71,10 @@ public class QueryLoader {
      * classpath.
      */
     private Map<String, String> setRemoveOldProcessQueries() {
-        String sFileName = "removeOldProcess";
-        try (BufferedReader reader = new BufferedReader(new FileReader(homeDirectory + sFileName))) {
-            for (String text; null != (text = reader.readLine());) {
-                StringTokenizer tokenizer = new StringTokenizer(text, ";");
+        String sFileName = "removeOldProcess.sql";
+        try (InputStream in = QueryLoader.class.getResourceAsStream(homeDirectory + sFileName)) {
+            for (String text : (List<String>) IOUtils.readLines(in)) {
+                StringTokenizer tokenizer = new StringTokenizer(text, "=");
                 if (tokenizer.hasMoreTokens()) {
                     removeOldProcessQueries.put(tokenizer.nextToken(), tokenizer.nextToken());
                 }
