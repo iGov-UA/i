@@ -150,6 +150,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //TODO temp
         }
         String sURL = oRequest.getRequestURL().toString();
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!sURL: "+sURL);
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
