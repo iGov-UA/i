@@ -150,22 +150,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //TODO temp
         }
         String sURL = oRequest.getRequestURL().toString();
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!sURL: "+sURL);
+        LOG.info("sURL: "+sURL);
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!sRequestBody: " + sRequestBody + " oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
+        LOG.info("sRequestBody: " + sRequestBody + " oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
-            LOG.info("!!!!!!!!!!!!!TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find(): "+TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find());
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
-            LOG.info("!!!!!!!!!!!!!snTaskId: "+snTaskId);
-            LOG.info("!!!!!!!!!!!!!oRequest.getMethod(): "+oRequest.getMethod());
-            LOG.info("!!!!!!!!!!!!!Request.getMethod().trim(): "+oRequest.getMethod().trim());
+            LOG.info("snTaskId: "+snTaskId);
+            LOG.info("Request.getMethod().trim(): "+oRequest.getMethod().trim());
              if ("PUT".equalsIgnoreCase(oRequest.getMethod().trim()) && SREQUESTBODY_PATTERN.matcher(sRequestBody).find()) {
                 LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
                 Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
                 if (task.getAssignee() != null) {
-                    LOG.info("!!!!!!!!!!!!!task.getAssignee(): "+task.getAssignee());
+                    LOG.info("task.getAssignee(): "+task.getAssignee());
                     throw new TaskAlreadyUnboundException(HttpStatus.FORBIDDEN+" Task has been already assigneed!");
                 }               
             }                     
