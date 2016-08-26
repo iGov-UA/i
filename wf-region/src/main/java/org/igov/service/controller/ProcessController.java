@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
@@ -40,6 +41,7 @@ import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.ArchiveServiceImpl;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.VariableMultipartFile;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,7 +60,7 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
-    
+
     @Autowired
     private org.igov.model.action.task.core.entity.ProcessHistoryDao processHistoryDao;
 
@@ -81,6 +83,9 @@ public class ProcessController {
 
     @Autowired
     private ArchiveServiceImpl archiveService;
+
+    @Autowired
+    QueryLoader queryLoader;
 
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
@@ -234,17 +239,37 @@ public class ProcessController {
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    void removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process") Long nID_Process,
-            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def") String sID_Process_Def,
-            @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt") String sDateFinishAt,
-            @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo") String sDateFinishTo,
+    String removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
+            @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt", required = true, defaultValue = "2010-01-01") String sDateFinishAt,
+            @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo", required = true, defaultValue = "2050-01-01") String sDateFinishTo,
             HttpServletResponse httpResponse) throws RecordNotFoundException, CommonServiceException {
         //получение через дао из таблички с файлами файлов
+        String result = null;
         LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        if (nID_Process == null && sID_Process_Def == null) {
-            throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
-        } else {
-            processHistoryDao.removeOldProcess(sID_Process_Def, sDateFinishAt, sDateFinishTo);
+        try {
+            if (nID_Process == null && sID_Process_Def == null) {
+                throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
+            } else {
+                for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
+                    String removeOldProcessQueryValue;
+                    if (removeOldProcessQuery.getKey().startsWith("update")) {
+                        removeOldProcessQueryValue = removeOldProcessQuery.getValue().replaceFirst("%s", sID_Process_Def);
+                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
+                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    } else {
+                        removeOldProcessQueryValue = removeOldProcessQuery.getValue();
+                    }
+                    result = result + " " + removeOldProcessQueryValue;
+                    LOG.info(removeOldProcessQueryValue + " ...");
+                    processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    LOG.info(removeOldProcessQueryValue + " success!");
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("!!!error: ", ex);
+            result = result + "" + ex.getMessage();
         }
+        return result;
     }
 }

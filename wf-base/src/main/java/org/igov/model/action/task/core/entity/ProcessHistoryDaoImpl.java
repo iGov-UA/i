@@ -13,6 +13,7 @@ import org.igov.util.db.QueryBuilder;
 import org.igov.util.db.queryloader.QueryLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -24,25 +25,13 @@ public class ProcessHistoryDaoImpl extends GenericEntityDao<Long, ProcessHistory
 
     private static final Logger log = Logger.getLogger(ProcessHistoryDaoImpl.class);
 
-    @Autowired
-    QueryLoader queryLoader;
-
     protected ProcessHistoryDaoImpl() {
         super(ProcessHistory.class);
     }
 
     @Override
-    public void removeOldProcess(String sID_Process_Def, String sDateFinishAt, String sDateFinishTo) {
-        for (Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
-            String removeOldProcessQueryValue;
-            if (removeOldProcessQuery.getKey().startsWith("update")) {
-                removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
-            } else {
-                removeOldProcessQueryValue = removeOldProcessQuery.getValue();
-            }
-            log.info(removeOldProcessQueryValue + " ...");
-            Query query = new QueryBuilder(getSession()).append(removeOldProcessQueryValue).toSQLQuery();
-            log.info(removeOldProcessQueryValue + " success!");
-        }
+    @Transactional
+    public void removeOldProcess(String removeOldProcessQueryValue, String sID_Process_Def, String sDateFinishAt, String sDateFinishTo) {
+        Query query = new QueryBuilder(getSession()).append(removeOldProcessQueryValue).toSQLQuery();
     }
 }
