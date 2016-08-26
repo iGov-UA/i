@@ -121,7 +121,7 @@ module.exports = function (grunt) {
           '<%= yeoman.client %>/{app,components}/**/*.js',
           '<%= yeoman.root %>/public-js/*/*.js',
           '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          '!<%= yeoman.client %>/{app,components}/**/*.nock.js',
           '!<%= yeoman.client %>/app/app.js'],
         tasks: ['injector:scripts']
       },
@@ -138,7 +138,7 @@ module.exports = function (grunt) {
       jsTest: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          '<%= yeoman.client %>/{app,components}/**/*.nock.js'
         ],
         tasks: ['newer:jshint:all', 'karma']
       },
@@ -162,7 +162,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
           '{.tmp,<%= yeoman.root %>}/public-js/*/*.js',
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
-          '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
+          '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.nock.js',
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
@@ -206,14 +206,14 @@ module.exports = function (grunt) {
         '<%= yeoman.client %>/{app,components}/**/*.js',
         '<%= yeoman.root %>/public-js/*/*.js',
         '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-        '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
+        '!<%= yeoman.client %>/{app,components}/**/*.nock.js'
       ],
       test: {
         src: [
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          '<%= yeoman.client %>/{app,components}/**/*.nock.js',
           '<%= yeoman.root %>/public-js/*/*.spec.js',
-          '<%= yeoman.root %>/public-js/*/*.mock.js'
+          '<%= yeoman.root %>/public-js/*/*.nock.js'
         ]
       }
     },
@@ -425,7 +425,7 @@ module.exports = function (grunt) {
             'server/**/*',
             '!server/**/*.spec.js',
             '!server/**/*.test.js',
-            '!server/**/*.mock.js'
+            '!server/**/*.nock.js'
           ]
         }, {
           expand: true,
@@ -582,7 +582,7 @@ module.exports = function (grunt) {
             ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
               '!{.tmp,<%= yeoman.client %>}/app/app.js',
               '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
-              '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
+              '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.nock.js',
               '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.test.js'
             ]
           ]
