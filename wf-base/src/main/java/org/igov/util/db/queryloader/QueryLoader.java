@@ -74,7 +74,7 @@ public class QueryLoader {
         String sFileName = "removeOldProcess.sql";
         try (InputStream in = QueryLoader.class.getResourceAsStream(homeDirectory + sFileName)) {
             for (String text : (List<String>) IOUtils.readLines(in)) {
-                StringTokenizer tokenizer = new StringTokenizer(text, "=");
+                StringTokenizer tokenizer = new StringTokenizer(text, ";");
                 if (tokenizer.hasMoreTokens()) {
                     removeOldProcessQueries.put(tokenizer.nextToken(), tokenizer.nextToken());
                 }
