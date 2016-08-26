@@ -154,7 +154,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         String sRequestBody = osRequestBody.toString();
         LOG.info("!!!!!!!!!!!!!!!!!!!!!sRequestBody: " + sRequestBody + " oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
-        if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
+        /*if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
              if ("PUT".equalsIgnoreCase(oRequest.getMethod().trim()) && SREQUESTBODY_PATTERN.matcher(oRequest.getRequestURL()).find()) {
                 LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
@@ -164,7 +164,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     throw new TaskAlreadyUnboundException(HttpStatus.FORBIDDEN+" Task has been already assigneed!");
                 }               
             }                     
-        }
+        }*/
         if (snTaskId != null && mRequestParam.get("taskId") == null) {
             mRequestParam.put("taskId", snTaskId);
         }
