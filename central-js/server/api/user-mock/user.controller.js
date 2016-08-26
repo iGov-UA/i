@@ -48,7 +48,8 @@ module.exports.tryCache = function (req, res, next) {
 
         var callback = function (error, body) {
           var err = null;
-          finishRequest(req, res, err, body, type);
+          var userService = authProviderRegistry.getUserService(type);
+          finishRequest(req, res, err, body, userService);
         };
 
         function getUserMock() {
@@ -82,7 +83,7 @@ module.exports.index = function (req, res, next) {
       if (userService.mergeFromSession) {
         userService.mergeFromSession(result, req.session);
       }
-      finishRequest(req, res, err, result, type);
+      finishRequest(req, res, err, result, userService);
     });
   } else {
     next();
