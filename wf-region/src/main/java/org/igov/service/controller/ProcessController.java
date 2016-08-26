@@ -228,22 +228,20 @@ public class ProcessController {
         }
     }
 
-    @ApiOperation(value = "/removeProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
-    @RequestMapping(value = "/removeProcess", method = RequestMethod.GET, headers = {JSON_TYPE})
+    @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
+    @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    void removeProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process") Long nID_Process,
-            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "nID_Process_Def") Long nID_Process_Def,
-            @ApiParam(value = "дата закрытия процесса с ", required = true) @RequestParam(value = "sDateFinishAt") String sDateFinishAt,
-            @ApiParam(value = "дата закрытия процесса по ", required = true) @RequestParam(value = "sDateFinishTo") String sDateFinishTo,
+    void removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process") Long nID_Process,
+            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def") String sID_Process_Def,
+            @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt") String sDateFinishAt,
+            @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo") String sDateFinishTo,
             HttpServletResponse httpResponse) throws RecordNotFoundException, CommonServiceException {
         //получение через дао из таблички с файлами файлов
         LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-
-        if (nID_Process == null && nID_Process_Def == null) {
+        if (nID_Process == null && sID_Process_Def == null) {
             throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
         } else {
-
+            processDao.removeOldProcess(sID_Process_Def, sDateFinishAt, sDateFinishTo);
         }
-
     }
 }
