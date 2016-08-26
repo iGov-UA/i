@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
@@ -38,7 +39,9 @@ import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.ArchiveServiceImpl;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.util.VariableMultipartFile;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +60,9 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
+
+    @Autowired
+    private org.igov.model.action.task.core.entity.ProcessHistoryDao processHistoryDao;
 
     @Autowired
     private SourceDBDao sourceDBDao;
@@ -78,50 +84,9 @@ public class ProcessController {
     @Autowired
     private ArchiveServiceImpl archiveService;
 
-    /*@ApiOperation(value = "/setProcess", notes = "##### Process - сохранение процесса #####\n\n")
-     @RequestMapping(value = "/setProcess", method = RequestMethod.GET//, headers = {JSON_TYPE}
-     )
-     public @ResponseBody
-     Process setProcess(@ApiParam(value = "внутренний ид заявки", required = true) @RequestParam(value = "sID_") String sID_,
-     @ApiParam(value = "ключ сохраненного объекта в монгу", required = true) @RequestParam(value = "sID_Data") String sID_Data,
-     @ApiParam(value = "имя файла", required = true) @RequestParam(value = "sFileName") String sFileName,
-     @ApiParam(value = "расширение файла", required = true) @RequestParam(value = "sExtName") String sExtName,
-     @ApiParam(value = "тип контента", required = true) @RequestParam(value = "sContentType") String sContentType,
-     @ApiParam(value = "ид источника", required = true) @RequestParam(value = "nID_Source", required = true) Long nID_Source,
-     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "nID_AttributeType", required = true) Long nID_AttributeType,
-     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateStart", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateStart,
-     @ApiParam(value = "ид типа атрибута", required = true) @RequestParam(value = "oDateFinish", required = true) @DateTimeFormat(pattern = "YYYY-MM-DD hh:mm:ss") DateTime oDateFinish) {
-     LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-     Process process = new Process();
-     SourceDB sourceDB = sourceDBDao.findByIdExpected(nID_Source);
-     AttributeType attributeType = attributeTypeDao.findByIdExpected(nID_AttributeType);
+    @Autowired
+    QueryLoader queryLoader;
 
-     //process.setoDateStart(new DateTime(oDateStart));
-     //process.setoDateFinish(new DateTime(oDateFinish));
-     process.setoDateStart(oDateStart);
-     process.setoDateFinish(oDateFinish);
-     process.setoSourceDB(sourceDB);
-     process.setsID_(sID_);
-     process.setsID_Data(sID_Data);
-     process = processDao.saveOrUpdate(process);
-
-     Attribute attribute = new Attribute();
-     attribute.setoAttributeType(attributeType);
-     attribute.setoProcess(process);
-     attribute.setsID_(sFileName);
-     attribute.setName(sFileName);
-     attribute = attributeDao.saveOrUpdate(attribute);
-
-     Attribute_File attribute_File = new Attribute_File();
-     attribute_File.setoAttribute(attribute);
-     attribute_File.setsID_Data(sID_Data);
-     attribute_File.setsFileName(sFileName);
-     attribute_File.setsContentType(sContentType);
-     attribute_File.setsExtName(sExtName);
-     attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
-
-     return process;
-     }*/
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
     public @ResponseBody
@@ -131,48 +96,6 @@ public class ProcessController {
         LOG.info("/backup ok!!!");
     }
 
-    /*@ApiOperation(value = "/setProcessNew", notes = "##### Process - сохранение процесса #####\n\n")
-     @RequestMapping(value = "/setProcessNew", method = RequestMethod.GET//, headers = {JSON_TYPE}
-     )
-     public @ResponseBody
-     Process setProcessNew() { //@RequestBody Process oProcess
-     LOG.info("/setProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-     Process process = new Process();
-     try {
-     SourceDB sourceDB = sourceDBDao.findByIdExpected(new Long(1));
-     AttributeType attributeType = attributeTypeDao.findByIdExpected(new Long(7));
-
-     process.setoDateStart(new DateTime());
-     process.setoDateFinish(new DateTime());
-     process.setoSourceDB(sourceDB);
-     process.setsID_("test!!:)");
-     process.setsID_Data("test!!:)");
-     //process = processDao.saveOrUpdate(process);
-
-     Attribute attribute = new Attribute();
-     attribute.setoAttributeType(attributeType);
-     attribute.setoProcess(process);
-     //attribute = attributeDao.saveOrUpdate(attribute);
-     List<Attribute> attributes = new ArrayList();
-     attributes.add(attribute);
-     process.setaAttribute(attributes);
-     Attribute_File attribute_File = new Attribute_File();
-     attribute_File.setoAttribute(attribute);
-     attribute_File.setsID_Data("test");
-     attribute_File.setsFileName("test");
-     attribute_File.setsContentType("pdf");
-     attribute_File.setsExtName("txt");
-     attribute.setoAttribute_File(attribute_File);
-     //attribute_File = attribute_FileDao.saveOrUpdate(attribute_File);
-     processDao.saveOrUpdate(process);
-     //Optional<Process> oProcess = processDao.findById(process.getId());
-     return process;
-     } catch (Exception ex) {
-     LOG.error("!!!!Eror: ", ex);
-     process.setsID_(ex.getMessage());
-     }
-     return process;
-     }*/
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
     @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = {JSON_TYPE})
@@ -185,10 +108,10 @@ public class ProcessController {
             //if ("1".equalsIgnoreCase(sID_.trim())) {
             //   result.add(creatStub());
             //} else {
-                LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
-                List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
-                LOG.info("processes: " + processes.size());
-                result.addAll(processes);
+            LOG.info("/getProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sID_: " + sID_.trim());
+            List<Process> processes = processDao.findAllBy("sID_", sID_.trim());
+            LOG.info("processes: " + processes.size());
+            result.addAll(processes);
             //}
         } catch (Exception ex) {
             LOG.error("ex: ", ex);
@@ -313,4 +236,39 @@ public class ProcessController {
         }
     }
 
+    @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
+    @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    String removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
+            @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt", required = true, defaultValue = "2010-01-01") String sDateFinishAt,
+            @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo", required = true, defaultValue = "2050-01-01") String sDateFinishTo,
+            HttpServletResponse httpResponse) throws RecordNotFoundException, CommonServiceException {
+        //получение через дао из таблички с файлами файлов
+        String result = null;
+        LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
+        try {
+            if (nID_Process == null && sID_Process_Def == null) {
+                throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
+            } else {
+                for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
+                    String removeOldProcessQueryValue;
+                    if (removeOldProcessQuery.getKey().startsWith("update")) {
+                        removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
+                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    } else {
+                        removeOldProcessQueryValue = removeOldProcessQuery.getValue();
+                    }
+                    result = result + " " + removeOldProcessQueryValue;
+                    LOG.info(removeOldProcessQueryValue + " ...");
+                    processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
+                    LOG.info(removeOldProcessQueryValue + " success!");
+                }
+
+            }
+        } catch (Exception ex) {
+            result = ex.getMessage();
+        }
+        return result;
+    }
 }

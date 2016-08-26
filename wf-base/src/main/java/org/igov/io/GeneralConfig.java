@@ -141,7 +141,7 @@ public class GeneralConfig {
     private String sPath_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.sSuffixDateMask}")
     private String sSuffixDateMask_Pay_Yuzhny_FTP;
-    @Value("${general.Pay.Yuzhny.FTP.nDaysOffset")
+    @Value("${general.Pay.Yuzhny.FTP.nDaysOffset}")
     private String snDaysOffset_Pay_Yuzhny_FTP;
    
     

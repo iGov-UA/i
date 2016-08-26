@@ -6,7 +6,6 @@
 package org.igov.service;
 
 import com.google.common.base.Optional;
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -34,6 +33,7 @@ import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.model.core.AbstractEntity;
 import org.igov.model.core.EntityDao;
 import org.igov.service.controller.ProcessController;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,6 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     private static Connection conn;
     private static Statement stat, statComplain, statUpdateComplain;
-    private static final PrintStream o = System.out;
     private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
 
     @Autowired
@@ -75,6 +74,11 @@ public class ArchiveServiceImpl implements ArchiveService {
 
     @Autowired
     private Attribute_DateDao attribute_DateDao;
+    
+    @Autowired
+    QueryLoader queryLoader;
+    
+    
 
     /*@Autowired
      private IFileStorage durableFileStorage;*/
@@ -300,4 +304,13 @@ public class ArchiveServiceImpl implements ArchiveService {
             sb.append(" attributeValueDao: ").append(getTimeDiff());
         }
     }
+    
+    /*public void removeProcess(){
+    String selectQuery = queryLoader.get("select_document_content_key.sql");
+        Query query = new QueryBuilder(getSession())
+                .append(selectQuery)
+                .setParam("OFFSET", offset)
+                .toSQLQuery();
+        return Lists.newArrayList(Iterables.filter(query.list(), String.class));
+    }*/
 }
