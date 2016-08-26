@@ -25,8 +25,8 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
 
     private static final Logger log = Logger.getLogger(ProcessDaoImpl.class);
 
-    @Autowired
-    QueryLoader queryLoader;
+    //@Autowired
+    //QueryLoader queryLoader;
 
     protected ProcessDaoImpl() {
         super(Process.class);
@@ -34,7 +34,7 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
 
     @Override
     public void removeOldProcess(String sID_Process_Def, String sDateFinishAt, String sDateFinishTo) {
-        for (Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
+        /*for (Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
             String removeOldProcessQueryValue;
             if (removeOldProcessQuery.getKey().startsWith("update")) {
                 removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
@@ -44,6 +44,6 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
             log.info(removeOldProcessQueryValue + " ...");
             Query query = new QueryBuilder(getSession()).append(removeOldProcessQueryValue).toSQLQuery();
             log.info(removeOldProcessQueryValue + " success!");
-        }
+        }*/
     }
 }
