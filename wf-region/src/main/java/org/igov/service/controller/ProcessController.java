@@ -58,6 +58,9 @@ public class ProcessController {
 
     @Autowired
     private ProcessDao processDao;
+    
+    @Autowired
+    private org.igov.model.action.task.core.entity.ProcessHistoryDao processHistoryDao;
 
     @Autowired
     private SourceDBDao sourceDBDao;
@@ -241,7 +244,7 @@ public class ProcessController {
         if (nID_Process == null && sID_Process_Def == null) {
             throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
         } else {
-            processDao.removeOldProcess(sID_Process_Def, sDateFinishAt, sDateFinishTo);
+            processHistoryDao.removeOldProcess(sID_Process_Def, sDateFinishAt, sDateFinishTo);
         }
     }
 }
