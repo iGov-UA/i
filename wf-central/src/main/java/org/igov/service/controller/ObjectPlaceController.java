@@ -9,7 +9,6 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
-import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
