@@ -182,7 +182,7 @@ public class EscalationService {
         long nElapsedDays = nElapsedHours / 24;
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Прошло дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
         result.put("bSuspended", oTask.isSuspended());
@@ -209,7 +209,7 @@ public class EscalationService {
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Удалить");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
