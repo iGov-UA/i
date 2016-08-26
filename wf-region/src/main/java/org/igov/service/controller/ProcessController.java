@@ -12,7 +12,9 @@ import io.swagger.annotations.ApiParam;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Query;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
 import org.igov.analytic.model.access.AccessGroup;
@@ -40,6 +42,8 @@ import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.ArchiveServiceImpl;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.VariableMultipartFile;
+import org.igov.util.db.QueryBuilder;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,6 +85,9 @@ public class ProcessController {
 
     @Autowired
     private ArchiveServiceImpl archiveService;
+    
+    @Autowired
+    QueryLoader queryLoader;
 
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
@@ -244,7 +251,18 @@ public class ProcessController {
         if (nID_Process == null && sID_Process_Def == null) {
             throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
         } else {
-            processHistoryDao.removeOldProcess(sID_Process_Def, sDateFinishAt, sDateFinishTo);
+            for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
+            String removeOldProcessQueryValue;
+            if (removeOldProcessQuery.getKey().startsWith("update")) {
+                removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
+            } else {
+                removeOldProcessQueryValue = removeOldProcessQuery.getValue();
+            }
+            LOG.info(removeOldProcessQueryValue + " ...");
+            //Query query = new QueryBuilder(getSession()).append(removeOldProcessQueryValue).toSQLQuery();
+            processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo); 
+            LOG.info(removeOldProcessQueryValue + " success!");
+        }
         }
     }
 }
