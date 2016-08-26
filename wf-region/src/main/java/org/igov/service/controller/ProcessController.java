@@ -264,10 +264,9 @@ public class ProcessController {
                     processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
                     LOG.info(removeOldProcessQueryValue + " success!");
                 }
-
             }
         } catch (Exception ex) {
-            result = ex.getMessage();
+            result = result + "" + ex.getMessage();
         }
         return result;
     }
