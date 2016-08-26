@@ -30,6 +30,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
+import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
