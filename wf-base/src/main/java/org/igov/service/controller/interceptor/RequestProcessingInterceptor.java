@@ -155,7 +155,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sRequestBody = osRequestBody.toString();
         LOG.info("!!!!!!!!!!!!!!!!!!!!!sRequestBody: " + sRequestBody + " oRequest.getRequestURL(): " + oRequest.getRequestURL() + " oRequest.getMethod(): " + oRequest.getMethod());
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
+            LOG.info("!!!!!!!!!!!!!TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find(): "+TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find());
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+            LOG.info("!!!!!!!!!!!!!snTaskId: "+snTaskId);
              if ("PUT".equalsIgnoreCase(oRequest.getMethod().trim()) && SREQUESTBODY_PATTERN.matcher(oRequest.getRequestURL()).find()) {
                 LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
                 Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
