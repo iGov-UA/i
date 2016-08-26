@@ -6,9 +6,6 @@
 package org.igov.service;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import org.hibernate.Query;
 import org.igov.analytic.model.attribute.Attribute;
 import org.igov.analytic.model.attribute.AttributeDao;
 import org.igov.analytic.model.attribute.AttributeType;
@@ -37,7 +33,6 @@ import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.model.core.AbstractEntity;
 import org.igov.model.core.EntityDao;
 import org.igov.service.controller.ProcessController;
-import org.igov.util.db.QueryBuilder;
 import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;

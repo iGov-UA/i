@@ -12,7 +12,5 @@ import org.igov.model.core.EntityDao;
  * @author olga
  */
 public interface ProcessDao extends EntityDao<Long, Process>{
-    
-    public void removeOldProcess(String sID_Process_Def, String sDateFinishAt, String sDateFinishTo);
-    
+      
 }

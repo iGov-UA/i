@@ -30,7 +30,6 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
-import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -68,6 +67,13 @@ import java.util.*;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
 
+class Process{  
+    private String id;
+    
+    public Process(String id) {
+        this.id = id;
+    }
+}
 //import com.google.common.base.Optional;
 /**
  * @author BW
@@ -679,82 +685,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return JsonRestUtils.toJsonResponse(response);
     }
 
-    /*private static class TaskAlreadyUnboundException extends Exception {
-     private TaskAlreadyUnboundException(String message) {
-     super(message);
-     }
-     }*/
-//@RequestMapping("/web")
-//public class StartWebController {
-    /*private final Logger LOG = LoggerFactory
-     .getLogger(StartWebController.class);
-
-     @Autowired
-     private RuntimeService runtimeService;
-
-     @Autowired
-     private RepositoryService repositoryService;
-
-     @Autowired
-     private FormService formService;
-
-     @RequestMapping(value = "/activiti/index", method = RequestMethod.GET)
-     public ModelAndView index() {
-
-     ModelAndView modelAndView = new ModelAndView("index");
-     List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().latestVersion()
-     .list();
-     modelAndView.addObject("processList", processDefinitions);
-     return modelAndView;
-     }
-
-     @RequestMapping(value = "/activiti/startForm/{id}", method = RequestMethod.GET)
-     public ModelAndView startForm(@PathVariable("id") String id) {
-
-     StartFormData sfd = formService.getStartFormData(id);
-
-     List<FormProperty> fpList = sfd.getFormProperties();
-     ModelAndView modelAndView = new ModelAndView("startForm");
-     modelAndView.addObject("fpList", fpList);
-     modelAndView.addObject("id", id);
-     return modelAndView;
-     }
-
-     @RequestMapping(value = "/activiti/startProcess/{id}", method = RequestMethod.POST)
-     public ModelAndView startProcess(@PathVariable("id") String id, @RequestParam Map<String, String> params) {
-     ProcessInstance pi = formService.submitStartFormData(id, params);
-
-     ModelAndView modelAndView = new ModelAndView("startedProcess");
-     modelAndView.addObject("pi", pi.getProcessInstanceId());
-     modelAndView.addObject("bk", pi.getBusinessKey());
-     return modelAndView;
-     }*/
-    /*
-     private String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
-     return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
-     }
-
-     private List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
-     List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
-     List<String> res = new ArrayList<>();
-
-     for (Task task : aTask) {
-     res.add(task.getId());
-     }
-
-     return res;
-     }
-
-     private List<Task> getTasksByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
-     List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceID).list();
-     if (tasks == null || tasks.isEmpty()) {
-     LOG.error(
-     String.format("Tasks for Process Instance [id = '%s'] not found", processInstanceID));
-     throw new RecordNotFoundException();
-     }
-     return tasks;
-     }
-     */
     /**
      * Запуск процесса Activiti:
      *
@@ -777,7 +707,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @Transactional
     public @ResponseBody
-    ProcessI startProcessByKey(
+    Process startProcessByKey(
             @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
             @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
 
