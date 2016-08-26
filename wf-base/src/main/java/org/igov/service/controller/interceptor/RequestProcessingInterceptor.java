@@ -68,7 +68,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    private static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("assignee" + ":" + "[а-яА-Яa-z_A-z]+$");
+    private static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("\"assignee\":\"[а-яА-Яa-z_A-z0-9]+\"");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long SubjectMessageType_ServiceCommentEmployeeAnswerEscalation = 11L;
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
