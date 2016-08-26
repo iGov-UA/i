@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Zags_Dn987_Smert" name="Повторна видача свідоцтва про смерть" isExecutable="true">
+  <process id="Zags_Dn987_Name" name="Повторна видача свідоцтва про Зміну імені" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0" required="true"></activiti:formProperty>
@@ -11,35 +11,16 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі, щодо якої запитується свідоцтво" type="enum" required="true">
-          <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
-          <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
-          <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
-          <activiti:value id="sEnamRodich4" name="Донька"></activiti:value>
-          <activiti:value id="sEnamRodich5" name="Брат"></activiti:value>
-          <activiti:value id="sEnamRodich6" name="Сестра"></activiti:value>
-          <activiti:value id="sEnamRodich7" name="Дід"></activiti:value>
-          <activiti:value id="sEnamRodich8" name="Бабуся"></activiti:value>
-          <activiti:value id="sEnamRodich9" name="Онук"></activiti:value>
-          <activiti:value id="sEnamRodich10" name="Онучка"></activiti:value>
-          <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
-          <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="file_Rodich" name="Сканкопія документа, що підтверджує родинний зв'язок" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/rodich.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sZap_LastName" name="Прізвище померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sZap_Name" name="Ім'я померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sZap_MiddleName" name="По батькові померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_smert" name="Вкажіть місце і дату реєстрації смерті особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькаові що були в вас до зміни імені" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Ваша дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_born" name="Вкажіть дату і місце де проводилась зміна імені" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum2" name="сума платежу" type="invisible" default="0,53"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="сума платежу" type="invisible" default="0.53"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription2" name="опис платежу" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sDescription2" name="опис платежу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
@@ -47,7 +28,7 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про смерть"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про зміну імені"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -108,38 +89,25 @@ ${sNameOrgan}.&lt;br /&gt;
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" writable="false">
-          <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
-          <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
-          <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
-          <activiti:value id="sEnamRodich4" name="Донька"></activiti:value>
-          <activiti:value id="sEnamRodich5" name="Брат"></activiti:value>
-          <activiti:value id="sEnamRodich6" name="Сестра"></activiti:value>
-          <activiti:value id="sEnamRodich7" name="Дід"></activiti:value>
-          <activiti:value id="sEnamRodich8" name="Бабуся"></activiti:value>
-          <activiti:value id="sEnamRodich9" name="Онук"></activiti:value>
-          <activiti:value id="sEnamRodich10" name="Онучка"></activiti:value>
-          <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
-          <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="DeathFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_smert" name="Місце і дата реєстрації смерті особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькаові що були в вас до зміни імені" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_born" name="Дата і місце де проводилась зміна імені" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Мета отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Death_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Name_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Rodich},${file_Spadok},${file_Opika},${file_OPLATA}</activiti:expression>
+            <activiti:expression>${file_OPLATA}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -234,13 +202,13 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-        var Z_LastName=''
+        var Z_LastName=' '
       </script>
     </scriptTask>
     <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Smert">
-    <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Smert" id="BPMNPlane_Zags_Dn987_Smert">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Narod">
+    <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Narod" id="BPMNPlane_Zags_Dn987_Narod">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

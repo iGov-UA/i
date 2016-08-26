@@ -11,11 +11,15 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; заповнювати не треба - він завантажується автоматично" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Звернння подаю" type="enum" required="true">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="довірена особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" required="true">
           <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
           <activiti:value id="invalid_not_pension" name="призначення допомоги особам, які не мають права на пенсію, та інвалідам"></activiti:value>
@@ -34,24 +38,21 @@
           <activiti:value id="other_funeral" name="призначення допомоги на поховання"></activiti:value>
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
         </activiti:formProperty>
-                
+        <activiti:formProperty id="sDocConfidant" name="Довіренність" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrganName" name="sOrganName" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganPhone" name="sOrganPhone" type="invisible"></activiti:formProperty>
-
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>       
-        
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+  		<activiti:formProperty id="markers1" name="Якщо  довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
-
-
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
@@ -59,6 +60,10 @@
         <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Звернння подаю" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="довірена особа"></activiti:value>
+        </activiti:formProperty>  
         <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" writable="false">
           <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
           <activiti:value id="invalid_not_pension" name="призначення допомоги особам, які не мають права на пенсію, та інвалідам"></activiti:value>
@@ -78,15 +83,12 @@
           <activiti:value id="children_orphan" name="призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="info0" name=" " type="label" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="rishen" name="Завантажте відскановану довідку у полі нижче, скориставшись кнопкою &quot;завантажити файл&quot;" type="file" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="info1" name=" " type="label" default=" "></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${sDocConfidant}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -111,8 +113,7 @@
           <activiti:expression><![CDATA[${rishen}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-			[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			Ви подавали звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> щодо отримання довідки:<br />
 			enum{[content]}<br />
@@ -126,8 +127,7 @@
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -159,8 +159,7 @@
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 			Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a><br />
 			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -169,7 +168,7 @@
     <sequenceFlow id="flow39" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P7DT1M</timeDuration>
+        <timeDuration>P10DT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask6" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
