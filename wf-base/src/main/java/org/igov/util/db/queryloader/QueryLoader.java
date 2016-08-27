@@ -1,7 +1,5 @@
 package org.igov.util.db.queryloader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import ru.qatools.properties.Property;
