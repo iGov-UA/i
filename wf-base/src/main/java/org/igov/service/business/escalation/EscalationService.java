@@ -280,8 +280,8 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
         BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
-        result.put("sLoginAssigned", oTask.getAssignee());
-        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+//        result.put("sLoginAssigned", oTask.getAssignee());
+//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
         List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
