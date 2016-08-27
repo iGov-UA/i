@@ -106,6 +106,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //private ExceptionCommonController exceptionController;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
+    
+    @Autowired
+    private ProcessHistoryDao processHistoryDao;
+    
+    @Autowired
+    QueryLoader queryLoader;
 
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
      @ResponseBody
