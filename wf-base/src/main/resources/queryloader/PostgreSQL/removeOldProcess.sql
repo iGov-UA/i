@@ -13,4 +13,4 @@ delete_act_hi_actinst;delete from "public"."act_hi_actinst" d where "proc_inst_i
 update_act_hi_taskinst;update "public"."act_hi_taskinst" d set "proc_inst_id_" = '0' from "public"."act_hi_procinst" p where p."proc_def_id_" like '%s%' and p."start_time_" >= '%dateAt' and p."end_time_" <= '%dateTo' and p."proc_inst_id_" = d."proc_inst_id_"
 delete_act_hi_taskinst;delete from "public"."act_hi_taskinst" d where "proc_inst_id_" = '0'
 delete_act_hi_procinst;delete from "public"."act_hi_procinst" where "proc_def_id_" like '%s%' and p."start_time_" >= '%dateAt' and p."end_time_" <= '%dateTo'
-delete_act_hi_procinst;delete from "public"."act_hi_procinst" where "proc_def_id_" like '%s%' and p."start_time_" >= '%dateAt' and p."end_time_" <= '%dateTo'    
+delete_act_hi_procinst;delete from "public"."act_hi_procinst" p where "proc_def_id_" like '%s%' and p."start_time_" >= '%dateAt' and p."end_time_" <= '%dateTo'    
