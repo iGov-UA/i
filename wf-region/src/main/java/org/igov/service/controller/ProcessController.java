@@ -245,7 +245,7 @@ public class ProcessController {
             @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo", required = true, defaultValue = "2050-01-01") String sDateFinishTo,
             HttpServletResponse httpResponse) throws RecordNotFoundException, CommonServiceException {
         //получение через дао из таблички с файлами файлов
-        String result = null;
+        String result = "";
         LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         try {
             if (nID_Process == null && sID_Process_Def == null) {

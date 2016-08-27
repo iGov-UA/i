@@ -2424,13 +2424,13 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
     public @ResponseBody
-    String removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+    Map<String, Integer> removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
             @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt", required = true, defaultValue = "2010-01-01") String sDateFinishAt,
             @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo", required = true, defaultValue = "2050-01-01") String sDateFinishTo,
             HttpServletResponse httpResponse) throws org.igov.io.db.kv.statical.exceptions.RecordNotFoundException, CommonServiceException {
         //получение через дао из таблички с файлами файлов
-        String result = "";
+        Map<String, Integer> result = new LinkedHashMap<>();
         LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         try {
             if (nID_Process == null && sID_Process_Def == null) {
@@ -2446,16 +2446,16 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
                     } else {
                         removeOldProcessQueryValue = removeOldProcessQuery.getValue();
                     }
-                    result = result + " " + removeOldProcessQueryValue;
+                    result.put(removeOldProcessQueryValue, -1);
                     LOG.info(removeOldProcessQueryValue + " ...");
                     int countRowUpdated = processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                    result = result + ": " + countRowUpdated;
+                    result.put(removeOldProcessQueryValue, countRowUpdated);
                     LOG.info(removeOldProcessQueryValue + ": " + countRowUpdated + " success!");
                 }
             }
         } catch (Exception ex) {
             LOG.error("!!!error: ", ex);
-            result = result + "" + ex.getMessage() + "!!!";
+            result.put(ex.getMessage(), 1);
         }
         return result;
     }
