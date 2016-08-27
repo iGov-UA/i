@@ -185,6 +185,8 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
+        result.put("sLoginAssigned", taskService.createTaskQuery().taskAssignee(taskId));
+        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         result.put("bSuspended", oTask.isSuspended());
         BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
