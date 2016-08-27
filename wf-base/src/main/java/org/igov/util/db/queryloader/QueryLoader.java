@@ -9,6 +9,7 @@ import ru.qatools.properties.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -33,7 +34,7 @@ public class QueryLoader {
 
     private String homeDirectory;
 
-    private Map<String, String> removeOldProcessQueries = new HashMap<>();
+    private Map<String, String> removeOldProcessQueries = new LinkedHashMap<>();
 
     public QueryLoader() {
         PropertyLoader.newInstance().populate(this);
