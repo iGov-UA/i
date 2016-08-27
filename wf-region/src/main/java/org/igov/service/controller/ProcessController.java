@@ -253,7 +253,7 @@ public class ProcessController {
             } else {
                 for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
                     String removeOldProcessQueryValue;
-                    if (removeOldProcessQuery.getKey().startsWith("update")) {
+                    if (removeOldProcessQuery.getKey().startsWith("update") || removeOldProcessQuery.getKey().startsWith("delete_act_hi_procinst")) {
                         removeOldProcessQueryValue = removeOldProcessQuery.getValue().replaceFirst("%s", sID_Process_Def)
                                 .replaceFirst("%dateAt", sDateFinishAt).replaceFirst("%dateTo", sDateFinishTo);
                         //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
