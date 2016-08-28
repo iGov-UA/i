@@ -110,21 +110,13 @@ public class GeneralConfig {
     
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
+    @Value("${general.SMS.sURL_SendNew}")
+    private String sURL_Send_SMSNew;
     @Value("${general.SMS.sMerchantId}")
     private String sMerchantId_SMS;
     @Value("${general.SMS.sMerchantPassword}")
     private String sMerchantPassword_SMS;
 
-    @Value("${general.SMS_New.sURL_Send}")
-    private String sURL_Send_SMS_New;
-    @Value("${general.SMS_New.sMerchantId}")
-    private String sMerchantId_SMS_New;
-    @Value("${general.SMS_New.sMerchantPassword}")
-    private String sMerchantPassword_SMS_New;
-    @Value("${general.SMS_New.sCallbackUrl}")
-    private String sCallbackUrl_SMS_New;
-
-    
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
@@ -267,24 +259,14 @@ public class GeneralConfig {
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
     }
+    public String getURL_Send_SMSNew()  {
+        return sURL_Send_SMSNew;
+    }
     public String getMerchantId_SMS()  {
         return sMerchantId_SMS;
     }
     public String getMerchantPassword_SMS()  {
         return sMerchantPassword_SMS;
-    }
-    
-    public String getURL_Send_SMS_New()  {
-        return sURL_Send_SMS_New;
-    }
-    public String getMerchantId_SMS_New()  {
-        return sMerchantId_SMS_New;
-    }
-    public String getMerchantPassword_SMS_New()  {
-        return sMerchantPassword_SMS_New;
-    }
-    public String getCallbackUrl_SMS_New()  {
-        return sCallbackUrl_SMS_New;
     }
     
     public Boolean isEnable_UniSender_Mail() {

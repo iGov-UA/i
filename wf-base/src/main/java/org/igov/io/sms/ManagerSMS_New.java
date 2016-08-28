@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
@@ -21,14 +22,14 @@ import com.google.gson.Gson;
 public class ManagerSMS_New {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS.class);
-    
+
     private static int countSMS = 0;
 
     private String sURL_Send = null;
     private String sMerchantId = null;
     private String sMerchantPassword = null;
     private String sCallbackUrl_SMS = null;
-    
+
     private String static_sMessageId = "IGOV_SMS-";
 
     // Признак готовности сервиса отсылать сообщения
@@ -43,10 +44,10 @@ public class ManagerSMS_New {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMS_New().trim();
-	sMerchantId = generalConfig.getMerchantId_SMS_New().trim();
-	sMerchantPassword = generalConfig.getMerchantPassword_SMS_New().trim();
-	sCallbackUrl_SMS = generalConfig.getCallbackUrl_SMS_New().trim();
+	sURL_Send = generalConfig.getURL_Send_SMSNew().trim();
+	sMerchantId = generalConfig.getMerchantId_SMS().trim();
+	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
+	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
 
 	LOG.debug(
 		"general.SMS_New.sURL_Send={}, general.SMS_New.sMerchantId={}, general.SMS_New.sMerchantPassword=*****, general.SMS_New.sCallbackUrl={}",
@@ -57,8 +58,8 @@ public class ManagerSMS_New {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	static_sMessageId = static_sMessageId + System.currentTimeMillis()+"-";
-	
+	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "-";
+
 	LOG.info("Сервис готов к отсылке сообщений.");
 	isReadySendSMS = true;
     }
@@ -93,46 +94,49 @@ public class ManagerSMS_New {
 	LOG.info("sURL={}", sURL_Send);
 	LOG.debug("Запрос:\n{}", stringSmsReqest);
 
-	URL oURL = new URL(sURL_Send);
-	HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-	oHttpURLConnection.setRequestMethod("POST");
-	oHttpURLConnection.setRequestProperty("content-type", "application/json;charset=UTF-8");
-	oHttpURLConnection.setDoOutput(true);
-
+	HttpURLConnection oHttpURLConnection = null;
 	String ret = "";
+	try {
+	    URL oURL = new URL(sURL_Send);
+	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
+	    oHttpURLConnection.setRequestMethod("POST");
+	    oHttpURLConnection.setRequestProperty("content-type", "application/json");
+	    oHttpURLConnection.setDoOutput(true);
 
-	try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-	    oDataOutputStream.writeBytes(stringSmsReqest);
-	    oDataOutputStream.flush();
-	    oDataOutputStream.close();
+	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
+		oDataOutputStream.writeBytes(stringSmsReqest);
+		oDataOutputStream.flush();
+		oDataOutputStream.close();
 
-	    try (BufferedReader oBufferedReader = new BufferedReader(
-		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
-		StringBuilder os = new StringBuilder();
-		String s;
-		while ((s = oBufferedReader.readLine()) != null) {
-		    os.append(s);
+		try (BufferedReader oBufferedReader = new BufferedReader(
+			new InputStreamReader(oHttpURLConnection.getInputStream()))) {
+		    StringBuilder os = new StringBuilder();
+		    String s;
+		    while ((s = oBufferedReader.readLine()) != null) {
+			os.append(s);
+		    }
+		    ret = os.toString();
+		} catch (java.io.FileNotFoundException e) {
+		    LOG.error("HTTP Request code: ", oHttpURLConnection.getResponseCode());
+		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
 		}
-		ret = os.toString();
-	    }
 
+	    }
+	} catch (MalformedURLException e) {
+	    LOG.error("HTTP Request code: ", oHttpURLConnection != null? oHttpURLConnection.getResponseCode() : null );
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
+	} catch (IOException e) {
+	    LOG.error("HTTP Request code: ", oHttpURLConnection != null? oHttpURLConnection.getResponseCode() : null );
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
+	} finally {
+	    if (oHttpURLConnection != null) {
+		oHttpURLConnection.disconnect();
+	    }
 	}
 
 	LOG.info("Ответ:\n{}", ret);
 
 	return ret;
-    }
-
-    public void main(String[] args) {
-	ManagerSMS_New msms = new ManagerSMS_New();
-
-	try {
-	    msms.sendSMS("+380923046007", "проверка");
-	} catch (IllegalArgumentException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
     }
 
 }
