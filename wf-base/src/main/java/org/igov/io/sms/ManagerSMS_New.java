@@ -3,6 +3,7 @@ package org.igov.io.sms;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -117,15 +118,16 @@ public class ManagerSMS_New {
 		    }
 		    ret = os.toString();
 		} catch (java.io.FileNotFoundException e) {
-		    ret = "Ошибка при отправке SMS. Не рботает сервис: " + sURL_Send;
-		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
+		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
+			    oHttpURLConnection.getResponseCode());
+		    LOG.error("Ошибка при отправке SMS. http code:{}\nЗапрос:\n{}",
+			    oHttpURLConnection.getResponseCode(), stringSmsReqest);
 		}
-
 	    }
 	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:", stringSmsReqest, e);
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
 	} catch (IOException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:", stringSmsReqest, e);
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
 	} finally {
 	    if (oHttpURLConnection != null) {
 		oHttpURLConnection.disconnect();
