@@ -184,7 +184,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //oLogBig_Interceptor.info("sRequestBody: " + sRequestBody);
         //LOG.debug("sRequestBody: " + sRequestBody);
 
-        String sResponseBody = oResponse.toString();
+        String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
             LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
             //LOG.debug("(sResponseBody: {})", sResponseBody);
@@ -289,13 +289,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         //LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
-        return (sResponseBody != null && !"".equals(sResponseBody))
+        return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
+        if(sResponseBody==null){
+            LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
+        }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
