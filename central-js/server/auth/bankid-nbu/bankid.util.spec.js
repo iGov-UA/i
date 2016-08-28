@@ -30,7 +30,7 @@ describe('decrypt object fields', function () {
     var testCustomer = JSON.parse(JSON.stringify(appData.customerShort));
 
     var publicKey = {
-      key: fs.readFileSync(__dirname + '/../../../iGov_sgn_2x12_cert.pem'),
+      key: fs.readFileSync(__dirname + '/../../../iGov_sgn_cert.pem'),
       padding: constants.RSA_PKCS1_PADDING
     };
 

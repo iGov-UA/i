@@ -5,7 +5,7 @@ var express = require('express')
 
 var router = express.Router();
 
-router.get('/', bankidNBUController.authorize);
+router.get('/', bankidNBUController.authenticate);
 router.get('/callback', bankidNBUController.token);
 
 module.exports = router;

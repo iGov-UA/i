@@ -3,7 +3,7 @@ var passport = require('passport')
   , authService = require('../auth.service');
 
 
-module.exports.authorize = function (req, res, next) {
+module.exports.authenticate = function (req, res, next) {
   req.session.prepare = authService.createPrepareSessionObject('bankid-nbu', {
     link: req.query.link
   });

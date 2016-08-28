@@ -1,5 +1,7 @@
 'use strict';
 
+var functions = require('../functions');
+
 var errorStatusCodes = [4//**
   , 5//**
 ];
@@ -7,7 +9,8 @@ var errorStatusCodes = [4//**
 module.exports.codes = {
   EXTERNAL_SERVICE_ERROR: 'ESE',
   INPUT_PARAMETER_ERROR: 'IPE',
-  LOGIC_SERVICE_ERROR: 'LSE'
+  LOGIC_SERVICE_ERROR: 'LSE',
+  UNKNOWN_SERVICE_ERROR: 'UNK'
 };
 
 module.exports.createExternalServiceError = function (error_description, error) {
@@ -20,6 +23,27 @@ module.exports.createInputParameterError = function (error_description, error) {
 
 module.exports.createLogicServiceError = function (error_description, error) {
   return this.createError(this.codes.LOGIC_SERVICE_ERROR, error_description, error);
+};
+
+module.exports.createUnknownError = function (error_description, error) {
+  return this.createError(this.codes.UNKNOWN_SERVICE_ERROR, error_description, error);
+};
+
+module.exports.createErrorOnResponse = function (mapper) {
+  var self = this;
+
+  return function (error, response, body) {
+    if (error) {
+      return self.createExternalServiceError(error.message, error);
+    } else {
+      var e = functions.mapObject(mapper)(body);
+      if (e) {
+        return self.createExternalServiceError(e.message, e);
+      } else {
+        return self.createUnknownError('Unknown error', {});
+      }
+    }
+  };
 };
 
 module.exports.createError = function (code, error_description, error) {

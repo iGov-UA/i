@@ -38,6 +38,20 @@ module.exports.getUserKeyFromSession = function (session){
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
 
+  function validateResponse(errorCallback, successCallback) {
+    return function (error, repsonse, body) {
+      if(error){
+        errorCallback(error, repsonse, body);
+      } else {
+        successCallback(error, repsonse, body);
+      }
+    }
+  }
+
+  function errorCallback(error, response, body) {
+    callback(error, response, body);
+  }
+
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
     var innToCheck;
@@ -69,9 +83,9 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
   var resultCallback;
 
   if (disableDecryption) {
-    resultCallback = adminCheckCallback;
+    resultCallback = validateResponse(errorCallback, adminCheckCallback);
   } else {
-    resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
+    resultCallback = validateResponse(errorCallback, bankidUtil.decryptCallback(adminCheckCallback));
   }
 
   return request.post({
@@ -183,11 +197,19 @@ module.exports.syncWithSubject = function (accessToken, done) {
   var self = this;
   var disableDecryption = true;
 
+  function errorFromBody(body) {
+    if(body.error && body.error_description){
+      return body;
+    } else {
+      return null;
+    }
+  }
+
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
         if (error || body.error || !body.customer) {
-          callback(createError(error || body.error || body, body.error_description, response), null);
+          callback(errors.createErrorOnResponse(errorFromBody)(error, response, body), null);
         } else {
           callback(null, {
             customer: body.customer,
