@@ -67,6 +67,7 @@ import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.db.queryloader.QueryLoader;
 
 //import com.google.common.base.Optional;
 /**
@@ -106,7 +107,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //private ExceptionCommonController exceptionController;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-
+    
+    @Autowired
+    private ProcessHistoryDao processHistoryDao;
+    
+    @Autowired
+    QueryLoader queryLoader;
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
      @ResponseBody
      public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
