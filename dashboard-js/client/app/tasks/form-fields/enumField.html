@@ -1,30 +1,38 @@
-            <div ng-if="item.type == 'enum'">
-              <field-title></field-title>
-              <select class="form-control"
-                      name="{{item.id}}"
-                      ng-disabled="isFormPropertyDisabled(item)"
-                      ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
-                      ng-required="{{item.required}}"
-                      ng-model="item.value"
-                      ng-class="{submitted:item.required && isTaskSubmitted()}"></select>
-
-              <div class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
-                <div ng-message="required">Необхідно заповнити.</div>
-                <div ng-message="pattern">Значення має бути числом.</div>
-                <div ng-message="email">Помилка в email.</div>
-                <div ng-message="tel">Помилка в номері телефону.</div>
-                <div ng-message="autovin">Помилка у VIN-номері авто.</div>
-                <div ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</div>
-                <div ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</div>
-                <div ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</div>
-                <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
-                  х-місяців, х-років.
+            <div ng-if="item.type == 'enum'" class="row">
+              <div class="col-sm-12">
+                <div class="col-sm-6 task-form-title">
+                  <field-title></field-title>
                 </div>
-                <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="FileSign">Підпис не валідний або відсутній</div>
+                <div class="col-sm-6">
+                  <select name="{{item.id}}"
+                          ng-disabled="isFormPropertyDisabled(item)"
+                          style="margin-bottom: 15px; width:100%; height:25px;;"
+                          ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
+                          ng-required="{{item.required}}"
+                          ng-model="item.value"
+                          ng-class="{submitted:item.required && isTaskSubmitted()}"></select>
+
+                  <span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+                    <span ng-message="required">Необхідно заповнити.</span>
+                    <span ng-message="pattern">Значення має бути числом.</span>
+                    <span ng-message="email">Помилка в email.</span>
+                    <span ng-message="tel">Помилка в номері телефону.</span>
+                    <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+                    <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+                    <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+                    <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+                    <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів, х-місяців, х-років.</span>
+                    <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+                    <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+                    <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+                    <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+                    <span ng-message="numbersaccounts">Перевірте правильність уведеного номеру (літери не дозволені до заповнення)</span>
+                    <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
+                  </span>
+                </div>
+
               </div>
+
 
             </div>
 

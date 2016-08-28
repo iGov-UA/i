@@ -110,6 +110,8 @@ public class GeneralConfig {
     
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
+    @Value("${general.SMS.sURL_SendNew}")
+    private String sURL_Send_SMSNew;
     @Value("${general.SMS.sMerchantId}")
     private String sMerchantId_SMS;
     @Value("${general.SMS.sMerchantPassword}")
@@ -256,6 +258,9 @@ public class GeneralConfig {
     
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
+    }
+    public String getURL_Send_SMSNew()  {
+        return sURL_Send_SMSNew;
     }
     public String getMerchantId_SMS()  {
         return sMerchantId_SMS;

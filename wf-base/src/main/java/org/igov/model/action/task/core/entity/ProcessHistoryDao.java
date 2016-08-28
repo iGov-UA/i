@@ -13,6 +13,6 @@ import org.igov.model.core.EntityDao;
  */
 public interface ProcessHistoryDao extends EntityDao<Long, ProcessHistory>{
     
-    public void removeOldProcess(String removeOldProcessQueryValue, String sID_Process_Def, String sDateFinishAt, String sDateFinishTo);
+    public int removeOldProcess(String removeOldProcessQueryValue, String sID_Process_Def, String sDateFinishAt, String sDateFinishTo);
     
 }

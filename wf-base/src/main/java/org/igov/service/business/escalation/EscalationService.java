@@ -182,9 +182,11 @@ public class EscalationService {
         long nElapsedDays = nElapsedHours / 24;
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Прошло дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
+//        result.put("sLoginAssigned", taskService.createTaskQuery().taskAssignee(taskId));
+//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         result.put("bSuspended", oTask.isSuspended());
         BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
@@ -209,7 +211,7 @@ public class EscalationService {
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Удалить");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
@@ -278,8 +280,8 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
         BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
-        result.put("sLoginAssigned", oTask.getAssignee());
-        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+//        result.put("sLoginAssigned", oTask.getAssignee());
+//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
         List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),

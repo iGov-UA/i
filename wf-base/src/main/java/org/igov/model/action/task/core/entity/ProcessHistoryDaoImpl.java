@@ -31,7 +31,8 @@ public class ProcessHistoryDaoImpl extends GenericEntityDao<Long, ProcessHistory
 
     @Override
     @Transactional
-    public void removeOldProcess(String removeOldProcessQueryValue, String sID_Process_Def, String sDateFinishAt, String sDateFinishTo) {
+    public int removeOldProcess(String removeOldProcessQueryValue, String sID_Process_Def, String sDateFinishAt, String sDateFinishTo) {
         Query query = new QueryBuilder(getSession()).append(removeOldProcessQueryValue).toSQLQuery();
+        return query.executeUpdate();
     }
 }
