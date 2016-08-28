@@ -53,6 +53,7 @@ public class DeleteProccess implements JavaDelegate {
         List<ProcessInstance> processInstances;
         int countRowDeleted = 0;
         int index = 0;
+        int limit = 20;
         do {
             LOG.info("processInstances processInstanceQuery...");
             processInstances = processInstanceQuery.listPage(index++, 1000);
@@ -62,7 +63,7 @@ public class DeleteProccess implements JavaDelegate {
                 countRowDeleted++;
             }
             LOG.info("processInstances processInstanceQuery size: " + processInstances.size() + " countRowDeleted: " + countRowDeleted + " success!");
-        } while (!processInstances.isEmpty());
+        } while (!processInstances.isEmpty() && index <= 20);
 
         //}
     }
