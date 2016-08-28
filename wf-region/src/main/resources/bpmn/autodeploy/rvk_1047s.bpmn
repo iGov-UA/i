@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rvk_1047" name="Постановка на військовий облік" isExecutable="true">
+  <process id="rvk_1047s" name="Зняття з військового обліку" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -9,10 +9,15 @@
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArea1" name="З якого РВК Ви прибули" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої нової реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої поточної реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asZnType" name="Причина зняття з військового обліку" type="enum" required="true">
+          <activiti:value id="sUkraine" name="зміна місця проживання у межах України"></activiti:value>
+          <activiti:value id="sOtherCountry" name="виїзд на постійне місце проживання до іншої країни"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sArea1" name="Назва РВК за новим місцем реєстрації" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" required="true">
           <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
           <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
@@ -71,7 +76,7 @@
         <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/zn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва РВК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
@@ -115,13 +120,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Постановка на військовий облік]]></activiti:expression>
+          <activiti:expression><![CDATA[Зняття з військового обліку]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
-            						Ваша заявка про постановку на військовий облік успішно зареєстрована №[sID_Order].<br>
+            						Ваша заявка про зняття з військового обліку успішно зареєстрована №[sID_Order].<br>
 									Спеціалісти Вашого РВК повинні дати відповідь найближчим часом.
                                 </p>
                                 <p>
@@ -150,9 +155,14 @@
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea_1" name="З якого РВК прибув" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asZnType" name="Причина зняття з військового обліку" type="enum" writable="false">
+          <activiti:value id="sUkraine" name="зміна місця проживання у межах України"></activiti:value>
+          <activiti:value id="sOtherCountry" name="виїзд на постійне місце проживання до іншої країни"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea_1" name="Назва РВК за новим місцем реєстраіції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" writable="false">
           <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
           <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
@@ -210,11 +220,11 @@
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/zn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_znRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -240,7 +250,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
+          <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -285,13 +295,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
+          <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Дані за Вашою заявкою №[sID_Order] перевірені.<br>
-			Для того щоб закінчити постановку на військовий облік необхідно:<br>
+			Для того щоб закінчити зняття з військового обліку необхідно:<br>
 										<ul>
 										<li>Прийти до ${sArea} за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Отримати відмітку у військовообліковому документі.</li>
@@ -343,13 +353,13 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
+          <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Дані за Вашою заявкою №[sID_Order] перевірені.<br>
-			Для того щоб закінчити постановку на військовий облік необхідно:<br>
+			Для того щоб закінчити зняття з військового обліку необхідно:<br>
 										<ul>
 										<li>Прийти до ${sArea} за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Отримати відмітку у військовообліковому документі.</li>
@@ -399,9 +409,14 @@
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea_1" name="З якого РВК прибув" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asZnType" name="Причина зняття з військового обліку" type="enum" writable="false">
+          <activiti:value id="sUkraine" name="зміна місця проживання у межах України"></activiti:value>
+          <activiti:value id="sOtherCountry" name="виїзд на постійне місце проживання до іншої країни"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea_1" name="Назва РВК за новим місцем реєстраіції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewCountry" name="Назва країни" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Приналежність до роду військ" type="enum" writable="false">
           <activiti:value id="sAirEarth" name="сухопутні або повітряні сили"></activiti:value>
           <activiti:value id="sSea" name="військово-моські сили"></activiti:value>
@@ -462,10 +477,10 @@
           <activiti:value id="sReestr" name="Громадянин отримав послугу"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/zn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOficer" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sArea" name="РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_znRVK.html]" type="invisible" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -491,13 +506,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Постановка на військовий облік]]></activiti:string>
+          <activiti:string><![CDATA[Зняття з військового обліку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Постановка на військовий облік".&lt;br&gt;
+                              		Ви отримали послугу "Зняття з військового обліку".&lt;br&gt;
                               		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
@@ -512,8 +527,8 @@
     <sequenceFlow id="flow54" sourceRef="servicetask7" targetRef="endevent8"></sequenceFlow>
     <endEvent id="endevent8" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_rvk_1047">
-    <bpmndi:BPMNPlane bpmnElement="rvk_1047" id="BPMNPlane_rvk_1047">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rvk_1047s">
+    <bpmndi:BPMNPlane bpmnElement="rvk_1047s" id="BPMNPlane_rvk_1047s">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

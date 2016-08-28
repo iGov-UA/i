@@ -8,6 +8,11 @@ import ru.qatools.properties.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -29,9 +34,12 @@ public class QueryLoader {
 
     private String homeDirectory;
 
+    private Map<String, String> removeOldProcessQueries = new LinkedHashMap<>();
+
     public QueryLoader() {
         PropertyLoader.newInstance().populate(this);
         homeDirectory = rootFolder + TypeDB.define(dbProfile).getPath();
+        setRemoveOldProcessQueries();
     }
 
     public QueryLoader(String directory) {
@@ -41,8 +49,9 @@ public class QueryLoader {
     /**
      * @param fileWithQuery file's name which contains sql/hql query.
      * @return sql/hql query from external file.
-     * @throws QueryLoadingException    when unable to load the file.
-     * @throws MissingResourceException when unable to find the file in classpath.
+     * @throws QueryLoadingException when unable to load the file.
+     * @throws MissingResourceException when unable to find the file in
+     * classpath.
      */
     public String get(String fileWithQuery) {
         notNull(fileWithQuery, "Key can't be a null");
@@ -50,6 +59,28 @@ public class QueryLoader {
             return IOUtils.toString(in);
         } catch (IOException e) {
             throw new QueryLoadingException(fileWithQuery, e);
+        }
+    }
+
+    /**
+     * @param fileWithQuery file's name which contains sql/hql queries.
+     * @return sql/hql query from external file.
+     * @throws QueryLoadingException when unable to load the file.
+     * @throws MissingResourceException when unable to find the file in
+     * classpath.
+     */
+    private Map<String, String> setRemoveOldProcessQueries() {
+        String sFileName = "removeOldProcess.sql";
+        try (InputStream in = QueryLoader.class.getResourceAsStream(homeDirectory + sFileName)) {
+            for (String text : (List<String>) IOUtils.readLines(in)) {
+                StringTokenizer tokenizer = new StringTokenizer(text, ";");
+                if (tokenizer.hasMoreTokens()) {
+                    removeOldProcessQueries.put(tokenizer.nextToken(), tokenizer.nextToken());
+                }
+            }
+            return removeOldProcessQueries;
+        } catch (IOException e) {
+            throw new QueryLoadingException(sFileName, e);
         }
     }
 
@@ -77,14 +108,20 @@ public class QueryLoader {
 
         public static final TypeDB define(String profile) {
             notNull(profile, "Profile can't be empty");
-            for (TypeDB type : values())
-                if (type.getPath().startsWith(profile))
+            for (TypeDB type : values()) {
+                if (type.getPath().startsWith(profile)) {
                     return type;
+                }
+            }
             throw new IllegalArgumentException("Database type " + profile + " not found");
         }
 
         public String getPath() {
             return profile + '/';
         }
+    }
+
+    public Map<String, String> getRemoveOldProcessQueries() {
+        return removeOldProcessQueries;
     }
 }
