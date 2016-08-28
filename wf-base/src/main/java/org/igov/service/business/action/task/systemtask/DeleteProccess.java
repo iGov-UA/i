@@ -50,11 +50,16 @@ public class DeleteProccess implements JavaDelegate {
             LOG.info("Delete all active proccess with processDefinitionKeyValue: " + processDefinitionKeyValue);
             processInstanceQuery.processDefinitionKey(processDefinitionKeyValue);
         }
+        List<ProcessInstance> processInstances;
+        do {
+            LOG.info("processInstances processInstanceQuery...");
+            processInstances = processInstanceQuery.listPage(0, 1000);
+            LOG.info("processInstances processInstanceQuery size: " + processInstances.size());
+            for (ProcessInstance processInstance : processInstances) {
+                runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
+            }
+        } while (!processInstances.isEmpty());
 
-        List<ProcessInstance> processInstances = processInstanceQuery.list();
-        for (ProcessInstance processInstance : processInstances) {
-            runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
-        }
         //}
     }
 
