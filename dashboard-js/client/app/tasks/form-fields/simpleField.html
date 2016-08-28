@@ -1,36 +1,43 @@
-<div class="input-group">
-  <input class="form-control"
-    name="{{item.id}}"
-    ng-readonly="isFormPropertyDisabled(item)"
-    ng-required="{{item.required}}"
-    ng-model="item.value"
-    ng-class="{submitted: item.required && isTaskSubmitted()}"
-  />
-  <span class="input-group-addon"
-    ng-if="isFormPropertyDisabled(item)"
-    clip-copy="item.value">
-    <i class="glyphicon glyphicon-copy"></i>
+<div ng-if="['string', 'long'].indexOf(item.type) > -1" class="row form-field">
+  <div class="col-sm-12">
+    <span class="col-sm-6 task-form-title">
+    <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
   </span>
+    <div class="col-sm-6">
+      <input ng-if="!isFormPropertyDisabled(item)"
+             name="{{item.id}}"
+             style="width:100%;"
+             ng-readonly="isFormPropertyDisabled(item)"
+             ng-required="{{item.required}}"
+             ng-model="item.value"
+             ng-class="{submitted: item.required && isTaskSubmitted()}"/>
+      <div ng-if="isFormPropertyDisabled(item)">
+      <span class="task-form-written-right-sight"
+            name="{{item.id}}"
+            ng-readonly="isFormPropertyDisabled(item)"
+            ng-required="{{item.required}}">{{item.value}}
+      </span>
+      </div>
 
+      <span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+      <span ng-message="required">Необхідно заповнити.</span>
+      <span ng-message="pattern">Значення має бути числом.</span>
+      <span ng-message="email">Помилка в email.</span>
+      <span ng-message="tel">Помилка в номері телефону.</span>
+      <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+      <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+      <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+      <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+      <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів, х-місяців, х-років.</span>
+      <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+      <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+      <span ng-message="numbersaccounts">Перевірте правильність уведеного номеру (літери не дозволені до заповнення)</span>
+      <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
+    </span>
+    </div>
+  </div>
 </div>
 
-<span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
-    <span ng-message="required">Необхідно заповнити.</span>
-    <span ng-message="pattern">Значення має бути числом.</span>
-    <span ng-message="email">Помилка в email.</span>
-    <span ng-message="tel">Помилка в номері телефону.</span>
-    <span ng-message="autovin">Помилка у VIN-номері авто.</span>
-    <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
-    <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
-    <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
-    <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
-      х-місяців, х-років.
-    </span>
-    <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
-    <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
-    <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
-    <span ng-message="FileSign">Підпис не валідний або відсутній</span>
-    <span ng-message="numbersaccounts">Перевірте правильність уведеного номеру (літери не дозволені до заповнення)</span>
-    <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
-  </span>
 
