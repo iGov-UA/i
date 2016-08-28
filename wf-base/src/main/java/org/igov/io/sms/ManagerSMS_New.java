@@ -64,11 +64,11 @@ public class ManagerSMS_New {
 	isReadySendSMS = true;
     }
 
-    public String sendSMS(String sPhone, String sText) throws IllegalArgumentException, IOException {
+    public String sendSMS(String sPhone, String sText) throws IllegalArgumentException {
 	return sendSMS(null, sPhone, sText);
     }
 
-    public String sendSMS(String sMessageId, String sPhone, String sText) throws IllegalArgumentException, IOException {
+    public String sendSMS(String sMessageId, String sPhone, String sText) throws IllegalArgumentException {
 	if (!isReadySendSMS) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
@@ -117,17 +117,15 @@ public class ManagerSMS_New {
 		    }
 		    ret = os.toString();
 		} catch (java.io.FileNotFoundException e) {
-		    LOG.error("HTTP Request code: ", oHttpURLConnection.getResponseCode());
+		    ret = "Ошибка при отправке SMS. Не рботает сервис: " + sURL_Send;
 		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
 		}
 
 	    }
 	} catch (MalformedURLException e) {
-	    LOG.error("HTTP Request code: ", oHttpURLConnection != null? oHttpURLConnection.getResponseCode() : null );
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:", stringSmsReqest, e);
 	} catch (IOException e) {
-	    LOG.error("HTTP Request code: ", oHttpURLConnection != null? oHttpURLConnection.getResponseCode() : null );
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:\n", stringSmsReqest, e);
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\n Ошибка:", stringSmsReqest, e);
 	} finally {
 	    if (oHttpURLConnection != null) {
 		oHttpURLConnection.disconnect();

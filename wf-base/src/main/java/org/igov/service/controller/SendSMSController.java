@@ -37,8 +37,6 @@ public class SendSMSController {
 	    retObj = managerSMS.sendSMS(phone, text);
 	} catch (IllegalArgumentException e) {
 	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
 	}
 
 	return retObj;
