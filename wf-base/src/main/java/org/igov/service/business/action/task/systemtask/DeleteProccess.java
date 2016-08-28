@@ -57,15 +57,17 @@ public class DeleteProccess implements JavaDelegate {
         int size = 1000;
         do {
             LOG.info("processInstances processInstanceQuery...");
+            LOG.info("processInstances processInstanceQuery: index={},size={}", index, size);
             processInstances = processInstanceQuery.listPage(index, size);
-            index = ++index + size;
-            LOG.info("processInstances processInstanceQuery size: " + processInstances.size());
+            LOG.info("processInstances processInstanceQuery: processInstances.size()={}", processInstances.size());
             for (ProcessInstance processInstance : processInstances) {
                 runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
                 countRowDeleted++;
             }
             LOG.info("processInstances processInstanceQuery size: " + processInstances.size() + " countRowDeleted: " + countRowDeleted + " success!");
+            index = ++index + size;
         } while (!processInstances.isEmpty() && countRowDeleted <= limitCountRowDeleted);
+        LOG.info("FINISHED!!! processInstances processInstanceQuery size: countRowDeleted: " + countRowDeleted);
 
         //}
     }
