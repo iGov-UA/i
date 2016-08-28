@@ -5,6 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Place_UA" name="обраний населений пункт sID_Place_UA" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="Country Code sID_UA" type="string"></activiti:formProperty>  
         <activiti:formProperty id="email" name="емейл" type="string"></activiti:formProperty>
         <activiti:formProperty id="mark1" name="активные / неактивные поля" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;: [&quot;info&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;: &quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient]=='attr1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="client" name="сделать активным ?" type="enum">
@@ -18,6 +19,7 @@
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="Country Code sID_UA" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Place_UA" name="обраний населений пункт sID_Place_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="email" name="емейл" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="mark1" name="активные / неактивные поля" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;: [&quot;info&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;: &quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient]=='attr1'&quot;}}}"></activiti:formProperty>
@@ -46,7 +48,6 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[выбран город - ${sID_UA}
-client -${client}
 info - ${info}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
