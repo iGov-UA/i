@@ -34,6 +34,9 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     var self = this;
     self.initializeParamsOnly(ActivitiForm);
     setBankIDAccount(self, BankIDAccount);
+    if(self.params.sID_Place_UA){
+      self.params.sID_Place_UA.value = oServiceData.oPlace.sID_UA;
+    }
 
     return $q.all([fillInCountryInformation(self),
       uploadScansFromBankID(self, oServiceData)])
