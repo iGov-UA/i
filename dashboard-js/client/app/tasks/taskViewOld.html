@@ -1,0 +1,45 @@
+<div class="tasks-form-view">
+  <show-error data="error" ng-show="error"></show-error>
+
+  <div class="task-view-info">
+    <h4 ng-show="sSelectedTask == 'all' && selectedTask.assignee">Призначено на: {{selectedTask.assignee}}</h4>
+    <h4 ng-show="sSelectedTask == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+    <button ng-show="sSelectedTask == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+    </button>
+  </div>
+
+  <div class="task-number-date" style="margin-bottom: 20px">
+    <h3 style="margin-top: 0; margin-bottom: 3px; font-size: 22px; font-weight: bold">0-0123456789</h3>
+    <span>від {{creationDateFormatted(taskData.sDateTimeCreate)}}</span>
+  </div>
+
+  <div ng-if="!clarify">
+    <puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>
+  </div>
+
+  <div ng-include="'app/tasks/taskForm.html'"></div>
+
+  <div ng-if="!clarify" style="padding-top:5px;">
+    <puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>
+  </div>
+</div>
+
+<hr>
+
+<div class="tasks-form-buttons">
+
+  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned' && selectedTask.processDefinitionId.indexOf('system') != 0 && !isTaskSuccessfullySubmitted()">
+    <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+    <div ng-if="clarify" style="padding-top:5px;">
+      <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
+      <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
+      <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
+    </div>
+  </div>
+
+</div>
+
+<div ng-if="!inUnassigned()" ng-include="'app/tasks/taskFormHistory.html'"></div>
+
+<print-dialog></print-dialog>
+<sign-info-content-dialog></sign-info-content-dialog>
