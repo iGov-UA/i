@@ -510,9 +510,11 @@
         };
 
         $scope.creationDateFormatted = function (date) {
-          var unformatted = date.split(' ')[0];
-          var splittedDate = unformatted.split('-');
-          return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
+          if (date){
+            var unformatted = date.split(' ')[0];
+            var splittedDate = unformatted.split('-');
+            return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
+          }
         };
 
         $scope.inUnassigned = function () {
