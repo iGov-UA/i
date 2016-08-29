@@ -69,12 +69,8 @@
         <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; Усі заповнені сторінки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocInn" name="Копія довідки про присвоєння ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocVlk" name="Копія довідки про проходження ВЛК" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocEdu" name="Копія документу про освіту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocReestr" name="Копія заяви про зняття з реєстрації місця проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/zn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва РВК" type="invisible"></activiti:formProperty>
@@ -228,7 +224,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nDocInn},${nDocVlk},${nDocEdu},${nDocMilit},${nDocReestr}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocMilit},${nDocReestr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -484,7 +480,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nDocInn},${nDocVlk},${nDocEdu},${nDocMilit},${nDocReestr}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocMilit},${nDocReestr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
