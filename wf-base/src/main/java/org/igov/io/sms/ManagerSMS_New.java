@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ManagerSMS_New {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS_New.class);
 
     private static AtomicInteger countSMS = new AtomicInteger(0);
 
@@ -97,7 +97,7 @@ public class ManagerSMS_New {
 	try {
             String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
                     generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
-            LOG.info("Retrieved session ID:" + sessionId);
+            LOG.info("Retrieved session ID: {}", sessionId);
 	    
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
@@ -128,8 +128,13 @@ public class ManagerSMS_New {
 	    }
 	} catch (MalformedURLException e) {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    ret = e.getMessage();
 	} catch (IOException e) {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    ret = e.getMessage();
+	} catch (Exception e) {
+	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    ret = e.getMessage();
 	} finally {
 	    if (oHttpURLConnection != null) {
 		oHttpURLConnection.disconnect();
