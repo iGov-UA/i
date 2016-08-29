@@ -94,11 +94,21 @@ public class ManagerSMS_New {
 
 	HttpURLConnection oHttpURLConnection = null;
 	String ret = "";
-	try {
-            String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
-                    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
-            LOG.info("Retrieved session ID: {}", sessionId);
+	String sessionId;
 	    
+	try {
+	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
+		    generalConfig.getPassword_Auth_UkrDoc_SED(),
+		    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+	} catch (Exception e) {
+	    LOG.error("Ошибка получения идентификатора сессии", e);
+	    ret = String.format("Ошибка получения идентификатора сессии. %s", e.getMessage());
+	    return ret;
+	}
+
+	LOG.info("Retrieved session ID: {}", sessionId);
+
+	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
@@ -130,9 +140,6 @@ public class ManagerSMS_New {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} catch (IOException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
-	    ret = e.getMessage();
-	} catch (Exception e) {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} finally {
