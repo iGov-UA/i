@@ -21,7 +21,7 @@ if [[ "$DIFF" != "" ]]; then
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec"
       echo 'change in' $x'_Central-front'
      fi
-     fi
+     
    elif [[ "$app" == "dashboard-js" ]]; then
       echo 'change in' $x'_Region-front'
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Region/buildWithParameters?delay=0sec" 
@@ -58,7 +58,7 @@ if [[ "$DIFF" != "" ]]; then
                                 curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
                                 echo 'change in' $x'_Region-Back'
                               fi
-     
+   fi  
    else
    echo "no change"
 fi
