@@ -16,11 +16,11 @@ if [[ "$DIFF" != "" ]]; then
    if [[ "$app" == "central-js" ]]; then
     echo 'change in' $x'_Central-front'
     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
-     if [[ "$x" == "test_alpha-old" ]]; then
+     elif [[ "$x" == "test_alpha-old" ]]; then
       TOKEN=$5
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec"
       echo 'change in' $x'_Central-front'
-     fi
+#     fi
      
    elif [[ "$app" == "dashboard-js" ]]; then
       echo 'change in' $x'_Region-front'
