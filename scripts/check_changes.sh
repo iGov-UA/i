@@ -61,7 +61,7 @@ if [[ "$DIFF" != "" ]]; then
    else
    echo "no change"
 fi
-done
+#done
 
 mv last_change_new_$app last_change_$app
 }
