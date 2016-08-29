@@ -3,6 +3,7 @@ source="configs/app.lst"
 
 get_change()
 {
+cp scripts/check_changes.sh ..
 app=$1
 new=$(find ./$app -type f  -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | head -n 1 | awk '{print $1, $2}') >> last_change
 echo $new >> last_change_$app
