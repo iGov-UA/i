@@ -139,4 +139,13 @@ public class ManagerSMS_New {
 	return ret;
     }
 
+    public void saveCallbackSMS(String soJSON) {
+	Gson oGson = new Gson();
+	try {
+	    SMSCallback sc = new SMSCallback(soJSON);
+	    LOG.info("%s", oGson.toJson(sc));
+	} catch (IllegalArgumentException e) {
+	    LOG.error("Ошибка callback SMS", e);
+	}
+    }
 }
