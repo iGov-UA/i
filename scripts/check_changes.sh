@@ -31,7 +31,7 @@ if [[ "$DIFF" != "" ]]; then
                echo 'change in' $x'_Region-front'
              fi
 
-        elif [[ "$app" == "wf-base" ||  "$app" == "storage-static" ||  "$app" == "storage-temp" || "$app" == "analytic"]]; then
+        elif [[ "$app" == "wf-base" ||  "$app" == "storage-static" ||  "$app" == "storage-temp" || "$app" == "analytic" ]]; then
            echo 'change in' $x'_Back'
            touch no
            curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back/buildWithParameters?delay=0sec"
