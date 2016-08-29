@@ -1,17 +1,18 @@
 #!/bin/bash
 source="scripts/config/app.lst"
 
-array=$(cat scripts/config/app.lst | awk '{print $2}')
+#array=$(cat scripts/config/app.lst | awk '{print $2}')
 echo $array
 get_change() {
  app=$1
  USER=$3
  TOKEN=$4
+ x=$2
  new=$(find ./$app -type f  -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | head -n 1 | awk '{print $1, $2}') >> last_change
  echo $new >> last_change_new_$app
  DIFF=$(diff -lq last_change_$app last_change_new_$app)
-for x in ${array[@]}
-  do
+#for x in ${array[@]}
+#  do
 if [[ "$DIFF" != "" ]]; then
    if [[ "$app" == "central-js" ]]; then
     echo 'change in' $x'_Central-front'
