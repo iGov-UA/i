@@ -3,28 +3,27 @@ package org.igov.io.sms;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
+import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-
 @Component
 public class ManagerSMS_New {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS_New.class);
 
-    private static int countSMS = 0;
+    private static AtomicInteger countSMS = new AtomicInteger(0);
 
     private String sURL_Send = null;
     private String sMerchantId = null;
@@ -76,32 +75,45 @@ public class ManagerSMS_New {
 	}
 
 	if (sMessageId == null) {
-	    countSMS++;
-	    sMessageId = static_sMessageId + Integer.toString(countSMS);
+	    countSMS.incrementAndGet();
+	    sMessageId = static_sMessageId + Integer.toString(countSMS.get());
 	}
+
+	String ret = "";
 
 	SMS_New sms;
 	try {
 	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
 	    LOG.error("Ошибка создания SMS. sPhone={}, sText={}", sPhone, sText, e);
-	    return "";
+	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
-	Gson oGson = new Gson();
-
-	String stringSmsReqest = oGson.toJson(sms);
+	String stringSmsReqest = sms.toJSONString();
 
 	LOG.info("sURL={}", sURL_Send);
 	LOG.debug("Запрос:\n{}", stringSmsReqest);
 
 	HttpURLConnection oHttpURLConnection = null;
-	String ret = "";
+	String sessionId;
+	    
+	try {
+	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
+		    generalConfig.getPassword_Auth_UkrDoc_SED(),
+		    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+	} catch (Exception e) {
+	    LOG.error("Error get Session ID", e);
+	    return String.format("Error get Session ID. %s", e.getMessage());
+	}
+
+	LOG.info("Retrieved Session ID: {}", sessionId);
+
 	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
 	    oHttpURLConnection.setRequestProperty("content-type", "application/json");
+	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
@@ -126,8 +138,10 @@ public class ManagerSMS_New {
 	    }
 	} catch (MalformedURLException e) {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    ret = e.getMessage();
 	} catch (IOException e) {
 	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    ret = e.getMessage();
 	} finally {
 	    if (oHttpURLConnection != null) {
 		oHttpURLConnection.disconnect();
@@ -139,4 +153,12 @@ public class ManagerSMS_New {
 	return ret;
     }
 
+    public void saveCallbackSMS(String soJSON) {
+	try {
+	    SMSCallback sc = new SMSCallback(soJSON);
+	    LOG.info("%s", sc.toJSONString());
+	} catch (IllegalArgumentException e) {
+	    LOG.error("Ошибка callback SMS", e);
+	}
+    }
 }

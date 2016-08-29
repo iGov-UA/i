@@ -1,18 +1,18 @@
 package org.igov.io.sms;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SMS_New {
-    private final static Logger LOG = LoggerFactory.getLogger(SMS.class);
+import com.google.gson.Gson;
 
-    private static final String PHONE_REGEX = "^\\+[0-9]{10,12}$";
+public class SMS_New {
+    private final static Logger LOG = LoggerFactory.getLogger(SMS.class);    
+    
+    private final static String PHONE_REGEX = "^\\+[0-9]{10,12}$";
+    private final static Gson oGson = new Gson();
 
     private String messageId = null;
     private String callbackUrl = null;
@@ -24,7 +24,7 @@ public class SMS_New {
     private String merchantType = "sms_service";
     private String merchantPassword = null;
     private List<SMS_Text> messageTemplate = new ArrayList<>();
-    private String smsAlfaname = SMSFrom.FROM_IGOV.getSMSFrom();;
+    private String smsAlfaname = SMSFrom.FROM_IGOV.getSMSFrom();
     private int senderTTL = 60;
     private int privat24TTL = 60;
 
@@ -53,35 +53,63 @@ public class SMS_New {
 
     @Override
     public String toString() {
-	StringBuffer sb = new StringBuffer(200);
-	sb.append("messageId: ");
-	sb.append(messageId);
-	sb.append(", callbackUrl ");
-	sb.append(callbackUrl);
-	sb.append(", schemaId ");
-	sb.append(schemaId);
-	sb.append(", addrPhone ");
-	sb.append(addrPhone);
-	sb.append(", typeSend ");
-	sb.append(typeSend);
-	sb.append(", typeCheck ");
-	sb.append(typeCheck);
-	sb.append(", merchantId ");
-	sb.append(merchantId);
-	sb.append(", merchantType ");
-	sb.append(merchantType);
-	sb.append(", merchantPassword ");
-	sb.append(merchantPassword);
-	sb.append(", messageTemplate ");
-	sb.append(messageTemplate);
-	sb.append(", smsAlfaname ");
-	sb.append(smsAlfaname);
-	sb.append(", senderTTL ");
-	sb.append(senderTTL);
-	sb.append(", privat24TTL ");
-	sb.append(privat24TTL);
-
-	return sb.toString();
+	return toJSONString();
     }
 
+    public String toJSONString() {
+	return oGson.toJson(this);
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public String getSchemaId() {
+        return schemaId;
+    }
+
+    public String getAddrPhone() {
+        return addrPhone;
+    }
+
+    public String getTypeSend() {
+        return typeSend;
+    }
+
+    public String getTypeCheck() {
+        return typeCheck;
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public String getMerchantType() {
+        return merchantType;
+    }
+
+    public String getMerchantPassword() {
+        return merchantPassword;
+    }
+
+    public List<SMS_Text> getMessageTemplate() {
+        return messageTemplate;
+    }
+
+    public String getSmsAlfaname() {
+        return smsAlfaname;
+    }
+
+    public int getSenderTTL() {
+        return senderTTL;
+    }
+
+    public int getPrivat24TTL() {
+        return privat24TTL;
+    }
+    
 }
