@@ -57,8 +57,7 @@ if [[ "$DIFF" != "" ]]; then
     #                            TOKEN=$5
     #                            curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
     #                            echo 'change in' $x'_Region-Back'
-    #
-    fi
+    #fi
    fi  
    else
    echo "no change"
