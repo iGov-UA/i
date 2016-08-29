@@ -156,7 +156,7 @@ public class PaymentProcessorService {
 			oChannel.connect();
 			LOG.info("Connected to the remote server");
 			ChannelSftp oChannelSftp = (ChannelSftp) oChannel;
-			oChannelSftp.get(sFileName, oFile.getAbsolutePath());
+			oChannelSftp.get(sPathFileName, oFile.getAbsolutePath());
 			oChannelSftp.exit();
 			oSession.disconnect();
 		} catch (Exception e) {
