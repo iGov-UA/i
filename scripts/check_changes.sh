@@ -1,7 +1,7 @@
 #!/bin/bash
 source="scripts/config/app.lst"
 
-array=$(cat app.lst | awk '{print $2}')
+array=$(cat scripts/config/app.lst | awk '{print $2}')
 echo $array
 get_change()
 {
