@@ -16,7 +16,6 @@ if [[ "$DIFF" != "" ]]; then
    if [[ "$app" == "central-js" ]]; then
     echo 'change in' $x'_Central-front'
     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
-    fi 
      if [[ "$x" == "test_alpha-old" ]]; then
       TOKEN=$5
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec"
@@ -59,7 +58,7 @@ if [[ "$DIFF" != "" ]]; then
     #                            curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
     #                            echo 'change in' $x'_Region-Back'
     #fi
-   #fi  
+   fi  
    else
    echo "no change"
 fi
