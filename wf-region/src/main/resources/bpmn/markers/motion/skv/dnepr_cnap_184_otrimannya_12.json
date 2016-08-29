@@ -1,0 +1,84 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Cherez dovirenu osobu"],
+			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"ShowFieldsOnCondition_52":
+		{
+			"sNote":		["Hide choice dovirenu osobu"],
+			"aField_ID":	["asHow"],
+			"asID_Field":	{"sPerson":"asSubect"},
+			"sCondition":	"[sPerson] == 'not_correct'"
+		},
+		"RequiredFieldsOnCondition_52": 
+		{
+			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"RequiredFieldsOnCondition_6": 
+		{
+			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"sNote":				["For Novopskov open Topology Materials (M1:500) za minusom Chaernigova"],
+			"aField_ID":			["nFile_Roztashuvannya_M1_500"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
+			"sCondition":			"[sClient] == 'mvk_lug_NovopskovskT' || ([sReason] == 'first_permission' && [sClient]!= 'nik_pervomayskT' && [sClient]!= 'mvk_chernT' && [sClient]!= 'novomoskT' && [sClient]!= 'tern_Kremenets')"
+		},
+		"ShowFieldsOnCondition_7":
+		{
+			"sNote":				["For Chernigov ADD file"],
+			"aField_ID":			["nFile_PravoVlasnist"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
+			"sCondition":			"[sClient] == 'mvk_chernT'"
+		},
+		"ShowFieldsOnCondition_8":
+		{
+			"sNote":				["For Pervomaysk (Nikolaevska obl)"],
+			"aField_ID":			["nFile_SchemePlace"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
+			"sCondition":			"[sClient] == 'nik_pervomayskT' && [sReason] == 'first_permission'"
+		},
+		"RequiredFieldsOnCondition_8": 
+		{
+			"aField_ID":			["nFile_SchemePlace"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
+			"sCondition":			"[sClient] == 'nik_pervomayskT' && [sReason] == 'first_permission'"
+		},
+		"ShowFieldsOnCondition_82":
+		{
+			"sNote":		["Annulyuvannya - hide files"],
+			"aField_ID":	["nFile_AdvertLicense"],
+			"asID_Field":	{"sPerson":"asPurpose","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"([sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring') && [sClient] != 'tern_Kremenets'"
+		},
+		"RequiredFieldsOnCondition_82": 
+		{
+			"aField_ID":	["nFile_AdvertLicense"],
+			"asID_Field":	{"sPerson":"asPurpose","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"([sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring') && [sClient] != 'tern_Kremenets'"
+		},
+		"ShowFieldsOnCondition_83":
+		{
+			"sNote":		["Show for Kremenets"],
+			"aField_ID":	["nFile_Prioritet","sStrokReklami"],
+			"asID_Field":	{"sPerson":"asPurpose","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'first_permission' && [sClient] == 'tern_Kremenets'"
+		},
+		"RequiredFieldsOnCondition_83": 
+		{
+			"aField_ID":	["nFile_Prioritet","sStrokReklami"],
+			"asID_Field":	{"sPerson":"asPurpose","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'first_permission' && [sClient] == 'tern_Kremenets'"
+		}
+	}
+}
