@@ -29,16 +29,23 @@ module.exports.createUnknownError = function (error_description, error) {
   return this.createError(this.codes.UNKNOWN_SERVICE_ERROR, error_description, error);
 };
 
-module.exports.createErrorOnResponse = function (mapper) {
+module.exports.createErrorOnResponse = function (mapperOrObject) {
   var self = this;
 
   return function (error, response, body) {
     if (error) {
       return self.createExternalServiceError(error.message, error);
     } else {
-      var e = functions.mapObject(mapper)(body);
-      if (e) {
+      var e;
+      if (typeof(mapperOrObject) == 'function') {
+        e = functions.mapObject(mapperOrObject)(body);
+      } else {
+        e = mapperOrObject;
+      }
+      if (e && e.message) {
         return self.createExternalServiceError(e.message, e);
+      } else if (e && !e.message) {
+        return self.createUnknownError('Unknown error', e);
       } else {
         return self.createUnknownError('Unknown error', {});
       }

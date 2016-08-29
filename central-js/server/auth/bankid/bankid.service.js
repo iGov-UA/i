@@ -42,6 +42,8 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     return function (error, repsonse, body) {
       if(error){
         errorCallback(error, repsonse, body);
+      } else if (body && (body.state === 'err' ||  body.error)) {
+        errorCallback(error, repsonse, body);
       } else {
         successCallback(error, repsonse, body);
       }
@@ -198,7 +200,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
   var disableDecryption = true;
 
   function errorFromBody(body) {
-    if(body.error && body.error_description){
+    if(body && (body.error || body.state === 'err')){
       return body;
     } else {
       return null;
@@ -208,8 +210,9 @@ module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
-        if (error || body.error || !body.customer) {
-          callback(errors.createErrorOnResponse(errorFromBody)(error, response, body), null);
+        var err = errorFromBody(body);
+        if (error || err) {
+          callback(errors.createErrorOnResponse(err)(error, response, body), null);
         } else {
           callback(null, {
             customer: body.customer,

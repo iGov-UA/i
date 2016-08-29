@@ -16,6 +16,7 @@ module.exports.codes = {
   forErrorResponse406: 'code406',
   forErrorResponse501: 'code501',
   forCustomerDataResponse: 'codeCustomerData',
+  forCustomerDataResponseError: 'codeCustomerDataError',
   forCustomerDataCryptoResponse: 'codeCustomerDataCrypto'
 };
 
@@ -23,7 +24,14 @@ module.exports.accessTokens = {
   forErrorResponse406: 'error token 406',
   forErrorResponse501: 'error token 501',
   forCustomerDataResponse: 'customer data token',
+  forCustomerDataResponseError: 'customer data token error',
   forCustomerDataCryptoResponse: 'customer data crypto token'
+};
+
+module.exports.customerError = {
+  state: "err",
+  code: "CLO001",
+  desc: "Ошибка получения данных клиента"
 };
 
 module.exports.customer = {

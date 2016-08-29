@@ -28,8 +28,11 @@ module.exports.token = function (req, res, next) {
       error = {error: 'Cant sync user'};
     }
 
+
     if (error) {
-      res.redirect(req.query.link + '?error=' + JSON.stringify(error));
+      var errString = encodeURIComponent(JSON.stringify(error));
+      console.log('bankid authentication error : ' + errString);
+      res.redirect(req.query.link + '?error=' + errString);
     } else {
       req.session = authService.createSessionObject('bankid', user, info);
       delete req.session.prepare;

@@ -27,4 +27,15 @@ describe('authorize with bankid', function () {
       agent = loginAgent;
     }, bankidData.codes.forCustomerDataResponse);
   });
+
+  it('should handle error with non-encrypted customer data', function (done) {
+    var agent;
+    appTest.loginWithBankID(function (error) {
+        done();
+      }, function (loginAgent) {
+        agent = loginAgent;
+      },
+      bankidData.codes.forCustomerDataResponseError,
+      appTest.AUTH_MODE.SUCCESS_ON_ERROR);
+  });
 });

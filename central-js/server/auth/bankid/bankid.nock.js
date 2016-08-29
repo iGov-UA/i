@@ -40,8 +40,17 @@ bankidMock
     return body && body.code === bankidData.codes.forCustomerDataResponse;
   })
   .reply(200, bankidData.createToken(bankidData.accessTokens.forCustomerDataResponse), headers)
+  .post(baseUrls.access.path.token, function (body) {
+    return body && body.code === bankidData.codes.forCustomerDataResponseError;
+  })
+  .reply(200, bankidData.createToken(bankidData.accessTokens.forCustomerDataResponseError), headers)
   .post(baseUrls.resource.path.info)
   .matchHeader('Authorization', function (val) {
     return appUtil.extractAccessTokenBankID(val) === bankidData.accessTokens.forCustomerDataResponse;
   })
-  .reply(200, createCustomerData(bankidData.customer), headers);
+  .reply(200, createCustomerData(bankidData.customer), headers)
+  .post(baseUrls.resource.path.info)
+  .matchHeader('Authorization', function (val) {
+    return appUtil.extractAccessTokenBankID(val) === bankidData.accessTokens.forCustomerDataResponseError;
+  })
+  .reply(200, bankidData.customerError, headers);
