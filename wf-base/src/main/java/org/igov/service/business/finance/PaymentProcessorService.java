@@ -145,8 +145,7 @@ public class PaymentProcessorService {
 					, generalConfig.getHost_FTP_Yuzhny_Pay(), generalConfig.getPort_FTP_Yuzhny_Pay(), generalConfig.getLogin_FTP_Yuzhny_Pay() //generalConfig.getPassword_FTP_Yuzhny_Pay(),
 					, sPathFileName,sTag,sTagValue,sSuffixDateMask,sPath,sFileNameMask,sFileName //generalConfig.getPathFileName_FTP_Yuzhny_Pay()
 					);
-			//file = File.createTempFile("11082016", ".csv");
-			oFile = File.createTempFile(StringUtils.replace(sFileName, ".csv", "csv"), null);
+			oFile = File.createTempFile(sFileName, null);
 			LOG.info("Created temporary file {}", oFile.getAbsolutePath());
 			oSession = oJSch.getSession(generalConfig.getLogin_FTP_Yuzhny_Pay(), generalConfig.getHost_FTP_Yuzhny_Pay(), Integer.valueOf(generalConfig.getPort_FTP_Yuzhny_Pay()));
 			oSession.setConfig("StrictHostKeyChecking", "no");
@@ -157,7 +156,7 @@ public class PaymentProcessorService {
 			oChannel.connect();
 			LOG.info("Connected to the remote server");
 			ChannelSftp oChannelSftp = (ChannelSftp) oChannel;
-			//oChannelSftp.get(generalConfig.getPathFileName_FTP_Yuzhny_Pay(), oFile.getAbsolutePath());
+			oChannelSftp.get(sFileName, oFile.getAbsolutePath());
 			oChannelSftp.exit();
 			oSession.disconnect();
 		} catch (Exception e) {
