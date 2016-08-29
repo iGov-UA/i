@@ -1,14 +1,19 @@
 package org.igov.io.sms;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.igov.util.JSON.JsonRestUtils;
 
+import com.google.gson.Gson;
+
 public class SMSCallback {
+    private static Gson oGson = new Gson();
+
     private String msStatus = null;
     private String messageId = null;
-    private List<String> schemaList = new ArrayList<>();
+    private String msCode = null;
+    private String msMessage = null;
+    private List<String> schemaList = null;
     private String msChannel = null;
     private MessageHistory messageHistory = null;
 
@@ -33,6 +38,12 @@ public class SMSCallback {
 	    }
 	    if (moData.containsKey("msChannel")) {
 		this.msChannel = (String) moData.get("msChannel");
+	    }
+	    if (moData.containsKey("msCode")) {
+		this.msCode = (String) moData.get("msCode");
+	    }
+	    if (moData.containsKey("msMessage")) {
+		this.msMessage = (String) moData.get("msMessage");
 	    }
 
 	    if (moData.containsKey("messageHistory")) {
@@ -61,6 +72,14 @@ public class SMSCallback {
 
     public String getMessageId() {
 	return messageId;
+    }
+
+    public String getMsCode() {
+	return msCode;
+    }
+
+    public String getMsMessage() {
+	return msMessage;
     }
 
     public List<String> getSchemaList() {
@@ -100,27 +119,32 @@ public class SMSCallback {
 
     }
 
+    @Override
+    public String toString() {
+	return toJSONString();
+    }
+
+    public String toJSONString() {
+	return oGson.toJson(this);
+    }
+
 //    public static void main(String[] args) {
 //	///////////////////////////////
-//	String s = "{" + "\"msStatus\": \"delivered\"," + "   \"messageId\": \"ref1\","
+//	String s = "{" + "\"msStatus\": \"delivered\"," + " \"messageId\":\"ref1\","
 //		+ "\"schemaList\": [ \"sender\", \"privat24\", \"sms\" ]," + "\"msChannel\": \"sms\","
-//		+ "		    \"messageHistory\": {" + "\"sender\": \"Сообщение не доставлено\","
-//		+ "\"privat24\": \"Не дождались отчета о доставке\"," + "\"sms\": \"Сообщение отправлено\""
-//		+ "		    }" + "}";
+//		+ " \"messageHistory\": {" + "\"sender\": \"Сообщение не доставлено\","
+//		+ "\"privat24\": \"Не дождались отчета о доставке\"," + "\"sms\":\"Сообщение отправлено\"" + " }" + "}";
 //	SMSCallback sc = new SMSCallback(s);
 //
-//	Gson oGson = new Gson();
-//	String stringSmsReqest = oGson.toJson(sc);
-//	System.out.println(stringSmsReqest);
+//	System.out.println(sc);
 //
 //	///////////////////////////////
-//	String s2 = "{" + "\"msStatus\": \"warning\"," + "\"msCode\": \"incorrect_password\","
-//		+ "\"msMessage\": \"Указанный пароль не подходит для мерчанта 25@sms_service\","
+//	String s2 = "{" + "\"msStatus\": \"warning\"," + "\"msCode\":\"incorrect_password\","
+//		+ "\"msMessage\": \"Указанный пароль не подходит для мерчанта25@sms_service\","
 //		+ "\"messageId\": \"ref1\"" + "}";
 //
 //	sc = new SMSCallback(s2);
-//	stringSmsReqest = oGson.toJson(sc);
-//	System.out.println(stringSmsReqest);
+//	System.out.println(sc);
 //    }
 
 }

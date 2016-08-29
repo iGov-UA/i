@@ -3,7 +3,6 @@ package org.igov.io.sms;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -16,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 
 @Component
 public class ManagerSMS_New {
@@ -88,9 +85,7 @@ public class ManagerSMS_New {
 	    return "";
 	}
 
-	Gson oGson = new Gson();
-
-	String stringSmsReqest = oGson.toJson(sms);
+	String stringSmsReqest = sms.toJSONString();
 
 	LOG.info("sURL={}", sURL_Send);
 	LOG.debug("Запрос:\n{}", stringSmsReqest);
@@ -140,10 +135,9 @@ public class ManagerSMS_New {
     }
 
     public void saveCallbackSMS(String soJSON) {
-	Gson oGson = new Gson();
 	try {
 	    SMSCallback sc = new SMSCallback(soJSON);
-	    LOG.info("%s", oGson.toJson(sc));
+	    LOG.info("%s", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
 	    LOG.error("Ошибка callback SMS", e);
 	}
