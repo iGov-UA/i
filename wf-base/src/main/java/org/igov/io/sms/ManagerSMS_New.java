@@ -79,12 +79,14 @@ public class ManagerSMS_New {
 	    sMessageId = static_sMessageId + Integer.toString(countSMS.get());
 	}
 
+	String ret = "";
+
 	SMS_New sms;
 	try {
 	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
 	    LOG.error("Ошибка создания SMS. sPhone={}, sText={}", sPhone, sText, e);
-	    return "";
+	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
 	String stringSmsReqest = sms.toJSONString();
@@ -93,7 +95,6 @@ public class ManagerSMS_New {
 	LOG.debug("Запрос:\n{}", stringSmsReqest);
 
 	HttpURLConnection oHttpURLConnection = null;
-	String ret = "";
 	String sessionId;
 	    
 	try {
@@ -101,12 +102,11 @@ public class ManagerSMS_New {
 		    generalConfig.getPassword_Auth_UkrDoc_SED(),
 		    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
 	} catch (Exception e) {
-	    LOG.error("Ошибка получения идентификатора сессии", e);
-	    ret = String.format("Ошибка получения идентификатора сессии. %s", e.getMessage());
-	    return ret;
+	    LOG.error("Error get Session ID", e);
+	    return String.format("Error get Session ID. %s", e.getMessage());
 	}
 
-	LOG.info("Retrieved session ID: {}", sessionId);
+	LOG.info("Retrieved Session ID: {}", sessionId);
 
 	try {
 	    URL oURL = new URL(sURL_Send);
