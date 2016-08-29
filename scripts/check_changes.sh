@@ -13,13 +13,13 @@ get_change() {
 for x in ${array[@]}
   do
 if [[ "$DIFF" != "" ]]; then
-   elif [[ "$app" == "central-js" ]]; then
+   if [[ "$app" == "central-js" ]]; then
     echo 'change in' $x'_Central-front'
     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
      elif [[ "$x" == "test_alpha-old" ]]; then
       TOKEN=$5
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec"
-      echo 'change in' $x'_Central-front'
+      echo 'change in' $x'_Front_Central'
     elif [[ "$app" == "dashboard-js" ]]; then
       echo 'change in' $x'_Region-front'
       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Region/buildWithParameters?delay=0sec" 
@@ -56,7 +56,7 @@ if [[ "$DIFF" != "" ]]; then
     #                            curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
     #                            echo 'change in' $x'_Region-Back'
     #fi
-   #fi  
+   fi  
    else
    echo "no change"
 fi
@@ -66,7 +66,7 @@ mv last_change_new_$app last_change_$app
 }
 
 while read sLine; do
-# if [[ -z $sLine ]] || [[ "$sLine" == "" ]] || [[ "$sLine" =~ ^#.* ]]; then continue; fi
+ if [[ -z $sLine ]] || [[ "$sLine" == "" ]] || [[ "$sLine" =~ ^#.* ]]; then continue; fi
 #   echo $sLine 
    get_change $sLine
  done < $source 
