@@ -17,21 +17,21 @@ do
 if [[ "$DIFF" != "" ]]; then
    if [[ "$app" == "central-js" ]]; then
     echo 'change in Central-front'
-#   curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
+    curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
    elif [[ "$app" == "dashboard-js" ]]; then
       echo 'change in Region-front'
-#     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Region/buildWithParameters?delay=0sec" 
+      curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Region/buildWithParameters?delay=0sec" 
         elif [[ "$app" == "wf-base" ||  "$app" == "storage-static" ||  "$app" == "storage-temp" ]]; then
            echo 'change in Back'
            touch no
-     #     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back/buildWithParameters?delay=0sec"
+           curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back/buildWithParameters?delay=0sec"
            elif [[ "$app" == "wf-central" || ! -f no ]]; then
-              echo "change in "
-        #     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Central/buildWithParameters?delay=0sec" 
+              echo "change in Back-Central"
+              curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Central/buildWithParameters?delay=0sec" 
                     elif [[ "$app" == "wf-region" || ! -f no ]]; then
 #                        TOKEN=$5
-                        echo "change in "
-                  #     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
+                        echo "change in Back-Region"
+                       curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
      fi
 else
 echo "no change"
