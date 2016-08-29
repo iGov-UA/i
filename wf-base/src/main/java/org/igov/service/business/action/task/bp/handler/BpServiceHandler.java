@@ -171,7 +171,7 @@ public class BpServiceHandler {
         mParam.put("organ", organ);
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        mParam.put("sLoginAssigned", taskService.createTaskQuery().taskId(sField).taskAssignee(sField));
+        mParam.put("sLoginAssigned", taskService.createTaskQuery().taskAssignee(organ));
         mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
