@@ -139,6 +139,7 @@ public class PaymentProcessorService {
 			SimpleDateFormat oDateFormat = new SimpleDateFormat(sSuffixDateMask);
 			String sTagValue = oDateFormat.format(oDate);
 			String sFileName = sFileNameMask.replace(sTag, sTagValue);//pivd_160823.csv
+			sFileName = StringUtils.replace(sFileName, ".csv", "csv");
 			String sPathFileName = sPath+sFileName;
 			LOG.info("Loading file from the server sHost={},nPort={},sLogin={}"
 					+ ",sPathFileName={},sTag={},sTagValue={},sSuffixDateMask={},sPath={},sFileNameMask={},sFileName={}"
