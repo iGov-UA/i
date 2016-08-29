@@ -1,3 +1,86 @@
+<script>
+    function ParseUaID(id) {
+
+
+        var result = {};
+        var daysOfMouth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        //sex
+        result.sex = (id.substr(8, 1) % 2) ? 'Чоловіча' : 'Жіноча';
+
+        //birthdate
+        var days = id.substr(0, 5);
+        var year = 1900;
+        var day = 01;
+        var month = 01;
+        while (days > 0) {
+            var daysInYear = ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0)) ? 366 : 365;
+            if (days > daysInYear) {
+                days -= daysInYear;
+                year++;
+            }
+            else {
+                //break;
+                if (daysInYear == 366) {
+                    daysOfMouth[1] = 29;
+                }
+                for (var i = 0; i < 12; i++) {
+                    if (days > daysOfMouth[i]) {
+                        days -= daysOfMouth[i];
+                        month++;
+                    } else {
+                        day = days;
+                        days = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        result.year = year;
+        result.month = month;
+        result.day = day;
+
+        //control Sum
+        var validMas = [-1, 5, 7, 9, 4, 6, 10, 5, 7];
+        var sumValid = 0;
+        for (var i = 0; i < 9; i++) {
+            sumValid += Number(id[i]) * validMas[i];
+        }
+        result.valid = (Number(id[9]) == (sumValid % 11) % 10);
+
+        return result;
+    }
+
+    function cl() {
+        var myInn = document.getElementById("inn").value;
+        var res1 = ParseUaID(myInn);
+
+        document.getElementById("birthDay").innerHTML = res1.day + "." + res1.month + "." + res1.year;
+        document.getElementById("sex").innerHTML = res1.sex;
+
+        if (res1.valid) {
+            document.getElementById("validRow").className = "alert alert-success";
+            document.getElementById("validRow").innerHTML = "Поздоровляємо! Ваш ІПН відповідає вимогам";
+
+            document.getElementById("rBirthDay").style.visibility = 'visible';
+            document.getElementById("rSex").style.visibility = 'visible';
+            document.getElementById("rInfo").style.visibility = 'visible';
+
+        } else {
+
+            document.getElementById("validRow").className = "alert alert-danger";
+            document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
+
+            document.getElementById("rBirthDay").style.visibility = 'hidden';
+            document.getElementById("rSex").style.visibility = 'hidden';
+            document.getElementById("rInfo").style.visibility = 'hidden';
+        }
+
+        document.getElementById("resFin").style.visibility = 'visible';
+
+    }
+</script>
+
 <style>
     .article-block {
         font-family: Open Sans, Arial, sans-serif;
@@ -149,7 +232,8 @@
         <li>при оформленні<a href="https://igov.org.ua/subcategory/1/3">соціальних виплат</a>.</li>
     </ol>
     <h1 id="anchor2">2. Як отримати ІПН</h1>
-    Будь-яка фізична особа, незалежно від віку і від того, чи є резидентом (громадянином України), може безкоштовно на протязі 5-ти робочих днів отримати ІПН.
+    <p>
+        Будь-яка фізична особа, незалежно від віку і від того, чи є резидентом (громадянином України), може безкоштовно на протязі 5-ти робочих днів отримати ІПН.
     </p>
     <h3>Отримати ІПН online</h3>
     <p>
@@ -237,6 +321,67 @@
         Не резиденти України не можуть відмовитися від ІПН, так як державні службовці не мають права ставити штамп у паспорт іншої держави.
     </p>
     <h1 id="anchor6">Перевірка свого ІПН</h1>
+    <p>
+        Якщо ви вже маєте ідентифікаційний номер, Ви можете його перевірити на відповідність:
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="highlight">
+                <div class="row">
+                    <div class="col-md-5">
+                        Ваш ідентифікаційний персональний номер:
+                    </div>
+                    <div class="col-md-5">
+                        <input id="inn" name="inn" type="text" placeholder="Введіть свій ІПН для перевірки" class="form-control">
+                    </div>
+                </div>
+                <div class="row accordion-group">
+                    <div class="accordion-heading">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-3">
+                            <br>
+                            <button class="btn btn-info" onclick="cl()">
+                                Перевірити ІПН
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <div id="resFin" style="visibility:hidden">
+                    <div id="validRow">
+
+                    </div>
+
+                    <div class="row" id="rBirthDay">
+                        <div class="col-md-5">
+                            День			народження:
+                        </div>
+                        <div class="col-md-5" id="birthDay">
+                        </div>
+                    </div>
+
+                    <div class="row" id="rSex">
+                        <div class="col-md-5">
+                            Стать:
+                        </div>
+                        <div class="col-md-5" id="sex">
+                        </div>
+                    </div>
+
+                    <div class="row" id="rInfo">
+                        <div class="alert alert-info">
+                            Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильсті надонного Вам персонального номеру
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
     <h1 id="anchor7">Посилання на законодавство</h1>
     <ol>
         <li>
