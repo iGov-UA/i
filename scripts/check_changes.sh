@@ -14,7 +14,7 @@ for x in ${array[@]}
   do
 if [[ "$DIFF" != "" ]]; then
    if [[ "$app" == "central-js" ]]; then
-    echo 'change in' ${array[@]}'_Central-front'
+    echo 'change in' $x'_Central-front'
     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec" 
      if [[ "$x" == "test_alpha-old" ]]; then
       TOKEN=$5
