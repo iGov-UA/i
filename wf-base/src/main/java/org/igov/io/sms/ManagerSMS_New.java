@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
@@ -21,7 +22,7 @@ public class ManagerSMS_New {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS.class);
 
-    private static int countSMS = 0;
+    private static AtomicInteger countSMS = new AtomicInteger(0);
 
     private String sURL_Send = null;
     private String sMerchantId = null;
@@ -73,8 +74,8 @@ public class ManagerSMS_New {
 	}
 
 	if (sMessageId == null) {
-	    countSMS++;
-	    sMessageId = static_sMessageId + Integer.toString(countSMS);
+	    countSMS.incrementAndGet();
+	    sMessageId = static_sMessageId + Integer.toString(countSMS.get());
 	}
 
 	SMS_New sms;
