@@ -90,7 +90,7 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[klimkovichy@gmail.com]]></activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -104,7 +104,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask3" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -133,6 +133,17 @@
 				[pattern/mail/_common_signature_end.html]   
 				[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -217,7 +228,7 @@
     <sequenceFlow id="flow5" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Емейл відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Емейл відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -246,6 +257,17 @@
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow19" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
@@ -317,7 +339,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Емейл громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Емейл громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -335,26 +357,34 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
+                                        Ваше звернення на тему: ${sTopic} було розглянуто.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
                                     </p>
                                     <p>
-										Якщо Ви бажаєте отримати паперову копію цієї відповіді, Вам необхідно звернутися особисто до відповідального органу.
+                                        Якщо Ви бажаєте отримати паперову копію цієї відповіді, Вам необхідно звернутися особисто до відповідального органу.
                                     </p>
                                     <p>
-										Адреса: <br />
-										${sWorkTime}
-										 ${sPhoneOrgan}
+					Адреса: <br />
+					${sWorkTime}
+					${sPhoneOrgan}
                                     </p>
                                     <p>
-									<i>${decisionComment}</i>
-									</p>
+                                    <i>${decisionComment}</i>
+                                    </p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]
-									[pattern/mail/_common_feedback.html]
+                                    ${sNameOrgan},<br>
+                                    [pattern/mail/_common_signature_end.html]
+                                    [pattern/mail/_common_feedback.html]
                                     [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+                
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow36" sourceRef="servicetask7" targetRef="endevent5"></sequenceFlow>
