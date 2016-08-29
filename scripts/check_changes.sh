@@ -31,7 +31,7 @@ if [[ "$DIFF" != "" ]]; then
                echo 'change in' $x'_Region-front'
              fi
 
-        elif [[ "$app" == "wf-base" ||  "$app" == "storage-static" ||  "$app" == "storage-temp" ]]; then
+        elif [[ "$app" == "wf-base" ||  "$app" == "storage-static" ||  "$app" == "storage-temp" || "$app" == "analytic"]]; then
            echo 'change in' $x'_Back'
            touch no
            curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back/buildWithParameters?delay=0sec"
@@ -52,10 +52,10 @@ if [[ "$DIFF" != "" ]]; then
 
                     elif [[ "$app" == "wf-region" || ! -f no ]]; then
                         echo 'change in' $x'_Region-Back'
-                  #     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
+                        curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
                               if [[ "$x" == "test_alpha-old" ]]; then
                                 TOKEN=$5
-                                curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Front_Central/buildWithParameters?delay=0sec"
+                                curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$x"_Back_Region/buildWithParameters?delay=0sec"
                                 echo 'change in' $x'_Region-Back'
                               fi
       fi
