@@ -147,6 +147,7 @@ public class PaymentProcessorService {
 					);
 			//file = File.createTempFile("11082016", ".csv");
 			oFile = File.createTempFile(sFileName, null);
+			LOG.info("Created temporary file {}", oFile.getAbsolutePath());
 			oSession = oJSch.getSession(generalConfig.getLogin_FTP_Yuzhny_Pay(), generalConfig.getHost_FTP_Yuzhny_Pay(), Integer.valueOf(generalConfig.getPort_FTP_Yuzhny_Pay()));
 			oSession.setConfig("StrictHostKeyChecking", "no");
 			oSession.setPassword(generalConfig.getPassword_FTP_Yuzhny_Pay());
@@ -154,17 +155,14 @@ public class PaymentProcessorService {
 
 			Channel oChannel = oSession.openChannel("sftp");
 			oChannel.connect();
+			LOG.info("Connected to the remote server");
 			ChannelSftp oChannelSftp = (ChannelSftp) oChannel;
 			//oChannelSftp.get(generalConfig.getPathFileName_FTP_Yuzhny_Pay(), oFile.getAbsolutePath());
 			oChannelSftp.exit();
 			oSession.disconnect();
-		} catch (JSchException e) {
+		} catch (Exception e) {
 			LOG.error("Exception occured while getting file from sftp {}", e.getMessage(), e);
-		} /*catch (SftpException e) {
-                    LOG.error("Exception occured while getting file from sftp {}", e.getMessage(), e);
-            } */catch (IOException e) {
-            	LOG.error("Exception occured while getting file from sftp {}", e.getMessage(), e);
-            }
+		} 
 		return oFile != null ? oFile.getAbsolutePath() : null;
 	}
 }
