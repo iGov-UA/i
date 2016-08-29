@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
+import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,10 +95,15 @@ public class ManagerSMS_New {
 	HttpURLConnection oHttpURLConnection = null;
 	String ret = "";
 	try {
+            String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
+                    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+            LOG.info("Retrieved session ID:" + sessionId);
+	    
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
 	    oHttpURLConnection.setRequestProperty("content-type", "application/json");
+	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
