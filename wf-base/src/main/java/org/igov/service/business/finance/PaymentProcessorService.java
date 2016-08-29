@@ -139,7 +139,6 @@ public class PaymentProcessorService {
 			SimpleDateFormat oDateFormat = new SimpleDateFormat(sSuffixDateMask);
 			String sTagValue = oDateFormat.format(oDate);
 			String sFileName = sFileNameMask.replace(sTag, sTagValue);//pivd_160823.csv
-			sFileName = StringUtils.replace(sFileName, ".csv", "csv");
 			String sPathFileName = sPath+sFileName;
 			LOG.info("Loading file from the server sHost={},nPort={},sLogin={}"
 					+ ",sPathFileName={},sTag={},sTagValue={},sSuffixDateMask={},sPath={},sFileNameMask={},sFileName={}"
@@ -147,7 +146,7 @@ public class PaymentProcessorService {
 					, sPathFileName,sTag,sTagValue,sSuffixDateMask,sPath,sFileNameMask,sFileName //generalConfig.getPathFileName_FTP_Yuzhny_Pay()
 					);
 			//file = File.createTempFile("11082016", ".csv");
-			oFile = File.createTempFile(sFileName, null);
+			oFile = File.createTempFile(StringUtils.replace(sFileName, ".csv", "csv"), null);
 			LOG.info("Created temporary file {}", oFile.getAbsolutePath());
 			oSession = oJSch.getSession(generalConfig.getLogin_FTP_Yuzhny_Pay(), generalConfig.getHost_FTP_Yuzhny_Pay(), Integer.valueOf(generalConfig.getPort_FTP_Yuzhny_Pay()));
 			oSession.setConfig("StrictHostKeyChecking", "no");
