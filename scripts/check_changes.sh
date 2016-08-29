@@ -1,5 +1,5 @@
 #!/bin/bash
-source="configs/app.lst"
+source="scripts/configs/app.lst"
 
 get_change()
 {
