@@ -126,6 +126,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_pereoformlennya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -187,6 +188,7 @@
         <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_pereoformlennya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -258,6 +260,7 @@
         <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_pereoformlennya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -394,11 +397,10 @@ ${sComment_2}&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см.&lt;br /&gt;
-5. Ескіз рекламного засобу з конструктивним рішенням.&lt;br /&gt;
-6. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
-7. Оригінал попереднього дозволу (якщо Ви подавали запит на анулювання, переоформлення та подовження)&lt;br /&gt;
-${sAddPrintSpisok}&lt;br /&gt;
+4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
+&lt;br /&gt;
+Та оригінали відповідних додатків:&lt;br /&gt; 
+${sAdd_doc}&lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -648,11 +650,10 @@ ${sComment_2}&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см.&lt;br /&gt;
-5. Ескіз рекламного засобу з конструктивним рішенням.&lt;br /&gt;
-6. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
-7. Оригінал попереднього дозволу.&lt;br /&gt;
-${sAddPrintSpisok}&lt;br /&gt;
+4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
+&lt;br /&gt;
+Та оригінали відповідних додатків:&lt;br /&gt; 
+${sAdd_doc}&lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
