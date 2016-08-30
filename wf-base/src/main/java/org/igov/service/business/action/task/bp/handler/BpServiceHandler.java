@@ -172,8 +172,8 @@ public class BpServiceHandler {
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("data", "Дата БП");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        mParam.put("sLoginAssigned", "sTaskId");
-        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
+//        mParam.put("sLoginAssigned", "sTaskId");
+//        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
@@ -384,7 +384,8 @@ public class BpServiceHandler {
 
         // Отобразим набор
         for (Map.Entry<String, Object> taskParam : aTaskParamEntrySet) {
-            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
+//            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
+            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n";
         }
         LOG.info(result);
         return result;
