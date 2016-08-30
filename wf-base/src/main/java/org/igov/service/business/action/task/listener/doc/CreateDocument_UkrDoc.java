@@ -22,6 +22,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
@@ -31,6 +32,7 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 
 import org.igov.service.business.action.task.systemtask.ProcessCountTaskListener;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
+import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +63,13 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression sID_Document;
     private Expression sDateAppeal;
 
+    private Expression bOrganization;
+    private Expression sCompanyName;
+    private Expression sID_EDRPOU;
+    private Expression sBossFirstLastName;
+    private Expression sDateDocIncoming;
+    private Expression sNumberDocIncoming;
+        
     @Autowired
     GeneralConfig generalConfig;
 
@@ -153,9 +162,18 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
                 LOG.info("Processing {} attachments", attachments.size());
 
+                Boolean bOrganization = Boolean.valueOf(getStringFromFieldExpression(this.bOrganization, execution));
+                String sCompanyName = getStringFromFieldExpression(this.sCompanyName, execution);
+                String sID_EDRPOU = getStringFromFieldExpression(this.sID_EDRPOU, execution);
+                String sBossFirstLastName = getStringFromFieldExpression(this.sBossFirstLastName, execution);
+                String sDateDocIncoming = getStringFromFieldExpression(this.sDateDocIncoming, execution);
+                String sNumberDocIncoming = getStringFromFieldExpression(this.sNumberDocIncoming, execution);
+                
                 Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
                         attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
-                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue);
+                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue
+                        , bOrganization, sCompanyName, sID_EDRPOU, sBossFirstLastName, sDateDocIncoming, sNumberDocIncoming
+                );
 
                 JSONObject json = new JSONObject();
                 json.putAll(urkDocRequest);

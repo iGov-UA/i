@@ -64,6 +64,15 @@
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Запит до державного архіву"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -104,7 +113,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист в Архів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -135,8 +144,15 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamposl3" name="Науково-технічне опрацювання документу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" writable="false">
+          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOpis" name="Загальний опис інформації або вид, назва, реквізити чи зміст документа" type="string" writable="false"></activiti:formProperty>
@@ -163,19 +179,38 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnam66" name="6"></activiti:value>
           <activiti:value id="sEnam77" name="7"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSprava11" name="Вкажіть характеристики справи №1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava22" name="Вкажіть характеристики справи №2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava33" name="Вкажіть характеристики справи №3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava44" name="Вкажіть характеристики справи №4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava55" name="Вкажіть характеристики справи №5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava66" name="Вкажіть характеристики справи №6" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSprava77" name="Вкажіть характеристики справи №7" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava11" name="Характеристики справи №1" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava22" name="Характеристики справи №2" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava33" name="Характеристики справи №3" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava44" name="Характеристики справи №4" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava55" name="Характеристики справи №5" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava66" name="Характеристики справи №6" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSprava77" name="Характеристики справи №7" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker11" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('poltava/Arhiv_obl.json')}"></activiti:formProperty>
         <activiti:formProperty id="asRishenja" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="sEnam_ok" name="Прийняти заяву"></activiti:value>
           <activiti:value id="sEnam_bad" name="Заявка не вірна, Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Coment" name="Коментар, обов'язково заповніть у випадку відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Obl_arch_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Obl_arch_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;Posl1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl1'&quot;},&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;Posl2&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl2'&quot;},&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;Posl3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPosluga&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamposl3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShap_Pro" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDost" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr1" name="Справа1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr2" name="Справа2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr3" name="Справа3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr4" name="Справа4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr5" name="Справа5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr6" name="Справа6" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSpr7" name="Справа7" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -230,7 +265,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. Вас буде повідомлено про подальші кроки.&lt;br /&gt;
+&lt;p&gt;Ваше звернення пройшло попередню перевірку. Вас буде повідомлено про подальші кроки.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -301,6 +336,91 @@ ${sNameOrgan}.&lt;br /&gt;
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+       var vv3PM=execution.getVariable('email')
+       var vv3F=execution.getVariable('sFax')
+       var xxx2='на електронну адресу'+vv3PM
+       var xxx3='на факс №'+vv3F
+            
+       
+       if(execution.getVariable('asPosluga') == 'sEnamposl1'){execution.setVariable('sShap_Pro', 'Про надання інформації')}
+       if(execution.getVariable('asPosluga') == 'sEnamposl2'){execution.setVariable('sShap_Pro', 'Про замовлення справ в читальному залі')}
+       if(execution.getVariable('asPosluga') == 'sEnamposl3'){execution.setVariable('sShap_Pro', 'Про науково-технічне опрацювання документа')}
+       
+       if(execution.getVariable('asVidpovid') == 'sEnamPost'){execution.setVariable('sDost', 'у паперовому вигляді, листом на вказану у заяві адресу')}
+       if(execution.getVariable('asVidpovid') == 'sEnamE_mail'){execution.setVariable('sDost', xxx2)}
+       if(execution.getVariable('asVidpovid') == 'sEnamFax'){execution.setVariable('sDost', xxx3)}
+       
+       var www=' '
+       var s1=execution.getVariable('sSprava11')
+       var s2=execution.getVariable('sSprava22')
+       var s3=execution.getVariable('sSprava33')
+       var s4=execution.getVariable('sSprava44')
+       var s5=execution.getVariable('sSprava55')
+       var s6=execution.getVariable('sSprava66')
+       var s7=execution.getVariable('sSprava77')
+       execution.setVariable('sSpr1', www)
+       execution.setVariable('sSpr2', www)
+       execution.setVariable('sSpr3', www)
+       execution.setVariable('sSpr4', www)
+       execution.setVariable('sSpr5', www)
+       execution.setVariable('sSpr6', www)
+       execution.setVariable('sSpr7', www)
+       
+       if(execution.getVariable('asKilk_sprav') == 'sEnam11')
+         {
+         execution.setVariable('sSpr1', s1)
+         }
+       if(execution.getVariable('asKilk_sprav') == 'sEnam22')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         }
+       if(execution.getVariable('asKilk_sprav') == 'sEnam33')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         }
+       if(execution.getVariable('asKilk_sprav') == 'sEnam44')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         }
+       if(execution.getVariable('asKilk_sprav') == 'sEnam55')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         }
+       if(execution.getVariable('asKilk_sprav') == 'sEnam66')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         execution.setVariable('sSpr6', s6)
+         } 
+       if(execution.getVariable('asKilk_sprav') == 'sEnam77')
+         {
+         execution.setVariable('sSpr1', s1)
+         execution.setVariable('sSpr2', s2)
+         execution.setVariable('sSpr3', s3)
+         execution.setVariable('sSpr4', s4)
+         execution.setVariable('sSpr5', s5)
+         execution.setVariable('sSpr6', s6)
+         execution.setVariable('sSpr7', s7)
+         }
+       
+     </script>
+    </scriptTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Poltava_858">
     <bpmndi:BPMNPlane bpmnElement="Poltava_858" id="BPMNPlane_Poltava_858">
@@ -343,13 +463,16 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="675.0" y="620.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="145.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="190.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="295.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="445.0" y="147.0"></omgdi:waypoint>
@@ -396,6 +519,10 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="595.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="640.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="242.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

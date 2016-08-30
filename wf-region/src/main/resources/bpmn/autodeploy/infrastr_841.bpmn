@@ -26,7 +26,7 @@
         <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;посиланням&lt;/a&gt; та заповнити обґрунтування і розрахунок мінімального складу екіпажу судна."></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;обґрунтування і розрахунок мінімального складу екіпажу судна&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України" type="file" required="true"></activiti:formProperty>
@@ -121,7 +121,7 @@
           <activiti:value id="accept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Орієнтовна дата готовності свідоцтва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата готовності свідоцтва" type="date"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання свідоцтва у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
@@ -205,7 +205,7 @@
 			</ul>
 			</p> 
 			<p>
-			Орієнтовна дата готовності свідоцтва: ${sDate}<br>
+			Дата готовності свідоцтва: value{[sDate]}<br>
 			Приймальні дні управління надання адміністративних послуг на водному транспорті Департаменту надання адміністративних послуг Укртрансбезпеки:<br>
 			понеділок, середа, п’ятниця з 9.00-18.00, обідня перерва з 13.00-13.45.<br>
 			Факт отримання свідоцтва засвідчується у журналі видачі свідоцтв особистим підписом керівника юридичної особи, фізичної особи - підприємця, фізичної особи (уповноваженої особи) у разі пред’явлення документа, що посвідчує його (її) особу.<br>

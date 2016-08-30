@@ -45,13 +45,9 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;, &quot;sAdres_1&quot;,&quot;sAdres_1&quot;,&quot;workPhone&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sAdres_0&quot;,&quot;sPib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо  тварини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;perelic_animals&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumAnimals'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Якщо  корма" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;perelic_provender&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumProvender'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="назва доку по тваринам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік продуктів тваринного походження&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumAnimals'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="назва доку по кормам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік добавок, преміксів і кормів&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumProvender'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFlag" name="регионы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="markers" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_54_55.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -196,7 +192,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення  №[sID_Order] щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) enum{[asDozvil]} успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини впродовж 10 робочих днів.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення  №[sID_Order] щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) enum{[asDozvil]} успішно зареєстровано і буде опрацьовано Управлінням Держпродспоживслужби впродовж 10 робочих днів.&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${nReestr};&lt;br /&gt;
 &lt;br /&gt;
 &lt;br /&gt;
@@ -276,8 +272,8 @@ ${comment_2} &lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
-4. Оригінал довідки про здатність провадити відповідну діяльність, в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються. &lt;br /&gt;
-5. Перелік продукції (преміксів, кормів або продуктів тваринного походження).&lt;br /&gt;&lt;br /&gt;
+А також, оригінали документів, скан-копії яких було додано до заяви:
+${rdozvil}
 &lt;/p&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 &lt;br /&gt;

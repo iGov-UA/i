@@ -85,7 +85,7 @@
         <activiti:formProperty id="sHeadFIO" name="Голова" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; для тестування отримання пошти працівником відповідального органу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bFlagRda360" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
       </extensionElements>
@@ -99,7 +99,7 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -108,7 +108,7 @@
           <activiti:expression><![CDATA[Нове звернення громадян на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify_delta.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -141,7 +141,7 @@
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -373,7 +373,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
+                                        Ваше звернення на тему: ${sTopic} було розглянуто.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
                                     </p>
                                     <p>Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.</p>

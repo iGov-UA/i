@@ -60,7 +60,7 @@
 
         if (res1.valid) {
             document.getElementById("validRow").className = "alert alert-success";
-            document.getElementById("validRow").innerHTML = "Поздоровляємо! Ваш ІПН відповідає вимогам";
+            document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
 
             document.getElementById("rBirthDay").style.visibility = 'visible';
             document.getElementById("rSex").style.visibility = 'visible';
@@ -88,7 +88,22 @@
     }
 
         .article-block li {
-            margin: 16px 0;
+            margin: 10px 0;
+        }
+
+        .article-block ol,
+        .article-block ul {
+            margin-bottom: 46px;
+        }
+
+        .article-block .content-art ol,
+        .article-block .content-art ul
+         {
+            margin-bottom: 12px;
+        }
+
+        .article-block .notmarker>li {
+            list-style-type: none; /* Убираем маркеры */
         }
 
         .article-block sup {
@@ -101,6 +116,10 @@
             margin-top: 46px;
         }
 
+            .article-block h1.topic {
+                margin-top: 12px;
+            }
+
         .article-block a {
             color: #428bca;
         }
@@ -110,39 +129,106 @@
             font-size: 15.8333px;
         }
 
-        .article-block .itable {
+        .article-block table {
             border-spacing: 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            border-collapse: separate;
         }
 
-            .article-block .itable td, .itable th {
-                padding: 16px 10px;
-                vertical-align: top;
-                border-left: 1px solid #ddd;
-                border-top: 1px solid #ddd;
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
+
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
             }
 
-            .article-block .itable th {
-                background: #eeeeee;
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
             }
 
-            .article-block .itable tr:first-child > th {
-                border-top: none;
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
+
+
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
+
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block .ta-j {
+            text-align: justify;
+        }
+
+        .article-block .attention-block {
+            margin: 20px;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+            .article-block .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+            .article-block .attention-block p:last-child {
+                margin-bottom: 0;
             }
 
-                .article-block .itable td:first-child,
-                .article-block .itable tr:first-child > th:first-child {
-                    border-left: none;
-                }
-                /* из-за background */
-                .article-block .itable tr:first-child > th:first-child {
-                    border-top-left-radius: 5px;
-                }
-
-                .article-block .itable tr:first-child > th:last-child {
-                    border-top-right-radius: 5px;
-                }
+        .article-block .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+            .article-block .attention-block-info h4 {
+                color: #5bc0de;
+            }
 
         .article-block .attention {
             padding: 16px 10px;
@@ -155,23 +241,19 @@
             color: #999;
         }
 
-        .article-block .ta-c {
-            text-align: center;
-        }
-
         .article-block .b {
             font-weight: bold;
         }
 
         .article-block .notb {
-            font-weight: normal;
+            font-weight: 100;
         }
 </style>
 
 <article class="article-block">
     <h1>Індивідуальний податковий номер (ІПН)</h1>
     <p>Зміст:</p>
-    <ol>
+    <ol class="content-art">
         <li>
             <a href="" ng-click="gotoAnchor(1)">
                 Що таке ІПН
@@ -204,7 +286,7 @@
         </li>
         <li>
             <a href="" ng-click="gotoAnchor(7)">
-                Посилання на Закон
+                Посилання на законодавство
             </a>
         </li>
     </ol>
@@ -268,7 +350,7 @@
     </p>
     <h3>Результат реєстрації індивідуального податкового номера</h3>
     <p>
-        Після реєстрації, видається картка платника податків у вигляді <a href="http://zakon3.rada.gov.ua/laws/file/text/21/f415494n297.doc">документа</a>, який включає в себе такі реквізити:
+        Після реєстрації, видається картка платника податків у вигляді <a href="http://zakon3.rada.gov.ua/laws/file/text/21/f415494n297.doc" target="_blank">документа</a>, який включає в себе такі реквізити:
     </p>
     <ul>
         <li>П.І.Б одержувача;</li>
@@ -375,7 +457,7 @@
 
                     <div class="row" id="rInfo">
                         <div class="alert alert-info">
-                            Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильсті надонного Вам персонального номеру
+                            Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильності наданого Вам персонального номеру
                         </div>
                     </div>
                 </div>
@@ -386,7 +468,7 @@
     <h1 id="anchor7">Посилання на законодавство</h1>
     <ol>
         <li>
-            <a href="http://zakon3.rada.gov.ua/laws/show/z2211-13/page">Положення про реєстрацію фізичних осіб у Державному Реєстрі фізичних осіб - платників податків</a>
+            <a href="http://zakon3.rada.gov.ua/laws/show/z2211-13/page" target="_blank">Положення про реєстрацію фізичних осіб у Державному Реєстрі фізичних осіб - платників податків</a>
         </li>
     </ol>
 </article>

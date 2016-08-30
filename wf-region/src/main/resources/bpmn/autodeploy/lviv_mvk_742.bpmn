@@ -8,21 +8,18 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" required="true" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sPlaceLive" name="Місце реєстрації;(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування);(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sYear" name="Вкажіть потрібний рік (роки) витягу з господарської книги" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpouse" name="Для чого необхідний витяг?" type="string" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканована копія ІПН" type="file" required="true"></activiti:formProperty>
-      
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -38,11 +35,14 @@
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sYear" name="Вкажіть потрібний рік (роки) витягу з господарської книги; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPurpouse" name="Для чого необхідний витяг?; ;writable=false" type="string"></activiti:formProperty>
-            <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
+        <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="запросити людину для отримання витягу"></activiti:value>
-          <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="reject" name="відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateVisit" name="Вкажіть дату і час - коли прийти громадянину за витягом, у разі потреби - додаткові відомості щодо візиту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'запросити людину для отримання витягу'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Внесіть, будь ласка, причину відхилення звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію витягу" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -55,7 +55,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Видача витягів з господарської книги]]></activiti:string>
@@ -74,7 +74,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -97,9 +97,18 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="повідомлення громадянина про готовність довідки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="повідомлення громадянина про готовність довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -117,6 +126,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Витяг з господарської книги готов.
+Вам призначено дату і час візиту для отримання витягу - ${sDateVisit}.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг собисто.&lt;br /&gt;
 Сканована копія знаходиться у додатку до листа.&lt;br /&gt;
 &lt;br /&gt;
@@ -131,6 +141,15 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
