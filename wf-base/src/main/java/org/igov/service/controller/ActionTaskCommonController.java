@@ -2470,7 +2470,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
     public @ResponseBody
-    void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def) {
+    void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = true) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
+            @ApiParam(value = "лимит количества заявок для удаления", required = false) @RequestParam(value = "nLimitCountRowDeleted", required = false) String nLimitCountRowDeleted) {
         deleteProccess.closeProcess(sID_Process_Def);
     }
 
