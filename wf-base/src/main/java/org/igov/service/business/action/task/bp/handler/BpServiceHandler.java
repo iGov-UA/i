@@ -170,6 +170,7 @@ public class BpServiceHandler {
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
         mParam.put("data", mTaskParam.get("sDate_BP"));
+        mGuideTaskParamKey.put("data", "Дата БП");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sLoginAssigned", "sTaskId");
         mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
