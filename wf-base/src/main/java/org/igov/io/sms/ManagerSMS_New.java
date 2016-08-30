@@ -132,8 +132,8 @@ public class ManagerSMS_New {
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Ошибка при отправке SMS. http code:{}\nЗапрос:\n{}",
-			    oHttpURLConnection.getResponseCode(), stringSmsReqest);
+		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\nhttp code:{}\n",
+			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
 	} catch (MalformedURLException e) {
