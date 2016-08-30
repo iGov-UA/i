@@ -39,7 +39,11 @@ public class DeleteProccess implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         String processDefinitionKeyValue = getStringFromFieldExpression(this.processDefinitionKey, execution);
-        //if (generalConfig.isSelfTest()) {
+        closeProcess(processDefinitionKeyValue);
+    }
+    
+    public void closeProcess(String processDefinitionKeyValue){
+    //if (generalConfig.isSelfTest()) {
         //List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
         ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
         if (processDefinitionKeyValue == null || "".equals(processDefinitionKeyValue.trim())

@@ -66,6 +66,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
@@ -111,7 +112,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private ProcessHistoryDao processHistoryDao;
     
     @Autowired
-    QueryLoader queryLoader;
+    private QueryLoader queryLoader;
+    
+    @Autowired
+    private DeleteProccess deleteProccess;
 
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
      @ResponseBody
@@ -2458,6 +2462,13 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
             result.put(ex.getMessage(), 1);
         }
         return result;
+    }
+    
+    @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
+    @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
+    public @ResponseBody
+    void closeProcess( @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def) {
+          deleteProccess.closeProcess(sID_Process_Def);
     }
 
 }
