@@ -1135,7 +1135,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
-            HttpServletResponse httpResponse) throws IOException {
+            HttpServletResponse httpResponse) throws IOException, CommonServiceException {
 
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
@@ -1303,15 +1303,15 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
             oMail._Head(sSubject);
             oMail._Body(sSubject);
             oMail._Attach(oDataSource, sTaskDataFileName, "");
-            try {
-                if (!oMail.sendWithUniSender()) {
-                    LOG.error("Error occured while sending tasks data to email!!!");
-                }
-            } catch (Exception e) {
-                LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
+            if (!oMail.sendWithUniSender()) {
+                LOG.error("Error occured while sending tasks data to email!!!");
+                pi.close();
+                throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Error occured while sending tasks data to email!!!");
+            } else{
+                pi.close();
             }
-            pi.close();
-
             httpResponse.setContentType("text/plain");
             httpResponse.getWriter().print("OK");
         }
