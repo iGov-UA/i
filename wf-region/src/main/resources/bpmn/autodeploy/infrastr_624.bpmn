@@ -141,7 +141,7 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var nat=execution.getVariable('sAreabirthNotUkr')+" / "+execution.getVariable('sAreabirthEng')
+var nat=execution.getVariable('sNationalityUkr')+" / "+execution.getVariable('sNationalityEn')
 execution.setVariable('sNationality', nat)
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
@@ -353,7 +353,7 @@ else
     {
         if ((month!='02'))
           {
-              month=month+1
+              month=month-(-1)
               day=day-(-delta)-30
           }
         else
@@ -482,6 +482,8 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -621,7 +623,7 @@ execution.setVariable('sID_Payment', Pay)
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										${slabelSum}<br>
-										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
 									</p>
@@ -672,7 +674,7 @@ else
     {
         if ((month!='02'))
           {
-              month=month+1
+              month=month-(-1)
               day=day-(-delta)-30
           }
         else
@@ -735,7 +737,9 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення (вводити без пробілу)" type="string" default="AB" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
