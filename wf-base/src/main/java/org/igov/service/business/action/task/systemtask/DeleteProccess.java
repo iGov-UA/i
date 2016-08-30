@@ -36,7 +36,7 @@ public class DeleteProccess implements JavaDelegate {
 
     public Expression processDefinitionKey;
     
-    private int limitCountRowDeleted = 20;
+    private int limitCountRowDeleted = 200000;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -71,7 +71,7 @@ public class DeleteProccess implements JavaDelegate {
                 countRowDeleted++;
             }
             LOG.info("processInstances processInstanceQuery size: " + processInstances.size() + " countRowDeleted: " + countRowDeleted + " success!");
-            index = ++index + size;
+            //index = ++index + size;
         } while (!processInstances.isEmpty() && countRowDeleted <= limitCountRowDeleted);
         LOG.info("FINISHED!!! processInstances processInstanceQuery size: countRowDeleted: " + countRowDeleted);
 
