@@ -97,7 +97,7 @@ public class ManagerSMS_New {
 	LOG.info("sURL={}", sURL_Send);
 	LOG.debug("Запрос:\n{}", stringSmsReqest);
 
-	HttpURLConnection oHttpURLConnection = null;
+//	HttpURLConnection oHttpURLConnection = null;
 	String sessionId;
 	    
 	try {
@@ -111,52 +111,51 @@ public class ManagerSMS_New {
 
 	LOG.info("Retrieved Session ID: {}", sessionId);
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
-//        headers.set("Content-Type", "application/json; charset=utf-8");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+        headers.set("Content-Type", "application/json; charset=utf-8");
+
+        ret = new RestRequest().post(sURL_Send, stringSmsReqest, null, StandardCharsets.UTF_8, String.class, headers);
+	
+//	try {
+//	    URL oURL = new URL(sURL_Send);
+//	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
+//	    oHttpURLConnection.setRequestMethod("POST");
+//	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+//	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+//	    oHttpURLConnection.setDoOutput(true);
 //
-//        ret = new RestRequest().get(sURL_Send, null, StandardCharsets.UTF_8, String.class, headers);
-	
-	
-	try {
-	    URL oURL = new URL(sURL_Send);
-	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
-	    oHttpURLConnection.setDoOutput(true);
-
-	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-		oDataOutputStream.writeBytes(stringSmsReqest);
-		oDataOutputStream.flush();
-		oDataOutputStream.close();
-
-		try (BufferedReader oBufferedReader = new BufferedReader(
-			new InputStreamReader(oHttpURLConnection.getInputStream()))) {
-		    StringBuilder os = new StringBuilder();
-		    String s;
-		    while ((s = oBufferedReader.readLine()) != null) {
-			os.append(s);
-		    }
-		    ret = os.toString();
-		} catch (java.io.FileNotFoundException e) {
-		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
-			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\nhttp code:{}\n",
-			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
-		}
-	    }
-	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
-	    ret = e.getMessage();
-	} catch (IOException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
-	    ret = e.getMessage();
-	} finally {
-	    if (oHttpURLConnection != null) {
-		oHttpURLConnection.disconnect();
-	    }
-	}
+//	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
+//		oDataOutputStream.writeBytes(stringSmsReqest);
+//		oDataOutputStream.flush();
+//		oDataOutputStream.close();
+//
+//		try (BufferedReader oBufferedReader = new BufferedReader(
+//			new InputStreamReader(oHttpURLConnection.getInputStream()))) {
+//		    StringBuilder os = new StringBuilder();
+//		    String s;
+//		    while ((s = oBufferedReader.readLine()) != null) {
+//			os.append(s);
+//		    }
+//		    ret = os.toString();
+//		} catch (java.io.FileNotFoundException e) {
+//		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
+//			    oHttpURLConnection.getResponseCode());
+//		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\nhttp code:{}\n",
+//			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
+//		}
+//	    }
+//	} catch (MalformedURLException e) {
+//	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+//	    ret = e.getMessage();
+//	} catch (IOException e) {
+//	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+//	    ret = e.getMessage();
+//	} finally {
+//	    if (oHttpURLConnection != null) {
+//		oHttpURLConnection.disconnect();
+//	    }
+//	}
 
 	LOG.info("Ответ:\n{}", ret);
 
