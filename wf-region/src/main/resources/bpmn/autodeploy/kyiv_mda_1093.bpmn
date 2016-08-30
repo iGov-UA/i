@@ -166,7 +166,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки">
+    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -712,11 +712,11 @@
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOrderSchedule" name="Наказ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sControlOrganizationName" name="Найменування органу державного архітектурно-будівельного контролю (місцезнаходження, телефон, електронна адреса)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileDirection" name="Направлення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileDirection" name="Направлення" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asNumberOfPersons" name="Кількість осіб, які здійснюють перевірку" type="enum">
           <activiti:value id="sEnumPersons_1" name="1"></activiti:value>
           <activiti:value id="sEnumPersons_2" name="2"></activiti:value>
