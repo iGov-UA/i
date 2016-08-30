@@ -60,6 +60,13 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression sCity;
     private Expression sID_Document;
     private Expression sDateAppeal;
+    private Expression bOrganization;
+    private Expression sCompanyName;
+    private Expression sID_EDRPOU;
+    private Expression sBossFirstLastName;
+    private Expression sDateDocIncoming;
+    private Expression sNumberDocIncoming;
+    
 
     @Autowired
     GeneralConfig generalConfig;
@@ -95,21 +102,29 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
                 String sZipCodeValue = getStringFromFieldExpression(this.sZipCode, execution);
                 String sCityValue = getStringFromFieldExpression(this.sCity, execution);
-                String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
-                String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
-                String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
-                String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);;
+                String bankIdlastNameValue = getStringFromFieldExpression(this.bankIdlastName, execution);
+                String bankIdfirstNameValue = getStringFromFieldExpression(this.bankIdfirstName, execution);
+                String bankIdmiddleNameValue = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+                String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);
+                String bOrganizationValue = getStringFromFieldExpression(this.bOrganization, execution);
+                String sCompanyNameValue = getStringFromFieldExpression(this.sCompanyName, execution);
+                String sID_EDRPOUValue = getStringFromFieldExpression(this.sID_EDRPOU, execution);
+                String sBossFirstLastNameValue = getStringFromFieldExpression(this.sBossFirstLastName, execution);
+                String sDateDocIncomingValue = getStringFromFieldExpression(this.sDateDocIncoming, execution);
+                String sNumberDocIncomingValue = getStringFromFieldExpression(this.sNumberDocIncoming, execution);
+                
                 String shortFIO = "_", fullIO = "_";
                 sID_Order_GovPublicValue = runtimeService.hasVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC)?
                 		 (String)runtimeService.getVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC):"";
-                LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
+                LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastNameValue:{}, bankIdfirstNameValue:{}, bankIdmiddleNameValue:{}", 
+                        sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastNameValue, bankIdfirstNameValue, bankIdmiddleNameValue);
 
-                if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
-                        && bankIdfirstName.length() > 0 && bankIdmiddleName.length() > 0) {
-                    fullIO = new StringBuilder(bankIdfirstName).append(" ").append(bankIdmiddleName).toString();
-                    shortFIO = new StringBuilder(bankIdlastName).append(". ")
-                            .append(bankIdfirstName.substring(0, 1)).append(". ")
-                            .append(bankIdmiddleName.substring(0, 1)).append(".").toString();
+                if (bankIdlastNameValue != null && bankIdfirstNameValue != null && bankIdmiddleNameValue != null
+                        && bankIdfirstNameValue.length() > 0 && bankIdmiddleNameValue.length() > 0) {
+                    fullIO = new StringBuilder(bankIdfirstNameValue).append(" ").append(bankIdmiddleNameValue).toString();
+                    shortFIO = new StringBuilder(bankIdlastNameValue).append(". ")
+                            .append(bankIdfirstNameValue.substring(0, 1)).append(". ")
+                            .append(bankIdmiddleNameValue.substring(0, 1)).append(".").toString();
                 }
 
                 List<Attachment> attachments = new LinkedList<Attachment>();
@@ -155,7 +170,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
                 Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
                         attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
-                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue);
+                        sDepartNameFullValue, sSexValue, sAddressValue, sZipCodeValue, sCityValue, sDateAppealValue,
+                        bOrganizationValue, sCompanyNameValue, sID_EDRPOUValue, sBossFirstLastNameValue, sDateDocIncomingValue, sNumberDocIncomingValue);
 
                 JSONObject json = new JSONObject();
                 json.putAll(urkDocRequest);
