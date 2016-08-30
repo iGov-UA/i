@@ -60,6 +60,8 @@
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc" name="Реестр Файлов-додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc_table" name="Реестр Файлов-додатків у вигляді таблиці" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_12.json')}"></activiti:formProperty>
@@ -118,6 +120,8 @@
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc" name="Реестр Файлов-додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc_table" name="Реестр Файлов-додатків у вигляді таблиці" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_2.json')}"></activiti:formProperty>
@@ -186,6 +190,8 @@
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc" name="Реестр Файлов-додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc_table" name="Реестр Файлов-додатків у вигляді таблиці" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="формулювання у email додаткового додатку (М 1:500)" type="invisible"></activiti:formProperty>
@@ -255,6 +261,8 @@
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc" name="Реестр Файлов-додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_doc_table" name="Реестр Файлов-додатків у вигляді таблиці" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="формулювання у email додаткового додатку (М 1:500)" type="invisible"></activiti:formProperty>
@@ -426,6 +434,92 @@ if (execution.getVariable('asPurpose') == 'restructuring'){
 per3 = 'переоформити дозвіл на розміщення зовнішньої реклами'
 }
 execution.setVariable('sPf_Part', per3)
+
+var per1=1
+var per2=' '
+var per2_table=' '
+var table_td1='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td2='&lt;td style="border:1px solid #000000" colspan="3" height="40" align="LEFT" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td3='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td4='&lt;td style="border:1px solid #000000" height="40" align="CENTER" valign="CENTER"&gt; &lt;font size="3" face="Times New Roman" color="#000000"&gt;'
+var table_td_close='&lt;/font&gt;&lt;/td&gt;'
+
+if (execution.getVariable('nFile_PlacePhoto') != null)
+{
+		per2 = per2 + per1.toString()+". Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Advert') != null)
+{
+		per2 = per2 + per1.toString()+". Ескіз рекламного засобу з конструктивним рішенням. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Ескіз рекламного засобу з конструктивним рішенням."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Roztashuvannya_M1_500') != null)
+{
+		per2 = per2 + per1.toString()+". Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500). &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_PravoVlasnist') != null)
+{
+		per2 = per2 + per1.toString()+". Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Original_Dozvolu') != null)
+{
+		per2 = per2 + per1.toString()+". Оригінал попереднього дозволу. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Оригінал попереднього дозволу."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_SchemePlace') != null)
+{
+		per2 = per2 + per1.toString()+". Схема розміщення рекламного засобу. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Схема розміщення рекламного засобу."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Dogovor') != null)
+{
+		per2 = per2 + per1.toString()+". Договор пріоритету на місце розташування. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Договор пріоритету на місце розташування."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Rekvizity') != null)
+{
+		per2 = per2 + per1.toString()+". Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+if (execution.getVariable('nFile_Prioritet') != null)
+{
+		per2 = per2 + per1.toString()+". Пріоритет на розміщення зовнішньої реклами. &lt;br&gt;"
+		per2_table = per2_table + "&lt;tr&gt;" + table_td1 + per1.toString() + ". " + table_td_close + table_td2 + 
+					"Пріоритет на розміщення зовнішньої реклами."
+					+ table_td_close + table_td3 + " " + table_td_close + table_td4 + " " + table_td_close + "&lt;/tr&gt;"   
+		per1 = per1 + 1
+}
+
+execution.setVariable('sAdd_doc', per2)
+execution.setVariable('sAdd_doc_table', per2_table)
+
     </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
