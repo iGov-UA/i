@@ -249,13 +249,18 @@ public class BpServiceHandler {
             final Map<String, Object> mTaskVariable, String prefix) {
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
+        LOG.info("saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
         if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
+            LOG.info("!!!!!!!!!!saCandidateCroupToCheck: "+saCandidateCroupToCheck);
             Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
+                LOG.info("!!!!!!!!!!mTaskVariable: "+mTaskVariable);
                 HistoricTaskInstance oHistoricTaskInstance = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
                         .singleResult();
+                LOG.info("!!!!!!!!!!oHistoricTaskInstance: "+oHistoricTaskInstance + "oHistoricTaskInstance.getProcessVariables(): " + oHistoricTaskInstance.getProcessVariables());
                 if (oHistoricTaskInstance != null && oHistoricTaskInstance.getProcessVariables() != null) {
                     mProcessVariable = oHistoricTaskInstance.getProcessVariables();
                 }
@@ -276,12 +281,13 @@ public class BpServiceHandler {
                         }
                     }
                     asCandidateGroupNew.add(prefix + sCandidateGroupNew);
+                    LOG.info("!!!!!!!!!!prefix+sCandidateGroupNew: "+prefix+sCandidateGroupNew);
                 }
                 asCandidateCroupToCheck = asCandidateGroupNew;
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
             }
         }
-        LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
+        LOG.info("!!!!!!!!!!saCandidateCroupToCheck={}", saCandidateCroupToCheck);
         return asCandidateCroupToCheck;
     }
 
