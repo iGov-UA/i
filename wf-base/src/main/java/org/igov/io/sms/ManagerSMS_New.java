@@ -7,15 +7,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,7 +47,7 @@ public class ManagerSMS_New {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMSNew().trim();
+	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
@@ -108,6 +111,13 @@ public class ManagerSMS_New {
 
 	LOG.info("Retrieved Session ID: {}", sessionId);
 
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+//        headers.set("Content-Type", "application/json; charset=utf-8");
+//
+//        ret = new RestRequest().get(sURL_Send, null, StandardCharsets.UTF_8, String.class, headers);
+	
+	
 	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
@@ -132,8 +142,8 @@ public class ManagerSMS_New {
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Ошибка при отправке SMS. http code:{}\nЗапрос:\n{}",
-			    oHttpURLConnection.getResponseCode(), stringSmsReqest);
+		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\nhttp code:{}\n",
+			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
 	} catch (MalformedURLException e) {
