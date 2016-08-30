@@ -109,8 +109,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
                 String sDateAppealValue = getStringFromFieldExpression(this.sDateAppeal, execution);;
                 String shortFIO = "_", fullIO = "_";
-                sID_Order_GovPublicValue = runtimeService.hasVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC)?
-                		 (String)runtimeService.getVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC):"";
+                //sID_Order_GovPublicValue = runtimeService.hasVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC)?
+                //		 (String)runtimeService.getVariable(execution.getProcessInstanceId(), ProcessCountTaskListener.S_ID_ORDER_GOV_PUBLIC):"";
                 LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
                 if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
