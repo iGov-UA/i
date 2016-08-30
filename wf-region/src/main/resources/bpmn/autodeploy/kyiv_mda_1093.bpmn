@@ -751,7 +751,12 @@
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask8"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="usertask8" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask9" name="Temporary UserTask for UploadFiles"></userTask>
+    <userTask id="usertask9" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_boss_permit">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="bankIdlastName" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <serviceTask id="servicetask5" name="Лист директору ДАБК для ознайомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -1022,11 +1027,8 @@
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sPaymentDate" name="Дата сплати" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileReceipt" name="Квитанція" type="file" required="true"></activiti:formProperty>
-        
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -1034,7 +1036,6 @@
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
-
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask10" targetRef="parallelgateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
@@ -1083,7 +1084,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileAppeal" name="Оскарження" type="file" required="true"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
