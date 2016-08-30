@@ -22,6 +22,7 @@
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо Хмель" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocRegistration&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'cnap_hmel_hmelT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="призначення дати обстеження житлових умов" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -36,23 +37,23 @@
         <activiti:formProperty id="sAdresResidence" name="Адреса, за якою треба провести обстеження умов проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Укажіть причину обстеження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="результат обробки вхідних данних" type="enum" required="true">
-          <activiti:value id="accept" name="Заповнені дані вірні, призначено дату обстеження житлових умов"></activiti:value>
-          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="accept" name="Заповнені дані вірні, призначити дату обстеження житлових умов"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateVisit" name="Укажіть дату - коли буде відбуватися обстеження житлових умов (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTimeVisit" name="Укажіть час - о котрій буде відбуватися обстеження (наприклад 15:00)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVisit" name="Укажіть дату та час візиту - коли буде відбуватися обстеження житлових умов, у разі необхідності - додаткові відомості щодо візиту" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, призначити дату обстеження житлових умов'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_494_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_494_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${sDocRegistration}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${sDocRegistration}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -80,7 +81,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -89,20 +90,21 @@
           <activiti:string><![CDATA[Нове  звернення. Обстеження умов проживання громадян]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний колего!</b><br /><br />
+У черзі на обробку зареєстровано нове звернення.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -111,52 +113,33 @@
           <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо обстеження умов проживання отримано та буде опрацьовано протягом 5 робочих днів.&lt;br /&gt;
-Ви отримаєте додаткове повідомлення про дату та час проведення обстеження.&lt;br /&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</b><br /><br />
+Ваше звернення щодо обстеження умов проживання отримано та буде опрацьовано протягом 5 робочих днів.<br />
+Ви отримаєте додаткове повідомлення про дату та час проведення обстеження.<br />
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask5" name="лист з датою обстеження" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам призначено дату та час обстеження умов проживання: ${sDateVisit} ${sTimeVisit}&lt;br /&gt;
-${comment_3}&lt;br /&gt;
-До візиту підготуйте, будь ласка, оригінал довідки про склад сім'ї та реєстрацію або витяг з домової книги (якщо проживаєте у винайманому житлі – копію договору оренди).&lt;br /&gt;&lt;br /&gt;
-Також роздрукуйте і підпишіть заяву, яку Ви подавали в електронному вигляді (знаходиться у додатку до листа).&lt;br /&gt;&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="лист з датою обстеження Хмель" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -165,48 +148,133 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо обстеження умов проживання відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-${comment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</b><br /><br />
+Вам призначено дату та час обстеження умов проживання: ${sDateVisit}<br />
+До візиту підготуйте, будь ласка, оригінал довідки про склад сім'ї та реєстрацію або витяг з домової книги (якщо проживаєте у винайманому житлі – копію договору оренди).<br /><br />
+Також роздрукуйте і підпишіть заяву, яку Ви подавали в електронному вигляді (знаходиться у додатку до листа).<br /><br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Priznacheno datu vizitu posadovciv. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="лист з датою обстеження" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</b><br /><br />
+Вам призначено дату та час обстеження умов проживання: ${sDateVisit}<br />
+До візиту роздрукуйте і підпишіть заяву, яку Ви подавали в електронному вигляді (знаходиться у додатку до листа).<br /><br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Priznacheno datu vizitu posadovciv. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</b><br /><br />
+На жаль, Ваше звернення щодо обстеження умов проживання відхилено через недостатню або неправильну інформацію.<br />
+${comment_1}<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Обстеження умов проживання громадян]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen}</activiti:expression>
+          <activiti:expression><![CDATA[${rishen}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br />
+[pattern/mail/_common_header.html]
+<b>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</b><br /><br />
 Отримано результат обстеження житлових умов.
-${comment_1}&lt;br /&gt;
-Копія акту обстеження знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт собисто під підпис у центрі надання адміністративних послуг.&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+Копія акту обстеження знаходиться у додатку до листа.<br /><br />
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт собисто під підпис.<br />
+${sAddress}<br />
+${sPhoneOrgan}<br />
+${sWorkTime}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;	
+${sNameOrgan}<br />	
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -225,13 +293,17 @@ ${sNameOrgan}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept' && sID_Public_SubjectOrganJoin!='upszn366'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept' && sID_Public_SubjectOrganJoin=='upszn366'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_494">
     <bpmndi:BPMNPlane bpmnElement="hmel_cnap_494" id="BPMNPlane_hmel_cnap_494">
@@ -253,11 +325,14 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="276.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="102.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="182.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="235.0" y="112.0"></omgdc:Bounds>
@@ -272,7 +347,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="197.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="252.0" y="182.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="252.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -313,11 +388,19 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="252.0" y="276.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="245.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="305.0" y="53.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="53.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="373.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="292.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="276.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
