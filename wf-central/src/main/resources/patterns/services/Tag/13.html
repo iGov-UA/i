@@ -60,7 +60,7 @@
 
         if (res1.valid) {
             document.getElementById("validRow").className = "alert alert-success";
-            document.getElementById("validRow").innerHTML = "Поздоровляємо! Ваш ІПН відповідає вимогам";
+            document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
 
             document.getElementById("rBirthDay").style.visibility = 'visible';
             document.getElementById("rSex").style.visibility = 'visible';
@@ -96,7 +96,13 @@
             margin-bottom: 46px;
         }
 
-        .article-block .notmarker li {
+        .article-block .content-art ol,
+        .article-block .content-art ul
+         {
+            margin-bottom: 12px;
+        }
+
+        .article-block .notmarker>li {
             list-style-type: none; /* Убираем маркеры */
         }
 
@@ -203,6 +209,26 @@
             text-align: justify;
         }
 
+        .article-block .attention-block {
+            margin: 20px;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+            .article-block .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+            .article-block .attention-block p:last-child {
+                margin-bottom: 0;
+            }
+
+        .article-block .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+            .article-block .attention-block-info h4 {
+                color: #5bc0de;
+            }
 
         .article-block .attention {
             padding: 16px 10px;
@@ -227,7 +253,7 @@
 <article class="article-block">
     <h1>Індивідуальний податковий номер (ІПН)</h1>
     <p>Зміст:</p>
-    <ol>
+    <ol class="content-art">
         <li>
             <a href="" ng-click="gotoAnchor(1)">
                 Що таке ІПН
