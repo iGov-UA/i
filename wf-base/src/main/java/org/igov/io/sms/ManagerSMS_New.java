@@ -112,7 +112,7 @@ public class ManagerSMS_New {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("content-type", "application/json");
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
