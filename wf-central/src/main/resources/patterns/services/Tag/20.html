@@ -5,9 +5,17 @@
     }
 
         .article-block li {
-            margin: 16px 0;
+            margin: 10px 0;
         }
-        
+
+        .article-block ol,
+        .article-block ul {
+            margin-bottom: 46px;
+        }
+
+        .article-block .notmarker li {
+            list-style-type: none; /* Убираем маркеры */
+        }
 
         .article-block sup {
             color: #428bca;
@@ -19,6 +27,10 @@
             margin-top: 46px;
         }
 
+            .article-block h1.topic {
+                margin-top: 12px;
+            }
+
         .article-block a {
             color: #428bca;
         }
@@ -28,42 +40,86 @@
             font-size: 15.8333px;
         }
 
-        .article-block .itable {
+        .article-block table {
             border-spacing: 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            border-collapse: separate;
         }
 
-          .article-block .itable td, .itable th {
-                    padding: 16px 10px;
-                    vertical-align:central;
-                    border-left: 1px solid #ddd;
-                    border-top: 1px solid #ddd;
-                    font-size:10pt;
-                }
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
 
-            .article-block .itable th {
-                background: #eeeeee;
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
             }
 
-            .article-block .itable tr:first-child > th {
-                border-top: none;
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
             }
-            /*
-                .article-block .itable td:first-child,
-                .article-block .itable tr:first-child > th:first-child {
-                    border-left: none;
-                }
-                /**/
 
-                /* из-за background */
-                .article-block .itable tr:first-child > th:first-child {
-                    border-top-left-radius: 5px;
-                }
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
 
-                .article-block .itable tr:first-child > th:last-child {
-                    border-top-right-radius: 5px;
-                }
+
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
+
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block .ta-j {
+            text-align: justify;
+        }
+
 
         .article-block .attention {
             padding: 16px 10px;
@@ -76,16 +132,12 @@
             color: #999;
         }
 
-        .article-block .ta-c {
-            text-align: center;
-        }
-
         .article-block .b {
             font-weight: bold;
         }
 
         .article-block .notb {
-            font-weight: normal;
+            font-weight: 100;
         }
 </style>
 

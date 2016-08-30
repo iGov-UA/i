@@ -13,6 +13,10 @@
             margin-bottom: 46px;
         }
 
+        .article-block .notmarker li {
+            list-style-type: none; /* Убираем маркеры */
+        }
+
         .article-block sup {
             color: #428bca;
             font-size: 10.8333px;
@@ -43,36 +47,79 @@
             border-collapse: separate;
         }
 
-    .article-block th {
-                background: #eeeeee;
-                text-align: center;
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
+
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
             }
 
-            .article-block td,
-            .article-block th {
-                padding: 16px 10px;
-                vertical-align: central;
-                border-left: 1px solid #ddd;
-                border-top: 1px solid #ddd;
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
             }
 
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
 
-            .article-block tr:first-child > th {
-                border-top: none;
-            }
 
-                .article-block td:first-child,
-                .article-block tr:first-child > th:first-child {
-                    border-left: none;
-                }
-                /* из-за background */
-                .article-block tr:first-child > th:first-child {
-                    border-top-left-radius: 5px;
-                }
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
 
-                .article-block tr:first-child > th:last-child {
-                    border-top-right-radius: 5px;
-                }
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block .ta-j {
+            text-align: justify;
+        }
+
 
         .article-block .attention {
             padding: 16px 10px;
@@ -85,27 +132,6 @@
             color: #999;
         }
 
-        .article-block tr>td.ta-c,
-        .article-block .ta-c {
-            text-align: center;
-        }            
-
-        .article-block tr>td.ta-l,
-        .article-block .ta-l {
-            text-align: left;
-        }         
-
-        .article-block tr>td.ta-r,
-        .article-block .ta-r {
-            text-align: right;
-        }      
-
-        .article-block tr>td.ta-j,
-        .article-block .ta-j {
-            text-align: justify;
-        }
-
-
         .article-block .b {
             font-weight: bold;
         }
@@ -114,6 +140,7 @@
             font-weight: 100;
         }
 </style>
+
 <article class="article-block">
     <h1 class="topic">Як змінити ім’я, прізвище та по батькові</h1>
     <p>Зміст:</p>
