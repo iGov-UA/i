@@ -16,7 +16,7 @@ public class SMS_New {
 
     private String messageId = null;
     private String callbackUrl = null;
-    private String schemaId = "1";
+    private String schemaId = "4";
     private String addrPhone = null;
     private String typeSend = "online";
     private String typeCheck = "info";
