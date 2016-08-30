@@ -113,14 +113,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     QueryLoader queryLoader;
-    /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
-     @ResponseBody
-     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-     return exceptionController.catchActivitiRestException(new CommonServiceException(
-     ExceptionCommonController.BUSINESS_ERROR_CODE,
-     e.getMessage(), e,
-     HttpStatus.FORBIDDEN));
-     }*/
+     
+    @Autowired
+    private DeleteProccess deleteProccess;
+    
     @Autowired
     private ActionTaskService oActionTaskService;
 
