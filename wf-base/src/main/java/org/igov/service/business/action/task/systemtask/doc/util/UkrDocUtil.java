@@ -79,38 +79,42 @@ public class UkrDocUtil {
             String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig,
             String sID_Order_GovPublicValue, String sSourceChannelValue, String shortFIO, String fullIO,
             String sDepartNameFull, String sSex, String sAddress,
-            String sZipCode, String sPlace, String sDateAppealValue,
-            String bOrganizationValue, String sCompanyNameValue, String sID_EDRPOUValue, 
-            String sBossFirstLastNameValue, String sDateDocIncomingValue, String sNumberDocIncomingValue) {
+            String sZipCode, String sPlace, String sDateAppealValue
+            , Boolean bOrganization, String sCompanyName,String sID_EDRPOU, String sBossFirstLastName, String sDateDocIncoming, String sNumberDocIncoming
+    ) {
 
-        Map<String, Object> res = new LinkedHashMap<>();
+        Map<String, Object> res = new LinkedHashMap<String, Object>();
 
-        Map<String, Object> content = new LinkedHashMap<>();
+        Map<String, Object> content = new LinkedHashMap<String, Object>();
         content.put("name", sHeadValue);
         content.put("text", sBodyValue);
         content.put("paragraphs", new JSONArray());
 
         res.put("content", content);
 
-        Map<String, String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<String, String>();
         attributes.put("Автор", sLoginAuthorValue);
         attributes.put("Регистрационный номер заявки", sID_Order_GovPublicValue);
         attributes.put("Название канала", sSourceChannelValue);
         attributes.put("Краткое ФИО заявителя", shortFIO);
         attributes.put("Имя и отчество заявителя", fullIO);
         attributes.put("Полное название управления/департамента", sDepartNameFull);
+        //attributes.put("Пол заявителя", sSex);
+        //attributes.put("Адрес проживания", sAddress);
         attributes.put("Индекс", sZipCode);
         attributes.put("Населенный пункт", sPlace);
         attributes.put("Остальной адрес", sAddress);
         attributes.put("Дата заявки", sDateAppealValue);
         attributes.put("sHost", generalConfig.getSelfHost());
+
         
-        /*attributes.put("", bOrganizationValue);
-        attributes.put("", sCompanyNameValue);
-        attributes.put("", sID_EDRPOUValue);
-        attributes.put("", sBossFirstLastNameValue);
-        attributes.put("", sDateDocIncomingValue);
-        attributes.put("", sNumberDocIncomingValue);*/
+        attributes.put("Юридическое лицо", bOrganization+"");
+        attributes.put("Название юридического лица", sCompanyName);
+        attributes.put("ОКПО", sID_EDRPOU);
+        attributes.put("Имя, отчество должностного лица", sBossFirstLastName);
+        attributes.put("Дата документа юридического лица", sDateDocIncoming);
+        attributes.put("Номер документа юридического лица", sNumberDocIncoming);
+        
 
         Map<String, Object> extensions = new HashMap<String, Object>();
         if (attachmentsIds != null && !attachmentsIds.isEmpty()) {
