@@ -47,7 +47,7 @@ public class ManagerSMS_New {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
+	sURL_Send = generalConfig.getURL_Send_SMSNew().trim();
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
