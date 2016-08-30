@@ -415,8 +415,6 @@ public class Mail extends Abstract_Mail {
         try {
             sendOld();
         } catch (Exception oException1) {
-//=            LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
-            //try {
                 new Log(oException1, LOG)//this.getClass()
                         ._Case("Mail_FailAlter")
                         ._Status(Log.LogStatus.ERROR)
@@ -426,10 +424,6 @@ public class Mail extends Abstract_Mail {
                         ._Param("sbBody", sbBody)
                         .save()
                 ;
-                //msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
-            /*} catch (Exception e) {
-                LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
-            }*/
         }
     }
 

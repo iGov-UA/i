@@ -64,6 +64,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.apache.commons.mail.EmailException;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
@@ -1134,7 +1135,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
-            HttpServletResponse httpResponse) throws IOException, CommonServiceException {
+            HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
 
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
@@ -1302,7 +1303,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             oMail._Head(sSubject);
             oMail._Body(sSubject);
             oMail._Attach(oDataSource, sTaskDataFileName, "");
-            if (!oMail.sendWithUniSender()) {
+            try {
+                oMail.send();
+            } catch (EmailException ex) {
+                LOG.error("Error occured while sending tasks data to email!!!", ex);
+                throw ex;
+            } finally {
+                pi.close();
+            }
+
+            /*if (!oMail.sendWithUniSender()) {
                 LOG.error("Error occured while sending tasks data to email!!!");
                 pi.close();
                 throw new CommonServiceException(
@@ -1310,7 +1320,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         "Error occured while sending tasks data to email!!!");
             } else {
                 pi.close();
-            }
+            }*/
             httpResponse.setContentType("text/plain");
             httpResponse.getWriter().print("OK");
         }
