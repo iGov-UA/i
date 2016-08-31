@@ -12,23 +12,23 @@ get_change() {
  echo $new >> last_change_new_$sApp
  DIFF=$(diff -lq last_change_$sApp last_change_new_$sApp)
   if [[ "$DIFF" != "" ]]; then
+     if [[ '$sApp' == "central-js" ]] || [[ '$sApp' == "dashboard-js" ]]; then
      curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_"$sJob"/buildWithParameters?delay=0sec" 
-     echo 'Start Job' $sHost'_'$sJob 
-         if [[ "$sApp" == "wf-base" ]] || [[ "$sApp" == "storage-static" ]] || [[ "$sApp" == "storage-temp" ]]; then
-            touch 'no'
+     echo 'Start Job' $sHost'_'$sJob
+         elif [[ "$sApp" == "wf-base" ]] || [[ "$sApp" == "storage-static" ]] || [[ "$sApp" == "storage-temp" ]]; then
+            touch no
             curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_"$sJob"/buildWithParameters?delay=0sec" 
             echo 'Start Job' $sHost'_'$sJob
-                if [[ "$sApp" == "wf-central" ]] || [[ "$sApp" == "wf-region" ]]  && [[ ! -f 'no' ]]; then
+                elif [[ "$sApp" == "wf-central" ]] || [[ "$sApp" == "wf-region" ]]  && [[ ! -f no ]]; then
                     curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_"$sJob"/buildWithParameters?delay=0sec" 
                     echo 'Start Job' $sHost'_'$sJob 
                 fi
-          fi
-   
+          else
+          echo 'No Changes'
   fi
-
-rm ./no
 mv last_change_new_$sApp last_change_$sApp
 }
+rm no
 
  while read sLine; do
  if [[ -z $sLine ]] || [[ "$sLine" == "" ]] || [[ "$sLine" =~ ^#.* ]]; then continue; fi
