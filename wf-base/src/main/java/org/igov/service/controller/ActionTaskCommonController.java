@@ -2467,44 +2467,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return result;
     }
 
-    @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
-    @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Integer> removeOldProcess(@ApiParam(value = "ид процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "ид бизнес-процесса", required = false) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
-            @ApiParam(value = "дата закрытия процесса с ", required = true, defaultValue = "2010-01-01") @RequestParam(value = "sDateFinishAt", required = true, defaultValue = "2010-01-01") String sDateFinishAt,
-            @ApiParam(value = "дата закрытия процесса по ", required = true, defaultValue = "2050-01-01") @RequestParam(value = "sDateFinishTo", required = true, defaultValue = "2050-01-01") String sDateFinishTo,
-            HttpServletResponse httpResponse) throws org.igov.io.db.kv.statical.exceptions.RecordNotFoundException, CommonServiceException {
-        //получение через дао из таблички с файлами файлов
-        Map<String, Integer> result = new LinkedHashMap<>();
-        LOG.info("/removeProcess!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
-        try {
-            if (nID_Process == null && sID_Process_Def == null) {
-                throw new CommonServiceException("404", "You should at list add param nID_Process or nID_Process_Def");
-            } else {
-                for (Map.Entry<String, String> removeOldProcessQuery : queryLoader.getRemoveOldProcessQueries().entrySet()) {
-                    String removeOldProcessQueryValue;
-                    if (removeOldProcessQuery.getKey().startsWith("update") || removeOldProcessQuery.getKey().startsWith("delete_act_hi_procinst")) {
-                        removeOldProcessQueryValue = removeOldProcessQuery.getValue().replaceFirst("%s", sID_Process_Def)
-                                .replaceFirst("%dateAt", sDateFinishAt).replaceFirst("%dateTo", sDateFinishTo);
-                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
-                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                    } else {
-                        removeOldProcessQueryValue = removeOldProcessQuery.getValue();
-                    }
-                    result.put(removeOldProcessQueryValue, -1);
-                    LOG.info(removeOldProcessQueryValue + " ...");
-                    int countRowUpdated = processHistoryDao.removeOldProcess(removeOldProcessQueryValue, sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                    result.put(removeOldProcessQueryValue, countRowUpdated);
-                    LOG.info(removeOldProcessQueryValue + ": " + countRowUpdated + " success!");
-                }
-            }
-        } catch (Exception ex) {
-            LOG.error("!!!error: ", ex);
-            result.put(ex.getMessage(), 1);
-        }
-        return result;
-    }
 
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
