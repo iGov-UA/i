@@ -73,6 +73,7 @@ for sHost in $sHost_ARRAY; do
  fi
 
 done
+rm no
 mv last_change_new_$sApp last_change_$sApp
 }
 
@@ -81,4 +82,4 @@ while read sLine; do
   get_change $sLine
 done < $sSource 
 exit 0
-rm no
+
