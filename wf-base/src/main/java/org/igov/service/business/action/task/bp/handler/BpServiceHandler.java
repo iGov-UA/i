@@ -173,7 +173,7 @@ public class BpServiceHandler {
         
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sLoginAssigned", "sTaskId");
-        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sOrganName", mTaskParam.get("area"));
@@ -232,6 +232,7 @@ public class BpServiceHandler {
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
+    
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
