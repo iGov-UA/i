@@ -318,6 +318,9 @@
     var transfer_type = "[transfer_type]";
     var asAdress = "[asAdress]";
     var bankIdPassport = "[bankIdPassport]";
+    var nPage = "[nPage]";
+    var nDocument = "[nDocument]"
+    
     // */
     /*
     var asNumberApplication = "первинне";
@@ -666,6 +669,15 @@
         }
       }      // */
       
+      function isNumeric(n) {
+    	  return !isNaN(parseFloat(n)) && isFinite(n);
+    	}
+      
+      function NumberDocument(){
+    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
+    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
+      }
+      
       function ShowElements(sCondition) {
         for(var i=1; i < arguments.length; i++) {    
           if(sCondition){
@@ -965,11 +977,9 @@
       </div>
 
 
-
-
       <div class="ta-j">
-        <b>До заяви відповідно до законодавства додано <em>[nDocument]</em> 
-          документів на <em>[nPage]</em> аркушах:</b> 
+        <b>До заяви відповідно до законодавства додано <em><span id="spanDocument"></span></em> 
+          документів на <em><span id="spanPage"></span></em> аркушах:</b> 
       </div>
       <div class="ta-j">
         Прошу в разі призначення допомоги кошти готівкою перераховувати 
@@ -1253,7 +1263,8 @@
     </div>
     <script>    
     	ChangeParagrath();
-        
+    	NumberDocument();
+    	
         ShowElements(asNumberApplication == "первинне", "spanFirst");
         ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
         

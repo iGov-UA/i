@@ -523,9 +523,16 @@
           <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
           <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
+        
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
@@ -1723,6 +1730,12 @@
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
@@ -1870,6 +1883,24 @@ p {font-size: 14px;}
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
             <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bOrganization">
+            <activiti:expression><![CDATA[${bOrganization}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sCompanyName">
+            <activiti:expression><![CDATA[${sCompanyName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_EDRPOU">
+            <activiti:expression><![CDATA[${sID_EDRPOU}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBossFirstLastName">
+            <activiti:expression><![CDATA[${sBossFirstLastName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDateDocIncoming">
+            <activiti:expression><![CDATA[${sDateDocIncoming}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sNumberDocIncoming">
+            <activiti:expression><![CDATA[${sNumberDocIncoming}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSourceChannel">
             <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
