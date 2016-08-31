@@ -3,17 +3,24 @@
   <process id="kalush_minsoc_399" name="Заява про видачу (заміну) довідки дитина війни" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний Код" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность" type="string" default="Начальнику управління соціального захисту населення Калуської міської ради" readable="false" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву" type="string" default="п. Л.Федоришин" readable="false" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -27,29 +34,58 @@
     <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення по заявці про видачу (заміну) довідки «дитина війни»]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача (заміну) довідки «дитина війни»]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="Лист про замовлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему "Отримання (заміна) довідки "Дитина війни"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;
-&lt;/p&gt;
-[pattern/mail/_common_signature.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Ваше звернення №[sID_Order] щодо отримання (заміни) довідки "Дитина війни" зареєстроване. &lt;/p&gt;
+&lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:&lt;/p&gt;
+&lt;p&gt;${sNameOrgan}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Форма перевірки документів громадянина" activiti:candidateGroups="upszn234">
+    <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Назва УПСЗН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -58,216 +94,176 @@
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний Код" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
+        <activiti:formProperty id="sReason" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decision" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина, що довідка МОЖЕ бути надана"></activiti:value>
-          <activiti:value id="decline" name="Відмовити в дані довідки"></activiti:value>
+          <activiti:value id="reject" name="Відмовити в дані довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Вкажіть причину неможливості отримання послуги;Ця інформація буде відправлена на e-mail заявника *" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBodyClaim" name="[pattern/print/minsoc/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;На жаль, Ваше звернення №[sID_Order] щодо отримання  довідки "Дитина війни" було відхилено.&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;&lt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему "Видача (заміна) довідки "Дитина війни"</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Ваше звернення №[sID_Order] щодо отримання  довідки "Дитина війни" було розглянуто і схвалено.&lt;/p&gt;
+&lt;p&gt;Коментар працівника УПСЗН (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Запрошуємо отримати Вашу довідку:&lt;/p&gt;
+&lt;p&gt;${sNameOrgan}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;&lt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему "Видача (заміна) довідки "Дитина війни"</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow7" name="відхилення" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про видачу (заміну) довідки «дитина війни»]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-	&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-	&lt;p&gt;
-		На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-		При необхідності отримати &lt;b&gt;Довідку «дитина війни»&lt;/b&gt; Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;, врахувавши коментар Державного службовця.
-	&lt;/p&gt; 
-	&lt;p&gt;
-		Коментар Державного службовця:&lt;br&gt;
-			&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-	&lt;/p&gt;
-	&lt;p&gt;
-		За додатковою інформацієї ви можете звернутись:&lt;br&gt;
-
-	&lt;/p&gt;
-		[pattern/mail/_common_signature_start.html]
-		Управління соціального захисту населення Калуської міської ради,&lt;br&gt;
-		[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow8" name="документи ок" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask2" name="Документи ОК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про видачу (заміну) довідки «дитина війни»]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-    &lt;p&gt;
-    	Ваш запит був успішно зареєстрований у нашій системі, вхідні дані переглянуті і Ваша заявка взята в роботу.
-	&lt;/p&gt;
-	&lt;p&gt;
-		Спеціалісти оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти у обраний час. 
-	&lt;/p&gt;
-	[pattern/mail/_common_signature_start.html]
-	Управління соціального захисту населення Калуської міської ради,&lt;br&gt;
-	[pattern/mail/_common_signature_end.html]   
-	[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Рішення" activiti:candidateGroups="upszn234">
-      <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний Код" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="aResultComment" name="Зазначте дату отримання довідки;Ця інформація буде відправлена на e-mail заявника *" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBodyClaim" name="[pattern/print/minsoc/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про видачу (заміну) довідки «дитина війни»]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-	&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-	&lt;p&gt;
-	    Спеціалісти успішно опрацювли Вашу заяву.&lt;br&gt;
-		Коментар Державного службовця:&lt;br&gt;
-			&lt;b&gt;&lt;i&gt;${aResultComment}&lt;/i&gt;&lt;/b&gt;
-	&lt;/p&gt;
-	&lt;p&gt;                                    	
-		Ви можете отримати вашу &lt;b&gt;Довідку «дитина війни»&lt;/b&gt; за адресою:&lt;br&gt;
-
-	&lt;/p&gt;
-		[pattern/mail/_common_signature_start.html]
-		Управління соціального захисту населення Калуської міської ради,&lt;br&gt;
-		[pattern/mail/_common_signature_end.html]  
-		Управління соціального захисту населення Калуської міської ради,&lt;br&gt;</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kalush_minsoc_399">
     <bpmndi:BPMNPlane bpmnElement="kalush_minsoc_399" id="BPMNPlane_kalush_minsoc_399">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="34.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="80.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="160.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="80.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="157.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="125.0" x="339.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="125.0" x="222.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="59.0" width="115.0" x="531.0" y="108.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="568.0" y="207.0"></omgdc:Bounds>
+        <omgdc:Bounds height="59.0" width="136.0" x="521.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="61.0" width="149.0" x="300.0" y="197.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="121.0" x="528.0" y="293.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="293.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="149.0" x="680.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="149.0" x="100.0" y="293.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="149.0" x="680.0" y="164.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="670.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="126.0" x="370.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="69.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="175.0" y="168.0"></omgdi:waypoint>
-        <omgdi:waypoint x="174.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="95.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="128.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="265.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="339.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="211.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="464.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="531.0" y="137.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="657.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="588.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="588.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="754.0" y="109.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="568.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="449.0" y="227.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="464.0" y="210.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="300.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="192.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="754.0" y="164.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="588.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="588.0" y="293.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="590.0" y="259.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="829.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="907.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="528.0" y="320.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="320.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="829.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="907.0" y="155.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="330.0" y="320.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="174.0" y="293.0"></omgdi:waypoint>
-        <omgdi:waypoint x="174.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="496.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="521.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
