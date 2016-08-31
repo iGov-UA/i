@@ -32,6 +32,10 @@ import javax.xml.datatype.Duration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Map.Entry;
+import org.activiti.engine.FormService;
+import org.activiti.engine.form.FormProperty;
+import org.igov.service.business.action.task.form.QueueDataFormType;
 
 /**
  * User: goodg_000
@@ -49,6 +53,7 @@ public class FlowService implements ApplicationContextAware {
     @Autowired
     private FlowSlotDao flowSlotDao;
 
+    
     @Autowired
     @Qualifier("flowPropertyDao")
     private GenericEntityDao<Long, FlowProperty> flowPropertyDao;
@@ -78,6 +83,9 @@ public class FlowService implements ApplicationContextAware {
     @Autowired
     private ActionTaskService actionTaskService;
 
+    @Autowired
+    private FormService oFormService;
+    
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -360,47 +368,91 @@ public class FlowService implements ApplicationContextAware {
 
     
     
-    public void addFlowSlowTicketToResult(List<Map<String, String>> res,
-            SimpleDateFormat dateFormat, FlowSlotTicket currFlowSlowTicket,
-            Task tasksByActivitiID) {
-        Map<String, String> currRes = new HashMap<String, String>();
+    public void addFlowSlowTicketToResult(List<Map<String, String>> amReturn, SimpleDateFormat oDateFormat
+            , FlowSlotTicket oFlowSlotTicket
+            , Task oTask) {
+        Map<String, String> m = new HashMap<>();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Adding flow slot ticket: ");
-        sb.append(currFlowSlowTicket.getId());
-        sb.append(":");
-        sb.append(currFlowSlowTicket.getnID_Subject());
-        sb.append(":");
-        sb.append(currFlowSlowTicket.getsDateStart());
-        sb.append(":");
-        sb.append(currFlowSlowTicket.getsDateFinish());
-        LOG.info("{}", sb.toString());
+        StringBuilder os = new StringBuilder();
+        os.append("Adding flow slot ticket(oFlowSlotTicket): ");
+        os.append("getId()=");
+        os.append(oFlowSlotTicket.getId());
+        os.append(",getnID_Subject()=");
+        os.append(oFlowSlotTicket.getnID_Subject());
+        os.append(",getsDateStart()=");
+        os.append(oFlowSlotTicket.getsDateStart());
+        os.append(",getsDateFinish()=");
+        os.append(oFlowSlotTicket.getsDateFinish());
+        LOG.info("{}", os.toString());
 
-        currRes.put("nID", currFlowSlowTicket.getId().toString());
-        currRes.put("nID_FlowSlot", !currFlowSlowTicket.getaFlowSlot().isEmpty() ?
-                currFlowSlowTicket.getaFlowSlot().get(0).getId().toString() : "");
-        currRes.put("nID_Subject", currFlowSlowTicket.getnID_Subject().toString());
-        Date startDate = new Date(currFlowSlowTicket.getsDateStart().getMillis());
-        currRes.put("sDateStart", dateFormat.format(startDate));
-        Date finishDate = new Date(currFlowSlowTicket.getsDateFinish().getMillis());
-        currRes.put("sDateFinish", dateFormat.format(finishDate));
-        Date editDate = new Date(currFlowSlowTicket.getsDateEdit().getMillis());
-        currRes.put("sDateEdit", dateFormat.format(editDate));
+        m.put("nID", oFlowSlotTicket.getId().toString());
+        m.put("nID_FlowSlot", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
+                oFlowSlotTicket.getaFlowSlot().get(0).getId().toString() : "");
+        m.put("nID_Subject", oFlowSlotTicket.getnID_Subject().toString());
+        Date oDateStart = new Date(oFlowSlotTicket.getsDateStart().getMillis());
+        m.put("sDateStart", oDateFormat.format(oDateStart));
+        Date oDateFinish = new Date(oFlowSlotTicket.getsDateFinish().getMillis());
+        m.put("sDateFinish", oDateFormat.format(oDateFinish));
+        Date oDateEdit = new Date(oFlowSlotTicket.getsDateEdit().getMillis());
+        m.put("sDateEdit", oDateFormat.format(oDateEdit));
 
-        currRes.put("nID_Task_Activiti", tasksByActivitiID.getId());
+        m.put("nID_Task_Activiti", oTask.getId());
 
-        currRes.put("name", tasksByActivitiID.getName());
-        currRes.put("id", tasksByActivitiID.getId());
-        currRes.put("assignee", tasksByActivitiID.getAssignee());
-        currRes.put("nID_Instance", tasksByActivitiID.getProcessInstanceId());
+        m.put("name", oTask.getName());
+        m.put("id", oTask.getId());
+        m.put("assignee", oTask.getAssignee());
+        m.put("nID_Instance", oTask.getProcessInstanceId());
 
-        currRes.put("sUserTaskName", tasksByActivitiID.getName());
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(tasksByActivitiID.getProcessDefinitionId()).singleResult();
-        currRes.put("sNameBP", processDefinition != null ? processDefinition.getName() : "");
-        currRes.put("sTaskDate", dateFormat.format(tasksByActivitiID.getCreateTime()));
-        res.add(currRes);
+        m.put("sUserTaskName", oTask.getName());
+        ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(oTask.getProcessDefinitionId()).singleResult();
+        m.put("sNameBP", oProcessDefinition != null ? oProcessDefinition.getName() : "");
+        m.put("sTaskDate", oDateFormat.format(oTask.getCreateTime()));
+        amReturn.add(m);
     }
+    
+    public void addFlowSlowTicketToResult_DMS(List<Map<String, String>> amReturn, SimpleDateFormat oDateFormat
+            , String sTicket_Number, String sTicket_Code, String sDate
+            , Task oTask) {
+        Map<String, String> m = new HashMap<>();
+
+        StringBuilder os = new StringBuilder();
+        os.append("Adding flow slot ticket: ");
+        os.append("sTicket_Number=");
+        os.append(sTicket_Number);
+        os.append(",sTicket_Code=");
+        os.append(sTicket_Code);
+        os.append(",sDate=");
+        os.append(sDate);
+        LOG.info("{}", os.toString());
+
+        m.put("nID", sTicket_Number);
+        m.put("nID_FlowSlot", sTicket_Code);
+        m.put("nID_Subject", "0");
+        /*Date oDateStart = new Date(currFlowSlowTicket.getsDateStart().getMillis());
+        currRes.put("sDateStart", dateFormat.format(oDateStart));
+        Date oDateFinish = new Date(currFlowSlowTicket.getsDateFinish().getMillis());
+        currRes.put("sDateFinish", dateFormat.format(oDateFinish));
+        Date oDateEdit = new Date(currFlowSlowTicket.getsDateEdit().getMillis());
+        currRes.put("sDateEdit", dateFormat.format(oDateEdit));*/
+        m.put("sDateStart", sDate);
+        m.put("sDateFinish", sDate);
+        m.put("sDateEdit", sDate);
+        
+        m.put("nID_Task_Activiti", oTask.getId());
+
+        m.put("name", oTask.getName());
+        m.put("id", oTask.getId());
+        m.put("assignee", oTask.getAssignee());
+        m.put("nID_Instance", oTask.getProcessInstanceId());
+
+        m.put("sUserTaskName", oTask.getName());
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(oTask.getProcessDefinitionId()).singleResult();
+        m.put("sNameBP", processDefinition != null ? processDefinition.getName() : "");
+        m.put("sTaskDate", oDateFormat.format(oTask.getCreateTime()));
+        amReturn.add(m);
+    }    
 
     public List<FlowProperty> getFilteredFlowPropertiesForFlowServiceData(Long nID_Flow_ServiceData,
             String sID_BP,
@@ -622,64 +674,113 @@ public class FlowService implements ApplicationContextAware {
      *
      * @param sLogin имя пользователя для которого необходимо вернуть тикеты
      * @param bEmployeeUnassigned опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей
-     * @param sDate опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
+     * @param sDateFilter опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.
      * @return возвращает активные тикеты, отсортированные по startDate
      * @throws ParseException
      */
-    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDate)
+    public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDateFilter)
             throws ParseException {
-        List<Map<String, String>> res = new LinkedList<Map<String, String>>();
+        List<Map<String, String>> mReturn = new LinkedList<>();
+        SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date oDateFilter = null;
+        if (sDateFilter != null) {
+            //LOG.info("Checking for flow spot tickets for the date:(sDate={}) ", sDateFilter);
+            oDateFilter = new SimpleDateFormat("yyyy-MM-dd").parse(sDateFilter);
+            //LOG.info("Checking for flow spot tickets for the date:(oDateSelect={}) ", oDateFilter);
+            LOG.info("Converted sDateFilter to oDateFilter! (sDateFilter={},oDateFilter:{})", sDateFilter, oDateFilter);
+        }
 
-        List<Task> tasks = actionTaskService.getTasksForChecking(sLogin, bEmployeeUnassigned);
+        List<Task> aTask = actionTaskService.getTasksForChecking(sLogin, bEmployeeUnassigned);
 
-        Map<Long, Task> taskActivityIDsMap = new HashMap<Long, Task>();
-        for (Task task : tasks) {
-            if (task.getProcessInstanceId() != null) {
-                taskActivityIDsMap.put(Long.valueOf(task.getProcessInstanceId()), task);
+        Map<Long, Task> mTask = new HashMap<>();
+        //Map<Long, List<FormProperty>> mTaskProperty = new HashMap<>();
+        //Map<Long, List<FormProperty>> mTaskProperty_DMS = new HashMap<>();
+        //Map<Long, Task> mTask = new HashMap<Long, Task>();
+        for (Task oTask : aTask) {
+            if (oTask.getProcessInstanceId() != null) {
+                //mTask.put(Long.valueOf(oTask.getProcessInstanceId()), oTask);
+                Boolean bQueue = false;
+                Boolean bQueueDMS = false;
+                List<FormProperty> aProperty = oFormService.getTaskFormData(oTask.getId()).getFormProperties();
+                for (FormProperty oProperty : aProperty) {
+                    if(oProperty.getType() instanceof QueueDataFormType){
+                        bQueue=true;
+                        String sValue = oProperty.getValue();
+                        if(sValue!=null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())){
+                            bQueueDMS=true;
+                            LOG.info("sValue is present, so queue is filled");
+                            //long nID_FlowSlotTicket = 0;
+                            Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
+                            String sDate = (String) m.get(QueueDataFormType.sDate);
+                            LOG.info("(sDate={})", sDate);
+                            String sID_Type = QueueDataFormType.get_sID_Type(m);
+                            LOG.info("(sID_Type={})", sID_Type);
+                            if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
+                                LOG.info("Found DMS flow slot tickets.");
+                                String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
+                                LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
+                                String sTicket_Number = (String) m.get("ticket_number");
+                                LOG.info("(sTicket_Number={})", sTicket_Number);
+                                String sTicket_Code = (String) m.get("ticket_code");
+                                LOG.info("(sTicket_Code={})", sTicket_Code);
+                            //}else if("iGov".equals(sID_Type)){
+                                Date oDate = null;
+                                if (sDate != null) {
+                                    //LOG.info("Converting sDate to oDate! (sDate={}) ", sDate);
+                                    oDate = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+                                    LOG.info("Converted sDate to oDate! (sDate={},oDate:{})", sDate, oDate);
+                                }
+                                //Filtering:
+                                if (oDate==null || oDateFilter == null || (DateUtils.isSameDay(oDate, oDateFilter))) {
+                                    addFlowSlowTicketToResult_DMS(mReturn, oDateFormat, sTicket_Number, sTicket_Code, sDate, oTask);
+                                }                            
+                            }
+                        }
+                    }
+                }
+                if(bQueue&&!bQueueDMS){
+                    Long nID_Task=Long.valueOf(oTask.getProcessInstanceId());
+                    mTask.put(nID_Task, oTask);
+                    ///mTaskProperty.put(nID_Task, aProperty);
+                }
             } else {
-                LOG.info("Task with ID:{} has null process instance id value", task.getId());
+                LOG.info("Task with ID:{} has null process instance id value", oTask.getId());
             }
         }
+        //LOG.info("Will check tasks which belong to process definition IDs:{}", mTask.keySet());
 
-        LOG.info("Will check tasks which belong to process definition IDs:{}", taskActivityIDsMap.keySet());
-
-        List<FlowSlotTicket> allFlowSlowTickets = oFlowSlotTicketDao.findAll();
-        LOG.info("Found {} flow slot tickets.", (allFlowSlowTickets != null ? allFlowSlowTickets.size() : 0));
-        if (allFlowSlowTickets != null) {
-
-            Collections.sort(allFlowSlowTickets, new Comparator<FlowSlotTicket>() {
-                @Override
-                public int compare(FlowSlotTicket ticket1, FlowSlotTicket ticket2) {
-                    return ticket1.getsDateStart().compareTo(ticket2.getsDateStart());
-                }
-            });
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-            Date dateOfTasks = null;
-            if (sDate != null) {
-                LOG.info("Checking for flow spot tickets for the date:(sDate={}) ", sDate);
-                dateOfTasks = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
-            }
-            for (FlowSlotTicket currFlowSlotTicket : allFlowSlowTickets) {
-                if (taskActivityIDsMap.keySet().contains(currFlowSlotTicket.getnID_Task_Activiti())) {
-                    Task tasksByActivitiID = taskActivityIDsMap.get(currFlowSlotTicket.getnID_Task_Activiti());
-
-                    if (dateOfTasks != null) {
-                        LOG.info("Comparing two dates:{} and {}", currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks);
+        if(mTask.isEmpty()){
+            LOG.info("mTask.isEmpty()");
+        }else{
+            List<FlowSlotTicket> aFlowSlowTicket = oFlowSlotTicketDao.findAll();
+            LOG.info("Found {} flow slot tickets.", (aFlowSlowTicket != null ? aFlowSlowTicket.size() : 0));
+            if (aFlowSlowTicket != null) {
+                Collections.sort(aFlowSlowTicket, new Comparator<FlowSlotTicket>() {
+                    @Override
+                    public int compare(FlowSlotTicket ticket1, FlowSlotTicket ticket2) {
+                        return ticket1.getsDateStart().compareTo(ticket2.getsDateStart());
                     }
-                    if (dateOfTasks == null || (DateUtils
-                            .isSameDay(currFlowSlotTicket.getsDateStart().toDate(), dateOfTasks))) {
-                        addFlowSlowTicketToResult(res, dateFormat, currFlowSlotTicket, tasksByActivitiID);
-                    } else {
-                        LOG.info("Skipping flowSlot {} for task:{} as they have not valid  start-end date {}:{}",
-                                currFlowSlotTicket.getId(), currFlowSlotTicket.getnID_Task_Activiti(),
-                                currFlowSlotTicket.getsDateStart().toString(), currFlowSlotTicket.getsDateFinish());
+                });
+
+                for (FlowSlotTicket oFlowSlotTicket : aFlowSlowTicket) {
+                    if (mTask.keySet().contains(oFlowSlotTicket.getnID_Task_Activiti())) {
+                        Task oTask = mTask.get(oFlowSlotTicket.getnID_Task_Activiti());
+                        /*if (oDateFilter != null) {
+                            LOG.info("Comparing two dates:{} and {}", oFlowSlotTicket.getsDateStart().toDate(), oDateFilter);
+                        }*/
+                        //Filtering:
+                        if (oDateFilter == null || (DateUtils.isSameDay(oFlowSlotTicket.getsDateStart().toDate(), oDateFilter))) {
+                            addFlowSlowTicketToResult(mReturn, oDateFormat, oFlowSlotTicket, oTask);
+                        /*} else {
+                            LOG.info("Skipping flowSlot {} for task:{} as they have not valid  start-end date {}:{}",
+                                    oFlowSlotTicket.getId(), oFlowSlotTicket.getnID_Task_Activiti(),
+                                    oFlowSlotTicket.getsDateStart().toString(), oFlowSlotTicket.getsDateFinish());*/
+                        }
                     }
                 }
-            }
+            }            
         }
-        return res;
+        return mReturn;
     }
 
     /**

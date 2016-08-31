@@ -14,13 +14,18 @@
         <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Тип звернення" type="enum" required="true">
+          <activiti:value id="sEnumFirst" name="Надання статусу та видача довідки «Дитина війни»"></activiti:value>
+          <activiti:value id="sEnumChange" name="Заміна довідки «Дитина війни»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина заміни довідки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sReason&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -40,7 +45,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Видача (заміну) довідки «дитина війни»]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача (заміна) довідки «дитина війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -94,12 +99,16 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний Код" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision" name="Результат обробки звернення" type="enum" required="true">
-          <activiti:value id="accept" name="Сповістити громадянина, що довідка МОЖЕ бути надана"></activiti:value>
-          <activiti:value id="reject" name="Відмовити в дані довідки"></activiti:value>
+        <activiti:formProperty id="asType" name="Тип звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFirst" name="Надання статусу та видача довідки «Дитина війни»"></activiti:value>
+          <activiti:value id="sEnumChange" name="Заміна довідки «Дитина війни»"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина заміни довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decision" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Задовільнити заяву"></activiti:value>
+          <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -182,8 +191,12 @@ ${sNameOrgan}&lt;br /&gt;&lt;
     </serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow6" name="-" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" name="+" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
@@ -207,6 +220,9 @@ ${sNameOrgan}&lt;br /&gt;&lt;
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="125.0" x="222.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="126.0" x="370.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="59.0" width="136.0" x="521.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -221,9 +237,6 @@ ${sNameOrgan}&lt;br /&gt;&lt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="120.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="126.0" x="370.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="69.0" y="137.0"></omgdi:waypoint>
@@ -244,10 +257,16 @@ ${sNameOrgan}&lt;br /&gt;&lt;
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="710.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="754.0" y="109.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="720.0" y="137.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="710.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="754.0" y="164.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="720.0" y="129.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="829.0" y="78.0"></omgdi:waypoint>

@@ -35,7 +35,7 @@ import org.igov.service.business.action.task.bp.BpService;
 @Service
 public class BpServiceHandler {
 
-    static Map<String, Object> gaide = new LinkedHashMap<String, Object>();
+    public static Map<String, String> mGuideTaskParamKey = new TreeMap<>();
     public static final String PROCESS_ESCALATION = "system_escalation";
     private static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
@@ -130,6 +130,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
@@ -149,9 +150,6 @@ public class BpServiceHandler {
 
     private String startEscalationProcess(final Map<String, Object> mTaskParam, final String sID_Process,
             final String sProcessName, Integer nID_Server) {
-        Map newMap;
-        newMap = createNewMap(mTaskParam);
-        buildString(newMap);
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
@@ -161,13 +159,20 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
+        Map mTaskParamConverted = convertTaskParam(mTaskParam);
+        String sField = convertTaskParamToString(mTaskParamConverted);
+        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("sField={}", sField);
+        mParam.put("saField", sField+".");
 
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
-        String organ = trimGroups(organs);
+        String organ = trimGroups(organs); 
+        LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-        mParam.put("saField", buildString(mTaskParam));
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
+        mParam.put("sLoginAssigned", "sTaskId");
+        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
@@ -244,13 +249,18 @@ public class BpServiceHandler {
             final Map<String, Object> mTaskVariable, String prefix) {
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
+        LOG.info("saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
         if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
+            LOG.info("!!!!!!!!!!saCandidateCroupToCheck: "+saCandidateCroupToCheck);
             Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
+                LOG.info("!!!!!!!!!!mTaskVariable: "+mTaskVariable);
                 HistoricTaskInstance oHistoricTaskInstance = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
                         .singleResult();
+                LOG.info("!!!!!!!!!!oHistoricTaskInstance: "+oHistoricTaskInstance + "oHistoricTaskInstance.getProcessVariables(): " + oHistoricTaskInstance.getProcessVariables());
                 if (oHistoricTaskInstance != null && oHistoricTaskInstance.getProcessVariables() != null) {
                     mProcessVariable = oHistoricTaskInstance.getProcessVariables();
                 }
@@ -271,12 +281,13 @@ public class BpServiceHandler {
                         }
                     }
                     asCandidateGroupNew.add(prefix + sCandidateGroupNew);
+                    LOG.info("!!!!!!!!!!prefix+sCandidateGroupNew: "+prefix+sCandidateGroupNew);
                 }
                 asCandidateCroupToCheck = asCandidateGroupNew;
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
             }
         }
-        LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
+        LOG.info("!!!!!!!!!!saCandidateCroupToCheck={}", saCandidateCroupToCheck);
         return asCandidateCroupToCheck;
     }
 
@@ -338,6 +349,7 @@ public class BpServiceHandler {
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
+
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
@@ -363,39 +375,36 @@ public class BpServiceHandler {
         return sbContact.toString(); //
     }
 
-    
-    
-    
-    public static String buildString(Map<String, Object> mTaskParam) {
+    public static String convertTaskParamToString(Map<String, Object> mTaskParam) {
 
         // Получаем набор элементов
-        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
+        Set<Map.Entry<String, Object>> aTaskParamEntrySet = mTaskParam.entrySet();
         String result = " ";
 
         // Отобразим набор
-        for (Map.Entry<String, Object> entry : set) {
-            result += entry.getKey() + ": " + entry.getValue() + "\n\r";
+        for (Map.Entry<String, Object> taskParam : aTaskParamEntrySet) {
+            result += taskParam.getKey() + ": " + taskParam.getValue() + "\n\r";
         }
         LOG.info(result);
         return result;
 
     }
 
-      public static Map<String, Object> createNewMap(Map<String, Object> mTaskParam) {
-        Map<String, Object> newMap = new LinkedHashMap<String, Object>();
-        Set<Map.Entry<String, Object>> set = mTaskParam.entrySet();
-        String res = " ";
-        for (Map.Entry<String, Object> entry : mTaskParam.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
+    public static Map<String, Object> convertTaskParam(Map<String, Object> mTaskParam) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> taskParam : mTaskParam.entrySet()) {
+            String taskParamKey = taskParam.getKey();
+            Object taskParamValue = taskParam.getValue();
 
-            if (gaide.get(key) != null) {
-                String newKey = (String) gaide.get(key);
-                newMap.put(newKey, value);
+            if (mGuideTaskParamKey.get(taskParamKey) != null) {
+                String newKeyTaskParam = mGuideTaskParamKey.get(taskParamKey);
+                if (!"Удалить".equalsIgnoreCase(newKeyTaskParam)) {
+                    result.put(newKeyTaskParam, taskParamValue);
+                }
             } else {
-                newMap.put(key, value);
+                result.put(taskParamKey, taskParamValue);
             }
         }
-        return newMap;
+        return result;
     }
 }

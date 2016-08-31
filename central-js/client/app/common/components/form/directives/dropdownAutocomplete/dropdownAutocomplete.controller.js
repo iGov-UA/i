@@ -21,7 +21,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
   }
 
   var getAdditionalPropertyName = function() {
-    return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.valueProperty) + '_' + $scope.autocompleteName;
+    return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.prefixAssociatedField) + '_' + $scope.autocompleteName;
   };
 
   $scope.requestMoreItems = function(collection) {
@@ -75,7 +75,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
   $scope.onSelectDataList = function (item) {
     var additionalPropertyName = getAdditionalPropertyName();
     if ($scope.formData.params[additionalPropertyName]) {
-      $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.valueProperty];
+      $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
     }
-  };
+  }
 });

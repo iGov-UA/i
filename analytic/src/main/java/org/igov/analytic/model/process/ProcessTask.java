@@ -70,10 +70,12 @@ public class ProcessTask extends AbstractEntity{
     
     @JsonProperty(value = "aAccessGroup")
     @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<AccessGroup> aAccessGroup = new ArrayList();
     
     @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<AccessUser> aAccessUser = new ArrayList();
 
 

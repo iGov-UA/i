@@ -44,6 +44,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
     var params = {
       nID_Service : oService.nID,
+      nID_ServiceData: oServiceData.nID,
       nID_Region : nID_Region,
       sID_UA : sID_UA,
       sID_UA_Common : sID_UA_Common

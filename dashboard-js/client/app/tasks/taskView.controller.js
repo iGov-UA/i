@@ -26,6 +26,11 @@
         $scope.printTemplateList = [];
         $scope.model = stateModel;
         $scope.model.printTemplate = null;
+        $scope.date = {
+          options: {
+            timePicker:false
+          }
+        };
 
         $scope.taskForm = null;
         $scope.error = null;
@@ -34,6 +39,7 @@
         $scope.sSelectedTask = $stateParams.type;
         $scope.selectedTask = oTask;
         $scope.taskId = oTask.id;
+        $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
 
@@ -252,10 +258,6 @@
 
         $scope.print = function () {
           if ($scope.selectedTask && $scope.taskForm) {
-            if ($scope.hasUnPopulatedFields()) {
-              Modal.inform.error()('Не всі поля заповнені!');
-              return;
-            }
             rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
           }
@@ -292,30 +294,34 @@
 
             var unpopulatedFields = $scope.unpopulatedFields();
             if (unpopulatedFields.length > 0) {
-              var errorMessage = 'Будь ласка, заповніть поля: ';
+              // var errorMessage = 'Будь ласка, заповніть поля: ';
 
-              if (unpopulatedFields.length == 1) {
+              // if (unpopulatedFields.length == 1) {
+              //
+              //   var nameToAdd = unpopulatedFields[0].name;
+              //   if (nameToAdd.length > 50) {
+              //     nameToAdd = nameToAdd.substr(0, 50) + "...";
+              //   }
+              //
+              //   errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
+              // }
+              // else {
+              //   unpopulatedFields.forEach(function (field) {
+              //
+              //     var nameToAdd = field.name;
+              //     if (nameToAdd.length > 50) {
+              //       nameToAdd = nameToAdd.substr(0, 50) + "...";
+              //     }
+              //     errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
+              //   });
+              //   var comaIndex = errorMessage.lastIndexOf(',');
+              //   errorMessage = errorMessage.substr(0, comaIndex);
+              // }
+              // Modal.inform.error()(errorMessage);
+              setTimeout(function () {
+                angular.element('.submitted').first().focus();
+              },100);
 
-                var nameToAdd = unpopulatedFields[0].name;
-                if (nameToAdd.length > 50) {
-                  nameToAdd = nameToAdd.substr(0, 50) + "...";
-                }
-
-                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
-              }
-              else {
-                unpopulatedFields.forEach(function (field) {
-
-                  var nameToAdd = field.name;
-                  if (nameToAdd.length > 50) {
-                    nameToAdd = nameToAdd.substr(0, 50) + "...";
-                  }
-                  errorMessage = errorMessage + "'" + nameToAdd + "',<br />";
-                });
-                var comaIndex = errorMessage.lastIndexOf(',');
-                errorMessage = errorMessage.substr(0, comaIndex);
-              }
-              Modal.inform.error()(errorMessage);
               return;
             }
 
@@ -440,6 +446,7 @@
         };
 
         $scope.getMessageFileUrl = function (oMessage, oFile) {
+          if(oMessage && oFile)
           return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
         };
 
@@ -506,6 +513,71 @@
           return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
               FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
         };
+
+        $scope.creationDateFormatted = function (date) {
+          if (date){
+            var unformatted = date.split(' ')[0];
+            var splittedDate = unformatted.split('-');
+            return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
+          }
+        };
+
+        $scope.inUnassigned = function () {
+          return $stateParams.type === "unassigned";
+        };
+
+        $scope.tabHistoryAppealChange = function (param) {
+          $scope.tabHistoryAppeal = param;
+        };
+
+        $scope.newPrint = function (form, id) {
+          $scope.model.printTemplate = id;
+          $scope.print(form);
+        };
+
+        $scope.isClarify = function (name) {
+          return name.indexOf('writable=false') !== -1 ;
+        };
+
+        var activeFieldsList = [];
+        angular.forEach($scope.taskForm, function (item) {
+          if($scope.isFieldVisible(item)
+            && !$scope.isFormPropertyDisabled(item)
+            && item.type !== 'invisible'
+            && item.type !== 'label'
+            && item.type !== 'markers') {
+            activeFieldsList.push(item);
+          }
+        });
+
+        $scope.isUnDisabledFields = function () {
+          return activeFieldsList.length > 0;
+        };
       }
-    ]);
+
+    ])
+    .filter('cut', function () {
+      return function (value, wordwise, max, tail) {
+        if (!value) return '';
+
+        max = parseInt(max, 10);
+        if (!max) return value;
+        if (value.length <= max) return value;
+
+        value = value.substr(0, max);
+        if (wordwise) {
+          var lastspace = value.lastIndexOf(' ');
+          if (lastspace != -1) {
+            value = value.substr(0, lastspace);
+          }
+        }
+        return value + (tail || '…');
+      };
+    })
+  .filter('fixDate', function () {
+    return function (value) {
+      return  value.split('.')[0];
+    }
+  })
+
 })();

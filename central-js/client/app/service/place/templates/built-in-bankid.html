@@ -159,15 +159,15 @@
                        value="">
 
                 <button ng-switch-when="string"
-                       type="button"
-                       name="{{property.id}}"
-                       ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
-                       ng-model="data.formData.params[property.id].value"
+                        type="button"
+                        name="{{property.id}}"
+                        ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                        ng-model="data.formData.params[property.id].value"
                         ng-disabled="!data.formData.params[property.id].value"
-                       ng-required="isFieldRequired(property)"
-                       ng-class="getBpAndFieldID(property)"
-                       ng-click="redirectPaymentLiqpay(property.id)"
-                       class="btn btn-success">Сплатити</button>
+                        ng-required="isFieldRequired(property)"
+                        ng-class="getBpAndFieldID(property)"
+                        ng-click="redirectPaymentLiqpay(property.id)"
+                        class="btn btn-success">Сплатити</button>
 
                 <label style="display: none;"
                        ng-switch-when="invisible"
@@ -373,9 +373,9 @@
                              </ui-select-match>
                              <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
                                                 refresh-delay="50"
-                                                repeat="item[property.autocompleteData.titleProperty] as item in items track by item.nID">
-                               <span title="{{::item[property.autocompleteData.titleProperty]}}">
-                                 {{::item[property.autocompleteData.titleProperty]}}
+                                                repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
+                               <span title="{{item[property.autocompleteData.titleProperty]}}">
+                                 {{item[property.autocompleteData.titleProperty]}}
                                </span>
                              </ui-select-choices>
                   </ui-select>
