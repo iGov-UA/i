@@ -3,12 +3,11 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
-//, config = require('../../config')
-  , syncSubject = require('../../api/subject/subject.service.js')
+  , syncSubject = require('../../api/subject/subject.service')
   , Admin = require('../../components/admin/index')
   , url = require('url')
   , StringDecoder = require('string_decoder').StringDecoder
-  , bankidUtil = require('./bankid.util.js')
+  , bankidUtil = require('./bankid.util')
   , errors = require('../../components/errors')
   , activiti = require('../../components/activiti');
 
@@ -22,8 +21,38 @@ var createError = function (error, error_description, response) {
   };
 };
 
+module.exports.decryptCallback = function (callback) {
+ return bankidUtil.decryptCallback(callback);
+};
+
+module.exports.convertToCanonical = function (customer) {
+  // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+  customer.isAuthTypeFromBankID = true;
+  return customer;
+};
+
+module.exports.getUserKeyFromSession = function (session){
+  return session.access.accessToken;
+};
+
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
+
+  function validateResponse(errorCallback, successCallback) {
+    return function (error, repsonse, body) {
+      if(error){
+        errorCallback(error, repsonse, body);
+      } else if (body && (body.state === 'err' ||  body.error)) {
+        errorCallback(error, repsonse, body);
+      } else {
+        successCallback(error, repsonse, body);
+      }
+    }
+  }
+
+  function errorCallback(error, response, body) {
+    callback(error, response, body);
+  }
 
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
@@ -56,9 +85,9 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
   var resultCallback;
 
   if (disableDecryption) {
-    resultCallback = adminCheckCallback;
+    resultCallback = validateResponse(errorCallback, adminCheckCallback);
   } else {
-    resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
+    resultCallback = validateResponse(errorCallback, bankidUtil.decryptCallback(adminCheckCallback));
   }
 
   return request.post({
@@ -170,11 +199,20 @@ module.exports.syncWithSubject = function (accessToken, done) {
   var self = this;
   var disableDecryption = true;
 
+  function errorFromBody(body) {
+    if(body && (body.error || body.state === 'err')){
+      return body;
+    } else {
+      return null;
+    }
+  }
+
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
-        if (error || body.error || !body.customer) {
-          callback(createError(error || body.error || body, body.error_description, response), null);
+        var err = errorFromBody(body);
+        if (error || err) {
+          callback(errors.createErrorOnResponse(err)(error, response, body), null);
         } else {
           callback(null, {
             customer: body.customer,

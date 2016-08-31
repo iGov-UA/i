@@ -2,15 +2,11 @@
  * Created by Igor on 5/12/2016.
  */
 var async = require('async')
-  , bankidService = require('../../auth/bankid/bankid.service.js')
-  , soccardService = require('../../auth/soccard/soccard.service.js')
-  , emailService = require('../../auth/email/email.service.js')
-  , userConvert = require('../user/user.convert')
-  , activiti = require('../../components/activiti')
+  , authProviderRegistry = require('../../auth/auth.provider.registry')
   , Admin = require('../../components/admin/index')
   , mock = require('./user.data.js');
 
-var finishRequest = function (req, res, err, result, type) {
+var finishRequest = function (req, res, err, result, userService) {
   if (err) {
     res.status(err.code);
     res.send(err);
@@ -19,7 +15,7 @@ var finishRequest = function (req, res, err, result, type) {
     req.session.subject = result.subject;
     req.session.bAdmin = result.admin;
 
-    var customer = userConvert.convertToCanonical(type, result.customer);
+    var customer = userService.convertToCanonical(result.customer);
     var admin = result.admin;
     if (Admin.isAdminInn(customer.inn)) {
       admin = {
@@ -52,7 +48,8 @@ module.exports.tryCache = function (req, res, next) {
 
         var callback = function (error, body) {
           var err = null;
-          finishRequest(req, res, err, body, type);
+          var userService = authProviderRegistry.getUserService(type);
+          finishRequest(req, res, err, body, userService);
         };
 
         function getUserMock() {
@@ -77,34 +74,17 @@ module.exports.tryCache = function (req, res, next) {
 };
 
 module.exports.index = function (req, res, next) {
-
   if (mock.isMockEnabled(req.cookies)) {
     var type = req.session.type;
-    if (type === 'bankid' || type === 'eds' || type === 'mpbds') {
-      bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
-        finishRequest(req, res, err, result, type);
-      });
-    } else if (type === 'soccard') {
-      soccardService.syncWithSubject(req.session.access.accessToken, function (err, result) {
-        finishRequest(req, res, err, result, type);
-      });
-    } else if (type === 'email') {
-      emailService.syncWithSubject(req.session.access.email, function (err, result) {
-        if (!result.customer.firstName) {
-          result.customer.firstName = req.session.account.firstName;
-        }
-        if (!result.customer.lastName) {
-          result.customer.lastName = req.session.account.lastName;
-        }
-        if (!result.customer.middleName) {
-          result.customer.middleName = req.session.account.middleName;
-        }
-        if (!result.customer.email) {
-          result.customer.email = req.session.access.email;
-        }
-        finishRequest(req, res, err, result, type);
-      });
-    }
+    var userService = authProviderRegistry.getUserService(type);
+    var userKey = userService.getUserKeyFromSession(req.session);
+
+    userService.syncWithSubject(userKey, function (err, result) {
+      if (userService.mergeFromSession) {
+        userService.mergeFromSession(result, req.session);
+      }
+      finishRequest(req, res, err, result, userService);
+    });
   } else {
     next();
   }

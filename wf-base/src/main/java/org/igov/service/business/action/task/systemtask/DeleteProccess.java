@@ -35,11 +35,17 @@ public class DeleteProccess implements JavaDelegate {
     GeneralConfig generalConfig;
 
     public Expression processDefinitionKey;
+    
+    private int limitCountRowDeleted = 200000;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         String processDefinitionKeyValue = getStringFromFieldExpression(this.processDefinitionKey, execution);
-        //if (generalConfig.isSelfTest()) {
+        closeProcess(processDefinitionKeyValue);
+    }
+    
+    public void closeProcess(String processDefinitionKeyValue){
+    //if (generalConfig.isSelfTest()) {
         //List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
         ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
         if (processDefinitionKeyValue == null || "".equals(processDefinitionKeyValue.trim())
@@ -50,11 +56,25 @@ public class DeleteProccess implements JavaDelegate {
             LOG.info("Delete all active proccess with processDefinitionKeyValue: " + processDefinitionKeyValue);
             processInstanceQuery.processDefinitionKey(processDefinitionKeyValue);
         }
+        List<ProcessInstance> processInstances;
+        int countRowDeleted = 0;
+        int index = 0;
+        int size = 1000;
+        do {
+            size = (limitCountRowDeleted < size ? limitCountRowDeleted : size);
+            LOG.info("processInstances processInstanceQuery...");
+            LOG.info("processInstances processInstanceQuery: index={},size={}", index, size);
+            processInstances = processInstanceQuery.listPage(index, size);
+            LOG.info("processInstances processInstanceQuery: processInstances.size()={}", processInstances.size());
+            for (ProcessInstance processInstance : processInstances) {
+                runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
+                countRowDeleted++;
+            }
+            LOG.info("processInstances processInstanceQuery size: " + processInstances.size() + " countRowDeleted: " + countRowDeleted + " success!");
+            //index = ++index + size;
+        } while (!processInstances.isEmpty() && countRowDeleted <= limitCountRowDeleted);
+        LOG.info("FINISHED!!! processInstances processInstanceQuery size: countRowDeleted: " + countRowDeleted);
 
-        List<ProcessInstance> processInstances = processInstanceQuery.list();
-        for (ProcessInstance processInstance : processInstances) {
-            runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
-        }
         //}
     }
 
@@ -67,5 +87,9 @@ public class DeleteProccess implements JavaDelegate {
             }
         }
         return null;
+    }
+
+    public void setLimitCountRowDeleted(int limitCountRowDeleted) {
+        this.limitCountRowDeleted = limitCountRowDeleted;
     }
 }

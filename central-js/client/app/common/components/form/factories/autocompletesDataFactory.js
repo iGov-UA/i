@@ -1,21 +1,25 @@
 angular.module('app').factory('autocompletesDataFactory', function () {
   return {
     Currency: {
-      valueProperty: 'sID_UA',
+      valueProperty: 'sName_UA',
       titleProperty: 'sName_UA',
+      prefixAssociatedField: 'sID_UA',
       apiUrl: './api/currencies',
       orderBy: 'sName_UA'
     },
     ObjectCustoms: {
-      valueProperty: 'sID_UA',
+      valueProperty: 'sName_UA',
       titleProperty: 'sName_UA',
+      prefixAssociatedField: 'sID_UA',
+      orderBy: 'sName_UA',
       apiUrl: './api/object-customs',
       hasPaging: true
     },
     SubjectOrganJoinTax: {
-      valueProperty: 'sID_UA',
+      valueProperty: 'sName_UA',
       titleProperty: 'sName_UA',
-      orderBy: 'sName_UA',
+      orderBy: 'sID_UA',
+      prefixAssociatedField: 'sID_UA',
       apiUrl: './api/subject/organs/join-tax',
       init: function (scope) {
         scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
@@ -24,15 +28,17 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       }
     },
     ObjectEarthTarget: {
-      valueProperty: 'sID_UA',
+      valueProperty: 'sName_UA',
       titleProperty: 'sName_UA',
       orderBy: 'sName_UA',
+      prefixAssociatedField: 'sID_UA',
       apiUrl: './api/object-earth-target'
     },
     Country: {
-      valueProperty: 'nID_UA',
+      valueProperty: 'sNameShort_UA',
       titleProperty: 'sNameShort_UA',
       orderBy: 'sNameShort_UA',
+      prefixAssociatedField: 'nID_UA',
       additionalValueProperty: 'sID_UA',
       apiUrl: './api/countries/'
     },

@@ -529,6 +529,7 @@ public class ActionEventService {
             String sUserTaskName,
             //String sProcessInstanceName,
             Long nID_Service,
+            Long nID_ServiceData,
             Long nID_Region,
             String sID_UA,
             String soData,
@@ -557,6 +558,7 @@ public class ActionEventService {
         oHistoryEvent_Service.setnID_Subject(nID_Subject);
         oHistoryEvent_Service.setnID_Region(nID_Region);
         oHistoryEvent_Service.setnID_Service(nID_Service);
+        oHistoryEvent_Service.setnID_ServiceData(nID_ServiceData);
         oHistoryEvent_Service.setsID_UA(sID_UA);
         oHistoryEvent_Service.setnRate(null);
         oHistoryEvent_Service.setSoData(soData);

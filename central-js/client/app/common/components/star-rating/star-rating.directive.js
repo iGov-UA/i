@@ -22,7 +22,7 @@
   }
 
 
-  function StarRatingController() {
+  function StarRatingController($scope) {
     var vm = this;
 
     vm.toggle = toggle;
@@ -34,7 +34,7 @@
         vm.max = 5;
       }
 
-      updateStars();
+      $scope.$watch('vm.ratingValue', updateStars);
     }
 
 
@@ -55,7 +55,6 @@
           rating: index + 1
         });
       }
-      updateStars();
     }
   }
 

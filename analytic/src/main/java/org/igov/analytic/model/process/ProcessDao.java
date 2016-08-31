@@ -12,5 +12,5 @@ import org.igov.model.core.EntityDao;
  * @author olga
  */
 public interface ProcessDao extends EntityDao<Long, Process>{
-    
+      
 }

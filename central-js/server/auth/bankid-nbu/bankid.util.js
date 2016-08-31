@@ -8,17 +8,17 @@ var config = require('../../config/environment')
 
 var privateKeyFromConfigs;
 
-function isCipherEnabled (){
-  return config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true;
+function isCipherEnabled() {
+  return config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true;
 }
 
 var initPrivateKey = function () {
-  if ((config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true) && config.bankid.privateKey && !privateKeyFromConfigs) {
+  if ((config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true) && config.bankidnbu.privateKey && !privateKeyFromConfigs) {
     try {
-      var key = fs.readFileSync(config.bankid.privateKey);
+      var key = fs.readFileSync(config.bankidnbu.privateKey);
       privateKeyFromConfigs = {
         key: key,
-        passphrase: config.bankid.privateKeyPassphrase,
+        passphrase: config.bankidnbu.privateKeyPassphrase,
         padding: constants.RSA_PKCS1_PADDING
       }
     } catch (err) {
@@ -81,7 +81,7 @@ module.exports.getAuthorizationURL = function () {
 };
 
 module.exports.getAuth = function (accessToken) {
-  return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
+  return 'Bearer ' + accessToken;
 };
 
 module.exports.decryptField = function (value, privateKey) {
@@ -97,71 +97,38 @@ module.exports.decryptCallback = function (callback) {
   var self = this;
 
   return function (error, response, body) {
-    if (isCipherEnabled() && body && body.customer && body.customer.signature) {
-      self.decryptData(body.customer);
+    if (isCipherEnabled() && body && body.customerCrypto) {
+      body.customer = self.decryptData(body.customerCrypto);
+      delete body.customerCrypto;
     }
     callback(error, response, body);
   }
 };
 
-var noEncryptionFields = ['number', 'type', 'signature'];
 
-function isEncrypted(value, key) {
-  if (noEncryptionFields.indexOf(key) === -1) {
-    return true;
-  } else {
-    if (key === 'number') {
-      if (Number.isNaN(Number.parseInt(value))) {
-        return true;
-      }
-    }
-    return false;
-  }
-}
-
-function decryptValue(value, privateKey, key){
+function decryptValue(value, privateKey) {
   try {
     return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
   } catch (err) {
-    throw new Error("can't decrypt value " + value + " field " + key + " because of\n" + err.message);
+    throw new Error("can't decrypt value " + value + " because of\n" + err.message);
   }
 }
 
-function decrypt(value, key, privateKey) {
-  if (isEncrypted(value, key)) {
-    return decryptValue(value, privateKey, key);
-  } else {
-    return value;
-  }
-}
 
-function iterateObj(obj, call) {
-  Object.keys(obj).forEach(function (key) {
-    if (typeof obj[key] === 'object') {
-      return iterateObj(obj[key], call);
-    }
-    obj[key] = call(obj[key], key);
-  });
-}
-
-module.exports.iterateObj = function (obj, call) {
-  return iterateObj(obj, call);
+module.exports.encryptData = function (customerDataObject, publicKey) {
+  var stringData = JSON.stringify(customerDataObject);
+  console.log(stringData);
+  return crypto.publicEncrypt(publicKey, new Buffer(stringData, 'utf-8')).toString('base64')
 };
 
-module.exports.encryptData = function (customerData, publicKey) {
-  iterateObj(customerData, function (value, key) {
-    return isEncrypted(value, key)
-      ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
-      : value;
-  });
+module.exports.decryptData = function (customerDataString, privateKey) {
+  var decryptedString = decryptValue(customerDataString, privateKey ? privateKey : privateKeyFromConfigs);
+  return JSON.parse(decryptedString);
 };
 
-module.exports.decryptData = function (customerData, privateKey) {
-  iterateObj(customerData, function (value, key) {
-    return decrypt(value, key, privateKey ? privateKey : privateKeyFromConfigs)
-  });
+module.exports.decryptFieldInn = function (customerCrypto) {
+  var decryptedData = this.decryptData(customerCrypto);
+  return decryptedData.inn;
 };
 
 module.exports.initPrivateKey = initPrivateKey;
-
-

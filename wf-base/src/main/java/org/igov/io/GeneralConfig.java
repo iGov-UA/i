@@ -110,6 +110,8 @@ public class GeneralConfig {
     
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
+    @Value("${general.SMS.sURL_SendNew}")
+    private String sURL_Send_SMSNew;
     @Value("${general.SMS.sMerchantId}")
     private String sMerchantId_SMS;
     @Value("${general.SMS.sMerchantPassword}")
@@ -118,6 +120,33 @@ public class GeneralConfig {
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
+    @Value("${general.queue.cherg.sURL}")
+    private String queueManagementSystemAddress;
+    @Value("${general.queue.cherg.sLogin}")
+    private String queueManagementSystemLogin;
+    @Value("${general.queue.cherg.sPassword}")
+    private String queueManagementSystemPassword;
+
+    @Value("${general.Pay.Yuzhny.FTP.sHost}")
+    private String sHost_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.nPort}")
+    private String nPort_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sLogin}")
+    private String sLogin_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sPassword}")
+    private String sPassword_Pay_Yuzhny_FTP;
+    //@Value("${general.Pay.Yuzhny.FTP.sPathFileName}")
+    //private String sPathFileName_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sFileNameMask}")
+    private String sFileNameMask_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sPath}")
+    private String sPath_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.sSuffixDateMask}")
+    private String sSuffixDateMask_Pay_Yuzhny_FTP;
+    @Value("${general.Pay.Yuzhny.FTP.nDaysOffset}")
+    private String snDaysOffset_Pay_Yuzhny_FTP;
+   
+    
     
     public boolean isSelfTest() {
         boolean b = true;
@@ -229,6 +258,9 @@ public class GeneralConfig {
     
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
+    }
+    public String getURL_Send_SMSNew()  {
+        return sURL_Send_SMSNew;
     }
     public String getMerchantId_SMS()  {
         return sMerchantId_SMS;
@@ -360,5 +392,46 @@ public class GeneralConfig {
 	LOG.info("----------------------------------------------------");
 	
     }
+
+    public String getQueueManagementSystemAddress() {
+        return queueManagementSystemAddress;
+    }
+
+    public String getQueueManagementSystemLogin() {
+        return queueManagementSystemLogin;
+    }
+
+    public String getQueueManagementSystemPassword() {
+        return queueManagementSystemPassword;
+    }
+    
+    
+	public String getHost_FTP_Yuzhny_Pay() {
+		return sHost_Pay_Yuzhny_FTP;
+	}
+	public String getPort_FTP_Yuzhny_Pay() {
+		return nPort_Pay_Yuzhny_FTP;
+	}
+	public String getLogin_FTP_Yuzhny_Pay() {
+		return sLogin_Pay_Yuzhny_FTP;
+	}
+	public String getPassword_FTP_Yuzhny_Pay() {
+		return sPassword_Pay_Yuzhny_FTP;
+	}
+	//public String getPathFileName_FTP_Yuzhny_Pay() {
+	//	return sPathFileName_Pay_Yuzhny_FTP;
+	//}
+	public String getFileNameMask_FTP_Yuzhny_Pay() {
+		return sFileNameMask_Pay_Yuzhny_FTP;
+	}
+	public String getPath_FTP_Yuzhny_Pay() {
+		return sPath_Pay_Yuzhny_FTP;
+	}
+	public String getSuffixDateMask_FTP_Yuzhny_Pay() {
+		return sSuffixDateMask_Pay_Yuzhny_FTP;
+	}
+	public Integer getDaysOffset_FTP_Yuzhny_Pay() {
+		return Integer.valueOf(snDaysOffset_Pay_Yuzhny_FTP);
+	}
     
 }

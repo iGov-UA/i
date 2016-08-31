@@ -5,7 +5,9 @@ var should = require('should')
   , testRequest = appTest.testRequest;
 
 require('../subject/subject.service.nock');
+require('../uploadfile/upload.nock');
 require('./form.service.nock');
+
 
 describe('GET /api/process-form', function () {
   var url = '/api/process-form';

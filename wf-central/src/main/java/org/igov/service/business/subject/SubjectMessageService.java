@@ -5,13 +5,12 @@
  */
 package org.igov.service.business.subject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.igov.model.core.EntityDao;
 import org.igov.model.subject.*;
 import org.igov.model.subject.message.*;
-import org.igov.util.JSON.JsonRestUtils;
+import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.igov.service.exception.CommonServiceException;
-
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  *
@@ -47,6 +41,8 @@ public class SubjectMessageService {
     private SubjectContactTypeDao subjectContactTypeDao;
     @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
+    @Autowired
+    private SubjectMessageFeedbackAnswerDao subjectMessageFeedbackAnswerDao;
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
@@ -235,9 +231,11 @@ public class SubjectMessageService {
 
     public SubjectMessageFeedback setSubjectMessageFeedback(String sID_Source, String sAuthorFIO, String sMail,
                                                             String sHead, String sBody, String sPlace, String sEmployeeFIO,
-                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId) {
+                                                            Long nID_Rate, Long nID_Service, String sAnswer, Long nId,
+                                                            Long nID_Subject) {
 
         SubjectMessageFeedback messageFeedback;
+        SubjectMessage subjectMessage;
         if (nId == null){
             messageFeedback = new SubjectMessageFeedback();
             messageFeedback.setsID_Source(sID_Source);
@@ -251,23 +249,87 @@ public class SubjectMessageService {
             messageFeedback.setnID_Service(nID_Service);
             messageFeedback.setsID_Token(RandomStringUtils.randomAlphanumeric(20));
             messageFeedback.setsAnswer(sAnswer);
+            if(!isEmpty(sHead) || !isEmpty(sBody)){
+                SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
+                subjectMessage = new SubjectMessage();
+                subjectMessage.setHead(sHead);
+                subjectMessage.setBody(sBody);
+                subjectMessage.setSubjectMessageType(subjectMessageType);
+                subjectMessage.setDate(new DateTime());
+                subjectMessage.setsSubjectInfo(sAuthorFIO);
+                subjectMessage.setMail(sMail);
+                subjectMessage.setId_subject(nID_Subject);
+            }
 
             return subjectMessageFeedbackDao.save(messageFeedback);
         }
         messageFeedback = subjectMessageFeedbackDao.getSubjectMessageFeedbackById(nId);
 
-        messageFeedback.setsID_Source(sID_Source);
-        messageFeedback.setsAuthorFIO(sAuthorFIO);
-        messageFeedback.setsMail(sMail);
-        messageFeedback.setsHead(sHead);
-        messageFeedback.setsBody(sBody);
-        messageFeedback.setsPlace(sPlace);
-        messageFeedback.setsEmployeeFIO(sEmployeeFIO);
-        messageFeedback.setnID_Rate(nID_Rate);
-        messageFeedback.setnID_Service(nID_Service);
-        messageFeedback.setsAnswer(sAnswer );
+        if (StringUtils.isEmpty(sAnswer)) {
+            messageFeedback.setsID_Source(sID_Source);
+            messageFeedback.setsAuthorFIO(sAuthorFIO);
+            messageFeedback.setsMail(sMail);
+            messageFeedback.setsHead(sHead);
+            messageFeedback.setsBody(sBody);
+            messageFeedback.setsPlace(sPlace);
+            messageFeedback.setsEmployeeFIO(sEmployeeFIO);
+            messageFeedback.setnID_Rate(nID_Rate);
+            messageFeedback.setnID_Service(nID_Service);
+            messageFeedback.setsAnswer(sAnswer );
+            subjectMessage = messageFeedback.getoSubjectMessage();
+            if(subjectMessage==null){
+                SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(2L);
+                subjectMessage = new SubjectMessage();
+                subjectMessage.setHead(sHead==null?"":sHead);
+                subjectMessage.setBody(sBody==null?"":sBody);
+                subjectMessage.setSubjectMessageType(subjectMessageType);
+                //subjectMessage.setDate(new DateTime());
+                //subjectMessage.setsSubjectInfo(sAuthorFIO);
+                subjectMessage.setMail(sMail==null?"":sMail);
+                subjectMessage.setId_subject(nID_Subject);
+            }
+            if(sHead!=null){
+                subjectMessage.setHead(sHead);
+            }
+            if(sBody!=null){
+                subjectMessage.setBody(sBody);
+            }
+            subjectMessage.setDate(new DateTime());
+            subjectMessage.setsSubjectInfo(sAuthorFIO);
+            if(sMail!=null){
+                subjectMessage.setMail(sMail);
+            }
+            if(nID_Subject!=null){
+                subjectMessage.setId_subject(nID_Subject);
+            }
+            messageFeedback.setoSubjectMessage(subjectMessage);
+        }
 
-       return subjectMessageFeedbackDao.update(messageFeedback);
+        return subjectMessageFeedbackDao.update(messageFeedback);
+    }
+
+    public SubjectMessageFeedbackAnswer setSubjectMessageFeedbackAnswer(Long nID_SubjectMessageFeedback, String sBody,
+                                                                        Long nID_Subject, Boolean bSelf, String sAuthorFIO){
+
+        SubjectMessageFeedbackAnswer answer = new SubjectMessageFeedbackAnswer();
+        SubjectMessageFeedback messageFeedback = subjectMessageFeedbackDao
+                .getSubjectMessageFeedbackById(nID_SubjectMessageFeedback);
+
+        SubjectMessage subjectMessage = new SubjectMessage();
+        subjectMessage.setBody(sBody);
+        subjectMessage.setHead("Ответ на feedback");
+        SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(11L);
+        subjectMessage.setSubjectMessageType(subjectMessageType);
+        subjectMessage.setDate(new DateTime());
+        subjectMessage.setId_subject(nID_Subject);
+        subjectMessage.setsSubjectInfo(sAuthorFIO);
+        
+
+        answer.setoSubjectMessageFeedback(messageFeedback);
+        answer.setbSelf(bSelf);
+        answer.setoSubjectMessage(subjectMessage);
+        
+        return subjectMessageFeedbackAnswerDao.save(answer);
     }
 
     public SubjectMessageFeedback getSubjectMessageFeedbackById(Long nId) {
