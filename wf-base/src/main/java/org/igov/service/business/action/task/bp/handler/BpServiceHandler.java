@@ -172,7 +172,7 @@ public class BpServiceHandler {
         
         
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-//        mParam.put("sLoginAssigned", "sTaskId");
+        mParam.put("sLoginAssigned", "sTaskId");
         mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("data", "Дата БП");
