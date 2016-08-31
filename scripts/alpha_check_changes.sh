@@ -1,5 +1,8 @@
 #!/bin/bash
-sSource="scripts/config/app.lst"
+git clone git@iSystem.github.com:e-government-ua/iSystem.git -b master --single-branch ./iSystem
+cp iSystem/config/_default/app.lst ./
+rm -rf iSysetm
+sSource="app.lst"
 
 get_change() {
 
