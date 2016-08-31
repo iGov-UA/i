@@ -12,7 +12,7 @@ get_change() {
  echo $new >> last_change_new_$sApp
  DIFF=$(diff -lq last_change_$sApp last_change_new_$sApp)
   if [[ "$DIFF" != "" ]]; then
-     if [[ '$sApp' == "central-js" ]] || [[ '$sApp' == "dashboard-js" ]]; then
+     if [[ "$sApp" == "central-js" ]] || [[ "$sApp" == "dashboard-js" ]]; then
      curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins-backup.tech.igov.org.ua/job/"$sHost"_"$sJob"/buildWithParameters?delay=0sec" 
      echo 'Start Job' $sHost'_'$sJob
          elif [[ "$sApp" == "wf-base" ]] || [[ "$sApp" == "storage-static" ]] || [[ "$sApp" == "storage-temp" ]]; then
