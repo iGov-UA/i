@@ -75,11 +75,9 @@ public class ManagerSMS_New {
 	    return "";
 	}
 
-	if (sMessageId == null) {
+	if (sMessageId == null || sMessageId.equals("")) {
 	    sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
 	}
-
-	String ret = "";
 
 	SMS_New sms;
 	try {
@@ -104,6 +102,7 @@ public class ManagerSMS_New {
 	LOG.info("sURL={}", sURL_Send);
 	LOG.debug("Session ID:, RequestBody:\n{}", sessionId, stringSmsReqest);
 
+	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sURL_Send);
@@ -126,46 +125,48 @@ public class ManagerSMS_New {
 			os.append(s);
 		    }
 		    ret = os.toString();
+
+		    // Этап обработки ответа сервиса
+		    Map<String, Object> moData = null;
+		    try {
+			moData = JsonRestUtils.readObject(ret, Map.class);
+
+			String msStatus = "";
+			String msCode = "";
+			String msMessage = "";
+			String messageId = "";
+			if (moData != null) {
+			    if (moData.containsKey("msStatus")) {
+				msStatus = (String) moData.get("msStatus");
+			    }
+
+			    // Если ответ с ошибкой
+			    if (msStatus.equals("not_delivered") || msStatus.equals("warning")
+				    || msStatus.equals("error")) {
+				if (moData.containsKey("msCode")) {
+				    msCode = (String) moData.get("msCode");
+				}
+				if (moData.containsKey("msMessage")) {
+				    msMessage = (String) moData.get("msMessage");
+				}
+				if (moData.containsKey("messageId")) {
+				    messageId = (String) moData.get("messageId");
+				}
+				LOG.error(
+					"Error send SMS. RequestBody:\n{}\nResponse msStatus:{}, msCode:{}, msMessage:{}, messageId:{}",
+					stringSmsReqest, msStatus, msCode, msMessage, messageId);
+			    }
+			}
+		    } catch (Exception e) {
+			LOG.error("Error parse response JSON: {}", ret);
+		    }
+
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
 		    LOG.error("Error send SMS. RequestBody:\n{}\nhttp code:{}\n", stringSmsReqest,
 			    oHttpURLConnection.getResponseCode(), e);
 		}
-	    }
-
-	    // Этап обработки ответа сервиса
-	    Map<String, Object> moData = null;
-	    try {
-		moData = JsonRestUtils.readObject(ret, Map.class);
-
-		String msStatus = "";
-		String msCode = "";
-		String msMessage = "";
-		String messageId = "";
-		if (moData != null) {
-		    if (moData.containsKey("msStatus")) {
-			msStatus = (String) moData.get("msStatus");
-		    }
-		    
-		    // Если ответ с ошибкой
-		    if (msStatus.equals("not_delivered") || msStatus.equals("warning") || msStatus.equals("error")) {
-			if (moData.containsKey("msCode")) {
-			    msCode = (String) moData.get("msCode");
-			}
-			if (moData.containsKey("msMessage")) {
-			    msMessage = (String) moData.get("msMessage");
-			}
-			if (moData.containsKey("messageId")) {
-			    messageId = (String) moData.get("messageId");
-			}
-			LOG.error(
-				"Error send SMS. RequestBody:\n{}\nResponse msStatus:{}, msCode:{}, msMessage:{}, messageId:{}",
-				stringSmsReqest, msStatus, msCode, msMessage, messageId);
-		    }
-		}
-	    } catch (Exception e) {
-		LOG.error("Error parse response JSON: {}", ret);
 	    }
 
 	} catch (MalformedURLException e) {
