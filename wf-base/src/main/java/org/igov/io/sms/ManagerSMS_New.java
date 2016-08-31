@@ -89,14 +89,7 @@ public class ManagerSMS_New {
 	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
-	String stringSmsReqest = sms.toJSONString();
-
-	LOG.info("sURL={}", sURL_Send);
-	LOG.debug("RequestBody:\n{}", stringSmsReqest);
-
-	HttpURLConnection oHttpURLConnection = null;
 	String sessionId;
-
 	try {
 	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
 		    generalConfig.getPassword_Auth_UkrDoc_SED(),
@@ -106,8 +99,12 @@ public class ManagerSMS_New {
 	    return String.format("Error get Session ID. %s", e.getMessage());
 	}
 
-	LOG.info("Retrieved Session ID: {}", sessionId);
+	String stringSmsReqest = sms.toJSONString();
 
+	LOG.info("sURL={}", sURL_Send);
+	LOG.debug("Session ID:, RequestBody:\n{}", sessionId, stringSmsReqest);
+
+	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
