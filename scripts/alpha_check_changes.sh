@@ -1,7 +1,7 @@
 #!/bin/bash
 git clone git@iSystem.github.com:e-government-ua/iSystem.git -b test --single-branch ./iSystem
-cp iSystem/config/_default/app.lst ./
-rm -rf iSysetm
+cp ./iSystem/config/_default/app.lst ./
+rm -rf ./iSysetm
 sSource="app.lst"
 
 get_change() {
