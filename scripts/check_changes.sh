@@ -81,3 +81,4 @@ while read sLine; do
   get_change $sLine
 done < $sSource 
 exit 0
+rm no
