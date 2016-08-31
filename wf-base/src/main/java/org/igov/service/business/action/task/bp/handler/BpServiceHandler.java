@@ -169,11 +169,13 @@ public class BpServiceHandler {
         String organ = trimGroups(organs); 
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-        mParam.put("data", mTaskParam.get("sDate_BP"));
-        mGuideTaskParamKey.put("data", "Дата БП");
+        
+        
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
 //        mParam.put("sLoginAssigned", "sTaskId");
-//        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
+        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
+        mParam.put("data", mTaskParam.get("sDate_BP"));
+        mGuideTaskParamKey.put("data", "Дата БП");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
