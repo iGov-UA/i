@@ -7,18 +7,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
-import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -52,8 +51,7 @@ public class ManagerSMS_New {
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
 
-	LOG.debug(
-		"general.SMS_New.sURL_Send={}, general.SMS_New.sMerchantId={}, general.SMS_New.sCallbackUrl={}",
+	LOG.debug("general.SMS_New.sURL_Send={}, general.SMS_New.sMerchantId={}, general.SMS_New.sCallbackUrl={}",
 		sURL_Send, sMerchantId, sCallbackUrl_SMS);
 
 	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")
@@ -98,7 +96,7 @@ public class ManagerSMS_New {
 
 	HttpURLConnection oHttpURLConnection = null;
 	String sessionId;
-	    
+
 	try {
 	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
 		    generalConfig.getPassword_Auth_UkrDoc_SED(),
@@ -134,10 +132,45 @@ public class ManagerSMS_New {
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Error send SMS. RequestBody:\n{}\nhttp code:{}\n",
-			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
+		    LOG.error("Error send SMS. RequestBody:\n{}\nhttp code:{}\n", stringSmsReqest,
+			    oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
+
+	    // Этап обработки ответа сервиса
+	    Map<String, Object> moData = null;
+	    try {
+		moData = JsonRestUtils.readObject(ret, Map.class);
+
+		String msStatus = "";
+		String msCode = "";
+		String msMessage = "";
+		String messageId = "";
+		if (moData != null) {
+		    if (moData.containsKey("msStatus")) {
+			msStatus = (String) moData.get("msStatus");
+		    }
+		    
+		    // Если ответ с ошибкой
+		    if (msStatus.equals("not_delivered") || msStatus.equals("warning") || msStatus.equals("error")) {
+			if (moData.containsKey("msCode")) {
+			    msCode = (String) moData.get("msCode");
+			}
+			if (moData.containsKey("msMessage")) {
+			    msMessage = (String) moData.get("msMessage");
+			}
+			if (moData.containsKey("messageId")) {
+			    messageId = (String) moData.get("messageId");
+			}
+			LOG.error(
+				"Error send SMS. RequestBody:\n{}\nResponse msStatus:{}, msCode:{}, msMessage:{}, messageId:{}",
+				stringSmsReqest, msStatus, msCode, msMessage, messageId);
+		    }
+		}
+	    } catch (Exception e) {
+		LOG.error("Error parse response JSON: {}", ret);
+	    }
+
 	} catch (MalformedURLException e) {
 	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
@@ -163,5 +196,5 @@ public class ManagerSMS_New {
 	    LOG.error("Error parse JSON response callback SMS", e);
 	}
     }
-    
+
 }
