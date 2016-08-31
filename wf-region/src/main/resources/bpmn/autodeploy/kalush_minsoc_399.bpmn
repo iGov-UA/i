@@ -14,13 +14,18 @@
         <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Тип звернення" type="enum" required="true">
+          <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Ветеран праці»"></activiti:value>
+          <activiti:value id="sEnumChange" name="Заміна посвідчення «Ветеран праці»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина заміни посвідчення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sReason&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -94,7 +99,11 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний Код" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Тип звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Ветеран праці»"></activiti:value>
+          <activiti:value id="sEnumChange" name="Заміна посвідчення «Ветеран праці»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина заміни посвідчення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина, що довідка МОЖЕ бути надана"></activiti:value>
           <activiti:value id="reject" name="Відмовити в дані довідки"></activiti:value>
