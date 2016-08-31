@@ -2427,7 +2427,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.debug(e.getMessage());
         }
     }
-
+    
     @ApiOperation(value = "/removeOldProcess", notes = "##### Удаление закрытых процессов из таблиц активити#####\n\n")
     @RequestMapping(value = "/removeOldProcess", method = RequestMethod.GET)
     public @ResponseBody
@@ -2466,6 +2466,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return result;
     }
+
 
     @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
     @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
