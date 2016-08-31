@@ -46,7 +46,7 @@ for sHost in $sHost_ARRAY; do
             echo 'Start Job' $sHost'_Back_CI'
         fi
 
-        elif [[ "$sApp" == "wf-central" ]] && [[ ! -f 'no_'$sApp ]]; then
+        elif [[ "$sApp" == "wf-central" ]] && [[ ! -f 'no_*' ]]; then
            echo 'Have change in' $sHost'_Back_Central'
          if [[ "$sHost" == "test_alpha-old" ]] || [[ "$sHost" == "test_beta-old" ]] || [[ "$sHost" == "PROD-Double" ]]; then
             TOKEN=$5
@@ -57,7 +57,7 @@ for sHost in $sHost_ARRAY; do
             echo 'Start Job' $sHost'_Back_Central_CI'
         fi
 
-        elif [[ "$sApp" == "wf-region" ]] && [[ ! -f 'no_'$sApp ]]; then
+        elif [[ "$sApp" == "wf-region" ]] && [[ ! -f 'no_*' ]]; then
            echo 'Have change in' $sHost'_Back_Region'
          if [[ "$sHost" == "test_alpha-old" ]] || [[ "$sHost" == "test_beta-old" ]] || [[ "$sHost" == "PROD-Double" ]]; then
             TOKEN=$5
