@@ -123,7 +123,8 @@ public class ManagerSMS_New {
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+//	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
@@ -142,15 +143,15 @@ public class ManagerSMS_New {
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Ошибка при отправке SMS. Запрос:\n{}\nhttp code:{}\n",
+		    LOG.error("Error send SMS. RequestBody:\n{}\nhttp code:{}\n",
 			    stringSmsReqest, oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
 	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} catch (IOException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} finally {
 	    if (oHttpURLConnection != null) {
@@ -158,7 +159,7 @@ public class ManagerSMS_New {
 	    }
 	}
 
-	LOG.info("Ответ:\n{}", ret);
+	LOG.info("ResponseBody:\n{}", ret);
 
 	return ret;
     }
@@ -168,7 +169,7 @@ public class ManagerSMS_New {
 	    SMSCallback sc = new SMSCallback(soJSON);
 	    LOG.info("%s", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Ошибка callback SMS", e);
+	    LOG.error("Error parse JSON response callback SMS", e);
 	}
     }
 }
