@@ -669,21 +669,13 @@
         }
       }      // */
       
+      function isNumeric(n) {
+    	  return !isNaN(parseFloat(n)) && isFinite(n);
+    	}
+      
       function NumberDocument(){
-    	  var spDoc = document.getElementById('spanDocument');
-    	  var spPage = document.getElementById('spanPage');
-    	  
-    	  if(nDocument == "[nDocument]"){              
-    		  spDoc.innerHTML = "&nbsp;&nbsp;&nbsp;";
-          } else {
-          	  spDoc.innerHTML = nDocument;
-          }    	
-    	  
-    	  if(nPage == "[nPage]"){              
-    		  spPage.innerHTML = "&nbsp;&nbsp;&nbsp;";
-          } else {
-        	  spPage.innerHTML = nDocument;
-          }
+    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
+    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
       }
       
       function ShowElements(sCondition) {
