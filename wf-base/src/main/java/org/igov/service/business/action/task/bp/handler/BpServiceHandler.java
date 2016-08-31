@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -174,8 +176,6 @@ public class BpServiceHandler {
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sLoginAssigned", "sTaskId");
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
-        mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
-        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
