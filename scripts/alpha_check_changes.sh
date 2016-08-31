@@ -22,7 +22,7 @@ get_change() {
 #      elif [[ "$sHost" == "test_alpha" ]] || [[ "$sHost" == "test_beta" ]] || [[ "$sHost" == "test_delta" ]] || [[ "$sHost" == "test_omega" ]]; then
          echo 'Start Job in' $sHost'_Front_Central_CI'
          curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_Front_Central/buildWithParameters?delay=0sec" 
-      fi
+#      fi
 
         elif [[ "$sApp" == "dashboard-js"  ]]; then
            echo 'Have change in' $sHost'_Front_Region'
@@ -33,7 +33,7 @@ get_change() {
 #         elif [[ "$sHost" == "test_alpha" ]] || [[ "$sHost" == "test_beta" ]] || [[ "$sHost" == "test_delta" ]] || [[ "$sHost" == "test_omega" ]]; then
             curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_Front_Region/buildWithParameters?delay=0sec" 
             echo 'Start Job' $sHost'_Front_Region_CI' 
-        fi
+#        fi
 
         elif [[ "$sApp" == "wf-base" ]] || [[ "$sApp" == "storage-static" ]] || [[ "$sApp" == "storage-temp" ]]; then
            touch 'no'
@@ -45,7 +45,7 @@ get_change() {
 #         elif [[ "$sHost" == "test_alpha" ]] || [[ "$sHost" == "test_beta" ]] || [[ "$sHost" == "test_delta" ]] || [[ "$sHost" == "test_omega" ]]; then
             curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_Back/buildWithParameters?delay=0sec" 
             echo 'Start Job' $sHost'_Back_CI'
-        fi
+#        fi
 
         elif [[ "$sApp" == "wf-central" ]] && [[ ! -f 'no' ]]; then
            echo 'Have change in' $sHost'_Back_Central'
@@ -56,7 +56,7 @@ get_change() {
 #         elif [[ "$sHost" == "test_alpha" ]] || [[ "$sHost" == "test_beta" ]] || [[ "$sHost" == "test_delta" ]] || [[ "$sHost" == "test_omega" ]]; then
             curl -k -XPOST --user $USER":"$TOKEN "https://ci-jenkins.tech.igov.org.ua/job/"$sHost"_Back_Central/buildWithParameters?delay=0sec" 
             echo 'Start Job' $sHost'_Back_Central_CI'
-        fi
+ #       fi
 
         elif [[ "$sApp" == "wf-region" ]] && [[ ! -f 'no' ]]; then
            echo 'Have change in' $sHost'_Back_Region'
@@ -70,7 +70,7 @@ get_change() {
         fi
            else
            echo "no change"
-   fi
+#   fi
  fi
 
 #done
