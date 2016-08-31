@@ -48,7 +48,6 @@ public class ManagerSMS_New {
     @PostConstruct
     private void init() {
 	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
-//	sURL_Send = generalConfig.getURL_Send_SMSNew().trim();
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
@@ -79,8 +78,7 @@ public class ManagerSMS_New {
 	}
 
 	if (sMessageId == null) {
-	    countSMS.incrementAndGet();
-	    sMessageId = static_sMessageId + Integer.toString(countSMS.get());
+	    sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
 	}
 
 	String ret = "";
@@ -89,14 +87,14 @@ public class ManagerSMS_New {
 	try {
 	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Ошибка создания SMS. sPhone={}, sText={}", sPhone, sText, e);
+	    LOG.error("Error create SMS. sPhone={}, sText={}", sPhone, sText, e);
 	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
 	String stringSmsReqest = sms.toJSONString();
 
 	LOG.info("sURL={}", sURL_Send);
-	LOG.debug("Запрос:\n{}", stringSmsReqest);
+	LOG.debug("RequestBody:\n{}", stringSmsReqest);
 
 	HttpURLConnection oHttpURLConnection = null;
 	String sessionId;
@@ -112,18 +110,11 @@ public class ManagerSMS_New {
 
 	LOG.info("Retrieved Session ID: {}", sessionId);
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
-//        headers.set("Content-Type", "application/json; charset=utf-8");
-//
-//        ret = new RestRequest().post(sURL_Send, stringSmsReqest, null, StandardCharsets.UTF_8, String.class, headers);
-	
 	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-//	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
@@ -172,4 +163,5 @@ public class ManagerSMS_New {
 	    LOG.error("Error parse JSON response callback SMS", e);
 	}
     }
+    
 }
