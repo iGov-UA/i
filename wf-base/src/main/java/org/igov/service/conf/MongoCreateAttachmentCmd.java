@@ -59,7 +59,7 @@ public class MongoCreateAttachmentCmd extends CreateAttachmentCmd {
 	      ByteArrayEntity byteArray = ByteArrayEntity.createAndInsert(bytes);
 	      String attachmentKey = bytesDataStorage.saveData(byteArray.getBytes());
 	      attachment.setContentId(MONGO_KEY_PREFIX + attachmentKey);
-	      attachment.setContent(byteArray);
+	      //BW//TEMP!!! attachment.setContent(byteArray);
 	      
 	      LOG.info("Saved attachment in Mongo DB with the key: {}{}", MONGO_KEY_PREFIX, attachmentKey);
 	    }
