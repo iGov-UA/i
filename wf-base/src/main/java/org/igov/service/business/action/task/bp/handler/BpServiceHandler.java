@@ -256,8 +256,8 @@ public class BpServiceHandler {
         LOG.info("!!!!!!!!!!!asCandidateCroupToCheck: "+asCandidateCroupToCheck);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
         LOG.info("!!!!!!!!!!!!!!!!!1saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
-        if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
-            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
+//        if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+//            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
             LOG.info("!!!!!!!!!!saCandidateCroupToCheck: "+saCandidateCroupToCheck);
             Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
@@ -305,7 +305,7 @@ public class BpServiceHandler {
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
                 LOG.info("saCandidateCroupToCheck!!!!!!: "+saCandidateCroupToCheck);
             }
-        }
+//        }
         LOG.info("!!!!!!!!!!saCandidateCroupToCheck={}", saCandidateCroupToCheck);
         return asCandidateCroupToCheck;
     }
