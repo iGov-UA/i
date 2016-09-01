@@ -154,7 +154,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
                 if (task.getAssignee() != null) {
                     LOG.info("task.getAssignee(): "+task.getAssignee());
-                    throw new TaskAlreadyUnboundException(HttpStatus.FORBIDDEN+" Вибачте - звернення вже взято в роботу!");  
+                    throw new TaskAlreadyUnboundException(HttpStatus.FORBIDDEN+" Вибачте, звернення вже взято в роботуачте - звернення вже взято в роботу");  
                 }               
             }
         }
