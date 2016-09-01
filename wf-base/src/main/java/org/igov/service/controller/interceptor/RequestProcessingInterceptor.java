@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 
 import static org.igov.util.Tool.sCut;
 
@@ -58,6 +59,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
 
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
+    private static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("\"assignee\":\"[а-яА-Яa-z_A-z0-9]+\"");
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long  SubjectMessageType_ServiceCommentEmployeeAnswer = 9L; 
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
@@ -117,7 +119,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
-            throws IOException {
+            throws IOException, TaskAlreadyUnboundException {
         LOG.info("Method 'protocolize' started");
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
@@ -141,16 +143,27 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sURL = oRequest.getRequestURL().toString();
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
+        String sRequestBody = osRequestBody.toString();
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
             LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
+        LOG.info("snTaskId: "+snTaskId);
+            LOG.info("Request.getMethod().trim(): "+oRequest.getMethod().trim());
+             if ("PUT".equalsIgnoreCase(oRequest.getMethod().trim()) && SREQUESTBODY_PATTERN.matcher(sRequestBody).find()) {
+                LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
+                Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+                if (task.getAssignee() != null) {
+                    LOG.info("task.getAssignee(): "+task.getAssignee());
+                    throw new TaskAlreadyUnboundException(HttpStatus.FORBIDDEN+" Task has been already assigneed!");
+                }               
+            }
         }
 
         if (snTaskId != null && mRequestParam.get("taskId") == null) {
             mRequestParam.put("taskId", snTaskId);
         }
 
-        String sRequestBody = osRequestBody.toString();
+//        String sRequestBody = osRequestBody.toString();
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
             LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
