@@ -255,58 +255,38 @@ public class BpServiceHandler {
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         LOG.info("!!!!!!!!!!!asCandidateCroupToCheck: "+asCandidateCroupToCheck);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
-        LOG.info("!!!!!!!!!!!!!!!!!1saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
-//        if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
-//            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
-            LOG.info("!!!!!!!!!!saCandidateCroupToCheck: "+saCandidateCroupToCheck);
-            Map<String, Object> mProcessVariable = null;
+        //if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+        Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
-                LOG.info("!!!!!!!!!!mTaskVariable: "+mTaskVariable);
-                HistoricTaskInstance oHistoricTaskInstance = historyService
+               HistoricTaskInstance oHistoricTaskInstance = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
                         .singleResult();
-                LOG.info("!!!!!!!!!!oHistoricTaskInstance: "+oHistoricTaskInstance + "oHistoricTaskInstance.getProcessVariables(): " + oHistoricTaskInstance.getProcessVariables());
                 if (oHistoricTaskInstance != null && oHistoricTaskInstance.getProcessVariables() != null) {
-                  LOG.info("!!!!!!!!!!!!!!oHistoricTaskInstance: "+oHistoricTaskInstance);  
-                    mProcessVariable = oHistoricTaskInstance.getProcessVariables();
-                     LOG.info("!!!!!!!!!!!!!mProcessVariable: "+mProcessVariable);  
-                }
+                   mProcessVariable = oHistoricTaskInstance.getProcessVariables();
+                     }
             } else { //use existing process variables
                 mProcessVariable = mTaskVariable;
-                LOG.info("After ELSE!!!!!!!!!!!!!mProcessVariable: "+mProcessVariable); 
-            }
+                }
             if (mProcessVariable != null) {
-                LOG.info("!!!!!!!!!!!!!mProcessVariable: "+mProcessVariable);  
                 Set<String> asCandidateGroupNew = new HashSet<>();
-                LOG.info("!!!!!!!!!!!!!asCandidateGroupNew: "+asCandidateGroupNew);
                 for (String sCandidateGroup : asCandidateCroupToCheck) {
-                    LOG.info("!!!!!!!!!!!!!sCandidateGroup: "+sCandidateGroup);
-                    String sCandidateGroupNew = sCandidateGroup;
-                    LOG.info("!!!!!!!!!!!!!sCandidateGroupNew: "+sCandidateGroupNew);
+                   String sCandidateGroupNew = sCandidateGroup;
                     if (sCandidateGroup.contains(BEGIN_GROUPS_PATTERN)) {
-                        LOG.info("!!!!!!!!!!!!!sCandidateGroup.contains(BEGIN_GROUPS_PATTERN): "+sCandidateGroup.contains(BEGIN_GROUPS_PATTERN));
-                        String sVariableName = StringUtils.substringAfter(sCandidateGroup, BEGIN_GROUPS_PATTERN);
-                        LOG.info("!!!!!!!!!!!!!sVariableName_BEGIN_GROUPS_PATTERN: "+sVariableName);
+                       String sVariableName = StringUtils.substringAfter(sCandidateGroup, BEGIN_GROUPS_PATTERN);
                         sVariableName = StringUtils.substringBeforeLast(sVariableName, END_GROUPS_PATTERN);
-                         LOG.info("!!!!!!!!!!!!!sVariableName_END_GROUPS_PATTERN: "+sVariableName);
                         Object sVariableValue = mProcessVariable.get(sVariableName);
-                      LOG.info("!!!!!!!!!!!!!sVariableValue: "+sVariableValue);
-                        if (sVariableValue != null) {
+                       if (sVariableValue != null) {
                             sCandidateGroupNew = sCandidateGroup.replace(BEGIN_GROUPS_PATTERN + sVariableName + END_GROUPS_PATTERN, "" + sVariableValue);
                             LOG.info("replace candidateGroups: from sCandidateGroup={}, to sCandidateGroupNew={}", sCandidateGroup, sCandidateGroupNew);
                         }
                     }
                     asCandidateGroupNew.add(prefix + sCandidateGroupNew);
-                    LOG.info("!!!!!!!!!!prefix+sCandidateGroupNew: "+asCandidateGroupNew.add(prefix + sCandidateGroupNew));
-                }
+                    }
                 asCandidateCroupToCheck = asCandidateGroupNew;
-                LOG.info("!!!!!asCandidateCroupToCheck: "+asCandidateCroupToCheck);
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
-                LOG.info("saCandidateCroupToCheck!!!!!!: "+saCandidateCroupToCheck);
-            }
+                }
 //        }
-        LOG.info("!!!!!!!!!!saCandidateCroupToCheck={}", saCandidateCroupToCheck);
         return asCandidateCroupToCheck;
     }
 
