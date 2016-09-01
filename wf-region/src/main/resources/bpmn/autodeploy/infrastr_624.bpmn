@@ -261,7 +261,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Ізмаїльська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26006030033419')          			
 				execution.setVariable('sVarSumPay','892.57')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Mariupol')
           	{
@@ -273,7 +273,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Маріупольска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26003030033423')          			
 				execution.setVariable('sVarSumPay','889.44')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Mikolayv')
           	{
@@ -284,8 +284,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGetCode','38728444')          			
 				execution.setVariable('sVarWhoPayGet','Миколаївска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26002030033424')          			
-				execution.setVariable('sVarSumPay','658.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sVarSumPay','1022,03')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Odesa')
           	{
@@ -297,7 +297,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Одеська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26000020033425')          			
 				execution.setVariable('sVarSumPay','610.06')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Kherson')
           	{
@@ -309,7 +309,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Херсонска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26008020033416')          			
 				execution.setVariable('sVarSumPay','1023.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Chernomorsk')
           	{
@@ -321,7 +321,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Іллічівська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26005030033421')          			
 				execution.setVariable('sVarSumPay','844.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
 	</script>
     </scriptTask>
@@ -482,9 +482,9 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="SUMMA" name="Назва порту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="OPERDAYDATE" name="Назва порту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -559,6 +559,12 @@ execution.setVariable('sID_Payment', Pay)
 										</ul>
 									</p>
 									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
 										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
 									</p>
 									<p>
@@ -568,12 +574,6 @@ execution.setVariable('sID_Payment', Pay)
 										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
-									</p>
-									<p>
-										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -617,6 +617,12 @@ execution.setVariable('sID_Payment', Pay)
 										</ul>
 									</p>
 									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
 										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
 									</p>
 									<p>
@@ -626,12 +632,6 @@ execution.setVariable('sID_Payment', Pay)
 										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
-									</p>
-									<p>
-										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>Коментар держслужбовця:<br>
 										<b><i>${sDecisionComment}</i></b>
