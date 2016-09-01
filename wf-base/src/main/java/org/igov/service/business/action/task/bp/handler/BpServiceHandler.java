@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -169,11 +171,11 @@ public class BpServiceHandler {
         String organ = trimGroups(organs); 
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-        mParam.put("data", mTaskParam.get("sDate_BP"));
-        mGuideTaskParamKey.put("data", "Дата БП");
+        
+        
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-//        mParam.put("sLoginAssigned", "sTaskId");
-//        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
+        mParam.put("sLoginAssigned", "sTaskId");
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
@@ -230,6 +232,7 @@ public class BpServiceHandler {
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
+    
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();

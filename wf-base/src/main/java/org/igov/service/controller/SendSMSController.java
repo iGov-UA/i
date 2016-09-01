@@ -1,7 +1,5 @@
 package org.igov.service.controller;
 
-import java.io.IOException;
-
 import org.igov.io.sms.ManagerSMS_New;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,7 @@ public class SendSMSController {
     @Autowired
     ManagerSMS_New managerSMS;
 
-    @RequestMapping(value = "/send", method = RequestMethod.GET)
+    @RequestMapping(value = "/send", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     public @ResponseBody String sendSMS(@RequestParam(value = "phone", required = false) String phone,
 	    @RequestParam(value = "text", required = false) String text) {
 	
