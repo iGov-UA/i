@@ -16,7 +16,12 @@ angular.module('app').service('MessagesService', function($http, $q) {
     $http.get('./api/messages/service?sID_Order='+sID_Order+(sToken?'&sToken='+sToken:"")).success(function (data, status) {
       angular.forEach(data.messages, function (message) {
         if (message.hasOwnProperty('sData') && message.sData.length > 1) {
-          message.osData = JSON.parse(message.sData);
+          var patternRegExp = new RegExp(/[s,n]ID_Rate=[2-5]/);
+          if(patternRegExp.test(message.sData) && message.sData.length == 10){
+            message.sData = message.sData.split('=')[1];
+          } else {
+            message.osData = JSON.parse(message.sData);
+          }
         }
       });
       deferred.resolve(data);
