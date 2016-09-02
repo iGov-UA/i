@@ -19,9 +19,8 @@ angular.module('app').service('MessagesService', function($http, $q) {
           var patternRegExp = new RegExp(/[s,n]ID_Rate=[1-5]/);
           if(patternRegExp.test(message.sData) && message.sData.length == 10){
             message.sData = message.sData.split('=')[1];
-          } else {
-            message.osData = JSON.parse(message.sData);
           }
+          message.osData = JSON.parse(message.sData);
         }
       });
       deferred.resolve(data);
