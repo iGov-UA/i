@@ -168,18 +168,23 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
 
         long nDiffMS = 0;
+        LOG.info("!!!!!!!!!!!!!!!!oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            LOG.info("!!!!!!if!!!!!!!!!!nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+             LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
         }
         LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours);
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays);
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
