@@ -167,7 +167,7 @@
         <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
           <activiti:value id="accept" name="звернення прийнято, видано наказ про надання безоплатної правової допомоги"></activiti:value>
           <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
-          <activiti:value id="reject_1" name="звернення прийнято, відмова у наданні безоплатної правової допомоги  (обов'язково вкажіть причину в коментарі)"></activiti:value>
+          <activiti:value id="deny" name="звернення прийнято, відмова у наданні безоплатної правової допомоги  (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/justice_989_print1.html" type="file"></activiti:formProperty>
@@ -274,8 +274,8 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="${decide=='reject_1'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide==reject_1}]]></conditionExpression>
+    <sequenceFlow id="flow6" name="${decide=='deny'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='deny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
