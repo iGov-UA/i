@@ -251,7 +251,7 @@
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum">
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum" writable="false">
           <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
@@ -454,6 +454,7 @@
         <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
