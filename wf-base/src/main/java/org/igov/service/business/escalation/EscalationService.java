@@ -168,25 +168,30 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
 
         long nDiffMS = 0;
+        LOG.info("!!!!!!!!!!!!!!!!oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            LOG.info("!!!!!!if!!!!!!!!!!nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+             LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
         }
         LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours); 
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays); 
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
-//        result.put("sLoginAssigned", taskService.createTaskQuery().taskAssignee(taskId));
-//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        result.put("sLoginAssigned", oTask.getAssignee());
+        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         result.put("bSuspended", oTask.isSuspended());
         BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
