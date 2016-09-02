@@ -59,6 +59,8 @@
         <activiti:formProperty id="nDocCharter" name=" Копія договору бербоут-чартеру;В разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_license.html"></activiti:formProperty>
         <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -179,7 +181,7 @@ execution.setVariable('sTypeBiz', res)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nPassport},${nDocVidom},${nDocKvalif},${nDocBezpek},${nDocSvid},${nDocPass},${nDocSafety},${nDocSysSafety},${nDocCharter},${nDocKvalif1},${nShipTiket},${form_signed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
