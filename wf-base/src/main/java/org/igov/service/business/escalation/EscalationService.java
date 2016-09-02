@@ -179,12 +179,12 @@ public class EscalationService {
         LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
-        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours);
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours); 
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
-        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays);
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays); 
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
