@@ -100,7 +100,7 @@ public class ManagerSMS_New {
 	String stringSmsReqest = sms.toJSONString();
 
 	LOG.info("sURL={}", sURL_Send);
-	LOG.debug("Session ID:, RequestBody:\n{}", sessionId, stringSmsReqest);
+	LOG.debug("Session ID:{}, RequestBody:\n{}", sessionId, stringSmsReqest);
 
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
