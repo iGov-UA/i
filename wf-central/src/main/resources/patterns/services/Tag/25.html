@@ -785,13 +785,14 @@
             </article>
         </div>
     </div>
+    <div class="progress_bar"></div>
+	<div class="to-top"><span class="glyphicon glyphicon-chevron-up"></span><br />до гори</div>
 </div>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
 
-<div class="progress_bar"></div>
-<div class="to-top"><span class="glyphicon glyphicon-chevron-up"></span><br />до гори</div>
+
 
 <!-- ****  Библиотека работы со скрол-еффектами  **** -->
 <script>
@@ -2062,7 +2063,7 @@
 
     <script>
    //вернуться назад
-   $('.to-top').click(function () {
+   $('.article-block .body .to-top').click(function () {
        $('html, body').animate({ scrollTop: 0 }, 500);
    }).scroolly([
        {   //спрятано
@@ -2083,12 +2084,12 @@
                bottom: '30px'
            }
        }
-   ], $('.body'));
+   ], $('.article-block .body'));
 
 
    //прогресс бар
    //к чему применяем эффект
-   $('.progress_bar').scroolly([
+   $('.article-block .progress_bar').scroolly([
        {//правло применения
            from: 'con-top',
            to: 'con-bottom',
@@ -2102,12 +2103,12 @@
            }
        }
        //время действие эффекта
-   ], $('.body'));
+   ], $('.article-block .body'));
 
 
 
    //удерживание меню
-   $('.navbar').scroolly([
+   $('.article-block .navbar').scroolly([
      {
          to: 'con-top',
          css: {
@@ -2125,10 +2126,10 @@
              opacity: 1
          }
      }
-   ], $('.body'));
+   ], $('.article-block .body'));
 
    //слежение за текстом
-   $('article h1').scroolly([
+   $('.article-block .body article h1').scroolly([
      {
          alias: 'before',
          //                    from: 'doc-top',
@@ -2175,7 +2176,7 @@
              bottom: '0px'
          }
      }
-   ], $('article'));
+   ], $('.article-block .body article'));
 
 
 </script>
