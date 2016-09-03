@@ -72,7 +72,7 @@ public class BpServiceHandler {
         //get process variables
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(sID_task)
+                .includeProcessVariables().taskId(sID_task) 
                 .singleResult();
         if (details != null && details.getProcessVariables() != null) {
             Map<String, Object> processVariables = details.getProcessVariables();
