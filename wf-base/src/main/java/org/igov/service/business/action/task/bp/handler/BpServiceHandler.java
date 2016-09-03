@@ -246,7 +246,7 @@ public class BpServiceHandler {
             final Map<String, Object> mTaskVariable, String prefix) {
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
-        if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+        //if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
             Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
                 HistoricTaskInstance oHistoricTaskInstance = historyService
@@ -277,7 +277,7 @@ public class BpServiceHandler {
                 asCandidateCroupToCheck = asCandidateGroupNew;
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
             }
-        }
+        //}
         LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
         return asCandidateCroupToCheck;
     }
