@@ -80,7 +80,7 @@ public class BpServiceHandler {
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
-            variables.put("phone", "" + processVariables.get("phone"));
+            variables.put("phone", "" + processVariables.get("phone")); 
             variables.put("email", processVariables.get("email"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
