@@ -132,7 +132,16 @@
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
       <scriptTask id="scripttask1" name="Отримання дати подання звернення" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+      <script>
+           <![CDATA[ execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())
+          
+          if(execution.getVariable('sID_Public_SubjectOrganJoin') == 'vo_147' && execution.getVariable('asKind') == 'sAddressing') { 
+    execution.setVariable('sMailClerk967', '9965298@gmail.com');
+} else {
+    execution.setVariable('sMailClerk967', 'klimkovichy@gmail.com');
+}
+      ]]> 
+      </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Сповіщення про нове зверення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -198,7 +207,7 @@
         <conditionExpression xsi:type="tFormalExpression"> <![CDATA[${asKind =='sAddressing'}]]> </conditionExpression>
     </sequenceFlow>
     
-    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Звернення до депутата. Первинна перевірка данних" activiti:candidateGroups="zvnardep_${sID_Public_SubjectOrganJoin}">
           <extensionElements>
          <!-->ЮЗЕРТАСКА 1 ЗВЕРНЕННЯ-->  
          
@@ -398,7 +407,7 @@
     
     
     
-    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину" activiti:candidateGroups="nardep_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Звернення до депутата. Відповідь громадянину" activiti:candidateGroups="zvnardep_${sID_Public_SubjectOrganJoin}">
         <!--ЮЗЕРТАСКА 2 гілка звернення ПОЧАТОК--> 
         
      <extensionElements>
