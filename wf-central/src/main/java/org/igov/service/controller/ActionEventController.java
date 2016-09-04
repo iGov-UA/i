@@ -514,7 +514,7 @@ public class ActionEventController {
     	
     	String[] headersMainField = { "sID_Order", "nID_Server",
                 "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
-                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData" };
+                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClosed" };
     	List<String> headers = new ArrayList<String>();
         headers.addAll(Arrays.asList(headersMainField));
     	
@@ -604,7 +604,10 @@ public class ActionEventController {
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
-
+                    //sDateCreate
+                    line.add(historyEventService.getsDateCreate() != null? historyEventService.getsDateCreate() : "");
+                    //sDateClosed
+                    line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
