@@ -174,7 +174,7 @@ public class BpServiceHandler {
         
         
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        mParam.put("sLoginAssigned",taskService.createTaskQuery().taskAssignee(sField));
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
