@@ -47,42 +47,6 @@ Access Common Controller
 
 ==== Удаление роли с логина
 ----
-GET /access/removeAccessServiceLoginRole
-----
-
-===== Description
-:hardbreaks:
-Удаление происходит либо по nID связки, либо по парезначений sLogin и nID_AccessServiceRole.
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД связки|false|integer (int64)|
-|QueryParameter|sLogin|строка-логин|false|string|
-|QueryParameter|nID_AccessServiceRole|номер-ИД роли|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Удаление роли с логина
-----
 POST /access/removeAccessServiceLoginRole
 ----
 
@@ -118,28 +82,29 @@ POST /access/removeAccessServiceLoginRole
 
 * */*
 
-==== Добавить/обновить объект-роли
+==== Удаление роли с логина
 ----
-GET /access/setAccessServiceRole
+GET /access/removeAccessServiceLoginRole
 ----
 
 ===== Description
 :hardbreaks:
-Если задан nID, то обновляет обьект роли, если нет - создает новый
+Удаление происходит либо по nID связки, либо по парезначений sLogin и nID_AccessServiceRole.
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД роли|false|integer (int64)|
-|QueryParameter|sName|строка-название|true|string|
+|QueryParameter|nID|номер-ИД связки|false|integer (int64)|
+|QueryParameter|sLogin|строка-логин|false|string|
+|QueryParameter|nID_AccessServiceRole|номер-ИД роли|false|integer (int64)|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|Результирующий обьект роли|object
+|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -189,29 +154,28 @@ POST /access/setAccessServiceRole
 
 * */*
 
-==== Добавить/обновить объект-связку роли на право доступа к сервису
+==== Добавить/обновить объект-роли
 ----
-GET /access/setAccessServiceRoleRight
+GET /access/setAccessServiceRole
 ----
 
 ===== Description
 :hardbreaks:
-Если задан nID, то обновляет обьект связку роли на право, если нет - создает новый
+Если задан nID, то обновляет обьект роли, если нет - создает новый
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД связки права и роли|false|integer (int64)|
-|QueryParameter|nID_AccessServiceRole|строка логин пользователя|true|integer (int64)|
-|QueryParameter|nID_AccessServiceRight|номер-ИД роли|true|integer (int64)|
+|QueryParameter|nID|номер-ИД роли|false|integer (int64)|
+|QueryParameter|sName|строка-название|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|Результирующий обьект-связку роли на право доступа к сервису|object
+|200|Результирующий обьект роли|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -262,23 +226,29 @@ POST /access/setAccessServiceRoleRight
 
 * */*
 
-==== Удалить объект-связку включение одного права, другим правом
+==== Добавить/обновить объект-связку роли на право доступа к сервису
 ----
-GET /access/removeAccessServiceRoleRightInclude
+GET /access/setAccessServiceRoleRight
 ----
+
+===== Description
+:hardbreaks:
+Если задан nID, то обновляет обьект связку роли на право, если нет - создает новый
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД связки права и права|true|integer (int64)|
+|QueryParameter|nID|номер-ИД связки права и роли|false|integer (int64)|
+|QueryParameter|nID_AccessServiceRole|строка логин пользователя|true|integer (int64)|
+|QueryParameter|nID_AccessServiceRight|номер-ИД роли|true|integer (int64)|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|object
+|200|Результирующий обьект-связку роли на право доступа к сервису|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -323,33 +293,23 @@ POST /access/removeAccessServiceRoleRightInclude
 
 * */*
 
-==== Добавить/обновить объект-права на сервис
+==== Удалить объект-связку включение одного права, другим правом
 ----
-GET /access/setAccessServiceRight
+GET /access/removeAccessServiceRoleRightInclude
 ----
-
-===== Description
-:hardbreaks:
-Если задан nID, то обновляет обьект-право, если нет - создает новый
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД права|true|integer (int64)|
-|QueryParameter|sName|строка-название|true|string|
-|QueryParameter|nOrder|номер порядка (проверки)|false|integer (int32)|
-|QueryParameter|sService|строка-сервис|false|string|
-|QueryParameter|saMethod|строка-название метода вызова|false|string|
-|QueryParameter|sHandlerBean|строка-название бина-обработчика|false|string|
-|QueryParameter|bDeny|булевый, запретить доступ к сервису?|false|boolean|
+|QueryParameter|nID|номер-ИД связки права и права|true|integer (int64)|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|Результирующий объект-права на сервис|object
+|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -391,6 +351,46 @@ POST /access/setAccessServiceRight
 |HTTP Code|Description|Schema
 |200|Результирующий объект-права на сервис|object
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Добавить/обновить объект-права на сервис
+----
+GET /access/setAccessServiceRight
+----
+
+===== Description
+:hardbreaks:
+Если задан nID, то обновляет обьект-право, если нет - создает новый
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД права|true|integer (int64)|
+|QueryParameter|sName|строка-название|true|string|
+|QueryParameter|nOrder|номер порядка (проверки)|false|integer (int32)|
+|QueryParameter|sService|строка-сервис|false|string|
+|QueryParameter|saMethod|строка-название метода вызова|false|string|
+|QueryParameter|sHandlerBean|строка-название бина-обработчика|false|string|
+|QueryParameter|bDeny|булевый, запретить доступ к сервису?|false|boolean|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|Результирующий объект-права на сервис|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -477,38 +477,6 @@ GET /access/getAccessServiceRights
 
 ==== Установить роль логина
 ----
-GET /access/setAccessServiceLoginRole
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД|false|integer (int64)|
-|QueryParameter|sLogin|Строка логин пользователя|true|string|
-|QueryParameter|nID_AccessServiceRole|номер-ИД роли|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|Результирующий обьект роли логина|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Установить роль логина
-----
 POST /access/setAccessServiceLoginRole
 ----
 
@@ -527,6 +495,38 @@ POST /access/setAccessServiceLoginRole
 |HTTP Code|Description|Schema
 |200|Результирующий обьект роли логина|object
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Установить роль логина
+----
+GET /access/setAccessServiceLoginRole
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД|false|integer (int64)|
+|QueryParameter|sLogin|Строка логин пользователя|true|string|
+|QueryParameter|nID_AccessServiceRole|номер-ИД роли|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|Результирующий обьект роли логина|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -743,61 +743,29 @@ https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit
 
 * */*
 
-====  Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID)
+==== Добавить/обновить объект-связку включение одного права, другим правом
 ----
-DELETE /access/logout
+POST /access/setAccessServiceRoleRightInclude
 ----
 
 ===== Description
 :hardbreaks:
-##### 
-Response:
+Если задан nID, то обновляет обьект-связку, если нет - создает новый
 
-```json
-  {"session":"97AE7CA414A5DA85749FE379CC843796"}
-
-```
-
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД связки права и включенного права|false|integer (int64)|
+|QueryParameter|nID_AccessServiceRole|Строка логин пользователя|true|integer (int64)|
+|QueryParameter|nID_AccessServiceRole_Include|номер-ИД роли|true|integer (int64)|
+|===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|Возращает JSESSIONID|<<LogoutResponseI>>
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-====  Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID)
-----
-POST /access/logout
-----
-
-===== Description
-:hardbreaks:
-##### 
-Response:
-
-```json
-  {"session":"97AE7CA414A5DA85749FE379CC843796"}
-
-```
-
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|Возращает JSESSIONID|<<LogoutResponseI>>
+|200|Результирующий обьект-связку включение одного права, другим правом|object
 |201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
@@ -835,43 +803,6 @@ GET /access/setAccessServiceRoleRightInclude
 |===
 |HTTP Code|Description|Schema
 |200|Результирующий обьект-связку включение одного права, другим правом|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Добавить/обновить объект-связку включение одного права, другим правом
-----
-POST /access/setAccessServiceRoleRightInclude
-----
-
-===== Description
-:hardbreaks:
-Если задан nID, то обновляет обьект-связку, если нет - создает новый
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД связки права и включенного права|false|integer (int64)|
-|QueryParameter|nID_AccessServiceRole|Строка логин пользователя|true|integer (int64)|
-|QueryParameter|nID_AccessServiceRole_Include|номер-ИД роли|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|Результирующий обьект-связку включение одного права, другим правом|object
-|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -932,6 +863,37 @@ https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLo
 
 ==== Удалить объект-право на сервис
 ----
+POST /access/removeAccessServiceRight
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД права|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|object
+|201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Удалить объект-право на сервис
+----
 GET /access/removeAccessServiceRight
 ----
 
@@ -960,16 +922,85 @@ GET /access/removeAccessServiceRight
 
 * */*
 
-==== Удалить объект-право на сервис
+====  Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID)
 ----
-POST /access/removeAccessServiceRight
+POST /access/logout
+----
+
+===== Description
+:hardbreaks:
+##### 
+Response:
+
+```json
+  {"session":"97AE7CA414A5DA85749FE379CC843796"}
+
+```
+
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|Возращает JSESSIONID|<<LogoutResponseI>>
+|201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+====  Аутентификация пользователя. Логаут пользователя (наличие cookie JSESSIONID)
+----
+DELETE /access/logout
+----
+
+===== Description
+:hardbreaks:
+##### 
+Response:
+
+```json
+  {"session":"97AE7CA414A5DA85749FE379CC843796"}
+
+```
+
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|Возращает JSESSIONID|<<LogoutResponseI>>
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Удалить объект-роли
+----
+POST /access/removeAccessServiceRole
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД права|true|integer (int64)|
+|QueryParameter|nID|номер-ИД роли|true|integer (int64)|
 |===
 
 ===== Responses
@@ -1021,16 +1052,16 @@ GET /access/removeAccessServiceRole
 
 * */*
 
-==== Удалить объект-роли
+==== Удалить объект-связку роли на право доступа к сервису
 ----
-POST /access/removeAccessServiceRole
+POST /access/removeAccessServiceRoleRight
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД роли|true|integer (int64)|
+|QueryParameter|nID|номер-ИД связки роли и права|true|integer (int64)|
 |===
 
 ===== Responses
@@ -1069,37 +1100,6 @@ GET /access/removeAccessServiceRoleRight
 |===
 |HTTP Code|Description|Schema
 |200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Удалить объект-связку роли на право доступа к сервису
-----
-POST /access/removeAccessServiceRoleRight
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД связки роли и права|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
-|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -1406,59 +1406,6 @@ http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Prot
 
 * */*
 
-==== Загрузка событий
-----
-GET /action/event/getHistoryEvents
-----
-
-===== Description
-:hardbreaks:
-Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10
-
-Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&nID_HistoryEvent_Service=2
-
-В зависимости от параметра **bGrouped** к списку может применяться фильтр.
-
-- Если **bGrouped = false** - выбираются все сущности для данного субъекта
-- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только одна с самым большим временем в поле sDate
-
-Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**
-
-Алгоритм сравнения сущностей:
-
-- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные
-- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**
-- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**
-- если **oHistoryEvent_Service = не null** и **oDocument = не null** - сравнение идет и по **oHistoryEvent_Service** и по **oDocument**
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Subject|id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
-|QueryParameter|nID_HistoryEvent_Service|id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора|false|integer (int64)|
-|QueryParameter|bGrouped|булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же|false|boolean|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<HistoryEvent>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Получение события истории по его id
 ----
 GET /action/event/getHistoryEvent
@@ -1752,6 +1699,59 @@ GET /action/event/addHistoryEvent_Service
 
 * */*
 
+==== Загрузка событий
+----
+GET /action/event/getHistoryEvents
+----
+
+===== Description
+:hardbreaks:
+Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10
+
+Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&nID_HistoryEvent_Service=2
+
+В зависимости от параметра **bGrouped** к списку может применяться фильтр.
+
+- Если **bGrouped = false** - выбираются все сущности для данного субъекта
+- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только одна с самым большим временем в поле sDate
+
+Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**
+
+Алгоритм сравнения сущностей:
+
+- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные
+- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**
+- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**
+- если **oHistoryEvent_Service = не null** и **oDocument = не null** - сравнение идет и по **oHistoryEvent_Service** и по **oDocument**
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Subject|id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
+|QueryParameter|nID_HistoryEvent_Service|id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора|false|integer (int64)|
+|QueryParameter|bGrouped|булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же|false|boolean|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<HistoryEvent>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Получение количества записей HistoryEvent_Service для сервиса по регионам
 ----
 GET /action/event/getStatisticServiceCounts
@@ -2025,35 +2025,53 @@ GET /action/execute/getActionExecuteStatuses
 :hardbreaks:
 Action Flow Controller
 
-==== Удаление расписания включений
+==== Получение расписаний исключений
 ----
-GET /action/flow/removeSheduleFlowInclude
+GET /action/flow/getSheduleFlowExcludes
 ----
 
 ===== Description
 :hardbreaks:
 ##### Пример:
-https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367
+https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1
 
 Пример результата
 
 ```json
-{
-  "sData": null,
-  "bExclude": false,
-  "sName": "Test",
-  "sRegionTime": "10:30-11:30",
-  "saRegionWeekDay": "mo,tu",
-  "sDateTimeAt": "2010-08-01 10:10:30",
-  "sDateTimeTo": "2010-08-01 18:10:00",
-  "nID": 20367,
-  "nID_FlowPropertyClass": {
-    "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-    "sBeanName": "defaultFlowSlotScheduler",
-    "nID": 1,
-    "sName": "DefaultFlowSlotScheduler"
+[
+  {
+    "sData": null,
+    "bExclude": true,
+    "sName": "Test",
+    "sRegionTime": "10:30-11:30",
+    "saRegionWeekDay": "mo,tu"
+    "sDateTimeAt": "2010-08-01 10:10:30",
+    "sDateTimeTo": "2010-08-01 18:10:00",
+    "nID": 20367,
+    "nID_FlowPropertyClass": {
+      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+      "sBeanName": "defaultFlowSlotScheduler",
+      "nID": 1,
+      "sName": "DefaultFlowSlotScheduler"
+    }
+  },
+  {
+    "sData": null,
+    "bExclude": false,
+    "sName": "Test",
+    "sRegionTime": "10:30-11:30",
+    "saRegionWeekDay": "mo,tu",
+    "sDateTimeAt": "10:30",
+    "sDateTimeTo": "12:30",
+    "nID": 20364,
+    "nID_FlowPropertyClass": {
+      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+      "sBeanName": "defaultFlowSlotScheduler",
+      "nID": 1,
+      "sName": "DefaultFlowSlotScheduler"
+    }
   }
-}
+]
 
 ```
 
@@ -2062,9 +2080,8 @@ https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД записи|true|integer (int64)|
-|QueryParameter|nID_Flow_ServiceData|номер-ИД потока (обязательный если нет sID_BP)|false|integer (int64)|
-|QueryParameter|sID_BP|строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)|false|string|
+|QueryParameter|nID_Flow_ServiceData|ИД потока|false|integer (int64)|
+|QueryParameter|sID_BP|строка-ИД БизнесПроцесса|false|string|
 |QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
 |===
 
@@ -2475,6 +2492,147 @@ GET /action/flow/getFlowSlots_Department
 
 * */*
 
+==== Получение расписаний включений
+----
+GET /action/flow/getSheduleFlowIncludes
+----
+
+===== Description
+:hardbreaks:
+##### Пример:
+https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1
+
+Пример результата
+
+
+```json
+[
+  {
+    "sData": null,
+    "bExclude": false,
+    "sName": "Test",
+    "sRegionTime": ""10:30-11:30"",
+    "saRegionWeekDay": ""mo,tu"",
+    "sDateTimeAt": ""2010-08-01 10:10:30"",
+    "sDateTimeTo": ""2010-08-01 18:10:00"",
+    "nID": 20367,
+    "nID_FlowPropertyClass": {
+      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+      "sBeanName": "defaultFlowSlotScheduler",
+      "nID": 1,
+      "sName": "DefaultFlowSlotScheduler"
+    }
+  },
+  {
+    "sData": null,
+    "bExclude": false,
+    "sName": "Test",
+    "sRegionTime": "10:30-11:30",
+    "saRegionWeekDay": "mo,tu",
+    "sDateTimeAt": "10:30",
+    "sDateTimeTo": "12:30",
+    "nID": 20364,
+    "nID_FlowPropertyClass": {
+      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+      "sBeanName": "defaultFlowSlotScheduler",
+      "nID": 1,
+      "sName": "DefaultFlowSlotScheduler"
+    }
+  }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Flow_ServiceData|ИД потока|false|integer (int64)|
+|QueryParameter|sID_BP|строка-ИД БизнесПроцесса|false|string|
+|QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<FlowProperty>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Удаление расписания исключений
+----
+GET /action/flow/removeSheduleFlowExclude
+----
+
+===== Description
+:hardbreaks:
+##### Пример:
+https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367
+
+Пример результата
+
+
+```json
+{
+  "sData": null,
+  "bExclude": true,
+  "sName": "Test",
+  "sRegionTime": "10:30-11:30",
+  "saRegionWeekDay": "mo,tu",
+  "sDateTimeAt": "2010-08-01 10:10:30",
+  "sDateTimeTo": "2010-08-01 18:10:00",
+  "nID": 20367,
+  "nID_FlowPropertyClass": {
+    "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+    "sBeanName": "defaultFlowSlotScheduler",
+    "nID": 1,
+    "sName": "DefaultFlowSlotScheduler"
+  }
+}
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|ИД-номер|true|integer (int64)|
+|QueryParameter|nID_Flow_ServiceData|номер-ИД потока (обязательный если нет sID_BP)|false|integer (int64)|
+|QueryParameter|sID_BP|строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)|false|string|
+|QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<FlowProperty>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Резервирование тайм слота.
 ----
 POST /action/flow/DMS/setSlotHold
@@ -2828,53 +2986,35 @@ nID_SlotHold - 18573Пример результата
 
 * application/json;charset=UTF-8
 
-==== Получение расписаний исключений
+==== Удаление расписания включений
 ----
-GET /action/flow/getSheduleFlowExcludes
+GET /action/flow/removeSheduleFlowInclude
 ----
 
 ===== Description
 :hardbreaks:
 ##### Пример:
-https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nID_Flow_ServiceData=1
+https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowInclude?nID_Flow_ServiceData=1&nID=20367
 
 Пример результата
 
 ```json
-[
-  {
-    "sData": null,
-    "bExclude": true,
-    "sName": "Test",
-    "sRegionTime": "10:30-11:30",
-    "saRegionWeekDay": "mo,tu"
-    "sDateTimeAt": "2010-08-01 10:10:30",
-    "sDateTimeTo": "2010-08-01 18:10:00",
-    "nID": 20367,
-    "nID_FlowPropertyClass": {
-      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-      "sBeanName": "defaultFlowSlotScheduler",
-      "nID": 1,
-      "sName": "DefaultFlowSlotScheduler"
-    }
-  },
-  {
-    "sData": null,
-    "bExclude": false,
-    "sName": "Test",
-    "sRegionTime": "10:30-11:30",
-    "saRegionWeekDay": "mo,tu",
-    "sDateTimeAt": "10:30",
-    "sDateTimeTo": "12:30",
-    "nID": 20364,
-    "nID_FlowPropertyClass": {
-      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-      "sBeanName": "defaultFlowSlotScheduler",
-      "nID": 1,
-      "sName": "DefaultFlowSlotScheduler"
-    }
+{
+  "sData": null,
+  "bExclude": false,
+  "sName": "Test",
+  "sRegionTime": "10:30-11:30",
+  "saRegionWeekDay": "mo,tu",
+  "sDateTimeAt": "2010-08-01 10:10:30",
+  "sDateTimeTo": "2010-08-01 18:10:00",
+  "nID": 20367,
+  "nID_FlowPropertyClass": {
+    "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
+    "sBeanName": "defaultFlowSlotScheduler",
+    "nID": 1,
+    "sName": "DefaultFlowSlotScheduler"
   }
-]
+}
 
 ```
 
@@ -2883,8 +3023,9 @@ https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowExcludes?nI
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Flow_ServiceData|ИД потока|false|integer (int64)|
-|QueryParameter|sID_BP|строка-ИД БизнесПроцесса|false|string|
+|QueryParameter|nID|номер-ИД записи|true|integer (int64)|
+|QueryParameter|nID_Flow_ServiceData|номер-ИД потока (обязательный если нет sID_BP)|false|integer (int64)|
+|QueryParameter|sID_BP|строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)|false|string|
 |QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
 |===
 
@@ -2991,68 +3132,6 @@ https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sI
 
 * */*
 
-==== Удаление расписания исключений
-----
-GET /action/flow/removeSheduleFlowExclude
-----
-
-===== Description
-:hardbreaks:
-##### Пример:
-https://test.region.igov.org.ua/wf/service/action/flow/removeSheduleFlowExclude?nID_Flow_ServiceData=1&nID=20367
-
-Пример результата
-
-
-```json
-{
-  "sData": null,
-  "bExclude": true,
-  "sName": "Test",
-  "sRegionTime": "10:30-11:30",
-  "saRegionWeekDay": "mo,tu",
-  "sDateTimeAt": "2010-08-01 10:10:30",
-  "sDateTimeTo": "2010-08-01 18:10:00",
-  "nID": 20367,
-  "nID_FlowPropertyClass": {
-    "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-    "sBeanName": "defaultFlowSlotScheduler",
-    "nID": 1,
-    "sName": "DefaultFlowSlotScheduler"
-  }
-}
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|ИД-номер|true|integer (int64)|
-|QueryParameter|nID_Flow_ServiceData|номер-ИД потока (обязательный если нет sID_BP)|false|integer (int64)|
-|QueryParameter|sID_BP|строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)|false|string|
-|QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<FlowProperty>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Добавление/изменение расписания включений
 ----
 GET /action/flow/setSheduleFlowInclude
@@ -3108,85 +3187,6 @@ https://test.region.igov.org.ua/wf/service/action/flow/setSheduleFlowInclude?nID
 |===
 |HTTP Code|Description|Schema
 |200|OK|<<FlowProperty>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Получение расписаний включений
-----
-GET /action/flow/getSheduleFlowIncludes
-----
-
-===== Description
-:hardbreaks:
-##### Пример:
-https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?nID_Flow_ServiceData=1
-
-Пример результата
-
-
-```json
-[
-  {
-    "sData": null,
-    "bExclude": false,
-    "sName": "Test",
-    "sRegionTime": ""10:30-11:30"",
-    "saRegionWeekDay": ""mo,tu"",
-    "sDateTimeAt": ""2010-08-01 10:10:30"",
-    "sDateTimeTo": ""2010-08-01 18:10:00"",
-    "nID": 20367,
-    "nID_FlowPropertyClass": {
-      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-      "sBeanName": "defaultFlowSlotScheduler",
-      "nID": 1,
-      "sName": "DefaultFlowSlotScheduler"
-    }
-  },
-  {
-    "sData": null,
-    "bExclude": false,
-    "sName": "Test",
-    "sRegionTime": "10:30-11:30",
-    "saRegionWeekDay": "mo,tu",
-    "sDateTimeAt": "10:30",
-    "sDateTimeTo": "12:30",
-    "nID": 20364,
-    "nID_FlowPropertyClass": {
-      "sPath": "org.igov.service.business.flow.handler.DefaultFlowSlotScheduler",
-      "sBeanName": "defaultFlowSlotScheduler",
-      "nID": 1,
-      "sName": "DefaultFlowSlotScheduler"
-    }
-  }
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Flow_ServiceData|ИД потока|false|integer (int64)|
-|QueryParameter|sID_BP|строка-ИД БизнесПроцесса|false|string|
-|QueryParameter|nID_SubjectOrganDepartment|ИД номер-ИН департамента|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<FlowProperty>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -3391,36 +3391,6 @@ DELETE /action/identity/removeUser
 
 * */*
 
-==== Возвращает список груп, если указан логин пользователя, - выводит все его групы, иначе, по умолчанию возвращает все существующие групы.
-----
-GET /action/identity/getGroups
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sLogin|строка текст, логин пользователя, опциональный параметр|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Group>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Удаляет членство пользователя в групе
 ----
 DELETE /action/identity/removeUserGroup
@@ -3442,6 +3412,36 @@ DELETE /action/identity/removeUserGroup
 |204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Возвращает список груп, если указан логин пользователя, - выводит все его групы, иначе, по умолчанию возвращает все существующие групы.
+----
+GET /action/identity/getGroups
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sLogin|строка текст, логин пользователя, опциональный параметр|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Group>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -4627,6 +4627,36 @@ garbage="--------------------",
 :hardbreaks:
 Action Task Common Controller
 
+==== getTasksByAssigneeGroup
+----
+GET /action/task/groups/{group}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|group|ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<TaskAssigneeI>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== /closeProcess
 ----
 GET /action/task/closeProcess
@@ -4651,57 +4681,6 @@ GET /action/task/closeProcess
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Запуск процесса Activiti
-----
-GET /action/task/start-process/{key}
-----
-
-===== Description
-:hardbreaks:
-#####  ActionCommonTaskController: Запуск процесса Activiti #####
-
-HTTP Context: https://server:port/wf/service/action/task/start-process/{key}
-- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-Request:
-
-https://test.region.igov.org.ua/wf/service/action/task/start-process/citizensRequest
-
-Response
-
-```json
-  {
-    "id":"31"
-  }
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|key|Ключ процесса|true|string|
-|QueryParameter|organ|Орган|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<ProcessI>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -4776,24 +4755,41 @@ https://test.region.igov.org.ua/wf/service/action/task/getTasksByText?sFind=бу
 
 * */*
 
-==== Создание нового обьекта-записи линка
+==== Загрузка задач из Activiti
 ----
-GET /action/task/setLink
+GET /action/task/login/{assignee}
 ----
 
 ===== Description
 :hardbreaks:
-#####  ActionCommonTaskController: Сервис создания обьекта-записи линка #####
-
-Request:
-
-https://test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder
-
+#####  Request:
+https://test.region.igov.org.ua/wf/service/action/task/kermit
 
 Response:
 
 ```json
-  {"sKey":"Cтрока-ключ",       "nID":ИД обьекта,       "nID_Process":ИД бизнес процесса,       "nID_Subject_Holder":ИД субьекта-хранителя    }
+    [
+      {
+            "delegationState": "RESOLVED",
+            "id": "38",
+            "name": "Первый процесс пользователя kermit",
+            "description": "Описание процесса",
+            "priority": 51,
+            "owner": "kermit-owner",
+            "assignee": "kermit-assignee",
+            "processInstanceId": "12",
+            "executionId": "1",
+            "createTime": "2015-04-13 00:51:34.527",
+            "taskDefinitionKey": "task-definition",
+            "dueDate": "2015-04-13 00:51:36.527",
+            "category": "my-category",
+            "parentTaskId": "2",
+            "tenantId": "diver",
+            "formKey": "form-key-12",
+            "suspended": true,
+            "processDefinitionId": "21"
+      }
+    ]
 
 ```
 
@@ -4802,16 +4798,14 @@ Response:
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Process|ИД бизнес процесса|true|integer (int64)|
-|QueryParameter|sKey|Cтрока-ключ|true|string|
-|QueryParameter|nID_Subject_Holder|ИД субьекта-хранителя|true|integer (int64)|
+|PathParameter|assignee|ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<ActionTaskLink>>
+|200|OK|<<TaskAssigneeI>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -4970,38 +4964,6 @@ Response:
 
 ==== Отмена задачи (в т.ч. электронной очереди)
 ----
-GET /action/task/cancelTask
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Order|номер-ИД процесса (с контрольной суммой)|true|integer (int64)|
-|QueryParameter|sInfo|Строка с информацией (причиной отмены)|false|string|
-|QueryParameter|bSimple|Простой вариант отмены (без электронной очереди)|false|boolean|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|string
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* text/plain;charset=UTF-8
-
-==== Отмена задачи (в т.ч. электронной очереди)
-----
 POST /action/task/cancelTask
 ----
 
@@ -5020,6 +4982,38 @@ POST /action/task/cancelTask
 |HTTP Code|Description|Schema
 |200|OK|string
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* text/plain;charset=UTF-8
+
+==== Отмена задачи (в т.ч. электронной очереди)
+----
+GET /action/task/cancelTask
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Order|номер-ИД процесса (с контрольной суммой)|true|integer (int64)|
+|QueryParameter|sInfo|Строка с информацией (причиной отмены)|false|string|
+|QueryParameter|bSimple|Простой вариант отмены (без электронной очереди)|false|boolean|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|string
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -5083,6 +5077,55 @@ https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nS
 |===
 |HTTP Code|Description|Schema
 |200|OK|object
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Создание нового обьекта-записи линка
+----
+GET /action/task/setLink
+----
+
+===== Description
+:hardbreaks:
+#####  ActionCommonTaskController: Сервис создания обьекта-записи линка #####
+
+Request:
+
+https://test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder
+
+
+Response:
+
+```json
+  {"sKey":"Cтрока-ключ",       "nID":ИД обьекта,       "nID_Process":ИД бизнес процесса,       "nID_Subject_Holder":ИД субьекта-хранителя    }
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Process|ИД бизнес процесса|true|integer (int64)|
+|QueryParameter|sKey|Cтрока-ключ|true|string|
+|QueryParameter|nID_Subject_Holder|ИД субьекта-хранителя|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ActionTaskLink>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -5271,192 +5314,6 @@ DELETE /action/task/delete-process-list
 
 * */*
 
-==== getCountTask
-----
-GET /action/task/getCountTask
-----
-
-===== Description
-:hardbreaks:
-#####  ActionCommonTaskController: Получение количествоа задач по нескольким наборам критериев-фильтров для указанного логина #####
-
-HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getCountTask?sLogin=[sLogin]?&amFilter=[amFilter]
-
-
-Параметры:
-- sLogin - имя пользователя для которого подсчитывать количества тасок
-- amFilter - массив наборов фильтров, по которым выдавать количества задач. 
-Допустимые параметры внутри наборов фильтров amFilter: 
-sFilterStatus - статус фильтрации задач. Значение по умолчанию - OpenedUnassigned (только не-ассайнутые), OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))) 
-bFilterHasTicket - по умолчанию false. Если true - возвращать только те задачи, у которых есть связанный тикет
-bIncludeAlienAssignedTasks - по умолчанию false. Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.
-Примеры:
-
-https://test.region.igov.org.ua/wf/service/action/task/getCountTask?sLogin=kermit&amFilter=[{"bFilterHasTicket":true},{"sFilterStatus":"OpenedUnassigned"},{"sFilterStatus":"OpenedAssigned","bFilterHasTicket":true}]
-Ответы: 
-
-```json
-[ 
-{"nCount":5},
-{"nCount":688},
-{"nCount":0}
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sLogin|sLogin|true|string|
-|QueryParameter|amFilter|amFilter|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Map«string,object»>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== getListBP
-----
-GET /action/task/getListBP
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID_BP|строка-ИД БП //опциональный фильтр, иначе все|false|string|
-|QueryParameter|sFieldType|строка-типа поля //опциональный фильтр, иначе все|false|string|
-|QueryParameter|sID_Field|строка-ИД поля //опциональный фильтр, иначе все|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<ProcDefinitionI>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== getTasksByAssigneeGroup
-----
-GET /action/task/groups/{group}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|group|ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<TaskAssigneeI>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Загрузка задач из Activiti
-----
-GET /action/task/login/{assignee}
-----
-
-===== Description
-:hardbreaks:
-#####  Request:
-https://test.region.igov.org.ua/wf/service/action/task/kermit
-
-Response:
-
-```json
-    [
-      {
-            "delegationState": "RESOLVED",
-            "id": "38",
-            "name": "Первый процесс пользователя kermit",
-            "description": "Описание процесса",
-            "priority": 51,
-            "owner": "kermit-owner",
-            "assignee": "kermit-assignee",
-            "processInstanceId": "12",
-            "executionId": "1",
-            "createTime": "2015-04-13 00:51:34.527",
-            "taskDefinitionKey": "task-definition",
-            "dueDate": "2015-04-13 00:51:36.527",
-            "category": "my-category",
-            "parentTaskId": "2",
-            "tenantId": "diver",
-            "formKey": "form-key-12",
-            "suspended": true,
-            "processDefinitionId": "21"
-      }
-    ]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|assignee|ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<TaskAssigneeI>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== /removeOldProcess
 ----
 GET /action/task/removeOldProcess
@@ -5629,6 +5486,60 @@ rostislav.siryk+igov.org.ua@gmail.com;3
 
 * */*
 
+==== Загрузка каталога сервисов из Activiti
+----
+GET /action/task/process-definitions
+----
+
+===== Description
+:hardbreaks:
+#####  ActionCommonTaskController: Загрузка каталога сервисов из Activiti #####
+
+Request:
+
+https://test.region.igov.org.ua/wf/service/action/task/process-definitions
+
+Response:
+
+
+```json
+  [
+    {
+      "id": "CivilCardAccountlRequest:1:9",
+      "category": "http://www.activiti.org/test",
+      "name": "Видача картки обліку об’єкта торговельного призначення",
+      "key": "CivilCardAccountlRequest",
+      "description": "Описание процесса",
+      "version": 1,
+      "resourceName": "dnepr-2.bpmn",
+      "deploymentId": "1",
+      "diagramResourceName": "dnepr-2.CivilCardAccountlRequest.png",
+      "tenantId": "diver",
+      "suspended": true
+    }
+  ]
+
+```
+
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ProcDefinitionI>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Получение списка бизнес процессов к которым у пользователя есть доступ
 ----
 GET /action/task/getLoginBPs
@@ -5719,6 +5630,98 @@ https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=kermit
 ===== Produces
 
 * application/json;charset=UTF-8
+
+==== getCountTask
+----
+GET /action/task/getCountTask
+----
+
+===== Description
+:hardbreaks:
+#####  ActionCommonTaskController: Получение количествоа задач по нескольким наборам критериев-фильтров для указанного логина #####
+
+HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getCountTask?sLogin=[sLogin]?&amFilter=[amFilter]
+
+
+Параметры:
+- sLogin - имя пользователя для которого подсчитывать количества тасок
+- amFilter - массив наборов фильтров, по которым выдавать количества задач. 
+Допустимые параметры внутри наборов фильтров amFilter: 
+sFilterStatus - статус фильтрации задач. Значение по умолчанию - OpenedUnassigned (только не-ассайнутые), OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))) 
+bFilterHasTicket - по умолчанию false. Если true - возвращать только те задачи, у которых есть связанный тикет
+bIncludeAlienAssignedTasks - по умолчанию false. Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.
+Примеры:
+
+https://test.region.igov.org.ua/wf/service/action/task/getCountTask?sLogin=kermit&amFilter=[{"bFilterHasTicket":true},{"sFilterStatus":"OpenedUnassigned"},{"sFilterStatus":"OpenedAssigned","bFilterHasTicket":true}]
+Ответы: 
+
+```json
+[ 
+{"nCount":5},
+{"nCount":688},
+{"nCount":0}
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sLogin|sLogin|true|string|
+|QueryParameter|amFilter|amFilter|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Map«string,object»>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== getListBP
+----
+GET /action/task/getListBP
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sID_BP|строка-ИД БП //опциональный фильтр, иначе все|false|string|
+|QueryParameter|sFieldType|строка-типа поля //опциональный фильтр, иначе все|false|string|
+|QueryParameter|sID_Field|строка-ИД поля //опциональный фильтр, иначе все|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ProcDefinitionI>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 ==== setBP
 ----
@@ -6074,6 +6077,57 @@ https://test.igov.org.ua/wf/service/action/task/callback/ukrdoc
 
 * */*
 
+==== Запуск процесса Activiti
+----
+GET /action/task/start-process/{key}
+----
+
+===== Description
+:hardbreaks:
+#####  ActionCommonTaskController: Запуск процесса Activiti #####
+
+HTTP Context: https://server:port/wf/service/action/task/start-process/{key}
+- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+Request:
+
+https://test.region.igov.org.ua/wf/service/action/task/start-process/citizensRequest
+
+Response
+
+```json
+  {
+    "id":"31"
+  }
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|key|Ключ процесса|true|string|
+|QueryParameter|organ|Орган|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ProcessI>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Получение списка ID пользовательских тасок по номеру заявки
 ----
 GET /action/task/getTasksByOrder
@@ -6172,38 +6226,6 @@ GET /action/task/removeListBP
 
 * */*
 
-==== setVariableToProcessInstance
-----
-GET /action/task/setVariable
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|processInstanceId|processInstanceId|true|string|
-|QueryParameter|key|key|true|string|
-|QueryParameter|value|value|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|string
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== setVariableToProcessInstanceUsingPost
 ----
 POST /action/task/setVariable
@@ -6235,47 +6257,25 @@ POST /action/task/setVariable
 
 * */*
 
-==== Загрузка каталога сервисов из Activiti
+==== setVariableToProcessInstance
 ----
-GET /action/task/process-definitions
+GET /action/task/setVariable
 ----
 
-===== Description
-:hardbreaks:
-#####  ActionCommonTaskController: Загрузка каталога сервисов из Activiti #####
-
-Request:
-
-https://test.region.igov.org.ua/wf/service/action/task/process-definitions
-
-Response:
-
-
-```json
-  [
-    {
-      "id": "CivilCardAccountlRequest:1:9",
-      "category": "http://www.activiti.org/test",
-      "name": "Видача картки обліку об’єкта торговельного призначення",
-      "key": "CivilCardAccountlRequest",
-      "description": "Описание процесса",
-      "version": 1,
-      "resourceName": "dnepr-2.bpmn",
-      "deploymentId": "1",
-      "diagramResourceName": "dnepr-2.CivilCardAccountlRequest.png",
-      "tenantId": "diver",
-      "suspended": true
-    }
-  ]
-
-```
-
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|processInstanceId|processInstanceId|true|string|
+|QueryParameter|key|key|true|string|
+|QueryParameter|value|value|true|string|
+|===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<ProcDefinitionI>> array
+|200|OK|string
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -6782,47 +6782,6 @@ Debug Central Controller
 
 ==== Сохранить системное событие
 ----
-GET /action/event/setEventSystem
-----
-
-===== Description
-:hardbreaks:
-Необходим для сбора логов из разных источников, например с криентского приложения
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sType|строка-тип|false|string|
-|QueryParameter|nID_Subject|Номер-ИД субьекта|false|integer (int64)|
-|QueryParameter|nID_Server|Номер-ИД сервера|false|integer (int64)|
-|QueryParameter|sFunction|строка-функция|false|string|
-|QueryParameter|sHead|строка-заголовок|false|string|
-|QueryParameter|sBody|строка-тело|false|string|
-|QueryParameter|sError|строка-ошибка|false|string|
-|BodyParameter|smData|Карта других параметров|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|integer (int64)
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Сохранить системное событие
-----
 POST /action/event/setEventSystem
 ----
 
@@ -6850,6 +6809,47 @@ POST /action/event/setEventSystem
 |HTTP Code|Description|Schema
 |200|OK|integer (int64)
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Сохранить системное событие
+----
+GET /action/event/setEventSystem
+----
+
+===== Description
+:hardbreaks:
+Необходим для сбора логов из разных источников, например с криентского приложения
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sType|строка-тип|false|string|
+|QueryParameter|nID_Subject|Номер-ИД субьекта|false|integer (int64)|
+|QueryParameter|nID_Server|Номер-ИД сервера|false|integer (int64)|
+|QueryParameter|sFunction|строка-функция|false|string|
+|QueryParameter|sHead|строка-заголовок|false|string|
+|QueryParameter|sBody|строка-тело|false|string|
+|QueryParameter|sError|строка-ошибка|false|string|
+|BodyParameter|smData|Карта других параметров|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|integer (int64)
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -7219,6 +7219,47 @@ GET /test/sendAttachmentsByMail
 :hardbreaks:
 Document Access Controller
 
+==== Получение контента документа по коду доступа,оператору, типу документа и паролю
+----
+GET /document/access/getDocumentAccessByHandler
+----
+
+===== Description
+:hardbreaks:
+Пример: https://test.igov.org.ua/wf/service/document/access/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1
+
+Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sCode_DocumentAccess|строка-код доступа документа|true|string|
+|QueryParameter|nID_DocumentOperator_SubjectOrgan|строка-код органа(оператора)|true|integer (int64)|
+|QueryParameter|nID_DocumentType|число-тип документа (опциональный)|false|integer (int64)|
+|QueryParameter|sPass|строка-пароль для доступа к документу (опциональный, пока только для документов у которы sCodeType=SMS)|false|string|
+|QueryParameter|nID_Subject|номер-ИД субьекта|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Document>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
 ==== запись на доступ, с генерацией и получением уникальной ссылки на него
 ----
 GET /document/access/setDocumentLink
@@ -7269,112 +7310,35 @@ Response
 
 * application/json
 
-==== Получение контента документа по коду доступа,оператору, типу документа и паролю
-----
-GET /document/access/getDocumentAccessByHandler
-----
-
-===== Description
-:hardbreaks:
-Пример: https://test.igov.org.ua/wf/service/document/access/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1
-
-Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sCode_DocumentAccess|строка-код доступа документа|true|string|
-|QueryParameter|nID_DocumentOperator_SubjectOrgan|строка-код органа(оператора)|true|integer (int64)|
-|QueryParameter|nID_DocumentType|число-тип документа (опциональный)|false|integer (int64)|
-|QueryParameter|sPass|строка-пароль для доступа к документу (опциональный, пока только для документов у которы sCodeType=SMS)|false|string|
-|QueryParameter|nID_Subject|номер-ИД субьекта|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Document>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 === DocumentController -- Документы И Смежные Сущности
 :hardbreaks:
 Document Controller
 
-==== Получение списка загруженных субъектом документов
+==== Получение списка всех "нескрытых" типов документов
 ----
-GET /document/getDocuments
+GET /document/getDocumentTypes
 ----
 
 ===== Description
 :hardbreaks:
-Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2
+Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes
 Response
 
 ```json
 [
-  {
-    "sDate_Upload":"2015-01-01",
-    "sContentType":"text/plain",
-    "contentType":"text/plain",
-    "nID":1,
-    "sName":"Паспорт",
-    "oDocumentType":{"nID":0,"sName":"Другое"},
-    "sID_Content":"1",
-    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
-    "sFile":"dd.txt",
-    "oDate_Upload":1420063200000,
-    "sID_Subject_Upload":"1",
-    "sSubjectName_Upload":"ПриватБанк",
-    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
-     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
-  },
-  {
-    "sDate_Upload":"2015-01-01",
-    "sContentType":"text/plain",
-    "contentType":"text/plain",
-    "nID":2,
-    "sName":"Паспорт",
-    "oDocumentType":{"nID":0,"sName":"Другое"},
-    "sID_Content":"2",
-    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
-    "sFile":"dd.txt",
-    "oDate_Upload":1420063200000,
-    "sID_Subject_Upload":"1",
-    "sSubjectName_Upload":"ПриватБанк",
-    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
-     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
-  }
+    {"nID":0,"sName":"Другое", "bHidden":false},
+    {"nID":1,"sName":"Справка", "bHidden":false},
+    {"nID":2,"sName":"Паспорт", "bHidden":false}
 ]
 
 ```
 
 
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Subject|ID-номер авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
-|===
-
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<Document>> array
+|200|OK|<<DocumentType>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -7387,6 +7351,47 @@ Response
 ===== Produces
 
 * */*
+
+==== Получение всех операторов(органов) которые имею право доступа к документу
+----
+GET /document/getDocumentOperators
+----
+
+===== Description
+:hardbreaks:
+Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators
+Response
+
+```json
+[
+    {
+        "nID_SubjectOrgan": 2,
+        "sHandlerClass": "org.igov.service.business.document.access.handler.DocumentAccessHandler_IGov",
+        "nID": 1,
+        "sName": "iGov"
+    }
+]
+
+```
+
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DocumentOperator_SubjectOrgan>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
 
 ==== Удаление записи по ее ид
 ----
@@ -7455,63 +7460,6 @@ Response ЗАГРУЖЕННЫЙ ФАЙЛ
 |===
 |HTTP Code|Description|Schema
 |200|OK|string array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Получение документа по ид документа
-----
-GET /document/getDocument
-----
-
-===== Description
-:hardbreaks:
-Пример: https://test.igov.org.ua/wf/service/document/getDocument?nID=1
-Response
-
-```json
-{
-    "sDate_Upload":"2015-01-01",
-    "sContentType":"text/plain",
-    "contentType":"text/plain",
-    "nID":1,
-    "sName":"Паспорт",
-    "oDocumentType":{"nID":0,"sName":"Другое"},
-    "sID_Content":"1",
-    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
-    "sFile":"dd.txt",
-    "oDate_Upload":1420063200000,
-    "sID_Subject_Upload":"1",
-    "sSubjectName_Upload":"ПриватБанк",
-    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
-     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
- }
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|ИД-номер документа|true|integer (int64)|
-|QueryParameter|nID_Subject|ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Document>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -7606,6 +7554,102 @@ Response ИД ДОКУМЕНТА
 
 * */*
 
+==== Получение документа по ид документа
+----
+GET /document/getDocument
+----
+
+===== Description
+:hardbreaks:
+Пример: https://test.igov.org.ua/wf/service/document/getDocument?nID=1
+Response
+
+```json
+{
+    "sDate_Upload":"2015-01-01",
+    "sContentType":"text/plain",
+    "contentType":"text/plain",
+    "nID":1,
+    "sName":"Паспорт",
+    "oDocumentType":{"nID":0,"sName":"Другое"},
+    "sID_Content":"1",
+    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
+    "sFile":"dd.txt",
+    "oDate_Upload":1420063200000,
+    "sID_Subject_Upload":"1",
+    "sSubjectName_Upload":"ПриватБанк",
+    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
+     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
+ }
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|ИД-номер документа|true|integer (int64)|
+|QueryParameter|nID_Subject|ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Document>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Получение списка типов контента документов
+----
+GET /document/getDocumentContentTypes
+----
+
+===== Description
+:hardbreaks:
+Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes
+Response
+
+```json
+[
+    {"nID":0,"sName":"application/json"},
+    {"nID":1,"sName":"application/xml"},
+    {"nID":2,"sName":"text/plain"},
+    {"nID":3,"sName":"application/jpg"}
+]
+
+```
+
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DocumentContentType>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Добавить/изменить запись типа контента документа
 ----
 GET /document/setDocumentContentType
@@ -7691,34 +7735,67 @@ todo
 
 * */*
 
-==== Получение всех операторов(органов) которые имею право доступа к документу
+==== Получение списка загруженных субъектом документов
 ----
-GET /document/getDocumentOperators
+GET /document/getDocuments
 ----
 
 ===== Description
 :hardbreaks:
-Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators
+Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2
 Response
 
 ```json
 [
-    {
-        "nID_SubjectOrgan": 2,
-        "sHandlerClass": "org.igov.service.business.document.access.handler.DocumentAccessHandler_IGov",
-        "nID": 1,
-        "sName": "iGov"
-    }
+  {
+    "sDate_Upload":"2015-01-01",
+    "sContentType":"text/plain",
+    "contentType":"text/plain",
+    "nID":1,
+    "sName":"Паспорт",
+    "oDocumentType":{"nID":0,"sName":"Другое"},
+    "sID_Content":"1",
+    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
+    "sFile":"dd.txt",
+    "oDate_Upload":1420063200000,
+    "sID_Subject_Upload":"1",
+    "sSubjectName_Upload":"ПриватБанк",
+    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
+     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
+  },
+  {
+    "sDate_Upload":"2015-01-01",
+    "sContentType":"text/plain",
+    "contentType":"text/plain",
+    "nID":2,
+    "sName":"Паспорт",
+    "oDocumentType":{"nID":0,"sName":"Другое"},
+    "sID_Content":"2",
+    "oDocumentContentType":{"nID":2,"sName":"text/plain"},
+    "sFile":"dd.txt",
+    "oDate_Upload":1420063200000,
+    "sID_Subject_Upload":"1",
+    "sSubjectName_Upload":"ПриватБанк",
+    "oSubject_Upload":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк", "sLabelShort":"ПриватБанк"},
+     "oSubject":{"nID":1,"sID":"ПАО","sLabel":"ПАО ПриватБанк","sLabelShort":"ПриватБанк"}
+  }
 ]
 
 ```
 
 
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Subject|ID-номер авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)|true|integer (int64)|
+|===
+
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<DocumentOperator_SubjectOrgan>> array
+|200|OK|<<Document>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -7730,7 +7807,7 @@ Response
 
 ===== Produces
 
-* application/json
+* */*
 
 ==== Удаление записи по ее ид
 ----
@@ -7850,45 +7927,6 @@ Response ИД ДОКУМЕНТА
 
 * */*
 
-==== Получение списка типов контента документов
-----
-GET /document/getDocumentContentTypes
-----
-
-===== Description
-:hardbreaks:
-Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes
-Response
-
-```json
-[
-    {"nID":0,"sName":"application/json"},
-    {"nID":1,"sName":"application/xml"},
-    {"nID":2,"sName":"text/plain"},
-    {"nID":3,"sName":"application/jpg"}
-]
-
-```
-
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<DocumentContentType>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Добавить/изменить запись типа документа
 ----
 GET /document/setDocumentType
@@ -7927,44 +7965,6 @@ GET /document/setDocumentType
 |===
 |HTTP Code|Description|Schema
 |200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Получение списка всех "нескрытых" типов документов
-----
-GET /document/getDocumentTypes
-----
-
-===== Description
-:hardbreaks:
-Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes
-Response
-
-```json
-[
-    {"nID":0,"sName":"Другое", "bHidden":false},
-    {"nID":1,"sName":"Справка", "bHidden":false},
-    {"nID":2,"sName":"Паспорт", "bHidden":false}
-]
-
-```
-
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<DocumentType>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -8068,38 +8068,49 @@ Status 200
 
 * */*
 
-==== обновляет запись валюты
+==== Получить весь список обьектов мерчантов
 ----
-GET /finance/setCurrency
+GET /finance/getMerchants
 ----
 
 ===== Description
 :hardbreaks:
-обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта
-
-http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]
-Пример добавления записи:
-https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka&sID_Currency=BDT
-Пример обновления записи:
-https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така
+Response
 
 
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)|false|integer (int64)|
-|QueryParameter|sID_UA|ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)|false|string|
-|QueryParameter|sName_UA|строка-название на украинском (уникальный; если nID задан и по нему найдена запись)|false|string|
-|QueryParameter|sName_EN|строка-название на английском (уникальный; если nID задан и по нему найдена запись)|false|string|
-|QueryParameter|sID_Currency|международный строковой трехсимвольный код валюты (уникальный; если nID задан и по нему найдена запись)|false|string|
-|===
+```json
+[
+    {
+        "nID":1
+        ,"sID":"Test_sID"
+        ,"sName":"Test_sName"
+        ,"sPrivateKey":"test_sPrivateKey"
+        ,"sURL_CallbackStatusNew":"test_sURL_CallbackStatusNew"
+        ,"sURL_CallbackPaySuccess":"test_sURL_CallbackPaySuccess"
+        ,"nID_SubjectOrgan":1
+        ,"sID_Currency":"UAH"
+    }
+    ,{
+        "nID":2
+        ,"sID":"i10172968078"
+        ,"sName":"igov test"
+        ,"sPrivateKey":"BStHb3EMmVSYefW2ejwJYz0CY6rDVMj1ZugJdZ2K"
+        ,"sURL_CallbackStatusNew":"test_sURL_CallbackStatusNew"
+        ,"sURL_CallbackPaySuccess":"test_sURL_CallbackPaySuccess"
+        ,"nID_SubjectOrgan":1
+        ,"sID_Currency":"UAH"
+    }
+]
+
+```
+Пример:
+https://test.igov.org.ua/wf/service/finance/getMerchants
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<Currency>>
+|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -8164,62 +8175,6 @@ http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник да�
 
 * */*
 
-==== Получить весь список обьектов мерчантов
-----
-GET /finance/getMerchants
-----
-
-===== Description
-:hardbreaks:
-Response
-
-
-```json
-[
-    {
-        "nID":1
-        ,"sID":"Test_sID"
-        ,"sName":"Test_sName"
-        ,"sPrivateKey":"test_sPrivateKey"
-        ,"sURL_CallbackStatusNew":"test_sURL_CallbackStatusNew"
-        ,"sURL_CallbackPaySuccess":"test_sURL_CallbackPaySuccess"
-        ,"nID_SubjectOrgan":1
-        ,"sID_Currency":"UAH"
-    }
-    ,{
-        "nID":2
-        ,"sID":"i10172968078"
-        ,"sName":"igov test"
-        ,"sPrivateKey":"BStHb3EMmVSYefW2ejwJYz0CY6rDVMj1ZugJdZ2K"
-        ,"sURL_CallbackStatusNew":"test_sURL_CallbackStatusNew"
-        ,"sURL_CallbackPaySuccess":"test_sURL_CallbackPaySuccess"
-        ,"nID_SubjectOrgan":1
-        ,"sID_Currency":"UAH"
-    }
-]
-
-```
-Пример:
-https://test.igov.org.ua/wf/service/finance/getMerchants
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Удаление элемента по обязательно заданному одному из параметров
 ----
 GET /finance/removeCurrency
@@ -8245,6 +8200,51 @@ https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== обновляет запись валюты
+----
+GET /finance/setCurrency
+----
+
+===== Description
+:hardbreaks:
+обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта
+
+http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]
+Пример добавления записи:
+https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka&sID_Currency=BDT
+Пример обновления записи:
+https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)|false|integer (int64)|
+|QueryParameter|sID_UA|ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)|false|string|
+|QueryParameter|sName_UA|строка-название на украинском (уникальный; если nID задан и по нему найдена запись)|false|string|
+|QueryParameter|sName_EN|строка-название на английском (уникальный; если nID задан и по нему найдена запись)|false|string|
+|QueryParameter|sID_Currency|международный строковой трехсимвольный код валюты (уникальный; если nID задан и по нему найдена запись)|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Currency>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -8492,6 +8492,53 @@ POST /finance/setPaymentStatus_TaskActiviti
 :hardbreaks:
 Object Controller
 
+==== Получение списка целевых назначений земель, подпадающих под параметры
+----
+GET /object/getObjectEarthTargets
+----
+
+===== Description
+:hardbreaks:
+Пример запроса:
+https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01
+Пример ответа:
+
+```json
+{
+  "sID_UA"   : "01.01",
+  "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
+  "nID"      : 1
+}
+
+```
+http://www.neruhomist.biz.ua/classification.html[источник данных]
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sID_UA|ид-строка. подразделение в коде КВЦПЗ (уникальный)|false|string|
+|QueryParameter|sName_UA|строка-название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ObjectEarthTarget>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Удаление записи по уникальному значению nID или sID_UA
 ----
 GET /object/removeObjectCustoms
@@ -8644,91 +8691,9 @@ GET /object/setObjectCustoms
 
 * */*
 
-==== Получение списка целевых назначений земель, подпадающих под параметры
-----
-GET /object/getObjectEarthTargets
-----
-
-===== Description
-:hardbreaks:
-Пример запроса:
-https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01
-Пример ответа:
-
-```json
-{
-  "sID_UA"   : "01.01",
-  "sName_UA" : "Для ведення товарного сільськогосподарського виробництва",
-  "nID"      : 1
-}
-
-```
-http://www.neruhomist.biz.ua/classification.html[источник данных]
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID_UA|ид-строка. подразделение в коде КВЦПЗ (уникальный)|false|string|
-|QueryParameter|sName_UA|строка-название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<ObjectEarthTarget>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 === ObjectFileCommonController -- Обьекты Файлов Общие
 :hardbreaks:
 Object File Common Controller
-
-==== GetAttachmentsFromRedisBytes
-----
-GET /object/file/download_file_from_redis_bytes
-----
-
-===== Description
-:hardbreaks:
-#####  ObjectFileCommonController: описания нет
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|key|key|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|string array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
 
 ==== Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti
 ----
@@ -8794,6 +8759,41 @@ ID созданного attachment - "id": "45"
 ===== Produces
 
 * application/json
+
+==== GetAttachmentsFromRedisBytes
+----
+GET /object/file/download_file_from_redis_bytes
+----
+
+===== Description
+:hardbreaks:
+#####  ObjectFileCommonController: описания нет
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|key|key|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|string array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 ==== PutAttachmentsToRedis
 ----
@@ -9343,36 +9343,6 @@ GET /object/file/download_file_from_storage_static
 :hardbreaks:
 Object Place Controller
 
-==== Возвращает весь список стран
-----
-GET /object/place/getCountries
-----
-
-===== Description
-:hardbreaks:
-(залит справочник согласно Википедии и Класифікації країн світу)
-
-пример:
-https://test.igov.org.ua/wf/service/object/place/getCountries
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Country>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Изменить объект "Cтрана"
 ----
 GET /object/place/setCountry
@@ -9414,6 +9384,161 @@ GET /object/place/setCountry
 
 * */*
 
+==== Получение типа места
+----
+GET /object/place/getPlaceTypes
+----
+
+===== Description
+:hardbreaks:
+Примеры
+Получить тип места (область)
+https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=true&bRoot=true
+Ответ
+
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+
+
+
+
+```
+Получить тип места (район).
+https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=true&bRoot=false
+Ответ
+
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": false,
+        "nID": 2,
+        "sName": "Район",
+        "nOrder": null
+    }
+]
+
+
+
+
+```
+Получить тип места (ПГТ, город, село).
+https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=false&bRoot=false
+Ответ
+
+```json
+[
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 3,
+        "sName": "Город",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 4,
+        "sName": "ПГТ",
+        "nOrder": null
+    },
+    {
+        "bArea": false,
+        "bRoot": false,
+        "nID": 5,
+        "sName": "Село",
+        "nOrder": null
+    }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|bArea|булевый флаг. если true -- только территория (район)|true|boolean|
+|QueryParameter|bRoot|булевый флаг. если true -- только корень (область)|true|boolean|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<PlaceType>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Получение данных из справочника КОАТУУ
+----
+GET /object/place/getObjectPlace_UA2
+----
+
+===== Description
+:hardbreaks:
+Получаем данные из справочника КОАТУУ. Пример:
+https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA2?sID=09&sName_UA=дніпр
+
+Ответ:
+
+```json
+[
+  {
+    "sID": "00008000",
+    "sName_UA": "Дніпропетровська обл.",
+    "nID_PlaceType": 1,
+    "nID": 1
+  }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sID|sID - кретерий поиска в sID (без учета регистра, в любой части текста)|true|string|
+|QueryParameter|sName_UA|sName_UA - кретерий поиска в sName_UA (без учета регистра, в любой части текста)|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ObjectPlace_UA>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
 ==== Удалить обьект по одному из четырех ключей (nID, nID_UA, sID_Two, sID_Three)
 ----
 GET /object/place/removeCountry
@@ -9439,92 +9564,6 @@ GET /object/place/removeCountry
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|401|Unauthorized|No Content
-|403|Record not found|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Получение данных из справочника КОАТУУ
-----
-GET /object/place/getObjectPlace_UA
-----
-
-===== Description
-:hardbreaks:
-Получаем данные из справочника КОАТУУ. Пример:
-https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA?sFind=днепр
-
-Ответ:
-
-```json
-[
-  {
-    "sID": "00008000",
-    "sName_UA": "Дніпропетровська обл.",
-    "nID_PlaceType": 1,
-    "nID": 1
-  }
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sFind|sFind - кретерий поиска в sID или sName_UA (без учета регистра, в любой части текста)|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<ObjectPlace_UA>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Возвращает название сущности Place исходной заявки
-----
-GET /object/place/getPlaceByProcess
-----
-
-===== Description
-:hardbreaks:
-Возвращает название сущности Place исходной заявки или кидает ошибку 403. Record not found!.
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Process|ИД-номер, идентификатор заявки|true|integer (int64)|
-|QueryParameter|nID_Server|ИД-номер сервера|true|integer (int32)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Place>>
 |401|Unauthorized|No Content
 |403|Record not found|No Content
 |404|Not Found|No Content
@@ -9656,6 +9695,202 @@ https://test.igov.org.ua/wf/service/object/place/getPlaces
 ===== Produces
 
 * */*
+
+==== Получение сущности Place
+----
+GET /object/place/getPlaceEntity
+----
+
+===== Description
+:hardbreaks:
+Пример: https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830
+Ответ:
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД места|false|integer (int64)|
+|QueryParameter|sID_UA|строка-ИД места (в классификаторе Украины)|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Place>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Получение данных из справочника КОАТУУ
+----
+GET /object/place/getObjectPlace_UA
+----
+
+===== Description
+:hardbreaks:
+Получаем данные из справочника КОАТУУ. Пример:
+https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA?sFind=днепр
+
+Ответ:
+
+```json
+[
+  {
+    "sID": "00008000",
+    "sName_UA": "Дніпропетровська обл.",
+    "nID_PlaceType": 1,
+    "nID": 1
+  }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sFind|sFind - кретерий поиска в sID или sName_UA (без учета регистра, в любой части текста)|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<ObjectPlace_UA>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Вставить новый объект Place
+----
+POST /object/place/setPlace
+----
+
+===== Description
+:hardbreaks:
+Примеры
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+
+Результат
+HTTP code = 200 OK
+
+
+GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
+
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+
+```
+Примечание: Первичный ключ (параметр nID) мы не указываем, т.к. хибернейт обязан сам генерировать PK
+
+
+
+Обновить объект Place (параметр для поиска sID_UA).
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
+Результат
+HTTP code = 200 OK
+
+GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
+
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+
+```
+
+
+
+Обновить объект Place (параметр для поиска nID, PK).
+https://test.igov.org.ua/wf/service/object/place/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
+Результат
+HTTP code = 200 OK
+
+GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
+
+```json
+{
+    "sID_UA": "90005000462",
+    "nID": 22830,
+    "sName": "child_of_462",
+    "nID_PlaceType": 5,
+    "sNameOriginal": "5000_462_child"
+}
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|id места|false|integer (int64)|
+|QueryParameter|sName|строка имени|false|string|
+|QueryParameter|nID_PlaceType|номер-МД типа места (населенного пункта/региона)|false|integer (int64)|
+|QueryParameter|sID_UA|строка-ИД места (в классификаторе Украины)|false|string|
+|QueryParameter|sNameOriginal|строка имени оригинального|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
 
 ==== Получить иерархию объектов вниз начиная с указанного узла
 ----
@@ -9907,253 +10142,6 @@ https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&bRoot=fal
 
 * application/json
 
-==== Вставить новый объект Place
-----
-POST /object/place/setPlace
-----
-
-===== Description
-:hardbreaks:
-Примеры
-https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
-
-Результат
-HTTP code = 200 OK
-
-
-GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность.
-
-```json
-{
-    "sID_UA": "90005000462",
-    "nID": 22830,
-    "sName": "child_of_462",
-    "nID_PlaceType": 5,
-    "sNameOriginal": "5000_462_child"
-}
-
-```
-Примечание: Первичный ключ (параметр nID) мы не указываем, т.к. хибернейт обязан сам генерировать PK
-
-
-
-Обновить объект Place (параметр для поиска sID_UA).
-https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child
-Результат
-HTTP code = 200 OK
-
-GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?sID_UA=90005000462 должен вернуть вашу сущность с обновленными параметрами:
-
-```json
-{
-    "sID_UA": "90005000462",
-    "nID": 22830,
-    "sName": "child_of_462",
-    "nID_PlaceType": 5,
-    "sNameOriginal": "5000_462_child"
-}
-
-```
-
-
-
-Обновить объект Place (параметр для поиска nID, PK).
-https://test.igov.org.ua/wf/service/object/place/setPlace?sName=The_child_of_462&nID_PlaceType=5&sNameOriginal=50000_462_child&nID=22830&sID_UA=90005000462
-Результат
-HTTP code = 200 OK
-
-GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830 должен вернуть вашу сущность с обновленными параметрами:
-
-```json
-{
-    "sID_UA": "90005000462",
-    "nID": 22830,
-    "sName": "child_of_462",
-    "nID_PlaceType": 5,
-    "sNameOriginal": "5000_462_child"
-}
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|id места|false|integer (int64)|
-|QueryParameter|sName|строка имени|false|string|
-|QueryParameter|nID_PlaceType|номер-МД типа места (населенного пункта/региона)|false|integer (int64)|
-|QueryParameter|sID_UA|строка-ИД места (в классификаторе Украины)|false|string|
-|QueryParameter|sNameOriginal|строка имени оригинального|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|201|Created|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получение сущности Place
-----
-GET /object/place/getPlaceEntity
-----
-
-===== Description
-:hardbreaks:
-Пример: https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830
-Ответ:
-```json
-{
-    "sID_UA": "90005000462",
-    "nID": 22830,
-    "sName": "child_of_462",
-    "nID_PlaceType": 5,
-    "sNameOriginal": "5000_462_child"
-}
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД места|false|integer (int64)|
-|QueryParameter|sID_UA|строка-ИД места (в классификаторе Украины)|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<Place>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получение субъекта
-----
-GET /object/place/getPlaceType
-----
-
-===== Description
-:hardbreaks:
-Пример:
-https://test.igov.org.ua/wf-central/service/object/place/getPlaceType?nID=1
-Ответ
-
-```json
-[
-    {
-        "bArea": true,
-        "bRoot": true,
-        "nID": 1,
-        "sName": "Область",
-        "nOrder": null
-    }
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|нет описания|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<PlaceType>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получение данных из справочника КОАТУУ
-----
-GET /object/place/getObjectPlace_UA2
-----
-
-===== Description
-:hardbreaks:
-Получаем данные из справочника КОАТУУ. Пример:
-https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA2?sID=09&sName_UA=дніпр
-
-Ответ:
-
-```json
-[
-  {
-    "sID": "00008000",
-    "sName_UA": "Дніпропетровська обл.",
-    "nID_PlaceType": 1,
-    "nID": 1
-  }
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID|sID - кретерий поиска в sID (без учета регистра, в любой части текста)|true|string|
-|QueryParameter|sName_UA|sName_UA - кретерий поиска в sName_UA (без учета регистра, в любой части текста)|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<ObjectPlace_UA>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== Изменение дерева мест (регионов и городов)
 ----
 POST /object/place/setPlaces
@@ -10237,110 +10225,6 @@ https://test.igov.org.ua/wf/service/object/place/setPlaces
 ===== Produces
 
 * */*
-
-==== Получение типа места
-----
-GET /object/place/getPlaceTypes
-----
-
-===== Description
-:hardbreaks:
-Примеры
-Получить тип места (область)
-https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=true&bRoot=true
-Ответ
-
-```json
-[
-    {
-        "bArea": true,
-        "bRoot": true,
-        "nID": 1,
-        "sName": "Область",
-        "nOrder": null
-    }
-]
-
-
-
-
-```
-Получить тип места (район).
-https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=true&bRoot=false
-Ответ
-
-```json
-[
-    {
-        "bArea": true,
-        "bRoot": false,
-        "nID": 2,
-        "sName": "Район",
-        "nOrder": null
-    }
-]
-
-
-
-
-```
-Получить тип места (ПГТ, город, село).
-https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=false&bRoot=false
-Ответ
-
-```json
-[
-    {
-        "bArea": false,
-        "bRoot": false,
-        "nID": 3,
-        "sName": "Город",
-        "nOrder": null
-    },
-    {
-        "bArea": false,
-        "bRoot": false,
-        "nID": 4,
-        "sName": "ПГТ",
-        "nOrder": null
-    },
-    {
-        "bArea": false,
-        "bRoot": false,
-        "nID": 5,
-        "sName": "Село",
-        "nOrder": null
-    }
-]
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|bArea|булевый флаг. если true -- только территория (район)|true|boolean|
-|QueryParameter|bRoot|булевый флаг. если true -- только корень (область)|true|boolean|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<PlaceType>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
 
 ==== Удаление объекта Place
 ----
@@ -10598,6 +10482,56 @@ https://test.igov.org.ua/wf-central/service/object/place/getPlace?sID_UA=5923555
 
 * application/json
 
+==== Получение субъекта
+----
+GET /object/place/getPlaceType
+----
+
+===== Description
+:hardbreaks:
+Пример:
+https://test.igov.org.ua/wf-central/service/object/place/getPlaceType?nID=1
+Ответ
+
+```json
+[
+    {
+        "bArea": true,
+        "bRoot": true,
+        "nID": 1,
+        "sName": "Область",
+        "nOrder": null
+    }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|нет описания|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<PlaceType>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
 ==== Удаление типа места
 ----
 POST /object/place/removePlaceType
@@ -10669,6 +10603,72 @@ GET запрос по адресу https://test.igov.org.ua/wf-central/service/o
 
 * application/json
 
+==== Возвращает название сущности Place исходной заявки
+----
+GET /object/place/getPlaceByProcess
+----
+
+===== Description
+:hardbreaks:
+Возвращает название сущности Place исходной заявки или кидает ошибку 403. Record not found!.
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Process|ИД-номер, идентификатор заявки|true|integer (int64)|
+|QueryParameter|nID_Server|ИД-номер сервера|true|integer (int32)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Place>>
+|401|Unauthorized|No Content
+|403|Record not found|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Возвращает весь список стран
+----
+GET /object/place/getCountries
+----
+
+===== Description
+:hardbreaks:
+(залит справочник согласно Википедии и Класифікації країн світу)
+
+пример:
+https://test.igov.org.ua/wf/service/object/place/getCountries
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<Country>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Возвращает объект Страны по первому из 4х ключей (nID, nID_UA, sID_Two, sID_Three)
 ----
 GET /object/place/getCountry
@@ -10727,65 +10727,6 @@ Eсли задано два ключа от разных записей -- ве�
 :hardbreaks:
 Subject Controller
 
-==== /getSubjectOrgan
-----
-GET /subject/getSubjectOrgan
-----
-
-===== Description
-:hardbreaks:
-##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectOrgan по номеру #####
-
-HTTP Context: http://server:port/wf/service/subject/getSubjectOrgan
-
-
-Если объект с заданным номером на найден - возвращается код 404
-Примеры:
-
-https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1
-
-Response
-
-```json
-{"oSubject":
-	{"sID":"ПАО",
-	"sLabel":"ПАО ПриватБанк",
-	"sLabelShort":"ПриватБанк",
-	"nID":1},
-"sOKPO":"093205",
-"sFormPrivacy":"ПАО",
-"sNameFull":"Банк ПриватБанк",
-"nID":1,
-"sName":"ПриватБанк"}
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Subject|номер-ИД субьекта|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<SubjectOrgan>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Record not found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== Удалить cубьект-орган, или вставить
 ----
 GET /subject/removeSubjectOrganJoinTax
@@ -10827,114 +10768,9 @@ HTTP Context: https://server:port/wf/service/subject/removeSubjectOrganJoinTax
 
 * application/json
 
-==== Возвратить весь список таможенных органов
+==== /saveSubjectHuman
 ----
-GET /subject/getSubjectOrganJoinTax
-----
-
-===== Description
-:hardbreaks:
-##### SubjectController - Субъекты  и смежные сущности. Возвратить весь список таможенных органов #####
-
-HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax
-
-
-Возвращает весь список таможенных органов (залит справочник согласно Державна фіскальна служба України. Офіційний портал)
-
-Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_SubjectOrganJoin|ID региональной таможни|false|integer (int32)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<SubjectOrganJoinTax>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)
-----
-GET /subject/getSubjectOrganJoins
-----
-
-===== Description
-:hardbreaks:
-##### SubjectController - Субъекты  и смежные сущности. Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA) #####
-
-Параметры:
-
-Пример ответа:
-
-```json
-[
-  {
-    "nID_SubjectOrgan":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)
-    ,"sNameUa":"Українська мова"  // sNameUa - ИД-строка <200 символов
-    ,"sNameRu":"Русский язык"  // sNameRu - строка <200 символов
-    ,"sID_Privat":"12345"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный
-    ,"sID_Public":"130501"  // sID_Public - строка ключ-публичный <60 символов
-    ,"sGeoLongitude":"15.232312"  // sGeoLongitude - строка долготы //опциональный
-    ,"sGeoLatitude":"23.234231"  // sGeoLatitude - строка широты //опциональный
-    ,"nID_Region":11  // nID_Region - ИД-номер //опциональный
-    ,"nID_City":33  // nID_City - ИД-номер //опциональный
-    ,"sID_UA":"1"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный
-  }
-]
-
-```
-Пример:
-
-https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_SubjectOrgan|ИД-номер Субьекта-органа|true|integer (int64)|
-|QueryParameter|nID_Region|ИД-номер места-региона (deprecated)|false|integer (int64)|
-|QueryParameter|nID_City|ИД-номер места-города (deprecated)|false|integer (int64)|
-|QueryParameter|sID_UA|ИД-строка места (унифицировано)|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<SubjectOrganJoin>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== /setSubjectOrgan
-----
-POST /subject/setSubjectOrgan
+POST /subject/setSubjectHuman
 ----
 
 ===== Description
@@ -10947,18 +10783,111 @@ POST /subject/setSubjectOrgan
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|BodyParameter|subjectOrgan|subjectOrgan|true|<<SubjectOrgan>>|
+|BodyParameter|subjectHuman|subjectHuman|true|<<SubjectHuman>>|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<SubjectOrgan>>
+|200|OK|<<SubjectHuman>>
 |201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Получение аккаунтов субъектов
+----
+GET /subject/getSubjectAccounts
+----
+
+===== Description
+:hardbreaks:
+Возвращает список аккаунтов субъектов, согласно заданных параметров. Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется
+Пример:
+https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1
+Ответ:
+
+```json
+[
+  {
+	   "sLogin": "Логин01",
+	   "sNote": "Примечание_1",
+	   "subjectAccountType":
+	   {
+	     "sID": "iGov",
+	     "sNote": "iGov",
+	     "nID": 1
+	   },
+	   "nID_Server": 1,
+	   "nID_Subject": 1,
+	   "nID": 1
+	 },
+	 {
+	   "sLogin": "Логин01",
+	   "sNote": "Примечание_2",
+	   "subjectAccountType":
+	     {
+	       "sID": "PD",
+	       "sNote": "PD",
+	       "nID": 2
+	       },
+    "nID_Server": 1,
+	   "nID_Subject": 1,
+	   "nID": 2
+  }
+]
+
+```
+Пример с ошибкой: не указаны обязательные параметры:
+https://test.igov.org.ua/wf/service/subject/getSubjectAccounts
+Ответ:
+
+```json
+{"code":"BUSINESS_ERR","message":"Error! Parameters nID_Subject and  sLogin is null"}
+
+```
+Пример, если записи не найдены:
+https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=100
+Ответ:
+
+```json
+{
+  "code":"BUSINESS_ERR",
+	 "message":"Record not found"
+}
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Subject|ID субъекта ( необходим, если не указан Логин )|false|integer (int64)|
+|QueryParameter|sLogin|Логин ( необходим, если, не указан ID субъекта )|false|string|
+|QueryParameter|nID_Server|ID сервера|false|integer (int64)|
+|QueryParameter|nID_SubjectAccountType|ID типа аккаунта|false|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<SubjectAccount>> array
+|400|Ошибка в параметрах|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Record not found|No Content
 |===
 
 ===== Consumes
@@ -11085,144 +11014,33 @@ https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED?sFind=рибал
 
 * application/json
 
-==== Получение данных из справочника КВЕД
+==== /setSubjectOrgan
 ----
-GET /subject/getActionKVED2
+POST /subject/setSubjectOrgan
 ----
 
 ===== Description
 :hardbreaks:
-Получаем данные из справочника КВЕД. Пример:
-https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED2?sID=03&sNote=Прісноводне
+##### SubjectController - Субъекты  и смежные сущности. Нет описания #####
 
-Ответ:
-
-```json
-[
-  {
-    "sID": "03.12",
-    "sNote": "Прісноводне рибальство ",
-    "nID": 37
-  },
-  {
-    "sID": "03.22",
-    "sNote": "Прісноводне рибництво (аквакультура) ",
-    "nID": 39
-  }
-]
-
-```
 
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID|sID - кретерий поиска в sID (без учета регистра, в любой части текста)|true|string|
-|QueryParameter|sNote|sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)|true|string|
+|BodyParameter|subjectOrgan|subjectOrgan|true|<<SubjectOrgan>>|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<SubjectActionKVED>> array
+|200|OK|<<SubjectOrgan>>
+|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получение аккаунтов субъектов
-----
-GET /subject/getSubjectAccounts
-----
-
-===== Description
-:hardbreaks:
-Возвращает список аккаунтов субъектов, согласно заданных параметров. Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется
-Пример:
-https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1
-Ответ:
-
-```json
-[
-  {
-	   "sLogin": "Логин01",
-	   "sNote": "Примечание_1",
-	   "subjectAccountType":
-	   {
-	     "sID": "iGov",
-	     "sNote": "iGov",
-	     "nID": 1
-	   },
-	   "nID_Server": 1,
-	   "nID_Subject": 1,
-	   "nID": 1
-	 },
-	 {
-	   "sLogin": "Логин01",
-	   "sNote": "Примечание_2",
-	   "subjectAccountType":
-	     {
-	       "sID": "PD",
-	       "sNote": "PD",
-	       "nID": 2
-	       },
-    "nID_Server": 1,
-	   "nID_Subject": 1,
-	   "nID": 2
-  }
-]
-
-```
-Пример с ошибкой: не указаны обязательные параметры:
-https://test.igov.org.ua/wf/service/subject/getSubjectAccounts
-Ответ:
-
-```json
-{"code":"BUSINESS_ERR","message":"Error! Parameters nID_Subject and  sLogin is null"}
-
-```
-Пример, если записи не найдены:
-https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=100
-Ответ:
-
-```json
-{
-  "code":"BUSINESS_ERR",
-	 "message":"Record not found"
-}
-
-```
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID_Subject|ID субъекта ( необходим, если не указан Логин )|false|integer (int64)|
-|QueryParameter|sLogin|Логин ( необходим, если, не указан ID субъекта )|false|string|
-|QueryParameter|nID_Server|ID сервера|false|integer (int64)|
-|QueryParameter|nID_SubjectAccountType|ID типа аккаунта|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<SubjectAccount>> array
-|400|Ошибка в параметрах|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Record not found|No Content
 |===
 
 ===== Consumes
@@ -11310,6 +11128,65 @@ HTTP Status: 200
 
 * */*
 
+==== /getSubjectOrgan
+----
+GET /subject/getSubjectOrgan
+----
+
+===== Description
+:hardbreaks:
+##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectOrgan по номеру #####
+
+HTTP Context: http://server:port/wf/service/subject/getSubjectOrgan
+
+
+Если объект с заданным номером на найден - возвращается код 404
+Примеры:
+
+https://test.igov.org.ua/wf/service/subject/getSubjectOrgan?nID_Subject=1
+
+Response
+
+```json
+{"oSubject":
+	{"sID":"ПАО",
+	"sLabel":"ПАО ПриватБанк",
+	"sLabelShort":"ПриватБанк",
+	"nID":1},
+"sOKPO":"093205",
+"sFormPrivacy":"ПАО",
+"sNameFull":"Банк ПриватБанк",
+"nID":1,
+"sName":"ПриватБанк"}
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_Subject|номер-ИД субьекта|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<SubjectOrgan>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Record not found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 ==== Удаление массива объектов п.2 (находя их по ИД)
 ----
 GET /subject/removeSubjectOrganJoins
@@ -11336,6 +11213,166 @@ https://test.igov.org.ua/wf/service/subject/removeSubjectOrganJoins?nID_SubjectO
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Возвратить весь список таможенных органов
+----
+GET /subject/getSubjectOrganJoinTax
+----
+
+===== Description
+:hardbreaks:
+##### SubjectController - Субъекты  и смежные сущности. Возвратить весь список таможенных органов #####
+
+HTTP Context: https://server:port/wf/service/subject/getSubjectOrganJoinTax
+
+
+Возвращает весь список таможенных органов (залит справочник согласно Державна фіскальна служба України. Офіційний портал)
+
+Пример: https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoinTax
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_SubjectOrganJoin|ID региональной таможни|false|integer (int32)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<SubjectOrganJoinTax>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Получает весь массив объектов джоинов субьектов-органа п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA)
+----
+GET /subject/getSubjectOrganJoins
+----
+
+===== Description
+:hardbreaks:
+##### SubjectController - Субъекты  и смежные сущности. Получает весь массив объектов п.2 (либо всех либо в рамках заданных в запросе nID_Region, nID_City или sID_UA) #####
+
+Параметры:
+
+Пример ответа:
+
+```json
+[
+  {
+    "nID_SubjectOrgan":32343  // nID - ИД-номер автоитеррируемый (уникальный, обязательный) (long)
+    ,"sNameUa":"Українська мова"  // sNameUa - ИД-строка <200 символов
+    ,"sNameRu":"Русский язык"  // sNameRu - строка <200 символов
+    ,"sID_Privat":"12345"  // sID_Privat - ИД-строка ключ-частный <60 символов //опциональный
+    ,"sID_Public":"130501"  // sID_Public - строка ключ-публичный <60 символов
+    ,"sGeoLongitude":"15.232312"  // sGeoLongitude - строка долготы //опциональный
+    ,"sGeoLatitude":"23.234231"  // sGeoLatitude - строка широты //опциональный
+    ,"nID_Region":11  // nID_Region - ИД-номер //опциональный
+    ,"nID_City":33  // nID_City - ИД-номер //опциональный
+    ,"sID_UA":"1"  // sID_UA - ИД-строка кода классификатора КОАТУУ //опциональный
+  }
+]
+
+```
+Пример:
+
+https://test.igov.org.ua/wf/service/subject/getSubjectOrganJoins?nID_SubjectOrgan=1&sID_UA=1
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID_SubjectOrgan|ИД-номер Субьекта-органа|true|integer (int64)|
+|QueryParameter|nID_Region|ИД-номер места-региона (deprecated)|false|integer (int64)|
+|QueryParameter|nID_City|ИД-номер места-города (deprecated)|false|integer (int64)|
+|QueryParameter|sID_UA|ИД-строка места (унифицировано)|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<SubjectOrganJoin>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== Получение данных из справочника КВЕД
+----
+GET /subject/getActionKVED2
+----
+
+===== Description
+:hardbreaks:
+Получаем данные из справочника КВЕД. Пример:
+https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED2?sID=03&sNote=Прісноводне
+
+Ответ:
+
+```json
+[
+  {
+    "sID": "03.12",
+    "sNote": "Прісноводне рибальство ",
+    "nID": 37
+  },
+  {
+    "sID": "03.22",
+    "sNote": "Прісноводне рибництво (аквакультура) ",
+    "nID": 39
+  }
+]
+
+```
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sID|sID - кретерий поиска в sID (без учета регистра, в любой части текста)|true|string|
+|QueryParameter|sNote|sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<SubjectActionKVED>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -11477,47 +11514,6 @@ Response
 |===
 |HTTP Code|Description|Schema
 |200|OK|<<Subject>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== Получение полного набора данных по субъектам
-----
-GET /subject/getSubjectsBy
-----
-
-===== Description
-:hardbreaks:
-Получаем полный набор данных по субъектам. Пример:
-https://test.igov.org.ua/wf/service/subject/getSubjectsBy
-
-что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства'  3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=["Barmaley","GrekD"] 4)ввести вторые логин и пароль из 'нашего хозяйства' Ответ:
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|saAccount|Массив с логинами чиновников в виде json|false|string|
-|QueryParameter|nID_Server|Ид сервера|false|integer (int32)|
-|QueryParameter|bSkipDetails|Не показывать подробности про организации и чиновников|false|boolean|false
-|QueryParameter|nID_SubjectAccountType|Массив с типами аакаунтов  в виде json|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -11738,6 +11734,47 @@ POST /subject/getSubjectOrganJoinAttributes
 
 * application/json
 
+==== Получение полного набора данных по субъектам
+----
+GET /subject/getSubjectsBy
+----
+
+===== Description
+:hardbreaks:
+Получаем полный набор данных по субъектам. Пример:
+https://test.igov.org.ua/wf/service/subject/getSubjectsBy
+
+что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства'  3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=["Barmaley","GrekD"] 4)ввести вторые логин и пароль из 'нашего хозяйства' Ответ:
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|saAccount|Массив с логинами чиновников в виде json|false|string|
+|QueryParameter|nID_Server|Ид сервера|false|integer (int32)|
+|QueryParameter|bSkipDetails|Не показывать подробности про организации и чиновников|false|boolean|false
+|QueryParameter|nID_SubjectAccountType|Массив с типами аакаунтов  в виде json|false|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|object
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
 ==== Изменить cубьект-орган, или вставить
 ----
 GET /subject/setSubjectOrganJoinTax
@@ -11772,43 +11809,6 @@ HTTP Context: https://server:port/wf/service/subject/setSubjectOrganJoinTax
 |200|OK|<<SubjectOrganJoinTax>>
 |401|Unauthorized|No Content
 |403|All args are null|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== /saveSubjectHuman
-----
-POST /subject/setSubjectHuman
-----
-
-===== Description
-:hardbreaks:
-##### SubjectController - Субъекты  и смежные сущности. Нет описания #####
-
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|BodyParameter|subjectHuman|subjectHuman|true|<<SubjectHuman>>|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<SubjectHuman>>
-|201|Created|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
 |404|Not Found|No Content
 |===
 
@@ -11896,48 +11896,6 @@ GET /subject/message/setMessageFeedback_Indirectly
 
 ==== Сохранение сообщения по услуге
 ----
-GET /subject/message/setServiceMessage
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID_Order|Строка-ИД заявки|true|string|
-|QueryParameter|nID_Subject|Номер-ИД субьекта (хозяина заявки сообщения)|false|integer (int64)|
-|QueryParameter|sToken|Строка-Token|false|string|
-|QueryParameter|sBody|Строка-тело сообщения|true|string|
-|QueryParameter|sData|Строка дополнительных данных автора|false|string|
-|QueryParameter|bAuth|булевский флаг, Включить авторизацию|false|boolean|
-|QueryParameter|sID_File|строка-Ключ записи redis|false|string|
-|QueryParameter|sFileName|строка-Название файла|false|string|
-|QueryParameter|nID_SubjectMessageType|ИД-номер типа сообщения|true|integer (int64)|
-|QueryParameter|sHead|Заголовок сообщения|false|string|
-|QueryParameter|sMail|электронка, но которую отсылаем|false|string|
-|QueryParameter|bAddDate|указывать дату и время отправки письма|false|boolean|
-|QueryParameter|sID_DataLink|Ключ записи в Монго ДБ|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Сохранение сообщения по услуге
-----
 POST /subject/message/setServiceMessage
 ----
 
@@ -11966,6 +11924,48 @@ POST /subject/message/setServiceMessage
 |HTTP Code|Description|Schema
 |200|OK|object
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Сохранение сообщения по услуге
+----
+GET /subject/message/setServiceMessage
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sID_Order|Строка-ИД заявки|true|string|
+|QueryParameter|nID_Subject|Номер-ИД субьекта (хозяина заявки сообщения)|false|integer (int64)|
+|QueryParameter|sToken|Строка-Token|false|string|
+|QueryParameter|sBody|Строка-тело сообщения|true|string|
+|QueryParameter|sData|Строка дополнительных данных автора|false|string|
+|QueryParameter|bAuth|булевский флаг, Включить авторизацию|false|boolean|
+|QueryParameter|sID_File|строка-Ключ записи redis|false|string|
+|QueryParameter|sFileName|строка-Название файла|false|string|
+|QueryParameter|nID_SubjectMessageType|ИД-номер типа сообщения|true|integer (int64)|
+|QueryParameter|sHead|Заголовок сообщения|false|string|
+|QueryParameter|sMail|электронка, но которую отсылаем|false|string|
+|QueryParameter|bAddDate|указывать дату и время отправки письма|false|boolean|
+|QueryParameter|sID_DataLink|Ключ записи в Монго ДБ|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -12082,55 +12082,6 @@ https://test.igov.org.ua/wf/service/subject/message/getMessageFeedbackExtended?s
 
 ==== Сохранение сообщение 
 ----
-GET /subject/message/setMessage
-----
-
-===== Description
-:hardbreaks:
-При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:
-
-- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)
-- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог
-- запись заявки (по nID_Protected без последней цифры) не найдена -- ошибка 403. Record not found, пишется в лог проверить запись HistoryEvent_Service можно через сервис \sevices\getHistoryEvent_Service?nID_Protected=xxx (link: 17. Работа с обьектами событий по услугам)
-
-Примеры:
-https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a
-Ответ: Status 200 если Ok
-
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sHead|Строка-заглавие сообщения|true|string|
-|QueryParameter|sBody|Строка-тело сообщения|false|string|
-|QueryParameter|nID_Subject|ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)|false|integer (int64)|
-|QueryParameter|sMail|Строка электронного адреса автора|false|string|
-|QueryParameter|sContacts|Строка контактов автора|false|string|
-|QueryParameter|sData|Строка дополнительных данных автора|false|string|
-|QueryParameter|nID_SubjectMessageType|ИД-номер типа сообщения|false|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|object
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Сохранение сообщение 
-----
 POST /subject/message/setMessage
 ----
 
@@ -12166,6 +12117,55 @@ https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=
 |HTTP Code|Description|Schema
 |200|OK|object
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Сохранение сообщение 
+----
+GET /subject/message/setMessage
+----
+
+===== Description
+:hardbreaks:
+При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:
+
+- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)
+- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог
+- запись заявки (по nID_Protected без последней цифры) не найдена -- ошибка 403. Record not found, пишется в лог проверить запись HistoryEvent_Service можно через сервис \sevices\getHistoryEvent_Service?nID_Protected=xxx (link: 17. Работа с обьектами событий по услугам)
+
+Примеры:
+https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a
+Ответ: Status 200 если Ok
+
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|sHead|Строка-заглавие сообщения|true|string|
+|QueryParameter|sBody|Строка-тело сообщения|false|string|
+|QueryParameter|nID_Subject|ИД-номер субьекта (автора) (добавляется в запрос автоматически после аутентификации пользователя)|false|integer (int64)|
+|QueryParameter|sMail|Строка электронного адреса автора|false|string|
+|QueryParameter|sContacts|Строка контактов автора|false|string|
+|QueryParameter|sData|Строка дополнительных данных автора|false|string|
+|QueryParameter|nID_SubjectMessageType|ИД-номер типа сообщения|false|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|object
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -12462,49 +12462,6 @@ POST /subject/message/setMessageFeedbackExtended
 
 ==== Сохранить отзыв по услуге от сторонней организации
 ----
-GET /subject/message/setFeedbackExternal
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|sID_Token|Строка-токен для доступа к записи|false|string|
-|QueryParameter|sID_Source|ID источника|true|string|
-|QueryParameter|sAuthorFIO|ФИО автора отзыва|true|string|
-|QueryParameter|sMail|e-mail автора отзыва|true|string|
-|QueryParameter|sHead|Заголовок отзыва|false|string|
-|QueryParameter|sBody|Тело отзыва|true|string|
-|QueryParameter|sPlace|Место|false|string|
-|QueryParameter|sEmployeeFIO|Имя сотрудника|false|string|
-|QueryParameter|nID_Rate|ID оценки|false|integer (int64)|
-|QueryParameter|sID_Order|ID заявки|false|string|
-|QueryParameter|nID_Service|ID сервиса|false|integer (int64)|
-|QueryParameter|nID|ID отзыва, который надо отредактировать|false|integer (int64)|
-|QueryParameter|nID_Subject|ID субъекта создавшего сообщение|false|integer (int64)|
-|QueryParameter|bSelf|булевый параметр bSelf|false|boolean|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|string
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Сохранить отзыв по услуге от сторонней организации
-----
 POST /subject/message/setFeedbackExternal
 ----
 
@@ -12547,27 +12504,36 @@ POST /subject/message/setFeedbackExternal
 
 * */*
 
-=== Deployment-collection-resource
-:hardbreaks:
-Deployment Collection Resource
-
-==== getDeployments
+==== Сохранить отзыв по услуге от сторонней организации
 ----
-GET /repository/deployments
+GET /subject/message/setFeedbackExternal
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|QueryParameter|sID_Token|Строка-токен для доступа к записи|false|string|
+|QueryParameter|sID_Source|ID источника|true|string|
+|QueryParameter|sAuthorFIO|ФИО автора отзыва|true|string|
+|QueryParameter|sMail|e-mail автора отзыва|true|string|
+|QueryParameter|sHead|Заголовок отзыва|false|string|
+|QueryParameter|sBody|Тело отзыва|true|string|
+|QueryParameter|sPlace|Место|false|string|
+|QueryParameter|sEmployeeFIO|Имя сотрудника|false|string|
+|QueryParameter|nID_Rate|ID оценки|false|integer (int64)|
+|QueryParameter|sID_Order|ID заявки|false|string|
+|QueryParameter|nID_Service|ID сервиса|false|integer (int64)|
+|QueryParameter|nID|ID отзыва, который надо отредактировать|false|integer (int64)|
+|QueryParameter|nID_Subject|ID субъекта создавшего сообщение|false|integer (int64)|
+|QueryParameter|bSelf|булевый параметр bSelf|false|boolean|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
+|200|OK|string
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -12579,7 +12545,11 @@ GET /repository/deployments
 
 ===== Produces
 
-* application/json
+* */*
+
+=== Deployment-collection-resource
+:hardbreaks:
+Deployment Collection Resource
 
 ==== uploadDeployment
 ----
@@ -12612,9 +12582,69 @@ POST /repository/deployments
 
 * application/json
 
+==== getDeployments
+----
+GET /repository/deployments
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DataResponse>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
 === Deployment-resource
 :hardbreaks:
 Deployment Resource
+
+==== getDeployment
+----
+GET /repository/deployments/{deploymentId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|deploymentId|deploymentId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DeploymentResponse>>
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
 
 ==== deleteDeployment
 ----
@@ -12637,36 +12667,6 @@ DELETE /repository/deployments/{deploymentId}
 |204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
-==== getDeployment
-----
-GET /repository/deployments/{deploymentId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|deploymentId|deploymentId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<DeploymentResponse>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -12985,9 +12985,9 @@ PUT /runtime/executions/{executionId}
 :hardbreaks:
 Execution Variable Collection Resource
 
-==== deleteLocalVariables
+==== createExecutionVariable
 ----
-DELETE /runtime/executions/{executionId}/variables
+POST /runtime/executions/{executionId}/variables
 ----
 
 ===== Parameters
@@ -13001,10 +13001,11 @@ DELETE /runtime/executions/{executionId}/variables
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|object
+|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -13013,7 +13014,7 @@ DELETE /runtime/executions/{executionId}/variables
 
 ===== Produces
 
-* */*
+* application/json
 
 ==== getVariables
 ----
@@ -13077,9 +13078,9 @@ PUT /runtime/executions/{executionId}/variables
 
 * application/json
 
-==== createExecutionVariable
+==== deleteLocalVariables
 ----
-POST /runtime/executions/{executionId}/variables
+DELETE /runtime/executions/{executionId}/variables
 ----
 
 ===== Parameters
@@ -13093,11 +13094,10 @@ POST /runtime/executions/{executionId}/variables
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|object
-|201|Created|No Content
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -13106,7 +13106,7 @@ POST /runtime/executions/{executionId}/variables
 
 ===== Produces
 
-* application/json
+* */*
 
 === Execution-variable-data-resource
 :hardbreaks:
@@ -13147,38 +13147,6 @@ GET /runtime/executions/{executionId}/variables/{variableName}/data
 === Execution-variable-resource
 :hardbreaks:
 Execution Variable Resource
-
-==== deleteVariable
-----
-DELETE /runtime/executions/{executionId}/variables/{variableName}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|executionId|executionId|true|string|
-|PathParameter|variableName|variableName|true|string|
-|QueryParameter|scope|scope|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
 
 ==== getVariable
 ----
@@ -13244,31 +13212,28 @@ PUT /runtime/executions/{executionId}/variables/{variableName}
 
 * application/json
 
-=== Form-data-resource
-:hardbreaks:
-Form Data Resource
-
-==== getFormData
+==== deleteVariable
 ----
-GET /form/form-data
+DELETE /runtime/executions/{executionId}/variables/{variableName}
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|taskId|taskId|false|string|
-|QueryParameter|processDefinitionId|processDefinitionId|false|string|
+|PathParameter|executionId|executionId|true|string|
+|PathParameter|variableName|variableName|true|string|
+|QueryParameter|scope|scope|false|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<FormDataResponse>>
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -13277,7 +13242,11 @@ GET /form/form-data
 
 ===== Produces
 
-* application/json
+* */*
+
+=== Form-data-resource
+:hardbreaks:
+Form Data Resource
 
 ==== submitForm
 ----
@@ -13310,27 +13279,24 @@ POST /form/form-data
 
 * application/json
 
-=== Group-collection-resource
-:hardbreaks:
-Group Collection Resource
-
-==== getGroups
+==== getFormData
 ----
-GET /identity/groups
+GET /form/form-data
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|QueryParameter|taskId|taskId|false|string|
+|QueryParameter|processDefinitionId|processDefinitionId|false|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
+|200|OK|<<FormDataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -13343,6 +13309,10 @@ GET /identity/groups
 ===== Produces
 
 * application/json
+
+=== Group-collection-resource
+:hardbreaks:
+Group Collection Resource
 
 ==== createGroup
 ----
@@ -13362,6 +13332,36 @@ POST /identity/groups
 |HTTP Code|Description|Schema
 |200|OK|<<GroupResponse>>
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== getGroups
+----
+GET /identity/groups
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -13450,36 +13450,6 @@ DELETE /identity/groups/{groupId}/members/{userId}
 :hardbreaks:
 Group Resource
 
-==== deleteGroup
-----
-DELETE /identity/groups/{groupId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|groupId|groupId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getGroup
 ----
 GET /identity/groups/{groupId}
@@ -13541,6 +13511,36 @@ PUT /identity/groups/{groupId}
 ===== Produces
 
 * application/json
+
+==== deleteGroup
+----
+DELETE /identity/groups/{groupId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|groupId|groupId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Historic-activity-instance-collection-resource
 :hardbreaks:
@@ -13754,36 +13754,6 @@ GET /history/historic-process-instances
 :hardbreaks:
 Historic Process Instance Comment Collection Resource
 
-==== getComments
-----
-GET /history/historic-process-instances/{processInstanceId}/comments
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processInstanceId|processInstanceId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<CommentResponse>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== createComment
 ----
 POST /history/historic-process-instances/{processInstanceId}/comments
@@ -13816,13 +13786,9 @@ POST /history/historic-process-instances/{processInstanceId}/comments
 
 * application/json
 
-=== Historic-process-instance-comment-resource
-:hardbreaks:
-Historic Process Instance Comment Resource
-
-==== deleteComment
+==== getComments
 ----
-DELETE /history/historic-process-instances/{processInstanceId}/comments/{commentId}
+GET /history/historic-process-instances/{processInstanceId}/comments
 ----
 
 ===== Parameters
@@ -13830,17 +13796,16 @@ DELETE /history/historic-process-instances/{processInstanceId}/comments/{comment
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|processInstanceId|processInstanceId|true|string|
-|PathParameter|commentId|commentId|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<CommentResponse>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -13849,7 +13814,11 @@ DELETE /history/historic-process-instances/{processInstanceId}/comments/{comment
 
 ===== Produces
 
-* */*
+* application/json
+
+=== Historic-process-instance-comment-resource
+:hardbreaks:
+Historic Process Instance Comment Resource
 
 ==== getComment
 ----
@@ -13881,6 +13850,37 @@ GET /history/historic-process-instances/{processInstanceId}/comments/{commentId}
 ===== Produces
 
 * application/json
+
+==== deleteComment
+----
+DELETE /history/historic-process-instances/{processInstanceId}/comments/{commentId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processInstanceId|processInstanceId|true|string|
+|PathParameter|commentId|commentId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Historic-process-instance-identity-link-collection-resource
 :hardbreaks:
@@ -13956,36 +13956,6 @@ POST /query/historic-process-instances
 :hardbreaks:
 Historic Process Instance Resource
 
-==== deleteProcessInstance
-----
-DELETE /history/historic-process-instances/{processInstanceId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processInstanceId|processInstanceId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getProcessInstance
 ----
 GET /history/historic-process-instances/{processInstanceId}
@@ -14015,6 +13985,36 @@ GET /history/historic-process-instances/{processInstanceId}
 ===== Produces
 
 * application/json
+
+==== deleteProcessInstance
+----
+DELETE /history/historic-process-instances/{processInstanceId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processInstanceId|processInstanceId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Historic-process-instance-variable-data-resource
 :hardbreaks:
@@ -14159,36 +14159,6 @@ POST /query/historic-task-instances
 :hardbreaks:
 Historic Task Instance Resource
 
-==== deleteTaskInstance
-----
-DELETE /history/historic-task-instances/{taskId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getTaskInstance
 ----
 GET /history/historic-task-instances/{taskId}
@@ -14218,6 +14188,36 @@ GET /history/historic-task-instances/{taskId}
 ===== Produces
 
 * application/json
+
+==== deleteTaskInstance
+----
+DELETE /history/historic-task-instances/{taskId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|taskId|taskId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Historic-task-instance-variable-data-resource
 :hardbreaks:
@@ -14431,9 +14431,9 @@ GET /management/jobs/{jobId}/exception-stacktrace
 :hardbreaks:
 Job Resource
 
-==== deleteJob
+==== executeJobAction
 ----
-DELETE /management/jobs/{jobId}
+POST /management/jobs/{jobId}
 ----
 
 ===== Parameters
@@ -14441,6 +14441,7 @@ DELETE /management/jobs/{jobId}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|jobId|jobId|true|string|
+|BodyParameter|actionRequest|actionRequest|true|<<RestActionRequest>>|
 |===
 
 ===== Responses
@@ -14448,9 +14449,10 @@ DELETE /management/jobs/{jobId}
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|204|No Content|No Content
+|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -14491,9 +14493,9 @@ GET /management/jobs/{jobId}
 
 * application/json
 
-==== executeJobAction
+==== deleteJob
 ----
-POST /management/jobs/{jobId}
+DELETE /management/jobs/{jobId}
 ----
 
 ===== Parameters
@@ -14501,7 +14503,6 @@ POST /management/jobs/{jobId}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|jobId|jobId|true|string|
-|BodyParameter|actionRequest|actionRequest|true|<<RestActionRequest>>|
 |===
 
 ===== Responses
@@ -14509,10 +14510,9 @@ POST /management/jobs/{jobId}
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|201|Created|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -14526,36 +14526,6 @@ POST /management/jobs/{jobId}
 === Model-collection-resource
 :hardbreaks:
 Model Collection Resource
-
-==== getModels
-----
-GET /repository/models
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|allRequestParams|allRequestParams|true|ref|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
 
 ==== createModel
 ----
@@ -14588,30 +14558,26 @@ POST /repository/models
 
 * application/json
 
-=== Model-resource
-:hardbreaks:
-Model Resource
-
-==== deleteModel
+==== getModels
 ----
-DELETE /repository/models/{modelId}
+GET /repository/models
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|PathParameter|modelId|modelId|true|string|
+|QueryParameter|allRequestParams|allRequestParams|true|ref|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<DataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -14620,7 +14586,11 @@ DELETE /repository/models/{modelId}
 
 ===== Produces
 
-* */*
+* application/json
+
+=== Model-resource
+:hardbreaks:
+Model Resource
 
 ==== getModel
 ----
@@ -14683,6 +14653,36 @@ PUT /repository/models/{modelId}
 ===== Produces
 
 * application/json
+
+==== deleteModel
+----
+DELETE /repository/models/{modelId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|modelId|modelId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Model-source-extra-resource
 :hardbreaks:
@@ -14852,36 +14852,6 @@ GET /repository/process-definitions
 :hardbreaks:
 Process Definition Identity Link Collection Resource
 
-==== getIdentityLinks
-----
-GET /repository/process-definitions/{processDefinitionId}/identitylinks
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processDefinitionId|processDefinitionId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<RestIdentityLink>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== createIdentityLink
 ----
 POST /repository/process-definitions/{processDefinitionId}/identitylinks
@@ -14914,13 +14884,9 @@ POST /repository/process-definitions/{processDefinitionId}/identitylinks
 
 * application/json
 
-=== Process-definition-identity-link-resource
-:hardbreaks:
-Process Definition Identity Link Resource
-
-==== deleteIdentityLink
+==== getIdentityLinks
 ----
-DELETE /repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}
+GET /repository/process-definitions/{processDefinitionId}/identitylinks
 ----
 
 ===== Parameters
@@ -14928,18 +14894,16 @@ DELETE /repository/process-definitions/{processDefinitionId}/identitylinks/{fami
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|processDefinitionId|processDefinitionId|true|string|
-|PathParameter|family|family|true|string|
-|PathParameter|identityId|identityId|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<RestIdentityLink>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -14948,7 +14912,11 @@ DELETE /repository/process-definitions/{processDefinitionId}/identitylinks/{fami
 
 ===== Produces
 
-* */*
+* application/json
+
+=== Process-definition-identity-link-resource
+:hardbreaks:
+Process Definition Identity Link Resource
 
 ==== getIdentityLink
 ----
@@ -14981,6 +14949,38 @@ GET /repository/process-definitions/{processDefinitionId}/identitylinks/{family}
 ===== Produces
 
 * application/json
+
+==== deleteIdentityLink
+----
+DELETE /repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processDefinitionId|processDefinitionId|true|string|
+|PathParameter|family|family|true|string|
+|PathParameter|identityId|identityId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Process-definition-image-resource
 :hardbreaks:
@@ -15215,36 +15215,6 @@ GET /management/engine
 :hardbreaks:
 Process Instance Collection Resource
 
-==== getProcessInstances
-----
-GET /runtime/process-instances
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|allRequestParams|allRequestParams|true|ref|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== createProcessInstance
 ----
 POST /runtime/process-instances
@@ -15263,6 +15233,36 @@ POST /runtime/process-instances
 |HTTP Code|Description|Schema
 |200|OK|<<ProcessInstanceResponse>>
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== getProcessInstances
+----
+GET /runtime/process-instances
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<DataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -15314,36 +15314,6 @@ GET /runtime/process-instances/{processInstanceId}/diagram
 :hardbreaks:
 Process Instance Identity Link Collection Resource
 
-==== getIdentityLinks
-----
-GET /runtime/process-instances/{processInstanceId}/identitylinks
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processInstanceId|processInstanceId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<RestIdentityLink>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== createIdentityLink
 ----
 POST /runtime/process-instances/{processInstanceId}/identitylinks
@@ -15376,13 +15346,9 @@ POST /runtime/process-instances/{processInstanceId}/identitylinks
 
 * application/json
 
-=== Process-instance-identity-link-resource
-:hardbreaks:
-Process Instance Identity Link Resource
-
-==== deleteIdentityLink
+==== getIdentityLinks
 ----
-DELETE /runtime/process-instances/{processInstanceId}/identitylinks/users/{identityId}/{type}
+GET /runtime/process-instances/{processInstanceId}/identitylinks
 ----
 
 ===== Parameters
@@ -15390,18 +15356,16 @@ DELETE /runtime/process-instances/{processInstanceId}/identitylinks/users/{ident
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|processInstanceId|processInstanceId|true|string|
-|PathParameter|identityId|identityId|true|string|
-|PathParameter|type|type|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<RestIdentityLink>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -15410,7 +15374,11 @@ DELETE /runtime/process-instances/{processInstanceId}/identitylinks/users/{ident
 
 ===== Produces
 
-* */*
+* application/json
+
+=== Process-instance-identity-link-resource
+:hardbreaks:
+Process Instance Identity Link Resource
 
 ==== getIdentityLink
 ----
@@ -15443,6 +15411,38 @@ GET /runtime/process-instances/{processInstanceId}/identitylinks/users/{identity
 ===== Produces
 
 * application/json
+
+==== deleteIdentityLink
+----
+DELETE /runtime/process-instances/{processInstanceId}/identitylinks/users/{identityId}/{type}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processInstanceId|processInstanceId|true|string|
+|PathParameter|identityId|identityId|true|string|
+|PathParameter|type|type|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Process-instance-query-resource
 :hardbreaks:
@@ -15483,37 +15483,6 @@ POST /query/process-instances
 === Process-instance-resource
 :hardbreaks:
 Process Instance Resource
-
-==== deleteProcessInstance
-----
-DELETE /runtime/process-instances/{processInstanceId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processInstanceId|processInstanceId|true|string|
-|QueryParameter|deleteReason|deleteReason|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
 
 ==== getProcessInstance
 ----
@@ -15577,13 +15546,9 @@ PUT /runtime/process-instances/{processInstanceId}
 
 * application/json
 
-=== Process-instance-variable-collection-resource
-:hardbreaks:
-Process Instance Variable Collection Resource
-
-==== deleteLocalVariables
+==== deleteProcessInstance
 ----
-DELETE /runtime/process-instances/{processInstanceId}/variables
+DELETE /runtime/process-instances/{processInstanceId}
 ----
 
 ===== Parameters
@@ -15591,6 +15556,7 @@ DELETE /runtime/process-instances/{processInstanceId}/variables
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|processInstanceId|processInstanceId|true|string|
+|QueryParameter|deleteReason|deleteReason|false|string|
 |===
 
 ===== Responses
@@ -15610,6 +15576,41 @@ DELETE /runtime/process-instances/{processInstanceId}/variables
 ===== Produces
 
 * */*
+
+=== Process-instance-variable-collection-resource
+:hardbreaks:
+Process Instance Variable Collection Resource
+
+==== createExecutionVariable
+----
+POST /runtime/process-instances/{processInstanceId}/variables
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processInstanceId|processInstanceId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|object
+|201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
 
 ==== getVariables
 ----
@@ -15673,9 +15674,9 @@ PUT /runtime/process-instances/{processInstanceId}/variables
 
 * application/json
 
-==== createExecutionVariable
+==== deleteLocalVariables
 ----
-POST /runtime/process-instances/{processInstanceId}/variables
+DELETE /runtime/process-instances/{processInstanceId}/variables
 ----
 
 ===== Parameters
@@ -15689,11 +15690,10 @@ POST /runtime/process-instances/{processInstanceId}/variables
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|object
-|201|Created|No Content
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -15702,7 +15702,7 @@ POST /runtime/process-instances/{processInstanceId}/variables
 
 ===== Produces
 
-* application/json
+* */*
 
 === Process-instance-variable-data-resource
 :hardbreaks:
@@ -15743,38 +15743,6 @@ GET /runtime/process-instances/{processInstanceId}/variables/{variableName}/data
 === Process-instance-variable-resource
 :hardbreaks:
 Process Instance Variable Resource
-
-==== deleteVariable
-----
-DELETE /runtime/process-instances/{processInstanceId}/variables/{variableName}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|processInstanceId|processInstanceId|true|string|
-|PathParameter|variableName|variableName|true|string|
-|QueryParameter|scope|scope|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
 
 ==== getVariable
 ----
@@ -15839,6 +15807,38 @@ PUT /runtime/process-instances/{processInstanceId}/variables/{variableName}
 ===== Produces
 
 * application/json
+
+==== deleteVariable
+----
+DELETE /runtime/process-instances/{processInstanceId}/variables/{variableName}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|processInstanceId|processInstanceId|true|string|
+|PathParameter|variableName|variableName|true|string|
+|QueryParameter|scope|scope|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Properties-collection-resource
 :hardbreaks:
@@ -16137,36 +16137,6 @@ GET /management/tables/{tableName}
 :hardbreaks:
 Task Attachment Collection Resource
 
-==== getAttachments
-----
-GET /runtime/tasks/{taskId}/attachments
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<AttachmentResponse>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* application/json
-
 ==== createAttachment
 ----
 POST /runtime/tasks/{taskId}/attachments
@@ -16185,6 +16155,36 @@ POST /runtime/tasks/{taskId}/attachments
 |HTTP Code|Description|Schema
 |200|OK|<<AttachmentResponse>>
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== getAttachments
+----
+GET /runtime/tasks/{taskId}/attachments
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|taskId|taskId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<AttachmentResponse>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -16237,37 +16237,6 @@ GET /runtime/tasks/{taskId}/attachments/{attachmentId}/content
 :hardbreaks:
 Task Attachment Resource
 
-==== deleteAttachment
-----
-DELETE /runtime/tasks/{taskId}/attachments/{attachmentId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|PathParameter|attachmentId|attachmentId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getAttachment
 ----
 GET /runtime/tasks/{taskId}/attachments/{attachmentId}
@@ -16299,30 +16268,27 @@ GET /runtime/tasks/{taskId}/attachments/{attachmentId}
 
 * application/json
 
-=== Task-collection-resource
-:hardbreaks:
-Task Collection Resource
-
-==== getTasks
+==== deleteAttachment
 ----
-GET /runtime/tasks
+DELETE /runtime/tasks/{taskId}/attachments/{attachmentId}
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|requestParams|requestParams|true|ref|
+|PathParameter|taskId|taskId|true|string|
+|PathParameter|attachmentId|attachmentId|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16331,7 +16297,11 @@ GET /runtime/tasks
 
 ===== Produces
 
-* application/json
+* */*
+
+=== Task-collection-resource
+:hardbreaks:
+Task Collection Resource
 
 ==== createTask
 ----
@@ -16364,27 +16334,23 @@ POST /runtime/tasks
 
 * application/json
 
-=== Task-comment-collection-resource
-:hardbreaks:
-Task Comment Collection Resource
-
-==== getComments
+==== getTasks
 ----
-GET /runtime/tasks/{taskId}/comments
+GET /runtime/tasks
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
+|QueryParameter|requestParams|requestParams|true|ref|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<CommentResponse>> array
+|200|OK|<<DataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -16397,6 +16363,10 @@ GET /runtime/tasks/{taskId}/comments
 ===== Produces
 
 * application/json
+
+=== Task-comment-collection-resource
+:hardbreaks:
+Task Comment Collection Resource
 
 ==== createComment
 ----
@@ -16430,13 +16400,9 @@ POST /runtime/tasks/{taskId}/comments
 
 * application/json
 
-=== Task-comment-resource
-:hardbreaks:
-Task Comment Resource
-
-==== deleteComment
+==== getComments
 ----
-DELETE /runtime/tasks/{taskId}/comments/{commentId}
+GET /runtime/tasks/{taskId}/comments
 ----
 
 ===== Parameters
@@ -16444,17 +16410,16 @@ DELETE /runtime/tasks/{taskId}/comments/{commentId}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|taskId|taskId|true|string|
-|PathParameter|commentId|commentId|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<CommentResponse>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16463,7 +16428,11 @@ DELETE /runtime/tasks/{taskId}/comments/{commentId}
 
 ===== Produces
 
-* */*
+* application/json
+
+=== Task-comment-resource
+:hardbreaks:
+Task Comment Resource
 
 ==== getComment
 ----
@@ -16495,6 +16464,37 @@ GET /runtime/tasks/{taskId}/comments/{commentId}
 ===== Produces
 
 * application/json
+
+==== deleteComment
+----
+DELETE /runtime/tasks/{taskId}/comments/{commentId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|taskId|taskId|true|string|
+|PathParameter|commentId|commentId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Task-event-collection-resource
 :hardbreaks:
@@ -16534,37 +16534,6 @@ GET /runtime/tasks/{taskId}/events
 :hardbreaks:
 Task Event Resource
 
-==== deleteEvent
-----
-DELETE /runtime/tasks/{taskId}/events/{eventId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|PathParameter|eventId|eventId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getEvent
 ----
 GET /runtime/tasks/{taskId}/events/{eventId}
@@ -16596,13 +16565,9 @@ GET /runtime/tasks/{taskId}/events/{eventId}
 
 * application/json
 
-=== Task-identity-link-collection-resource
-:hardbreaks:
-Task Identity Link Collection Resource
-
-==== getIdentityLinks
+==== deleteEvent
 ----
-GET /runtime/tasks/{taskId}/identitylinks
+DELETE /runtime/tasks/{taskId}/events/{eventId}
 ----
 
 ===== Parameters
@@ -16610,16 +16575,17 @@ GET /runtime/tasks/{taskId}/identitylinks
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|taskId|taskId|true|string|
+|PathParameter|eventId|eventId|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<RestIdentityLink>> array
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16628,7 +16594,11 @@ GET /runtime/tasks/{taskId}/identitylinks
 
 ===== Produces
 
-* application/json
+* */*
+
+=== Task-identity-link-collection-resource
+:hardbreaks:
+Task Identity Link Collection Resource
 
 ==== createIdentityLink
 ----
@@ -16649,6 +16619,36 @@ POST /runtime/tasks/{taskId}/identitylinks
 |HTTP Code|Description|Schema
 |200|OK|<<RestIdentityLink>>
 |201|Created|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* application/json
+
+==== getIdentityLinks
+----
+GET /runtime/tasks/{taskId}/identitylinks
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|taskId|taskId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<RestIdentityLink>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -16701,39 +16701,6 @@ GET /runtime/tasks/{taskId}/identitylinks/{family}
 :hardbreaks:
 Task Identity Link Resource
 
-==== deleteIdentityLink
-----
-DELETE /runtime/tasks/{taskId}/identitylinks/{family}/{identityId}/{type}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|PathParameter|family|family|true|string|
-|PathParameter|identityId|identityId|true|string|
-|PathParameter|type|type|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getIdentityLink
 ----
 GET /runtime/tasks/{taskId}/identitylinks/{family}/{identityId}/{type}
@@ -16766,6 +16733,39 @@ GET /runtime/tasks/{taskId}/identitylinks/{family}/{identityId}/{type}
 ===== Produces
 
 * application/json
+
+==== deleteIdentityLink
+----
+DELETE /runtime/tasks/{taskId}/identitylinks/{family}/{identityId}/{type}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|taskId|taskId|true|string|
+|PathParameter|family|family|true|string|
+|PathParameter|identityId|identityId|true|string|
+|PathParameter|type|type|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === Task-query-resource
 :hardbreaks:
@@ -16807,9 +16807,9 @@ POST /query/tasks
 :hardbreaks:
 Task Resource
 
-==== deleteTask
+==== executeTaskAction
 ----
-DELETE /runtime/tasks/{taskId}
+POST /runtime/tasks/{taskId}
 ----
 
 ===== Parameters
@@ -16817,8 +16817,7 @@ DELETE /runtime/tasks/{taskId}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|taskId|taskId|true|string|
-|QueryParameter|cascadeHistory|cascadeHistory|false|boolean|
-|QueryParameter|deleteReason|deleteReason|false|string|
+|BodyParameter|actionRequest|actionRequest|true|<<TaskActionRequest>>|
 |===
 
 ===== Responses
@@ -16826,9 +16825,10 @@ DELETE /runtime/tasks/{taskId}
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|204|No Content|No Content
+|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16901,9 +16901,9 @@ PUT /runtime/tasks/{taskId}
 
 * application/json
 
-==== executeTaskAction
+==== deleteTask
 ----
-POST /runtime/tasks/{taskId}
+DELETE /runtime/tasks/{taskId}
 ----
 
 ===== Parameters
@@ -16911,7 +16911,8 @@ POST /runtime/tasks/{taskId}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|taskId|taskId|true|string|
-|BodyParameter|actionRequest|actionRequest|true|<<TaskActionRequest>>|
+|QueryParameter|cascadeHistory|cascadeHistory|false|boolean|
+|QueryParameter|deleteReason|deleteReason|false|string|
 |===
 
 ===== Responses
@@ -16919,10 +16920,9 @@ POST /runtime/tasks/{taskId}
 |===
 |HTTP Code|Description|Schema
 |200|OK|No Content
-|201|Created|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16971,9 +16971,9 @@ GET /runtime/tasks/{taskId}/subtasks
 :hardbreaks:
 Task Variable Collection Resource
 
-==== deleteAllLocalTaskVariables
+==== createTaskVariable
 ----
-DELETE /runtime/tasks/{taskId}/variables
+POST /runtime/tasks/{taskId}/variables
 ----
 
 ===== Parameters
@@ -16987,10 +16987,11 @@ DELETE /runtime/tasks/{taskId}/variables
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|object
+|201|Created|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -16999,7 +17000,7 @@ DELETE /runtime/tasks/{taskId}/variables
 
 ===== Produces
 
-* */*
+* application/json
 
 ==== getVariables
 ----
@@ -17032,9 +17033,9 @@ GET /runtime/tasks/{taskId}/variables
 
 * application/json
 
-==== createTaskVariable
+==== deleteAllLocalTaskVariables
 ----
-POST /runtime/tasks/{taskId}/variables
+DELETE /runtime/tasks/{taskId}/variables
 ----
 
 ===== Parameters
@@ -17048,11 +17049,10 @@ POST /runtime/tasks/{taskId}/variables
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|object
-|201|Created|No Content
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -17061,7 +17061,7 @@ POST /runtime/tasks/{taskId}/variables
 
 ===== Produces
 
-* application/json
+* */*
 
 === Task-variable-data-resource
 :hardbreaks:
@@ -17102,38 +17102,6 @@ GET /runtime/tasks/{taskId}/variables/{variableName}/data
 === Task-variable-resource
 :hardbreaks:
 Task Variable Resource
-
-==== deleteVariable
-----
-DELETE /runtime/tasks/{taskId}/variables/{variableName}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|taskId|taskId|true|string|
-|PathParameter|variableName|variableName|true|string|
-|QueryParameter|scope|scope|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
 
 ==== getVariable
 ----
@@ -17200,30 +17168,28 @@ PUT /runtime/tasks/{taskId}/variables/{variableName}
 
 * application/json
 
-=== User-collection-resource
-:hardbreaks:
-User Collection Resource
-
-==== getUsers
+==== deleteVariable
 ----
-GET /identity/users
+DELETE /runtime/tasks/{taskId}/variables/{variableName}
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|QueryParameter|allRequestParams|allRequestParams|true|ref|
+|PathParameter|taskId|taskId|true|string|
+|PathParameter|variableName|variableName|true|string|
+|QueryParameter|scope|scope|false|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<DataResponse>>
+|200|OK|No Content
+|204|No Content|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -17232,7 +17198,11 @@ GET /identity/users
 
 ===== Produces
 
-* application/json
+* */*
+
+=== User-collection-resource
+:hardbreaks:
+User Collection Resource
 
 ==== createUser
 ----
@@ -17265,27 +17235,23 @@ POST /identity/users
 
 * application/json
 
-=== User-info-collection-resource
-:hardbreaks:
-User Info Collection Resource
-
-==== getUserInfo
+==== getUsers
 ----
-GET /identity/users/{userId}/info
+GET /identity/users
 ----
 
 ===== Parameters
 [options="header"]
 |===
 |Type|Name|Description|Required|Schema|Default
-|PathParameter|userId|userId|true|string|
+|QueryParameter|allRequestParams|allRequestParams|true|ref|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|<<UserInfoResponse>> array
+|200|OK|<<DataResponse>>
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -17298,6 +17264,10 @@ GET /identity/users/{userId}/info
 ===== Produces
 
 * application/json
+
+=== User-info-collection-resource
+:hardbreaks:
+User Info Collection Resource
 
 ==== setUserInfo
 ----
@@ -17331,13 +17301,9 @@ POST /identity/users/{userId}/info
 
 * application/json
 
-=== User-info-resource
-:hardbreaks:
-User Info Resource
-
-==== deleteUserInfo
+==== getUserInfo
 ----
-DELETE /identity/users/{userId}/info/{key}
+GET /identity/users/{userId}/info
 ----
 
 ===== Parameters
@@ -17345,17 +17311,16 @@ DELETE /identity/users/{userId}/info/{key}
 |===
 |Type|Name|Description|Required|Schema|Default
 |PathParameter|userId|userId|true|string|
-|PathParameter|key|key|true|string|
 |===
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
+|200|OK|<<UserInfoResponse>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
+|404|Not Found|No Content
 |===
 
 ===== Consumes
@@ -17364,7 +17329,11 @@ DELETE /identity/users/{userId}/info/{key}
 
 ===== Produces
 
-* */*
+* application/json
+
+=== User-info-resource
+:hardbreaks:
+User Info Resource
 
 ==== getUserInfo
 ----
@@ -17429,6 +17398,37 @@ PUT /identity/users/{userId}/info/{key}
 ===== Produces
 
 * application/json
+
+==== deleteUserInfo
+----
+DELETE /identity/users/{userId}/info/{key}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|userId|userId|true|string|
+|PathParameter|key|key|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
 
 === User-picture-resource
 :hardbreaks:
@@ -17499,36 +17499,6 @@ PUT /identity/users/{userId}/picture
 :hardbreaks:
 User Resource
 
-==== deleteUser
-----
-DELETE /identity/users/{userId}
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|PathParameter|userId|userId|true|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|No Content
-|204|No Content|No Content
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
 ==== getUser
 ----
 GET /identity/users/{userId}
@@ -17591,6 +17561,36 @@ PUT /identity/users/{userId}
 
 * application/json
 
+==== deleteUser
+----
+DELETE /identity/users/{userId}
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|userId|userId|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|204|No Content|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
 === С — Действия Эскалаций
 :hardbreaks:
 Action Escalation Controller
@@ -17607,36 +17607,6 @@ GET /action/escalation/runEscalation
 |200|OK|No Content
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Возврат одной записи правила эскалации по ее nID
-----
-GET /action/escalation/getEscalationRule
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ИД правила эскалации|true|integer (int64)|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<EscalationRule>>
-|401|Unauthorized|No Content
-|403|Record not found|No Content
 |404|Not Found|No Content
 |===
 
@@ -17667,6 +17637,125 @@ GET /action/escalation/getEscalationRuleFunction
 |200|OK|<<EscalationRuleFunction>>
 |401|Unauthorized|No Content
 |403|Record not found|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Добавление/обновление записи функции эскалации
+----
+GET /action/escalation/setEscalationRuleFunction
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|ИД-номер (уникальный-автоитерируемый):
+ - если nID не задан, то это создание записи;
+ - если nID задан, но его нету — будет ошибка;
+- если nID задан, и он есть — запись обновляется.
+|false|integer (int64)|
+|QueryParameter|sName|строка-название (Например "Отсылка уведомления на электронную почту")|true|string|
+|QueryParameter|sBeanHandler|строка бина-обработчика|false|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<EscalationRuleFunction>>
+|401|Unauthorized|No Content
+|403|Record not found|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Возвращает список всех записей правил эскалации
+----
+GET /action/escalation/getEscalationRules
+----
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|<<EscalationRule>> array
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Удаление записи правила эскалации по ее nID
+----
+GET /action/escalation/removeEscalationRule
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ИД правила эскалации|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|401|Unauthorized|No Content
+|403|Record not found|No Content
+|404|Not Found|No Content
+|===
+
+===== Consumes
+
+* application/json
+
+===== Produces
+
+* */*
+
+==== Запуск правила эскалации по его Ид
+----
+GET /action/escalation/runEscalationRule
+----
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|nID|номер-ид правила эскалации|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|OK|No Content
+|401|Unauthorized|No Content
+|403|Forbidden|No Content
 |404|Not Found|No Content
 |===
 
@@ -17737,68 +17826,9 @@ GET /action/escalation/getEscalationHistory
 
 * */*
 
-==== Возвращает список всех записей правил эскалации
+==== Возврат одной записи правила эскалации по ее nID
 ----
-GET /action/escalation/getEscalationRules
-----
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<EscalationRule>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Добавление/обновление записи функции эскалации
-----
-GET /action/escalation/setEscalationRuleFunction
-----
-
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|ИД-номер (уникальный-автоитерируемый):
- - если nID не задан, то это создание записи;
- - если nID задан, но его нету — будет ошибка;
-- если nID задан, и он есть — запись обновляется.
-|false|integer (int64)|
-|QueryParameter|sName|строка-название (Например "Отсылка уведомления на электронную почту")|true|string|
-|QueryParameter|sBeanHandler|строка бина-обработчика|false|string|
-|===
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<EscalationRuleFunction>>
-|401|Unauthorized|No Content
-|403|Record not found|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Удаление записи правила эскалации по ее nID
-----
-GET /action/escalation/removeEscalationRule
+GET /action/escalation/getEscalationRule
 ----
 
 ===== Parameters
@@ -17812,7 +17842,7 @@ GET /action/escalation/removeEscalationRule
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
+|200|OK|<<EscalationRule>>
 |401|Unauthorized|No Content
 |403|Record not found|No Content
 |404|Not Found|No Content
@@ -17849,23 +17879,34 @@ GET /action/escalation/getEscalationRuleFunctions
 
 * */*
 
-==== Запуск правила эскалации по его Ид
+==== Возвращает массив объектов сущности EscalationStatus
 ----
-GET /action/escalation/runEscalationRule
+GET /action/escalation/getEscalationStatuses
 ----
 
-===== Parameters
-[options="header"]
-|===
-|Type|Name|Description|Required|Schema|Default
-|QueryParameter|nID|номер-ид правила эскалации|true|integer (int64)|
-|===
+===== Description
+:hardbreaks:
+##### Пример: https://<server>/wf/service/action/escalation/getEscalationStatuses
+
+Oтвет:
+
+
+```json
+[
+{"sNote":"Отослано письмо","nID":1,"sID":"MailSent"},
+{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
+{"sNote":"БП в процессе","nID":3,"sID":"BP_Process"},
+{"sNote":"БП закрыт","nID":4,"sID":"BP_Closed"}
+]
+
+```
+
 
 ===== Responses
 [options="header"]
 |===
 |HTTP Code|Description|Schema
-|200|OK|No Content
+|200|OK|<<EscalationStatus>> array
 |401|Unauthorized|No Content
 |403|Forbidden|No Content
 |404|Not Found|No Content
@@ -17967,47 +18008,6 @@ https://test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?s
 |200|OK|<<EscalationRule>>
 |401|Unauthorized|No Content
 |403|Record not found|No Content
-|404|Not Found|No Content
-|===
-
-===== Consumes
-
-* application/json
-
-===== Produces
-
-* */*
-
-==== Возвращает массив объектов сущности EscalationStatus
-----
-GET /action/escalation/getEscalationStatuses
-----
-
-===== Description
-:hardbreaks:
-##### Пример: https://<server>/wf/service/action/escalation/getEscalationStatuses
-
-Oтвет:
-
-
-```json
-[
-{"sNote":"Отослано письмо","nID":1,"sID":"MailSent"},
-{"sNote":"БП создан","nID":2,"sID":"BP_Created"},
-{"sNote":"БП в процессе","nID":3,"sID":"BP_Process"},
-{"sNote":"БП закрыт","nID":4,"sID":"BP_Closed"}
-]
-
-```
-
-
-===== Responses
-[options="header"]
-|===
-|HTTP Code|Description|Schema
-|200|OK|<<EscalationStatus>> array
-|401|Unauthorized|No Content
-|403|Forbidden|No Content
 |404|Not Found|No Content
 |===
 

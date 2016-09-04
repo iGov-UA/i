@@ -112,7 +112,15 @@ public class HistoryEvent_Service extends AbstractEntity {
 
     @JsonProperty(value = "sName_UA_StatusType")
     @Transient
-    private String sName_UA_StatusType;    
+    private String sName_UA_StatusType;  
+    
+    @JsonProperty(value = "sDateCreate")
+    @Column(name = "sDateCreate", length = 25)
+    private String sDateCreate;
+    
+    @JsonProperty(value = "sDateClosed")
+    @Column(name = "sDateClosed", length = 25)
+    private String sDateClosed;
     
     public String getsID() {
         return sID;
@@ -298,6 +306,22 @@ public class HistoryEvent_Service extends AbstractEntity {
         this.nID_ServiceData = nID_ServiceData;
     }
 
+    public String getsDateCreate() {
+        return sDateCreate;
+    }
+
+    public void setsDateCreate(String sDateCreate) {
+        this.sDateCreate = sDateCreate;
+    }
+
+    public String getsDateClosed() {
+        return sDateClosed;
+    }
+
+    public void setsDateClosed(String sDateClosed) {
+        this.sDateClosed = sDateClosed;
+    }
+    
 	@Override
 	public String toString() {
 		return "HistoryEvent_Service [sID=" + sID + ", nID_Task=" + nID_Task
@@ -313,7 +337,8 @@ public class HistoryEvent_Service extends AbstractEntity {
 				+ ", sID_Rate_Indirectly=" + sID_Rate_Indirectly
 				+ ", nID_StatusType=" + nID_StatusType + ", nID_ServiceData="
 				+ nID_ServiceData + ", sID_StatusType=" + sID_StatusType
-				+ ", sName_UA_StatusType=" + sName_UA_StatusType + "]";
+				+ ", sName_UA_StatusType=" + sName_UA_StatusType
+                                + ", sDateCreate="+ sDateCreate + ", sDateClosed=" + sDateClosed +"]";
 	}
     
 }
