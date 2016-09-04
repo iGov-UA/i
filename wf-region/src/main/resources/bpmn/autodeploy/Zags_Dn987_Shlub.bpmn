@@ -11,9 +11,11 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ваш статус в шлюбі" type="enum" required="true">
+        <activiti:formProperty id="asRodich" name="Ваш статус" type="enum" required="true">
           <activiti:value id="sEnamCholovik" name="Чоловік"></activiti:value>
           <activiti:value id="sEnamDrugina" name="Дружина"></activiti:value>
+          <activiti:value id="sEnamPredsCh" name="Представник чоловіка"></activiti:value>
+          <activiti:value id="sEnamPredsDr" name="Представник дрижини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChol_LastName" name="Прізвище чоловіка" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChol_Name" name="Ім'я чоловіка" type="string" required="true"></activiti:formProperty>
@@ -105,9 +107,11 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Cтатус в шлюбі" type="enum" writable="false">
+        <activiti:formProperty id="asRodich" name="Статус заявника у шлюбі" type="enum" writable="false">
           <activiti:value id="sEnamCholovik" name="Чоловік"></activiti:value>
           <activiti:value id="sEnamDrugina" name="Дружина"></activiti:value>
+          <activiti:value id="sEnamPredsCh" name="Представник чоловіка"></activiti:value>
+          <activiti:value id="sEnamPredsDr" name="Представник дрижини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/shlubUT1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPIBDruz" name="ПІБ Дружини" type="string" writable="false"></activiti:formProperty>
@@ -255,6 +259,25 @@ ${sNameOrgan}.&lt;br /&gt;
           Odr_PIB=Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName
           execution.setVariable('sPIBChol', Odr_PIB)
           }
+          
+        if(execution.getVariable('asRodich') == 'sEnamPredsCh')
+          {
+          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'<br>Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
+          Odr_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          execution.setVariable('sPIBDruz', Odr_PIB)
+          Odr_PIB=Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName
+          execution.setVariable('sPIBChol', Odr_PIB)
+          }
+        if(execution.getVariable('asRodich') == 'sEnamPredsDr')
+          {
+          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'<br>Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
+          Odr_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          execution.setVariable('sPIBDruz', Odr_PIB)
+          Odr_PIB=Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName
+          execution.setVariable('sPIBChol', Odr_PIB)
+
+          }  
+          
         execution.setVariable('sPIBOdrugenui', Odr_print)
       </script>
     </scriptTask>
