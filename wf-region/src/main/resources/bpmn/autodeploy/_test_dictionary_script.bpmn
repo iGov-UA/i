@@ -72,10 +72,10 @@ execution.setVariable('sMinSalary', priceCur)
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="parallelgateway1"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P10M</timeDuration>
+        <timeDuration>T5M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask2" name="Шаг 2" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Шаг Эскалация" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -84,19 +84,18 @@ execution.setVariable('sMinSalary', priceCur)
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Шаг 2]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Шаг Эскалация]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-				<h1>ШАГ 2<h1>
+				<h1>ШАГ Эскалация</h1>
 			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="boundarytimer1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="servicetask5" targetRef="parallelgateway1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Шаг 1" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -110,10 +109,9 @@ execution.setVariable('sMinSalary', priceCur)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-				<h1>ШАГ 1<h1>
+				<h1>ШАГ 1</h1>
 			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -131,14 +129,34 @@ execution.setVariable('sMinSalary', priceCur)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-				<h1>ШАГ 3<h1>
+				<h1>ШАГ 3</h1>
 			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="parallelgateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="servicetask5"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Шаг 2" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове  звернення. Шаг 2]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+				<h1>ШАГ 2</h1>
+				<h2>Отработала юзер таска</h2>
+			[pattern/mail/_common_signature.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_dictionary_script">
     <bpmndi:BPMNPlane bpmnElement="_test_dictionary_script" id="BPMNPlane__test_dictionary_script">
@@ -155,10 +173,10 @@ execution.setVariable('sMinSalary', priceCur)
         <omgdc:Bounds height="30.0" width="30.0" x="358.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="101.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="830.0" y="101.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="470.0" y="98.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="98.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="200.0"></omgdc:Bounds>
@@ -167,7 +185,10 @@ execution.setVariable('sMinSalary', priceCur)
         <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="91.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="91.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="670.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="465.0" y="91.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="67.0" y="101.0"></omgdi:waypoint>
@@ -179,29 +200,33 @@ execution.setVariable('sMinSalary', priceCur)
         <omgdi:waypoint x="320.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="645.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="775.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="830.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="425.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="373.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="425.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="222.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="222.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="510.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="425.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
