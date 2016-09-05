@@ -183,7 +183,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression>[pattern/mail/_common_header.html]
 		    					&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 								&lt;p&gt;
-            						Ваша заявка на проведення огляду судна в експлуатацiї успішно зареєстрована.&lt;br&gt;
+            						Ваша заявка на проведення огляду судна в експлуатацiї успішно зареєстрована [sID_Order].&lt;br&gt;
 									Спеціалісти Регістра судноплавства України повинні дати відповідь найближчим часом.
                                 &lt;/p&gt;
                                 [pattern/mail/_common_signature_start.html]
@@ -291,7 +291,8 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/registr_1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/registr_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/registr_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="param" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="og1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="og2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
@@ -374,11 +375,9 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваша заявка на проведення огляду судна в эксплуатацiї прийнята в роботу.&lt;br&gt;
-			Ви можете отримати її у відповідальному органі.
+			В додатках до листа ви знайдете рахунок для сплати послуг Регістру судноплавства України,&lt;br&gt;
+			${comment}
 			&lt;/p&gt; 
-			&lt;p&gt;
-			${sRozklad}
-			&lt;/p&gt;  
 			&lt;p&gt;
 			Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
             &lt;/p&gt;
