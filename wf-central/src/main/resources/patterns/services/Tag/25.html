@@ -195,30 +195,30 @@
         height: 60px;
    }
    
-   .article-block .navbar li[data-target].active{
+   .article-block .navbar li.active{
    		border-radius: 0;
    }
 
   .article-block .header {
    }
 
-    .article-block   .header .container {
+    .article-block .header .container {
            height: 100%;
        }
 
- .article-block  .body {
+ .article-block .body {
        padding-top: 40px;
        min-height: 600px;
        /*border: 1px solid black;*/
    }
 
-     .article-block  .body article {
+     .article-block .body article {
            position: relative;
            overflow: hidden;
            /*margin: 0 -20px;*/
        }
 
-       .article-block    .body article h1 {
+       .article-block .body article h1 {
                margin-top: 0;
                padding-top: 60px;
                padding-bottom: 10px;
@@ -227,7 +227,7 @@
            }
 
    /* стиль прогресс бара*/
- .article-block  .progress_bar {
+ .article-block .progress_bar {
        /*.transition(all .1s);*/
        position: fixed;
        top: 0;
@@ -239,7 +239,7 @@
    }
 
    /* стиль кнопки */
- .article-block  .to-top {
+ 	.article-block .to-top {
        width: 40px;
        height: 40px;
        position: fixed;
@@ -255,6 +255,23 @@
        text-transform: uppercase;
        cursor: pointer;
    }
+	
+	 .article-block .i-nav {
+	    background-color: #fff;
+	    border-radius: 0;
+	    border: none;
+	    margin-bottom: 0px;
+	    box-shadow: none;
+	}   
+   
+ 	.article-block .i-nav .navbar-brand {
+	    color: #449dcd;
+	    font-size: 3em;
+	    font-weight: bold;
+	    margin-top: 0px;
+	    font-family: Open Sans;
+	    display: inline-block;
+	}
 </style>
 
 
@@ -370,123 +387,62 @@
     </div>
 
 
+<style>
+
+
+</style>
+
     <nav class="navbar" role="navigation">
         <div class="container">
 
-            <!-- .btn-navbar используется для показа/скрытия контента ->
+            <!-- .btn-navbar используется для показа/скрытия контента -->
            <div class="navbar-header">
-               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#article-navbar-collapse-1">
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                    <span class="icon-bar"></span>
                </button>
+               <a class="i-nav navbar-brand" href="#">iGov</a>
            </div>
            <!--   -->
            <!-- Поместите сюда все, что вы хотите скрыть на дисплеях с шириной менее 940px -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="article-navbar-collapse-1">
                 <ul class="nav  nav-pills">
-                    <li data-target="anchor1" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="" title="Як оформити покупку нового автомобіля з салону">
-                            Новий <b class="caret"></b>
+                    <li data-target="an1">
+                        <a href="" title="Як оформити покупку нового автомобіля з салону">
+                            Нове авто
                         </a>
-                        <ol class="dropdown-menu">
-                            <li>
-                                <a href="">
-                                    Реєстрація нового автомобіля за допомогою порталу iGov
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    Реєстрація в сервісному центрі
-                                </a>
-                            </li>
-                        </ol>
                     </li>
-                    <li data-target="anchor2" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="" title="Як оформити покупку б/у автомобіля">
-                            Б/в <b class="caret"></b>
+                    <li data-target="an2">
+                        <a href="" title="Як оформити покупку б/в автомобіля">
+                            Б/в авто
                         </a>
-                        <ol class="dropdown-menu">
-                            <li>
-                                <a href="">
-                                    Реєстрація б/у автомобіля за допомогою порталу iGov
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    Нотаріальне оформлення
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    Оформлення договору купівлі-продажу в сервісному центрі
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    Купівля б/у автомобіля неофіційно
-                                </a>
-                            </li>
-                        </ol>
                     </li>
-                    <li data-target="anchor3" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="" ng-click="gotoAnchor(3)" title="Страхуємо автомобіль">
-                            Страхуємо <b class="caret"></b>
+                    <li data-target="an3">
+                        <a href="" ng-click="gotoAnchor(3)" title="Страхуємо автомобіль">
+                            Страхуємо авто
                         </a>
-                        <ol class="dropdown-menu">
-                            <li>
-                                <a href="" ng-click="gotoAnchor(31)">
-                                    ОСЦПВ (автоцивілка)
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="gotoAnchor(32)">
-                                    КАСКО
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="gotoAnchor(33)">
-                                    Зелена карта
-                                </a>
-                            </li>
-                        </ol>
                     </li>
-                    <li data-target="anchor4" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="" ng-click="gotoAnchor(4)" title="Як оформити продаж автомобіля">
-                            Продаж <b class="caret"></b>
+                    <li data-target="an4">
+                        <a href="" ng-click="gotoAnchor(4)" title="Як оформити продаж автомобіля">
+                            Продаж авто
                         </a>
-                        <ol class="dropdown-menu">
-                            <li>
-                                <a href="" ng-click="gotoAnchor(41)">
-                                    Нотаріальне оформлення
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="gotoAnchor(42)">
-                                    Оформлення договору купівлі-продажу в сервісному центрі
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="gotoAnchor(43)">
-                                    Неофіційна продаж автомобіля
-                                </a>
-                            </li>
-                        </ol>
                     </li>
-                    <li data-target="anchor5">
+                    <li data-target="an5">
                         <a href="" ng-click="gotoAnchor(5)" title="Обмін автомобіля">
-                            Обмін
+                            Обмін авто
                         </a>
                     </li>
-                    <li data-target="anchor6">
+                    <li data-target="an6">
                         <a href="" ng-click="gotoAnchor(6)" title="Посилання на законодавство">
                             Законодавство
                         </a>
                     </li>
                 </ul>
             </div>
-
-
         </div>
     </nav>
 
@@ -495,7 +451,7 @@
         <div class="container">
             <article>
 
-                <h1 id="anchor1" class="container" data-item="anchor1">
+                <h1 id="anchor1" class="container" data-item="an1">
                     Як оформити покупку нового автомобіля з салону
                 </h1>
                 <div class="content">
@@ -535,7 +491,7 @@
                 </div>
             </article>
             <article>
-                <h1 id="anchor2" class="container" data-item="anchor2">
+                <h1 id="anchor2" class="container" data-item="an2">
                     Як оформити покупку б/у автомобіля
                 </h1>
                 <div class="content">
@@ -640,7 +596,7 @@
                 </div>
             </article>
             <article>
-                <h1 id="anchor3" class="container" data-item="anchor3">
+                <h1 id="anchor3" class="container" data-item="an3">
                     Страхуємо автомобіль
                 </h1>
                 <div class="content">
@@ -683,7 +639,7 @@
                 </div>
             </article>
             <article>
-                <h1 id="anchor4" class="container" data-item="anchor4">
+                <h1 id="anchor4" class="container" data-item="an4">
                     Як оформити продаж автомобіля
                 </h1>
                 <div class="content">
@@ -736,7 +692,7 @@
                 </div>
             </article>
             <article>
-                <h1 id="anchor5" class="container" data-item="anchor5">
+                <h1 id="anchor5" class="container" data-item="an5">
                     Обмін автомобіля
                 </h1>
                 <div class="content">
@@ -763,7 +719,7 @@
                 </div>
             </article>
             <article>
-                <h1 id="anchor6" class="container" data-item="anchor6">
+                <h1 id="anchor6" class="container" data-item="an6">
                     Посилання на законодавство
                 </h1>
                 <div class="content">
