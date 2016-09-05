@@ -40,7 +40,13 @@
           <activiti:value id="careSingle" name="одинокою малозабезпеченою особою, які за висновком ЛКК закладу охорони здоров’я потребують постійного стороннього догляду (крім інвалідів І групи)"></activiti:value>
           <activiti:value id="careInvalid1A" name="малозабезпеченим інвалідом підгрупи А І групи"></activiti:value>
           <activiti:value id="careInvalid1B" name="малозабезпеченим інвалідом підгрупи Б І групи"></activiti:value>
-        </activiti:formProperty>
+        </activiti:formProperty>        
+                
+		<activiti:formProperty id="asTypeSocGroupForCare" name="Оберіть соціальну группу" type="enum" required="true">
+          <activiti:value id="one" name="інваліду I групи"></activiti:value>
+          <activiti:value id="two" name="інваліду II групи"></activiti:value>
+          <activiti:value id="three" name="інваліду III групи"></activiti:value>
+        </activiti:formProperty>  
         
     	<activiti:formProperty id="asTypeSubgroup" name="Оберіть підгрупу інвалідності" type="enum" required="true">
           <activiti:value id="careInvalid1A" name="інвалід підгрупи А І групи"></activiti:value>
@@ -309,7 +315,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Державна соціальна допомога особам, які не мають права на пенсію, та інвалідам.]]></activiti:string>
