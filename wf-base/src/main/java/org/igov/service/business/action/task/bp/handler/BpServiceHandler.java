@@ -132,6 +132,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        String LoginAssigned = (String) mTaskParam.get("sLoginAssigned");
         LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
@@ -159,6 +160,8 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
@@ -166,7 +169,8 @@ public class BpServiceHandler {
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
         LOG.info("sField={}", sField);
         mParam.put("saField", sField+".");
-
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs); 
         LOG.info("!!!organ: " + organ);
@@ -174,8 +178,6 @@ public class BpServiceHandler {
         
         
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        mParam.put("sLoginAssigned",taskService.createTaskQuery().taskAssignee(sField));
-        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
