@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 27.07.2016</documentation>
+  <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 18.08.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -14,9 +14,9 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDocType" name="Тип документа" type="enum" required="true">
-          <activiti:value id="sDocTypeVikonkom" name="копія рішення виконавчого комітету міської (селищної) ради"></activiti:value>
-          <activiti:value id="sDocTypeGorsovet" name="копія рішення міської (селищної) ради"></activiti:value>
-          <activiti:value id="sDocTypeGolova" name="копія розпорядження міського (селищного) голови"></activiti:value>
+          <activiti:value id="sDocTypeVikonkom" name="копія рішення виконавчого комітету міської (селищної, районної) ради"></activiti:value>
+          <activiti:value id="sDocTypeGorsovet" name="копія рішення міської (селищної, районної) ради"></activiti:value>
+          <activiti:value id="sDocTypeGolova" name="копія розпорядження міського (селищного, районного) голови"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocDate" name="Дата прийняття документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
@@ -77,13 +77,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення [sID_Order] щодо видачі копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом успішно зареєстроване.
+			Ваше звернення [sID_Order] щодо видачі копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом успішно зареєстроване.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.&lt;br&gt;
@@ -122,6 +122,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -145,12 +146,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Ваше звернення [sID_Order] щодо видачі копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом не прийнято в роботу.&lt;/p&gt;
+			&lt;p&gt;На жаль, Ваше звернення [sID_Order] щодо видачі копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом не прийнято в роботу.&lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_feedback.html]
@@ -182,7 +183,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Ваше звернення передано для опрацювання: Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом]]></activiti:string>
+          <activiti:string><![CDATA[Ваше звернення передано для опрацювання: Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -229,6 +230,7 @@
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -252,12 +254,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення опрацьовано: Видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом]]></activiti:string>
+          <activiti:string><![CDATA[Звернення опрацьовано: Видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Замовлена Вами копія (витяг) з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом готова (звернення [sID_Order]).&lt;br&gt;			
+			&lt;p&gt;Замовлена Вами копія (витяг) з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом готова (звернення [sID_Order]).&lt;br&gt;			
 			Ви можете завантажити її з додатку до цього листа, та отримати оригінал за наступними контактами&lt;/p&gt;
 			${sAddress}&lt;br&gt;
 			${sWorkTime}&lt;br&gt;
@@ -295,12 +297,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відмова в видачі рішення на тему: видача копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом]]></activiti:string>
+          <activiti:string><![CDATA[Відмова в видачі рішення на тему: видача копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Вам відмовлено в видачі копій, витягів з розпоряджень міського (селищного) голови, рішень, прийнятих міською (селищною) радою та виконавчим комітетом (звернення [sID_Order]).&lt;/p&gt;
+			&lt;p&gt;На жаль, Вам відмовлено в видачі копій, витягів з розпоряджень міського (селищного, районного) голови, рішень, прийнятих міською (селищною, районною) радою та виконавчим комітетом (звернення [sID_Order]).&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;br&gt;&lt;br&gt;	
 			Якщо у вас виникли питання, Ви можете звернутись до&lt;br&gt;
@@ -347,13 +349,28 @@
 					per2= 'копію рішення виконавчого комітету селищної ради'
 		}	 
 		else
-			if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
-				per2= 'копію рішення міської ради'
+		{
+			if (execution.getVariable('sIsRDA') == 'True')
+			{
+				if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+					per2= 'копію рішення районної ради'
+				else
+					if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+						per2= 'копію розпорядження голови голова районної ради'
+					else	
+						per2= 'копію рішення виконавчого комітету районної ради'
+			}
 			else
-				if (execution.getVariable('asDocType') == 'sDocTypeGolova')
-					per2= 'копію розпорядження міського голови'
-				else	
-					per2= 'копію рішення виконавчого комітету міської ради'
+			{
+				if (execution.getVariable('asDocType') == 'sDocTypeGorsovet')
+					per2= 'копію рішення міської ради'
+				else
+					if (execution.getVariable('asDocType') == 'sDocTypeGolova')
+						per2= 'копію розпорядження міського голови'
+					else	
+						per2= 'копію рішення виконавчого комітету міської ради'
+			}
+		}
 		execution.setVariable('docTyp', per2)
 		
       </script>

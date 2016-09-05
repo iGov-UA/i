@@ -26,7 +26,9 @@
         <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;посиланням&lt;/a&gt; та заповнити обґрунтування і розрахунок мінімального складу екіпажу судна."></activiti:formProperty>
+        <activiti:formProperty id="warning00" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та підписати &lt;a href=&quot;https://drive.google.com/open?id=1Lsz7rBsh7FVmYxZLuXhwVOZYASGeCLwLCT0ucBkaGsY&quot;&gt;заяву для видачі свідоцтва&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="nDocZajava" name="Заява для видачі свідоцтва" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYaFExblNOTUFnaEdMUE5Ycl9Qc2REanNScHhn&quot;&gt;обґрунтування і розрахунок мінімального складу екіпажу судна&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Обґрунтування і розрахунок мінімального складу екіпажу судна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocTO" name="Копія класифікаційного свідоцтва або копія акта технічного нагляду судна для здійснення його державної реєстрації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України" type="file" required="true"></activiti:formProperty>
@@ -128,7 +130,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocAnketa},${nDocTO},${nDocFlag},${nDocVlasn},${nDocPass},${nDocZajava}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -201,7 +203,7 @@
 			Для того щоб закінчити процедуру видачі свідоцтва про мінімальний склад екіпажу судна необхідно:<br>
 			<ul>
 			<li>Сплатити послуг Державної служби України з безпеки на транспорті (в додатках до листа ви знайдете рахунок) та отримати квитанцію про сплату.</li>
-			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Повітрофлотський 76В, 4 поверх та отримати посвідчення.</li>
+			<li>Відвідати Державну службу України з безпеки на транспорті за адресою: м. Київ, пр. Повітрофлотський 76В, 4 поверх з оригіналами документів, які Ви додавали та отримати посвідчення.</li>
 			</ul>
 			</p> 
 			<p>

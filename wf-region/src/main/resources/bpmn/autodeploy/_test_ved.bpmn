@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_test_ved" name="_test_ved" isExecutable="true">
-    <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
+    <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Region" name="обрана область sID_UA_Region" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_City" name="обране місто sID_UA_City" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Region" name="обрана область nID_Region" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_City" name="обране місто nID_City" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="обранеий населений пункт sID_UA" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Сумма;Сумма стоимости" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" required="true">
-          <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
-          <activiti:value id="children_pregnancy" name="призначення допомоги у зв’язку з вагітністю та пологами"></activiti:value>
+        <activiti:formProperty id="content" name="поле з типом енум" type="enum" required="true">
+          <activiti:value id="atr1" name="атрибут 1"></activiti:value>
+          <activiti:value id="atr2" name="атрибут 2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Поле з типом дата" type="date" required="true"></activiti:formProperty>
       </extensionElements>
@@ -18,18 +24,24 @@
     <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Region" name="обрана область sID_UA_Region" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_City" name="обране місто sID_UA_City" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Region" name="обрана область nID_Region" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_City" name="обране місто nID_City" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="обранеий населений пункт sID_UA" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Сумма;Сумма стоимости" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="content" name="Оберіть тип довідки" type="enum" writable="false">
-          <activiti:value id="invalid_child" name="призначення допомоги інвалідам з дитинства та дітям-інвалідам"></activiti:value>
-          <activiti:value id="children_pregnancy" name="призначення допомоги у зв’язку з вагітністю та пологами"></activiti:value>
+        <activiti:formProperty id="content" name="поле з типом енум" type="enum" writable="false">
+          <activiti:value id="atr1" name="атрибут 1"></activiti:value>
+          <activiti:value id="atr2" name="атрибут 2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Поле з типом дата" type="date" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -37,7 +49,7 @@
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[darja.grek@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -46,10 +58,10 @@
           <activiti:string><![CDATA[Нове  звернення. Перевірка автозаповнення данними]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;тест&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>тест</b><br /><br />
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -67,7 +79,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_ved">
     <bpmndi:BPMNPlane bpmnElement="_test_ved" id="BPMNPlane__test_ved">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="52.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="137.0" x="296.0" y="129.0"></omgdc:Bounds>
@@ -85,7 +97,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="117.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="85.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="87.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">

@@ -97,10 +97,16 @@
           <activiti:value id="sYesPay" name="Так, має"></activiti:value>
           <activiti:value id="sNoPay" name="У громадянина відсутня квитанція, потрібно надати реквізити"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" required="true">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
-        <activiti:formProperty id="nDocEdu" name="Копія документу, що підтверджує отримання морської освіти або копія довідки з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія трудового договору (контракту) про працевлаштування на судні;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYSlh2LWhpVzBlTlVrU1pvQVFfYy1mVWZkbDlR/view?usp=sharing&quot;&gt;посиланням&lt;/a&gt; та заповнити анкету для видачі/обміну посвідчення особи моряка."></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та вклеїти фотокартку до &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYYzZmclRXdUF4UjA&quot;&gt;анкети для видачі/обміну посвідчення особи моряка&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте достовірність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -141,7 +147,7 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var nat=execution.getVariable('sAreabirthNotUkr')+" / "+execution.getVariable('sAreabirthEng')
+var nat=execution.getVariable('sNationalityUkr')+" / "+execution.getVariable('sNationalityEn')
 execution.setVariable('sNationality', nat)
 var place=execution.getVariable('asPlace_of_birth')
 var place1='АРК / UKRAINE' 
@@ -261,7 +267,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Ізмаїльська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26006030033419')          			
 				execution.setVariable('sVarSumPay','892.57')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Mariupol')
           	{
@@ -273,7 +279,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Маріупольска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26003030033423')          			
 				execution.setVariable('sVarSumPay','889.44')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Mikolayv')
           	{
@@ -284,8 +290,8 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGetCode','38728444')          			
 				execution.setVariable('sVarWhoPayGet','Миколаївска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26002030033424')          			
-				execution.setVariable('sVarSumPay','658.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sVarSumPay','1022,03')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Odesa')
           	{
@@ -297,7 +303,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Одеська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26000020033425')          			
 				execution.setVariable('sVarSumPay','610.06')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Kherson')
           	{
@@ -309,7 +315,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Херсонска філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26008020033416')          			
 				execution.setVariable('sVarSumPay','1023.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
           	if (sVarCNAP=='port_Chernomorsk')
           	{
@@ -321,7 +327,7 @@ var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
 				execution.setVariable('sVarWhoPayGet','Іллічівська філія ДП "АМПУ"')          			
 				execution.setVariable('sVarPayGetSchet','26005030033421')          			
 				execution.setVariable('sVarSumPay','844.09')       
-				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]')   			
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою №${sID_Order}')   			
           	}
 	</script>
     </scriptTask>
@@ -353,7 +359,7 @@ else
     {
         if ((month!='02'))
           {
-              month=month+1
+              month=month-(-1)
               day=day-(-delta)-30
           }
         else
@@ -482,11 +488,13 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -557,6 +565,12 @@ execution.setVariable('sID_Payment', Pay)
 										</ul>
 									</p>
 									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
 										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
 									</p>
 									<p>
@@ -566,12 +580,6 @@ execution.setVariable('sID_Payment', Pay)
 										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
-									</p>
-									<p>
-										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -615,21 +623,21 @@ execution.setVariable('sID_Payment', Pay)
 										</ul>
 									</p>
 									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
 										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
 									</p>
 									<p>
 										Реквізити для сплати:<br>
 										${sPortRekv}<br>
 										${slabelSum}<br>
-										<b>Призначення платежу:</b> сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
 										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
 										[paymentButton_LiqPay]
-									</p>
-									<p>
-										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
-										Ви можете перевірити їх у файлі, що додається.<br>
-										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
-										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
 									</p>
 									<p>Коментар держслужбовця:<br>
 										<b><i>${sDecisionComment}</i></b>
@@ -672,7 +680,7 @@ else
     {
         if ((month!='02'))
           {
-              month=month+1
+              month=month-(-1)
               day=day-(-delta)-30
           }
         else
@@ -735,7 +743,9 @@ execution.setVariable('sDate_of_print', timer)</script>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення (вводити без пробілу)" type="string" default="AB" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -942,16 +952,19 @@ execution.setVariable('sMoz2', moz2)
 									</p>
 									<p>
 									  <b>Необхідні документи, які треба пред'явити в ${sNameOrgan} при отриманні посвідчення особи моряка:</b><br>
-										<ul>
+									   <ul>
 										<li>заява-анкета, яку Ви заповнювали і сканували при поданні заявки;</li>
 										<li>паспорт громадянина України та його копія (усі заповнені сторінки);</li>
 										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
-										<li>дві фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
+										<li>одну фотокартку 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
 										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
-										<li>документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах (який Ви сканували при поданні заявки);</li>
-										<li>морський диплом та підтвердження до нього або свідоцтво та, за наявності, підтвердження до нього (який Ви сканували при поданні заявки);</li>
-										<li>посвідчення особи моряка, що обмінюється (за наявності);</li>
-										</ul>
+										<li>документ, на підставі якого буде видано посвідчення особи моряка (який Ви сканували при поданні заявки);</li>
+										<ul>
+											<li>оригінал та копія трудового договору (контракту) про працевлаштування на судні;</li>
+											<li>оригінал та копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;</li>
+											<li>оригінал довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;</li>
+										<ul>
+									   </ul>
 									</p>
 									<p>${sRozklad}</p>
 									<p>
@@ -1000,7 +1013,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

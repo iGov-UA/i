@@ -3,13 +3,13 @@
   <process id="_test_taskListener" name="Пошук групи" isExecutable="true">
     <startEvent id="start" name="Почати видалення!"></startEvent>
     <endEvent id="end" name="End"></endEvent>
-    <userTask id="usertask1" name="User Task1" activiti:assignee="kermit">
+    <userTask id="usertask1" name="User Task1" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="group_pattern" name="шаблон группы" type="string" default="_" writable="false" required="true"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="User Task2" activiti:assignee="kermit">
+    <userTask id="usertask2" name="User Task2" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="group_found" name="найденная группа" type="string"></activiti:formProperty>
         <activiti:formProperty id="user_last" name="Пользователь, отработавший прошлую usertask" type="string" default="none"></activiti:formProperty>
