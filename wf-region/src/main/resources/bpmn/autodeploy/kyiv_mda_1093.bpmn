@@ -455,6 +455,12 @@
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="hideShowFields7" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="hideShowFields8" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="hideShowFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="hideShowFields10" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_10.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -487,9 +493,17 @@
           <activiti:value id="sEnumDecisionRemarkYes" name="Є зауваження"></activiti:value>
           <activiti:value id="sEnumDecisionRemarkNo" name="Немає зауважень"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asProtocolType" name="Який протокол" type="enum">
+          <activiti:value id="sEnumProtocolType_1" name="Протокол про правопорушення у сфері містобудівної діяльності"></activiti:value>
+          <activiti:value id="sEnumProtocolType_2" name="Протокол про адміністративне правопорушення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum">
           <activiti:value id="sEnumTypeActNoVisit" name="Акт про недопуск на об’єкт"></activiti:value>
           <activiti:value id="sEnumTypeActVisit" name="Акт проведення перевірки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum" required="true">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateDraftingAct" name="Дата складання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceDraftingAct" name="Місце складання" type="string" required="true"></activiti:formProperty>
@@ -621,10 +635,7 @@
         <activiti:formProperty id="sPrescriptionEstablished_10" name="Встановлено (10 особа)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPrescriptionDemand_10" name="Вимагаю (10 особа) (заходи щодо усунення порушень із визначенням терміну виконання)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPrescriptionPersonMade_10" name="Особа, що склала припис (10 особа)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asProtocolType" name="Який протокол" type="enum">
-          <activiti:value id="sEnumProtocolType_1" name="Протокол про правопорушення у сфері містобудівної діяльності"></activiti:value>
-          <activiti:value id="sEnumProtocolType_2" name="Протокол про адміністративне правопорушення"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="asQuantityOffenses" name="Кількість правопорушень" type="enum">
           <activiti:value id="sEnumOffenses_1" name="1"></activiti:value>
           <activiti:value id="sEnumOffenses_2" name="2"></activiti:value>
@@ -665,10 +676,7 @@
         <activiti:formProperty id="sDateCase" name="Дата та час розгляду справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceCase" name="Місце розгляду справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressPlaceCase" name="Адреса місця розгляду справи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum" required="true">
-          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
