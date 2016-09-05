@@ -60,7 +60,7 @@
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_license.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
         <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -142,7 +142,7 @@ execution.setVariable('sTypeBiz', res)
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

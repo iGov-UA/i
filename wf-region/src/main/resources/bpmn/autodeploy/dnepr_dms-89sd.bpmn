@@ -6,7 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
@@ -16,13 +16,14 @@
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження;Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="oDate_of_death" name="Дата смерті" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -40,7 +41,7 @@
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -132,7 +133,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -147,6 +148,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildDoc" name="Дані документу померлого" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -165,7 +167,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nSvidChild}</activiti:expression>
+            <activiti:expression>${nSvidDeath}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -367,7 +369,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -383,6 +385,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum">
@@ -399,7 +402,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nSvidChild}</activiti:expression>
+            <activiti:expression>${nSvidDeath}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
