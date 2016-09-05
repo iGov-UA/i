@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 
 @Component
-public class ManagerSMS {
+public class ManagerSMS_Old {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerSMS_Old.class);
 
     private String sURL_Send = null;
     private String sMerchantId = null;

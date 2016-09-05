@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.mail.MultiPartEmail;
-import org.igov.io.sms.ManagerSMS;
+import org.igov.io.sms.ManagerSMS_New;
 
 /**
  * @author BW
