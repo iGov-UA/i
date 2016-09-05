@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.model.object.ObjectCustoms;
 
+
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)

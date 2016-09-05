@@ -159,6 +159,8 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
@@ -174,8 +176,6 @@ public class BpServiceHandler {
         
         
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-//        mParam.put("sLoginAssigned", taskService.createTaskQuery().processInstanceId(sProcessName).list().get(0).getAssignee());
-//        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sPlace", getPlaceForProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
