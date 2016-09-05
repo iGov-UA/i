@@ -1,0 +1,47 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["post_office"], 
+			"asID_Field" : {
+				"sClient" : "transfer_type"
+			}, 
+			"sCondition" : "[sClient] == 'post'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["bank_name", "mfo", "edrpou", "bank_account"], 
+			"asID_Field" : {
+				"sClient" : "transfer_type"
+			}, 
+			"sCondition" : "[sClient] == 'bank'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["nFileCertRefugee"], 
+			"asID_Field" : {
+				"sClient" : "asNationalUkraine"
+			}, 
+			"sCondition" : "[sClient] == 'no'"
+		}, 
+		"ShowFieldsOnCondition_4" : {
+			"aField_ID" : ["asTypeSocGroup"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp"
+			}, 
+			"sCondition" : "[sClient] == 'cos' || [sClient] == 'cosCare'"
+		}, 
+		"ShowFieldsOnCondition_5" : {
+			"aField_ID" : ["asTypeCare", "nFileCareRish"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp"
+			}, 
+			"sCondition" : "[sClient] == 'care' || [sClient] == 'cosCare'"
+		}, 
+		"ShowFieldsOnCondition_6" : {
+			"aField_ID" : ["asTypeSubgroup"], 
+			"asID_Field" : {
+				"sClient" : "asTypeHelp", 
+				"sClient_1" : "asTypeSocGroup"
+			}, 
+			"sCondition" : "[sClient] == 'cosCare' && [asTypeSocGroup] == 'one'"
+		}
+	}
+}
