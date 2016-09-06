@@ -377,6 +377,7 @@
         <activiti:formProperty id="markers36" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers37" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -541,6 +542,7 @@
         <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документом" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -698,6 +700,7 @@
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -747,7 +750,7 @@
 ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -782,10 +785,10 @@ ${sNameOrgan}<br />
 Ваше звернення отримано, вхідні данні пройшли первинну перевірку.<br />
 Для передачі документів на подальший розгляд в МВС Вам необхідно надати оригінали документів до обраного Вами відділу ДРАЦС.<br />
 Призначено дату і час візиту - ${sDateVisit1}.<br />
-${sAddress}<br />
+Адреса: ${sAddress}<br /><br />
 Перелік документів, які треба мати при собі:<br />
 ${sListDocumentsLetter}
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -820,10 +823,10 @@ ${sNameOrgan}<br />
 Вам надано дозвіл на зміну імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Вам призначено дату і час візиту для отримання оригіналу свідоцтва про зміну імені - ${sDateVisit2}.<br />
-${sAddress}<br />
+Адреса: ${sAddress}<br /><br />
 Звертаємо Вашу увагу - якщо впродовж 90 днів Ви не з'явитесь для отримання свідоцтва - дозвіл на зміну імені втрачає силу.<br />
-Після державної реєстрації зміни імені і отримання свідоцтва на першій сторінці паспорта буде зроблено відмітку про те, що паспорт підлягає обміну протягом місяця.<br />
-${sPhoneOrgan}<br />
+Після державної реєстрації зміни імені і отримання свідоцтва на першій сторінці паспорта буде зроблено відмітку про те, що паспорт підлягає обміну протягом місяця.<br /><br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -860,7 +863,7 @@ ${sNameOrgan}<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -897,7 +900,7 @@ ${sNameOrgan}<br />
 Якщо впродовж 10 днів свідоцтво Вами не буде отримано, дозвіл на зміну імені втратить силу.<br />
 У разі необхідності Ви зможете подати звернення на отримання дозволу повторно.
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -920,7 +923,7 @@ var per1 = "&lt;li&gt;Документ, що посвідчує особу;&lt;/
 var per2 = "&lt;li&gt;Заява, яка була подана в електронному вигляді (знаходиться у додатку до листа - завантажте, роздрукуйте і підпишіть);&lt;/li&gt;"
 var per3 = " "
 var per4 = "&lt;li&gt;Свідоцтво про народження;&lt;/li&gt;"
-var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4&lt;/li&gt;"
+var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4;&lt;/li&gt;"
 var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита;&lt;/li&gt;"
 var per7 = " "
 var per8 = " "
@@ -933,34 +936,34 @@ var per14 = " "
 var res = 'res'
 var res2 = 'res2'
 if(execution.getVariable('bankId_scan_passport') != null){
-per3 = '&lt;li&gt;Копія паспорта.&lt;/li&gt;'
+per3 = '&lt;li&gt;Копія паспорта;&lt;/li&gt;'
 }
 if(execution.getVariable('sDocMarriage') != null){
-per7 = '&lt;li&gt;Свідоцтво про шлюб.&lt;/li&gt;'
+per7 = '&lt;li&gt;Свідоцтво про шлюб;&lt;/li&gt;'
 }
 if(execution.getVariable('sDocNoMarriage') != null){
-per8 = '&lt;li&gt;Документ про розірвання шлюбу (або інший документ, який підтверджує припинення шлюбу).&lt;/li&gt;'
+per8 = '&lt;li&gt;Документ про розірвання шлюбу (або інший документ, який підтверджує припинення шлюбу);&lt;/li&gt;'
 }
 if(execution.getVariable('sDocChild1') != null){
-per9 = "&lt;li&gt;Свідоцтва про народження дітей&lt;/li&gt;"
+per9 = "&lt;li&gt;Свідоцтва про народження дітей;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPrevious') != null){
-per10 = "&lt;li&gt;Документ, що підтверджує зміну імені.&lt;/li&gt;"
+per10 = "&lt;li&gt;Документ, що підтверджує зміну імені;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocDeath') != null){
-per11 = "&lt;li&gt;Свідоцтво про смерть другого із подружжя.&lt;/li&gt;"
+per11 = "&lt;li&gt;Свідоцтво про смерть другого із подружжя;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPassport') != null){
-per12 = "&lt;li&gt;Копія паспортного документу.&lt;/li&gt;"
+per12 = "&lt;li&gt;Копія паспортного документу;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPhoto') != null){
-per13 = "&lt;li&gt;Фотокартка заявника.&lt;/li&gt;"
+per13 = "&lt;li&gt;Фотокартка заявника;&lt;/li&gt;"
 }
 if(execution.getVariable('asFullName') == 'name'){
 per14 = "прізвище, &lt;ins&gt;власне ім’я&lt;/ins&gt;, по батькові "
 }
 if(execution.getVariable('asFullName') == 'surname'){
-per14 = "&lt;ins&gt;прізвище&lt;/ins&gt;, власне ім’я, по батькові "
+per14 = "&lt;ins&gt;прізвище&lt;/ins&gt;, власне ім’я, по батькові"
 }
 if(execution.getVariable('asFullName') == 'secondname'){
 per14 = "прізвище, власне ім’я,&lt;ins&gt;по батькові&lt;/ins&gt;"
