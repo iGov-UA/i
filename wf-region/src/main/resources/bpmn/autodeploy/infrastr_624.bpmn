@@ -453,6 +453,11 @@ execution.setVariable('sID_Payment', Pay)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asWorkerDecision" name="Рішення посадової особи" type="enum" required="true">
           <activiti:value id="sAccept" name="Документи в порядку, надіслати рахунок для сплати"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити у прийнятті особової справи"></activiti:value>
@@ -828,12 +833,12 @@ var sex=src.substr(4,1)
 var year4=String(year3).substr(2,2)
 var c1=Number(year4.substr(2,1))
 var c2=Number(year4.substr(3,1))
-var c3=Number(month2.substr(0,1))
-var c4=Number(month2.substr(1,1))
-var c5=Number(day1.substr(0,1))
-var c6=Number(day1.substr(1,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
 k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+day1+k3
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
 execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
@@ -962,6 +967,11 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+         <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asResultVizit" name="Результат візиту" type="enum" required="true">
           <activiti:value id="sTake" name="Громадянин отримав документ"></activiti:value>
@@ -1100,36 +1110,40 @@ var sex1='Ч / M'
 if (sex=='sWoman'){
     sex1='Ж / W'}
 execution.setVariable('sSex', sex1)
-var src=execution.getVariable('sDate_of_issue')
-var day1=src.substr(0,2)
-var month2=src.substr(3,2)
-var year2=src.substr(6,4)
+var unixdate= Math.round((new Date()).getTime());
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
 var month3='СІЧ / JAN'
-if (month2=='02'){
+if (m=='02'){
     month3='ЛЮТ / FEB'}
-if (month2=='03'){
+if (m=='03'){
     month3='БЕР / MAR'}
-if (month2=='04'){
+if (m=='04'){
     month3='КВІ / APR'}
-if (month2=='05'){
+if (m=='05'){
     month3='ТРА / MAY'}
-if (month2=='06'){
+if (m=='06'){
     month3='ЧЕР / JUN'}
-if (month2=='07'){
+if (m=='07'){
     month3='ЛИП / JUL'}
-if (month2=='08'){
+if (m=='08'){
     month3='СЕР / AUG'}
-if (month2=='09'){
+if (m=='09'){
     month3='ВЕР / SEP'}
-if (month2=='10'){
+if (m=='10'){
     month3='ЖОВ / OCT'}
-if (month2=='11'){
+if (m=='11'){
     month3='ЛИС / NOV'}
-if (month2=='12'){
+if (m=='12'){
     month3='ГРУ / DEC'}
-var issue=day1+' '+month3+' '+year2
-var year3= year2-(-5)
-var expiry=day1+' '+month3+' '+year3
+var issue=d+' '+month3+' '+new_year
+var year3= new_year-(-5)
+var expiry=d+' '+month3+' '+year3
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
 var src=execution.getVariable('sSex')
@@ -1137,12 +1151,12 @@ var sex=src.substr(4,1)
 var year4=String(year3).substr(2,2)
 var c1=Number(year4.substr(2,1))
 var c2=Number(year4.substr(3,1))
-var c3=Number(month2.substr(0,1))
-var c4=Number(month2.substr(1,1))
-var c5=Number(day1.substr(0,1))
-var c6=Number(day1.substr(1,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
 k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+month2+day1+k3
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
 execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
@@ -1281,36 +1295,40 @@ var sex1='Ч / M'
 if (sex=='sWoman'){
     sex1='Ж / W'}
 execution.setVariable('sSex', sex1)
-var src=execution.getVariable('sDate_of_issue')
-var day1=src.substr(0,2)
-var month2=src.substr(3,2)
-var year2=src.substr(6,4)
+var unixdate= Math.round((new Date()).getTime());
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
 var month3='СІЧ / JAN'
-if (month2=='02'){
+if (m=='02'){
     month3='ЛЮТ / FEB'}
-if (month2=='03'){
+if (m=='03'){
     month3='БЕР / MAR'}
-if (month2=='04'){
+if (m=='04'){
     month3='КВІ / APR'}
-if (month2=='05'){
+if (m=='05'){
     month3='ТРА / MAY'}
-if (month2=='06'){
+if (m=='06'){
     month3='ЧЕР / JUN'}
-if (month2=='07'){
+if (m=='07'){
     month3='ЛИП / JUL'}
-if (month2=='08'){
+if (m=='08'){
     month3='СЕР / AUG'}
-if (month2=='09'){
+if (m=='09'){
     month3='ВЕР / SEP'}
-if (month2=='10'){
+if (m=='10'){
     month3='ЖОВ / OCT'}
-if (month2=='11'){
+if (m=='11'){
     month3='ЛИС / NOV'}
-if (month2=='12'){
+if (m=='12'){
     month3='ГРУ / DEC'}
-var issue=day1+' '+month3+' '+year2
-var year3= year2-(-5)
-var expiry=day1+' '+month3+' '+year3
+var issue=d+' '+month3+' '+new_year
+var year3= new_year-(-5)
+var expiry=d+' '+month3+' '+year3
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
 var src=execution.getVariable('sSex')
@@ -1318,12 +1336,12 @@ var sex=src.substr(4,1)
 var year4=String(year3).substr(2,2)
 var c1=Number(year4.substr(2,1))
 var c2=Number(year4.substr(3,1))
-var c3=Number(month2.substr(0,1))
-var c4=Number(month2.substr(1,1))
-var c5=Number(day1.substr(0,1))
-var c6=Number(day1.substr(1,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
 k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
-var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+month2+day1+k3
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
 execution.setVariable('sMoz2', moz2)
        </script>
     </scriptTask>
