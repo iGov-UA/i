@@ -132,7 +132,7 @@
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Прийняття рішення щодо продовження строка дії довідки" type="enum" required="true">
           <activiti:value id="accept" name="Продовжено довідку"></activiti:value>
-          <activiti:value id="reject" name="ВІДМОВЛЕНО У gродовжені довідки"></activiti:value>
+          <activiti:value id="reject" name="ВІДМОВЛЕНО у продовжені довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
@@ -179,7 +179,7 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${PrintForm_1}"</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -352,13 +352,30 @@ ${sNameOrgan}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно перевірено.&lt;br /&gt;
 &lt;br /&gt;
-Чекаємо Вас за адресою: ${sAddress}&lt;br /&gt;&lt;br /&gt;
-Дата та час роботи: ${sWorkTime}&lt;br /&gt;
+Чекаємо Вас за адресою: &lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
+Дата та час роботи: &lt;br /&gt; 
+${sWorkTime}&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
 
 ${sAdd_SpisokDocs}
 &lt;br /&gt;
 &lt;br /&gt;
 
+&lt;b&gt;Пам'ятка для внутрішньо переміщеної особи.&lt;/b&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;1. Внутрішньо переміщена особа зобов’язана:&lt;/b&gt;&lt;br /&gt;
+ - повідомляти про зміну місця проживання структурний підрозділ з питань соціального захисту населення районних за новим місцем проживання протягом 10 днів з дня прибуття до нового місця проживання;&lt;br /&gt;
+ - у разі добровільного повернення до покинутого постійного місця проживання внутрішньо переміщена особа зобов’язана повідомити про це структурний підрозділ з питань соціального захисту населення за місцем отримання довідки не пізніш як за три дні до дня від’їзду.&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;2. Підстави для скасування дії довідки, що має наслідки призупинення соціальних виплат:&lt;/b&gt;&lt;br /&gt;
+ а) особиста заява про відмову від довідки;&lt;br /&gt;
+ б) подача завідомо недостовірних відомостей;&lt;br /&gt;
+ в) особа повернулася до покинутого місця постійного проживання (тривала відсутність (понад 60 днів) особи за місцем фактичного проживання дає обґрунтовані підстави вважати, що внутрішньо переміщена особа повернулася до покинутого місця постійного проживання);&lt;br /&gt;
+ г) виїхала на постійне місце проживання за кордон;&lt;br /&gt;
+ д) скоїла терористичний акт, злочин або дії, спрямовані на захоплення державної влади, посягання на територіальну цілісність і недоторканність України та інше.&lt;br /&gt;
+&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
