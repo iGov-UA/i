@@ -222,7 +222,7 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1_green" name="перевірка документів і вхідних данних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_yellow" name="перевірка документів і вхідних данних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
@@ -388,7 +388,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_red" name="очікується відповідь з МВД" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_green" name="очікується відповідь з МВД" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
@@ -548,7 +548,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3_yellow" name="очікується візит громадянина для отримання оригіналу свідоцтва" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="очікується візит громадянина для отримання оригіналу свідоцтва" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
@@ -929,6 +929,7 @@ var per10 = " "
 var per11 = " "
 var per12 = " "
 var per13 = " "
+var per14 = " "
 var res = 'res'
 var res2 = 'res2'
 if(execution.getVariable('bankId_scan_passport') != null){
@@ -955,10 +956,20 @@ per12 = "&lt;li&gt;Копія паспортного документу.&lt;/li&
 if(execution.getVariable('sDocPhoto') != null){
 per13 = "&lt;li&gt;Фотокартка заявника.&lt;/li&gt;"
 }
+if(execution.getVariable('asFullName') == 'name'){
+per14 = "прізвище, &lt;ins&gt;власне ім’я&lt;/ins&gt;, по батькові "
+}
+if(execution.getVariable('asFullName') == 'surname'){
+per14 = "&lt;ins&gt;прізвище&lt;/ins&gt;, власне ім’я, по батькові "
+}
+if(execution.getVariable('asFullName') == 'secondname'){
+per14 = "прізвище, власне ім’я,&lt;ins&gt;по батькові&lt;/ins&gt;"
+}
 res = '&lt;ol&gt;'+per3+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+per12+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
+execution.setVariable('asFullNamepf', per14)
 	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Призначення дати автозакриття заявки" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -984,18 +995,18 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow50" sourceRef="usertask1_green" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask3_yellow" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow51" name="+" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow52" name="-" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2_red"></sequenceFlow>
-    <sequenceFlow id="flow90" sourceRef="servicetask5" targetRef="usertask1_green"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="servicetask5" targetRef="usertask3_yellow"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow92" sourceRef="usertask2_red" targetRef="exclusivegateway3"></sequenceFlow>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask3_yellow" cancelActivity="true">
+    <sequenceFlow id="flow92" sourceRef="usertask2_green" targetRef="exclusivegateway3"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>P80DT1M</timeDuration>
       </timerEventDefinition>
@@ -1006,7 +1017,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow94" name="+" sourceRef="exclusivegateway3" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow95" sourceRef="servicetask12" targetRef="usertask3_yellow"></sequenceFlow>
+    <sequenceFlow id="flow95" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow97" sourceRef="servicetask13" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow98" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
@@ -1014,7 +1025,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow99" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow100" name="80 днів" sourceRef="escalationTimer1" targetRef="servicetask14"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow101" sourceRef="usertask3_yellow" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow101" sourceRef="usertask4" targetRef="endevent3"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDate>${sNotification_day}</timeDate>
@@ -1029,13 +1040,13 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="72.0" y="38.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1_green" id="BPMNShape_usertask1_green">
+      <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="590.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="68.0" width="118.0" x="433.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="68.0" width="118.0" x="279.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
