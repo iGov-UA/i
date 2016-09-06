@@ -50,7 +50,7 @@ public class ManagerSMS_New {
 	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
-	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/sms/callbackSMS";
+	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/subject/message/getCallbackSMS_PB";
 	sChemaId = generalConfig.getChemaId().trim();
 
 	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
