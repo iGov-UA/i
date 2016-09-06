@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class PlaceServiceImpl implements PlaceService {
 
      private static final Logger LOG = LoggerFactory.getLogger(PlaceServiceImpl.class);
-    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/action/event/getPlaceByProcess";
+    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/business/place/getPlaceByProcess";
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
