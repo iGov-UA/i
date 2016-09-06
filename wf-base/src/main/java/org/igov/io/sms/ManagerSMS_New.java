@@ -31,6 +31,7 @@ public class ManagerSMS_New {
     private String sMerchantId = null;
     private String sMerchantPassword = null;
     private String sCallbackUrl_SMS = null;
+    private String sChemaId = null;
 
     private String static_sMessageId = "IGOV_SMS-";
 
@@ -49,13 +50,14 @@ public class ManagerSMS_New {
 	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
-	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
+	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/sms/callbackSMS";
+	sChemaId = generalConfig.getChemaId().trim();
 
-	LOG.debug("general.SMS_New.sURL_Send={}, general.SMS_New.sMerchantId={}, general.SMS_New.sCallbackUrl={}",
-		sURL_Send, sMerchantId, sCallbackUrl_SMS);
+	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
+		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
 
 	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")
-		|| sCallbackUrl_SMS.startsWith("${")) {
+		|| sCallbackUrl_SMS.startsWith("${") || sChemaId.startsWith("${")) {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
@@ -81,7 +83,7 @@ public class ManagerSMS_New {
 
 	SMS_New sms;
 	try {
-	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sPhone, sMerchantId, sMerchantPassword, sText);
+	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sChemaId, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
 	    LOG.error("Error create SMS. sPhone={}, sText={}", sPhone, sText, e);
 	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
