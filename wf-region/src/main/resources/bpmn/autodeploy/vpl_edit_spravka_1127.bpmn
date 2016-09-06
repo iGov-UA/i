@@ -43,11 +43,13 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Номер УПСЗН для групи безпеки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_edit_spravka_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду звернення (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду звернення (1-й крок)" activiti:candidateGroups="vpl_upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="string" writable="false"></activiti:formProperty>
@@ -88,6 +90,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -97,7 +100,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="vpl_upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="string" writable="false"></activiti:formProperty>
@@ -129,7 +132,7 @@
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Прийняття рішення щодо продовження строка дії довідки" type="enum" required="true">
           <activiti:value id="accept" name="Продовжено довідку"></activiti:value>
-          <activiti:value id="reject" name="ВІДМОВЛЕНО У gродовжені довідки"></activiti:value>
+          <activiti:value id="reject" name="ВІДМОВЛЕНО у продовжені довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
@@ -138,6 +141,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -346,9 +350,32 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;p&gt;Реєстраційний номер Вашого звернення: ${sExtension_Number} від ${sDate_Registrastion}.&lt;/p&gt; &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно перевірено.&lt;br /&gt;
+&lt;br /&gt;
+Чекаємо Вас за адресою: &lt;br /&gt;
+${sAddress}&lt;br /&gt;&lt;br /&gt;
+Дата та час роботи: &lt;br /&gt; 
+${sWorkTime}&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+
+${sAdd_SpisokDocs}
+&lt;br /&gt;
+&lt;br /&gt;
+
+&lt;b&gt;Пам'ятка для внутрішньо переміщеної особи.&lt;/b&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;1. Внутрішньо переміщена особа зобов’язана:&lt;/b&gt;&lt;br /&gt;
+ - повідомляти про зміну місця проживання структурний підрозділ з питань соціального захисту населення районних за новим місцем проживання протягом 10 днів з дня прибуття до нового місця проживання;&lt;br /&gt;
+ - у разі добровільного повернення до покинутого постійного місця проживання внутрішньо переміщена особа зобов’язана повідомити про це структурний підрозділ з питань соціального захисту населення за місцем отримання довідки не пізніш як за три дні до дня від’їзду.&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;2. Підстави для скасування дії довідки, що має наслідки призупинення соціальних виплат:&lt;/b&gt;&lt;br /&gt;
+ а) особиста заява про відмову від довідки;&lt;br /&gt;
+ б) подача завідомо недостовірних відомостей;&lt;br /&gt;
+ в) особа повернулася до покинутого місця постійного проживання (тривала відсутність (понад 60 днів) особи за місцем фактичного проживання дає обґрунтовані підстави вважати, що внутрішньо переміщена особа повернулася до покинутого місця постійного проживання);&lt;br /&gt;
+ г) виїхала на постійне місце проживання за кордон;&lt;br /&gt;
+ д) скоїла терористичний акт, злочин або дії, спрямовані на захоплення державної влади, посягання на територіальну цілісність і недоторканність України та інше.&lt;br /&gt;
+&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
@@ -387,13 +414,42 @@ ${sNameOrgan}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+<![CDATA[  
+      
+var per1 = ' '
+
+if (execution.getVariable('asEnumGet_Help') == 'sEnumElement_Yes' && execution.getVariable('asEnumExist_Flat') == 'sEnumElement_ExistFlat_No' && execution.getVariable('asEnumExist_Deposit') == 'sEnumElement_ExistDeposit_No')
+{
+	per1 ='<b>Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи та одночасним оформленням щомісячної адресної допомоги:</b><br><br>'+ 
+		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).<br>"+
+		'2. Заява про подовження (призначення) виплати щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління праці та соціального захисту населення). Заява доступна за цим <a href="http://goo.gl/JOaDvm"> посиланням </a>.<br>'+  
+	    "3. Оригінал і копія довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.<br>"+
+		"4. Оригінал і копія свідоцтва про шлюб, завірена особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані чоловік і дружина).<br>"+
+		"5. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані діти).<br>"+
+		"7. Письмова згода про виплату допомоги представнику сім'ї від інших членів сім'ї та згоду на обробку персональних даних в довільній формі (якщо адресна допомога призначається вперше).<br>"+
+		"8. Інформація щодо поточного рахунку, відкритого уповноваженому представнику сім'ї в установі" + '"Ощадбанку" (якщо адресна допомога призначається вперше).<br>'
+}
+else
+{
+	per1 = '<b>Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи:</b><br><br>'+
+		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).<br>"+
+		"2. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві вказані діти).<br>"
+}
+
+execution.setVariable('sAdd_SpisokDocs', per1)
+]]>
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Chernigov_RecoveryConsumerRights_798">
-    <bpmndi:BPMNPlane bpmnElement="Chernigov_RecoveryConsumerRights_798" id="BPMNPlane_Chernigov_RecoveryConsumerRights_798">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_vpl_edit_spravka_1127">
+    <bpmndi:BPMNPlane bpmnElement="vpl_edit_spravka_1127" id="BPMNPlane_vpl_edit_spravka_1127">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -443,7 +499,10 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="595.0" y="247.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="182.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="105.0" x="120.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="66.0" width="105.0" x="268.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="328.0" y="308.0"></omgdi:waypoint>
@@ -485,7 +544,7 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="172.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="234.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="116.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="381.0" y="177.0"></omgdi:waypoint>
@@ -518,7 +577,11 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="381.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="234.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="268.0" y="83.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="320.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
