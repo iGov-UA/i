@@ -172,7 +172,7 @@ public class BpServiceHandler {
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
         LOG.info("sField={}", sField); 
         mParam.put("saField", sField+".");
-        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mParam.put("sLoginAssigned",mTaskParam.get("organs"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs); 
