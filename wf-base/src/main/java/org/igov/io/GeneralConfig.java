@@ -116,6 +116,8 @@ public class GeneralConfig {
     private String sMerchantId_SMS;
     @Value("${general.SMS.sMerchantPassword}")
     private String sMerchantPassword_SMS;
+    @Value("${general.SMS.nID_Shema}")
+    private String snID_Shema;
 
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
@@ -267,6 +269,9 @@ public class GeneralConfig {
     }
     public String getMerchantPassword_SMS()  {
         return sMerchantPassword_SMS;
+    }
+    public String getChemaId()  {
+        return snID_Shema;
     }
     
     public Boolean isEnable_UniSender_Mail() {

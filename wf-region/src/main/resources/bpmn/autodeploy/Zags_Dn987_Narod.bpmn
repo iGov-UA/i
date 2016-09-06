@@ -11,12 +11,19 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі, щодо якої запитується свідоцтво" type="enum" required="true">
+        <activiti:formProperty id="asRodich" name="Ступінь родинного зв'язку" type="enum" required="true">
+          <activiti:value id="sEnamI" name="Особа, безпосередньо щодо якої складено актовий запис"></activiti:value>
           <activiti:value id="sEnamTato" name="Батько"></activiti:value>
           <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
-          <activiti:value id="sEnamOpikun" name="Опікун"></activiti:value>
+          <activiti:value id="sEnamOpikun" name="Опікун/піклувальник"></activiti:value>
+          <activiti:value id="sEnamUsin" name="Усиновлювач"></activiti:value>
+          <activiti:value id="sEnamZdor" name="Представник закладу охорони здоров’я, де постійно перебуває дитина"></activiti:value>
+          <activiti:value id="sEnamOpikOrg" name="Орган опіки та піклування"></activiti:value>
+          <activiti:value id="sEnamPredst" name="Представник вищевказаних осіб (у разі документального підтвердження його повноважень)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджуэ статус опікуна" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPredst" name="Вкажіть кого ви представляєте" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджуэ ваш статус" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Dov" name="Сканкопія довіреності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_LastName" name="Прізвище матері" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_Name" name="Ім'я матері" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMom_MiddleName" name="По батькові матері" type="string" required="true"></activiti:formProperty>
@@ -110,11 +117,17 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" required="true">
+        <activiti:formProperty id="asRodich" name="Ступінь родинного зв'язку" type="enum" writable="false">
+          <activiti:value id="sEnamI" name="Особа, безпосередньо щодо якої складено актовий запис"></activiti:value>
           <activiti:value id="sEnamTato" name="Батько"></activiti:value>
           <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
-          <activiti:value id="sEnamOpikun" name="Опікун"></activiti:value>
+          <activiti:value id="sEnamOpikun" name="Опікун/піклувальник"></activiti:value>
+          <activiti:value id="sEnamUsin" name="Усиновлювач"></activiti:value>
+          <activiti:value id="sEnamZdor" name="Представник закладу охорони здоров’я, де постійно перебуває дитина"></activiti:value>
+          <activiti:value id="sEnamOpikOrg" name="Орган опіки та піклування"></activiti:value>
+          <activiti:value id="sEnamPredst" name="Представник за довіреністю"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sPredst" name="Кого представляє представник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPIBMom" name="ПІБ Матері" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPIBDad" name="ПІБ Батька" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ChildFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
@@ -133,7 +146,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Opika},${file_OPLATA}</activiti:expression>
+            <activiti:expression>${file_Opika},${file_OPLATA},{file_Dov}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -264,6 +277,31 @@ ${sNameOrgan}.&lt;br /&gt;
           D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
           M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
           }
+        if(execution.getVariable('asRodich') == 'sEnamI')
+          {
+          D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamUsin')
+          {
+          D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamZdor')
+          {
+          D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamOpikOrg')
+          {
+          D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
+          }
+        if(execution.getVariable('asRodich') == 'sEnamPredst')
+          {
+          D_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
+          M_PIB=M_LastName+' '+M_FirstName+' '+M_MiddleName
+          }      
         execution.setVariable('sPIBMom', M_PIB)
         execution.setVariable('sPIBDad', D_PIB)
       </script>

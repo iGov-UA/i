@@ -58,27 +58,40 @@
 		{
 			"sNote":		["Annulyuvannya - hide files"],
 			"aField_ID":	["nFile_PlacePhoto"],
-			"asID_Field":	{"sPerson":"asPurpose"},
-			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+			"asID_Field":	{"sPerson":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] != 'zp_zpT'"
 		},
 		"RequiredFieldsOnCondition_41": 
 		{
 			"aField_ID":	["nFile_PlacePhoto"],
-			"asID_Field":	{"sPerson":"asPurpose"},
-			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+			"asID_Field":	{"sPerson":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] != 'zp_zpT'"
 		},
 		"ShowFieldsOnCondition_42":
 		{
 			"sNote":		["hide files nFile_Advert for Chernigov"],
 			"aField_ID":	["nFile_Advert"],
-			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
-			"sCondition":	"([sReason] == 'second_permission' || [sReason] == 'first_permission'|| [sReason] == 'continuation'|| [sReason] == 'restructuring') && [sClient]!= 'mvk_chernT'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]!= 'mvk_chernT' && [sClient]!= 'zp_zpT'"
 		},
 		"RequiredFieldsOnCondition_42": 
 		{
 			"aField_ID":	["nFile_Advert"],
-			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
-			"sCondition":	"([sReason] == 'second_permission' || [sReason] == 'first_permission'|| [sReason] == 'continuation'|| [sReason] == 'restructuring') && [sClient]!= 'mvk_chernT'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]!= 'mvk_chernT' && [sClient]!= 'zp_zpT'"
+		},
+		"ShowFieldsOnCondition_43":
+		{
+			"sNote":		["Show for Zaporozie"],
+			"aField_ID":	["nFile_Roztashuvannya"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]== 'zp_zpT'"
+		},
+		"RequiredFieldsOnCondition_43": 
+		{
+			"aField_ID":	["nFile_Roztashuvannya"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]== 'zp_zpT'"
 		}
 	}
 }
