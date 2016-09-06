@@ -97,10 +97,16 @@
           <activiti:value id="sYesPay" name="Так, має"></activiti:value>
           <activiti:value id="sNoPay" name="У громадянина відсутня квитанція, потрібно надати реквізити"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" required="true">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
-        <activiti:formProperty id="nDocEdu" name="Копія документу, що підтверджує отримання морської освіти або копія довідки з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія трудового договору (контракту) про працевлаштування на судні;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYSlh2LWhpVzBlTlVrU1pvQVFfYy1mVWZkbDlR/view?usp=sharing&quot;&gt;посиланням&lt;/a&gt; та заповнити анкету для видачі/обміну посвідчення особи моряка."></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та вклеїти фотокартку до &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYYzZmclRXdUF4UjA&quot;&gt;анкети для видачі/обміну посвідчення особи моряка&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте достовірність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -488,7 +494,7 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -946,16 +952,19 @@ execution.setVariable('sMoz2', moz2)
 									</p>
 									<p>
 									  <b>Необхідні документи, які треба пред'явити в ${sNameOrgan} при отриманні посвідчення особи моряка:</b><br>
-										<ul>
+									   <ul>
 										<li>заява-анкета, яку Ви заповнювали і сканували при поданні заявки;</li>
 										<li>паспорт громадянина України та його копія (усі заповнені сторінки);</li>
 										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
-										<li>дві фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
+										<li>одну фотокартку 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
 										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
-										<li>документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах (який Ви сканували при поданні заявки);</li>
-										<li>морський диплом та підтвердження до нього або свідоцтво та, за наявності, підтвердження до нього (який Ви сканували при поданні заявки);</li>
-										<li>посвідчення особи моряка, що обмінюється (за наявності);</li>
-										</ul>
+										<li>документ, на підставі якого буде видано посвідчення особи моряка (який Ви сканували при поданні заявки);</li>
+										<ul>
+											<li>оригінал та копія трудового договору (контракту) про працевлаштування на судні;</li>
+											<li>оригінал та копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;</li>
+											<li>оригінал довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;</li>
+										<ul>
+									   </ul>
 									</p>
 									<p>${sRozklad}</p>
 									<p>
@@ -1004,7 +1013,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
