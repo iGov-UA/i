@@ -172,17 +172,17 @@ public class BpServiceHandler {
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
         LOG.info("sField={}", sField); 
         mParam.put("saField", sField+".");
-        mParam.put("sLoginAssigned",mTaskParam.get("organs"));
-        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs); 
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
         
-        
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
-        mParam.put("sPlace", getPlaceForProcess(sID_Process));
+        mParam.put("sPlace", mTaskParam.get("sNameOriginal"));
         mGuideTaskParamKey.put("sPlace", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
