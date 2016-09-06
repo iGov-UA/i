@@ -40,7 +40,7 @@ public class SendSMSController {
 	return retObj;
     }
 
-    @RequestMapping(value = "/callbackSMS", method = RequestMethod.POST)
+    @RequestMapping(value = "/callbackSMS", method = RequestMethod.GET)
     public void callbackSMS( @RequestBody String soData_JSON ) {
 	LOG.debug("callback JSON={}", soData_JSON);
 	managerSMS.saveCallbackSMS(soData_JSON);
