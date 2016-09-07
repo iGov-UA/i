@@ -2,14 +2,15 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
+import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.util.ToolLuna;
 
 @Repository
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryEvent_Service>
@@ -147,6 +147,32 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         LOG.info("Found {} records based on nID_Service={}", resHistoryEventService.size(), nID_Service);
 
         return resHistoryEventService;
+    }
+
+    @Override
+    public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+
+        String queryString =
+                "select hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, \n"
+                        + "hes.sID_UA AS SID_UA, p.sName AS placeName, count(*) AS nCountTotal, \n"
+                        + "avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
+                        + "from \"HistoryEvent_Service\" AS hes, \"Service\" AS s, \"Place\" AS p \n"
+                        + "where s.nID = hes.nID_Service \n"
+                        + "and p.sID_UA = hes.sID_UA \n"
+                        + "and hes.sDate >= :dateFrom \n"
+                        + "and hes.sDate < :dateTo \n"
+                        + "group by hes.nID_Service, hes.sID_UA ";
+
+        List<ServicesStatistics> servicesStatistics = null;
+
+        SQLQuery query = getSession().createSQLQuery(queryString);
+        query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
+        query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
+        query.addEntity(ServicesStatistics.class);
+
+        servicesStatistics = query.list();
+
+        return servicesStatistics;
     }
     
     @Override

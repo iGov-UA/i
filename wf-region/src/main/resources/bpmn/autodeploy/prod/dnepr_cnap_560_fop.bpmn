@@ -13,19 +13,11 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
 
 <!-- адрес начало -->
-        <activiti:formProperty id="markers_Hide_Adr" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_Adr&quot;:{&quot;aField_ID&quot;:[&quot;markers_Adr01&quot;,&quot;markers_Adr02&quot;,&quot;markers_Adr03&quot;,&quot;markers_Adr04&quot;,&quot;markers_Adr05&quot;,&quot;markers_Adr06&quot;,&quot;markers_Adr07&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr01" name="сделать банкайдишное поле bankIdAddressFactual_country редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr01&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_country&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr02" name="сделать банкайдишное поле bankIdAddressFactual_state редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr02&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_state&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr03" name="сделать банкайдишное поле bankIdAddressFactual_area редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr03&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_area&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr04" name="сделать банкайдишное поле bankIdAddressFactual_city редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr04&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_city&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr05" name="сделать банкайдишное поле bankIdAddressFactual_street редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr05&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_street&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr06" name="сделать банкайдишное поле bankIdAddressFactual_houseNo редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr06&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_houseNo&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Adr07" name="сделать банкайдишное поле bankIdAddressFactual_flatNo редактируемым" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Adr07&quot;: {&quot;aField_ID&quot;: [&quot;bankIdAddressFactual_flatNo&quot;],&quot;asID_Field&quot;: {&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства" type="string" required="false" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="sVar2PostIndex" name="Поштовий індекс" type="string" required="false" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_state" name="Область" type="string" required="false" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_area" name="Найменування району в області" type="string" required="false" default=" "></activiti:formProperty>
 
-		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна громадянства" type="string" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="string" required="false" default=" "></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="string" required="false"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_area" name="Найменування району в області" type="string" required="false"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectTypePlace" name="Оберіть тип населеного пункту" type="enum" required="false" default="tf401">
           <activiti:value id="tf401" name="Місто"></activiti:value>
@@ -40,7 +32,7 @@
         <activiti:formProperty id="sVarPlace403Plus" name="Селище +" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPlace404Plus" name="Село +" type="invisible" default=" "></activiti:formProperty>
 
-		<activiti:formProperty id="bankIdAddressFactual_city" name="Назва населеного пункту" type="string" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_city" name="Назва населеного пункту" type="string" required="false" default=" "></activiti:formProperty>
 
 <!-- прячем маркеры -->
         <activiti:formProperty id="markers_Hide02" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide02&quot;:{&quot;aField_ID&quot;:[&quot;markers401&quot;,&quot;markers402&quot;,&quot;markers403&quot;,&quot;markers404&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
@@ -49,16 +41,16 @@
         <activiti:formProperty id="markers403" name="поставити + Селище, пробел остальным" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_403&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace403Plus&quot;,&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace404Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypePlace&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf403'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers404" name="поставити + Село, пробел остальным" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_404&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace404Plus&quot;,&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace403Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;,&quot; &quot;,&quot; &quot;,&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypePlace&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf404'&quot;}}}"></activiti:formProperty>
 		
-        <activiti:formProperty id="sVarRajCityNam" name="Назва району в місті" type="string" required="false" default="."></activiti:formProperty>
+        <activiti:formProperty id="sVar2RajCityNam" name="Назва району в місті" type="string" required="false" default="."></activiti:formProperty>
 
-        <activiti:formProperty id="sVarVulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="string"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="false"></activiti:formProperty>
-		
-		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Будинок" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2VulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="false" default=" "></activiti:formProperty>
+	
+		<activiti:formProperty id="sVar2BankIdAddressFactual_houseNo" name="Будинок" type="string" required="false" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sVarKvNum" name="Корпус" type="string" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sVarTypePom" name="Тип приміщення; квартира, кімната, кабінет або офіс тощо" type="string" required="false" default=" "></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер приміщення" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2KvNum" name="Корпус" type="string" required="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVar2TypePom" name="Тип приміщення" type="string" required="false" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_flatNo" name="Номер приміщення" type="string" required="false" default=" "></activiti:formProperty>
 <!-- адрес конец -->
 
 <!-- налогообложение старт -->
@@ -158,23 +150,18 @@
 <!--  Вставка автоподписания ЭЦП начало -->
 <!--    <activiti:formProperty id="fAppWithECP" name="Заявление на регистрацию" type="file"></activiti:formProperty> -->    
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_560_fop_print.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_560_fop2_print.html"></activiti:formProperty>
 <!--  Вставка автоподписания ЭЦП конец  -->
-
-<!--  Файлы додатки начало  -->
-        <activiti:formProperty id="fVarDod1" name="Файл з заявою щодо обрання фізичною особою спрощеної системи оподаткування" type="file" required="false"></activiti:formProperty>
-        <activiti:formProperty id="fVarDod2" name="Файл з реєстраційною заявою про добровільну реєстрацію як платника податку на додану вартість" type="file" required="false"></activiti:formProperty>
-<!--  Файлы додатки конец  -->
 
 <!-- работа невидимая на старте начало -->
 <!-- прячем строки -->
         <activiti:formProperty id="markers_Hide06" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide06&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblPlus&quot;,&quot;markers201&quot;,&quot;sVarRajObl301Plus&quot;,&quot;markers301_1&quot;,&quot;markers501_1&quot;,&quot;sNameService&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarOblPlus" name="область +" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers201" name="поставити + область если не пустой" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_201&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblPlus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdAddressFactual_state&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers201" name="поставити + область если не пустой" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_201&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblPlus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sVar2BankIdAddressFactual_state&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus" name="Район області +" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers301_1" name="поставити + Район області если не пустой" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_301_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajObl301Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdAddressFactual_area&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers301_1" name="поставити + Район області если не пустой" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_301_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajObl301Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sVar2BankIdAddressFactual_area&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarRajCity501Plus" name="В районі міста +" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers501_1" name="поставити + району в місті" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_501_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajCity501Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sVarRajCityNam&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers501_1" name="поставити + району в місті" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_501_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajCity501Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sVar2RajCityNam&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація створення фізичної особи – підприємця"></activiti:formProperty>
 <!-- работа невидимая на старте финиш -->
 
@@ -196,51 +183,39 @@
 <!--  Вставка форми -->
 <!-- переменные начало -->
 <!-- прячем переменные -->
-		<activiti:formProperty id="markers_Hide07" name="спрятать переменные" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide07&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace403Plus&quot;,&quot;sVarPlace404Plus&quot;,&quot;bankIdlastName&quot;,&quot;bankIdfirstName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdbirthDay&quot;,&quot;bankIdinn&quot;,&quot;bankIdAddressFactual_country&quot;,&quot;sVarPostIndex&quot;,&quot;bankIdAddressFactual_state&quot;,&quot;bankIdAddressFactual_area&quot;,&quot;bankIdAddressFactual_city&quot;,&quot;sVarRajCityNam&quot;,&quot;bankIdAddressFactual_street&quot;,&quot;bankIdAddressFactual_houseNo&quot;,&quot;sVarKvNum&quot;,&quot;sVarTypePom&quot;,&quot;bankIdAddressFactual_flatNo&quot;,&quot;sVarDod1_601Plus&quot;,&quot;sVarDod1_701Plus&quot;,&quot;sVarVulNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
+<!--		<activiti:formProperty id="markers_Hide07" name="спрятать переменные" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide07&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace403Plus&quot;,&quot;sVarPlace404Plus&quot;,&quot;bankIdlastName&quot;,&quot;bankIdfirstName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdbirthDay&quot;,&quot;bankIdinn&quot;,&quot;bankIdAddressFactual_country&quot;,&quot;sVarPostIndex&quot;,&quot;bankIdAddressFactual_state&quot;,&quot;bankIdAddressFactual_area&quot;,&quot;bankIdAddressFactual_city&quot;,&quot;sVarRajCityNam&quot;,&quot;bankIdAddressFactual_street&quot;,&quot;bankIdAddressFactual_houseNo&quot;,&quot;sVarKvNum&quot;,&quot;sVarTypePom&quot;,&quot;bankIdAddressFactual_flatNo&quot;,&quot;sVarDod1_601Plus&quot;,&quot;sVarDod1_701Plus&quot;,&quot;sVarVulNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty> -->
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="invisible" required="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible" required="false"></activiti:formProperty> -->
 <!-- адрес 1 форма - оригинал начало -->
-		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна громадянства" type="invisible" required="false" ></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="invisible" required="false"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="invisible" required="false"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_area" name="Найменування району в області" type="invisible" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства; ;writable=false" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2PostIndex" name="Поштовий індекс; ;writable=false" type="string" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_state" name="Область; ;writable=false" type="string" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_area" name="Найменування району в області; ;writable=false" type="string" required="false"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace401Plus" name="Місто +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace402Plus" name="Селище міського типу +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace403Plus" name="Селище +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace404Plus" name="Село +" type="invisible"></activiti:formProperty>
 
-		<activiti:formProperty id="bankIdAddressFactual_city" name="Назва населеного пункту" type="invisible" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_city" name="Назва населеного пункту; ;writable=false" type="string" required="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarRajCityNam" name="Назва району в місті" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2RajCityNam" name="Назва району в місті; ;writable=false" type="string" required="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarVulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2VulNam" name="Тип елемента вулично-дорожньої мережі; ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо; ;writable=false" type="string" required="false"></activiti:formProperty>
 		
-		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Будинок" type="invisible" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_houseNo" name="Будинок; ;writable=false" type="string" required="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarKvNum" name="Корпус" type="invisible" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarTypePom" name="Тип приміщення" type="invisible" required="false"></activiti:formProperty>
-		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер приміщення" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2KvNum" name="Корпус; ;writable=false" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVar2TypePom" name="Тип приміщення; ;writable=false" type="string" required="false"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_flatNo" name="Номер приміщення; ;writable=false" type="string" required="false"></activiti:formProperty>
 <!-- адрес 1 форма - оригинал конец  -->
 
 <!-- адрес 2 форма - для исправления начало -->
-		<activiti:formProperty id="lInfo001" name="АДРЕСА ДЛЯ КОРИГУВАННЯ:" type="label" required="false" default=" "></activiti:formProperty>
-		<activiti:formProperty id="lInfo002" name="==========================" type="label" required="false" default=" "></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства" type="string" required="false" default="${bankIdAddressFactual_country}"></activiti:formProperty>
-        <activiti:formProperty id="sVar2PostIndex" name="Поштовий індекс" type="string" required="false" default="${sVarPostIndex}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_state" name="Область" type="string" required="false" default="${bankIdAddressFactual_state}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_area" name="Найменування району в області" type="string" required="false" default="${bankIdAddressFactual_area}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_city" name="Назва населеного пункту" type="string" required="false" default="${bankIdAddressFactual_city}"></activiti:formProperty>
-        <activiti:formProperty id="sVar2RajCityNam" name="Назва району в місті" type="string" required="false" default="${sVarRajCityNam}"></activiti:formProperty>
-        <activiti:formProperty id="sVar2VulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="string" default="${sVarVulNam}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="false" default="${bankIdAddressFactual_street}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_houseNo" name="Будинок" type="string" required="false" default="${bankIdAddressFactual_houseNo}"></activiti:formProperty>
-        <activiti:formProperty id="sVar2KvNum" name="Корпус" type="string" required="false" default="${sVarKvNum}"></activiti:formProperty>
-        <activiti:formProperty id="sVar2TypePom" name="Тип приміщення" type="string" required="false" default="${sVarTypePom}"></activiti:formProperty>
-		<activiti:formProperty id="sVar2BankIdAddressFactual_flatNo" name="Номер приміщення" type="string" required="false" default="${bankIdAddressFactual_flatNo}"></activiti:formProperty>
+<!--		<activiti:formProperty id="lInfo001" name="АДРЕСА ДЛЯ КОРИГУВАННЯ:" type="label" required="false" default=" "></activiti:formProperty> --> 
+<!--		<activiti:formProperty id="lInfo002" name="==========================" type="label" required="false" default=" "></activiti:formProperty> -->
 <!-- адрес 2 форма - для исправления конец  -->
 
 <!-- налогообложение старт -->
@@ -302,15 +277,15 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_560_fop_print.html]" type="invisible" default="Заява про реєстрацію - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html]" type="invisible" default="Заява про реєстрацію - з виправленнями" writable="false"></activiti:formProperty>
+<!--         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_560_fop_print.html]" type="invisible" default="Заява про реєстрацію - оригінал" writable="false"></activiti:formProperty> -->
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html]" type="invisible" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
 		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
 <!-- версия с файлом ЭЦП -->
           <activiti:expression>${fAppWithECP},${fVarDod2},${fVarDod1}</activiti:expression> 
-<!-- версия  без файла ЭЦП           <activiti:expression>${fVarDod2},${fVarDod1}</activiti:expression>-->
+<!-- версия  без файла ЭЦП           <activiti:expression>${fVarDod2},${fVarDod1}</activiti:expression> -->
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

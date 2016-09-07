@@ -25,6 +25,7 @@
 
         <security:http create-session="stateless" realm="Activiti REST API">
             <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
+            <security:intercept-url pattern="/service/sms/callbackSMS" access="permitAll"/>
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
 
             <!-- will be executed after successful authentication -->

@@ -318,6 +318,9 @@
     var transfer_type = "[transfer_type]";
     var asAdress = "[asAdress]";
     var bankIdPassport = "[bankIdPassport]";
+    var nPage = "[nPage]";
+    var nDocument = "[nDocument]"
+    
     // */
     /*
     var asNumberApplication = "первинне";
@@ -666,6 +669,15 @@
         }
       }      // */
       
+      function isNumeric(n) {
+    	  return !isNaN(parseFloat(n)) && isFinite(n);
+    	}
+      
+      function NumberDocument(){
+    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
+    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
+      }
+      
       function ShowElements(sCondition) {
         for(var i=1; i < arguments.length; i++) {    
           if(sCondition){
@@ -768,7 +780,7 @@
             <td class="ta-c" id="spanCategory1_3">&#160;</td>
           </tr>
           <tr>
-            <td>допомогу' на дітей, над якими встановлено опіку чи піклування</td>
+            <td>допомогу на дітей, над якими встановлено опіку чи піклування</td>
             <td class="ta-c" id="spanCategory1_4">&#160;</td>
           </tr>
           <tr>
@@ -796,15 +808,15 @@
             <td class="ta-c" id="spanCategory3_3">&#160;</td>
           </tr>
           <tr>
-            <td>допомогу' на дітей-інвалідів віком до 18 років</td>
+            <td>допомогу на дітей-інвалідів віком до 18 років</td>
             <td class="ta-c" id="spanCategory3_4">&#160;</td>
           </tr>
           <tr>
-            <td>надбавку на догляд за інвалідом з дитинства підгрупи АІ групи</td>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи А І групи</td>
             <td class="ta-c" id="spanCategory3_5">&#160;</td>
           </tr>
           <tr>
-            <td>надбавку на догляд за інвалідом з дитинства підгрупи БІ групи</td>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи Б І групи</td>
             <td class="ta-c" id="spanCategory3_6">&#160;</td>
           </tr>
           <tr>
@@ -855,11 +867,11 @@
             <td class="ta-c" id="spanCategory4_7">&#160;</td>
           </tr>
           <tr>
-            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи АІ групи</td>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи А І групи</td>
             <td class="ta-c" id="spanCategory4_8">&#160;</td>
           </tr>
           <tr>
-            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи БІ групи</td>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи Б І групи</td>
             <td class="ta-c" id="spanCategory4_9">&#160;</td>
           </tr>
           <tr>
@@ -965,11 +977,9 @@
       </div>
 
 
-
-
       <div class="ta-j">
-        <b>До заяви відповідно до законодавства додано <em>[nDocument]</em> 
-          документів на <em>[nPage]</em> аркушах:</b> 
+        <b>До заяви відповідно до законодавства додано <em><span id="spanDocument"></span></em> 
+          документів на <em><span id="spanPage"></span></em> аркушах:</b> 
       </div>
       <div class="ta-j">
         Прошу в разі призначення допомоги кошти готівкою перераховувати 
@@ -981,7 +991,7 @@
         	<span id="spanTransferPostVal">[post_office]</span>
         </u></div>;
       </div>
-      <div class="ta-j b">
+      <div class="ta-j">
         <span class="check_box"><span id="spanTransferBank">&#10004;</span></span>
         на рахунок у банку №
         <span id="spanTransferBankNotVal">
@@ -1253,7 +1263,8 @@
     </div>
     <script>    
     	ChangeParagrath();
-        
+    	NumberDocument();
+    	
         ShowElements(asNumberApplication == "первинне", "spanFirst");
         ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
         
@@ -1269,7 +1280,7 @@
           ShowElementsOnTrue(true, "spanTransferBank", "spanTransferBankVal", "spanTransferHouseNotVal"); 
           ShowElementsOnTrue(false, "spanTransferHouse", "spanTransferPost", "spanTransferPostVal", "spanTransferHouseVal", "spanTransferBankNotVal"); 
           break;
-        case "House":    
+        case "на рахунок установи (закладу), де інвалід з дитинства(дитина-інвалід) перебуває на повному державному утриманні":    
           ShowElementsOnTrue(true, "spanTransferHouse", "spanTransferHouseVal", "spanTransferBankNotVal"); 
           ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouseNotVal"); 
           break;

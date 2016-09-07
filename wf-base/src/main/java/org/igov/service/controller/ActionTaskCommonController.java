@@ -64,11 +64,14 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.apache.commons.mail.EmailException;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import static org.igov.util.Tool.sO;
 import org.igov.util.db.queryloader.QueryLoader;
 //import com.google.common.base.Optional;
+
 /**
  * @author BW
  */
@@ -106,12 +109,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //private ExceptionCommonController exceptionController;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-    
+
     @Autowired
     private ProcessHistoryDao processHistoryDao;
-    
+
     @Autowired
-    QueryLoader queryLoader;
+    private QueryLoader queryLoader;
+
+    @Autowired
+    private DeleteProccess deleteProccess;
 
     /*@ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
      @ResponseBody
@@ -135,7 +141,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private Mail oMail;
-
 
     /**
      * Загрузка задач из Activiti:
@@ -318,22 +323,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
         try {
-            if(bSimple){
+            if (bSimple) {
                 //@Autowired
                 //private ActionTaskService oActionTaskService;
                 String sLogin = "volont_escalation";
                 String sReason = "Closed by user (/cancelTask)";
-                String snID_Order = nID_Order+"";
+                String snID_Order = nID_Order + "";
                 LOG.info("snID_Order={}", snID_Order);
-                String snID_Process = snID_Order.substring(0, snID_Order.length()-1);
+                String snID_Process = snID_Order.substring(0, snID_Order.length() - 1);
                 LOG.info("snID_Process={}", snID_Process);
                 oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
-            }else{
+            } else {
                 oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
             }
-            
 
-            
             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n<br>"
                     + "З повагою, команда порталу  iGov.org.ua";
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
@@ -753,17 +756,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     /**
-     * This method duplicates functionality of setVariableToProcessInstance but uses POST method which provides bigger
-     * size of query params.
+     * This method duplicates functionality of setVariableToProcessInstance but
+     * uses POST method which provides bigger size of query params.
+     *
      * @param allRequestParamsStr
      * @return
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST, consumes = "text/plain")
     @ResponseBody
     public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
-            //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
-            //            @RequestParam(value = "key", required = true) String sKey,
-            //            @RequestParam(value = "value", required = true) String sValue
+    //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+    //            @RequestParam(value = "key", required = true) String sKey,
+    //            @RequestParam(value = "value", required = true) String sValue
     ) {
         String processInstanceId = null;
         String key = null;
@@ -987,7 +991,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         List<String> headers = new ArrayList<>();
         String[] headersMainField = {"nID_Process", "sLoginAssignee",
-            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName","sAssignee"};
+            "sDateTimeStart", "nDurationMS", "nDurationHour", "sName", "sAssignee"};
         headers.addAll(Arrays.asList(headersMainField));
         LOG.debug("(headers={})", headers);
         Set<String> headersExtra = oActionTaskService.findExtraHeaders(bDetail, foundResults,
@@ -1131,7 +1135,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
-            HttpServletResponse httpResponse) throws IOException {
+            HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
 
 //      'sID_State_BP': '',//'usertask1'
 //      'saFieldsCalc': '', // поля для калькуляций
@@ -1193,14 +1197,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
-LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!"+saFields);
+        LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
-        // we need to call runtime query only when non completed tasks are selected.
-        // if only completed tasks are selected - results of historic query will be used
+            // we need to call runtime query only when non completed tasks are selected.
+            // if only completed tasks are selected - results of historic query will be used
             foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1236,26 +1240,26 @@ LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!"+saFields);
 
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
-            
-            LOG.info("headers"+headers);
+
+            LOG.info("headers" + headers);
         }
 
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers); 
-        
+                csvLines, saFields, saFieldsCalc, headers);
+
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            
+
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
-LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
+        LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
-            
+
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new ToolCellSum()
@@ -1266,7 +1270,7 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
                     }
                     List<String> line = stringResults.get(i);
                     printWriter.writeNext(line.toArray(new String[line.size()]));
-                    LOG.info("!!!!!!!!!!!!!!line"+line);
+                    LOG.info("!!!!!!!!!!!!!!line" + line);
                 }
             } catch (Exception e) {
                 List<String> errorList = new LinkedList<>();
@@ -1282,7 +1286,7 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
         } else {
             for (Map<String, Object> currLine : csvLines) {
                 String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
-                LOG.info("!!!!oActionTaskService.createStringArray_line"+line);
+                LOG.info("!!!!oActionTaskService.createStringArray_line" + line);
                 printWriter.writeNext(line);
             }
         }
@@ -1300,14 +1304,23 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
             oMail._Body(sSubject);
             oMail._Attach(oDataSource, sTaskDataFileName, "");
             try {
-                if (!oMail.sendWithUniSender()) {
-                    LOG.error("Error occured while sending tasks data to email!!!");
-                }
-            } catch (Exception e) {
-                LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
+                oMail.send();
+            } catch (EmailException ex) {
+                LOG.error("Error occured while sending tasks data to email!!!", ex);
+                throw ex;
+            } finally {
+                pi.close();
             }
-            pi.close();
 
+            /*if (!oMail.sendWithUniSender()) {
+                LOG.error("Error occured while sending tasks data to email!!!");
+                pi.close();
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Error occured while sending tasks data to email!!!");
+            } else {
+                pi.close();
+            }*/
             httpResponse.setContentType("text/plain");
             httpResponse.getWriter().print("OK");
         }
@@ -1997,10 +2010,10 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
             if (processes.size() > 0) {
                 processInstance = processes.get(0);
                 actionTaskLink = actionTaskLinkDao.getByCriteria(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
-                if(actionTaskLink == null){
+                if (actionTaskLink == null) {
                     LOG.info("ActionTaskLink is not found. Creating a new one");
                     actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
-                }  
+                }
             }
         } else {
             LOG.info("Found ActionTaskLink. Process Id is {}", actionTaskLink.getnIdProcess());
@@ -2014,27 +2027,27 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
                 String assignee = null;
                 for (Task task : tasks) {
 
-                    String sLogin ="user_UkrDoc"; // тех-логин УкрДок-а
+                    String sLogin = "user_UkrDoc"; // тех-логин УкрДок-а
                     Long nID_Task = Long.parseLong(task.getId());
                     if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
                         LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
 
 //                  if("usertask2".equalsIgnoreCase(task.getTaskDefinitionKey().trim())){ //костыль, убрать после валидации группы
-                    assignee = task.getAssignee();
-                    LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
-                    taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-                    runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
-                    runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
-                    taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-                    runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-                    taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
-                    runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
-                    LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}",
-                            status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
-                    taskService.complete(task.getId());
-                    LOG.info("Completed task {}", task.getId());
+                        assignee = task.getAssignee();
+                        LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
+                        taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
+                        runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+                        runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
+                        taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+                        runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+                        taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
+                        runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
+                        LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}",
+                                status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
+                        taskService.complete(task.getId());
+                        LOG.info("Completed task {}", task.getId());
 //                  }
-                } else {
+                    } else {
                         throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR,
                                 String.format("user '%s' not included in group 'group_UkrDoc' ot this usertask", sLogin));
                     }
@@ -2304,11 +2317,9 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
                                 procDefinitions.add(adapter.apply(pd));
                                 break;
                             }
-                        } else {
-                            if (sFieldType.equalsIgnoreCase(type)) {
-                                procDefinitions.add(adapter.apply(pd));
-                                break;
-                            }
+                        } else if (sFieldType.equalsIgnoreCase(type)) {
+                            procDefinitions.add(adapter.apply(pd));
+                            break;
                         }
                     }
                 } catch (Exception e) {
@@ -2367,10 +2378,8 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
         if (sFieldType == null && sID_Field == null) {
             if (sVersion == null) {
                 repositoryService.deleteDeployment(pd.getDeploymentId());
-            } else {
-                if (pd.getVersion() == Integer.parseInt(sVersion)) {
-                    repositoryService.deleteDeployment(pd.getDeploymentId());
-                }
+            } else if (pd.getVersion() == Integer.parseInt(sVersion)) {
+                repositoryService.deleteDeployment(pd.getDeploymentId());
             }
         }
         try {
@@ -2390,11 +2399,9 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
                             repositoryService.deleteDeployment(pd.getDeploymentId());
                             break;
                         }
-                    } else {
-                        if (sFieldType.equalsIgnoreCase(type)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
-                            break;
-                        }
+                    } else if (sFieldType.equalsIgnoreCase(type)) {
+                        repositoryService.deleteDeployment(pd.getDeploymentId());
+                        break;
                     }
                 } else if (pd.getVersion() == Integer.parseInt(sVersion)) {
                     if (sFieldType != null && sID_Field != null) {
@@ -2458,6 +2465,18 @@ LOG.info("!!!!!!!!!!!!!!saFieldsSummary"+saFieldSummary);
             result.put(ex.getMessage(), 1);
         }
         return result;
+    }
+
+
+    @ApiOperation(value = "/closeProcess", notes = "##### Закрытие всех инстансов бизнес-процесса#####\n\n")
+    @RequestMapping(value = "/closeProcess", method = RequestMethod.GET)
+    public @ResponseBody
+    void closeProcess(@ApiParam(value = "ид бизнес-процесса", required = true) @RequestParam(value = "sID_Process_Def", required = true) String sID_Process_Def,
+            @ApiParam(value = "лимит количества заявок для удаления", required = false) @RequestParam(value = "nLimitCountRowDeleted", required = false) Integer nLimitCountRowDeleted) {
+        if(nLimitCountRowDeleted != null){
+            deleteProccess.setLimitCountRowDeleted(nLimitCountRowDeleted);
+        }
+        deleteProccess.closeProcess(sID_Process_Def);
     }
 
 }

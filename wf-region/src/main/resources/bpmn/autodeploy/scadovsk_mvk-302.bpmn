@@ -60,8 +60,12 @@
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSots" name="соцзахист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/forma3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('scadovsk_mvk-302.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -75,7 +79,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>middayka@yandex.ru</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -138,28 +142,28 @@
           <activiti:value id="six" name="6"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="FIO1" name="Прізвище, ім'я, по батькові уповноваженого власника (співвласника, наймача); ;writable=false" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth1" name="Дата народження уповноваженого власника (співвласника, наймача); ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc1" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rodstvo2" name="Родинні стосунки; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth1" name="Дата народження уповноваженого власника (співвласника, наймача); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc1" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rodstvo2" name="Родинні стосунки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="FIO2" name="Прізвище, ім'я, по батькові; ;writable=false" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth2" name="Дата народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc2" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rodstvo3" name="Родинні стосунки; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth2" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc2" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rodstvo3" name="Родинні стосунки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="FIO3" name="Прізвище, ім'я, по батькові; ;writable=false" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth3" name="Дата народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc3" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rodstvo4" name="Родинні стосунки; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth3" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc3" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rodstvo4" name="Родинні стосунки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="FIO4" name="Прізвище, ім'я, по батькові; ;writable=false" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth4" name="Дата народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc4" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rodstvo5" name="Родинні стосунки; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth4" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc4" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rodstvo5" name="Родинні стосунки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="FIO5" name="Прізвище, ім'я, по батькові; ;writable=false" type="string" default="${lastName_UA5} ${firstName_UA5} ${middleName_UA5}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth5" name="Дата народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc5" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rodstvo6" name="Родинні стосунки; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth5" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc5" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rodstvo6" name="Родинні стосунки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="FIO6" name="Прізвище, ім'я, по батькові; ;writable=false" type="string" default="${lastName_UA6} ${firstName_UA6} ${middleName_UA6}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Birth6" name="Дата народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Doc6" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Birth6" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Doc6" name="№, серія паспорта або свідоцтва про народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч для видачі довідки"></activiti:value>
@@ -298,8 +302,13 @@
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dms/forma_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma3.html]" type="invisible" default="Довідка про склад сім'ї" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma3_1.html]" type="invisible" default="Довідка про склад сім'ї (розширена)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3_lubin.html]" type="invisible" default="Довідка про склад сім'ї (Великий Любінь)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSots" name="соцзахист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

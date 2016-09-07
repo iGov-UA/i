@@ -13,7 +13,7 @@
         <activiti:formProperty id="sDate_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані дитини, яку Ви будете реєструвати"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані дитини, яку Ви будете знімати з реєстрації"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові дитини" type="string" required="true"></activiti:formProperty>
@@ -21,7 +21,7 @@
         <activiti:formProperty id="sChildPOB" name="Місце народження дитини; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildDoc" name="Свідоцтво про народження дитини; Серія та номер документу, дата і орган, що його видав" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство дитини" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відповідальний підрозділ або ЦНАП району (міста), до якого належить нове місце реєстрації дитини" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації дитини" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="warning3" name="Зверніть увагу" type="label" default="Якщо батьки дитини зареєстровані за різними адресами, при реєстрації повинні бути присутні обидва батьки або Вам буде потрібна нотаріально завірена згода другого батька на реєстрацію місця проживання дитини"></activiti:formProperty>
@@ -38,6 +38,8 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"  default=" "></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -150,17 +152,19 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWorkerDecision" name="Рішення держслужбовця" type="enum" required="true">
+        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrChild.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFrChild.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/zajava_znFrChild.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/1zajava_znFrChild.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dms/zajava_znBk.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -172,7 +176,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" name="${sWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sWorkerDecision=='sDecline'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sDecline'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -257,6 +261,7 @@ execution.setVariable('sMaxPay', maxpay)
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;оригінал та копію паспорту одного з батьків (того, хто подавав заяву);&lt;/li&gt;
+										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
 										&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;	
 										&lt;li&gt;заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;									
 									&lt;/ul&gt;
@@ -332,6 +337,7 @@ execution.setVariable('sMaxPay', maxpay)
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
 										&lt;li&gt;оригінал та копію паспорту одного з батьків (того, хто подавав заяву);&lt;/li&gt;
+										&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
 										&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;										
 									&lt;/ul&gt;
 									&lt;/p&gt;
@@ -398,10 +404,13 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sReestr" name="Дитину знято з реєстрації"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrChild.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFrChild.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_12" name="[pattern/print/dms/DovidkaZn.html]" type="invisible" default="Довідка про зняття з реєстрації" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFr.html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkChild.html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

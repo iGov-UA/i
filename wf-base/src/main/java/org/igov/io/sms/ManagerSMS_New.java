@@ -7,12 +7,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,9 @@ public class ManagerSMS_New {
     private String sMerchantId = null;
     private String sMerchantPassword = null;
     private String sCallbackUrl_SMS = null;
+    private String sChemaId = null;
 
-    private String static_sMessageId = "IGOV_SMS-";
+    private String static_sMessageId = "IGOVSMS_";
 
     // Признак готовности сервиса отсылать сообщения
     private boolean isReadySendSMS = false;
@@ -44,21 +47,21 @@ public class ManagerSMS_New {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMSNew().trim();
+	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
-	sCallbackUrl_SMS = generalConfig.getSelfHost() + "/wf/service/sms/callbackSMS";
+	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/subject/message/getCallbackSMS_PB";
+	sChemaId = generalConfig.getChemaId().trim();
 
-	LOG.debug(
-		"general.SMS_New.sURL_Send={}, general.SMS_New.sMerchantId={}, general.SMS_New.sMerchantPassword=*****, general.SMS_New.sCallbackUrl={}",
-		sURL_Send, sMerchantId, sCallbackUrl_SMS);
+	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
+		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
 
 	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")
-		|| sCallbackUrl_SMS.startsWith("${")) {
+		|| sCallbackUrl_SMS.startsWith("${") || sChemaId.startsWith("${")) {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "-";
+	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "_";
 
 	LOG.info("Сервис готов к отсылке сообщений.");
 	isReadySendSMS = true;
@@ -68,35 +71,27 @@ public class ManagerSMS_New {
 	return sendSMS(null, sPhone, sText);
     }
 
-    public String sendSMS(String sMessageId, String sPhone, String sText) throws IllegalArgumentException {
+    public String sendSMS(String sID_Order, String sPhone, String sText) throws IllegalArgumentException {
 	if (!isReadySendSMS) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
+	LOG.debug("sID_Order:{}, sPhone:{}, sText:{}", sID_Order, sPhone, sText);
 
-	if (sMessageId == null) {
-	    countSMS.incrementAndGet();
-	    sMessageId = static_sMessageId + Integer.toString(countSMS.get());
+	String sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
+	if (sID_Order != null) {
+	    sMessageId = sMessageId + "_" + sID_Order;
 	}
-
-	String ret = "";
 
 	SMS_New sms;
 	try {
-	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sPhone, sMerchantId, sMerchantPassword, sText);
+	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sChemaId, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Ошибка создания SMS. sPhone={}, sText={}", sPhone, sText, e);
+	    LOG.error("Error create SMS. sPhone={}, sText={}", sPhone, sText, e);
 	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
-	String stringSmsReqest = sms.toJSONString();
-
-	LOG.info("sURL={}", sURL_Send);
-	LOG.debug("Запрос:\n{}", stringSmsReqest);
-
-	HttpURLConnection oHttpURLConnection = null;
 	String sessionId;
-	    
 	try {
 	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
 		    generalConfig.getPassword_Auth_UkrDoc_SED(),
@@ -106,14 +101,19 @@ public class ManagerSMS_New {
 	    return String.format("Error get Session ID. %s", e.getMessage());
 	}
 
-	LOG.info("Retrieved Session ID: {}", sessionId);
+	String stringSmsReqest = sms.toJSONString();
 
+	LOG.info("sURL={}", sURL_Send);
+	LOG.debug("Session ID:{}, RequestBody:\n{}", sessionId, stringSmsReqest);
+
+	String ret = "";
+	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("content-type", "application/json");
-	    oHttpURLConnection.setRequestProperty("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
@@ -129,18 +129,55 @@ public class ManagerSMS_New {
 			os.append(s);
 		    }
 		    ret = os.toString();
+
+		    // Этап обработки ответа сервиса
+		    Map<String, Object> moData = null;
+		    try {
+			moData = JsonRestUtils.readObject(ret, Map.class);
+
+			String msStatus = "";
+			String msCode = "";
+			String msMessage = "";
+			String messageId = "";
+			if (moData != null) {
+			    if (moData.containsKey("msStatus")) {
+				msStatus = (String) moData.get("msStatus");
+			    }
+
+			    // Если ответ с ошибкой
+			    if (msStatus.equals("not_delivered") || msStatus.equals("warning")
+				    || msStatus.equals("error")) {
+				if (moData.containsKey("msCode")) {
+				    msCode = (String) moData.get("msCode");
+				}
+				if (moData.containsKey("msMessage")) {
+				    msMessage = (String) moData.get("msMessage");
+				}
+				if (moData.containsKey("messageId")) {
+				    messageId = (String) moData.get("messageId");
+				}
+				LOG.error(
+					"Error send SMS. RequestBody:\n{}\nResponse msStatus:{}, msCode:{}, msMessage:{}, messageId:{}",
+					stringSmsReqest, msStatus, msCode, msMessage, messageId);
+			    }
+			}
+		    } catch (Exception e) {
+			LOG.error("Error parse response JSON: {}", ret);
+		    }
+
 		} catch (java.io.FileNotFoundException e) {
 		    ret = String.format("Error send SMS. Service: %s return http code: %s", sURL_Send,
 			    oHttpURLConnection.getResponseCode());
-		    LOG.error("Ошибка при отправке SMS. http code:{}\nЗапрос:\n{}",
-			    oHttpURLConnection.getResponseCode(), stringSmsReqest);
+		    LOG.error("Error send SMS. RequestBody:\n{}\nhttp code:{}\n", stringSmsReqest,
+			    oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
+
 	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} catch (IOException e) {
-	    LOG.error("Ошибка при отправке SMS. Запрос:\n{} Ошибка:", stringSmsReqest, e);
+	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
 	} finally {
 	    if (oHttpURLConnection != null) {
@@ -148,7 +185,7 @@ public class ManagerSMS_New {
 	    }
 	}
 
-	LOG.info("Ответ:\n{}", ret);
+	LOG.info("ResponseBody:\n{}", ret);
 
 	return ret;
     }
@@ -158,7 +195,8 @@ public class ManagerSMS_New {
 	    SMSCallback sc = new SMSCallback(soJSON);
 	    LOG.info("%s", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Ошибка callback SMS", e);
+	    LOG.error("Error parse JSON response callback SMS", e);
 	}
     }
+
 }

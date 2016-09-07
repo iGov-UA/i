@@ -1,0 +1,477 @@
+<meta charset="utf-8" />
+<script>
+    function ParseUaID(id) {
+
+
+        var result = {};
+        var daysOfMouth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        //sex
+        result.sex = (id.substr(8, 1) % 2) ? 'Чоловіча' : 'Жіноча';
+
+        //birthdate
+        var days = id.substr(0, 5);
+        var year = 1900;
+        var day = 01;
+        var month = 01;
+        while (days > 0) {
+            var daysInYear = ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0)) ? 366 : 365;
+            if (days > daysInYear) {
+                days -= daysInYear;
+                year++;
+            }
+            else {
+                //break;
+                if (daysInYear == 366) {
+                    daysOfMouth[1] = 29;
+                }
+                for (var i = 0; i < 12; i++) {
+                    if (days > daysOfMouth[i]) {
+                        days -= daysOfMouth[i];
+                        month++;
+                    } else {
+                        day = days;
+                        days = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        result.year = year;
+        result.month = month;
+        result.day = day;
+
+        //control Sum
+        var validMas = [-1, 5, 7, 9, 4, 6, 10, 5, 7];
+        var sumValid = 0;
+        for (var i = 0; i < 9; i++) {
+            sumValid += Number(id[i]) * validMas[i];
+        }
+        result.valid = (Number(id[9]) == (sumValid % 11) % 10);
+
+        return result;
+    }
+
+    function cl() {
+        var myInn = document.getElementById("inn").value;
+        var res1 = ParseUaID(myInn);
+
+        document.getElementById("birthDay").innerHTML = res1.day + "." + res1.month + "." + res1.year;
+        document.getElementById("sex").innerHTML = res1.sex;
+
+        if (res1.valid) {
+            document.getElementById("validRow").className = "alert alert-success";
+            document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
+
+            document.getElementById("rBirthDay").style.visibility = 'visible';
+            document.getElementById("rSex").style.visibility = 'visible';
+            document.getElementById("rInfo").style.visibility = 'visible';
+
+        } else {
+
+            document.getElementById("validRow").className = "alert alert-danger";
+            document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
+
+            document.getElementById("rBirthDay").style.visibility = 'hidden';
+            document.getElementById("rSex").style.visibility = 'hidden';
+            document.getElementById("rInfo").style.visibility = 'hidden';
+        }
+
+        document.getElementById("resFin").style.visibility = 'visible';
+
+    }
+</script>
+
+<style>
+    .article-block {
+        font-family: Open Sans, Arial, sans-serif;
+        color: #333333;
+    }
+
+        .article-block li {
+            margin: 10px 0;
+        }
+
+        .article-block ol,
+        .article-block ul {
+            margin-bottom: 46px;
+        }
+
+        .article-block .content-art ol,
+        .article-block .content-art ul
+         {
+            margin-bottom: 12px;
+        }
+
+        .article-block .notmarker>li {
+            list-style-type: none; /* Убираем маркеры */
+        }
+
+        .article-block sup {
+            color: #428bca;
+            font-size: 10.8333px;
+        }
+
+        .article-block h1,
+        .article-block .ind-section {
+            margin-top: 46px;
+        }
+
+            .article-block h1.topic {
+                margin-top: 12px;
+            }
+
+        .article-block a {
+            color: #428bca;
+        }
+
+        .article-block h1 > sup {
+            color: #428bca;
+            font-size: 15.8333px;
+        }
+
+        .article-block table {
+            border-spacing: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            border-collapse: separate;
+        }
+
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
+
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
+            }
+
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
+            }
+
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
+
+
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
+
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block .ta-j {
+            text-align: justify;
+        }
+
+        .article-block .attention-block {
+            margin: 20px;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+            .article-block .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+            .article-block .attention-block p:last-child {
+                margin-bottom: 0;
+            }
+
+        .article-block .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+            .article-block .attention-block-info h4 {
+                color: #5bc0de;
+            }
+
+        .article-block .attention {
+            padding: 16px 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+
+        .article-block .note {
+            color: #999;
+        }
+
+        .article-block .b {
+            font-weight: bold;
+        }
+
+        .article-block .notb {
+            font-weight: 100;
+        }
+</style>
+
+<article class="article-block">
+    <h1 class="topic">Індивідуальний податковий номер (ІПН)</h1>
+    <p>Зміст:</p>
+    <ol class="content-art">
+        <li>
+            <a href="" ng-click="gotoAnchor(1)">
+                Що таке ІПН
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(2)">
+                Як отримати ІПН
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(3)">
+                Як відновити загублену (пошкоджену) картку платника податків ІПН
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(4)">
+                Як внести зміни в картку платника податків
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(5)">
+                Коли можна відмовитися від ІПН
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(6)">
+                Перевірка свого ІПН
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="gotoAnchor(7)">
+                Посилання на законодавство
+            </a>
+        </li>
+    </ol>
+    <h1 id="anchor1">1. Що таке ІПН</h1>
+    <p>
+        Індивідуальний податковий номер (ІПН) - це цифровий код, необхідний кожному платнику податків для обліку в фіскальних органах. Протягом усього життя, ІПН не змінюється (крім випадків пов'язаних з релігійними переконаннями).
+    </p>
+    <p>
+        Після смерті платника податків ІПН втрачає актуальність і не може бути присвоєний комусь іншому. Дані, пов'язані з номером, зберігаються в архіві 75років.
+    </p>
+    <h3>Навіщо потрібен ІПН</h3>
+    <p>
+        З одного боку, ІПН полегшує діяльність фіскальної служби, з іншого боку він корисний і самим громадянам. Крім податкової системи, ІПН супроводжує людину в багатьох сферах діяльності, які передбачають соціальні, економічні та трудові відносини. Наприклад, він прискорює прийняття рішень по різним <a href="https://igov.org.ua/subcategory/1/3">соціальним виплатам</a>.
+    </p>
+    <p>
+        Теоретично, можна взагалі не звертатися за присвоєнням ІПН в податкову, але без ІПН Ви не зможете придбати житло, отримати кредит або будь-які пільги в тому числі і виплати, чи то державна допомога, зарплата або пенсія.
+    </p>
+    <h3>ІПН точно знадобиться Вам в наступних випадках:</h3>
+    <ol>
+        <li>при влаштуванні на роботу, так як Ваш новий роботодавець буде перераховувати в бюджет, крім своїх податків, ще й податки за Вас,</li>
+        <li>якщо Ви <a href="https://igov.org.ua/service/1495/general">приватний підприємець</a>, саме по ІПН податкова ідентифікує Ваші платежі;</li>
+        <li>при відкритті рахунків в банку або оформленні кредиту, так як банку необхідно сплачувати податки, пов'язані з Вашими транзакціями;</li>
+        <li>при купівлі/продажу дорогих матеріальних цінностей(нерухомість, <a href="https://igov.org.ua/subcategory/1/4/situation/25">автомобіль</a> і т.д.);</li>
+        <li>в будь-яких інших фінансових операціях, які пов'язані зі сплатою податків;</li>
+        <li>при оформленні <a href="https://igov.org.ua/subcategory/1/3">соціальних виплат</a>.</li>
+    </ol>
+    <h1 id="anchor2">2. Як отримати ІПН</h1>
+    <p>
+        Будь-яка фізична особа, незалежно від віку і від того, чи є резидентом (громадянином України), може безкоштовно на протязі 5-ти робочих днів отримати ІПН.
+    </p>
+    <h3>Отримати ІПН online</h3>
+    <p>
+        ІПН можна отримати за допомогу порталу державних послуг iGov.org.ua! Для цього перейдіть за <a href="https://igov.org.ua/service/360/general">посиланням</a> та виберіть свій регіон і заповніть поля, дотримуючись підказок на екрані.
+    </p>
+    <h3>Отримати ІПН offline</h3>
+    <p>
+        Якщо у Вас немає можливості, скористатися послугами реєстрації індивідуального податкового номера на порталі, Вам необхідно звернутися до територіального органу Державної податкової адміністрації України (податкова):
+    </p>
+    <ul>
+        <li>за місцем проживання;</li>
+        <li>за місцем отримання доходів.</li>
+    </ul>
+    <p>
+        При відсутності реєстрації місця проживання: до податкової за місцем отримання доходів.
+    </p>
+    <p>
+        Ці вимоги стосуються того, всіх хто подає документи незалежно від того, подає він свої документи чи виступає чиїмось представником.
+    </p>
+    <p>
+        ІПН може отримати:
+    </p>
+    <ol>
+        <li>Повнолітній громадянин України.</li>
+        <li>Батько (опікун) для дитини.</li>
+        <li>Не резидент (іноземець), для сплати податків в Україні.</li>
+        <li>Законний представник або уповноважена особа.</li>
+        <li>Громадянин України за допомогою пошти, якщо він знаходиться за кордоном.</li>
+    </ol>
+    <p>
+        Щоб дізнатися, які саме документи необхідні для присвоєння ІПН, перейдіть <a href="https://igov.org.ua/service/360/general">сюди</a>.
+    </p>
+    <h3>Результат реєстрації індивідуального податкового номера</h3>
+    <p>
+        Після реєстрації, видається картка платника податків у вигляді <a href="http://zakon3.rada.gov.ua/laws/file/text/21/f415494n297.doc" target="_blank">документа</a>, який включає в себе такі реквізити:
+    </p>
+    <ul>
+        <li>П.І.Б одержувача;</li>
+        <li>дату народження;</li>
+        <li>дата постановки на облік у податковій службі;</li>
+        <li>сам індивідуальний номер громадянина;</li>
+        <li>підпис представника та печатка організації місцевого податкового органу.</li>
+    </ul>
+    <p>
+        Картка видається тільки при пред'явленні оригіналу документа, що встановлює особу зареєстрованої особи. Якщо реєстрація проводилась законним представником, то необхідний і документ представника.
+    </p>
+    <p>
+        На Ваше прохання дані про присвоєння ІПН можуть бути внесені в паспорт.
+    </p>
+    <h3>Коли Вам можуть відмовити в реєстрації ІПН</h3>
+    <p>
+        Відмова можливий тільки, якщо подані дані містили в собі помилки або не точності. Якщо є можливість внести коректування в документи, послуга буде надана, але термін обробки заяви може збільшиться до 10 робочих днів від дати, зазначеної в заяві.
+    </p>
+    <h1 id="anchor3">3. Як відновити загублену (пошкоджену) картку платника податків ІПН</h1>
+    <p>
+        Щоб відновити втрачену або пошкоджену карточку платника податків, потрібно звернутися в найближчої налогової за місцем прописки або за місцем отримання доходів і написати заяву, з проханням про видачу такого дубліката.
+    </p>
+    <p>
+        Дублікат картки видається безкоштовно і єдина відмінність від оригіналу - на новій картці буде стояти відмітка «ДУБЛІКАТ»
+    </p>
+    <p>
+        Як правило, картку можна отримати в день звернення але в деяких випадках, якщо вказати неправильні дані, отримання дубліката може зайняти до 10 днів.
+    </p>
+    <h1 id="anchor4">4. Як внести зміни в картку платника податків</h1>
+    <p>
+        Якщо Ви переїжджаєте на нове місце проживання, підвідомче іншому податковому органу, або міняєте фамілію, ім'я, по батькові - підлягає заміні картка платника податків. Міняється тільки картка, а не зам індивідуальний номер платника податків. Послуга також безкоштовна і надається на протязі 5-и днів. Можна скористатися послугою по внесенню змін і віддалено, перейшовши за цим <a href="https://igov.org.ua/service/1449/general">посиланням</a>, або особисто звернутися в податкову.
+    </p>
+    <h1 id="anchor5">5. Коли можна відмовитися від ІПН</h1>
+    <p>
+        Ви можете відмовитися від ІПН через релігійні переконання. Замість ІПН, для Вашої ідентифікації буде використовуватися окремий реєстр, куди будуть внесені серія та номер паспорта. Треба розуміти, що таке рішення викличе зайві клопоти, пов'язані з оформленням додаткових довідок, і проблеми, пов'язані з роботою деяких органів.
+    </p>
+    <p>
+        Цю послугу можна отримати онлайн через портал <a href="https://igov.org.ua/">iGov.org.ua</a>. 
+        Для цього достатньо перейти за <a href="https://igov.org.ua/service/361/general">посиланням</a> і заповнити відповідні поля.
+    </p>
+    <p>
+        Якщо послуга не відрита для Вашого регіону, Вам (Вашому представнику), так само, як і при реєстрації, необхідно звернутися в податкову і написати заяву з проханням відмовитися від присвоєння індивідуального податкового номера.
+    </p>
+    <p>
+        Після реєстрації в <a href="https://igov.org.ua/subcategory/1/1/situation/11">паспорт</a> ставиться відмітка про право використовувати номер і серію паспорта замість ІПН.
+    </p>
+    <p>
+        Якщо після відмови, Ваші релігійні переконання зміняться в ту чи іншу сторону, Ви завжди зможете отримати ІПН або відмовитися від нього.
+    </p>
+    <p>
+        Не резиденти України не можуть відмовитися від ІПН, так як державні службовці не мають права ставити штамп у паспорт іншої держави.
+    </p>
+    <h1 id="anchor6">Перевірка свого ІПН</h1>
+    <p>
+        Якщо ви вже маєте ідентифікаційний номер, Ви можете його перевірити на відповідність:
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="highlight">
+                <div class="row">
+                    <div class="col-md-5">
+                        Ваш ідентифікаційний персональний номер:
+                    </div>
+                    <div class="col-md-5">
+                        <input id="inn" name="inn" type="text" placeholder="Введіть свій ІПН для перевірки" class="form-control">
+                    </div>
+                </div>
+                <div class="row accordion-group">
+                    <div class="accordion-heading">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-3">
+                            <br>
+                            <button class="btn btn-info" onclick="cl()">
+                                Перевірити ІПН
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <div id="resFin" style="visibility:hidden">
+                    <div id="validRow">
+
+                    </div>
+
+                    <div class="row" id="rBirthDay">
+                        <div class="col-md-5">
+                            День			народження:
+                        </div>
+                        <div class="col-md-5" id="birthDay">
+                        </div>
+                    </div>
+
+                    <div class="row" id="rSex">
+                        <div class="col-md-5">
+                            Стать:
+                        </div>
+                        <div class="col-md-5" id="sex">
+                        </div>
+                    </div>
+
+                    <div class="row" id="rInfo">
+                        <div class="alert alert-info">
+                            Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильності наданого Вам персонального номеру
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <h1 id="anchor7">Посилання на законодавство</h1>
+    <ol>
+        <li>
+            <a href="http://zakon3.rada.gov.ua/laws/show/z2211-13/page" target="_blank">Положення про реєстрацію фізичних осіб у Державному Реєстрі фізичних осіб - платників податків</a>
+        </li>
+    </ol>
+</article>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

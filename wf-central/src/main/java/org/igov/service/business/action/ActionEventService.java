@@ -19,6 +19,7 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.ToolLuna;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -238,6 +239,11 @@ public class ActionEventService {
 //        params.put("sUserTaskName", sUserTaskName);
         return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
                 true, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
+    }
+
+    public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+        List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatistics(from, to);
+        return servicesStatistics;
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {

@@ -125,7 +125,7 @@ function FieldMotionService(MarkersFactory) {
         } else if (formData.hasOwnProperty(fId)) {
           result = formData[fId].value;
         } else {
-          console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
+          //console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
         }
       }else{
         angular.forEach(formData, function (item) {
@@ -135,7 +135,7 @@ function FieldMotionService(MarkersFactory) {
             } else if (item.hasOwnProperty(fId)) {
               result = item.value;
             } else {
-              console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
+              //console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
             }
           }
         })

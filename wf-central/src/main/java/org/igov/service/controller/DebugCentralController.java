@@ -32,6 +32,7 @@ import com.pb.ksv.msgcore.data.IMsgObjR;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import org.igov.io.Log;
+import org.igov.io.sms.ManagerSMS_New;
 import org.igov.service.business.msg.MsgType;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
@@ -64,6 +65,8 @@ public class DebugCentralController {
     private MsgService msgService;
     @Autowired
     private HistoryService oHistoryService;
+    @Autowired
+    ManagerSMS_New managerSMS;
 
     @Autowired
     private SubjectMessageService subjectMessageService;
@@ -420,5 +423,18 @@ public class DebugCentralController {
         return JSONValue.toJSONString(result);
     }
 
+    @RequestMapping(value = "/test/sendsms", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String sendSMS(@RequestParam(value = "phone", required = false) String phone,
+	    @RequestParam(value = "text", required = false) String text) {
+	
+	String retObj = "";
+	try {
+	    retObj = managerSMS.sendSMS(phone, text);
+	} catch (IllegalArgumentException e) {
+	    e.printStackTrace();
+	}
+
+	return retObj;
+    }
 
 }

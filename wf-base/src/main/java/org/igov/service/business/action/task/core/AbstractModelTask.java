@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.igov.service.business.action.task.form.TableFormType;
 
 public abstract class AbstractModelTask {
 
@@ -111,6 +112,20 @@ public abstract class AbstractModelTask {
         return getVariableValues(execution.getEngineServices().getRuntimeService(), execution.getProcessInstanceId(),
                 formFieldIds);
     }
+    
+    public static FormProperty getField(FormData oFormData, String sID) {
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                if(sID.equals(oFormProperty.getId())){
+                    return oFormProperty;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
     public static String getVariableValue(DelegateExecution execution, String sID) {
         RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
         if(runtimeService!=null){
@@ -141,7 +156,7 @@ public abstract class AbstractModelTask {
     }
 
     /**
-     * Получить ид поля с кастомным типом file
+     * Получить ид поля с кастомным типом file или table
      *
      * @param oFormData
      * @return
@@ -151,7 +166,7 @@ public abstract class AbstractModelTask {
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                if (oFormProperty.getType() instanceof FormFileType) {
+                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
                     asFieldID.add(oFormProperty.getId());
                 }
             }
@@ -299,7 +314,7 @@ public abstract class AbstractModelTask {
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
-        List<Attachment> res = new LinkedList<>();
+        List<Attachment> aAttachment = new LinkedList<>();
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
@@ -308,6 +323,9 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldValue={})", asFieldValue.toString());
         List<String> asFieldName = getListCastomFieldName(oFormData);
         LOG.info("(asFieldName={})", asFieldName.toString());
+        
+        //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
+
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
@@ -316,15 +334,24 @@ public abstract class AbstractModelTask {
                         .equals(sKeyRedis.trim())) {
                     if (sKeyRedis.length() > 15) {
                         if (!asFieldName.isEmpty() && n < asFieldName.size()) {
+                            
+                            String sID_Field = asFieldID.get(n);
+                            LOG.info("(sID_Field={})", sID_Field);
+                            
                             //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                             String sDescription = asFieldName.get(n);
                             if(sDescription!=null&&sDescription.contains(";")){
-                                LOG.info("BEFORE:(sDescription={})", sDescription);
+                                //LOG.info("BEFORE:(sDescription={})", sDescription);
                                 sDescription=sDescription.split(";")[0];
                             }
+                            if(sDescription==null){
+                                sDescription="";
+                            }
+                            if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
+                                sDescription = sDescription+"[table]";
+                            }
                             LOG.info("(sDescription={})", sDescription);
-                            String sID_Field = asFieldID.get(n);
-                            LOG.info("(sID_Field={})", sID_Field);
+                            
                             //получение контента файла из временного хранилища
                             byte[] aByteFile;
                             ByteArrayMultipartFile oByteArrayMultipartFile = null;
@@ -338,7 +365,7 @@ public abstract class AbstractModelTask {
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
                                         oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                                res.add(oAttachment);
+                                aAttachment.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
                                         sID_Field, nID_Attachment);
@@ -357,7 +384,7 @@ public abstract class AbstractModelTask {
                             try {
                                     LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
                                     Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                                    res.add(oAttachment);
+                                    aAttachment.add(oAttachment);
                             } catch (Exception e){
                                     LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
                             }
@@ -368,7 +395,7 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        return res;
+        return aAttachment;
 
     }
 

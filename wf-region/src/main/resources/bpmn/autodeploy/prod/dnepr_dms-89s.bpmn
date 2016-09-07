@@ -20,8 +20,8 @@
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відповідальний підрозділ або ЦНАП району (міста), до якого належить Ваше cтаре місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстраці;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше поточне місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="Місце проживання дитини молодше 14 років не може бути зареєстровано окремо від батьків, тому якщо Ви знімаєтесь з реєстрації та другий із батьків зареєстрований за іншою адресою, дитина повина бути знята з реєстрації разом із Вами. Для цього скористайтесь окремою &lt;a href=&quot;https://igov.org.ua/service/185/general&quot;&gt;послугою&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="asMilitStatus" name="Чи перебуваєте Ви на військовому обліку?" type="enum" required="true">
@@ -33,7 +33,7 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
@@ -41,6 +41,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка або свідоцтва про приписку;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -157,10 +158,11 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу зняття з реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/zajava_znFr.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/1zajava_znFr.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dms/zajava_znBk.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -391,12 +393,13 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sReestr" name="Громадянин знятий з реєстрації"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/kartkaFr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartkaBk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFr.html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBk.html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/kartkaFr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartkaBk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

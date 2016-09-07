@@ -396,21 +396,16 @@ public class Mail extends Abstract_Mail {
             }
         } catch (Exception oException) {
             result = false;
-//=            LOG.error("FAIL: {} (oID_Message()={},getTo()={})", oException.getMessage(), oID_Message, getTo());
-//=            LOG.trace("FAIL:", oException);
-            //throw new EmailException("Error happened when sending email (" + getTo() + ")(oID_Message=" + oID_Message + ")", oException);
-            new Log(oException, LOG)//this.getClass()
+            LOG.error("FAIL: {} (oID_Message()={},getTo()={})", oException.getMessage(), oID_Message, getTo());
+            new Log(oException, LOG)
                     ._Case("Mail_FailUS")
                     ._Status(Log.LogStatus.ERROR)
                     ._Head("First try send fail")
-                    //._Body(oException.getMessage())
                     ._Param("getTo", getTo())
                     ._Param("sbBody", sbBody)
                     ._Param("oID_Message", oID_Message)
-                    //._Param("sExcetion", oException.getMessage())
                     .save()
             ;
-            //msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
         }
         LOG.info("SUCCESS: sent!");
         return result;
@@ -420,8 +415,6 @@ public class Mail extends Abstract_Mail {
         try {
             sendOld();
         } catch (Exception oException1) {
-//=            LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
-            //try {
                 new Log(oException1, LOG)//this.getClass()
                         ._Case("Mail_FailAlter")
                         ._Status(Log.LogStatus.ERROR)
@@ -431,10 +424,6 @@ public class Mail extends Abstract_Mail {
                         ._Param("sbBody", sbBody)
                         .save()
                 ;
-                //msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
-            /*} catch (Exception e) {
-                LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
-            }*/
         }
     }
 
