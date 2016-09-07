@@ -42,12 +42,12 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
             if (sPhone_SMS != null) {
                 String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
+                String sID_Order = getStringFromFieldExpression(this.sID_Order, oExecution);
                 if (sText_SMS != null) {
                     sText_SMS = replaceTags(sText_SMS, oExecution);
                     String sReturn;
                     sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
 
-                    String sID_Order = getStringFromFieldExpression(this.sID_Order, oExecution);
                     sReturn = oManagerSMS.sendSMS(sID_Order, sPhone_SMS, sText_SMS);
                     LOG.info("(sReturn={})", sReturn);
                 }
