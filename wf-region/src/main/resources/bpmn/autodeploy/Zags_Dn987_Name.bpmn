@@ -7,14 +7,21 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassport" name="Паспортні дані;(Серія, номер, дата видачі, ким видано)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія паспортного документу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькаові що були в вас до зміни імені" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_born" name="Ваша дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Вкажіть дату і місце де проводилась зміна імені" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Мета отримання витягу" type="enum" required="true">
+          <activiti:value id="sEnamMeta1" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMeta2" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMeta3" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMeta4" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
@@ -93,9 +100,14 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькаові що були в вас до зміни імені" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_born" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Дата і місце де проводилась зміна імені" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMeta" name="Мета отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Мета отримання витягу" type="enum" writable="false">
+          <activiti:value id="sEnamMeta1" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMeta2" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMeta3" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMeta4" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
