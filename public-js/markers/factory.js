@@ -111,13 +111,29 @@ angular.module('iGovMarkers')
                     if (value[0].indexOf(prefix) === 0) result.push(value[1]);
                 });
             },
-            interpolateString: function(strPattern, arrKeys, objData, startSymbol, endSymbol) {
+
+          /**
+           * Интерполяция строки с подстановкой значения полей формы
+           * @param strPattern - исходная строка с паттерном
+           * @param objData - сам объект, из которого будут подставляться значения
+           * @param startSymbol - (опциональный) открывающийся символ для обозначения места вставки
+           * @param endSymbol - (опциональный) закрывающий символ для обозначения места подстановки
+           * @param arrKeys - (опциональный) массив наименований параметров объекта, откуда будут браться значения для подстановки
+           * @returns {{value: string, differentTriggered: boolean}}
+           */
+            interpolateString: function(strPattern, objData, startSymbol, endSymbol, arrKeys) {
                 var result = {
                     value: '',
                     differentTriggered: false
                 };
                 if (!strPattern || strPattern === null || strPattern === "") {
                     return result;
+                }
+                if (!arrKeys || arrKeys === null) {
+                    arrKeys = [];
+                    for (var sKey in objData) if (objData.hasOwnProperty(sKey)){
+                        arrKeys.push(sKey);
+                    }
                 }
                 if (!startSymbol || startSymbol === null || startSymbol === '') {
                     startSymbol = "{{";

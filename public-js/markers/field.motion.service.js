@@ -76,7 +76,7 @@ function FieldMotionService(MarkersFactory) {
           aFieldIDs.push(key);
         }
       }
-      var replacer = MarkersFactory.interpolateString(result.value, aFieldIDs, formData, '[', ']');
+      var replacer = MarkersFactory.interpolateString(result.value, formData, '[', ']', aFieldIDs);
       result.value = replacer.value;
       result.differentTriggered = replacer.differentTriggered;
     }
