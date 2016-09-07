@@ -61,6 +61,7 @@ function FieldMotionService(MarkersFactory) {
     return b;
   };
   var fieldId_entryTriggered = {};
+  var aFieldIDs = [];
   this.calcFieldValue = function(fieldId, formData) {
     var entry = _.find(grepByPrefix('ValuesFieldsOnCondition'), function(entry) {
       return evalCondition(entry, fieldId, formData)
@@ -69,6 +70,15 @@ function FieldMotionService(MarkersFactory) {
     if (entry) {
       result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
       result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue[$.inArray(fieldId, entry.aField_ID)];
+
+      if(aFieldIDs.length == 0){
+        for(var key in formData) if (formData.hasOwnProperty(key)){
+          aFieldIDs.push(key);
+        }
+      }
+      var replacer = MarkersFactory.interpolateString(result.value, aFieldIDs, formData, '[', ']');
+      result.value = replacer.value;
+      result.differentTriggered = replacer.differentTriggered;
     }
     fieldId_entryTriggered[fieldId] = entry;
     return result;
