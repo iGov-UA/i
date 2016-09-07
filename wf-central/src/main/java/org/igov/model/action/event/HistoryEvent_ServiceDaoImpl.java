@@ -153,8 +153,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
 
         String queryString =
-                "select 0 AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, hes.sID_UA AS SID_UA, \n"
-                        + "p.sName AS placeName, avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
+                "select hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, \n"
+                        + "hes.sID_UA AS SID_UA, p.sName AS placeName, count(*) AS nCountTotal, \n"
+                        + "avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
                         + "from HistoryEvent_Service hes, Service s, Place p \n"
                         + "where s.nID = hes.nID_Service \n"
                         + "and p.sID_UA = hes.sID_UA \n"
@@ -162,16 +163,16 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
                         + "and hes.sDate < :dateTo \n"
                         + "group by hes.nID_Service, hes.sID_UA ";
 
-        List<ServicesStatistics> events = null;
+        List<ServicesStatistics> servicesStatistics = null;
 
         SQLQuery query = getSession().createSQLQuery(queryString);
         query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
         query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
         query.addEntity(ServicesStatistics.class);
 
-        events = query.list();
+        servicesStatistics = query.list();
 
-        return events;
+        return servicesStatistics;
     }
     
     @Override
