@@ -156,7 +156,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
                 "select hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, \n"
                         + "hes.sID_UA AS SID_UA, p.sName AS placeName, count(*) AS nCountTotal, \n"
                         + "avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
-                        + "from HistoryEvent_Service hes, Service s, Place p \n"
+                        + "from \"HistoryEvent_Service\" hes, \"Service\" s, \"Place\" p \n"
                         + "where s.nID = hes.nID_Service \n"
                         + "and p.sID_UA = hes.sID_UA \n"
                         + "and hes.sDate >= :dateFrom \n"
