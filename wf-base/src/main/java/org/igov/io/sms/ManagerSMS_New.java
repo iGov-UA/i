@@ -71,14 +71,15 @@ public class ManagerSMS_New {
 	return sendSMS(null, sPhone, sText);
     }
 
-    public String sendSMS(String sMessageId, String sPhone, String sText) throws IllegalArgumentException {
+    public String sendSMS(String sID_Order, String sPhone, String sText) throws IllegalArgumentException {
 	if (!isReadySendSMS) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
 
-	if (sMessageId == null || sMessageId.equals("")) {
-	    sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
+	String sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
+	if (sID_Order != null) {
+	    sMessageId = sMessageId + "-" + sID_Order;
 	}
 
 	SMS_New sms;

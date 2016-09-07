@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.mail.MultiPartEmail;
-import org.igov.io.sms.ManagerSMS_New;
+//import org.igov.io.sms.ManagerSMS_New;
 
 /**
  * @author BW
@@ -29,6 +29,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
+    protected Expression sID_Order;
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
@@ -45,7 +46,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     sText_SMS = replaceTags(sText_SMS, oExecution);
                     String sReturn;
                     sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
-                    sReturn = oManagerSMS.sendSMS(sPhone_SMS, sText_SMS);
+
+                    String sID_Order = getStringFromFieldExpression(this.sID_Order, oExecution);
+                    sReturn = oManagerSMS.sendSMS(sID_Order, sPhone_SMS, sText_SMS);
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
