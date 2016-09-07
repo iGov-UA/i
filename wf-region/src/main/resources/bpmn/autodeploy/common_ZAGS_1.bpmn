@@ -5,15 +5,26 @@
       <extensionElements>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто в ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
-          <activiti:value id="sEnum1" name="Скорочений обряд(15 хвилин, вартість - 140 грн. )"></activiti:value>
-          <activiti:value id="sEnum2" name="Повний обряд(45 хвилин, вартість - 337 грн.)"></activiti:value>
+          <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
+          <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм.мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгову категорію" type="enum" required="true">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum" required="true">
+          <activiti:value id="sEnum1" name="1-ша, 2-га, 3-тя категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="4-та категорія потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="Категорія інвалідів Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum4" name="Категорія інвалідів I та II груп"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
@@ -40,6 +51,7 @@
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText4" name=" " type="label" default="Якщо Ви не знайшли у обраному відділу ДРАЦС зручну дату, спробуйте обрати інший відділ Вашого міста."></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string"></activiti:formProperty>
@@ -60,10 +72,10 @@
           <activiti:value id="sEnum2" name="Удівець"></activiti:value>
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу(паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу(паспорт або паспортний документ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFemaleData" name="Дані нареченої" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName2" name="Прізвище" type="string"></activiti:formProperty>
@@ -84,9 +96,9 @@
           <activiti:value id="sEnum2" name="Удова"></activiti:value>
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу(паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
@@ -112,6 +124,12 @@
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="1-ша, 2-га, 3-тя категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="4-та категорія потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="Категорія інвалідів Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum4" name="Категорія інвалідів I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -193,6 +211,12 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="1-ша, 2-га, 3-тя категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="4-та категорія потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="Категорія інвалідів Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum4" name="Категорія інвалідів I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -443,6 +467,12 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="1-ша, 2-га, 3-тя категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="4-та категорія потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="Категорія інвалідів Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum4" name="Категорія інвалідів I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я" type="string" writable="false"></activiti:formProperty>
