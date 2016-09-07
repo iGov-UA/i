@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
@@ -530,12 +531,13 @@ public class ActionEventController {
                 line.add(item.getPlaceName());
                 line.add(String.valueOf(item.getnCountTotal()));
                 line.add(String.valueOf(item.getAverageRate()));
-                line.add(String.valueOf(item.getAverageTime()/60)); //to get hours divide minutes to 60
+                line.add(String.valueOf(item.getAverageTime()));
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             csvWriter.close();
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
         }
     }
 

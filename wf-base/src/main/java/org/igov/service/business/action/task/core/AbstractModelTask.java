@@ -194,28 +194,29 @@ public abstract class AbstractModelTask {
     /**
      * Получить имя поля
      *
-     * @param formData
+     * @param oFormData
      * @return
      */
-    public static List<String> getListCastomFieldName(FormData formData) {
+    public static List<String> getListCastomFieldName(FormData oFormData) {
         List<String> filedName = new ArrayList<String>();
-        List<FormProperty> formDataList = formData.getFormProperties();
-        if (!formDataList.isEmpty()) {
-            for (FormProperty prop : formDataList) {
-                if (prop.getType() instanceof FormFileType) {
-                    filedName.add(prop.getName());
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
+                    filedName.add(oFormProperty.getName());
                 }
             }
         }
         return filedName;
     }
 
-    public static String getCastomFieldValue(FormData formData, String fieldName) {
-        List<FormProperty> formDataList = formData.getFormProperties();
-        if (!formDataList.isEmpty()) {
-            for (FormProperty prop : formDataList) {
-                if (prop.getType() instanceof FormFileType && prop.getName().equalsIgnoreCase(fieldName)) {
-                    return prop.getValue() != null ? prop.getValue() : "";
+    public static String getCastomFieldValue(FormData oFormData, String sFieldName) {
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                //if (oFormProperty.getType() instanceof FormFileType && oFormProperty.getName().equalsIgnoreCase(fieldName)) {
+                if (oFormProperty.getName().equalsIgnoreCase(sFieldName)) {
+                    return oFormProperty.getValue() != null ? oFormProperty.getValue() : "";
                 }
             }
         }

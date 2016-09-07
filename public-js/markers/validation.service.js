@@ -789,11 +789,14 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       console.log("bValid=" + bValid);
 
       if (!bValid) {
-        options.lastError = self.interpolateMarkerMessage(options, "{", "}") || 'Недопустимий формат файлу! Повинно бути: ' + options.saExtension + '!';
+        if (!options.sMessage || options.sMessage === null || options.sMessage === "") {
+          options.sMessage = 'Недопустимий формат файлу! Повинно бути: {saExtension}!';
+        }
+        var sMessage = MarkersFactory.interpolateString(options.sMessage, options, '{', '}');
+        options.lastError = sMessage.value;
       }
       return bValid;
     },
-    
     
     /**
      Логика: Не ипустота и не ноль
@@ -896,68 +899,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
     return nCRC;
 
-  };
-
-  /**
-   * Інтерполяція строки marker.sMessage яка містить шаблон повідомлення валідатора, де замість виразів
-   * по типу {{propertyKey_N}} необхідно підставити значення відповідного параметру об'єкта marker
-   * @param marker (object) - об'єкт маркеру, у якого є параметр sMessage з шаблоном відповіді валідатора
-   * @param startSymbol (string) - строка, якою починаэться вираз. За замовчуванням - "{{"
-   * @param endSymbol (string) - строка, якою закынчуэться вираз. За замовчуванням - "}}"
-   * @returns {string}
-   */
-  self.interpolateMarkerMessage = function(marker, startSymbol, endSymbol) {
-    if (!marker.sMessage || marker.sMessage === null || marker.sMessage === "") {
-      return;
-    }
-    if (!startSymbol || startSymbol === null || startSymbol === '') {
-      startSymbol = "{{";
-    }
-    if (!endSymbol || endSymbol === null || endSymbol === '') {
-      endSymbol = "}}";
-    }
-
-    var aSubstrings = [];
-
-    var findOpenSymbol = true;
-    var startIndexChar = 0;
-    for (var strCharInd = 0; strCharInd < marker.sMessage.length; strCharInd++) {
-      if (findOpenSymbol && marker.sMessage.charAt(strCharInd) === startSymbol) {
-        addSubstring(strCharInd);
-        continue;
-      }
-      if (!findOpenSymbol && marker.sMessage.charAt(strCharInd) === endSymbol) {
-        addSubstring(strCharInd);
-        continue;
-      }
-      if (strCharInd == marker.sMessage.length - 1) {
-        addSubstring(strCharInd + 1);
-      }
-    }
-    function addSubstring(index) {
-      aSubstrings.push(marker.sMessage.substring(startIndexChar, index));
-      startIndexChar = index + 1;
-      findOpenSymbol = !findOpenSymbol;
-    }
-    startIndexChar = 0;
-
-    var resultMessage = "";
-    var needAddFromArray = true;
-    for (var arrInd = 0; arrInd < aSubstrings.length; arrInd++) {
-      for (var markerPropertyKey in marker) {
-        if (markerPropertyKey === aSubstrings[arrInd]) {
-          resultMessage = resultMessage + marker[markerPropertyKey];
-          needAddFromArray = false;
-          continue;
-        }
-      }
-      if (!needAddFromArray) {
-        needAddFromArray = true;
-        continue;
-      }
-      resultMessage = resultMessage + aSubstrings[arrInd];
-    }
-    return resultMessage;
   };
 
 }

@@ -11,9 +11,11 @@ import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.ToolLuna;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -33,6 +35,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
+    private static final String GET_SERVICES_STATISTICS_QUERY = "get_ServicesStatistics.sql";
+
+    @Autowired
+    private QueryLoader sqlStorage;
     
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
@@ -151,20 +157,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @Override
     public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
-
-        String queryString =
-                "select hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, \n"
-                        + "hes.sID_UA AS SID_UA, p.sName AS placeName, count(*) AS nCountTotal, \n"
-                        + "avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
-                        + "from \"HistoryEvent_Service\" AS hes, \"Service\" AS s, \"Place\" AS p \n"
-                        + "where s.nID = hes.nID_Service \n"
-                        + "and p.sID_UA = hes.sID_UA \n"
-                        + "and hes.sDate >= :dateFrom \n"
-                        + "and hes.sDate < :dateTo \n"
-                        + "group by hes.nID_Service, hes.sID_UA ";
+        String queryString = sqlStorage.get(GET_SERVICES_STATISTICS_QUERY);
 
         List<ServicesStatistics> servicesStatistics = null;
-
         SQLQuery query = getSession().createSQLQuery(queryString);
         query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
         query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));

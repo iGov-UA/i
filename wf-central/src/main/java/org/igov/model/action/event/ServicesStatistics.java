@@ -14,7 +14,7 @@ public class ServicesStatistics extends AbstractEntity {
 
     @JsonProperty(value = "nID_Service")
     @Column(name = "nID_Service")
-    private long nID_Service;
+    private Long nID_Service;
 
     @JsonProperty(value = "ServiceName")
     @Column(name = "ServiceName")
@@ -22,29 +22,29 @@ public class ServicesStatistics extends AbstractEntity {
 
     @JsonProperty(value = "SID_UA")
     @Column(name = "SID_UA")
-    private long SID_UA;
+    private Long SID_UA;
 
     @JsonProperty(value = "placeName")
     @Column(name = "placeName")
     private String placeName;
 
-    public long getnCountTotal() {
+    public Long getnCountTotal() {
         return nCountTotal;
     }
 
     @JsonProperty(value = "nCountTotal")
     @Column(name = "nCountTotal")
-    private long nCountTotal;
+    private Long nCountTotal;
 
     @JsonProperty(value = "averageRate")
     @Column(name = "averageRate")
-    private float averageRate;
+    private Float averageRate;
 
     @JsonProperty(value = "averageTime")
     @Column(name = "averageTime")
-    private float averageTime;
+    private Float averageTime;
 
-    public long getnID_Service() {
+    public Long getnID_Service() {
         return nID_Service;
     }
 
@@ -52,7 +52,7 @@ public class ServicesStatistics extends AbstractEntity {
         return ServiceName;
     }
 
-    public long getSID_UA() {
+    public Long getSID_UA() {
         return SID_UA;
     }
 
@@ -60,11 +60,11 @@ public class ServicesStatistics extends AbstractEntity {
         return placeName;
     }
 
-    public float getAverageRate() {
+    public Float getAverageRate() {
         return averageRate;
     }
 
-    public float getAverageTime() {
+    public Float getAverageTime() {
         return averageTime;
     }
 
