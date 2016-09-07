@@ -9,7 +9,6 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginAssigned" name="логін посадовця" type="string"></activiti:formProperty>
         <activiti:formProperty id="sElapsedInfo" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
-         
         <activiti:formProperty id="saField" name="Данные" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="processID" name="номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string"></activiti:formProperty>
@@ -28,32 +27,18 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginAssigned" name="Логін посадовця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sElapsedInfo" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
-               
         <activiti:formProperty id="saField" name="Данные" type="textArea" writable="false"></activiti:formProperty>
-              
         <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="data" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info" name="речовий модуль" type="textArea" default="
-Доброго дня!
-Мене звуть %ім'я%, я один з координаторів порталу iGov в %назву% області.
-Кілька днів тому було відправлено звернення в електронному вигляді на порталі iGov в вашу службу.
-Ми отримали інформацію про те, що вона до сьогодні не взята в роботу, тому хотіли б уточнити у Вас, з якої саме причини? Можливо, у вас виникли проблеми в роботі з порталом?
-Можливо, я би міг допомогти вам у вирішенні даних питань?
-(Записуєте результат розмови в коментарі).
-Дякую за приділений час, на все добре, до побачення!
-" writable="false"></activiti:formProperty>
-       
+        <activiti:formProperty id="info" name="речовий модуль" type="textArea" default=" Доброго дня! Мене звуть %ім'я%, я один з координаторів порталу iGov в %назву% області. Кілька днів тому було відправлено звернення в електронному вигляді на порталі iGov в вашу службу. Ми отримали інформацію про те, що вона до сьогодні не взята в роботу, тому хотіли б уточнити у Вас, з якої саме причини? Можливо, у вас виникли проблеми в роботі з порталом? Можливо, я би міг допомогти вам у вирішенні даних питань? (Записуєте результат розмови в коментарі). Дякую за приділений час, на все добре, до побачення! " writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар для громадянина за результатами контакту з адміністративним органом" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="commentar" name="Внутрішній коментар волонтера" type="textArea"></activiti:formProperty>
-       
         <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -91,6 +76,45 @@ execution.setVariable('sNotification_day', timer)
     <sequenceFlow id="flow10" sourceRef="timerintermediatecatchevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Лист заявнку з коментом" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформація щодо Вашого звернення ${nID_Protected}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[sID_Order]<br>
+[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${clfio}.</b><br /><br />
+У зв'язку з порушенням сроків обробки звернень волонтери команди iGov зв'язалися з представниками адміністративного органу, відповідального за опрацювання Вашого звернення ${sNameProcess} - ${nID_Protected}.<br />
+За результатми контакту отримано наступний коментар працівника:<br />
+${comment}<br /><br />
+При необхідності Ви можете зателефонувати до державного органу:<br />
+${sEmployeeContacts}<br /><br />
+Якщо Ваша заявка вже не актуальна, натисніть на цю кнопку:
+[cancelTaskSimple]<br /><br />
+Якщо відповідь державного органу, яку Ви отримаєте на свій запит, Вас не задовольнить, напишіть про це нам за <a href="http://goo.gl/forms/YKYIdf1nNQxq1XIo2">цією формою</a>. <br>
+Волонтери iGov спробують додатково привернути увагу до Вашої заявки.<br />
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Termin obrobki zvernen. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_escalation">
     <bpmndi:BPMNPlane bpmnElement="system_escalation" id="BPMNPlane_system_escalation">
@@ -111,6 +135,9 @@ execution.setVariable('sNotification_day', timer)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="185.0" y="32.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="275.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="347.0" y="122.0"></omgdi:waypoint>
