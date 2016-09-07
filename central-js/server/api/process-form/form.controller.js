@@ -1,12 +1,14 @@
 var url = require('url')
-  , StringDecoder = require('string_decoder').StringDecoder
   , request = require('request')
+  , fs = require('fs')
   , FormData = require('form-data')
   , config = require('../../config/environment')
   , authProviderRegistry = require('../../auth/auth.provider.registry')
   , _ = require('lodash')
+  , StringDecoder = require('string_decoder').StringDecoder
   , async = require('async')
   , formTemplate = require('./form.template')
+  , uploadFileService = require('../uploadfile/uploadfile.service')
   , activiti = require('../../components/activiti')
   , errors = require('../../components/errors');
 
@@ -126,6 +128,7 @@ module.exports.scanUpload = function (req, res) {
       res.send(uploadResults);
     }
   });
+
 };
 
 module.exports.signCheck = function (req, res) {
@@ -167,6 +170,215 @@ module.exports.signCheck = function (req, res) {
       res.status(200).send(body.customer.signatureData);
     } else {
       res.status(200).send({});
+    }
+  });
+};
+
+module.exports.signFormMultiple = function (req, res) {
+  var oServiceDataNID = req.query.oServiceDataNID;
+  var sName = req.query.sName;
+  var nID_Server = req.query.nID_Server;
+  var formID = req.session.formID;
+  var sHost = req.region.sHost;
+  var sURL = sHost + '/';
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
+
+  if (!formID) {
+    res.status(400).send({error: 'formID should be specified'});
+  }
+
+  if (!oServiceDataNID && !sURL) {
+    res.status(400).send({error: 'Either sURL or oServiceDataNID should be specified'});
+    return;
+  }
+
+  var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/signMultiple/callback?nID_Server=' + nID_Server);
+  function findFileFields(formData) {
+    var fileFields = formData.activitiForm.formProperties.filter(function (property) {
+      return property.type === 'file';
+    });
+    fileFields.forEach(function (fileField) {
+      if (formData.formData.params[fileField.id]) {
+        fileField.value = formData.formData.params[fileField.id];
+      }
+    });
+
+    fileFields = fileFields.filter(function (fileField) {
+      return fileField.value;
+    });
+
+    return fileFields;
+  }
+
+  function createHtml(data, callback) {
+    var formData = data.formData;
+
+    var templateData = {
+      formProperties: data.activitiForm.formProperties,
+      processName: sName,
+      businessKey: data.businessKey,
+      creationDate: '' + new Date()
+    };
+
+    var patternFileName = null;
+
+    templateData.formProperties.forEach(function (item) {
+      var value = formData.params[item.id];
+      if (value) {
+        item.value = value;
+      }
+    });
+
+    for (var key in formData.params) {
+      if (formData.params.hasOwnProperty(key) && key.indexOf('PrintFormAutoSign_') === 0)
+        patternFileName = formData.params[key];
+    }
+
+    if (patternFileName) {
+      var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, sURL);
+      request(reqParams, function (error, response, body) {
+        for (var key in formData.params) {
+          if (formData.params.hasOwnProperty(key)) {
+            body = body.replace('[' + key + ']', formData.params[key]);
+          }
+        }
+        callback(body);
+      });
+    } else {
+      callback(formTemplate.createHtml(templateData));
+    }
+  }
+
+  function getFormAsync(callbackAsync) {
+    loadForm(formID, sURL, function (error, response, body) {
+      if (error) {
+        callbackAsync(error, null);
+      } else {
+        callbackAsync(null, body);
+      }
+    });
+  }
+
+  var objectsToSign = [];
+
+  function getHtmlAsync(formData, callbackAsync) {
+    createHtml(formData, function (formToUpload) {
+      objectsToSign.push({
+        name: 'file',
+        text: formToUpload,
+        options: {
+          filename: 'signedForm.html',
+          contentType: 'text/html;charset=utf-8'
+        }
+      });
+      callbackAsync(null, formData);
+    });
+  }
+
+  function getFileBuffersAsync(formData, callbackAsync) {
+    var filesToSign = [];
+    async.forEach(findFileFields(formData), function (fileField, callbackEach) {
+      uploadFileService.downloadBuffer(fileField.value, function (error, response, buffer) {
+        filesToSign.push({
+          name: fileField.id,
+          options: {
+            filename: formData.formData.files[fileField.id]
+          },
+          buffer: buffer
+        });
+        callbackEach();
+      }, sHost)
+    }, function (error) {
+      if (error) {
+        callbackAsync(error, null);
+      } else {
+        objectsToSign = objectsToSign.concat(filesToSign);
+        callbackAsync(null, formData);
+      }
+    });
+  }
+
+  function signFilesAsync(formData, callbackAsync) {
+    var accessToken = req.session.access.accessToken;
+    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, result) {
+      if (error) {
+        callbackAsync(error, null);
+      } else {
+        callbackAsync(null, result)
+      }
+    });
+  }
+
+  async.waterfall([
+    getFormAsync,
+    getHtmlAsync,
+    getFileBuffersAsync,
+    signFilesAsync
+  ], function (error, result) {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.redirect(result.desc);
+    }
+  });
+};
+
+module.exports.signFormMultipleCallback = function (req, res) {
+  var sHost = req.region.sHost;
+  var sURL = sHost + '/';
+  var formID = req.session.formID;
+  var codeValue = req.query.code;
+  var accessToken = req.session.access.accessToken;
+  var type = req.session.type;
+  var userService = authProviderRegistry.getUserService(type);
+
+  if (!codeValue) {
+    codeValue = req.query['amp;code'];
+  }
+
+  async.waterfall([
+    function (callback) {
+      loadForm(formID, sURL, function (error, response, body) {
+        if (error) {
+          callback(error, null);
+        } else {
+          callback(null, body);
+        }
+      });
+    },
+    function (formData, callback) {
+      userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
+        callback(error, {signedContent : result, formData: formData});
+      });
+    },
+    function (result, callback) {
+      uploadFileService.upload([{
+        name: 'file',
+        options: {
+          filename: result.signedContent.fileName
+        },
+        buffer: result.signedContent.buffer
+      }], function (error, response, body) {
+        if (!body) {
+          callback(errors.createExternalServiceError('Can\'t save signed content. Unknown error', error), null);
+        } else if (body.code && body.message) {
+          callback(errors.createExternalServiceError('Can\'t save content. ' + body.message, body), null);
+        } else if (body.fileID) {
+          result.signedFileID = body.fileID;
+          callback(null, result);
+        }
+      }, sHost);
+    }
+  ], function (err, result) {
+    if (err) {
+      res.redirect(result.formData.restoreFormUrl
+        + '?formID=' + formID
+        + '&error=' + JSON.stringify(err));
+    } else {
+      res.redirect(result.formData.restoreFormUrl
+        + '?formID=' + formID
+        + '&signedFileID=' + result.signedFileID);
     }
   });
 };
@@ -357,63 +569,41 @@ module.exports.signFormCallback = function (req, res) {
 };
 
 module.exports.saveForm = function (req, res) {
+  var sHost = req.region.sHost;
   var data = req.body;
-  var oServiceDataNID = req.query.oServiceDataNID;
 
-  var nID_Server = req.query.nID_Server;
-  activiti.getServerRegionHost(nID_Server, function (sHost) {
-    var sURL = sHost + '/';
-    console.log("sURL=" + sURL);
-
-    if (oServiceDataNID) {
-      //TODO fill sURL from oServiceData to use it below
-      sURL = '';
-    }
-
-    var uploadURL = sURL + 'service/object/file/upload_file_to_redis';
-
-    var form = new FormData();
-    form.append('file', JSON.stringify(data), {
+  uploadFileService.upload([{
+    name: 'file',
+    options: {
       filename: 'formData.json'
-    });
-
-    var requestOptionsForUploadContent = {
-      url: uploadURL,
-      auth: getAuth(),
-      headers: form.getHeaders()
-    };
-
-    pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
-      req.session.formID = result.data;
-      if (oServiceDataNID) {
-        req.session.oServiceDataNID = oServiceDataNID;
-      } else {
-        req.session.sURL = sURL;
-      }
-      res.send({formID: result.data});
-    });
-  });
+    },
+    text: JSON.stringify(data)
+  }], function (error, response, body) {
+    if (!body) {
+      res.status(500).send(errors.createExternalServiceError('Can\'t save form. Unknown error', error));
+    } else if (body.code && body.message) {
+      res.status(500).send(errors.createExternalServiceError('Can\'t save form. ' + body.message, body));
+    } else if (body.fileID) {
+      req.session.formID = body.fileID;
+      res.send({formID: body.fileID});
+    }
+  }, sHost);
 };
 
 module.exports.loadForm = function (req, res) {
   var formID = req.query.formID;
+  var sHost = req.region.sHost;
+  var sURL = sHost + '/';
 
-  var nID_Server = req.query.nID_Server;
-  activiti.getServerRegionHost(nID_Server, function (sHost) {
-    var sURL = sHost + '/';
-    console.log("sURL=" + sURL);
+  var callback = function (error, response, body) {
+    if (error) {
+      res.status(400).send(error);
+    } else {
+      res.send(body);
+    }
+  };
 
-    var callback = function (error, response, body) {
-      if (error) {
-        res.status(400).send(error);
-      } else {
-        res.send(body);
-      }
-    };
-
-    loadForm(formID, sURL, callback);
-  });
-
+  loadForm(formID, sURL, callback);
 };
 
 function loadForm(formID, sURL, callback) {
@@ -458,7 +648,9 @@ var originalURL = function (req, options) {
     , host = (trustProxy && req.headers['x-forwarded-host']) || req.headers.host
     , protocol = tls ? 'https' : 'http'
     , path = req.url || '';
-  return protocol + '://' + host + path;
+  var originalURL = protocol + '://' + host + path;
+  console.log('[sign] originalURL = ' + originalURL);
+  return originalURL;
 };
 
 function getOptions() {

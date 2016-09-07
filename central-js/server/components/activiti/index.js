@@ -1,4 +1,5 @@
 var request = require('request')
+  , async = require('async')
   , _ = require('lodash')
   , NodeCache = require("node-cache")
   , FormData = require('form-data')
@@ -99,7 +100,7 @@ module.exports.getRequestUrl = function (apiURL, sHost) {
   return (sHost !== null && sHost !== undefined ? sHost : options.protocol + '://' + options.hostname + options.path) + apiURL;
 };
 
-module.exports.buildGET = function (apiURL, params, sHost, session) {
+module.exports.buildGET = function (apiURL, params, sHost, session, isCustomAuth, buffer) {
   var sURL = this.getRequestUrl(apiURL, sHost);
   var qs = params;
 
@@ -107,17 +108,27 @@ module.exports.buildGET = function (apiURL, params, sHost, session) {
     qs = _.extend(params, {nID_Subject: session.subject.nID});
   }
 
-  return {
-    'url': sURL,
-    'auth': this.getAuth(),
-    'json': true,
-    'qs': qs
+  var reqObj = {
+    url: sURL,
+    json: true,
+    qs: qs
+  };
+
+  if(buffer){
+    reqObj.encoding = null;
   }
+
+
+  if(!isCustomAuth){
+    _.extend(reqObj, {auth: this.getAuth()})
+  }
+
+  return reqObj;
 };
 
-module.exports.buildRequest = function (req, apiURL, params, sHost) {
+module.exports.buildRequest = function (req, apiURL, params, sHost, buffer) {
   //var nID_Subject = req.session.subject ? req.session.subject.nID : null;
-  return this.buildGET(apiURL, params, sHost, req.session);//nID_Subject
+  return this.buildGET(apiURL, params, sHost, req.session, false, buffer);//nID_Subject
 };
 
 module.exports.getAuth = function () {
@@ -140,14 +151,14 @@ module.exports.getDefaultCallback = function (res) {
   }
 };
 
-module.exports.sendGetRequest = function (req, res, apiURL, params, callback, sHost) {
+module.exports.sendGetRequest = function (req, res, apiURL, params, callback, sHost, buffer) {
   var _callback = callback ? callback : this.getDefaultCallback(res);
-  var url = this.buildRequest(req, apiURL, params, sHost);
+  var url = this.buildRequest(req, apiURL, params, sHost, buffer);
   return request(url, _callback);
 };
 
-module.exports.get = function (apiURL, params, callback, sHost, session) {
-  var prepared = this.buildGET(apiURL, params, sHost, session);
+module.exports.get = function (apiURL, params, callback, sHost, session, buffer) {
+  var prepared = this.buildGET(apiURL, params, sHost, session, false, buffer);
   return request(prepared, callback);
 };
 
@@ -155,6 +166,71 @@ module.exports.post = function (apiURL, params, body, callback, sHost, session) 
   var prepared = this.buildGET(apiURL, params, sHost, session);
   prepared = _.extend(prepared, {body: body});
   request.post(prepared, callback);
+};
+
+/**
+ * General method to upload different content
+ *
+ * @param apiURL url where to upload content
+ * @param params parameters for URL
+ * @param content array of content that should be uploaded. object {name, request|text|file, [options : {filename, contentType}]}
+ * @param callback here will be result, pass function there
+ * @param sHost optional, for adding it in the beginning of the apiURL
+ * @param session optional, to get nID from it
+ */
+module.exports.uploadContent = function (apiURL, params, content, callback, sHost, session) {
+  if (!content || content.length < 0) {
+    throw Error('There is nothing to upload to ' + apiURL + '. Content shouldn\'t be empty array');
+  }
+
+  var uploadRequest;
+
+  if(params.qs || params.headers){
+    //params is object with query string and/or headers
+    var hasCustomAuth = params.headers && params.headers.Authorization ? true : false;
+    var qs = params.qs ? params.qs : {};
+    uploadRequest = this.buildGET(apiURL, qs, sHost, session, hasCustomAuth);
+    if(params.headers){
+      if(!uploadRequest.headers){
+        uploadRequest.headers = {};
+      }
+      _.extend(uploadRequest.headers, params.headers);
+    }
+  } else {
+    //params are query string
+    uploadRequest = this.buildGET(apiURL, params, sHost, session);
+  }
+
+  if(!uploadRequest.headers){
+    uploadRequest.headers = {};
+  }
+  _.merge(uploadRequest.headers, {'Accept': 'application/json'});
+
+  function formAppend(formData, content){
+    content.forEach(function(formContent){
+      var contentOptions;
+      if(formContent.options){
+        contentOptions = formContent.options;
+      }
+
+      if(formContent.request){
+        formData.append(formContent.name, formContent.request, contentOptions);
+      } else if (formContent.file){
+        formData.append(formContent.name, formContent.file, contentOptions);
+      } else if (formContent.text){
+        formData.append(formContent.name, formContent.text, contentOptions);
+      } else if (formContent.buffer){
+        formData.append(formContent.name, formContent.buffer, contentOptions);
+      }
+    });
+  }
+
+  //var formDataForHeaders = new FormData();
+  //formAppend(formDataForHeaders, content);
+  //_.merge(uploadRequest.headers, formDataForHeaders.getHeaders());
+
+  var r = request.post(uploadRequest, callback);
+  formAppend(r.form(), content);
 };
 
 module.exports.upload = function (apiURL, params, fileName, content, callback, sHost, session) {

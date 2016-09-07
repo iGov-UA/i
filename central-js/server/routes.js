@@ -32,7 +32,7 @@ module.exports = function (app) {
   app.use('/api/service/flow', require('./api/service/flow'));
   app.use('/api/messages', require('./api/messages/index'));
   app.use('/api/catalog', require('./api/catalog'));
-  app.post('/api/uploadfile', require('./api/uploadfile/post'));
+  app.use('/api/uploadfile', auth.isAuthenticated(), require('./api/uploadfile'));
   app.use('/api/countries', require('./api/countries'));
   app.use('/api/currencies', require('./api/currencies'));
   app.use('/api/object-customs', require('./api/object-customs'));
