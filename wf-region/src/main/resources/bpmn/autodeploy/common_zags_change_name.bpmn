@@ -386,7 +386,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів">
+    <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
@@ -535,7 +535,7 @@
           <activiti:value id="accept" name="так - данні відправлено до МВС"></activiti:value>
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -862,7 +862,6 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-  
     <serviceTask id="servicetask5" name="Повідомлення співробітника держ.органу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -1184,7 +1183,6 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow103" sourceRef="servicetask14" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow104" name="ще 10 днів" sourceRef="scripttask2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow105" sourceRef="timerintermediatecatchevent1" targetRef="endevent3"></sequenceFlow>
-   
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow106" sourceRef="usertask5" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow107" name="прийшов" sourceRef="exclusivegateway4" targetRef="usertask2_green"></sequenceFlow>
@@ -1200,6 +1198,9 @@ execution.setVariable('sNotification_day', timer)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="590.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="68.0" width="118.0" x="738.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="68.0" width="118.0" x="433.0" y="203.0"></omgdc:Bounds>
@@ -1254,9 +1255,6 @@ execution.setVariable('sNotification_day', timer)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="778.0" y="388.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="68.0" width="118.0" x="738.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="630.0" y="216.0"></omgdc:Bounds>
@@ -1325,7 +1323,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="552.0" y="357.0"></omgdi:waypoint>
         <omgdi:waypoint x="577.0" y="322.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="555.0" y="356.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="570.0" y="341.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
@@ -1355,14 +1353,14 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="630.0" y="236.0"></omgdi:waypoint>
         <omgdi:waypoint x="551.0" y="237.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="561.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="45.0" x="561.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
         <omgdi:waypoint x="650.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="491.0" y="176.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="601.0" y="180.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="601.0" y="180.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
