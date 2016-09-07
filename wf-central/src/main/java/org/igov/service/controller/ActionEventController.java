@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
@@ -536,6 +537,7 @@ public class ActionEventController {
             csvWriter.close();
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
         }
     }
 
