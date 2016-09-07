@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
@@ -524,18 +525,19 @@ public class ActionEventController {
 
             for(ServicesStatistics item : servicesStatistics){
                 List<String> line = new LinkedList<String>();
-                line.add(String.valueOf(item.getnID_Service()));
+                line.add(item.getnID_Service().toString());
                 line.add(item.getServiceName());
-                line.add(String.valueOf(item.getSID_UA()));
+                line.add(item.getSID_UA().toString());
                 line.add(item.getPlaceName());
-                line.add(String.valueOf(item.getnCountTotal()));
-                line.add(String.valueOf(item.getAverageRate()));
-                line.add(String.valueOf(item.getAverageTime()/60)); //to get hours divide minutes to 60
+                line.add(item.getnCountTotal().toString());
+                line.add(item.getAverageRate().toString());
+                line.add(item.getAverageTime().toString());
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             csvWriter.close();
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
         }
     }
 
