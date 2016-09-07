@@ -7,16 +7,16 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб'єкт звернення" type="enum" required="true">
-          <activiti:value id="sEnamGrom" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamDerj" name="Державний орган (Посадова особа)"></activiti:value>
-          <activiti:value id="sEnamUr" name="Службова особа"></activiti:value>
+        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true">
+          <activiti:value id="pasport" name="паспорт"></activiti:value>
+          <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSub_Name" name="Повне найменування органу чи юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія паспортного документу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/Vutiag.json')}"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу!" type="label" default="Вкажіть повну адресу реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="AdressCountry" name="Країна" type="string" required="true" default="Україна"></activiti:formProperty>
+        <activiti:formProperty id="AdressCountry" name="Країна" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="AdressInd" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="AdressOBL" name="Область" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="AdressRay" name="Район" type="string"></activiti:formProperty>
@@ -28,18 +28,15 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Зазначте мету отримання витягу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asVudVutiagu" name="Вид витягу" type="enum" required="true">
-          <activiti:value id="sEnamVutiag" name="Звичайний витяг"></activiti:value>
-          <activiti:value id="sEnamNE_Povn" name="Витяг з реєстру про внесення до актового запису змін, доповнень"></activiti:value>
-          <activiti:value id="sEnamPovn" name="Повний витяг"></activiti:value>
-        </activiti:formProperty>    
-        <activiti:formProperty id="asAktoviu" name="Про що актовий запис" type="enum" required="true">
-          <activiti:value id="sEnamAktNar" name="Про народження"></activiti:value>
-          <activiti:value id="sEnamAktSmert" name="Про смерть"></activiti:value>
-          <activiti:value id="sEnamAktSlub" name="Про шлюб"></activiti:value>
-          <activiti:value id="sEnamAktRazv" name="Про розірвання шлюб"></activiti:value>
-          <activiti:value id="sEnamAktIma" name="Про зміну імені"></activiti:value>
-          <activiti:value id="sEnamAktUsin" name="Про усиновлення"></activiti:value>
-          <activiti:value id="sEnamAktBat" name="Про визнання батьківства"></activiti:value>
+          <activiti:value id="sEnamVudZmin" name="Витяг з Державного реєстру актів цивільного стану громадян про внесення змін до актового запису цивільного стану"></activiti:value>
+          <activiti:value id="sEnamVudPovn" name="Повний витяг з Державного реєстру актів цивільного стану громадян"></activiti:value>
+          <activiti:value id="sEnamVudNar" name="Витяг щодо актового запису про народження"></activiti:value>
+          <activiti:value id="sEnamVudSmert" name="Витяг щодо актового запису про смерть"></activiti:value>
+          <activiti:value id="sEnamVudSlub" name="Витяг щодо актового запису про шлюб"></activiti:value>
+          <activiti:value id="sEnamVudRazv" name="Витяг щодо актового запису про розірвання шлюбу"></activiti:value>
+          <activiti:value id="sEnamVudIma" name="Витяг щодо актового запису про зміну імені"></activiti:value>
+          <activiti:value id="sEnamVudUsin" name="Витяг щодо актового запису про усиновлення"></activiti:value>
+          <activiti:value id="sEnamVudBat" name="Витяг щодо актового запису про встановлення батьківства"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSutVytagu" name="Про що витяг" type="enum" required="true">
           <activiti:value id="sEnamSutNar" name="Про реєстрацію народження відповідно до статей 126, 133, 135 СКУ"></activiti:value>
@@ -65,12 +62,13 @@
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText2" name="Зверніть увагу!" type="label" default="Вкажіть повну адресу місця народження особи"></activiti:formProperty>
         <activiti:formProperty id="AdressCountry_born" name="Країна" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="AdressOBL_born" name="Область" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="AdressRay_born" name="Район" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" default=" "></activiti:formProperty><activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату реєстрації народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату реєстрації народження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_Registr" name="Найменування органу, що здійснив реєстрацію" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Ser" name="Серія свідоцтва" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSvid_Nom" name="Номер свідоцтва" type="string" default=" "></activiti:formProperty>
@@ -84,8 +82,6 @@
         <activiti:formProperty id="sID_Currency2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file_OPLATA" name="Завантажте копію квитанції про оплату мита" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="O1" name="O1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="O2" name="O2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="T1" name="T1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="T2" name="T2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="A1" name="A1" type="invisible"></activiti:formProperty>
@@ -125,13 +121,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Нова заявка про ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -142,32 +138,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Заявка про ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо ${sPosluga_name} прийнято в роботу. <br />
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -175,30 +171,27 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubject" name="Суб'єкт звернення" type="enum" writable="false">
-          <activiti:value id="sEnamGrom" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamDerj" name="Державний орган (Посадова особа)"></activiti:value>
-          <activiti:value id="sEnamUr" name="Службова особа"></activiti:value>
+        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
+          <activiti:value id="pasport" name="паспорт"></activiti:value>
+          <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSub_Name" name="Повне найменування органу чи юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressFact" name="Адреса реєстрації" type="string" default="${AdressInd} ${AdressCountry} ${AdressOBL} ${AdressRay} ${AdressMisto} ${AdressVul} ${AdressBud} кв.${AdressKimn}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Мета отримання витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVudVutiagu" name="Вид витягу" type="enum" writable="false">
-          <activiti:value id="sEnamVutiag" name="Звичайний витяг"></activiti:value>
-          <activiti:value id="sEnamNE_Povn" name="Витяг з реєстру про внесення до актового запису змін, доповнень"></activiti:value>
-          <activiti:value id="sEnamPovn" name="Повний витяг"></activiti:value>
-        </activiti:formProperty> 
-        <activiti:formProperty id="asAktoviu" name="Про що актовий запис" type="enum" writable="false">
-          <activiti:value id="sEnamAktNar" name="Про народження"></activiti:value>
-          <activiti:value id="sEnamAktSmert" name="Про смерть"></activiti:value>
-          <activiti:value id="sEnamAktSlub" name="Про шлюб"></activiti:value>
-          <activiti:value id="sEnamAktRazv" name="Про розірвання шлюб"></activiti:value>
-          <activiti:value id="sEnamAktIma" name="Про зміну імені"></activiti:value>
-          <activiti:value id="sEnamAktUsin" name="Про усиновлення"></activiti:value>
-          <activiti:value id="sEnamAktBat" name="Про визнання батьківства"></activiti:value>
+          <activiti:value id="sEnamVudZmin" name="Витяг з Державного реєстру актів цивільного стану громадян про внесення змін до актового запису цивільного стану"></activiti:value>
+          <activiti:value id="sEnamVudPovn" name="Повний витяг з Державного реєстру актів цивільного стану громадян"></activiti:value>
+          <activiti:value id="sEnamVudNar" name="Витяг щодо актового запису про народження"></activiti:value>
+          <activiti:value id="sEnamVudSmert" name="Витяг щодо актового запису про смерть"></activiti:value>
+          <activiti:value id="sEnamVudSlub" name="Витяг щодо актового запису про шлюб"></activiti:value>
+          <activiti:value id="sEnamVudRazv" name="Витяг щодо актового запису про розірвання шлюбу"></activiti:value>
+          <activiti:value id="sEnamVudIma" name="Витяг щодо актового запису про зміну імені"></activiti:value>
+          <activiti:value id="sEnamVudUsin" name="Витяг щодо актового запису про усиновлення"></activiti:value>
+          <activiti:value id="sEnamVudBat" name="Витяг щодо актового запису про встановлення батьківства"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSutVytagu" name="Про що витяг" type="enum" writable="false">
           <activiti:value id="sEnamSutNar" name="Про реєстрацію народження відповідно до статей 126, 133, 135 СКУ"></activiti:value>
@@ -223,11 +216,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressCountry_born" name="Країна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressOBL_born" name="Область" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressRay_born" name="Район" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" writable="false"></activiti:formProperty><activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_Registr" name="Найменування органу що здійснив реєстрацію" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Ser" name="Серія свідоцтва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Nom" name="Номер свідоцтва" type="string" writable="false"></activiti:formProperty>
@@ -236,6 +230,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sSvid_AktN" name="Номер актового запису в реєстрі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
+          <activiti:value id="acceptVid" name="Дані в Реєстрі відсутні, запропонувати заявнику отримати витяг про відсутність відомостей"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
@@ -250,8 +245,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="AdressVul" name="Вулиця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressBud" name="Будинок, корпус" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressKimn" name="Квартира/кімната" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="O1" name="O1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="O2" name="O2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="T1" name="T1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="T2" name="T2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="A1" name="A1" type="invisible"></activiti:formProperty>
@@ -278,7 +271,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_OPLATA},{file_Prav_otr}</activiti:expression>
+            <activiti:expression><![CDATA[${sDocPassport},${file_OPLATA},${file_Prav_otr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -292,71 +285,113 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлена вірно.&lt;br /&gt;
-Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до РАГСу з документом, що посвідчує особу (паспорт), оригіналом документу про оплату державного мита та з іншими оригіналами документів які ви докладали до заяви.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Заява оформлена вірно.<br />
+Ви можете отримати Витяг за адресою вказаною нижче. <br />
+Для отримання Витягу потрібно особисто звернутися до РАГСу з документом, що посвідчує особу (паспорт), оригіналом документу про оплату послуги та з іншими оригіналами документів які ви докладали до заяви.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
+${sNameOrgan}.<br />
+${sAddress}.<br />
+Будь ласка оцініть якість наданої вам послуги. <br />
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" name="decide == 'accept'" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow11" name="decide == 'acceptVid'" sourceRef="servicetask1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptVid'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Відомості відсутні" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Заява оформлена вірно.<br />
+Проте у Реєстрі відсутні відомості стосовно вашого запиту. Витяг надати не можливо.<br />
+Але є можливість надати витяг про відсутність даних у державному реєстрі.<br />
+Для цього потрібно особисто звернутися до РАГСу з документом, що посвідчує особу (паспорт), оригіналом документу про оплату послуги та з іншими оригіналами документів які ви докладали до заяви.<br />
+${sPhoneOrgan}.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.<br />
+${sAddress}.<br />
+Будь ласка оцініть якість наданої вам послуги. <br />
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask4" name="Лист з відмовою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
-Причина відмови: ${comment} &lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Заява оформлені НЕ вірно. Відмова. <br />
+Причина відмови: ${comment} <br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -373,8 +408,6 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-        var Os1=' '
-        var Os2=' '
         var Tip1=' '
         var Tip2=' '
         var Akt1=' '
@@ -399,8 +432,6 @@ ${sNameOrgan}.&lt;br /&gt;
         var Vut13=' '
         var Vut14=' '
         var xxx='X'
-        execution.setVariable('O1', Os1)
-        execution.setVariable('O2', Os2)
         execution.setVariable('T1', Tip1)
         execution.setVariable('T2', Tip2)
         execution.setVariable('A1', Akt1)
@@ -425,19 +456,15 @@ ${sNameOrgan}.&lt;br /&gt;
         execution.setVariable('V13', Vut13)
         execution.setVariable('V14', Vut14)
         
-        if(execution.getVariable('asSubject') == 'sEnamDerj'){execution.setVariable('O1', xxx)}
-        if(execution.getVariable('asSubject') == 'sEnamUr'){execution.setVariable('O2', xxx)}
-        
-        if(execution.getVariable('asVudVutiagu') == 'sEnamNE_Povn'){execution.setVariable('T1', xxx)}
-        if(execution.getVariable('asVudVutiagu') == 'sEnamPovn'){execution.setVariable('T2', xxx)}
-        
-        if(execution.getVariable('asAktoviu') == 'sEnamAktNar'){execution.setVariable('A1', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktSmert'){execution.setVariable('A2', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktSlub'){execution.setVariable('A3', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktRazv'){execution.setVariable('A4', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktIma'){execution.setVariable('A5', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktUsin'){execution.setVariable('A6', xxx)}
-        if(execution.getVariable('asAktoviu') == 'sEnamAktBat'){execution.setVariable('A7', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudZmin'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudPovn'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar'){execution.setVariable('A1', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert'){execution.setVariable('A2', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub'){execution.setVariable('A3', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudRazv'){execution.setVariable('A4', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma'){execution.setVariable('A5', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin'){execution.setVariable('A6', xxx)}
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat'){execution.setVariable('A7', xxx)}
         
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNar'){execution.setVariable('V1', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNarBat'){execution.setVariable('V2', xxx)}
@@ -455,7 +482,9 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asSutVytagu') == 'sEnamSutSmerDop'){execution.setVariable('V14', xxx)}
       </script>
     </scriptTask>
-    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Vutiag">
     <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Vutiag" id="BPMNPlane_Zags_Dn987_Vutiag">
@@ -481,16 +510,19 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="502.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="574.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="663.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="366.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="276.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="505.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="305.0" y="147.0"></omgdi:waypoint>
@@ -510,24 +542,24 @@ ${sNameOrgan}.&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="542.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="626.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="715.0" y="330.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="577.0" y="296.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="577.0" y="296.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="502.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="418.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="330.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="296.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="381.0" y="296.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="626.0" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="715.0" y="385.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="418.0" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="385.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -542,6 +574,14 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="372.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="522.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
