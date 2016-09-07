@@ -171,11 +171,9 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPhoto" name="Фотокартка заявника (кольорова, для документів)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberPassportDoc" name="Серія, номер, яким органом і коли виданий паспортний документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспортного документу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо змінюється ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо змінюється прізвище" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'surname'||[sClient] == 'власне прізвище'&quot;}}}"></activiti:formProperty>
@@ -209,8 +207,8 @@
         <activiti:formProperty id="markers30" name="якщо дев'ять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateBirthChild8&quot;,&quot;sPlaceBirthChild8&quot;,&quot;sPlaceChild8&quot;,&quot;sDocChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateBirthChild9&quot;,&quot;sPlaceBirthChild9&quot;,&quot;sPlaceChild9&quot;,&quot;sDocChild9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'||[sClient] == '9'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="якщо десять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_31&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateBirthChild8&quot;,&quot;sPlaceBirthChild8&quot;,&quot;sPlaceChild8&quot;,&quot;sDocChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateBirthChild9&quot;,&quot;sPlaceBirthChild9&quot;,&quot;sPlaceChild9&quot;,&quot;sDocChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateBirthChild10&quot;,&quot;sPlaceBirthChild10&quot;,&quot;sPlaceChild10&quot;,&quot;sDocChild10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'||[sClient] == '10'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers32" name="якщо удова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_32&quot;:{&quot;aField_ID&quot;:[&quot;sDocDeath&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saMarriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'widow'||[sClient] == 'удова (удівець)'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers33" name="якщо паспорт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;sNumberPassport&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasport'||[sClient] == 'паспорт'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers34" name="якщо паспортний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_34&quot;:{&quot;aField_ID&quot;:[&quot;sNumberPassportDoc&quot;,&quot;sDocPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasportdoc'||[sClient] == 'паспортний документ'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers33" name="якщо паспорт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;sNumberPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasport'||[sClient] == 'паспорт'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers34" name="якщо паспортний документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_34&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasportdoc'||[sClient] == 'паспортний документ'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers35" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sSum2&quot;,&quot;sDescription2&quot;],&quot;asID_Field_sValue&quot;:[&quot;51.92&quot;,&quot;державне мито за повторну державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -367,7 +365,6 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumberPassportDoc" name="Серія, номер, яким органом і коли виданий паспортний документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, запросити заявника для надання оригіналів"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
@@ -384,7 +381,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPhoto},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPhoto},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -534,7 +531,6 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberPassportDoc" name="Серія, номер, яким органом і коли виданий паспортний документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Чи з'явився заявник для надання оригіналів?" type="enum" required="true">
           <activiti:value id="accept" name="так - данні відправлено до МВС"></activiti:value>
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
@@ -694,7 +690,6 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberPassportDoc" name="Серія, номер, яким органом і коли виданий паспортний документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="наданно дозвіл на зміну імені"></activiti:value>
           <activiti:value id="reject" name="відмовлено у зміні імені"></activiti:value>
@@ -855,7 +850,6 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberPassportDoc" name="Серія, номер, яким органом і коли виданий паспортний документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
@@ -1082,7 +1076,6 @@ ${sNameOrgan}<br />
       <script>
 var per1 = "&lt;li&gt;Документ, що посвідчує особу;&lt;/li&gt;"
 var per2 = "&lt;li&gt;Заява, яка була подана в електронному вигляді (знаходиться у додатку до листа - завантажте, роздрукуйте і підпишіть);&lt;/li&gt;"
-var per3 = " "
 var per4 = "&lt;li&gt;Свідоцтво про народження;&lt;/li&gt;"
 var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4;&lt;/li&gt;"
 var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита;&lt;/li&gt;"
@@ -1096,9 +1089,6 @@ var per13 = " "
 var per14 = " "
 var res = 'res'
 var res2 = 'res2'
-if(execution.getVariable('bankId_scan_passport') != null){
-per3 = '&lt;li&gt;Копія паспорта;&lt;/li&gt;'
-}
 if(execution.getVariable('sDocMarriage') != null){
 per7 = '&lt;li&gt;Свідоцтво про шлюб;&lt;/li&gt;'
 }
@@ -1115,7 +1105,7 @@ if(execution.getVariable('sDocDeath') != null){
 per11 = "&lt;li&gt;Свідоцтво про смерть другого із подружжя;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPassport') != null){
-per12 = "&lt;li&gt;Копія паспортного документу;&lt;/li&gt;"
+per12 = "&lt;li&gt;Копія документа, що посвідчує особу;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPhoto') != null){
 per13 = "&lt;li&gt;Фотокартка заявника;&lt;/li&gt;"
@@ -1129,7 +1119,7 @@ per14 = "&lt;ins&gt;прізвище&lt;/ins&gt;, власне ім’я, по �
 if(execution.getVariable('asFullName') == 'secondname'){
 per14 = "прізвище, власне ім’я,&lt;ins&gt;по батькові&lt;/ins&gt;"
 }
-res = '&lt;ol&gt;'+per3+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+per12+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
