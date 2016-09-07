@@ -28,6 +28,14 @@ public class ServicesStatistics extends AbstractEntity {
     @Column(name = "placeName")
     private String placeName;
 
+    public long getnCountTotal() {
+        return nCountTotal;
+    }
+
+    @JsonProperty(value = "nCountTotal")
+    @Column(name = "nCountTotal")
+    private long nCountTotal;
+
     @JsonProperty(value = "averageRate")
     @Column(name = "averageRate")
     private float averageRate;

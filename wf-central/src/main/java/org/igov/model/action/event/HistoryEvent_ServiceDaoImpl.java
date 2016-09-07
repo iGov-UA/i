@@ -11,9 +11,11 @@ import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.ToolLuna;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -33,6 +35,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
+
+    @Autowired
+    private QueryLoader sqlStorage;
     
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
@@ -151,27 +156,29 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @Override
     public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+//        sqlStorage.get()
 
         String queryString =
-                "select 0 AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, hes.sID_UA AS SID_UA, \n"
-                        + "p.sName AS placeName, avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
-                        + "from HistoryEvent_Service hes, Service s, Place p \n"
-                        + "where s.nID = hes.nID_Service \n"
-                        + "and p.sID_UA = hes.sID_UA \n"
-                        + "and hes.sDate >= :dateFrom \n"
-                        + "and hes.sDate < :dateTo \n"
-                        + "group by hes.nID_Service, hes.sID_UA ";
+                "select hes.\"nID_Service\" AS nID, hes.\"nID_Service\" AS nID_Service, s.\"sName\" AS ServiceName, \n"
+                        + "hes.\"sID_UA\" AS SID_UA, p.\"sName\" AS placeName, count(*) AS nCountTotal, \n"
+                        + "avg(hes.\"nRate\") AS averageRate, avg(hes.\"nTimeMinutes\") AS averageTime \n"
+                        + "from \"HistoryEvent_Service\" AS hes, \"Service\" AS s, \"Place\" AS p \n"
+                        + "where s.\"nID\" = hes.\"nID_Service\" \n"
+                        + "and p.\"sID_UA\" = hes.\"sID_UA\" \n"
+                        + "and hes.\"sDate\" >= to_timestamp( :dateFrom , 'YYYY-MM-DD hh24:mi:ss') \n"
+                        + "and hes.\"sDate\" < to_timestamp( :dateTo  , 'YYYY-MM-DD hh24:mi:ss')\n"
+                        + "group by hes.\"nID_Service\", hes.\"sID_UA\" ";
 
-        List<ServicesStatistics> events = null;
+        List<ServicesStatistics> servicesStatistics = null;
 
         SQLQuery query = getSession().createSQLQuery(queryString);
         query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
         query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
         query.addEntity(ServicesStatistics.class);
 
-        events = query.list();
+        servicesStatistics = query.list();
 
-        return events;
+        return servicesStatistics;
     }
     
     @Override

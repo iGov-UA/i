@@ -33,7 +33,7 @@ public class ManagerSMS_New {
     private String sCallbackUrl_SMS = null;
     private String sChemaId = null;
 
-    private String static_sMessageId = "IGOV_SMS-";
+    private String static_sMessageId = "IGOVSMS_";
 
     // Признак готовности сервиса отсылать сообщения
     private boolean isReadySendSMS = false;
@@ -61,7 +61,7 @@ public class ManagerSMS_New {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "-";
+	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "_";
 
 	LOG.info("Сервис готов к отсылке сообщений.");
 	isReadySendSMS = true;
@@ -71,14 +71,16 @@ public class ManagerSMS_New {
 	return sendSMS(null, sPhone, sText);
     }
 
-    public String sendSMS(String sMessageId, String sPhone, String sText) throws IllegalArgumentException {
+    public String sendSMS(String sID_Order, String sPhone, String sText) throws IllegalArgumentException {
 	if (!isReadySendSMS) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
+	LOG.debug("sID_Order:{}, sPhone:{}, sText:{}", sID_Order, sPhone, sText);
 
-	if (sMessageId == null || sMessageId.equals("")) {
-	    sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
+	String sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
+	if (sID_Order != null) {
+	    sMessageId = sMessageId + "_" + sID_Order;
 	}
 
 	SMS_New sms;

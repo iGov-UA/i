@@ -166,7 +166,15 @@ angular.module('app').controller('FooterController', function ($scope) {
       alt: 'fondy.eu',
       image: 'assets/images/ads/fondy.png',
       height: 50
-    }    
+    }
+    
+    ,{
+      url: 'http://www.jetbrains.com',
+      alt: 'jetbrains.com',
+      image: 'assets/images/ads/jetbrain.png',
+      height: 50
+    }
+    
  
  
   ];

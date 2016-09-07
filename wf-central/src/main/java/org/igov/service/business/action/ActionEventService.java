@@ -241,11 +241,9 @@ public class ActionEventService {
                 true, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
     }
 
-    public List<ServicesStatistics> getHistoryEvents(DateTime from, DateTime to) {
-
-        List<ServicesStatistics> events = historyEventServiceDao.getServicesStatistics(from, to);
-
-        return events;
+    public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+        List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatistics(from, to);
+        return servicesStatistics;
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
