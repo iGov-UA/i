@@ -525,13 +525,13 @@ public class ActionEventController {
 
             for(ServicesStatistics item : servicesStatistics){
                 List<String> line = new LinkedList<String>();
-                line.add(item.getnID_Service().toString());
+                line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
-                line.add(item.getSID_UA().toString());
+                line.add(String.valueOf(item.getSID_UA()));
                 line.add(item.getPlaceName());
-                line.add(item.getnCountTotal().toString());
-                line.add(item.getAverageRate().toString());
-                line.add(item.getAverageTime().toString());
+                line.add(String.valueOf(item.getnCountTotal()));
+                line.add(String.valueOf(item.getAverageRate()));
+                line.add(String.valueOf(item.getAverageTime()));
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             csvWriter.close();
