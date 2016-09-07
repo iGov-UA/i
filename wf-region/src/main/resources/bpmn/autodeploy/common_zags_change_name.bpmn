@@ -222,7 +222,7 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1_green" name="перевірка документів і вхідних данних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_yellow" name="перевірка документів і вхідних данних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
@@ -377,6 +377,7 @@
         <activiti:formProperty id="markers36" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers37" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -388,7 +389,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_red" name="очікується відповідь з МВД" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_green" name="очікується відповідь з МВД" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
@@ -541,6 +542,7 @@
         <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документом" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -548,7 +550,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3_yellow" name="очікується візит громадянина для отримання оригіналу свідоцтва" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="очікується візит громадянина для отримання оригіналу свідоцтва" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFullName" name="Прізвище, власне ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
@@ -698,6 +700,7 @@
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
@@ -747,7 +750,7 @@
 ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -782,10 +785,10 @@ ${sNameOrgan}<br />
 Ваше звернення отримано, вхідні данні пройшли первинну перевірку.<br />
 Для передачі документів на подальший розгляд в МВС Вам необхідно надати оригінали документів до обраного Вами відділу ДРАЦС.<br />
 Призначено дату і час візиту - ${sDateVisit1}.<br />
-${sAddress}<br />
+Адреса: ${sAddress}<br /><br />
 Перелік документів, які треба мати при собі:<br />
 ${sListDocumentsLetter}
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -820,10 +823,10 @@ ${sNameOrgan}<br />
 Вам надано дозвіл на зміну імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Вам призначено дату і час візиту для отримання оригіналу свідоцтва про зміну імені - ${sDateVisit2}.<br />
-${sAddress}<br />
+Адреса: ${sAddress}<br /><br />
 Звертаємо Вашу увагу - якщо впродовж 90 днів Ви не з'явитесь для отримання свідоцтва - дозвіл на зміну імені втрачає силу.<br />
-Після державної реєстрації зміни імені і отримання свідоцтва на першій сторінці паспорта буде зроблено відмітку про те, що паспорт підлягає обміну протягом місяця.<br />
-${sPhoneOrgan}<br />
+Після державної реєстрації зміни імені і отримання свідоцтва на першій сторінці паспорта буде зроблено відмітку про те, що паспорт підлягає обміну протягом місяця.<br /><br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -860,7 +863,7 @@ ${sNameOrgan}<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -897,7 +900,7 @@ ${sNameOrgan}<br />
 Якщо впродовж 10 днів свідоцтво Вами не буде отримано, дозвіл на зміну імені втратить силу.<br />
 У разі необхідності Ви зможете подати звернення на отримання дозволу повторно.
 <br />
-${sPhoneOrgan}<br />
+Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
@@ -920,7 +923,7 @@ var per1 = "&lt;li&gt;Документ, що посвідчує особу;&lt;/
 var per2 = "&lt;li&gt;Заява, яка була подана в електронному вигляді (знаходиться у додатку до листа - завантажте, роздрукуйте і підпишіть);&lt;/li&gt;"
 var per3 = " "
 var per4 = "&lt;li&gt;Свідоцтво про народження;&lt;/li&gt;"
-var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4&lt;/li&gt;"
+var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4;&lt;/li&gt;"
 var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита;&lt;/li&gt;"
 var per7 = " "
 var per8 = " "
@@ -929,36 +932,47 @@ var per10 = " "
 var per11 = " "
 var per12 = " "
 var per13 = " "
+var per14 = " "
 var res = 'res'
 var res2 = 'res2'
 if(execution.getVariable('bankId_scan_passport') != null){
-per3 = '&lt;li&gt;Копія паспорта.&lt;/li&gt;'
+per3 = '&lt;li&gt;Копія паспорта;&lt;/li&gt;'
 }
 if(execution.getVariable('sDocMarriage') != null){
-per7 = '&lt;li&gt;Свідоцтво про шлюб.&lt;/li&gt;'
+per7 = '&lt;li&gt;Свідоцтво про шлюб;&lt;/li&gt;'
 }
 if(execution.getVariable('sDocNoMarriage') != null){
-per8 = '&lt;li&gt;Документ про розірвання шлюбу (або інший документ, який підтверджує припинення шлюбу).&lt;/li&gt;'
+per8 = '&lt;li&gt;Документ про розірвання шлюбу (або інший документ, який підтверджує припинення шлюбу);&lt;/li&gt;'
 }
 if(execution.getVariable('sDocChild1') != null){
-per9 = "&lt;li&gt;Свідоцтва про народження дітей&lt;/li&gt;"
+per9 = "&lt;li&gt;Свідоцтва про народження дітей;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPrevious') != null){
-per10 = "&lt;li&gt;Документ, що підтверджує зміну імені.&lt;/li&gt;"
+per10 = "&lt;li&gt;Документ, що підтверджує зміну імені;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocDeath') != null){
-per11 = "&lt;li&gt;Свідоцтво про смерть другого із подружжя.&lt;/li&gt;"
+per11 = "&lt;li&gt;Свідоцтво про смерть другого із подружжя;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPassport') != null){
-per12 = "&lt;li&gt;Копія паспортного документу.&lt;/li&gt;"
+per12 = "&lt;li&gt;Копія паспортного документу;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPhoto') != null){
-per13 = "&lt;li&gt;Фотокартка заявника.&lt;/li&gt;"
+per13 = "&lt;li&gt;Фотокартка заявника;&lt;/li&gt;"
+}
+if(execution.getVariable('asFullName') == 'name'){
+per14 = "прізвище, &lt;ins&gt;власне ім’я&lt;/ins&gt;, по батькові "
+}
+if(execution.getVariable('asFullName') == 'surname'){
+per14 = "&lt;ins&gt;прізвище&lt;/ins&gt;, власне ім’я, по батькові"
+}
+if(execution.getVariable('asFullName') == 'secondname'){
+per14 = "прізвище, власне ім’я,&lt;ins&gt;по батькові&lt;/ins&gt;"
 }
 res = '&lt;ol&gt;'+per3+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+per12+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
+execution.setVariable('asFullNamepf', per14)
 	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Призначення дати автозакриття заявки" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -984,18 +998,18 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow50" sourceRef="usertask1_green" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask3_yellow" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow51" name="+" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow52" name="-" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2_red"></sequenceFlow>
-    <sequenceFlow id="flow90" sourceRef="servicetask5" targetRef="usertask1_green"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="servicetask5" targetRef="usertask3_yellow"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow92" sourceRef="usertask2_red" targetRef="exclusivegateway3"></sequenceFlow>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask3_yellow" cancelActivity="true">
+    <sequenceFlow id="flow92" sourceRef="usertask2_green" targetRef="exclusivegateway3"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>P80DT1M</timeDuration>
       </timerEventDefinition>
@@ -1006,7 +1020,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow94" name="+" sourceRef="exclusivegateway3" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow95" sourceRef="servicetask12" targetRef="usertask3_yellow"></sequenceFlow>
+    <sequenceFlow id="flow95" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow97" sourceRef="servicetask13" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow98" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
@@ -1014,7 +1028,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow99" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow100" name="80 днів" sourceRef="escalationTimer1" targetRef="servicetask14"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow101" sourceRef="usertask3_yellow" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow101" sourceRef="usertask4" targetRef="endevent3"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
         <timeDate>${sNotification_day}</timeDate>
@@ -1029,13 +1043,13 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="72.0" y="38.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1_green" id="BPMNShape_usertask1_green">
+      <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="590.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="68.0" width="118.0" x="433.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="68.0" width="118.0" x="279.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
@@ -1165,7 +1179,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="398.0" y="365.0"></omgdi:waypoint>
         <omgdi:waypoint x="432.0" y="334.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="444.0" y="323.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="396.0" y="372.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
