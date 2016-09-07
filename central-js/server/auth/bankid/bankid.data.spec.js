@@ -34,6 +34,18 @@ module.exports.customerError = {
   desc: "Ошибка получения данных клиента"
 };
 
+module.exports.scans = {
+  passportPDF: function (baseUrl) {
+      return {
+        "type": "passport",
+        "link": baseUrl + "/89f2fc550e2a0fa72e4d91a10fa41ab4e831b0d1/passport",
+        "dateCreate": "01.02.2016",
+        "extension": "pdf",
+        "number": 1
+      }
+  }
+};
+
 module.exports.customer = {
   "type": "physical",
   "clId": "111111dfdfd22222",
@@ -70,6 +82,15 @@ module.exports.customer = {
     "dateIssue": "01.01.1996",
     "issueCountryIso2": "UA"
   }]
+};
+
+module.exports.createCustomer = function (customerConfig) {
+  var customer = this.customer;
+  if(customerConfig.scans){
+    var baseUrl = customerConfig.scans.baseUrl;
+    customer.scans = [];
+    customer.scans.push(this.scans.passportPDF(baseUrl));
+  }
 };
 
 module.exports.createEncryptedCustomer = function (customerData, bankidNBUUtil, publicKeyPath) {

@@ -53,4 +53,12 @@ bankidMock
   .matchHeader('Authorization', function (val) {
     return appUtil.extractAccessTokenBankID(val) === bankidData.accessTokens.forCustomerDataResponseError;
   })
-  .reply(200, bankidData.customerError, headers);
+  .reply(200, bankidData.customerError, headers)
+  // https://bankid.privatbank.ua:443/ResourceService/checked/scan/89f2fc550e2a0fa72e4d91a10fa41ab4e831b0d1/passport
+  .get(function (uri) {
+    return uri.indexOf(baseUrls.resource.path.scan) >= 0;
+  })
+  .matchHeader('Authorization', function (val) {
+    return appUtil.extractAccessTokenBankID(val) === bankidData.accessTokens.forCustomerDataResponse;
+  })
+  .replyWithFile(200, __dirname + '/replies/user.json');
