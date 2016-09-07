@@ -7,10 +7,7 @@ import liquibase.util.csv.CSVWriter;
 
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.model.action.event.HistoryEvent;
-import org.igov.model.action.event.HistoryEventDao;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
 import org.igov.model.action.task.core.entity.ActionTaskLinkDao;
@@ -489,6 +486,21 @@ public class ActionEventController {
 
         List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = oActionEventService.getListOfHistoryEvents(nID_Service);
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
+    }
+
+    @RequestMapping(value = "/getServicesStatistic", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getServicesStatistic(
+            @ApiParam(value = "номер-ид сервиса(услуги)", required = true) @RequestParam(value = "nID_Service") Long nID_Service,
+            @RequestParam(value = "sDate_from") String sDate_from,
+            @RequestParam(value = "sDate_to") String sDate_to) {
+
+
+        DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+        DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+
+        List<ServicesStatistics> historyEvents = oActionEventService.getHistoryEvents(from, to);
+        return JSONValue.toJSONString(historyEvents);
     }
 
     @ApiOperation(value = "Получение отчета о поданных заявках", notes =

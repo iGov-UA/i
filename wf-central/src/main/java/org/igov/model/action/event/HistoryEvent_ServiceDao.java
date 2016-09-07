@@ -28,4 +28,13 @@ public interface HistoryEvent_ServiceDao extends EntityDao<Long, HistoryEvent_Se
     List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA);
 
     List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt, DateTime dateTo, List<Long> anID_Service_Exclude);
+
+    /**
+     * method analyses HistoryEvent_Service records filters them and perform grouping an aggregations
+     * result of aggregations represented in separate entity ServicesStatistics
+     * @param from
+     * @param to
+     * @return
+     */
+    List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to);
 }
