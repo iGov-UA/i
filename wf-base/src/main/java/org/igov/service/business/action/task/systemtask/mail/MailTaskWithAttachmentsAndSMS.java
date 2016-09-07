@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
 
 import javax.activation.DataSource;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,6 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
-    protected Expression sID_Order;
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
@@ -42,13 +44,13 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
             if (sPhone_SMS != null) {
                 String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
-                String sID_Order = getStringFromFieldExpression(this.sID_Order, oExecution);
                 if (sText_SMS != null) {
                     sText_SMS = replaceTags(sText_SMS, oExecution);
                     String sReturn;
                     sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
 
-                    sReturn = oManagerSMS.sendSMS(sID_Order, sPhone_SMS, sText_SMS);
+                    Long nID_Order = getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()));
+                    sReturn = oManagerSMS.sendSMS(nID_Order, sPhone_SMS, sText_SMS);
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
