@@ -153,15 +153,15 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
 
         String queryString =
-                "select hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s.sName AS ServiceName, \n"
-                        + "hes.sID_UA AS SID_UA, p.sName AS placeName, count(*) AS nCountTotal, \n"
-                        + "avg(hes.nRate) AS averageRate, avg(hes.nTimeMinutes) AS averageTime \n"
+                "select hes.\"nID_Service\" AS nID, hes.\"nID_Service\" AS nID_Service, s.\"sName\" AS ServiceName, \n"
+                        + "hes.\"sID_UA\" AS SID_UA, p.\"sName\" AS placeName, count(*) AS nCountTotal, \n"
+                        + "avg(hes.\"nRate\") AS averageRate, avg(hes.\"nTimeMinutes\") AS averageTime \n"
                         + "from \"HistoryEvent_Service\" AS hes, \"Service\" AS s, \"Place\" AS p \n"
-                        + "where s.nID = hes.nID_Service \n"
-                        + "and p.sID_UA = hes.sID_UA \n"
-                        + "and hes.sDate >= :dateFrom \n"
-                        + "and hes.sDate < :dateTo \n"
-                        + "group by hes.nID_Service, hes.sID_UA ";
+                        + "where s.\"nID\" = hes.\"nID_Service\" \n"
+                        + "and p.\"sID_UA\" = hes.\"sID_UA\" \n"
+                        + "and hes.\"sDate\" >= :dateFrom \n"
+                        + "and hes.\"sDate\" < :dateTo \n"
+                        + "group by hes.\"nID_Service\", hes.\"sID_UA\" ";
 
         List<ServicesStatistics> servicesStatistics = null;
 
