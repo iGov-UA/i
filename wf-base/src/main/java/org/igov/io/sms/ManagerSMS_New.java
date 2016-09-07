@@ -76,6 +76,7 @@ public class ManagerSMS_New {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
+	LOG.debug("sID_Order:{}, sPhone:{}, sText:{}", sID_Order, sPhone, sText);
 
 	String sMessageId = static_sMessageId + Integer.toString(countSMS.incrementAndGet());
 	if (sID_Order != null) {
