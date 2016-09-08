@@ -26,7 +26,8 @@ public class SubjectMessageCommonController {
      * 
      * @param soData_JSON
      */
-    @RequestMapping(value = "/getCallbackSMS_PB", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/getCallbackSMS_PB", method = { RequestMethod.POST,
+	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
     public @ResponseBody String callbackSMS(@RequestBody String soData_JSON) {
 	LOG.debug("callback JSON={}", soData_JSON);
 	String ret = managerSMS.saveCallbackSMS(soData_JSON);

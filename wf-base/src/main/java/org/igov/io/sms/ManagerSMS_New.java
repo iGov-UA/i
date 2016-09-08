@@ -202,7 +202,7 @@ public class ManagerSMS_New {
 	    sc = new SMSCallback(soJSON);
 	    LOG.info("%s", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Error parse JSON response callback SMS", e);
+	    LOG.error("Error parse JSON response callback SMS", e.getMessage());
 	}
 	return sc == null? "{}" : sc.toJSONString();
     }
