@@ -15,6 +15,9 @@
           <activiti:value id="atr2" name="атрибут 2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Поле з типом дата" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Поле з типом файл1" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Поле з типом файл2" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Поле з типом файл3" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="sales">
@@ -33,7 +36,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sDoc1},${sDoc2},${sDoc3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
