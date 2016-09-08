@@ -16,6 +16,13 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
           }
         });
       }
+      if (res.config.url.indexOf('object-customs') > 0){
+        angular.forEach(res.data, function (el) {
+          if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
+            el.sName_UA = el.sID_UA + " " + el.sName_UA;
+          }
+        });
+      }
       return res;
     });
   }
