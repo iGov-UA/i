@@ -8,7 +8,8 @@
         <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я англійською" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Якщо прізвище або ім'я англійською відрізняється від запису у кваліфікаційних документах, вкажіть причину у цьому полі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth1" name="Дата народження;Формат ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asBirthInUkr" name="Ви народились в Україні" type="enum" required="true">
           <activiti:value id="sYes" name="Так"></activiti:value>
@@ -400,7 +401,7 @@ execution.setVariable('sID_Payment', Pay)
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
 										Ваш запит був успішно зареєстрований у нашій системі за №[sID_Order].<br>
-										Ви отримаєте відповідь протягом трьох робочіх днів. 
+										Ви отримаєте відповідь протягом п'яти робочіх днів. 
 								    </p>
 									<p>
 										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
@@ -433,6 +434,7 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Причина невідповідності прізвища або ім'я англійською запису у кваліфікаційних документах" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth1" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
@@ -951,6 +953,7 @@ execution.setVariable('sMoz2', moz2)
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Причина невідповідності прізвища або ім'я англійською запису у кваліфікаційних документах" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
@@ -968,13 +971,14 @@ execution.setVariable('sMoz2', moz2)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
           <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
           <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
           <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asResultVizit" name="Результат візиту" type="enum" required="true">
           <activiti:value id="sTake" name="Громадянин отримав документ"></activiti:value>
+          <activiti:value id="sNoTake" name="Громадянину відмовлено у видачі документу"></activiti:value>
           <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -989,6 +993,9 @@ execution.setVariable('sMoz2', moz2)
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow63" sourceRef="exclusivegateway6" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sMistake'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow71" sourceRef="exclusivegateway6" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sNoTake'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="exclusivegateway6" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sTake'}]]></conditionExpression>
@@ -1690,6 +1697,12 @@ execution.setVariable('sMoz2', moz2)
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="510.0" y="827.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="827.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="211.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="635.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

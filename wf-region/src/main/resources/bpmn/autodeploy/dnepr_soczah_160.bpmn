@@ -224,19 +224,27 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-			Ви отримали схвалення щодо свого звернення про надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.<br />
-			Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.<br />
-			<br />
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]<br />
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ви отримали схвалення щодо свого звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>,
+				про надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.
+			</p><br>
+			<p>
+				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
+			</p><br>
+			Якщо у Вас є додаткові питання, ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],<br />
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${rish_copy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -318,7 +326,7 @@
           <activiti:value id="attr4_failure" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rish_copy" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="E-mail про відмову у наданні компенсації" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -334,19 +342,32 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-			На жаль, Вам відмовлено у призначенні державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам<br /> </p>
-			${comment1}<br /><br />
-			Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.<br />
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]<br />
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, було оброблене.
+			</p>
+			<p>				  
+				На жаль, Вам відмовлено у призначенні державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.
+			</p>
+			<p>
+				Причина: ${comment1}
+			</p><br>
+			<p>				
+				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.<br />
+			</p><br>
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],<br />
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]>
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${rish_copy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -385,8 +406,9 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<strong>Шановний(-а) колего!</strong><br /><br />
-			У Вас в черзі на обробку зареєстровано нове звернення щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.<br />
+			<h3>Шановний(-а) колего!</h3>
+			У черзі на обробку зареєстровано нове звернення № [sID_Order], 
+			щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.<br />
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 			Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 			[pattern/mail/_common_signature.html]
@@ -408,15 +430,24 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-			<p>На жаль, Ваше звернення щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам було відхилено.</p>
-			<p>Причина: ${comment}</p>
-			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-			<br />
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
-			<br />
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
+				щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам було відхилено.
+			</p>
+			<p>
+				Причина: ${comment}
+			</p>
+			<p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/778/general">iGov.org.ua</a>
+			</p><br>
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],<br />
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]>
 		  </activiti:expression>
@@ -447,14 +478,29 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-			<p>Ваше звернення щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів. Протягом трьох місяців Ви повині донести іх в  [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>, враховуючи коментар нижче.</p>
-			<p>Коментар спеціаліста: ${comment}</p>
-			<br />
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
-			<br />
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>,  
+				щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів. 
+			</p>
+			<p>				
+				Протягом трьох місяців Ви повині донести іх в ${sNameOrgan}.<br>
+				${sAddress}
+			</p>
+			<p>				
+				Також Вы можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/778/general">iGov.org.ua</a>, 
+				враховуючи коментар нижче.
+			</p>
+			<p>
+				Коментар спеціаліста: ${comment}
+			</p><br>
+			<br>
+			За наявності додаткових питань, можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],<br />
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]>
 		  </activiti:expression>
@@ -487,12 +533,21 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br>
-			<p>Ваше звернення щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам зареєстровано у системі.<br>
-			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]<br>
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
+				щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів.
+			</p>
+			<p>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+			</p><br>
+			<br>
+			Якщо у Вас э якісь додаткові питання, Ви можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2],<br>
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]>
 		  </activiti:expression>
