@@ -51,7 +51,15 @@ module.exports = function (app) {
     app.use(express.static(path.join(config.root, 'client')));
     app.use('/public-js', express.static(path.resolve(config.root + '../../public-js')));
     app.set('appPath', path.join(config.root, 'client'));
-    app.use(morgan('dev'));
+
+    morgan.token('local-dev', function (req, res) {
+//:method :url :status :response-time ms - :res[content-length]
+      return res.method + ' ' +
+             res.originalUrl + ' ' +
+             'body/' + JSON.stringify(res.body) + ' '
+    });
+
+    app.use(morgan('local-dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
 };
