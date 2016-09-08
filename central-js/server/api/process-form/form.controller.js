@@ -41,34 +41,7 @@ module.exports.submit = function (req, res) {
   var table = req.body.params.sTable;
   var properties = [];
 
-  async.waterfall([
-    function (callback) {
-      if('sTable' in formData.params) {
-
-        function putTableToRedis (table, callback) {
-          var url = '/object/file/upload_file_to_redis';
-          activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
-        }
-
-        putTableToRedis(table, function (error, response, body) {
-          if (error || body.code) {
-            callback(createError(body, 'error while caching data. ' + body.message, response), null);
-          } else {
-            callback(null, response, body);
-          }
-        })
-
-      }
-    },
-
-    function (response, body, callback) {
-      if(body) {
-        formData.params.sTable = body;
-        callback(null, body)
-      }
-    }
-    ],
-  function (err, body) {
+  function formSubmit() {
     for (var id in formData.params) {
       if (formData.params.hasOwnProperty(id)) {
         var value = formData.params[id];
@@ -109,9 +82,42 @@ module.exports.submit = function (req, res) {
     };
 
     activiti.post('/service/form/form-data', qs, body, callback, sHost);
-  });
+  }
 
+  if('sTable' in formData.params) {
+    async.waterfall([
+        function (callback) {
+          if('sTable' in formData.params) {
 
+            function putTableToRedis (table, callback) {
+              var url = '/object/file/upload_file_to_redis';
+              activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
+            }
+
+            putTableToRedis(table, function (error, response, body) {
+              if (error || body.code) {
+                callback(createError(body, 'error while caching data. ' + body.message, response), null);
+              } else {
+                callback(null, response, body);
+              }
+            })
+
+          }
+        },
+
+        function (response, body, callback) {
+          if(body) {
+            formData.params.sTable = body;
+            callback(null, body)
+          }
+        }
+      ],
+      function (err, body) {
+        formSubmit();
+      });
+  } else {
+    formSubmit();
+  }
 };
 
 module.exports.scanUpload = function (req, res) {
