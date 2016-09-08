@@ -53,10 +53,26 @@
           <activiti:value id="sEnamSutNarDop" name="Про реєстрацію народження згідно з ч. 1 ст. 135 СКУ для отримання допомоги"></activiti:value>
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRod_zvjazok" name="Ступінь родинного зв'язку" type="enum" required="true">
-          <activiti:value id="sEnamR1" name="Близький родич"></activiti:value>
-          <activiti:value id="sEnamR2" name="Далекий родич"></activiti:value>
-          <activiti:value id="sEnamR3" name="Опікун з довіреністю"></activiti:value>
+        <activiti:formProperty id="sRod_zvjazok" name="Вкажіть ступінь родинного зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asRod_zvjazokNarodj" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
+          <activiti:value id="sEnamR1" name="Батьки та усиновлювачі (незалежно від віку дитини)"></activiti:value>
+          <activiti:value id="sEnamR2" name="Опікуни, піклувальники"></activiti:value>
+          <activiti:value id="sEnamR3" name="Адміністрації закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRod_zvjazokSmerrtr" name="Ким ви є померлому" type="enum" required="true">
+          <activiti:value id="sEnamS1" name="Другий з подружжя"></activiti:value>
+          <activiti:value id="sEnamS2" name="Батько"></activiti:value>
+          <activiti:value id="sEnamS3" name="Мати"></activiti:value>
+          <activiti:value id="sEnamS4" name="Дитина"></activiti:value>
+          <activiti:value id="sEnamS5" name="Брат"></activiti:value>
+          <activiti:value id="sEnamS6" name="Сестра"></activiti:value>
+          <activiti:value id="sEnamS7" name="Онук"></activiti:value>
+          <activiti:value id="sEnamS8" name="Онука"></activiti:value>
+          <activiti:value id="sEnamS9" name="Дід"></activiti:value>
+          <activiti:value id="sEnamS10" name="Баба"></activiti:value>
+          <activiti:value id="sEnamS11" name="Інший родич померлої особи (за умови предявлення ним паспорта або паспортного документа і документів, що підтверджують родинні чи сімейні стосунки)"></activiti:value>
+          <activiti:value id="sEnamS12" name="Спадкоємці померлої особи (якщо родинні стосунки та/або право на спадкування підтверджуються документально, за умови предявлення паспорта або паспортного документа)"></activiti:value>
+          <activiti:value id="sEnamS13" name="Особа, що є вигодонабувачем (згідно з договором особистого страхування життя, укладеним у фінансовій установі, або із спадковим договором; за умови предявлення договору, паспорта або паспортного документа)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="file_Prav_otr" name="Документ що дає право на отримання витягу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
@@ -105,6 +121,7 @@
         <activiti:formProperty id="V12" name="V12" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="V13" name="V13" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="V14" name="V14" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="RodZv" name="RodZv" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
@@ -268,6 +285,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="V12" name="V12" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="V13" name="V13" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="V14" name="V14" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="RodZv" name="RodZv" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -478,6 +496,22 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNarDop'){execution.setVariable('V12', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNarVup'){execution.setVariable('V13', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutSmerDop'){execution.setVariable('V14', xxx)}
+        
+        
+        var Rod=(execution.getVariable('sRod_zvjazok')
+        execution.setVariable('RodZv', Rod)
+        
+        
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar')
+          {
+          var RodN=(execution.getVariable('asRod_zvjazokNarodj')
+          execution.setVariable('RodZv', RodN)
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert')
+          {
+          var RodS=(execution.getVariable('asRod_zvjazokSmerrtr')
+          execution.setVariable('RodZv', RodS)
+          }
       </script>
     </scriptTask>
     <sequenceFlow id="flow12" name="${decide == 'acceptVid'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
