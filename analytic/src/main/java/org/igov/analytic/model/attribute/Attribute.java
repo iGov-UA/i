@@ -33,13 +33,19 @@ public class Attribute extends NamedEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeType")
     private AttributeType oAttributeType;
+    
+    
+    @JsonProperty(value = "oAttributeName")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_AttributeName")
+    private AttributeName oAttributeName;
 
     @JsonProperty(value = "oAttributeTypeCustom")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeTypeCustom")
     private AttributeTypeCustom oAttributeTypeCustom;
 
-    @JsonIgnore
+	@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
@@ -172,5 +178,14 @@ public class Attribute extends NamedEntity {
     public void setoAttribute_File(Attribute_File oAttribute_File) {
         this.oAttribute_File = oAttribute_File;
     }
+    
+    public AttributeName getoAttributeName() {
+  		return oAttributeName;
+  	}
+
+  	public void setoAttributeName(AttributeName oAttributeName) {
+  		this.oAttributeName = oAttributeName;
+  	}
+
 
 }

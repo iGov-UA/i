@@ -119,6 +119,13 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+      getTableAttachment: function (taskId, attachId) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + taskId + '/attachments/' + attachId + '/table'
+        })
+      },
+
       taskFormFromHistory: function(taskId) {
         return simpleHttpPromise({
           method: 'GET',

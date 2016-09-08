@@ -12,6 +12,16 @@ var url = require('url')
   , activiti = require('../../components/activiti')
   , errors = require('../../components/errors');
 
+  var createError = function (error, error_description, response) {
+    return {
+      code: response ? response.statusCode : 500,
+      err: {
+        error: error,
+        error_description: error_description
+      }
+    };
+  };
+
 module.exports.index = function (req, res) {
   var sHost = req.region.sHost;
   var sID_BP_Versioned = req.query.sID_BP_Versioned;
@@ -28,48 +38,86 @@ module.exports.submit = function (req, res) {
   var formData = req.body;
   var nID_Subject = req.session.subject.nID;
   var sHost = req.region.sHost;
-
+  var table = req.body.params.sTable;
   var properties = [];
-  for (var id in formData.params) {
-    if (formData.params.hasOwnProperty(id)) {
-      var value = formData.params[id];
-      if (id === 'nID_Subject') {
-        value = nID_Subject;
-      }
-      if (id === 'sID_UA' && formData.sID_UA_Common !== null) {
-        value = formData.sID_UA_Common;
-      } else if (id === 'sID_UA') {
-        value = formData.sID_UA;
-      }
 
-      properties.push({
-        id: id,
-        value: value
-      });
+  function formSubmit() {
+    for (var id in formData.params) {
+      if (formData.params.hasOwnProperty(id)) {
+        var value = formData.params[id];
+        if (id === 'nID_Subject') {
+          value = nID_Subject;
+        }
+        if (id === 'sID_UA' && formData.sID_UA_Common !== null) {
+          value = formData.sID_UA_Common;
+        } else if (id === 'sID_UA') {
+          value = formData.sID_UA;
+        }
+
+        properties.push({
+          id: id,
+          value: value
+        });
+      }
     }
+
+    var callback = function (error, response, body) {
+      res.send(body);
+      res.end();
+    };
+
+    var qs = {
+      nID_Subject: nID_Subject,
+      nID_Service: formData.nID_Service,
+      nID_ServiceData: formData.nID_ServiceData,
+      nID_Region: formData.nID_Region,
+      sID_UA: formData.sID_UA
+    };
+
+    var body = {
+      processDefinitionId: formData.processDefinitionId,
+      businessKey: "key",
+      nID_Subject: nID_Subject,
+      properties: properties
+    };
+
+    activiti.post('/service/form/form-data', qs, body, callback, sHost);
   }
 
-  var callback = function (error, response, body) {
-    res.send(body);
-    res.end();
-  };
+  if('sTable' in formData.params) {
+    async.waterfall([
+        function (callback) {
+          if('sTable' in formData.params) {
 
-  var qs = {
-    nID_Subject: nID_Subject,
-    nID_Service: formData.nID_Service,
-    nID_ServiceData: formData.nID_ServiceData,
-    nID_Region: formData.nID_Region,
-    sID_UA: formData.sID_UA
-  };
+            function putTableToRedis (table, callback) {
+              var url = '/object/file/upload_file_to_redis';
+              activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
+            }
 
-  var body = {
-    processDefinitionId: formData.processDefinitionId,
-    businessKey: "key",
-    nID_Subject: nID_Subject,
-    properties: properties
-  };
+            putTableToRedis(table, function (error, response, body) {
+              if (error || body.code) {
+                callback(createError(body, 'error while caching data. ' + body.message, response), null);
+              } else {
+                callback(null, response, body);
+              }
+            })
 
-  activiti.post('/service/form/form-data', qs, body, callback, sHost);
+          }
+        },
+
+        function (response, body, callback) {
+          if(body) {
+            formData.params.sTable = body;
+            callback(null, body)
+          }
+        }
+      ],
+      function (err, body) {
+        formSubmit();
+      });
+  } else {
+    formSubmit();
+  }
 };
 
 module.exports.scanUpload = function (req, res) {

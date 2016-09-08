@@ -26,6 +26,7 @@
             DROP TABLE IF EXISTS "AttributeType" CASCADE;
             DROP TABLE IF EXISTS "AttributeTypeCustom" CASCADE;
             DROP TABLE IF EXISTS "SourceDB" CASCADE;
+            DROP TABLE IF EXISTS "AttributeName" CASCADE;
         </sql>
 
         <sql splitStatements="true" dbms="h2">
@@ -47,6 +48,7 @@
             DROP TABLE IF EXISTS AttributeType CASCADE;
             DROP TABLE IF EXISTS AttributeTypeCustom CASCADE;
             DROP TABLE IF EXISTS SourceDB CASCADE;
+            DROP TABLE IF EXISTS AttributeName CASCADE;
         </sql>
 
 
@@ -54,6 +56,15 @@
         
         <!-- ####################################################################################################### -->
         <createTable tableName="AttributeType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="AttributeName">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -197,6 +208,10 @@
                 <constraints nullable="true" foreignKeyName="FK_Attribute_AttributeTypeCustom"
                              referencedTableName="AttributeTypeCustom" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
+              <column name="nID_AttributeName" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Attribute_AttributeName"
+                             referencedTableName="AttributeName" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
         </createTable>  
         
         <createTable tableName="Attribute_Integer">
@@ -323,6 +338,7 @@
         <addAutoIncrement tableName="Attribute_Boolean" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Attribute_Date" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="AttributeType" columnName="nID" startWith="2000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AttributeName" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="AttributeTypeCustom" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="SourceDB" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="AccessGroup" columnName="nID" startWith="2000" columnDataType="bigint"/>

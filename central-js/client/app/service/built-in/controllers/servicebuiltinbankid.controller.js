@@ -29,7 +29,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   service,
   FieldMotionService,
   ParameterFactory,
-  $modal
+  $modal,
+  FileFactory,
+  DatepickerFactory
   ,ErrorsFactory
 ) {
 
@@ -52,6 +54,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.data.id = currentState.data.id;
 
   $scope.data.formData = formData;
+  $scope.tableIsInvalid = false;
 
   $scope.setFormScope = function(scope){
     this.formScope = scope;
@@ -203,6 +206,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.processForm = function (form, aFormProperties) {
+    if($scope.tableContent) {
+      $scope.data.formData.params['sTable'].value = $scope.tableContent;
+    }
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -740,5 +746,57 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       window.open( url, '_blank' );
     }
   }
+
+  function addProtoToTableDate() {
+    angular.forEach($scope.tableContent.aRow, function(fields) {
+      angular.forEach(fields.aField, function (item, key, obj) {
+        if (item.type === 'date') {
+          obj[key].props = DatepickerFactory.prototype.createFactory();
+        }
+      })
+    });
+  }
+
+
+  if($scope.data.formData.params.sTable) {
+    if(localStorage.getItem("TableParams") !== null){
+      $scope.tableContent = JSON.parse(localStorage.getItem("TableParams"));
+    } else {
+      var parsedTable = JSON.parse($scope.data.formData.params.sTable.value);
+      $scope.tableContent = {
+        aRow : [parsedTable]
+      };
+    }
+    addProtoToTableDate();
+  }
+
+  $scope.addRow = function (form) {
+    if(!form.$invalid) {
+      $scope.tableIsInvalid = false;
+      var defaultCopy = angular.copy($scope.tableContent.aRow[0]);
+      angular.forEach(defaultCopy.aField, function (item) {
+        if(item.id) {
+          var nId = item.id.match(/\d+/)[0];
+          item.id = item.id.split(nId)[0] + (+$scope.tableContent.aRow.length +1);
+        }
+        if(item.default) {
+          item.value = item.default;
+          delete item.default;
+        }
+      });
+      addProtoToTableDate();
+      $scope.tableContent.aRow.push(defaultCopy);
+      JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
+    } else {
+      $scope.tableIsInvalid = true;
+    }
+  };
+  $scope.removeRow = function (index, form) {
+    $scope.tableContent.aRow.splice(index, 1);
+    JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
+    if(!form.$invalid) {
+      $scope.tableIsInvalid = false;
+    }
+  };
 
 });
