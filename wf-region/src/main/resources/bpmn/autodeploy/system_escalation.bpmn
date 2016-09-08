@@ -105,19 +105,18 @@ execution.setVariable('sNotification_day', timer)
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Інформація щодо Вашого звернення ${nID_Protected}]]></activiti:string>
+          <activiti:string>Інформація щодо Вашого звернення ${nID_Protected}</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${clfio}.</b><br /><br />
-У зв'язку з порушенням сроків обробки звернень волонтери команди iGov зв'язалися з представниками адміністративного органу, відповідального за опрацювання Вашого звернення ${sNameProcess} - ${nID_Protected}.<br />
+У зв'язку з порушенням сроків обробки звернення ${nID_Protected} (${sNameProcess})
+волонтери команди iGov зв'язалися з выдповідальним представниками адміністративного органу - ${sOrganName}.
 За результатми контакту отримано наступний коментар працівника:<br />
 ${comment}<br /><br />
 При необхідності Ви можете зателефонувати до державного органу:<br />
 ${sEmployeeContacts}<br /><br />
-Якщо відповідь державного органу, яку Ви отримаєте на свій запит, Вас не задовольнить, напишіть про це нам за <a href="http://goo.gl/forms/YKYIdf1nNQxq1XIo2">цією формою</a>. <br>
-Волонтери iGov спробують додатково привернути увагу до Вашої заявки.<br />
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
