@@ -5,7 +5,7 @@ angular.module('app').factory('SignFactory', function () {
   };
 
   Sign.prototype.isFit = function (property) {
-    return property.type === 'file' && property.id === 'form_signed';
+    return property.type === 'file' && (property.id === 'form_signed' || property.id === 'form_signed_all');
   };
 
   Sign.prototype.get = function() {

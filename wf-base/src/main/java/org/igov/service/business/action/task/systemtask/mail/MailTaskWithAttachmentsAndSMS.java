@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
 
 import javax.activation.DataSource;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.mail.MultiPartEmail;
-import org.igov.io.sms.ManagerSMS;
+//import org.igov.io.sms.ManagerSMS_New;
 
 /**
  * @author BW
@@ -45,7 +48,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     sText_SMS = replaceTags(sText_SMS, oExecution);
                     String sReturn;
                     sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
-                    sReturn = oManagerSMS.sendSMS(sPhone_SMS, sText_SMS);
+
+                    sReturn = oManagerSMS.sendSMS(generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))),
+                	    sPhone_SMS, sText_SMS);
                     LOG.info("(sReturn={})", sReturn);
                 }
             }

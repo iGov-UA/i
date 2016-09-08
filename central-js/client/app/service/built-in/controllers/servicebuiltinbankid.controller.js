@@ -194,7 +194,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         'some business key 111',
         'process name here', $scope.activitiForm, $scope.data.formData)
         .then(function (result) {
-          var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService);
+          var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService, $scope.data.formData.params);
           $window.location.href = $location.protocol() + '://' + $location.host() + ':' + $location.port() + signPath;
           //$window.location.href = $location.absUrl()
           //  + '?formID=' + result.formID

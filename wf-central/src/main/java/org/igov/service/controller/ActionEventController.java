@@ -5,15 +5,12 @@ import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.model.action.event.HistoryEvent;
-import org.igov.model.action.event.HistoryEventDao;
-import org.igov.model.action.event.HistoryEvent_Service;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.*;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.action.task.core.entity.ActionTaskLinkDao;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
@@ -435,8 +432,8 @@ public class ActionEventController {
     }
 
     @ApiOperation(value = "Загрузка событий", notes =
-              "Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
-            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&nID_HistoryEvent_Service=2\n\n"
+              "Пример 1: http://test.igov.org.ua/wf/service/action/event/getServicesStatistics?nID_Subject=10\n\n"
+            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getServicesStatistics?nID_Subject=10&nID_HistoryEvent_Service=2\n\n"
             + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
             + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
             + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
@@ -491,6 +488,60 @@ public class ActionEventController {
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
     }
 
+    @ApiOperation(value = "Получение статистики по сервисам и регионам за заданный промежуток времени", notes =
+            "##### Примеры:\n"
+                    + "https://test.igov.org.ua/wf/service/action/event/getServicesStatistic?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
+                    + "Результат\n"
+                    + "\n```csv\n"
+                    + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
+                    + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
+                    + "\n```\n")
+    @RequestMapping(value = "/getServicesStatistic", method = RequestMethod.GET)
+    public @ResponseBody
+    void getServicesStatistic(
+            @ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
+            @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
+            HttpServletResponse httpResponse) {
+
+
+        //parse date to check that it has appropriate form
+        DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+        DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+
+        List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatistics(from, to);
+
+        String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "averageRate",
+                "averageTime"};
+        List<String> headers = new ArrayList<>();
+        headers.addAll(Arrays.asList(headingFields));
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatistics.csv");
+        httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+        CSVWriter csvWriter;
+        try {
+            csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+
+            for(ServicesStatistics item : servicesStatistics){
+                List<String> line = new LinkedList<>();
+                line.add(String.valueOf(item.getnID_Service()));
+                line.add(item.getServiceName());
+                line.add(String.valueOf(item.getSID_UA()));
+                line.add(item.getPlaceName());
+                line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
+                //divide average time (mins) to 60 to get hours
+                line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue()/60f));
+                csvWriter.writeNext(line.toArray(new String[line.size()]));
+            }
+            csvWriter.close();
+        } catch (Exception e) {
+            LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
+        }
+    }
+
     @ApiOperation(value = "Получение отчета о поданных заявках", notes =
             "##### Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
             + "В результате возвращаются следующий набор полей - sID_Order, nID_Server, nID_Service, sID_Place, nID_Subject, nRate, sTextFeedback, sUserTaskName, sHead, sBody, nTimeMinutes, sPhone\n"
@@ -514,7 +565,7 @@ public class ActionEventController {
     	
     	String[] headersMainField = { "sID_Order", "nID_Server",
                 "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
-                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData" };
+                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClosed" };
     	List<String> headers = new ArrayList<String>();
         headers.addAll(Arrays.asList(headersMainField));
     	
@@ -604,7 +655,10 @@ public class ActionEventController {
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
-
+                    //sDateCreate
+                    line.add(historyEventService.getsDateCreate() != null? historyEventService.getsDateCreate() : "");
+                    //sDateClosed
+                    line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}

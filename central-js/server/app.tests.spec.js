@@ -66,10 +66,21 @@ function testPOSTUnathorized(urlWithParams, agent, body, done) {
     .end(defaultEnd(done));
 }
 
+function assertNoError(done) {
+  return function (error) {
+    if(error){
+      done(error);
+    } else {
+      done();
+    }
+  }
+}
+
 module.exports = function (testRequestParam) {
   testRequest = testRequestParam;
 
   return {
+    assertNoError : assertNoError,
     assertErrorResult: assertErrorResult,
     assertErrorNestedResult: assertErrorNestedResult,
     testGET: testGET,

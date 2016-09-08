@@ -23,10 +23,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.action.task.bp.BpService;
+import org.igov.service.business.place.PlaceService;
 
 /**
  * @author OlgaPrylypko
@@ -52,6 +55,8 @@ public class BpServiceHandler {
     private BpService bpService;
     @Autowired
     private HistoryService historyService;
+    @Autowired
+    private PlaceService placeService;
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
@@ -130,6 +135,7 @@ public class BpServiceHandler {
             LOG.debug("FAIL:", oException);
         }
         String taskName = (String) mTaskParam.get("sTaskName");
+        String LoginAssigned = (String) mTaskParam.get("sLoginAssigned");
         LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
         Map<String, String> params = new HashMap<>();
@@ -157,30 +163,47 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника"); 
+        mParam.put("email",mTaskParam.get("email"));
+        mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
-        LOG.info("sField={}", sField);
+        LOG.info("sField={}", sField); 
         mParam.put("saField", sField+".");
-
+        
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs); 
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
         
-        
+        mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
-        mParam.put("sLoginAssigned", "sTaskId");
-        mGuideTaskParamKey.put("sLoginAssigned", "Логін посадовця");
-        mParam.put("data", mTaskParam.get("sDate_BP"));
-        mGuideTaskParamKey.put("data", "Дата БП");
         mParam.put("sOrganName", mTaskParam.get("area"));
-        mParam.put("sPlace", getPlaceForProcess(sID_Process));
+        mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
+        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
+        mParam.put("sPlace", mTaskParam.get("sNameOriginal"));
+        mGuideTaskParamKey.put("sPlace", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
+         try {//issue #1350
+                String jsonPlace = placeService.getPlaceByProcess(sField);
+                LOG.info("!!!!!!!!!!!!!!!get place for bp:(jsonPlace={})", jsonPlace);
+                JSONObject sPlace = new JSONObject(jsonPlace);
+                mParam.put("sNameOriginal", sPlace.get("sNameOriginal"));
+                LOG.info("!!!!!!!!!!!!!!mParam.put(\"sNameOriginal\", sPlace.get(\"sNameOriginal\"))"+mParam.put("sNameOriginal", sPlace.get("sNameOriginal")));
+                nID_Server = sPlace.getInt("nID_Server");
+                LOG.info("!!!!!!!!!!!!!!!nID_Server"+nID_Server);
+            } catch (Exception oException) {
+                LOG.error("ex!: {}", oException.getMessage());
+                LOG.debug("FAIL:", oException);
+
+            }
         try {
             String soProcessEscalation = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, mParam);
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
@@ -232,6 +255,7 @@ public class BpServiceHandler {
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
+    
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
@@ -250,47 +274,42 @@ public class BpServiceHandler {
 
     private Set<String> getCandidateGroups(final String sProcessName, final String snID_Task,
             final Map<String, Object> mTaskVariable, String prefix) {
+        LOG.info("!!!!!!!!!!!!!sProcessName: "+sProcessName+"snID_Task: "+snID_Task+"mTaskVariable: "+mTaskVariable+"prefix: "+prefix);
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
+        LOG.info("!!!!!!!!!!!asCandidateCroupToCheck: "+asCandidateCroupToCheck);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
-        LOG.info("saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
-        if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
-            LOG.info("!!!!!!!!!!saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN): "+saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN));
-            LOG.info("!!!!!!!!!!saCandidateCroupToCheck: "+saCandidateCroupToCheck);
-            Map<String, Object> mProcessVariable = null;
+        //if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
+        Map<String, Object> mProcessVariable = null;
             if (mTaskVariable == null) {//get process variables
-                LOG.info("!!!!!!!!!!mTaskVariable: "+mTaskVariable);
-                HistoricTaskInstance oHistoricTaskInstance = historyService
+               HistoricTaskInstance oHistoricTaskInstance = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
                         .singleResult();
-                LOG.info("!!!!!!!!!!oHistoricTaskInstance: "+oHistoricTaskInstance + "oHistoricTaskInstance.getProcessVariables(): " + oHistoricTaskInstance.getProcessVariables());
                 if (oHistoricTaskInstance != null && oHistoricTaskInstance.getProcessVariables() != null) {
-                    mProcessVariable = oHistoricTaskInstance.getProcessVariables();
-                }
+                   mProcessVariable = oHistoricTaskInstance.getProcessVariables();
+                     }
             } else { //use existing process variables
                 mProcessVariable = mTaskVariable;
-            }
+                }
             if (mProcessVariable != null) {
                 Set<String> asCandidateGroupNew = new HashSet<>();
                 for (String sCandidateGroup : asCandidateCroupToCheck) {
-                    String sCandidateGroupNew = sCandidateGroup;
+                   String sCandidateGroupNew = sCandidateGroup;
                     if (sCandidateGroup.contains(BEGIN_GROUPS_PATTERN)) {
-                        String sVariableName = StringUtils.substringAfter(sCandidateGroup, BEGIN_GROUPS_PATTERN);
+                       String sVariableName = StringUtils.substringAfter(sCandidateGroup, BEGIN_GROUPS_PATTERN);
                         sVariableName = StringUtils.substringBeforeLast(sVariableName, END_GROUPS_PATTERN);
                         Object sVariableValue = mProcessVariable.get(sVariableName);
-                        if (sVariableValue != null) {
+                       if (sVariableValue != null) {
                             sCandidateGroupNew = sCandidateGroup.replace(BEGIN_GROUPS_PATTERN + sVariableName + END_GROUPS_PATTERN, "" + sVariableValue);
                             LOG.info("replace candidateGroups: from sCandidateGroup={}, to sCandidateGroupNew={}", sCandidateGroup, sCandidateGroupNew);
                         }
                     }
                     asCandidateGroupNew.add(prefix + sCandidateGroupNew);
-                    LOG.info("!!!!!!!!!!prefix+sCandidateGroupNew: "+prefix+sCandidateGroupNew);
-                }
+                    }
                 asCandidateCroupToCheck = asCandidateGroupNew;
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
-            }
-        }
-        LOG.info("!!!!!!!!!!saCandidateCroupToCheck={}", saCandidateCroupToCheck);
+                }
+//        }
         return asCandidateCroupToCheck;
     }
 
