@@ -509,6 +509,7 @@ public class ActionEventController {
         DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
 
         List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatistics(from, to);
+        LOG.info("ServicesStatistics {}", servicesStatistics);
 
         String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "averageRate",
                 "averageTime"};
