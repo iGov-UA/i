@@ -9,7 +9,9 @@ var url = require('url')
   , async = require('async')
   , formTemplate = require('./form.template')
   , uploadFileService = require('../uploadfile/uploadfile.service')
+  , formService = require('./form.service')
   , activiti = require('../../components/activiti')
+  , admZip = require('adm-zip')
   , errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
@@ -332,45 +334,139 @@ module.exports.signFormMultipleCallback = function (req, res) {
   var accessToken = req.session.access.accessToken;
   var type = req.session.type;
   var userService = authProviderRegistry.getUserService(type);
+  var self = this;
 
   if (!codeValue) {
     codeValue = req.query['amp;code'];
   }
 
-  async.waterfall([
-    function (callback) {
-      loadForm(formID, sURL, function (error, response, body) {
-        if (error) {
-          callback(error, null);
-        } else {
-          callback(null, body);
-        }
-      });
-    },
-    function (formData, callback) {
-      userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
-        callback(error, {signedContent : result, formData: formData});
-      });
-    },
-    function (result, callback) {
+  function loadFormAsync(callback) {
+    loadForm(formID, sURL, function (error, response, body) {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, body);
+      }
+    });
+  }
+
+  function downloadSignedContent(formData, callback) {
+    userService.downloadSignedContent(accessToken, codeValue, function (error, result) {
+      callback(error, {signedContent : result, formData: formData});
+    });
+  }
+
+  function processZipWithSignedContent(result, callback) {
+    //TODO new async of decompressing files from archive, saving to redis, ids from redis to form data,
+    //TODO form data to redis, new formdata id to redirect
+    var zip = new admZip(result.signedContent.buffer);
+    var zipEntries = zip.getEntries();
+
+    var uploadedFiles = {};
+
+    function uploadZipEntry(zipEntry, buffer, entryProcessCallback) {
       uploadFileService.upload([{
         name: 'file',
         options: {
-          filename: result.signedContent.fileName
+          filename: zipEntry.name
         },
-        buffer: result.signedContent.buffer
+        buffer: buffer
       }], function (error, response, body) {
         if (!body) {
-          callback(errors.createExternalServiceError('Can\'t save signed content. Unknown error', error), null);
+          entryProcessCallback(errors.createExternalServiceError('Can\'t save signed content from archive. Unknown error', error));
         } else if (body.code && body.message) {
-          callback(errors.createExternalServiceError('Can\'t save content. ' + body.message, body), null);
+          entryProcessCallback(errors.createExternalServiceError('Can\'t save signed content from archive. ' + body.message, body));
         } else if (body.fileID) {
-          result.signedFileID = body.fileID;
-          callback(null, result);
+          uploadedFiles[zipEntry.name.split('.')[0]] = body.fileID;
+          entryProcessCallback();
         }
       }, sHost);
     }
-  ], function (err, result) {
+
+    function processZipEntry(zipEntry, entryProcessCallback) {
+      zip.readFileAsync(zipEntry, function (buffer) {
+        uploadZipEntry(zipEntry, buffer, entryProcessCallback);
+      });
+    }
+
+    function populateFormDataWithNewIDs(error) {
+      if(error){
+        callback(error, null);
+      } else {
+        console.log(JSON.stringify(uploadedFiles));
+        console.log(JSON.stringify(result.formData));
+
+        var savedForm = result.formData;
+        for(var formFieldKey in savedForm.formData.files){
+          if(savedForm.formData.files.hasOwnProperty(formFieldKey)){
+            var fileNameWithoutExt = savedForm.formData.files[formFieldKey].split('.')[0];
+
+            if(uploadedFiles.hasOwnProperty(fileNameWithoutExt)){
+              var oldID = savedForm.formData.params[formFieldKey];
+              var newID = uploadedFiles[fileNameWithoutExt];
+              savedForm.formData.params[formFieldKey] = newID;
+              console.log('[sign multiple callback] update fileids. was : ' + oldID +'now : ' + newID);
+            }
+          }
+        }
+
+        for(var uploadedFileKey in uploadedFiles){
+          if(uploadedFiles.hasOwnProperty(uploadedFileKey) && uploadedFileKey.indexOf('signedForm') > -1){
+            var newID = uploadedFiles[uploadedFileKey];
+            savedForm.formData.params['form_signed_all'] = newID;
+            console.log('[sign multiple callback] update form_signed_all. was : ' + undefined +'now : ' + newID);
+          }
+        }
+
+        formService.saveForm(sHost, result.formData, function (error, response, body) {
+          if (!body) {
+            callback(errors.createExternalServiceError('Can\'t rewrite form. Unknown error', error), null);
+          } else if (body.code && body.message) {
+            callback(errors.createExternalServiceError('Can\'t rewrite form. ' + body.message, body), null);
+          } else if (body.fileID) {
+            var oldFormID = formID;
+            req.session.formID = body.fileID;
+            formID = body.fileID;
+            console.log('[sign multiple callback] update form id. was : ' + oldFormID +'now : ' + formID);
+            callback(null, result);
+          } else {
+            callback(errors.createExternalServiceError('Can\'t rewrite form. Unknown response', {}), null);
+          }
+        });
+      }
+    }
+
+    async.forEach(zipEntries, processZipEntry, populateFormDataWithNewIDs);
+  }
+
+  function processSingleFileWithSignedContent(result, callback) {
+    uploadFileService.upload([{
+      name: 'file',
+      options: {
+        filename: result.signedContent.fileName
+      },
+      buffer: result.signedContent.buffer
+    }], function (error, response, body) {
+      if (!body) {
+        callback(errors.createExternalServiceError('Can\'t save signed content. Unknown error', error), null);
+      } else if (body.code && body.message) {
+        callback(errors.createExternalServiceError('Can\'t save content. ' + body.message, body), null);
+      } else if (body.fileID) {
+        result.signedFileID = body.fileID;
+        callback(null, result);
+      }
+    }, sHost);
+  }
+
+  function processSignedContent(result, callback) {
+    if(result.signedContent.fileName.indexOf('.zip') > -1){
+      processZipWithSignedContent(result, callback);
+    } else {
+      processSingleFileWithSignedContent(result, callback);
+    }
+  }
+
+  function processResult(err, result) {
     if (err) {
       res.redirect(result.formData.restoreFormUrl
         + '?formID=' + formID
@@ -380,7 +476,13 @@ module.exports.signFormMultipleCallback = function (req, res) {
         + '?formID=' + formID
         + '&signedFileID=' + result.signedFileID);
     }
-  });
+  }
+
+  async.waterfall([
+    loadFormAsync,
+    downloadSignedContent,
+    processSignedContent
+  ], processResult);
 };
 
 module.exports.signForm = function (req, res) {
@@ -572,13 +674,7 @@ module.exports.saveForm = function (req, res) {
   var sHost = req.region.sHost;
   var data = req.body;
 
-  uploadFileService.upload([{
-    name: 'file',
-    options: {
-      filename: 'formData.json'
-    },
-    text: JSON.stringify(data)
-  }], function (error, response, body) {
+  formService.saveForm(sHost, data, function (error, response, body) {
     if (!body) {
       res.status(500).send(errors.createExternalServiceError('Can\'t save form. Unknown error', error));
     } else if (body.code && body.message) {
@@ -587,7 +683,7 @@ module.exports.saveForm = function (req, res) {
       req.session.formID = body.fileID;
       res.send({formID: body.fileID});
     }
-  }, sHost);
+  });
 };
 
 module.exports.loadForm = function (req, res) {
