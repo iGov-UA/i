@@ -118,7 +118,7 @@ public class ManagerSMS_New {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json");
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
