@@ -68,17 +68,21 @@ function FieldMotionService(MarkersFactory) {
     });
     var result = {value: '', differentTriggered: false};
     if (entry) {
-      result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
-      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue[$.inArray(fieldId, entry.aField_ID)];
-
       if(aFieldIDs.length == 0){
         for(var key in formData) if (formData.hasOwnProperty(key)){
           aFieldIDs.push(key);
         }
       }
-      var replacer = MarkersFactory.interpolateString(result.value, formData, '[', ']', aFieldIDs);
-      result.value = replacer.value;
-      result.differentTriggered = replacer.differentTriggered;
+      result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
+      entry.asID_Field_sValue_Interpolated = [];
+      angular.forEach(entry.asID_Field_sValue, function (sValue) {
+        var interpolatedEntry = MarkersFactory.interpolateString(sValue, formData, '[', ']', aFieldIDs);
+        entry.asID_Field_sValue_Interpolated.push(interpolatedEntry.value);
+        if (interpolatedEntry.differentTriggered){
+          result.differentTriggered = true;
+        }
+      });
+      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue_Interpolated[$.inArray(fieldId, entry.aField_ID)];
     }
     fieldId_entryTriggered[fieldId] = entry;
     return result;

@@ -50,9 +50,14 @@ public class ManagerSMS_New {
 	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
 	sMerchantId = generalConfig.getMerchantId_SMS().trim();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
-	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/subject/message/getCallbackSMS_PB";
 	sChemaId = generalConfig.getChemaId().trim();
 
+	String sTestSMS = "";
+	if ( generalConfig.isSelfTest() ) {
+	    sTestSMS = ".80.e.it.loc";	
+	}
+	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + sTestSMS + "/wf/service/subject/message/getCallbackSMS_PB";
+	
 	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
 		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
 
@@ -112,12 +117,12 @@ public class ManagerSMS_New {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-		oDataOutputStream.writeBytes(stringSmsReqest);
+		oDataOutputStream.write(stringSmsReqest.getBytes("UTF-8"));
 		oDataOutputStream.flush();
 		oDataOutputStream.close();
 
@@ -190,13 +195,15 @@ public class ManagerSMS_New {
 	return ret;
     }
 
-    public void saveCallbackSMS(String soJSON) {
+    public String saveCallbackSMS(String soJSON) {
+	SMSCallback sc = null;
 	try {
-	    SMSCallback sc = new SMSCallback(soJSON);
-	    LOG.info("%s", sc.toJSONString());
+	    sc = new SMSCallback(soJSON);
+	    LOG.info("soJSON: {}", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Error parse JSON response callback SMS", e);
+	    LOG.error("Error parse JSON response callback SMS", e.getMessage());
 	}
+	return sc == null? "{}" : sc.toJSONString();
     }
 
 }

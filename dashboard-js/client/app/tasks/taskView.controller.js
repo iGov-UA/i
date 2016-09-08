@@ -26,6 +26,7 @@
         $scope.printTemplateList = [];
         $scope.model = stateModel;
         $scope.model.printTemplate = null;
+        $scope.tableContentShow = false;
         $scope.date = {
           options: {
             timePicker:false
@@ -549,6 +550,21 @@
             activeFieldsList.push(item);
           }
         });
+
+        $scope.isTableAttachment = function (item) {
+          return item.indexOf('[table]') > -1;
+        };
+
+        $scope.getAttachmentTable = function (taskId, attachId, attachName) {
+          if(!$scope.taskData.oTable){
+            var tableName = attachName;
+            tasks.getTableAttachment(taskId, attachId).then(function (res) {
+              $scope.taskData.oTable = JSON.parse(res);
+              $scope.taskData.oTable.sName = tableName;
+            });
+          }
+          $scope.tableContentShow = !$scope.tableContentShow;
+        };
 
         $scope.isUnDisabledFields = function () {
           return activeFieldsList.length > 0;

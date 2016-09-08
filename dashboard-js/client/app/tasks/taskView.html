@@ -165,13 +165,19 @@
               <p>{{item.description}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
                  target="_blank"
+                 ng-if="!isTableAttachment(item.description)"
                  class="btn btn-info">Завантажити
+              </a>
+              <a href="#"
+                 ng-click="getAttachmentTable(item.taskId, item.id, item.description)"
+                 ng-if="isTableAttachment(item.description)"
+                 class="btn btn-info">Переглянути
               </a>
               <button
                 class="btn btn-info"
                 ng-disabled="checkSignState.inProcess"
                 ng-click="checkAttachmentSign(taskId, item.id, item.description)"
-                ng-if="sSelectedTask=='selfAssigned'">Перевірити ЕЦП
+                ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
               </button>
             </div>
             <button style="position:relative;"
@@ -265,4 +271,5 @@
 </div>
 
 <print-dialog></print-dialog>
+<table-modal></table-modal>
 <sign-info-content-dialog></sign-info-content-dialog>

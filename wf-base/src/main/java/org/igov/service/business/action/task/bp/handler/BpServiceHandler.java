@@ -163,10 +163,16 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+        mParam.put("sTaskName ", mTaskParam.get("sTaskName"+"-"+"sTaskId"));
+        
         mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника"); 
+        mParam.put("nElapsedDays",mTaskParam.get("nElapsedDays"));
+        mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії"); 
+        mParam.put("email",mTaskParam.get("email"));
+        mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
-        mParam.put("email", mTaskParam.get("email"));
+//        mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
@@ -182,6 +188,8 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
+        mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
+        mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sPlace", mTaskParam.get("sNameOriginal"));
         mGuideTaskParamKey.put("sPlace", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
