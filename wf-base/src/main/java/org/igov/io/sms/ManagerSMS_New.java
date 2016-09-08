@@ -53,6 +53,12 @@ public class ManagerSMS_New {
 	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + "/wf/service/subject/message/getCallbackSMS_PB";
 	sChemaId = generalConfig.getChemaId().trim();
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Временно заменен на локальный адрес, для тестирования
+//	sCallbackUrl_SMS = "http://10.4.1.84:8080/wf-central/service/subject/message/getCallbackSMS_PB";
+	sCallbackUrl_SMS = "http://alpha.test.igov.org.ua.80.e.it.loc/wf-central/service/subject/message/getCallbackSMS_PB";
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
 		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
 
@@ -190,13 +196,15 @@ public class ManagerSMS_New {
 	return ret;
     }
 
-    public void saveCallbackSMS(String soJSON) {
+    public String saveCallbackSMS(String soJSON) {
+	SMSCallback sc = null;
 	try {
-	    SMSCallback sc = new SMSCallback(soJSON);
-	    LOG.info("%s", sc.toJSONString());
+	    sc = new SMSCallback(soJSON);
+	    LOG.info("soJSON: {}", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Error parse JSON response callback SMS", e);
+	    LOG.error("Error parse JSON response callback SMS", e.getMessage());
 	}
+	return sc == null? "{}" : sc.toJSONString();
     }
 
 }
