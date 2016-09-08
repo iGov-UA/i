@@ -55,8 +55,8 @@ public class ManagerSMS_New {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Временно заменен на локальный адрес, для тестирования
-	sCallbackUrl_SMS = "http://10.4.1.84:8080/wf-central/service/subject/message/getCallbackSMS_PB";
-//	sCallbackUrl_SMS = "http://alpha.test.igov.org.ua.80.e.it.loc/wf-central/service/subject/message/getCallbackSMS_PB";
+//	sCallbackUrl_SMS = "http://10.4.1.84:8080/wf-central/service/subject/message/getCallbackSMS_PB";
+	sCallbackUrl_SMS = "http://alpha.test.igov.org.ua.80.e.it.loc/wf-central/service/subject/message/getCallbackSMS_PB";
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
@@ -118,12 +118,12 @@ public class ManagerSMS_New {
 	    URL oURL = new URL(sURL_Send);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("POST");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-		oDataOutputStream.writeBytes(stringSmsReqest);
+		oDataOutputStream.write(stringSmsReqest.getBytes("UTF-8"));
 		oDataOutputStream.flush();
 		oDataOutputStream.close();
 
