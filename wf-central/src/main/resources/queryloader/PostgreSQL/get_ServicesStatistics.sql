@@ -1,4 +1,4 @@
-select distinct hes.nID_Service AS nID, hes.nID_Service AS nID_Service, s."sName" AS ServiceName,
+select distinct (hes.nID_Service || hes.sID_UA) AS nID, hes.nID_Service AS nID_Service, s."sName" AS ServiceName,
                 hes.sID_UA AS SID_UA, p."sName" AS placeName, hes.nCountTotal AS nCountTotal,
                 hes.averageRate AS averageRate, hes.averageTime AS averageTime
 from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, count(*) AS nCountTotal,
