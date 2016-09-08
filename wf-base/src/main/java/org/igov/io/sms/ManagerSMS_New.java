@@ -123,7 +123,7 @@ public class ManagerSMS_New {
 	    oHttpURLConnection.setDoOutput(true);
 
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-		oDataOutputStream.writeBytes(stringSmsReqest);
+		oDataOutputStream.write(stringSmsReqest.getBytes("UTF-8"));
 		oDataOutputStream.flush();
 		oDataOutputStream.close();
 
