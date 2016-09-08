@@ -55,9 +55,9 @@ public class ManagerSMS_New {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Временно заменен на локальный адрес, для тестирования
-	sCallbackUrl_SMS = "http://10.4.1.84:8080/wf-central/service/subject/message/getCallbackSMS_PB";
+//	sCallbackUrl_SMS = "http://10.4.1.84:8080/wf-central/service/subject/message/getCallbackSMS_PB";
+	sCallbackUrl_SMS = "http://alpha.test.igov.org.ua.80.e.it.loc/wf-central/service/subject/message/getCallbackSMS_PB";
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
 		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
@@ -200,7 +200,7 @@ public class ManagerSMS_New {
 	SMSCallback sc = null;
 	try {
 	    sc = new SMSCallback(soJSON);
-	    LOG.info("%s", sc.toJSONString());
+	    LOG.info("soJSON: {}", sc.toJSONString());
 	} catch (IllegalArgumentException e) {
 	    LOG.error("Error parse JSON response callback SMS", e.getMessage());
 	}
