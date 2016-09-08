@@ -10,6 +10,8 @@ router.get('/', endpoint.assertQueryParams('nID_Server', 'sID_BP_Versioned'), fo
 router.post('/', form.submit);
 router.get('/sign', form.signForm);
 router.use('/sign/callback', form.signFormCallback);
+router.get('/signMultiple', form.signFormMultiple);
+router.use('/signMultiple/callback', form.signFormMultipleCallback);
 router.get('/sign/check', form.signCheck);
 router.post('/save', form.saveForm);
 router.get('/load', form.loadForm);

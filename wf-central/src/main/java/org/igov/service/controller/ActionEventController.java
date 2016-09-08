@@ -524,14 +524,15 @@ public class ActionEventController {
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
             for(ServicesStatistics item : servicesStatistics){
-                List<String> line = new LinkedList<String>();
-                line.add(item.getnID_Service().toString());
+                List<String> line = new LinkedList<>();
+                line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
-                line.add(item.getSID_UA().toString());
+                line.add(String.valueOf(item.getSID_UA()));
                 line.add(item.getPlaceName());
-                line.add(item.getnCountTotal().toString());
-                line.add(item.getAverageRate().toString());
-                line.add(item.getAverageTime().toString());
+                line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
+                //divide average time (mins) to 60 to get hours
+                line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue()/60f));
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             csvWriter.close();

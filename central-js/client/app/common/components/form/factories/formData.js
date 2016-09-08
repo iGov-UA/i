@@ -345,12 +345,18 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
   FormDataFactory.prototype.getRequestObject = function () {
     var data = {
       processDefinitionId: this.processDefinitionId,
-      params: {}
+      params: {},
+      files: {}
     };
     for (var key in this.params) {
       var param = this.params[key];
       if (param.writable || param.required) {
         data.params[key] = param.get();
+        if(param.fileName){
+          data.files[key] = param.fileName;
+        } else if (param.scan){
+          data.files[key] = param.scan.type + '.' + param.scan.extension;
+        }
       }
     }
     return data;
