@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 
@@ -25,10 +26,14 @@ public class SubjectMessageCommonController {
      * 
      * @param soData_JSON
      */
-    @RequestMapping(value = "/getCallbackSMS_PB", method = RequestMethod.GET)
-    public void callbackSMS(@RequestBody String soData_JSON) {
+    @RequestMapping(value = "/getCallbackSMS_PB", method = { RequestMethod.POST,
+	    RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String callbackSMS(@RequestBody String soData_JSON) {
 	LOG.debug("callback JSON={}", soData_JSON);
-	managerSMS.saveCallbackSMS(soData_JSON);
+	String ret = managerSMS.saveCallbackSMS(soData_JSON);
+	LOG.info("save callback JSON={}", ret);
+
+	return "";
     }
 
 }
