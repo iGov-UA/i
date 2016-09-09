@@ -19,7 +19,7 @@ public class SubjectMessageCommonController {
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageCommonController.class);
 
     @Autowired
-    ManagerSMS_New managerSMS;
+    private ManagerSMS_New managerSMS;
 
     /**
      * Колбек для сервиса отправки СМС

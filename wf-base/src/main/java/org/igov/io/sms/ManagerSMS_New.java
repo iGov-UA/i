@@ -55,7 +55,8 @@ public class ManagerSMS_New {
 	    String sSelfHost = generalConfig.getSelfHost(); 
 	    if (sURL_Send == null || sMerchantId == null || sMerchantPassword == null
 			|| sSelfHost == null || sChemaId == null) {
-		LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
+		LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}, sMerchantId={}, sMerchantPassword={}, sSelfHost={}, sChemaId={}", sURL_Send, sMerchantId, sMerchantPassword,
+			sSelfHost, sChemaId);
 		return;
 	    }
 	    
