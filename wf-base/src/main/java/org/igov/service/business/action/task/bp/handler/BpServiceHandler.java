@@ -190,14 +190,14 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("sPlace", getPlaceForProcess(sID_Process));
-        mGuideTaskParamKey.put("sPlace", "Место");
+        mParam.put("Place", getPlaceForProcess(sID_Process));
+        mGuideTaskParamKey.put("Place", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
          try {//issue 1350
                 String jsonPlace = placeService.getPlaceByProcess(sID_Process);
-                LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonPlace);
+                LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
                 JSONObject Place  = new JSONObject(jsonPlace);
                 mParam.put("nID_Rate", Place.get("nRate"));
                 nID_Server = Place.getInt("sID_Process");
