@@ -510,8 +510,8 @@ public class ActionEventController {
 
         List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatistics(from, to);
 
-        String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "averageRate",
-                "averageTime"};
+        String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
+                "nCountEscalation", "averageRate", "averageTime"};
         List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headingFields));
 
@@ -530,6 +530,8 @@ public class ActionEventController {
                 line.add(String.valueOf(item.getSID_UA()));
                 line.add(item.getPlaceName());
                 line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getnCountFeedback() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getnCountEscalation() == null ? "0" : item.getnCountTotal().toString());
                 line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
                 //divide average time (mins) to 60 to get hours
                 line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue()/60f));
