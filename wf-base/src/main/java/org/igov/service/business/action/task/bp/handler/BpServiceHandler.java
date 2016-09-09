@@ -199,7 +199,7 @@ public class BpServiceHandler {
                 String jsonPlace = placeService.getPlaceByProcess(sField);
                 LOG.info("!!!!!!!!!!!!!!!get place for bp:(jsonPlace={})", jsonPlace);
                 JSONObject sPlace = new JSONObject(jsonPlace);
-                mParam.put("sNameOriginal", sPlace.get("sNameOriginal"));
+                mParam.put("sPlace", sPlace.get("sNameOriginal"));
                 LOG.info("!!!!!!!!!!!!!!mParam.put(\"sNameOriginal\", sPlace.get(\"sNameOriginal\"))"+mParam.put("sNameOriginal", sPlace.get("sNameOriginal")));
                 nID_Server = sPlace.getInt("nID_Server");
                 LOG.info("!!!!!!!!!!!!!!!nID_Server"+nID_Server);

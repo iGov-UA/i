@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class PlaceServiceImpl implements PlaceService {
 
      private static final Logger LOG = LoggerFactory.getLogger(PlaceServiceImpl.class);
-    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/business/place/getPlaceByProcess";
+    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/action/event/getPlaceByProcess";
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
@@ -32,16 +32,16 @@ public class PlaceServiceImpl implements PlaceService {
     private GeneralConfig generalConfig;
 
     @Override
-    public String getPlaceByProcess(String sPlace)
+    public String getPlaceByProcess(String nID_Process)
             throws Exception {
         Map<String, String> params = new HashMap<>();
-        params.put("sPlace", sPlace);
+        params.put("nID_Process", nID_Process);
         return doRemoteRequest(URI_GET_PLACE_BY_PROCESS, params);
     }
 
-    public String doRemoteRequest(String sURL, Map<String, String> mParam, String sPlace, String sUserTaskName)
+    public String doRemoteRequest(String sURL, Map<String, String> mParam, String nID_Process, String sUserTaskName)
             throws Exception {
-        mParam.put("sPlace", sPlace);
+        mParam.put("nID_Process", nID_Process);
         if (sUserTaskName != null) {
             mParam.put("sUserTaskName", sUserTaskName);
         }
