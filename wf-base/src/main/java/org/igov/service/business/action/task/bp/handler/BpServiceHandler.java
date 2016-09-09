@@ -190,7 +190,7 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("sPlace", mTaskParam.get("sNameOriginal"));
+        mParam.put("sPlace", getPlaceForProcess(sID_Process));
         mGuideTaskParamKey.put("sPlace", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
