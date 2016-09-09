@@ -187,7 +187,7 @@ public class EscalationService {
         LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays); 
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
         result.put("sLoginAssigned", oTask.getAssignee());
