@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author HS
+ * @author HS issue 1350
  */
 @Service
 public class PlaceServiceImpl implements PlaceService {

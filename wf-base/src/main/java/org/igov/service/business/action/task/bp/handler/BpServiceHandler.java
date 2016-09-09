@@ -195,14 +195,12 @@ public class BpServiceHandler {
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
-         try {//issue #1350
-                String jsonPlace = placeService.getPlaceByProcess(sField);
-                LOG.info("!!!!!!!!!!!!!!!get place for bp:(jsonPlace={})", jsonPlace);
-                JSONObject sPlace = new JSONObject(jsonPlace);
-                mParam.put("sPlace", sPlace.get("sNameOriginal"));
-                LOG.info("!!!!!!!!!!!!!!mParam.put(\"sNameOriginal\", sPlace.get(\"sNameOriginal\"))"+mParam.put("sNameOriginal", sPlace.get("sNameOriginal")));
-                nID_Server = sPlace.getInt("nID_Server");
-                LOG.info("!!!!!!!!!!!!!!!nID_Server"+nID_Server);
+         try {//issue 1350
+                String jsonPlace = placeService.getPlaceByProcess(sID_Process);
+                LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonPlace);
+                JSONObject Place  = new JSONObject(jsonPlace);
+                mParam.put("nID_Rate", Place.get("nRate"));
+                nID_Server = Place.getInt("sID_Process");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
