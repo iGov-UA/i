@@ -4,12 +4,13 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -33,10 +34,11 @@
     <userTask id="usertask1" name="опрацювання волонтером" activiti:candidateGroups="volont_escalation">
       <extensionElements>
         <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Place" name="Обраний населений пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -105,14 +107,14 @@ execution.setVariable('sNotification_day', timer)
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Інформація щодо Вашого звернення ${nID_Protected}</activiti:string>
+          <activiti:string>Інформація щодо Вашого звернення на iGov</activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${clfio}.</b><br /><br />
 У зв'язку з порушенням сроків обробки звернення ${nID_Protected} (${sNameProcess})
-волонтери команди iGov зв'язалися з выдповідальним представниками адміністративного органу - ${sOrganName}.
+волонтери команди iGov зв'язалися з відповідальними представниками адміністративного органу - ${sOrganName}.<br />
 За результатми контакту отримано наступний коментар працівника:<br />
 ${comment}<br /><br />
 При необхідності Ви можете зателефонувати до державного органу:<br />

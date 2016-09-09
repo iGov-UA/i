@@ -66,7 +66,7 @@ public class DebugCentralController {
     @Autowired
     private HistoryService oHistoryService;
     @Autowired
-    ManagerSMS_New managerSMS;
+    private ManagerSMS_New managerSMS;
 
     @Autowired
     private SubjectMessageService subjectMessageService;

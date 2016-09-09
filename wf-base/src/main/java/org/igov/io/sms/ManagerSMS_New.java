@@ -39,7 +39,7 @@ public class ManagerSMS_New {
     private boolean isReadySendSMS = false;
 
     @Autowired
-    GeneralConfig generalConfig;
+    private GeneralConfig generalConfig;
 
     /*
      * Проверяем заданы ли все параметры для отсылки СМС. Если нет то сервис не
@@ -47,29 +47,44 @@ public class ManagerSMS_New {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMSNew().trim() + "/api/v1/send";
-	sMerchantId = generalConfig.getMerchantId_SMS().trim();
-	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
-	sChemaId = generalConfig.getChemaId().trim();
+	if ( generalConfig != null ) {
+	    sURL_Send = generalConfig.getURL_Send_SMSNew();
+	    sMerchantId = generalConfig.getMerchantId_SMS();
+	    sMerchantPassword = generalConfig.getMerchantPassword_SMS();
+	    sChemaId = generalConfig.getChemaId();    
+	    String sSelfHost = generalConfig.getSelfHost(); 
+	    if (sURL_Send == null || sMerchantId == null || sMerchantPassword == null
+			|| sSelfHost == null || sChemaId == null) {
+		LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}, sMerchantId={}, sMerchantPassword={}, sSelfHost={}, sChemaId={}", sURL_Send, sMerchantId, sMerchantPassword,
+			sSelfHost, sChemaId);
+		return;
+	    }
+	    
+	    sURL_Send = sURL_Send.trim() + "/api/v1/send";
+	    sMerchantId = sMerchantId.trim();
+	    sMerchantPassword = sMerchantPassword.trim();
+	    sChemaId = sChemaId.trim();
 
-	String sTestSMS = "";
-	if ( generalConfig.isSelfTest() ) {
-	    sTestSMS = ".80.e.it.loc";	
-	}
-	sCallbackUrl_SMS = generalConfig.getSelfHost().trim() + sTestSMS + "/wf/service/subject/message/getCallbackSMS_PB";
+	    String sTestSMS = "";
+	    if ( generalConfig.isSelfTest() ) {
+		sTestSMS = ".80.e.it.loc";	
+	    }
+	    sCallbackUrl_SMS = sSelfHost.trim() + sTestSMS + "/wf/service/subject/message/getCallbackSMS_PB";
 	
-	LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
-		sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
+	    LOG.debug("sURL_Send={}, sMerchantId={}, sCallbackUrl_SMS={}, sChemaId",
+		    sURL_Send, sMerchantId, sCallbackUrl_SMS, sChemaId);
 
-	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")
+	    if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")
 		|| sCallbackUrl_SMS.startsWith("${") || sChemaId.startsWith("${")) {
-	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
-	    return;
+		LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
+		return;
+	    }
+	    static_sMessageId = static_sMessageId + System.currentTimeMillis() + "_";
+	    isReadySendSMS = true;
+	    LOG.info("Сервис готов к отсылке сообщений.");	    
+	} else {
+	    LOG.info("Сервис не готов к отсылке сообщений. generalConfig = null");	    
 	}
-	static_sMessageId = static_sMessageId + System.currentTimeMillis() + "_";
-
-	LOG.info("Сервис готов к отсылке сообщений.");
-	isReadySendSMS = true;
     }
 
     public String sendSMS(String sPhone, String sText) throws IllegalArgumentException {
