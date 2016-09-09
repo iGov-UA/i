@@ -57,7 +57,7 @@
         <activiti:formProperty id="asRod_zvjazokNarodj" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Батьки та усиновлювачі (незалежно від віку дитини)"></activiti:value>
           <activiti:value id="sEnamR2" name="Опікуни, піклувальники"></activiti:value>
-          <activiti:value id="sEnamR3" name="Адміністрації закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина."></activiti:value>
+          <activiti:value id="sEnamR3" name="Адміністрація закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asRod_zvjazokSmerrtr" name="Ким ви є померлому" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Другий з подружжя"></activiti:value>
@@ -70,9 +70,9 @@
           <activiti:value id="sEnamS8" name="Онука"></activiti:value>
           <activiti:value id="sEnamS9" name="Дід"></activiti:value>
           <activiti:value id="sEnamS10" name="Баба"></activiti:value>
-          <activiti:value id="sEnamS11" name="Інший родич померлої особи (за умови предявлення ним паспорта або паспортного документа і документів, що підтверджують родинні чи сімейні стосунки)"></activiti:value>
-          <activiti:value id="sEnamS12" name="Спадкоємці померлої особи (якщо родинні стосунки та/або право на спадкування підтверджуються документально, за умови предявлення паспорта або паспортного документа)"></activiti:value>
-          <activiti:value id="sEnamS13" name="Особа, що є вигодонабувачем (згідно з договором особистого страхування життя, укладеним у фінансовій установі, або із спадковим договором; за умови предявлення договору, паспорта або паспортного документа)"></activiti:value>
+          <activiti:value id="sEnamS11" name="Інший родич померлої особи (за умови підтвердження родинних стосунків)"></activiti:value>
+          <activiti:value id="sEnamS12" name="Спадкоємці померлої особи (якщо підтверджено право спадкування)"></activiti:value>
+          <activiti:value id="sEnamS13" name="Особа, що є вигодонабувачем (за умови пред'явлення документів)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="file_Prav_otr" name="Документ що дає право на отримання витягу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
@@ -238,7 +238,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="AdressOBL_born" name="Область" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressRay_born" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_Registr" name="Найменування органу що здійснив реєстрацію" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Ser" name="Серія свідоцтва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Nom" name="Номер свідоцтва" type="string" writable="false"></activiti:formProperty>
@@ -471,7 +471,6 @@ ${sNameOrgan}.&lt;br /&gt;
         execution.setVariable('V12', Vut12)
         execution.setVariable('V13', Vut13)
         execution.setVariable('V14', Vut14)
-        
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudZmin'){execution.setVariable('T1', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudPovn'){execution.setVariable('T2', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar'){execution.setVariable('A1', xxx)}
@@ -481,7 +480,6 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma'){execution.setVariable('A5', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin'){execution.setVariable('A6', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat'){execution.setVariable('A7', xxx)}
-        
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNar'){execution.setVariable('V1', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNarBat'){execution.setVariable('V2', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutSmer'){execution.setVariable('V3', xxx)}
@@ -497,21 +495,30 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asSutVytagu') == 'sEnamSutNarVup'){execution.setVariable('V13', xxx)}
         if(execution.getVariable('asSutVytagu') == 'sEnamSutSmerDop'){execution.setVariable('V14', xxx)}
         
-        
         var Rod=execution.getVariable('sRod_zvjazok')
-        execution.setVariable('RodZv', Rod)
-        
-        
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar')
           {
-          var RodN=execution.getVariable('asRod_zvjazokNarodj')
-          execution.setVariable('RodZv', RodN)
+          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR1'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR2'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR3'){Rod='Адміністрація закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert')
           {
-          var RodS=execution.getVariable('asRod_zvjazokSmerrtr')
-          execution.setVariable('RodZv', RodS)
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS1'){Rod='Другий з подружжя'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS2'){Rod='Батько'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS3'){Rod='Мати'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS4'){Rod='Дитина'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS5'){Rod='Брат'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS6'){Rod='Сестра'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS7'){Rod='Онук'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS8'){Rod='Онука'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS9'){Rod='Дід'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS10'){Rod='Баба'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS11'){Rod='Інший родич померлої особи'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS12'){Rod='Спадкоємці померлої особи'}
+          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS13'){Rod='Особа, що є вигодонабувачем'}
           }
+        execution.setVariable('RodZv', Rod)
       </script>
     </scriptTask>
     <sequenceFlow id="flow12" name="${decide == 'acceptVid'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
