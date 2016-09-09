@@ -232,7 +232,7 @@
 			<p>
 				Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.
 			</p><br>
-			За наявності питань можете звернутись за наступними контактами<br>
+			Якщо у Вас є додаткові питання, ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br>
@@ -244,7 +244,7 @@
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${rish_copy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -326,7 +326,7 @@
           <activiti:value id="attr4_failure" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rish_copy" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="E-mail про відмову у наданні компенсації" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -344,7 +344,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, було оброблене
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, було оброблене.
 			</p>
 			<p>				  
 				На жаль, Вам відмовлено у призначенні державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам.
@@ -367,7 +367,7 @@
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${rish_copy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -484,11 +484,12 @@
 				щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів. 
 			</p>
 			<p>				
-				Протягом трьох місяців Ви повині донести іх в ${sNameOrgan}.<br>
+				Протягом трьох місяців Ви повині донести їх в ${sNameOrgan}.<br>
 				${sAddress}
 			</p>
 			<p>				
-				Також Вы можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/767/general">iGov.org.ua</a>, враховуючи коментар нижче.
+				Також Вы можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/778/general">iGov.org.ua</a>, 
+				враховуючи коментар нижче.
 			</p>
 			<p>
 				Коментар спеціаліста: ${comment}
@@ -535,7 +536,7 @@
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
-				щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам зареєстровано у системі.
+				щодо надання державної соціальної допомоги особам, які не мають права на пенсію, та інвалідам в очикуванні недостатніх документів.
 			</p>
 			<p>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.

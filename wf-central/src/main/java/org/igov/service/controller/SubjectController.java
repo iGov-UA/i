@@ -792,7 +792,7 @@ public class SubjectController {
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = true) String saAccount,
-            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Long nID_Server,
+            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
             @ApiParam(value = "Не показывать подробности про организации и чиновников", required = false, defaultValue = "false") @RequestParam(value = "bSkipDetails", required = false, defaultValue = "false") boolean bSkipDetails,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false, defaultValue = "1") Long nID_SubjectAccountType) throws CommonServiceException {
 

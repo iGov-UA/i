@@ -45,6 +45,11 @@
         <activiti:formProperty id="oplata" name="Платіжний документи (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
@@ -150,7 +155,7 @@
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>middayka@yandex.ru</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -181,7 +186,7 @@
           <activiti:string><![CDATA[Звернення на тему: Узгодження маршрутів дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
+          <activiti:expression> </activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -191,9 +196,9 @@
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -216,9 +221,9 @@
 На жаль, Ваше звернення щодо узгодження маршрутів дорожнього перевезення небезпечного вантажу відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -255,11 +260,11 @@ ${comment_1}&lt;br /&gt;
 8. Копію свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.&lt;br /&gt;
 9. У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу.&lt;br /&gt;
 10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
