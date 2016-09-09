@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class PlaceServiceImpl implements PlaceService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlaceServiceImpl.class);
-    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/action/event/getPlaceByProcess";
+    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/object/place/getPlaceByProcess";
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
@@ -36,8 +36,16 @@ public class PlaceServiceImpl implements PlaceService {
         return doRemoteRequest(URI_GET_PLACE_BY_PROCESS, params);
     }
 
-    private String doRemoteRequest(String sURL, Map<String, String> mParam) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
+        String soResponse = "";
+        if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
+            String sURL = generalConfig.getSelfHostCentral() + sServiceContext;
+            LOG.info("(sURL={},mParam={})", sURL, mParam);
+            soResponse = httpRequester.getInside(sURL, mParam);
+            LOG.info("(soResponse={})", soResponse);
+        }
+        return soResponse;
     }
 
 }
