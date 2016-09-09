@@ -39,7 +39,8 @@
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
@@ -245,14 +246,18 @@ execution.setVariable('sMaxPay', maxpay)
                                         Спеціалісти підрозділу ДМС успішно опрацювли Вашу заяву.<br>
 										Для того щоб закінчити процедуру зняття з реєстрації необхідно:<br>
 										<ul>
-										<li>У будь-якому банку сплатити адміністративний збір у розмірі ${sMinPay} грн і отримати квитанцію про сплату.</li>
+										<li>У будь-якому банку сплатити необхідні платежі і отримати квитанцію про сплату.</li>
 										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
 										<li>Підписати необхідні документи.</li>
 										</ul>
 									</p>
 									<p>
-										<b>Реквізити для сплати:</b><br>
-										<i>${sRecvizitiInozem}<br>
+										<b>Реквізити для сплати держмита:</b><br>
+										<i>Сума: 5,10 грн. При необхідності термінового (до 10 днів) оформлення сума: 10,20 грн</i><br>
+										<i>${sRecviziti}</i><br>
+										<b>Реквізити для сплати адмінпослуги:</b><br>
+										<i>Сума: 58,20 грн. При необхідності термінового (до 10 днів) оформлення сума: 114,72 грн</i><br>
+										<i>${sRecvizitiInozem}</i><br>
 										</p>
 									<p>
 										<b>Деталі зустрічі:</b><br>
