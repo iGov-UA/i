@@ -157,69 +157,76 @@
                     </tr>
                     </thead>
                     <tbody ng-form="tableForm">
-                    <tr ng-repeat="row in tableContent.aRow track by $index">
+                    <tr ng-repeat="row in tableContent.aRow track by $index" ng-init="rowIndex=$index">
                       <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
                         <div ng-if="item.type == 'string'">
-                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
                             <p>Невiрний формат даних</p>
                           </div>
                           <input class="inputs-in-table"
                                  ng-if='item.hasOwnProperty("default") || !item.hasOwnProperty("default") && !item.hasOwnProperty("value")'
-                                 name="{{item.id}}"
-                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid}"
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
                                  ng-required="item.required"
                                  ng-model="item.default"
                                  type="text">
                           <input class="inputs-in-table"
                                  ng-if='item.hasOwnProperty("value")'
-                                 name="{{item.id}}"
-                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid}"
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
                                  ng-required="item.required"
                                  ng-model="item.value"
                                  type="text">
                         </div>
                         <div ng-if="item.type == 'enum'">
-                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
                             <p>Невiрний формат даних</p>
                           </div>
-                          <select name="{{item.id}}"
+                          <select name="{{item.id + rowIndex}}"
                                   ng-required="item.required"
                                   ng-model="item.value"
-                                  ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid}"
+                                  ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
                                   ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.a"
                                   class="inputs-in-table">
                           </select>
                         </div>
                         <div ng-if="item.type == 'long'">
-                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
                             <p>Невiрний формат даних</p>
                           </div>
-                          <input name="{{item.id}}"
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('default') || !item.hasOwnProperty('default') && !item.hasOwnProperty('value')"
                                  ng-required="item.required"
-                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
                                  ng-model="item.default"
                                  class="inputs-in-table"
-                                 type="text"
-                                 placeholder="long">
+                                 type="number">
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('value')"
+                                 ng-required="item.required"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                 ng-model="item.value"
+                                 class="inputs-in-table"
+                                 type="number">
                         </div>
                         <div ng-if="item.type == 'date'">
-                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
                             <p>Невiрний формат даних</p>
                           </div>
                           <!--заменить на директиву-->
                           <p class="input-group">
                             <input type="text"
                                    ng-required="item.required"
-                                   name="{{item.id}}"
+                                   name="{{item.id + rowIndex}}"
                                    datepicker-popup="{{item.props.format}}"
                                    is-open="item.props.opened"
                                    datepicker-options="item.props.options"
                                    ng-model="item.props.value"
                                    ng-readonly="true"
-                                   ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id].$invalid || tableIsInvalid && form.tableForm[item.id].$invalid}"
+                                   ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
                                    close-text="Close"
                                    class="form-control"
-                                   value="">
+                                   value="item.props.value | fixDateFormat">
                             <span class="input-group-btn">
                               <button type="button"
                                       class="btn btn-link"

@@ -751,7 +751,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     angular.forEach($scope.tableContent.aRow, function(fields) {
       angular.forEach(fields.aField, function (item, key, obj) {
         if (item.type === 'date') {
-          obj[key].props = DatepickerFactory.prototype.createFactory();
+          if(!item.props) {
+            obj[key].props = DatepickerFactory.prototype.createFactory();
+          } else {
+            obj[key].props.open = function ($event) {
+              $event.preventDefault();
+              $event.stopPropagation();
+              this.opened = true;
+            };
+            obj[key].props.get = function() {
+              return $filter('date')(this.value, this.format);
+            };
+            obj[key].props.clear = function() {
+              this.value = null;
+            };
+            obj[key].props.today = function() {
+              this.value = new Date();
+            };
+            obj[key].props.isFit = function(property){
+              return property.type === 'date';
+            };
+          }
         }
       })
     });
@@ -775,10 +795,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       $scope.tableIsInvalid = false;
       var defaultCopy = angular.copy($scope.tableContent.aRow[0]);
       angular.forEach(defaultCopy.aField, function (item) {
-        if(item.id) {
-          var nId = item.id.match(/\d+/)[0];
-          item.id = item.id.split(nId)[0] + (+$scope.tableContent.aRow.length +1);
-        }
         if(item.default) {
           item.value = item.default;
           delete item.default;
