@@ -530,8 +530,8 @@ public class ActionEventController {
                 line.add(String.valueOf(item.getSID_UA()));
                 line.add(item.getPlaceName());
                 line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
-                line.add(item.getnCountFeedback() == null ? "0" : item.getnCountTotal().toString());
-                line.add(item.getnCountEscalation() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getnCountFeedback() == null ? "0" : item.getnCountFeedback().toString());
+                line.add(item.getnCountEscalation() == null ? "0" : item.getnCountEscalation().toString());
                 line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
                 //divide average time (mins) to 60 to get hours
                 line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue()/60f));
