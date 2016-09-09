@@ -36,7 +36,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
     private ApplicationContext context;
 
     @Autowired
-    public ManagerSMS_New managerSMS_New;
+    private ManagerSMS_New managerSMS_New;
     
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);
