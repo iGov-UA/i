@@ -36,7 +36,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
     private ApplicationContext context;
 
     @Autowired
-    public ManagerOTP oManagerOTP;
+    public ManagerSMS_New managerSMS_New;
     
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);
@@ -167,7 +167,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
             if (generalConfig.isSelfTest()) {
                 sReturn = "test";
             } else {
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer, false);
+                sReturn = managerSMS_New.sendSMS(sPhone, sAnswer);
             }
 
             LOG.info("[bSentDocumentAccessOTP]sReturn={}",  sReturn);
