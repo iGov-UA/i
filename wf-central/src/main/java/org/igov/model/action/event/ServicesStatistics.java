@@ -36,6 +36,14 @@ public class ServicesStatistics extends AbstractEntity {
     @Column(name = "nCountTotal")
     private Long nCountTotal;
 
+    @JsonProperty(value = "nCountFeedback")
+    @Column(name = "nCountFeedback")
+    private Long nCountFeedback;
+
+    @JsonProperty(value = "nCountEscalation")
+    @Column(name = "nCountEscalation")
+    private Long nCountEscalation;
+
     @JsonProperty(value = "averageRate")
     @Column(name = "averageRate")
     private Float averageRate;
@@ -43,6 +51,14 @@ public class ServicesStatistics extends AbstractEntity {
     @JsonProperty(value = "averageTime")
     @Column(name = "averageTime")
     private Float averageTime;
+
+    public Long getnCountFeedback() {
+        return nCountFeedback;
+    }
+
+    public Long getnCountEscalation() {
+        return nCountEscalation;
+    }
 
     public Long getnID_Service() {
         return nID_Service;

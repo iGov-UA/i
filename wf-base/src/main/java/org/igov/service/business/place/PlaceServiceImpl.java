@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
-import org.igov.service.business.access.AccessDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,38 +16,28 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author HS
+ * @author HS issue 1350
  */
 @Service
 public class PlaceServiceImpl implements PlaceService {
 
-     private static final Logger LOG = LoggerFactory.getLogger(PlaceServiceImpl.class);
-    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/business/place/getPlaceByProcess";
+    private static final Logger LOG = LoggerFactory.getLogger(PlaceServiceImpl.class);
+    private final String URI_GET_PLACE_BY_PROCESS = "/wf/service/object/place/getPlaceByProcess";
     @Autowired
     private HttpRequester httpRequester;
-    @Autowired
-    private AccessDataService accessDataDao;
     @Autowired
     private GeneralConfig generalConfig;
 
     @Override
-    public String getPlaceByProcess(String sPlace)
+    public String getPlaceByProcess(String nID_Process)
             throws Exception {
         Map<String, String> params = new HashMap<>();
-        params.put("sPlace", sPlace);
+        params.put("nID_Process", nID_Process);
         return doRemoteRequest(URI_GET_PLACE_BY_PROCESS, params);
     }
 
-    public String doRemoteRequest(String sURL, Map<String, String> mParam, String sPlace, String sUserTaskName)
-            throws Exception {
-        mParam.put("sPlace", sPlace);
-        if (sUserTaskName != null) {
-            mParam.put("sUserTaskName", sUserTaskName);
-        }
-        return doRemoteRequest(sURL, mParam);
-    }
-
-    private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
+    
+     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
         String soResponse = "";
         if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
             String sURL = generalConfig.getSelfHostCentral() + sServiceContext;
@@ -58,4 +47,5 @@ public class PlaceServiceImpl implements PlaceService {
         }
         return soResponse;
     }
+
 }
