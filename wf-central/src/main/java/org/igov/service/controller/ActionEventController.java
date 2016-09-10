@@ -658,6 +658,7 @@ public class ActionEventController {
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
                     //sDateCreate
+                    LOG.info("(Before getsDateCreate)");
                     if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
                     {
                         LOG.info("Executing historyservice dates ");
