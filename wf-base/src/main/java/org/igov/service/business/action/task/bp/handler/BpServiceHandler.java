@@ -166,7 +166,9 @@ public class BpServiceHandler {
         mParam.put("sTaskName ", mTaskParam.get("sTaskName"+"-"+"sTaskId"));
         
         mParam.put("sLoginAssigned",mTaskParam.get("sLoginAssigned"));
-        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника"); 
+        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        mParam.put("sEmployeeContacts", "sEmployeeContacts");
+        mGuideTaskParamKey.put("sEmployeeContacts", "ПІБ та контактні телефони відповідальних посадовців");
         mParam.put("nElapsedDays",mTaskParam.get("nElapsedDays"));
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії"); 
         mParam.put("email",mTaskParam.get("email"));
@@ -190,17 +192,17 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("Place", getPlaceForProcess(sID_Process));
-        mGuideTaskParamKey.put("Place", "Место");
+        mParam.put("sPlace", getPlaceForProcess(sID_Process));
+        mGuideTaskParamKey.put("sPlace", "Место");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
          try {//issue 1350
                 String jsonPlace = placeService.getPlaceByProcess(sID_Process);
                 LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
-                JSONObject Place  = new JSONObject(jsonPlace);
-                mParam.put("nID_Rate", Place.get("nRate"));
-                nID_Server = Place.getInt("sID_Process");
+                JSONObject sPlace  = new JSONObject(jsonPlace);
+                mParam.put("nID_Rate", sPlace.get("nRate"));
+                nID_Server = sPlace.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
