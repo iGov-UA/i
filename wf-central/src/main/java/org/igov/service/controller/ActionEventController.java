@@ -664,7 +664,7 @@ public class ActionEventController {
                     {
                         LOG.info("Executing historyservice dates ");
                          List<Date> listDate = oActionEventService.setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
-                       if(listDate.size() == 2)
+                       if(listDate.size() == 1)
                        {
                          LOG.info("Exec lines");
                          line.add(listDate.get(0).toString());

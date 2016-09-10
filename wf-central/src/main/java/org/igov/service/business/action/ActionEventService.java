@@ -85,11 +85,11 @@ public class ActionEventService {
              try
              {
                 Date oDateCreate = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getCreateTime();
-                Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
+               // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
                 listDate.add(oDateCreate);
-                listDate.add(oDateClosed);
+               // listDate.add(oDateClosed);
                 historyEventService.setsDateCreate(oDateCreate.toString());
-                historyEventService.setsDateClosed(oDateClosed.toString());
+               // historyEventService.setsDateClosed(oDateClosed.toString());
                // this.historyEventServiceDao.saveOrUpdate(historyEventService);
 
              }
