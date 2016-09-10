@@ -658,10 +658,32 @@ public class ActionEventController {
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
                     //sDateCreate
-                    line.add(historyEventService.getsDateCreate() != null? historyEventService.getsDateCreate() : "");
-                    //sDateClosed
-                    line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
-		            csvWriter.writeNext(line.toArray(new String[line.size()]));
+                    if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
+                    {
+                        LOG.info("Executing historyservice dates ");
+                         List<Date> listDate = oActionEventService.setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
+                       if(listDate.size() == 2)
+                       {
+                         LOG.info("Exec lines");
+                         line.add(listDate.get(0).toString());
+                         line.add(listDate.get(1).toString());
+                       }
+                       else
+                       {
+                           LOG.info("No data");
+                          line.add("");
+                          line.add("");
+                       }
+                           
+                    }
+                    else
+                    {
+                        LOG.info("datecreate not null or empty");
+                        line.add(historyEventService.getsDateCreate());
+                        line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
+		    
+                    }
+                            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
 	    	csvWriter.close();
