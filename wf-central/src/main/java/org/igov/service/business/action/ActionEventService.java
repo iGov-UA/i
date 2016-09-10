@@ -84,7 +84,7 @@ public class ActionEventService {
              LOG.info(String.format("Finding task [id = %s] and its dates as historic object", snId_Task));
              try
              {
-                Date oDateCreate = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getCreateTime();
+                Date oDateCreate = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getStartTime();
                // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
                 listDate.add(oDateCreate);
                // listDate.add(oDateClosed);
