@@ -330,10 +330,12 @@ module.exports.signFormMultiple = function (req, res) {
     var filesToSign = [];
     async.forEach(findFileFields(formData), function (fileField, callbackEach) {
       uploadFileService.downloadBuffer(fileField.value, function (error, response, buffer) {
+        var ext = formData.formData.files[fileField.id].split('.').pop().toLowerCase();
+        var fileName = fileField.id + (ext ? '.' + ext : '');
         filesToSign.push({
           name: fileField.id,
           options: {
-            filename: formData.formData.files[fileField.id]
+            filename: fileName
           },
           buffer: buffer
         });
@@ -447,11 +449,9 @@ module.exports.signFormMultipleCallback = function (req, res) {
         var savedForm = result.formData;
         for(var formFieldKey in savedForm.formData.files){
           if(savedForm.formData.files.hasOwnProperty(formFieldKey)){
-            var fileNameWithoutExt = savedForm.formData.files[formFieldKey].split('.')[0];
-
-            if(uploadedFiles.hasOwnProperty(fileNameWithoutExt)){
+            if(uploadedFiles.hasOwnProperty(formFieldKey)){
               var oldID = savedForm.formData.params[formFieldKey];
-              var newID = uploadedFiles[fileNameWithoutExt];
+              var newID = uploadedFiles[formFieldKey];
               savedForm.formData.params[formFieldKey] = newID;
               console.log('[sign multiple callback] update fileids. was : ' + oldID +'now : ' + newID);
             }
