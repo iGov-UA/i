@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
