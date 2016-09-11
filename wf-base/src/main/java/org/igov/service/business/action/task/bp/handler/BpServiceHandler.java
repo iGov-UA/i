@@ -275,7 +275,7 @@ public class BpServiceHandler {
         String soResponse = null;
         try {
             soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);
+            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param); 
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
             soResponse = (String) res.get("place");
