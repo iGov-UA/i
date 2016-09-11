@@ -278,7 +278,7 @@ public class BpServiceHandler {
             LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param); 
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("place");
+            soResponse = (String) res.get("sName");
             LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse = (String): " + soResponse);
         } catch (Exception ex) {
             LOG.error("[getPlaceByProcess]: ", ex);
