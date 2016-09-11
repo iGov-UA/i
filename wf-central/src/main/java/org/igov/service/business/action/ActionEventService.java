@@ -31,6 +31,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
@@ -84,7 +86,30 @@ public class ActionEventService {
              LOG.info(String.format("Finding task [id = %s] and its dates as historic object", snId_Task));
              try
              {
-                Date oDateCreate = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getStartTime();
+                LOG.info("Get query");
+                 HistoricTaskInstanceQuery query = oHistoryService.createHistoricTaskInstanceQuery();
+                if(query != null)
+                    LOG.info("query has been got");
+                else
+                     LOG.info("query hasn't been got");
+                
+                LOG.info("Get query another");
+                query = query.taskId(snId_Task);
+                if(query != null)
+                     LOG.info("query has been got 1");
+                else
+                     LOG.info("query hasn't been got 1");
+                 LOG.info("Get task");
+                HistoricTaskInstance task = query.singleResult();
+                if(task != null)
+                     LOG.info("task has been got");
+                else
+                     LOG.info("task hasn't been got");
+                LOG.info("Get oDateCreate");
+                Date oDateCreate = task.getCreateTime();
+                if(oDateCreate != null)
+                    LOG.info(String.format("oDateCreate = {}", oDateCreate.toString()));
+                //taskId(snId_Task).singleResult().getStartTime();
                // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
                 listDate.add(oDateCreate);
                // listDate.add(oDateClosed);
