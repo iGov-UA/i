@@ -77,7 +77,7 @@ public class ActionEventService {
     //@Autowired
     //private HistoryEvent_ServiceDao historyEventServiceDao;
     
-   /*  public List<Date> setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService)
+     public List<Date> setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService)
     {
        String snId_Task = nId_Task.toString();
        List<Date> listDate = new ArrayList();
@@ -135,7 +135,7 @@ public class ActionEventService {
         
                 
         return listDate;
-    }*/
+    }
    
     
     public void checkAuth (HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception{
