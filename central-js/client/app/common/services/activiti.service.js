@@ -179,8 +179,12 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     }
   };
 
-  this.getUploadFileURL = function (oServiceData) {
-    return './api/uploadfile?nID_Server=' + oServiceData.nID_Server;
+  this.getUploadFileURL = function (oServiceData, customFileName) {
+    return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
+  };
+
+  this.getUploadFileURLByServer = function (nID_Server, customFileName) {
+    return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
