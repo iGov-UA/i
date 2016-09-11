@@ -562,6 +562,7 @@ public class ActionEventController {
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
             @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
             HttpServletResponse httpResponse) {
+        LOG.info("{Enter into function}");
     	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
     	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
     	
@@ -658,10 +659,33 @@ public class ActionEventController {
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
                     //sDateCreate
-                    line.add(historyEventService.getsDateCreate() != null? historyEventService.getsDateCreate() : "");
-                    //sDateClosed
-                    line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
-		            csvWriter.writeNext(line.toArray(new String[line.size()]));
+                  /*  LOG.info("(Before getsDateCreate)");
+                    if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
+                    {
+                        LOG.info("Executing historyservice dates ");
+                         List<Date> listDate = oActionEventService.setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
+                       if(listDate.size() == 1)
+                       {
+                         LOG.info("Exec lines");
+                         line.add(listDate.get(0).toString());
+                         line.add(listDate.get(1).toString());
+                       }
+                       else
+                       {
+                           LOG.info("No data");
+                          line.add("");
+                          line.add("");
+                       }
+                           
+                    }
+                    else
+                    {
+                        LOG.info("datecreate not null or empty");
+                        line.add(historyEventService.getsDateCreate());
+                        line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
+		    
+                    }*/
+                            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
 	    	csvWriter.close();
