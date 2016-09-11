@@ -271,7 +271,7 @@ public class BpServiceHandler {
         LOG.info("!!!!!!!!!!!!!generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
         LOG.info("!!!!!!!!!!!!!ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, param);
+        LOG.info("(sURL={},mParam={})", sURL, param); 
         String soResponse = null;
         try {
             soResponse = httpRequester.getInside(sURL, param);
