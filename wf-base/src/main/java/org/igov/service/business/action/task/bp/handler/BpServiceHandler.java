@@ -180,6 +180,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): "+getPlaceByProcess(sID_Process)+" sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
