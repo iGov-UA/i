@@ -176,8 +176,11 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії"); 
         mParam.put("email",mTaskParam.get("email"));
         mGuideTaskParamKey.put("email", "email"); 
-        mParam.put("phone", "" + mTaskParam.get("phone"));
-//        mParam.put("email", mTaskParam.get("email"));
+        mParam.put("phone", "" + mTaskParam.get("phone")); 
+        mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
+        mParam.put("Place", getPlaceByProcess(sID_Process));
+        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+        // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
@@ -195,8 +198,6 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("Place", getPlaceByProcess(sID_Process));
-        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
