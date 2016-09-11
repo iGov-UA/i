@@ -659,7 +659,7 @@ public class ActionEventController {
                     // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
                     //sDateCreate
-                  /*  LOG.info("(Before getsDateCreate)");
+                    LOG.info("(Before getsDateCreate)");
                     if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
                     {
                         LOG.info("Executing historyservice dates ");
@@ -684,7 +684,7 @@ public class ActionEventController {
                         line.add(historyEventService.getsDateCreate());
                         line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
 		    
-                    }*/
+                    }
                             csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
