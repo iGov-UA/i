@@ -176,7 +176,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email");
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess(sID_Process));
+        mParam.put("Place", "sName");
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess(sID_Process) + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
@@ -204,7 +204,7 @@ public class BpServiceHandler {
             String jsonPlace = placeService.getPlaceByProcess(sID_Process);
             LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
             JSONObject Place = new JSONObject(jsonPlace);
-            mParam.put("sNameOriginal", Place.get("sNameOriginal"));
+            mParam.put("Place", Place.get("sName"));
             nID_Server = Place.getInt("nID_Server");
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
