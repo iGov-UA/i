@@ -163,7 +163,7 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskName", mTaskParam.get("sTaskName"));
+        mParam.put("sTaskName", mTaskParam.get("sTaskName"+" - " + "sTaskId"));
         mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
         mGuideTaskParamKey.put("sTaskId", "ИД  таски");
@@ -195,17 +195,17 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("sPlace", getPlaceForProcess(sID_Process));
-        mGuideTaskParamKey.put("sPlace", "Место");
+        mParam.put("Place", "sNameOriginal");
+        mGuideTaskParamKey.put("Place", getPlaceByProcess(sID_Process));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
          try {//issue 1350
                 String jsonPlace = placeService.getPlaceByProcess(sID_Process);
                 LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
-                JSONObject sPlace  = new JSONObject(jsonPlace);
-                mParam.put("nID_Rate", sPlace.get("nRate"));
-                nID_Server = sPlace.getInt("nID_Server");
+                JSONObject Place  = new JSONObject(jsonPlace);
+                mParam.put("sNameOriginal", Place.get("sNameOriginal"));
+                nID_Server = Place.getInt("nID_Server");
             } catch (Exception oException) {
                 LOG.error("ex!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
@@ -262,7 +262,23 @@ public class BpServiceHandler {
         LOG.info("(soResponse={})", soResponse);
         return soResponse;
     }
-    
+    private String getPlaceByProcess(String sID_Process) {
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("nID_Process", sID_Process);
+        param.put("nID_Server", generalConfig.getSelfServerId().toString());
+        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
+        LOG.info("(sURL={},mParam={})", sURL, param);
+        String soResponse = null;
+        try {
+            soResponse = httpRequester.getInside(sURL, param);
+            Map res = JsonRestUtils.readObject(soResponse, Map.class);
+            soResponse = (String) res.get("place");
+        } catch (Exception ex) {
+            LOG.error("[getPlaceByProcess]: ", ex);
+        }
+        LOG.info("(soResponse={})", soResponse);
+        return soResponse;
+    }
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
