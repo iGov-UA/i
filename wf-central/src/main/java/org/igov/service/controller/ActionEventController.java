@@ -41,6 +41,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 
 @Controller
 @Api(tags = { "ActionEventController -- События по действиям и статистика" })
@@ -66,6 +70,12 @@ public class ActionEventController {
     private DocumentDao documentDao;
     @Autowired
     private ActionProcessCountDao actionProcessCountDao;
+    
+    @Autowired
+    private HistoryService oHistoryService;
+    
+    @Autowired
+    private TaskService oTaskService;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -663,7 +673,7 @@ public class ActionEventController {
                     if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
                     {
                         LOG.info("Executing historyservice dates ");
-                         List<Date> listDate = oActionEventService.setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
+                         List<Date> listDate = setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
                        if(listDate.size() == 1)
                        {
                          LOG.info("Exec lines");
@@ -693,6 +703,67 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
+    
+     public List<Date> setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService)
+    {
+       String snId_Task = nId_Task.toString();
+       List<Date> listDate = new ArrayList();
+       
+        
+             LOG.info(String.format("Finding task [id = %s] and its dates as historic object", snId_Task));
+             try
+             {
+                LOG.info("Get query");
+                 HistoricTaskInstanceQuery query = oHistoryService.createHistoricTaskInstanceQuery();
+                if(query != null)
+                    LOG.info("query has been got");
+                else
+                     LOG.info("query hasn't been got");
+                
+                LOG.info("Get query another");
+                query = query.taskId(snId_Task);
+                if(query != null)
+                     LOG.info("query has been got 1");
+                else
+                     LOG.info("query hasn't been got 1");
+                 LOG.info("Get task");
+                HistoricTaskInstance task = query.singleResult();
+                if(task != null)
+                     LOG.info("task has been got");
+                else
+                     LOG.info("task hasn't been got");
+                LOG.info("Get oDateCreate");
+                Date oDateCreate = task.getCreateTime();
+                if(oDateCreate != null)
+                    LOG.info(String.format("oDateCreate = {}", oDateCreate.toString()));
+                //taskId(snId_Task).singleResult().getStartTime();
+               // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
+                listDate.add(oDateCreate);
+               // listDate.add(oDateClosed);
+                historyEventService.setsDateCreate(oDateCreate.toString());
+               // historyEventService.setsDateClosed(oDateClosed.toString());
+               // this.historyEventServiceDao.saveOrUpdate(historyEventService);
+
+             }
+             catch(NullPointerException ex)
+             {
+                 try{
+                     LOG.info("Active task check");
+                  Date oDate = oTaskService.createTaskQuery().taskId(snId_Task).singleResult().getCreateTime();
+              LOG.info(String.format(" It has been found task [id = %s] and its dates as active", snId_Task));
+               }
+             catch(NullPointerException e)
+             {
+                 LOG.info(String.format("The Task [id = %s] hasn't been found as active object", snId_Task));
+             }
+        
+                LOG.info(String.format("The Task [id = %s] hasn't been found as historic object", snId_Task));
+             }
+        
+                
+        return listDate;
+    }
+   
     
     @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
     @RequestMapping(value = "/getActionProcessCount", method = RequestMethod.GET)
