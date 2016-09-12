@@ -86,15 +86,14 @@ angular.module('app')
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;
           $scope.changeCategory();
+          $scope.spinner = false;
+          $scope.mainSpinner = false;
+          TitleChangeService.defaultTitle();
         });
       }
       if (toState.resolve) {
         $scope.spinner = true;
       }
-    });
-    $scope.$on('$stateChangeSuccess', function() {
-      $scope.spinner = false;
-      $scope.mainSpinner = false;
     });
     $scope.$on('$stateChangeError', function(event, toState) {
       if (toState.resolve) {
