@@ -55,6 +55,7 @@
         <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -138,7 +139,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -210,7 +211,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
