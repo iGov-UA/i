@@ -92,6 +92,10 @@ angular.module('app')
         $scope.spinner = true;
       }
     });
+    $scope.$on('$stateChangeSuccess', function() {
+      $scope.spinner = false;
+      $scope.mainSpinner = false;
+    });
     $scope.$on('$stateChangeError', function(event, toState) {
       if (toState.resolve) {
         $scope.spinner = false;
