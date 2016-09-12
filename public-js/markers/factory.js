@@ -119,9 +119,10 @@ angular.module('iGovMarkers')
            * @param startSymbol - (опциональный) открывающийся символ для обозначения места вставки
            * @param endSymbol - (опциональный) закрывающий символ для обозначения места подстановки
            * @param arrKeys - (опциональный) массив наименований параметров объекта, откуда будут браться значения для подстановки
+           * @param arrFormProperties - Activiti Form Properties
            * @returns {{value: string, differentTriggered: boolean}}
            */
-            interpolateString: function(strPattern, objData, startSymbol, endSymbol, arrKeys) {
+            interpolateString: function(strPattern, objData, startSymbol, endSymbol, arrKeys, arrFormProperties) {
                 var result = {
                     value: '',
                     differentTriggered: false
@@ -141,6 +142,10 @@ angular.module('iGovMarkers')
                 if (!endSymbol || endSymbol === null || endSymbol === '') {
                     endSymbol = "}}";
                 }
+                //if (!arrFormProperties || arrFormProperties === null) {
+                //    arrFormProperties = [];
+                //}
+                //objData.aActivitiFormProperties = arrFormProperties || [];
 
                 var aSubstrings = [];
 
@@ -170,7 +175,22 @@ angular.module('iGovMarkers')
                     angular.forEach(arrKeys, function (objDataKey) {
                         if (objDataKey === aSubstrings[arrInd]) {
                             if(objData[objDataKey].value && angular.isString(objData[objDataKey].value)){
-                                result.value = result.value + objData[objDataKey].value;
+                                var bIsSetEnumValue = false;
+                                if(arrFormProperties){
+                                    angular.forEach(arrFormProperties, function (oProperty) {
+                                        if(oProperty.type && oProperty.type === 'enum'){
+                                            angular.forEach(oProperty.enumValues, function (oEnumValue) {
+                                                if(objData[objDataKey].value === oEnumValue.id){
+                                                    result.value = result.value + oEnumValue.name;
+                                                    bIsSetEnumValue = true;
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                                if(!bIsSetEnumValue){
+                                    result.value = result.value + objData[objDataKey].value;
+                                }
                                 result.differentTriggered = true;
                             } else if (angular.isString(objData[objDataKey])) {
                                 result.value = result.value + objData[objDataKey];
