@@ -30,7 +30,12 @@ for arg in vars(args):
 if os.path.exists("iSystem"):
     subprocess.call("rm -rf iSystem", shell=True)
 
-subprocess.call("git clone git@iSystem.github.com:e-government-ua/iSystem.git", shell=True)
+if args.version == 'prod' or args.version == 'prod-backup':
+   branch = 'master'
+else:
+   branch = 'test'
+
+subprocess.call("git clone git@iSystem.github.com:e-government-ua/iSystem.git  -b %s --single-branch" % (branch), shell=True)
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)

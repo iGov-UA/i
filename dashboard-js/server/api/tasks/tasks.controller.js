@@ -262,6 +262,19 @@ exports.getAttachmentContent = function (req, res) {
   activiti.filedownload(req, res, options);
 };
 
+exports.getAttachmentContentTable = function (req, res) {
+  var options = {
+    path: 'object/file/download_file_from_db',
+    query: {
+      'taskId': req.params.taskId,
+      'attachmentId': req.params.attachmentId
+    }
+  };
+  activiti.get(options, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+  });
+};
+
 exports.submitForm = function (req, res) {
   var options = {
     path: 'form/form-data'

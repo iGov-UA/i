@@ -16,7 +16,7 @@ public class SMS_New {
 
     private String messageId = null;
     private String callbackUrl = null;
-    private String schemaId = "4";
+    private String schemaId = null;
     private String addrPhone = null;
     private String typeSend = "online";
     private String typeCheck = "info";
@@ -28,12 +28,12 @@ public class SMS_New {
     private int senderTTL = 60;
     private int privat24TTL = 60;
 
-    public SMS_New(String messageId, String callbackUrl, String addrPhone, String merchantId, String merchantPassword,
+    public SMS_New(String messageId, String callbackUrl, String schemaId, String addrPhone, String merchantId, String merchantPassword,
 	    String sText) throws IllegalArgumentException {
-	LOG.debug("messageId={}, callbackUrl={}, addrPhone={}, merchantId={}, merchantPassword={}, sText={}", messageId,
-		callbackUrl, addrPhone, merchantId, merchantPassword, sText);
+	LOG.debug("messageId={}, callbackUrl={}, schemaId={}, addrPhone={}, merchantId={}, merchantPassword={}, sText={}", messageId,
+		callbackUrl, schemaId, addrPhone, merchantId, merchantPassword, sText);
 
-	if (messageId == null || callbackUrl == null || addrPhone == null || merchantId == null
+	if (messageId == null || callbackUrl == null || schemaId == null || addrPhone == null || merchantId == null
 		|| merchantPassword == null || sText == null) {
 	    throw new IllegalArgumentException("parameters is null");
 	}
@@ -45,6 +45,7 @@ public class SMS_New {
 
 	this.messageId = messageId;
 	this.callbackUrl = callbackUrl;
+	this.schemaId = schemaId;
 	this.addrPhone = addrPhone;
 	this.merchantId = merchantId;
 	this.merchantPassword = merchantPassword;

@@ -4,7 +4,7 @@ var activiti = require('../../components/activiti');
 
 exports.getSchedule = function(req, res) {
   var options = {
-    path: 'flow/getSheduleFlowIncludes',
+    path: 'action/flow/getSheduleFlowIncludes',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -22,7 +22,7 @@ exports.getSchedule = function(req, res) {
 
 exports.setSchedule = function(req, res) {
   var options = {
-    path: 'flow/setSheduleFlowInclude',
+    path: 'action/flow/setSheduleFlowInclude',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -49,7 +49,7 @@ exports.setSchedule = function(req, res) {
 
 exports.deleteSchedule = function(req, res) {
   var options = {
-    path: 'flow/removeSheduleFlowInclude',
+    path: 'action/flow/removeSheduleFlowInclude',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -68,7 +68,7 @@ exports.deleteSchedule = function(req, res) {
 
 exports.getExemptions = function(req, res) {
   var options = {
-    path: 'flow/getSheduleFlowExcludes',
+    path: 'action/flow/getSheduleFlowExcludes',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -86,7 +86,7 @@ exports.getExemptions = function(req, res) {
 
 exports.setExemption = function(req, res) {
   var options = {
-    path: 'flow/setSheduleFlowExclude',
+    path: 'action/flow/setSheduleFlowExclude',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -110,7 +110,7 @@ exports.setExemption = function(req, res) {
 
 exports.deleteExemption = function(req, res) {
   var options = {
-    path: 'flow/removeSheduleFlowExclude',
+    path: 'action/flow/removeSheduleFlowExclude',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -129,7 +129,7 @@ exports.deleteExemption = function(req, res) {
 
 exports.getFlowSlots = function(req, res) {
   var options = {
-    path: 'flow/getFlowSlots_ServiceData',
+    path: 'action/flow/getFlowSlots_ServiceData',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -150,7 +150,7 @@ exports.getFlowSlots = function(req, res) {
 
 exports.buildFlowSlots = function(req, res) {
   var options = {
-    path: 'flow/buildFlowSlots',
+    path: 'action/flow/buildFlowSlots',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -167,7 +167,7 @@ exports.buildFlowSlots = function(req, res) {
 
 exports.deleteFlowSlots = function(req, res) {
   var options = {
-    path: 'flow/clearFlowSlots',
+    path: 'action/flow/clearFlowSlots',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,
@@ -196,7 +196,7 @@ exports.getFlowSlotTickets = function(req, res) {
   if (req.query.sDate)
     query.sDate = req.query.sDate;
   var options = {
-    path: 'flow/getFlowSlotTickets',
+    path: 'action/flow/getFlowSlotTickets',
     query: query
   };
 
@@ -211,7 +211,7 @@ exports.getFlowSlotTickets = function(req, res) {
 
 exports.getFlowSlotDepartments = function(req, res) {
   var options = {
-    path: 'flow/getFlowSlots_Department',
+    path: 'action/flow/getFlowSlots_Department',
     query: {
       sID_BP: req.query.sID_BP
     }

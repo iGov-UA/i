@@ -59,8 +59,10 @@ var baseURls = {
   resource: {
     base: getResourceURL(),
     path: {
+      scan: '/ResourceService/checked/scan',
       info: '/ResourceService/checked/data',
       sign: '/ResourceService/checked/uploadFileForSignature',
+      signFiles: '/ResourceService/checked/uploadFilesForSignature',
       claim: '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
     }
   }
