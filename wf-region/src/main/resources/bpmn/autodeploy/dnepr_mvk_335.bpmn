@@ -200,46 +200,15 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Передача у власність земельної ділянки.]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>
-Ваше звернення щодо передачи у власність земельної ділянки - опрацьовано.<br />
-Відповідь в додатку до цього листа.
-</p>
-Телефон для довідок: (056) 744-63-51<br />
-<br />
-[pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc=='Исполнен'&&nID_DocumentTemplate_UkrDoc=='11401'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="exclusivegateway1" targetRef="servicetask7"></sequenceFlow>
-    <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script District" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'region'
@@ -297,14 +266,8 @@ execution.setVariable('sDistr', per1)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="68.0" width="181.0" x="430.0" y="249.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="174.0" x="663.0" y="350.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="265.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="601.0" y="363.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="70.0" width="174.0" x="200.0" y="153.0"></omgdc:Bounds>
@@ -325,10 +288,6 @@ execution.setVariable('sDistr', per1)</script>
         <omgdi:waypoint x="430.0" y="283.0"></omgdi:waypoint>
         <omgdi:waypoint x="395.0" y="282.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="663.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="636.0" y="380.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="611.0" y="187.0"></omgdi:waypoint>
         <omgdi:waypoint x="660.0" y="188.0"></omgdi:waypoint>
@@ -336,10 +295,6 @@ execution.setVariable('sDistr', per1)</script>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="729.0" y="283.0"></omgdi:waypoint>
         <omgdi:waypoint x="611.0" y="283.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="749.0" y="303.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="350.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="769.0" y="283.0"></omgdi:waypoint>
