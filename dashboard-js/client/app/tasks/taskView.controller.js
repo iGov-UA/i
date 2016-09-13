@@ -116,7 +116,19 @@
         }
 
         $scope.isRequired = function (item) {
-          return !$scope.isFormPropertyDisabled(item) && (item.required || $scope.isCommentAfterReject(item)); //item.writable
+          var bRequired = FieldMotionService.FieldMentioned.inRequired(item.id) ?
+            FieldMotionService.isFieldRequired(item.id, function(){
+              var oAdaptFormData;
+              angular.forEach($scope.taskForm, function (item) {
+                oAdaptFormData[item.id] = {
+                  required: item.required,
+                  value: item.value,
+                  writable: item.writable
+                }
+              });
+              return oAdaptFormData;
+            }) : item.required;
+          return !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
         };
 
         $scope.isTaskSubmitted = function (item) {
