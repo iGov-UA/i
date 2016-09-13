@@ -8,24 +8,25 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Чи є Ви моряком?" type="enum" required="true">
-          <activiti:value id="sTypeYes" name="так"></activiti:value>
-          <activiti:value id="sTypeNo" name="ні, я довірена особа моряка"></activiti:value>
+        <activiti:formProperty id="asSeaman" name="Чи є Ви моряком?" type="enum" required="true">
+          <activiti:value id="sSeamanYes" name="так"></activiti:value>
+          <activiti:value id="sSeamanNo" name="ні, я довірена особа моряка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLable1" name="Зверніть увагу" type="label" default="Дані моряка"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="privatePhone" name="Контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон; у форматі +380..." type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asWorkType" name="Місцезнаходження моряка на даний момент" type="enum" required="true">
           <activiti:value id="sSea" name="на борту судна"></activiti:value>
           <activiti:value id="sUkraine" name="в Україні"></activiti:value>
           <activiti:value id="sOtherCountry" name="в іншій країні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Назва країни місцезнаходження моряка" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asHavePRMTU" name="Чи є моряк членом Профспілки робітників морського транспорту України?" type="enum" required="true">
           <activiti:value id="sHavePRMTUYes" name="так"></activiti:value>
           <activiti:value id="sHavePRMTUNo" name="ні"></activiti:value>
-          <activiti:value id="sHavePRMTUNone" name="потрібно перевірити"></activiti:value>
+          <activiti:value id="sHavePRMTUFind" name="потрібно перевірити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTiketNumber" name="Номер членського квитка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLable2" name="Зверніть увагу" type="label" default="Звернення від членів ПРМТУ опрацьовуються у першу чергу"></activiti:formProperty>
@@ -37,7 +38,7 @@
         <activiti:formProperty id="sPosition" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Остання кампанія, від якої уходили в рейс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asProblem" name="Категорія питання" type="enum" required="true">
-          <activiti:value id="sPrivateE1" name="несплата або затримка зарплатні"></activiti:value>
+          <activiti:value id="sNo" name="несплата або затримка зарплатні"></activiti:value>
           <activiti:value id="sPrivateE2" name="несплата компенсацій або інших виплат"></activiti:value>
           <activiti:value id="sCorporal" name="порушення умов контракту з боку роботодавця"></activiti:value>
           <activiti:value id="sSerg" name="несанкціоноване списання"></activiti:value>
@@ -46,23 +47,14 @@
           <activiti:value id="sPrapor" name="питання по діяльності профспілки"></activiti:value>
           <activiti:value id="sChiefPrapor" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Назва судна та/або номер ІМО" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWhereNow" name="Поточне місцезнаходження судна або найближчій порт заходу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTermCount" name="Термін заборгованості" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Назва країни" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;за наявності" type="string" default="не було" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocReestr" name="Копія заяви про зняття з реєстрації місця проживання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія або фото індивідуального контракту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocPassp" name="Копія посвідчення особи моряка; обов'язково першу сторінку та сторінку з припискою до судна" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/zn.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Назва РВК" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRozklad" name="Розклад роботи органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRekvVoen" name="Реквізити" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
