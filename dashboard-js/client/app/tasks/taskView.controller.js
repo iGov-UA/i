@@ -115,20 +115,26 @@
           });
         }
 
+        function getAdaptedFormData(taskForm) {
+          var oAdaptFormData = {};
+          angular.forEach(taskForm, function (item) {
+            oAdaptFormData[item.id] = {
+              required: item.required,
+              value: item.value,
+              writable: item.writable
+            }
+          });
+          return oAdaptFormData;
+        }
+
         $scope.isRequired = function (item) {
           var bRequired = FieldMotionService.FieldMentioned.inRequired(item.id) ?
-            FieldMotionService.isFieldRequired(item.id, function(){
-              var oAdaptFormData;
-              angular.forEach($scope.taskForm, function (item) {
-                oAdaptFormData[item.id] = {
-                  required: item.required,
-                  value: item.value,
-                  writable: item.writable
-                }
-              });
-              return oAdaptFormData;
-            }) : item.required;
-          return !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
+            FieldMotionService.isFieldRequired(item.id, getAdaptedFormData($scope.taskForm)) : item.required;
+          var b = !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
+          /*if(item.id === 'sTestRequired'){
+            debugger;
+          }*/
+          return b;
         };
 
         $scope.isTaskSubmitted = function (item) {

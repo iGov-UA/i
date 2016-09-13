@@ -58,6 +58,9 @@ function FieldMotionService(MarkersFactory) {
     var b = grepByPrefix('RequiredFieldsOnCondition_').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
     });
+    /*if(fieldId === 'sTestRequired'){
+      debugger;
+    }*/
     return b;
   };
   var fieldId_entryTriggered = {};
