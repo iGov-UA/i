@@ -47,21 +47,18 @@
         <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers20" name="якщо показати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;saField&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;saQuestion1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'так'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="saField" name="Данные" type="textArea" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="saQuestion2" name="показати поле з речовим модулем?" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers21" name="якщо показати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;saQuestion2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'так'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="info" name="речовий модуль" type="textArea" default=" Доброго дня! Мене звуть %ім'я%, я один з координаторів порталу iGov в %назву% області. Кілька днів тому було відправлено звернення в електронному вигляді на порталі iGov в вашу службу. Ми отримали інформацію про те, що вона до сьогодні не взята в роботу, тому хотіли б уточнити у Вас, з якої саме причини? Можливо, у вас виникли проблеми в роботі з порталом? Можливо, я би міг допомогти вам у вирішенні даних питань? (Записуєте результат розмови в коментарі). Дякую за приділений час, на все добре, до побачення! " writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="comment" name="Коментар для громадянина за результатами контакту з адміністративним органом" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="commentar" name="Внутрішній коментар волонтера" type="textArea"></activiti:formProperty>
@@ -91,7 +88,7 @@ execution.setVariable('sNotification_day', timer)
 </script>
     </scriptTask>
     <sequenceFlow id="flow7" name="перенос срока" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountDays!=null && comment!=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountDays!=null && (comment!=null && comment!=""  && comment!=" ")}]]></conditionExpression>
     </sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
@@ -140,7 +137,7 @@ ${sEmployeeContacts}<br /><br />
     <sequenceFlow id="flow13" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow15" name="сохранение заявки" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountDays=="0" && comment==null || comment==""  || comment==" "}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountDays!=null && (comment==null || comment==""  || comment==" ")}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_system_escalation">
