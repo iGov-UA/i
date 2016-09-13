@@ -8,8 +8,9 @@ var nock = require('nock')
   , app = require('./app')
   , testRequest = supertest(app)
   , async = require('async')
-  , appData = require('./app.data.spec.js')
-  , appTests = require('./app.tests.spec.js')(testRequest)
+  , appData = require('./app.data.spec')
+  , appUtil = require('./app.util.spec')
+  , appTests = require('./app.tests.spec')(testRequest)
   , config = require('./config/environment');
 
 
@@ -23,7 +24,7 @@ var authResultMock = nock(testAuthResultBase)
   .get(testAuthResultPath)
   .query(true)
   .reply(200, function (uri, requestBody) {
-    var query = queryStringToObject(uri);
+    var query = appUtil.queryStringToObject(uri);
     for (var key in query) {
       query[key] = urlencode.decode(query[key]);
     }

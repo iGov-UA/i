@@ -1,5 +1,6 @@
 <div class="list-group">
   <place></place>
+
   <style>
     .ui-select-match-text {
       overflow: hidden;
@@ -29,8 +30,6 @@
     .dropdown-menu {
       padding-top: 0;
     }
-
-
   </style>
 
   <div class="list-group-item disabled">
@@ -110,7 +109,7 @@
                  ng-if="isFieldVisible(property)">
 
               <div class="col-md-5"
-                   ng-if="property.type!='invisible' && property.type!='markers'">
+                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
                 {{property.sFieldLabel}}:
@@ -123,7 +122,7 @@
 
 
               <div class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -147,6 +146,203 @@
                                   ng-class="getBpAndFieldID(property)"
                                   service-data="oServiceData"
                                   ng-required="isFieldRequired(property)"></dropdown-country>
+
+                <div class="col-md-12 field-table" ng-switch-when="table">
+                  <table style="width:95%">
+                    <thead>
+                    <tr class="table-thead">
+                      <th style="padding: 5px; border: 1px solid lightgrey; text-align: center" ng-repeat="item in tableContent.aRow[0].aField">
+                        <span style="font-weight: normal">{{item.name}}</span>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody ng-form="tableForm">
+                    <tr ng-repeat="row in tableContent.aRow track by $index" ng-init="rowIndex=$index">
+                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+                        <div ng-if="item.type == 'string'">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
+                            <p>Невiрний формат даних</p>
+                          </div>
+                          <input class="inputs-in-table"
+                                 ng-if='item.hasOwnProperty("default") || !item.hasOwnProperty("default") && !item.hasOwnProperty("value")'
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                 ng-required="item.required"
+                                 ng-model="item.default"
+                                 type="text">
+                          <input class="inputs-in-table"
+                                 ng-if='item.hasOwnProperty("value")'
+                                 name="{{item.id + rowIndex}}"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                 ng-required="item.required"
+                                 ng-model="item.value"
+                                 type="text">
+                        </div>
+                        <div ng-if="item.type == 'enum'">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
+                            <p>Невiрний формат даних</p>
+                          </div>
+                          <select name="{{item.id + rowIndex}}"
+                                  ng-required="item.required"
+                                  ng-model="item.value"
+                                  ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                  ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.a"
+                                  class="inputs-in-table">
+                          </select>
+                        </div>
+                        <div ng-if="item.type == 'long'">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
+                            <p>Невiрний формат даних</p>
+                          </div>
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('default') || !item.hasOwnProperty('default') && !item.hasOwnProperty('value')"
+                                 ng-required="item.required"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                 ng-model="item.default"
+                                 class="inputs-in-table"
+                                 type="number">
+                          <input name="{{item.id + rowIndex}}"
+                                 ng-if="item.hasOwnProperty('value')"
+                                 ng-required="item.required"
+                                 ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                 ng-model="item.value"
+                                 class="inputs-in-table"
+                                 type="number">
+                        </div>
+                        <div ng-if="item.type == 'date'">
+                          <div class="error-popup" ng-if="form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid">
+                            <p>Невiрний формат даних</p>
+                          </div>
+                          <!--заменить на директиву-->
+                          <p class="input-group">
+                            <input type="text"
+                                   ng-required="item.required"
+                                   name="{{item.id + rowIndex}}"
+                                   datepicker-popup="{{item.props.format}}"
+                                   is-open="item.props.opened"
+                                   datepicker-options="item.props.options"
+                                   ng-model="item.props.value"
+                                   ng-readonly="true"
+                                   ng-class="{'table-field-invalid': form.$submitted && form.tableForm[item.id + rowIndex].$invalid || tableIsInvalid && form.tableForm[item.id + rowIndex].$invalid}"
+                                   close-text="Close"
+                                   class="form-control"
+                                   value="item.props.value | fixDateFormat">
+                            <span class="input-group-btn">
+                              <button type="button"
+                                      class="btn btn-link"
+                                      style="background: white;outline: none;"
+                                      ng-click="item.props.open($event)">
+                                      <i class="glyphicon glyphicon-calendar" style="color:green;"></i>
+                              </button>
+                            </span>
+                            <!--calendar-modal-window-->
+                            <script id="template/datepicker/popup.html" type="text/ng-template">
+                              <ul class="dropdown-menu" ng-style="{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px', overflow: 'hidden'}" ng-keydown="keydown($event)">
+                                <li ng-transclude style="margin-top:0"></li>
+                                <li ng-if="showButtonBar" style="margin-top:0; text-align: center">
+                                  <button type="button" class="btn btn-sm btn-link" style="color: black; font-weight: bold" ng-click="select(null)">{{ getText('clear') }}</button>
+                                </li>
+                              </ul>
+                            </script>
+                            <!--calendar-year-template-->
+                            <script id="template/datepicker/year.html" type="text/ng-template">
+                              <table  role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th>
+                                    <button type="button" class="btn btn-link btn-sm pull-left" style="color: black;" ng-click="move(-1)" tabindex="-1">
+                                      <i class="glyphicon glyphicon-arrow-left"></i>
+                                    </button>
+                                  </th>
+                                  <th colspan="3">
+                                    <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                                      <strong style="color: black; font-size: 14px">Рік</strong>
+                                    </button>
+                                  </th>
+                                  <th>
+                                    <button type="button" class="btn btn-link btn-sm pull-right" style="color: black;" ng-click="move(1)" tabindex="-1">
+                                      <i class="glyphicon glyphicon-arrow-right"></i>
+                                    </button>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                                    <button type="button" style="min-width:100%;" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="::{'text-info': dt.current}" style="color:black">{{::dt.label}}</span></button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+                            <!--calendar-month-template-->
+                            <script id="template/datepicker/month.html" type="text/ng-template">
+                              <table role="grid" class="calender" style="outline: none; margin:5px" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th colspan="3"><button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%">
+                                    <strong style="color:black; font-size: 14px">{{title}}</strong>
+                                  </button>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center months" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass">
+                                    <button type="button" style="min-width:100%; padding:10px" class="btn btn-link" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                                      <span ng-class="::{'text-info': dt.current}" style="color:black; font-size:16px">{{::dt.label}}</span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+                            <!--calendar-day-template-->
+                            <script id="template/datepicker/day.html" type="text/ng-template">
+                              <table role="grid" class="calender" style="outline: none;" aria-labelledby="{{::uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+                                <thead>
+                                <tr>
+                                  <th class="month-year-heading" colspan="7">
+                                    <button id="{{::uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-link btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+                                      <strong style="color:black; font-size: 14px">{{title}}</strong>
+                                    </button>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th ng-repeat="label in labels track by $index" class="text-center">
+                                    <small aria-label="{{label.full}}">{{label.abbr}}</small>
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="row in rows track by $index">
+                                  <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{::dt.uid}}" ng-class="::dt.customClass" ng-mouseover="">
+                                    <button type="button" style="min-width:100%; color: black;" class="btn btn-link btn-sm" ng-class="{'btn-primary': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1">
+                                      <span ng-class="::{'text-muted': dt.secondary, 'text-info': dt.current}">{{::dt.label}}</span>
+                                    </button>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </script>
+
+                          </p>
+
+                          <!--заменить на директиву-->
+                        </div>
+                      </td>
+                      <td style="padding: 0;" ng-if="$index !== 0">
+                        <a href="#" class="btn btn-default remove-btn" ng-click="removeRow($index, form.tableForm)">
+                          <i style="color: #FF1F1F;" class="glyphicon glyphicon-remove"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div style="text-align: center; margin-top: 3px">
+                    <input type="button" class="add-row-button" ng-click="addRow(form.tableForm)" value="Додати строку">
+                  </div>
+                </div>
 
                 <input ng-switch-when="string"
                        type="text"

@@ -37,8 +37,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
-import org.igov.io.sms.ManagerOTP;
-import org.igov.io.sms.ManagerSMS;
+import org.igov.io.sms.ManagerSMS_New;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
@@ -133,10 +132,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	// private static final String PATTERN_DELIMITER = "_";
 
 	@Autowired
-	public ManagerOTP oManagerOTP;
-
-	@Autowired
-	public ManagerSMS oManagerSMS;
+	public ManagerSMS_New oManagerSMS;
 
 	@Autowired
 	AccessKeyService accessCover;

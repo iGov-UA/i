@@ -124,7 +124,7 @@ public class EscalationService {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
-                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Ссылка");
+                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
                     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
@@ -165,28 +165,33 @@ public class EscalationService {
 
         Map<String, Object> result = new HashMap<>();
         result.put("sTaskId", taskId);
-        BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "ИД таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
 
         long nDiffMS = 0;
+        LOG.info("!!!!!!!!!!!!!!!!oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            LOG.info("!!!!!!if!!!!!!!!!!nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+             LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
         }
         LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours); 
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays); 
         LOG.debug("(nElapsedDays={})", nElapsedDays);
         result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Количество просроченных дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
-//        result.put("sLoginAssigned", taskService.createTaskQuery().taskAssignee(taskId));
-//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        result.put("sLoginAssigned", oTask.getAssignee());
+        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         result.put("bSuspended", oTask.isSuspended());
         BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
@@ -269,17 +274,17 @@ public class EscalationService {
         }
 
         result.put("sID_BP_full", oTask.getProcessDefinitionId());
-        BpServiceHandler.mGuideTaskParamKey.put("sID_BP_full", "ИД БП (полный)");
+        BpServiceHandler.mGuideTaskParamKey.put("sID_BP_full", "Удалить");
         result.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
         BpServiceHandler.mGuideTaskParamKey.put("sID_BP", "ИД БП");
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "ИД таски активити");
+        BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "Удалить");
         result.put("sTaskName", oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
-        BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
+        BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "Удалить");
 //        result.put("sLoginAssigned", oTask.getAssignee());
 //        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
@@ -310,9 +315,9 @@ public class EscalationService {
         result.put("sTaskName", String.format("%s", oTask.getName()));
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя таски"); 
         result.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.mGuideTaskParamKey.put("sTaskNumber", "Номер  таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskNumber", "Удалить");
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
-        BpServiceHandler.mGuideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
+        BpServiceHandler.mGuideTaskParamKey.put("sElapsedInfo", "Удалить");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
         BpServiceHandler.mGuideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
 

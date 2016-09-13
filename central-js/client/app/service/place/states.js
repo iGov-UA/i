@@ -172,7 +172,7 @@ angular.module('app').config(function($stateProvider) {
             return ActivitiService.loadForm(oServiceData, $stateParams.formID).then(function(savedForm){
 
               savedForm.activitiForm.formProperties.forEach(function(item){
-                if(item.id === 'form_signed'){
+                if(item.id === 'form_signed' || item.id === 'form_signed_all'){
                   item.value = $stateParams.signedFileID;
                 } else {
                   item.value = savedForm.formData.params[item.id];
