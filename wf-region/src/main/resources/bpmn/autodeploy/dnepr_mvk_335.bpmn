@@ -239,7 +239,9 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc=='Исполнен'&&nID_DocumentTemplate_UkrDoc=='11401'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="exclusivegateway1" targetRef="servicetask7"></sequenceFlow>
-    <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script District" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'region'
