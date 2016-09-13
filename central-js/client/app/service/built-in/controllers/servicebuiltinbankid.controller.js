@@ -535,7 +535,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     var pars = $scope.data.formData.params;
     calcFields.forEach(function(key) {
       if (_.has(pars, key)) {
-        var data = FieldMotionService.calcFieldValue(key, pars);
+        var data = FieldMotionService.calcFieldValue(key, pars, $scope.activitiForm.formProperties);
         if (data.value && data.differentTriggered) pars[key].value = data.value;
       }
     });

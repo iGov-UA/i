@@ -5,17 +5,29 @@
       <extensionElements>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто в РАГС і підписати паперовий екземпляр заяви."></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
         <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
-          <activiti:value id="sEnum1" name="Скорочений обряд(15 хвилин, вартість - 140 грн. )"></activiti:value>
-          <activiti:value id="sEnum2" name="Повний обряд(45 хвилин, вартість - 337 грн.)"></activiti:value>
+          <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
+          <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного РАГС тимчасово неможливо сплатити держм.мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгову категорію" type="enum" required="true">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum" required="true">
+          <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="4 категорія  потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
@@ -30,7 +42,7 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
           <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
-          <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до РАГСу"></activiti:value>
+          <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до ДРАЦСу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asMarriageTerm" name="Чи маєте Ви поважні причини для скорочення місячного строку реєстрації шлюбу?" type="enum">
@@ -40,6 +52,7 @@
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText4" name=" " type="label" default="Якщо Ви не знайшли в обраному відділі ДРАЦС зручну дату, спробуйте обрати інший відділ Вашого міста."></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string"></activiti:formProperty>
@@ -49,17 +62,21 @@
         <activiti:formProperty id="sAge1" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship1" name="Чи є Ви особою без громадянства" type="enum">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry1" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMilitary1" name="Відношення до військової служби; де перебуваєте на обліку / назва міста та номер поштової скриньки військової частини, де служить" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum">
-          <activiti:value id="sEnum1" name="у шлюбі не перебуває"></activiti:value>
-          <activiti:value id="sEnum2" name="Удівець"></activiti:value>
-          <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
+          <activiti:value id="sEnum1" name="у шлюбі не перебуваю"></activiti:value>
+          <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
+          <activiti:value id="sEnum2" name="удівець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу(паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу(паспорт або паспортний документ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFemaleData" name="Дані нареченої" type="label" default="_____________________________________________________"></activiti:formProperty>
         <activiti:formProperty id="sLastName2" name="Прізвище" type="string"></activiti:formProperty>
@@ -69,17 +86,21 @@
         <activiti:formProperty id="sAge2" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви особою без громадянства" type="enum">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry2" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMilitary2" name="Відношення до військової служби; де перебуваєте на обліку / назва міста та номер поштової скриньки військової частини, де служить" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum">
-          <activiti:value id="sEnum1" name="у шлюбі не перебуває"></activiti:value>
-          <activiti:value id="sEnum2" name="Удова"></activiti:value>
-          <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
+          <activiti:value id="sEnum1" name="у шлюбі не перебуваю"></activiti:value>
+          <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
+          <activiti:value id="sEnum2" name="удова"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу(смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу(паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу(паспорт або паспортний документ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
@@ -104,6 +125,13 @@
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="4 категорія  потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -112,6 +140,10 @@
         <activiti:formProperty id="sAge1" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship1" name="Особа без громадянства; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMilitary1" name="Відношення до військової служби; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан; ;writable=false" type="enum">
@@ -130,6 +162,10 @@
         <activiti:formProperty id="sAge2" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship2" name="Особа без громадянства; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMilitary2" name="Відношення до військової служби; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан; ;writable=false" type="enum">
@@ -177,6 +213,13 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="4 категорія  потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -184,6 +227,10 @@
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge1" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship1" name="Особа без громадянства" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMilitary1" name="Відношення до військової служби" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum" writable="false">
@@ -202,6 +249,10 @@
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge2" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження " type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship2" name="Особа без громадянства" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMilitary2" name="Відношення до військової служби " type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан " type="enum" writable="false">
@@ -247,64 +298,64 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+<h3>Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.</h3>
 
-&lt;br&gt;&lt;b&gt;Нагадуємо: &lt;/b&gt;&lt;br&gt;
+<br><b>Нагадуємо: </b><br>
 Щоб отримати послугу необхідна наявість підписоної обома нареченими заяви. 
-Ви маєте підписати електроний екземпляр заяви (знаходиться в додатку до цього листа) за допомогою ЕЦП або в продовж 3 днів з моменту відправлення цього листа приїхати особисто в РАГС за адресою  ${sAddress} і підписати паперовий екземпляр заяви.
-&lt;br&gt;
-&lt;br&gt;
-&lt;a href="https://goo.gl/1OioXt" target="_blank"&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;
-&lt;br&gt;
-Підписану двома ЕЦП (нареченого та нареченої) заяву можна відправити співробітнику РАГСу через  розділ &lt;a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank"&gt;Мій журнал&lt;/a&gt;
-&lt;br&gt;
-&lt;br&gt;
-Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим &lt;a href="https://goo.gl/rujywk" target="_blank"&gt;посиланням&lt;/a&gt;
-&lt;br&gt;
-&lt;br&gt;
-&lt;b&gt;Під час візиту до РАГСу для отримання послуги обов'язково при собі  мати: &lt;/b&gt;&lt;br&gt;
-1. Квитанцію про сплату держа.мита&lt;br&gt;
-2. Квитанцію про сплату вартості обряду&lt;br&gt;
-3. Оригінали паспортів нареченого та нареченої&lt;br&gt;
-4. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, яке набрало законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним)&lt;br&gt;
-5.  У разі скорочення місячного строку реєстрації шлюбу з поважних причин (медична довідка про вагітність нареченої, засвідчена належним чином; свідоцтво про народження спільної дитини; медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої)&lt;br&gt;
+Ви маєте підписати електроний екземпляр заяви (знаходиться в додатку до цього листа) за допомогою ЕЦП або в продовж 3 днів з моменту відправлення цього листа приїхати особисто в ДРАЦС за адресою  ${sAddress} і підписати паперовий екземпляр заяви.
+<br>
+<br>
+<a href="https://goo.gl/1OioXt" target="_blank">Де і як в Україні можна отримати ЕЦП?</a>
+<br>
+Підписану двома ЕЦП (нареченого та нареченої) заяву можна відправити співробітнику ДРАЦСу через  розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a>
+<br>
+<br>
+Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
+<br>
+<br>
+<b>Під час візиту до ДРАЦСу для отримання послуги обов'язково при собі  мати: </b><br>
+1. Квитанцію про сплату держа.мита<br>
+2. Квитанцію про сплату вартості обряду<br>
+3. Оригінали паспортів нареченого та нареченої<br>
+4. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, яке набрало законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним)<br>
+5.  У разі скорочення місячного строку реєстрації шлюбу з поважних причин (медична довідка про вагітність нареченої, засвідчена належним чином; свідоцтво про народження спільної дитини; медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої)<br>
 
-&lt;br&gt;
-&lt;br&gt;
-&lt;b&gt;Реквізити для сплати вартості церемонії: &lt;/b&gt;&lt;br&gt;
-Отримувач: &lt;b&gt;Головне територіальне управління юстиції  у Дніпропетровській області  &lt;/b&gt;&lt;br&gt;
-Банк отримувача: &lt;b&gt;Державна казначейська служба України м.Київ &lt;/b&gt;&lt;br&gt;
-МФО: &lt;b&gt;820172 &lt;/b&gt;&lt;br&gt;
-Код ЄДРПОУ: &lt;b&gt;34984907 &lt;/b&gt;&lt;br&gt;
-Розрахунковий рахунок: &lt;b&gt;31258232100157 &lt;/b&gt;&lt;br&gt;
-Вартість повного обряду: &lt;b&gt; 337 грн &lt;/b&gt;&lt;br&gt;
-Вартість скороченого обряду: &lt;b&gt; 140 грн &lt;/b&gt;&lt;br&gt;
-&lt;br&gt;
-&lt;br&gt;
-Примітка співробітника: &lt;br /&gt;
-${comment}&lt;br /&gt;
+<br>
+<br>
+<b>Реквізити для сплати вартості церемонії: </b><br>
+Отримувач: <b>Головне територіальне управління юстиції  у Дніпропетровській області  </b><br>
+Банк отримувача: <b>Державна казначейська служба України м.Київ </b><br>
+МФО: <b>820172 </b><br>
+Код ЄДРПОУ: <b>34984907 </b><br>
+Розрахунковий рахунок: <b>31258232100157 </b><br>
+Вартість повного обряду: <b> 337 грн </b><br>
+Вартість скороченого обряду: <b> 140 грн </b><br>
+<br>
+<br>
+Примітка співробітника: <br />
+${comment}<br />
 
                                   
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature} &lt;br /&gt; &lt;br /&gt;
+${sMail_Signature} <br /> <br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -314,34 +365,34 @@ ${sMail_Signature} &lt;br /&gt; &lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
-&lt;br /&gt;
-На жаль, Вам відмовлено в наданні послуги.&lt;br /&gt;
-Підстава: &lt;br /&gt;
-${comment}&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+<h3>Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.</h3>
+<br />
+На жаль, Вам відмовлено в наданні послуги.<br />
+Підстава: <br />
+${comment}<br />
 
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
+${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html] 
  
 
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -351,21 +402,21 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
- &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+ <h3>Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.</h3>
 
-Дякуємо, Вам що скористались нашим сервісом!&lt;br /&gt;&lt;br /&gt;
+Дякуємо, Вам що скористались нашим сервісом!<br /><br />
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -376,30 +427,30 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
- &lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+ <h3>Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.</h3>
                                     
-Ваше звернення [sID_Order] успішно зареєстровано. &lt;br /&gt;
-Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
+Ваше звернення [sID_Order] успішно зареєстровано. <br />
+Результат обробки звернення будуть спрямовані на цей е-мейл. <br />
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
+${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html] 
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -419,6 +470,13 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum3" name="4 категорія  потерпілих внаслідок Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnum4" name="інваліди Великої Вітчизняної війни та сім'ї воїнів (партизанів), які загинули чи пропали безвісти, і прирівняні до них у встановленому порядку особи"></activiti:value>
+          <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sMaleData" name="Дані нареченого" type="label" default="------------------------"></activiti:formProperty>
         <activiti:formProperty id="sLastName1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFirstName1" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -426,6 +484,10 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge1" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship1" name="Особа без громадянства" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMilitary1" name="Відношення до військової служби" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum" writable="false">
@@ -444,6 +506,10 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge2" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження " type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship2" name="Особа без громадянства" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Так"></activiti:value>
+          <activiti:value id="sEnum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCountry2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMilitary2" name="Відношення до військової служби " type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан " type="enum" writable="false">
@@ -484,7 +550,7 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow43" sourceRef="usertask3_yellow" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow44" name="${isSigned == 'signed'}" sourceRef="exclusivegateway3" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isSigned == 'signed' && isSigned == 'signed2' }]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isSigned == 'signed' || isSigned == 'signed2' }]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask12" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -492,34 +558,34 @@ ${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.&lt;/h3&gt;
-&lt;br /&gt;
-На жаль, Вам відмовлено в реєстраціі шлюбу&lt;br /&gt;
-Підстава: &lt;br /&gt;
-${comment}&lt;br /&gt;
+          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+<h3>Шановні ${sFirstName1} ${sMiddleName1} та ${sFirstName2} ${sMiddleName2}.</h3>
+<br />
+На жаль, Вам відмовлено в реєстраціі шлюбу<br />
+Підстава: <br />
+${comment}<br />
 
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}&lt;br /&gt;&lt;br /&gt;
+${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html] 
  
 
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
