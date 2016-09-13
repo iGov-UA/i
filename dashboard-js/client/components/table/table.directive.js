@@ -24,3 +24,15 @@ angular.module('dashboardJsApp').directive('tableModal', ['$window', function ($
     templateUrl: 'components/table/table.template.html'
   };
 }]);
+
+// filter for date in table
+
+angular.module('dashboardJsApp').filter('fixDateFormat', function () {
+  return function (date, type) {
+    if(type === 'date') {
+      var onlyDate = date.split('T')[0];
+      var splitDate = onlyDate.split('-');
+      return splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+    }
+  }
+});
