@@ -7,7 +7,8 @@ exports.getSchedule = function(req, res) {
     path: 'action/flow/getSheduleFlowIncludes',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
     }
   };
 
@@ -25,7 +26,8 @@ exports.setSchedule = function(req, res) {
     path: 'action/flow/setSheduleFlowInclude',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
       nID: req.query.nID,
       sName: req.query.sName,
       sRegionTime: req.query.sRegionTime,
@@ -52,7 +54,8 @@ exports.deleteSchedule = function(req, res) {
     path: 'action/flow/removeSheduleFlowInclude',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
       nID: req.query.nID
     }
   };
@@ -71,7 +74,8 @@ exports.getExemptions = function(req, res) {
     path: 'action/flow/getSheduleFlowExcludes',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
     }
   };
 
@@ -89,7 +93,8 @@ exports.setExemption = function(req, res) {
     path: 'action/flow/setSheduleFlowExclude',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
       nID: req.query.nID,
       sName: req.query.sName,
       sRegionTime: req.query.sRegionTime,
@@ -113,7 +118,8 @@ exports.deleteExemption = function(req, res) {
     path: 'action/flow/removeSheduleFlowExclude',
     query: {
       sID_BP: req.query.sID_BP,
-      nID_Department: req.query.nID_Department,
+      nID_Flow_ServiceData: req.query.nID_Department,
+//      nID_Department: req.query.nID_Department,
       nID: req.query.nID
     }
   };
