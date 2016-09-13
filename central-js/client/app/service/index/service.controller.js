@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll) {
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll', 'TitleChangeService',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll, TitleChangeService) {
     $rootScope.catalogTab = 1;
     $scope.catalog = [];
     // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -86,6 +86,9 @@ angular.module('app')
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;
           $scope.changeCategory();
+          $scope.spinner = false;
+          $scope.mainSpinner = false;
+          TitleChangeService.defaultTitle();
         });
       }
       if (toState.resolve) {

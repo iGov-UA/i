@@ -8,9 +8,9 @@ var express = require('express');
 var config = require('./config/environment');
 //var config = require('./config');
 
-//var nock = require('nock');
-
-//nock.recorder.rec();
+// var nock = require('nock');
+//
+// nock.recorder.rec();
 // Setup server
 var app = express();
 

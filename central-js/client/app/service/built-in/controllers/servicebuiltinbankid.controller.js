@@ -29,7 +29,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   service,
   FieldMotionService,
   ParameterFactory,
-  $modal
+  $modal,
+  FileFactory,
+  DatepickerFactory
   ,ErrorsFactory
 ) {
 
@@ -52,6 +54,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.data.id = currentState.data.id;
 
   $scope.data.formData = formData;
+  $scope.tableIsInvalid = false;
 
   $scope.setFormScope = function(scope){
     this.formScope = scope;
@@ -191,7 +194,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         'some business key 111',
         'process name here', $scope.activitiForm, $scope.data.formData)
         .then(function (result) {
-          var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService);
+          var signPath = ActivitiService.getSignFormPath(oServiceData, result.formID, oService, $scope.data.formData.params);
           $window.location.href = $location.protocol() + '://' + $location.host() + ':' + $location.port() + signPath;
           //$window.location.href = $location.absUrl()
           //  + '?formID=' + result.formID
@@ -203,6 +206,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.processForm = function (form, aFormProperties) {
+    if($scope.tableContent) {
+      $scope.data.formData.params['sTable'].value = $scope.tableContent;
+    }
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -529,7 +535,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     var pars = $scope.data.formData.params;
     calcFields.forEach(function(key) {
       if (_.has(pars, key)) {
-        var data = FieldMotionService.calcFieldValue(key, pars);
+        var data = FieldMotionService.calcFieldValue(key, pars, $scope.activitiForm.formProperties);
         if (data.value && data.differentTriggered) pars[key].value = data.value;
       }
     });
@@ -740,5 +746,75 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       window.open( url, '_blank' );
     }
   }
+
+  function addProtoToTableDate() {
+    angular.forEach($scope.tableContent.aRow, function(fields) {
+      angular.forEach(fields.aField, function (item, key, obj) {
+        if (item.type === 'date') {
+          if(!item.props) {
+            obj[key].props = DatepickerFactory.prototype.createFactory();
+          } else {
+            obj[key].props.open = function ($event) {
+              $event.preventDefault();
+              $event.stopPropagation();
+              this.opened = true;
+            };
+            obj[key].props.get = function() {
+              return $filter('date')(this.value, this.format);
+            };
+            obj[key].props.clear = function() {
+              this.value = null;
+            };
+            obj[key].props.today = function() {
+              this.value = new Date();
+            };
+            obj[key].props.isFit = function(property){
+              return property.type === 'date';
+            };
+          }
+        }
+      })
+    });
+  }
+
+
+  if($scope.data.formData.params.sTable) {
+    if(localStorage.getItem("TableParams") !== null){
+      $scope.tableContent = JSON.parse(localStorage.getItem("TableParams"));
+    } else {
+      var parsedTable = JSON.parse($scope.data.formData.params.sTable.value);
+      $scope.tableContent = {
+        aRow : [parsedTable]
+      };
+    }
+    addProtoToTableDate();
+  }
+
+  $scope.addRow = function (form) {
+    if(!form.$invalid) {
+      $scope.tableIsInvalid = false;
+      var defaultCopy = angular.copy($scope.tableContent.aRow[0]);
+      angular.forEach(defaultCopy.aField, function (item) {
+        if(item.default) {
+          delete item.default;
+        } else if(item.props) {
+          item.props.value = ""
+        }
+        item.value = "";
+      });
+      addProtoToTableDate();
+      $scope.tableContent.aRow.push(defaultCopy);
+      JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
+    } else {
+      $scope.tableIsInvalid = true;
+    }
+  };
+  $scope.removeRow = function (index, form) {
+    $scope.tableContent.aRow.splice(index, 1);
+    JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
+    if(!form.$invalid) {
+      $scope.tableIsInvalid = false;
+    }
+  };
 
 });

@@ -13,9 +13,20 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
             el.sFind = el.sID + " " + el.sNote;
           } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
             el.sFind = el.sID + " " + el.sName_UA;
+          } else if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
+            el.sFind = el.sID_UA + " " + el.sName_UA;
           }
         });
       }
+      /*
+      if (res.config.url.indexOf('object-customs') > 0){
+        angular.forEach(res.data, function (el) {
+          if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
+            el.sName_UA = el.sID_UA + " " + el.sName_UA;
+          }
+        });
+      }
+      */
       return res;
     });
   }

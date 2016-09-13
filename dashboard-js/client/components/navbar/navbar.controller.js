@@ -33,10 +33,10 @@
 
     $scope.isVisibleInstrument = function(menuType){
       if(menuType === 'tools.users'){
-        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('superadmin');
       }
       if(menuType === 'tools.groups'){
-        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('superadmin');
       }
       return Auth.isLoggedIn();
     };

@@ -5,7 +5,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Place_UA" name="обраний населений пункт sID_Place_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -34,17 +33,12 @@
         <activiti:formProperty id="fiz_drfo" name="Ідентифікаційний номер у Державному реєстрі фізичних осіб (ДРФО)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_pib" name="ПІБ керівника" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника" type="string" default=" "></activiti:formProperty>
+       
         <activiti:formProperty id="text3" name=" " type="label" default="Дані про поточний рахунок у &lt;b&gt;національній&lt;/b&gt; валюті"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Дані про поточний рахунок у національній валюті" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNumberAccountUah&quot;,&quot;name&quot;:&quot;Номер поточного рахунку у національній валюті&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankNameUah&quot;,&quot;name&quot;:&quot;Найменування банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankMfoUah&quot;,&quot;name&quot;:&quot;МФО банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sBankAdresUah&quot;,&quot;name&quot;:&quot;Місцезнаходження банку&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        
         <activiti:formProperty id="text5" name=" " type="label" default="Дані про поточний рахунок у &lt;b&gt; іноземній&lt;/b&gt; валюті"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text11" name=" " type="label" default="&lt;b&gt;Дані іноземного суб'єкту зовнішньоекономічної діяльності&lt;/b&gt;"></activiti:formProperty>
+          <activiti:formProperty id="text11" name=" " type="label" default="&lt;b&gt;Дані іноземного суб'єкту зовнішньоекономічної діяльності&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" required="true">
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
@@ -159,7 +153,6 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers0" name="тільки з ЕЦП" type="markers" default="{&quot;validate&quot;:{&quot;FileSign&quot;:{&quot;aField_ID&quot;:[&quot;dogovor&quot;,&quot;pogodgennya&quot;,&quot;visnovok&quot;,&quot;other_docs&quot;]}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
@@ -172,9 +165,10 @@
         <activiti:formProperty id="markers10" name="Якщо експорт то додати документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;pogodgennya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;type_lic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'export'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="валідатор поля fiz_drfo" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_drfo&quot;],&quot;sFormat&quot;:&quot;##########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ДРФО має складатися з 10 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="валідатор поля ur_edrpou" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_12&quot;:{&quot;aField_ID&quot;:[&quot;ur_edrpou&quot;],&quot;sFormat&quot;:&quot;########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ЕДРПОУ має складатися з 8 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="валідатор поля applicant_account_uah" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_13&quot;:{&quot;aField_ID&quot;:[&quot;applicant_account_uah&quot;],&quot;sFormat&quot;:&quot;####################&quot;,&quot;sMessage&quot;:&quot;Невірний формат. Рахунок у національній валюті має складатися з 20 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="валідатор поля uah_bank_mfo та currency_bank_mfo" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;uah_bank_mfo&quot;,&quot;currency_bank_mfo&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="валідатор поля sNumberAccountUah" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_13&quot;:{&quot;aField_ID&quot;:[&quot;sNumberAccountUah&quot;],&quot;sFormat&quot;:&quot;####################&quot;,&quot;sMessage&quot;:&quot;Невірний формат. Рахунок у національній валюті має складатися з 20 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Всі файли буде підписано ЕЦП" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
@@ -202,15 +196,7 @@
         <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+           <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text11" name=" " type="label" default="Дані іноземного суб'єкту зовнішньоекономічної діяльності"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
@@ -315,9 +301,6 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, надіслати заявнику реквізити для оплати послуги"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
@@ -362,15 +345,7 @@
         <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text11" name=" " type="label" default="Дані іноземного суб'єкту зовнішньоекономічної діяльності"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
@@ -475,9 +450,6 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Оплату послуги отримано - передати документи на польший розгляд"></activiti:value>
           <activiti:value id="reject" name="Оплата не надішла впродовж 5 днів - відхилити звернення"></activiti:value>
@@ -522,15 +494,7 @@
         <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+           <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text11" name=" " type="label" default="Дані іноземного суб'єкту зовнішньоекономічної діяльності"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
@@ -635,9 +599,6 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Прийняте рішення щодо надання ліцензії" type="enum" required="true">
           <activiti:value id="accept" name="надано індивідуальну ліцензію"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні індивідуальної ліцензії"></activiti:value>
@@ -679,14 +640,6 @@
         <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text11" name=" " type="label" default="Дані іноземного суб'єкту зовнішньоекономічної діяльності"></activiti:formProperty>
@@ -792,9 +745,6 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Прийняте рішення щодо надання ліцензії" type="enum" required="true">
           <activiti:value id="accept" name="надано індивідуальну ліцензію"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні індивідуальної ліцензії"></activiti:value>
@@ -856,12 +806,11 @@
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Ваше звернення щодо отримання індивідуальної ліцензії на enum{[type_lic]} зарееєстровано.<br />
-Реєстраційний номер заяви: ${reestr_numb};<br />
 Для передачі звернення на подальший розгляд,
 Вам необхідно додати платіжний документ (квитанцію) про оплату вартості послуги 
-через  розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a><br>
+через  розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a>.<br>
 Ви можете здійснити оплату зручним для Вас способом за 
-<a href="https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit" target="_blank">реквізитами</a><br>
+<a href="https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit" target="_blank">реквізитами</a>.<br>
 Якщо впродовж 5 днів платіжний документ не буде відправлено, звернення буде відхілено.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameUnit}<br /> 
@@ -928,7 +877,7 @@ ${sNameUnit}<br />
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Надыйшов платіжний документ про оплату вартості послуги: отримання індивідуальної ліцензії на enum{[type_lic]}.
+Надійшов платіжний документ про оплату вартості послуги: отримання індивідуальної ліцензії на enum{[type_lic]}.
 Звернення передано на подалший розгляд в ${sNameUnit} і буде опрацьовано протягом 30 календарних днів.<br /><br />
 <br />
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
@@ -1000,7 +949,8 @@ ${sNameUnit}<br />
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Вам enum{[decision_2]}.<br />  <br />  
+Вам enum{[decision_3]} {[decision_4]}.<br />
+${comment_3},${comment_4}<br />  
 Копія відповідного документу знаходиться у додатку до листа.<br />
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис за адресою ${sAdress}.<br /><br />
 При собі треба мати:<br />
@@ -1074,7 +1024,7 @@ per4 = "Режим роботи: Понеділок-Четверг з 09:00 - 18
 per5 = 'khmelnitsky'
 }
 if(execution.getVariable('dogovor') != null){
-per10 = "&lt;li&gt;Копії зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку;&lt;/li&gt;"
+per10 = "&lt;li&gt;Копію зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку;&lt;/li&gt;"
 }
 if(execution.getVariable('pogodgennya') != null){
 per11 = "&lt;li&gt;Сертифікат про походження товару або експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньоекономічної діяльності, виданий Торгово-промисловою палатою України або регіональними торгово-промисловими палатами;&lt;/li&gt;"

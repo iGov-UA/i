@@ -61,14 +61,28 @@ function FieldMotionService(MarkersFactory) {
     return b;
   };
   var fieldId_entryTriggered = {};
-  this.calcFieldValue = function(fieldId, formData) {
+  var aFieldIDs = [];
+  this.calcFieldValue = function(fieldId, formData, formProperties) {
     var entry = _.find(grepByPrefix('ValuesFieldsOnCondition'), function(entry) {
       return evalCondition(entry, fieldId, formData)
     });
     var result = {value: '', differentTriggered: false};
     if (entry) {
+      if(aFieldIDs.length == 0){
+        for(var key in formData) if (formData.hasOwnProperty(key)){
+          aFieldIDs.push(key);
+        }
+      }
       result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
-      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue[$.inArray(fieldId, entry.aField_ID)];
+      entry.asID_Field_sValue_Interpolated = [];
+      angular.forEach(entry.asID_Field_sValue, function (sValue) {
+        var interpolatedEntry = MarkersFactory.interpolateString(sValue, formData, '[', ']', aFieldIDs, formProperties);
+        entry.asID_Field_sValue_Interpolated.push(interpolatedEntry.value);
+        if (interpolatedEntry.differentTriggered){
+          result.differentTriggered = true;
+        }
+      });
+      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue_Interpolated[$.inArray(fieldId, entry.aField_ID)];
     }
     fieldId_entryTriggered[fieldId] = entry;
     return result;
