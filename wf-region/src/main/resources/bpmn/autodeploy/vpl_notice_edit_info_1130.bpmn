@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="vpl_edit_spravka_1127" name="Переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги" isExecutable="true">
+  <process id="vpl_notice_edit_info_1130" name="Повідомлення уповноваженого органу (за місцем отримання довідки ВПО) про наявність змін в інформації, що може впливати на призначення грошової допомоги (зміна составу сім’ї, працевлаштування працездатних членів сім’ї і тому інше)" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -18,24 +18,10 @@
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
-          <activiti:value id="sEnumElement_Yes" name="Так, надати щомісячну допомогу"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, не потрібно надання допомоги"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" default=" ">
-          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є таке житло"></activiti:value>
-          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, немає такого житла"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Deposit" name="Наявність у будь-кого з членів сім’ї на депозитному банківському рахунку коштів у розмірі, що перевищує 10-кратний розмір прожиткового мінімуму, встановленого для працездатних осіб?" type="enum" default=" ">
-          <activiti:value id="sEnumElement_ExistDeposit_Yes" name="Так, є такі депозити"></activiti:value>
-          <activiti:value id="sEnumElement_ExistDeposit_No" name="Немає таких депозитів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLabelFailure" name=" " type="label" default="&lt;b&gt; Грошова допомога НЕ МОЖЕ бути Вам призначена (згідно &lt;a href=&quot;http://zakon4.rada.gov.ua/laws/show/505-2014-%D0%BF#n34)&quot; target=&quot;_blank&quot;&gt; Порядку &lt;/a&gt; надання щомісячної адресної допомоги)!! &lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/soJngn&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; , що є підставою для надання щомісячної адресної допомоги внутрішньо переміщеним особам"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти; завантажте одним файлом формату PDF, якщо дітей декілька" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/CVvCAV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо повідомлення уповноваженого органу (за місцем отримання довідки ВПО) про наявність змін в інформації, що може впливати на призначення грошової допомоги (зміна составу сім’ї, працевлаштування працездатних членів сім’ї і тому інше)"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про наявність змін в інформації, що може впливати на призначення грошової допомоги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Other" name="Копія документів, що підтверджують зміни в інформації; наприклад, справка про працевлаштування працездатного члена сім’ї, свідоцтво про смерть або народження і тому інше" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -45,7 +31,7 @@
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Номер УПСЗН для групи безпеки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_edit_spravka_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_notice_edit_info_1130_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -63,18 +49,6 @@
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Yes" name="Так, надати"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, не потрібна"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" writable="false">
-          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є "></activiti:value>
-          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, не потрібна"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Deposit" name="Наявність у будь-кого з членів сім’ї на депозитному банківському рахунку коштів у розмірі, що перевищує 10-кратний розмір прожиткового мінімуму, встановленого для працездатних осіб?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_ExistDeposit_Yes" name="Так, є такі депозити"></activiti:value>
-          <activiti:value id="sEnumElement_ExistDeposit_No" name="Немає таких депозитів"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sLabel" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string"></activiti:formProperty>
@@ -83,7 +57,7 @@
           <activiti:value id="accept" name="З інформацією все гаразд, звернення буде розглянуто"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -95,7 +69,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_Other}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
