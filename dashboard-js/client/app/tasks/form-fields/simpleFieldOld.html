@@ -2,9 +2,9 @@
   <input class="form-control"
     name="{{item.id}}"
     ng-readonly="isFormPropertyDisabled(item)"
-    ng-required="{{item.required}}"
+    ng-required="isRequired(item)"
     ng-model="item.value"
-    ng-class="{submitted: item.required && isTaskSubmitted()}"
+    ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"
   />
 </div>
 
@@ -12,12 +12,12 @@
   <span class="task-form-written-right-sight"
         name="{{item.id}}"
         ng-readonly="isFormPropertyDisabled(item)"
-        ng-required="{{item.required}}"
+        ng-required="isRequired(item)"
         >{{item.value}}
   </span>
 </div>
 
-<span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+<span class="validation-message" ng-messages="isTaskSubmitted() && isRequired(item) && form[item.id].$error">
     <span ng-message="required">Необхідно заповнити.</span>
     <span ng-message="pattern">Значення має бути числом.</span>
     <span ng-message="email">Помилка в email.</span>
