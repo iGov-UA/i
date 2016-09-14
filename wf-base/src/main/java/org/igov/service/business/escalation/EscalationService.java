@@ -119,7 +119,7 @@ public class EscalationService {
             //LOG.info("Found {} tasks for specified business process and state", aTask.size());
             for (Task oTask : aTask) {
                 onID_Task = null;
-                Map<String, Object> mTaskParam = null;
+                Map<String, Object> mTaskParam = null; 
                 try {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");

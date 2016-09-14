@@ -203,8 +203,8 @@ public class BpServiceHandler {
         String snID_ProcessEscalation = null;
         try {//issue 1350
             String jsonPlace = placeService.getPlaceByProcess(sID_Process);
-            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
-            JSONObject Place = new JSONObject(jsonPlace);
+            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace); 
+            JSONObject Place = new JSONObject(jsonPlace); 
             mParam.put("Place", Place.get("sName"));
             nID_Server = Place.getInt("nID_Server");
         } catch (Exception oException) {
