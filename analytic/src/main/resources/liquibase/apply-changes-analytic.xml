@@ -67,5 +67,22 @@
        <addAutoIncrement tableName="AttributeName" columnName="nID" startWith="2000" columnDataType="bigint"/>
     </changeSet>
      
+    <changeSet id="Add AttributeName 1" author="bw" runOnChange="false">
+        <createTable tableName="AttributeName">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addColumn tableName="Attribute">
+             <column name="nID_AttributeName" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Attribute_AttributeName"
+                             referencedTableName="AttributeName" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </addColumn>
+       <addAutoIncrement tableName="AttributeName" columnName="nID" startWith="2000" columnDataType="bigint"/>
+    </changeSet>
         
 </databaseChangeLog>
