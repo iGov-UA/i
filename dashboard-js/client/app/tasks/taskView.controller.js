@@ -115,8 +115,23 @@
           });
         }
 
+        function getAdaptedFormData(taskForm) {
+          var oAdaptFormData = {};
+          angular.forEach(taskForm, function (item) {
+            oAdaptFormData[item.id] = {
+              required: item.required,
+              value: item.value,
+              writable: item.writable
+            }
+          });
+          return oAdaptFormData;
+        }
+
         $scope.isRequired = function (item) {
-          return !$scope.isFormPropertyDisabled(item) && (item.required || $scope.isCommentAfterReject(item)); //item.writable
+          var bRequired = FieldMotionService.FieldMentioned.inRequired(item.id) ?
+            FieldMotionService.isFieldRequired(item.id, getAdaptedFormData($scope.taskForm)) : item.required;
+          var b = !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
+          return b;
         };
 
         $scope.isTaskSubmitted = function (item) {
@@ -286,9 +301,15 @@
           }
         };
 
-
+        $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
           $scope.validateForm(form);
+          if(form.$invalid){
+            $scope.isFormInvalid = true;
+            return;
+          } else {
+            $scope.isFormInvalid = false;
+          }
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;

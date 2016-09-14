@@ -160,9 +160,10 @@ public class BpServiceHandler {
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
-        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
-        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
+        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"+sProcessName));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
+//        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
+//        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
         mGuideTaskParamKey.put("sTaskId", "ИД  таски");
 
@@ -173,16 +174,16 @@ public class BpServiceHandler {
         mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         mParam.put("email", mTaskParam.get("email"));
-        mGuideTaskParamKey.put("email", "email");
+        mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sName"));
+        mParam.put("Place", getPlaceByProcess("sName"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess(sID_Process) + " sID_Process: " + sID_Process);
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess("sName") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
-        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted); 
         LOG.info("sField={}", sField);
         mParam.put("saField", sField + ".");
 
@@ -202,8 +203,8 @@ public class BpServiceHandler {
         String snID_ProcessEscalation = null;
         try {//issue 1350
             String jsonPlace = placeService.getPlaceByProcess(sID_Process);
-            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace);
-            JSONObject Place = new JSONObject(jsonPlace);
+            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace); 
+            JSONObject Place = new JSONObject(jsonPlace); 
             mParam.put("Place", Place.get("sName"));
             nID_Server = Place.getInt("nID_Server");
         } catch (Exception oException) {
