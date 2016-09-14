@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="vpl_cancel_spravka_1126" name="Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)" isExecutable="true">
+  <process id="vpl_notice_edit_place_live_1128" name="Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПЛ" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -12,20 +12,15 @@
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFact" name="Нова фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зняття з обліку внутрішньо переміщеної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи надавалася Вам щомісячна адресна допомога внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
-          <activiti:value id="sEnumElement_Yes" name="Так, надавалася щомісячна допомога"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, щомісячна допомога не надавалася"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/HHftiB&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для зняття з обліку внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Comment" name="Копія документів щодо причини зняття з обліку (якщо є)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни адреси фактичного проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/Fx2vzQ&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; про повідомлення уповноваженого органу про зміну адреси фактичного проживання"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про зміну адреси фактичного проживання" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -35,7 +30,7 @@
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Номер УПСЗН для групи безпеки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_cancel_spravka_1126_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_notice_edit_place_live_1128_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -47,16 +42,12 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFact" name="Нова фактична адреса проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зняття з обліку внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи надавалася Вам щомісячна адресна допомога внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Yes" name="Так, надавалася щомісячна допомога"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, щомісячна допомога не надавалася"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни адреси фактичного проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLabel" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string"></activiti:formProperty>
@@ -73,11 +64,11 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_cancel_spravka_1126.html]" type="invisible" default="Заява про зняття з обліку внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_notice_edit_place_live_1128_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_Comment}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -93,7 +84,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
@@ -110,13 +101,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -148,12 +139,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) відхилено.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
@@ -187,12 +178,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно перевірено.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання успішно перевірено.&lt;br /&gt;
 &lt;br /&gt;
 &lt;p&gt;Коментар чиновника:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
@@ -208,6 +199,18 @@ ${sAdd_SpisokDocs}
 &lt;br /&gt;
 &lt;br /&gt;
 
+&lt;b&gt;Пам'ятка для внутрішньо переміщеної особи.&lt;/b&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;1. Внутрішньо переміщена особа зобов’язана:&lt;/b&gt;&lt;br /&gt;
+ - повідомляти про зміну місця проживання структурний підрозділ з питань соціального захисту населення районних за новим місцем проживання протягом 10 днів з дня прибуття до нового місця проживання;&lt;br /&gt;
+ - у разі добровільного повернення до покинутого постійного місця проживання внутрішньо переміщена особа зобов’язана повідомити про це структурний підрозділ з питань соціального захисту населення за місцем отримання довідки не пізніш як за три дні до дня від’їзду.&lt;br /&gt;
+&lt;br /&gt;
+&lt;b&gt;2. Підстави для скасування дії довідки, що має наслідки призупинення соціальних виплат:&lt;/b&gt;&lt;br /&gt;
+ а) особиста заява про відмову від довідки;&lt;br /&gt;
+ б) подача завідомо недостовірних відомостей;&lt;br /&gt;
+ в) особа повернулася до покинутого місця постійного проживання (тривала відсутність (понад 60 днів) особи за місцем фактичного проживання дає обґрунтовані підстави вважати, що внутрішньо переміщена особа повернулася до покинутого місця постійного проживання);&lt;br /&gt;
+ г) виїхала на постійне місце проживання за кордон;&lt;br /&gt;
+ д) скоїла терористичний акт, злочин або дії, спрямовані на захоплення державної влади, посягання на територіальну цілісність і недоторканність України та інше.&lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -253,13 +256,12 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-  
       
 var per1 = ' '
 
-per1 ='&lt;b&gt;Необхідні документи, які треба принести для зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена):&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
+per1 ='&lt;b&gt;Необхідні документи, які треба принести для повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання :&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
 	"1. Оригінал паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-	'2. Заява про відмову від довідки (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="https://goo.gl/HHftiB"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
+	'2. Заява про зміну адреси фактичного проживання (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="https://goo.gl/Fx2vzQ"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
     "3. Оригінал довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
     "4. Оригінал довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"
 
