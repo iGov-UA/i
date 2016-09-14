@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 public class SMS_New {
-    private final static Logger LOG = LoggerFactory.getLogger(SMS.class);    
+    private final static Logger LOG = LoggerFactory.getLogger(SMS_New.class);    
     
     private final static String PHONE_REGEX = "^\\+[0-9]{10,12}$";
     private final static Gson oGson = new Gson();
