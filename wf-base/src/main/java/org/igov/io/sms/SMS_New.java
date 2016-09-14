@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 public class SMS_New {
-    private final static Logger LOG = LoggerFactory.getLogger(SMS.class);    
+    private final static Logger LOG = LoggerFactory.getLogger(SMS_New.class);    
     
     private final static String PHONE_REGEX = "^\\+[0-9]{10,12}$";
     private final static Gson oGson = new Gson();
@@ -39,8 +39,8 @@ public class SMS_New {
 	}
 	addrPhone = addrPhone.trim();
 	if (!addrPhone.matches(PHONE_REGEX)) {
-	    LOG.debug("Некорректный номер телефона: {}", addrPhone);
-	    throw new IllegalArgumentException("Некорректный номер телефона: " + addrPhone);
+	    LOG.debug("Некорректный номер телефона: {}, должен быть вида +380671234567", addrPhone);
+	    throw new IllegalArgumentException("Некорректный номер телефона: " + addrPhone + ", должен быть вида +380671234567");
 	}
 
 	this.messageId = messageId;

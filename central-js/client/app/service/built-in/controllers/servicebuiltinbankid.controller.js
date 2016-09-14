@@ -535,7 +535,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     var pars = $scope.data.formData.params;
     calcFields.forEach(function(key) {
       if (_.has(pars, key)) {
-        var data = FieldMotionService.calcFieldValue(key, pars);
+        var data = FieldMotionService.calcFieldValue(key, pars, $scope.activitiForm.formProperties);
         if (data.value && data.differentTriggered) pars[key].value = data.value;
       }
     });
@@ -796,9 +796,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       var defaultCopy = angular.copy($scope.tableContent.aRow[0]);
       angular.forEach(defaultCopy.aField, function (item) {
         if(item.default) {
-          item.value = item.default;
           delete item.default;
+        } else if(item.props) {
+          item.props.value = ""
         }
+        item.value = "";
       });
       addProtoToTableDate();
       $scope.tableContent.aRow.push(defaultCopy);
