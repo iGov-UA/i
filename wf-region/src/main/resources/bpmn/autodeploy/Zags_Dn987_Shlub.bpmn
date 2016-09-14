@@ -7,8 +7,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Ваш статус" type="enum" required="true">
@@ -26,7 +26,12 @@
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/shlub.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Зазначте мету отримання свідоцтва" type="enum" required="true">
+          <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
@@ -103,8 +108,8 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Статус заявника у шлюбі" type="enum" writable="false">
@@ -119,10 +124,16 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPIBOdrugenui" name="Для принтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Мета отримання свідоцтва" type="enum" writable="false">
+          <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="acceptVid" name="Запитувані відомості відсутні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Shlub_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
@@ -262,7 +273,7 @@ ${sNameOrgan}.&lt;br /&gt;
           
         if(execution.getVariable('asRodich') == 'sEnamPredsCh')
           {
-          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
+          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'&lt;br /&gt;Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
           Odr_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
           execution.setVariable('sPIBDruz', Odr_PIB)
           Odr_PIB=Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName
@@ -270,7 +281,7 @@ ${sNameOrgan}.&lt;br /&gt;
           }
         if(execution.getVariable('asRodich') == 'sEnamPredsDr')
           {
-          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
+          Odr_print='Чоловік: '+Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName +'&lt;br /&gt;Дружина: '+D_LastName+' '+D_FirstName+' '+D_MiddleName
           Odr_PIB=D_LastName+' '+D_FirstName+' '+D_MiddleName
           execution.setVariable('sPIBDruz', Odr_PIB)
           Odr_PIB=Ch_LastName+' '+Ch_FirstName+' '+Ch_MiddleName
@@ -282,6 +293,46 @@ ${sNameOrgan}.&lt;br /&gt;
       </script>
     </scriptTask>
     <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Заява оформлена вірно.&lt;br /&gt;
+За результатами опрацювання Вашої заяви повідомляємо, що відповідного актового запису цивільного стану не виявлено.&lt;br /&gt;
+У разі необхідності отримання витягу з Державного реєстру актів цивільного стану громадян про відсутність актового запису Ви можете звернутись до відділу державної реєстрації актів цивільного стану особисто.&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" name="decide == 'acceptVid'" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Shlub">
     <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Shlub" id="BPMNPlane_Zags_Dn987_Shlub">
@@ -307,16 +358,19 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="502.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="574.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="366.0" y="330.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="315.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="505.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="305.0" y="147.0"></omgdi:waypoint>
@@ -335,25 +389,25 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="522.0" y="280.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="542.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="626.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="577.0" y="296.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="557.0" y="316.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="502.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="418.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="367.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="296.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="366.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="626.0" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="395.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="418.0" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="367.0" y="395.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -368,6 +422,17 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="372.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="340.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="303.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="522.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
