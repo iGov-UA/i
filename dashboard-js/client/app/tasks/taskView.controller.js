@@ -131,9 +131,6 @@
           var bRequired = FieldMotionService.FieldMentioned.inRequired(item.id) ?
             FieldMotionService.isFieldRequired(item.id, getAdaptedFormData($scope.taskForm)) : item.required;
           var b = !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
-          /*if(item.id === 'sTestRequired'){
-            debugger;
-          }*/
           return b;
         };
 
