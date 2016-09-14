@@ -19,6 +19,7 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.ToolLuna;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
@@ -61,9 +66,77 @@ public class ActionEventService {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
+    
+    @Autowired
+    private HistoryService oHistoryService;
+    
+    @Autowired
+    private TaskService oTaskService;
+   
 
     //@Autowired
     //private HistoryEvent_ServiceDao historyEventServiceDao;
+    
+     public List<Date> setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService)
+    {
+       String snId_Task = nId_Task.toString();
+       List<Date> listDate = new ArrayList();
+       
+        
+             LOG.info(String.format("Finding task [id = %s] and its dates as historic object", snId_Task));
+             try
+             {
+                LOG.info("Get query");
+                 HistoricTaskInstanceQuery query = oHistoryService.createHistoricTaskInstanceQuery();
+                if(query != null)
+                    LOG.info("query has been got");
+                else
+                     LOG.info("query hasn't been got");
+                
+                LOG.info("Get query another");
+                query = query.taskId(snId_Task);
+                if(query != null)
+                     LOG.info("query has been got 1");
+                else
+                     LOG.info("query hasn't been got 1");
+                 LOG.info("Get task");
+                HistoricTaskInstance task = query.singleResult();
+                if(task != null)
+                     LOG.info("task has been got");
+                else
+                     LOG.info("task hasn't been got");
+                LOG.info("Get oDateCreate");
+                Date oDateCreate = task.getCreateTime();
+                if(oDateCreate != null)
+                    LOG.info(String.format("oDateCreate = {}", oDateCreate.toString()));
+                //taskId(snId_Task).singleResult().getStartTime();
+               // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
+                listDate.add(oDateCreate);
+               // listDate.add(oDateClosed);
+                historyEventService.setsDateCreate(oDateCreate.toString());
+               // historyEventService.setsDateClosed(oDateClosed.toString());
+               // this.historyEventServiceDao.saveOrUpdate(historyEventService);
+
+             }
+             catch(NullPointerException ex)
+             {
+                 try{
+                     LOG.info("Active task check");
+                  Date oDate = oTaskService.createTaskQuery().taskId(snId_Task).singleResult().getCreateTime();
+              LOG.info(String.format(" It has been found task [id = %s] and its dates as active", snId_Task));
+               }
+             catch(NullPointerException e)
+             {
+                 LOG.info(String.format("The Task [id = %s] hasn't been found as active object", snId_Task));
+             }
+        
+                LOG.info(String.format("The Task [id = %s] hasn't been found as historic object", snId_Task));
+             }
+        
+                
+        return listDate;
+    }
+   
     
     public void checkAuth (HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception{
         if(sToken!=null){
@@ -238,6 +311,11 @@ public class ActionEventService {
 //        params.put("sUserTaskName", sUserTaskName);
         return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
                 true, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
+    }
+
+    public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+        List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatistics(from, to);
+        return servicesStatistics;
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {

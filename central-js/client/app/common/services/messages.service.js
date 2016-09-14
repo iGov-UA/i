@@ -16,7 +16,11 @@ angular.module('app').service('MessagesService', function($http, $q) {
     $http.get('./api/messages/service?sID_Order='+sID_Order+(sToken?'&sToken='+sToken:"")).success(function (data, status) {
       angular.forEach(data.messages, function (message) {
         if (message.hasOwnProperty('sData') && message.sData.length > 1) {
-          message.osData = JSON.parse(message.sData);
+          try{
+            message.osData = JSON.parse(message.sData);
+          } catch (e){
+            message.osData = {};
+          }
         }
       });
       deferred.resolve(data);

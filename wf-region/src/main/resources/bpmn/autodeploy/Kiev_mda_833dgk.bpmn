@@ -168,7 +168,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamReject" name="Надіслати витяг в електронному вигляді"></activiti:value>
           <activiti:value id="sEnamAccept" name="Надіслати лист з запрошенням до канцелярії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_ECP" name="Завантажте витяг з ЄЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Koment" name="Коментар" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_ECP" name="Завантажте витяг з ЄЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker_Rishenia" name="marker_Rishenia" type="markers" default="${markerService.loadFromFile('mvk/mda_833_Rish.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

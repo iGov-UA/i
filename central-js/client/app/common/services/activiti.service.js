@@ -21,7 +21,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         });
     }
     return aField;
-  }
+  };
 
   var prepareFormData = function (oService, oServiceData, formData, nID_Server) {//url
     var data = {
@@ -171,13 +171,20 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
   };
 
-  this.getSignFormPath = function (oServiceData, formID, oService) {
-    return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
-
+  this.getSignFormPath = function (oServiceData, formID, oService, formDataParams) {
+    if(formDataParams.hasOwnProperty('form_signed')){
+      return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
+    } else if (formDataParams.hasOwnProperty('form_signed_all')) {
+      return '/api/process-form/signMultiple?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
+    }
   };
 
-  this.getUploadFileURL = function (oServiceData) {
-    return './api/uploadfile?nID_Server=' + oServiceData.nID_Server;
+  this.getUploadFileURL = function (oServiceData, customFileName) {
+    return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
+  };
+
+  this.getUploadFileURLByServer = function (nID_Server, customFileName) {
+    return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
@@ -214,10 +221,9 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     var oFuncNote = {sHead:"Завантаженя файлу", sFunc:"autoUploadScans"};
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_ServiceData: '+oServiceData.nID, 'scans: '+scans]});
     var oData = {
-      nID_Server: oServiceData.nID_Server,
       scanFields: scans
     };
-    return $http.post('./api/process-form/scansUpload', oData).then(function (oResponse) {
+    return $http.post('./api/process-form/scansUpload?nID_Server=' + oServiceData.nID_Server, oData).then(function (oResponse) {
         if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
         }

@@ -1,0 +1,28 @@
+<div ng-show="tableContentShow" class="ng-modal">
+  <div class='ng-modal-overlay' ng-click='tableContentShow=false'></div>
+  <div class='ng-modal-dialog' ng-style='dialogStyle'>
+    <div class='ng-modal-header'>
+      <div class='ng-modal-close' ng-click='tableContentShow=false'>X</div>
+    </div>
+    <div class='col-md-12 ng-modal-dialog-content-view' ng-style='dialogStyle'>
+      <div class='ng-modal-dialog-content'>
+        <h1>{{taskData.oTable.sName}}</h1>
+        <table>
+          <thead>
+          <tr>
+            <th ng-repeat="item in taskData.oTable.aRow[0].aField">{{item.name}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in taskData.oTable.aRow">
+            <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class='ng-modal-dialog-print-button'>
+      <button ng-click='printTable()' class='btn btn-igov'>Роздрукувати</button>
+    </div>
+  </div>
+</div>

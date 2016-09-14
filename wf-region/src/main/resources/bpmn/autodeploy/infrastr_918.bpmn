@@ -61,7 +61,11 @@
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/infr/sea_licenseECP.html"></activiti:formProperty>
-        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sK1" name="Діяльність для якої потрібна ліцензія1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK2" name="Діяльність для якої потрібна ліцензія2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK3" name="Діяльність для якої потрібна ліцензія3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sK4" name="Діяльність для якої потрібна ліцензія4" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
@@ -71,30 +75,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow49" sourceRef="boundaryerror1" targetRef="endevent7"></sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
-    <sequenceFlow id="flow47" sourceRef="servicetask6" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1"  name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var k1=' '
-var k2=' '
-var k3=' '
-var k4=' '      
-var ship1=execution.getVariable('asPassShip')
-if (ship1=='sPassShipOk'){
-k1='перевезення пасажирів річковим, морським транспортом, '}
-var ship2=execution.getVariable('asScrapShip')
-if (ship2=='sScrapShipOk'){
-k2='перевезення небезпечних вантажів річковим, морським транспортом, '}
-var ship3=execution.getVariable('asTrashShip')
-if (ship3=='sTrashShipOk'){
-k3='перевезення небезпечних відходів річковим, морським транспортом, '}
-var ship4=execution.getVariable('asPassSmalShip')
-if (ship4=='sPassSmalShipOk'){
-k4='перевезення пасажирів малими/маломірними суднами'}
-var res=k1+k2+k3+k4      
-execution.setVariable('sTypeBiz', res)
-	  </script>
-	</scriptTask>
-    <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="servicetask6" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -127,7 +108,7 @@ execution.setVariable('sTypeBiz', res)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 								<p>
-            						Ваша заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом успішно зареєстрована №[sID_Order].<br>
+            						Ваша заявка на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом успішно зареєстрована на порталі №[sID_Order].<br>
 									Спеціалісти Державної служби України з безпеки на транспорті повинні дати відповідь найближчим часом.
                                 </p>
                                 [pattern/mail/_common_signature_start.html]
@@ -361,8 +342,17 @@ execution.setVariable('sTypeBiz', res)
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="71.0" width="105.0" x="61.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="61.0" y="165.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="181.0" y="122.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="185.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="105.0" x="311.0" y="122.0"></omgdc:Bounds>
@@ -391,24 +381,20 @@ execution.setVariable('sTypeBiz', res)
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="851.0" y="320.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="121.0" y="50.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="71.0" width="105.0" x="61.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="61.0" y="165.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="61.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="76.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="128.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="166.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="286.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
@@ -448,18 +434,6 @@ execution.setVariable('sTypeBiz', res)
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="814.0" y="337.0"></omgdi:waypoint>
         <omgdi:waypoint x="851.0" y="337.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="113.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="233.0" y="122.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="76.0" y="195.0"></omgdi:waypoint>
-        <omgdi:waypoint x="128.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
