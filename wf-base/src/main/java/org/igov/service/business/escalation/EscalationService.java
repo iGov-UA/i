@@ -184,9 +184,9 @@ public class EscalationService {
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
-        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays); 
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays);  
         LOG.debug("(nElapsedDays={})", nElapsedDays);
-        result.put("nElapsedDays", nElapsedDays);
+        result.put("nElapsedDays", nElapsedDays); 
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");

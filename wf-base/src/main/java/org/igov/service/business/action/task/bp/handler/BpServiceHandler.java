@@ -174,10 +174,10 @@ public class BpServiceHandler {
         mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         mParam.put("email", mTaskParam.get("email"));
-        mGuideTaskParamKey.put("email", "email");
+        mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sName"));  
+        mParam.put("Place", getPlaceByProcess("sName"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess("sName") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
