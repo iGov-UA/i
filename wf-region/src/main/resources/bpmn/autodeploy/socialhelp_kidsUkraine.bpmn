@@ -121,7 +121,7 @@ ${sNameOrgan}<br />
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -201,7 +201,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="attr2_bad" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="document" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan}]]></activiti:expression>
