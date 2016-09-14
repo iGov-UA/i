@@ -131,9 +131,6 @@
           var bRequired = FieldMotionService.FieldMentioned.inRequired(item.id) ?
             FieldMotionService.isFieldRequired(item.id, getAdaptedFormData($scope.taskForm)) : item.required;
           var b = !$scope.isFormPropertyDisabled(item) && (bRequired || $scope.isCommentAfterReject(item));
-          /*if(item.id === 'sTestRequired'){
-            debugger;
-          }*/
           return b;
         };
 
@@ -304,9 +301,15 @@
           }
         };
 
-
+        $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
           $scope.validateForm(form);
+          if(form.$invalid){
+            $scope.isFormInvalid = true;
+            return;
+          } else {
+            $scope.isFormInvalid = false;
+          }
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
