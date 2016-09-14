@@ -183,7 +183,7 @@ public class BpServiceHandler {
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
-        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted);
+        LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted); 
         LOG.info("sField={}", sField);
         mParam.put("saField", sField + ".");
 
