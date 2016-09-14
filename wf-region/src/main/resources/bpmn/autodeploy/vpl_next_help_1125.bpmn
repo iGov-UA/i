@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="vpl_edit_spravka_1127" name="Переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги" isExecutable="true">
+  <process id="vpl_next_help_1125" name="Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -18,11 +18,6 @@
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
-          <activiti:value id="sEnumElement_Yes" name="Так, надати щомісячну допомогу"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, не потрібно надання допомоги"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" default=" ">
           <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є таке житло"></activiti:value>
           <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, немає такого житла"></activiti:value>
@@ -45,7 +40,7 @@
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Номер УПСЗН для групи безпеки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_edit_spravka_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_next_help_1125_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -62,11 +57,6 @@
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Yes" name="Так, надати"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, не потрібна"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" writable="false">
           <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є "></activiti:value>
           <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, не потрібна"></activiti:value>
@@ -111,7 +101,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Переоформлення довідки про взяття на облік внутрішньо переміщеної особи]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
@@ -128,13 +118,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: Переоформлення довідки про взяття на облік внутрішньо переміщеної особи]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -166,12 +156,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Переоформлення довідки про взяття на облік внутрішньо переміщеної особи]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги відхилено.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
@@ -205,12 +195,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: Переоформлення довідки про взяття на облік внутрішньо переміщеної особи]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно перевірено.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк успішно перевірено.&lt;br /&gt;
 &lt;br /&gt;
 &lt;p&gt;Коментар чиновника:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
@@ -287,24 +277,20 @@ ${sNameOrgan}&lt;br /&gt;
       
 var per1 = ' '
 
-if (execution.getVariable('asEnumGet_Help') == 'sEnumElement_Yes' &amp;&amp; execution.getVariable('asEnumExist_Flat') == 'sEnumElement_ExistFlat_No' &amp;&amp; execution.getVariable('asEnumExist_Deposit') == 'sEnumElement_ExistDeposit_No')
+if (execution.getVariable('asEnumExist_Flat') == 'sEnumElement_ExistFlat_No' &amp;&amp; execution.getVariable('asEnumExist_Deposit') == 'sEnumElement_ExistDeposit_No')
 {
-	per1 ='&lt;b&gt;Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи та одночасним оформленням щомісячної адресної допомоги:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
+	per1 ='&lt;b&gt;Необхідні документи, які треба принести для призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
 		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-		'2. Заява про подовження (призначення) виплати щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="http://goo.gl/JOaDvm"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
-	    "3. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
+	    "2. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
+		'3. Заява про призначення на наступний шестимісячний строк грошової щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="http://goo.gl/JOaDvm"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
 	    "4. Оригінал і копія довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"+
 		"5. Оригінал і копія свідоцтва про шлюб, завірена особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані чоловік і дружина).&lt;br&gt;"+
 		"6. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані діти).&lt;br&gt;"+
-		"7. Письмова згода про виплату допомоги представнику сім'ї від інших членів сім'ї та згоду на обробку персональних даних в довільній формі (якщо адресна допомога призначається вперше).&lt;br&gt;"+
-		"8. Інформація щодо поточного рахунку, відкритого уповноваженому представнику сім'ї в установі" + '"Ощадбанку" (якщо адресна допомога призначається вперше).&lt;br&gt;'
+		"7. Інформація щодо поточного рахунку, відкритого уповноваженому представнику сім'ї в установі" + '"Ощадбанку" (якщо раніше адресна допомога перераховувалася не в "Ощадбанк").&lt;br&gt;'
 }
 else
 {
-	per1 = '&lt;b&gt;Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+
-		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-	    "2. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
-		"3. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві вказані діти).&lt;br&gt;"
+	per1 = '&lt;b&gt;Грошова допомога НЕ МОЖЕ бути Вам призначена!&lt;/b&gt;&lt;br&gt;&lt;br&gt;'
 }
 
 execution.setVariable('sAdd_SpisokDocs', per1)
