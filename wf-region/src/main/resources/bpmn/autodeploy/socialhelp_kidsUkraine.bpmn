@@ -121,8 +121,7 @@ ${sNameOrgan}<br />
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="название района соцзащиты" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -152,7 +151,7 @@ ${sNameOrgan}<br />
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 &lt;p&gt;Ваше звернення №[sID_Order] щодо отримання допомоги при народженні дитини розглядається працівниками УПСЗН. Незабаром Ви отримаєте результат розгляду Вашої заяви.&lt;/p&gt;
-&lt;p&gt;Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment}&lt;/p&gt;
+&lt;p&gt;Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment1}&lt;/p&gt;
 &lt;p&gt;Контакти підрозділу соцзахисту, який обробляє Ваше звернення:&lt;/p&gt;
 &lt;p&gt;${sNameOrgan}.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -202,8 +201,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="attr2_bad" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="document" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="название района соцзащиты" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan}]]></activiti:expression>
