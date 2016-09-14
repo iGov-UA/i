@@ -9,15 +9,16 @@
               ng-required="isRequired(item)"
               ng-model="item.value"
               style="width:100%;"
-              ng-class="{submitted:item.required && isTaskSubmitted()}">
+              ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
     </textarea>
     <span class="task-form-written-right-sight"
+          style="white-space: pre-line"
           ng-if="isFormPropertyDisabled(item) && item.value"
           name="{{item.id}}"
           ng-model="item.value">{{item.value}}
     </span>
 
-    <span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+    <span class="validation-message" ng-messages="isTaskSubmitted() && isRequired(item) && form[item.id].$error">
       <span ng-message="required">Необхідно заповнити.</span>
       <span ng-message="pattern">Значення має бути числом.</span>
       <span ng-message="email">Помилка в email.</span>
