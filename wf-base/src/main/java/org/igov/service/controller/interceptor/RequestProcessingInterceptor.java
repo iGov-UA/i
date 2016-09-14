@@ -547,11 +547,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-
+                Task task = taskService.createTaskQuery().taskId(snID_Task).singleResult();
                 LOG_BIG.debug("aTask={}", aTask);
 
                 boolean bProcessClosed = aTask == null || aTask.isEmpty();
-                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                String sUserTaskName = (bProcessClosed || task == null) ? "закрита" : task.getName();
 
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
