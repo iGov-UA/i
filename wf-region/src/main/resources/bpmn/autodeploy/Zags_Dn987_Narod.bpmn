@@ -7,14 +7,14 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Ступінь родинного зв'язку" type="enum" required="true">
           <activiti:value id="sEnamI" name="Особа, безпосередньо щодо якої складено актовий запис"></activiti:value>
-          <activiti:value id="sEnamTato" name="Батько"></activiti:value>
-          <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
+          <activiti:value id="sEnamTato" name="Батько дитини"></activiti:value>
+          <activiti:value id="sEnamMatu" name="Мати дитини"></activiti:value>
           <activiti:value id="sEnamOpikun" name="Опікун/піклувальник"></activiti:value>
           <activiti:value id="sEnamUsin" name="Усиновлювач"></activiti:value>
           <activiti:value id="sEnamZdor" name="Представник закладу охорони здоров’я, де постійно перебуває дитина"></activiti:value>
@@ -22,14 +22,14 @@
           <activiti:value id="sEnamPredst" name="Представник вищевказаних осіб (у разі документального підтвердження його повноважень)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPredst" name="Вкажіть кого ви представляєте" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджуэ ваш статус" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує ваш статус" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_Dov" name="Сканкопія довіреності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMom_LastName" name="Прізвище матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMom_Name" name="Ім'я матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMom_MiddleName" name="По батькові матері" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDad_LastName" name="Прізвище батька" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDad_Name" name="Ім'я батька" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDad_MiddleName" name="По батькові батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMom_LastName" name="Прізвище матері дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMom_Name" name="Ім'я матері дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMom_MiddleName" name="По батькові матері дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDad_LastName" name="Прізвище батька дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDad_Name" name="Ім'я батька дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDad_MiddleName" name="По батькові батька дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/mom_dad.json')}"></activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
@@ -37,7 +37,12 @@
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlase_born" name="Місце народження особи, щодо якої запитується інформація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMeta" name="Зазначте мету отримання свідоцтва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Ваш статус" type="enum" required="true">
+          <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
@@ -113,14 +118,14 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Ступінь родинного зв'язку" type="enum" writable="false">
           <activiti:value id="sEnamI" name="Особа, безпосередньо щодо якої складено актовий запис"></activiti:value>
-          <activiti:value id="sEnamTato" name="Батько"></activiti:value>
-          <activiti:value id="sEnamMatu" name="Мати"></activiti:value>
+          <activiti:value id="sEnamTato" name="Батько дитини"></activiti:value>
+          <activiti:value id="sEnamMatu" name="Мати дитини"></activiti:value>
           <activiti:value id="sEnamOpikun" name="Опікун/піклувальник"></activiti:value>
           <activiti:value id="sEnamUsin" name="Усиновлювач"></activiti:value>
           <activiti:value id="sEnamZdor" name="Представник закладу охорони здоров’я, де постійно перебуває дитина"></activiti:value>
@@ -128,19 +133,25 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamPredst" name="Представник за довіреністю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPredst" name="Кого представляє представник" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIBMom" name="ПІБ Матері" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIBDad" name="ПІБ Батька" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ChildFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIBMom" name="ПІБ Матері дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIBDad" name="ПІБ Батька дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ChildFio" name="ПІБ дитини" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_born" name="Місце народження особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Місце і дата РЕЄСТРАЦІЇ народження особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Мета отримання свідоцтва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Ваш статус" type="enum" writable="false">
+          <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
+          <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
+          <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
+          <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Заява оформлена вірно надати свідоцтво"></activiti:value>
+          <activiti:value id="accept" name="Заява оформлена вірно, запросити заявника"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Nar_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Nar_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Nar_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
