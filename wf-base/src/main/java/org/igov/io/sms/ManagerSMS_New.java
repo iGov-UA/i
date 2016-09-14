@@ -107,7 +107,7 @@ public class ManagerSMS_New {
 	try {
 	    sms = new SMS_New(sMessageId, sCallbackUrl_SMS, sChemaId, sPhone, sMerchantId, sMerchantPassword, sText);
 	} catch (IllegalArgumentException e) {
-	    LOG.error("Error create SMS. sPhone={}, sText={}", sPhone, sText, e);
+	    LOG.error("Error create SMS. sPhone={}, sText={}, Error={}", sPhone, sText, e.getMessage());
 	    return String.format("Error create SMS. phone=%s, text=%s", sPhone, sText);
 	}
 
