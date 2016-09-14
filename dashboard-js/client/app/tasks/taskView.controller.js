@@ -301,9 +301,15 @@
           }
         };
 
-
+        $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
           $scope.validateForm(form);
+          if(form.$invalid){
+            $scope.isFormInvalid = true;
+            return;
+          } else {
+            $scope.isFormInvalid = false;
+          }
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
