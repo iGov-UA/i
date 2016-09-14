@@ -160,9 +160,10 @@ public class BpServiceHandler {
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
-        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
-        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
+        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"+sProcessName));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
+//        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
+//        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
         mGuideTaskParamKey.put("sTaskId", "ИД  таски");
 
@@ -178,7 +179,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
         mParam.put("Place", getPlaceByProcess("sName"));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess(sID_Process) + " sID_Process: " + sID_Process);
+        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess("sName") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);

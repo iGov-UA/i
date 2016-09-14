@@ -190,8 +190,6 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
-        result.put("sLoginAssigned", oTask.getAssignee());
-        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         result.put("bSuspended", oTask.isSuspended());
         BpServiceHandler.mGuideTaskParamKey.put("bSuspended", "Удалить");
         result.put("bAssigned", oTask.getAssignee() != null);
@@ -281,12 +279,15 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "Удалить");
         result.put("sTaskName", oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
+        
+        result.put("sTaskIDPlusName", oTask.getId());
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskIDPlusName", "ИД таски+Имя таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
         BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "Удалить");
-//        result.put("sLoginAssigned", oTask.getAssignee());
-//        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+        result.put("sLoginAssigned", oTask.getAssignee());
+        BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
         List<User> aUser = ExploreBPMN
                 .getUsersInfoBelongToProcess(repositoryService, identityService, oTask.getProcessDefinitionId(),
