@@ -206,9 +206,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.processForm = function (form, aFormProperties) {
-    if($scope.tableContent) {
-      $scope.data.formData.params['sTable'].value = $scope.tableContent;
-    }
+    angular.forEach($scope.activitiForm.formProperties, function(prop) {
+      if(prop.type === 'table') {
+        $scope.data.formData.params[prop.id].value = prop.aRow;
+      }
+    });
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -748,73 +750,85 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   }
 
   function addProtoToTableDate() {
-    angular.forEach($scope.tableContent.aRow, function(fields) {
-      angular.forEach(fields.aField, function (item, key, obj) {
-        if (item.type === 'date') {
-          if(!item.props) {
-            obj[key].props = DatepickerFactory.prototype.createFactory();
-          } else {
-            obj[key].props.open = function ($event) {
-              $event.preventDefault();
-              $event.stopPropagation();
-              this.opened = true;
-            };
-            obj[key].props.get = function() {
-              return $filter('date')(this.value, this.format);
-            };
-            obj[key].props.clear = function() {
-              this.value = null;
-            };
-            obj[key].props.today = function() {
-              this.value = new Date();
-            };
-            obj[key].props.isFit = function(property){
-              return property.type === 'date';
-            };
-          }
-        }
-      })
+    angular.forEach($scope.activitiForm.formProperties, function(prop) {
+      if (prop.type === 'table') {
+        angular.forEach(prop.aRow, function (fields) {
+          angular.forEach(fields.aField, function (item, key, obj) {
+            if (item.type === 'date') {
+              if (!item.props) {
+                obj[key].props = DatepickerFactory.prototype.createFactory();
+              } else {
+                obj[key].props.open = function ($event) {
+                  $event.preventDefault();
+                  $event.stopPropagation();
+                  this.opened = true;
+                };
+                obj[key].props.get = function () {
+                  return $filter('date')(this.value, this.format);
+                };
+                obj[key].props.clear = function () {
+                  this.value = null;
+                };
+                obj[key].props.today = function () {
+                  this.value = new Date();
+                };
+                obj[key].props.isFit = function (property) {
+                  return property.type === 'date';
+                };
+              }
+            }
+          })
+        })
+      }
     });
   }
 
 
-  if($scope.data.formData.params.sTable) {
-    if(localStorage.getItem("TableParams") !== null){
-      $scope.tableContent = JSON.parse(localStorage.getItem("TableParams"));
-    } else {
-      var parsedTable = JSON.parse($scope.data.formData.params.sTable.value);
-      $scope.tableContent = {
-        aRow : [parsedTable]
-      };
+  angular.forEach($scope.activitiForm.formProperties, function(item, key, obj) {
+    if(item.type === 'table') {
+      if(sessionStorage.getItem("TableParams") !== null){
+      } else {
+        if(!item.aRow) {
+          item.aRow = [];
+        }
+        var parsedTable = JSON.parse(item.value);
+        obj[key].aRow.push(parsedTable);
+      }
+      addProtoToTableDate();
     }
-    addProtoToTableDate();
-  }
+  });
 
-  $scope.addRow = function (form) {
+  $scope.addRow = function (form, id, index) {
     if(!form.$invalid) {
       $scope.tableIsInvalid = false;
-      var defaultCopy = angular.copy($scope.tableContent.aRow[0]);
-      angular.forEach(defaultCopy.aField, function (item) {
-        if(item.default) {
-          delete item.default;
-        } else if(item.props) {
-          item.props.value = ""
+      angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
+        if(item.id === id) {
+          var defaultCopy = angular.copy(obj[key].aRow[0]);
+          angular.forEach(defaultCopy.aField, function (field) {
+            if(field.default) {
+              delete field.default;
+            } else if(field.props) {
+              field.props.value = ""
+            }
+            field.value = "";
+          });
+          addProtoToTableDate();
+          obj[key].aRow.push(defaultCopy);
         }
-        item.value = "";
       });
-      addProtoToTableDate();
-      $scope.tableContent.aRow.push(defaultCopy);
-      JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
     } else {
       $scope.tableIsInvalid = true;
+      $scope.invalidTableNum = index;
     }
   };
-  $scope.removeRow = function (index, form) {
-    $scope.tableContent.aRow.splice(index, 1);
-    JSON.stringify(localStorage.setItem('TableParams', JSON.stringify($scope.tableContent)));
-    if(!form.$invalid) {
-      $scope.tableIsInvalid = false;
-    }
+  $scope.removeRow = function (index, form, id) {
+    angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
+      if(item.id === id) {
+       obj[key].aRow.splice(index, 1);
+       if(!form.$invalid) {
+         $scope.tableIsInvalid = false;
+       }
+      }
+    });
   };
-
 });
