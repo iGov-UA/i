@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="vpl_next_help_1125" name="Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк" isExecutable="true">
+  <process id="vpl_notice_edit_place_live_1128" name="Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПЛ" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -12,25 +12,15 @@
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFact" name="Нова фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" default=" ">
-          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є таке житло"></activiti:value>
-          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, немає такого житла"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Deposit" name="Наявність у будь-кого з членів сім’ї на депозитному банківському рахунку коштів у розмірі, що перевищує 10-кратний розмір прожиткового мінімуму, встановленого для працездатних осіб?" type="enum" default=" ">
-          <activiti:value id="sEnumElement_ExistDeposit_Yes" name="Так, є такі депозити"></activiti:value>
-          <activiti:value id="sEnumElement_ExistDeposit_No" name="Немає таких депозитів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLabelFailure" name=" " type="label" default="&lt;b&gt; Грошова допомога НЕ МОЖЕ бути Вам призначена (згідно &lt;a href=&quot;http://zakon4.rada.gov.ua/laws/show/505-2014-%D0%BF#n34)&quot; target=&quot;_blank&quot;&gt; Порядку &lt;/a&gt; надання щомісячної адресної допомоги)!! &lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/soJngn&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; , що є підставою для надання щомісячної адресної допомоги внутрішньо переміщеним особам"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти; завантажте одним файлом формату PDF, якщо дітей декілька" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни адреси фактичного проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/Fx2vzQ&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; про повідомлення уповноваженого органу про зміну адреси фактичного проживання"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про зміну адреси фактичного проживання" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -40,7 +30,7 @@
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="Номер УПСЗН для групи безпеки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_next_help_1125_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_notice_edit_place_live_1128_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -52,19 +42,12 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFact" name="Нова фактична адреса проживання (перебування); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" writable="false">
-          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є "></activiti:value>
-          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, не потрібна"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumExist_Deposit" name="Наявність у будь-кого з членів сім’ї на депозитному банківському рахунку коштів у розмірі, що перевищує 10-кратний розмір прожиткового мінімуму, встановленого для працездатних осіб?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_ExistDeposit_Yes" name="Так, є такі депозити"></activiti:value>
-          <activiti:value id="sEnumElement_ExistDeposit_No" name="Немає таких депозитів"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни адреси фактичного проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLabel" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string"></activiti:formProperty>
@@ -81,11 +64,11 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_notice_edit_place_live_1128_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -101,7 +84,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
@@ -118,13 +101,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -156,12 +139,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк відхилено.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
@@ -195,12 +178,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк успішно перевірено.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання успішно перевірено.&lt;br /&gt;
 &lt;br /&gt;
 &lt;p&gt;Коментар чиновника:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
@@ -273,25 +256,14 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-  
       
 var per1 = ' '
 
-if (execution.getVariable('asEnumExist_Flat') == 'sEnumElement_ExistFlat_No' &amp;&amp; execution.getVariable('asEnumExist_Deposit') == 'sEnumElement_ExistDeposit_No')
-{
-	per1 ='&lt;b&gt;Необхідні документи, які треба принести для призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
-		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-	    "2. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
-		'3. Заява про призначення на наступний шестимісячний строк грошової щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="http://goo.gl/JOaDvm"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
-	    "4. Оригінал і копія довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"+
-		"5. Оригінал і копія свідоцтва про шлюб, завірена особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані чоловік і дружина).&lt;br&gt;"+
-		"6. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані діти).&lt;br&gt;"+
-		"7. Інформація щодо поточного рахунку, відкритого уповноваженому представнику сім'ї в установі" + '"Ощадбанку" (якщо раніше адресна допомога перераховувалася не в "Ощадбанк").&lt;br&gt;'
-}
-else
-{
-	per1 = '&lt;b&gt;Грошова допомога НЕ МОЖЕ бути Вам призначена!&lt;/b&gt;&lt;br&gt;&lt;br&gt;'
-}
+per1 ='&lt;b&gt;Необхідні документи, які треба принести для повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання :&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
+	"1. Оригінал паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
+	'2. Заява про зміну адреси фактичного проживання (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="https://goo.gl/Fx2vzQ"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
+    "3. Оригінал довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
+    "4. Оригінал довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"
 
 execution.setVariable('sAdd_SpisokDocs', per1)
 

@@ -1,14 +1,14 @@
 <p
   ng-if="item.type == 'file' && !isFormPropertyDisabled(item) && item.id.indexOf('PrintForm') === -1"
-  ng-class="{submitted:item.required && isTaskSubmitted()}">
+  ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
               <field-title></field-title>
               <file-field name="{{item.id}}"
                           ng-disabled="isFormPropertyDisabled(item)"
                           ng-model="item.value"
-                          ng-required="{{item.required}}">Add File
+                          ng-required="isRequired(item)">Add File
               </file-field>
 
-<span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+<span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
   <span ng-message="required">Необхідно заповнити.</span>
   <span ng-message="pattern">Значення має бути числом.</span>
   <span ng-message="email">Помилка в email.</span>
@@ -25,4 +25,4 @@
   <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
   <span ng-message="FileSign">Підпис не валідний або відсутній</span>
 </span>
-            </p>
+</p>
