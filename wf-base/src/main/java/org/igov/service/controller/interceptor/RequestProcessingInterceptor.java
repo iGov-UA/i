@@ -404,7 +404,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      *    ]
      *  } 
      */
-    public void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+    private void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
         String sComment = null;
         String sTaskId = (String) omRequestBody.get("taskId");
         String sProcessDefinitionId = null;
@@ -547,12 +547,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-
+                //HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
                 LOG_BIG.debug("aTask={}", aTask);
 
                 boolean bProcessClosed = aTask == null || aTask.isEmpty();
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
@@ -584,7 +583,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
                         //issue 981 -- save history
-                        EscalationHistory escalationHistory = escalationHistoryService.updateStatus(nID_Process,
+                        escalationHistoryService.updateStatus(nID_Process,
                                 bProcessClosed
                                         ? EscalationHistoryService.STATUS_CLOSED
                                         : EscalationHistoryService.STATUS_IN_WORK);
@@ -610,16 +609,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             ._Param("nID_Process", nID_Process)
                             .save();
                 }
+                HistoryEvent_Service_StatusType status;
                 if (bProcessClosed) {
-                    LOG.info("Saving closed task");
-
-                    mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-                    mParam.put("sUserTaskName", sUserTaskName);
-                    mParam.put("sID_Order", sID_Order);
-                    historyEventService
-                            .updateHistoryEvent(sID_Order, mParam);//sID_Process
-                    LOG.info("saving closed task finished");
+                    status = HistoryEvent_Service_StatusType.CLOSED;
+                } else{
+                    status = HistoryEvent_Service_StatusType.OPENED;
                 }
+                LOG.info("Saving closed task");
+                mParam.put("nID_StatusType", status.getnID().toString());
+                mParam.put("sUserTaskName", sUserTaskName);
+                mParam.put("sID_Order", sID_Order);
+                historyEventService
+                        .updateHistoryEvent(sID_Order, mParam);//sID_Process
+                LOG.info("saving closed task finished");
+                
             }
         }
         LOG.info("Method saveClosedTaskInfo finished");
