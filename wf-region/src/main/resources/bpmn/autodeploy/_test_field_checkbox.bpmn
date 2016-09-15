@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_fields_bankid" name="тестирование новых полей bankId" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+       <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" ></activiti:formProperty>
+        
+        <activiti:formProperty id="bFavorite" name="Фаворит;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite" type="enum" required="true">
+          <activiti:value id="Favorite" name="Так, фаворит"></activiti:value>
+          <activiti:value id="NotFavorite" name="Ні, нефаворит"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite1" name="Фаворит1;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite1" type="enum" required="true" default="NotFavorite1">
+          <activiti:value id="Favorite1" name="Так, фаворит1"></activiti:value>
+          <activiti:value id="NotFavorite1" name="Ні, нефаворит1"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite11" name="Фаворит11;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite11" type="enum" required="true" default="Favorite11">
+          <activiti:value id="Favorite11" name="Так, фаворит"></activiti:value>
+          <activiti:value id="NotFavorite11" name="Ні, нефаворит"></activiti:value>
+        </activiti:formProperty>
+                                
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="громадянство" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdemail" name="e-mail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdphone" name="телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="адреса прописки" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdAddressFactual_country" name="страна прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_state" name="область прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_area" name="район прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_city" name="город прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_street" name="улица прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_houseNo" name="номер дома прописки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual_flatNo" name="номер квартиры прописки" type="string"></activiti:formProperty>
+                        
+        <activiti:formProperty id="bankId_scan_passport" name="скан паспорта" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="тест скан инн" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="тест инн" type="string"></activiti:formProperty>
+    
+        <activiti:formProperty id="tooltiptext" name="какой текст показать в дашборде после нажатия на кнопку обработки?" type="string"></activiti:formProperty>
+        
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="обробка заявки" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" ></activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite" name="Фаворит;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite" type="enum" required="false">
+          <activiti:value id="Favorite" name="Так, фаворит"></activiti:value>
+          <activiti:value id="NotFavorite" name="Ні, нефаворит"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite1" name="Фаворит1;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite1" type="enum" required="false">
+          <activiti:value id="Favorite1" name="Так, фаворит1"></activiti:value>
+          <activiti:value id="NotFavorite1" name="Ні, нефаворит1"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite11" name="Фаворит11;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite11" type="enum" required="false">
+          <activiti:value id="Favorite11" name="Так, фаворит"></activiti:value>
+          <activiti:value id="NotFavorite11" name="Ні, нефаворит"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite2" name="Фаворит2;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite2" type="enum" required="true">
+          <activiti:value id="Favorite2" name="Так, фаворит2"></activiti:value>
+          <activiti:value id="NotFavorite2" name="Ні, нефаворит2"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite22" name="Фаворит22;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite22" type="enum" required="true">
+          <activiti:value id="Favorite22" name="Так, фаворит22"></activiti:value>
+          <activiti:value id="NotFavorite22" name="Ні, нефаворит22"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite3" name="Фаворит3;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite3" type="enum" required="true" default="NotFavorite3">
+          <activiti:value id="Favorite3" name="Так, фаворит2"></activiti:value>
+          <activiti:value id="NotFavorite3" name="Ні, нефаворит2"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite4" name="Фаворит4;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite4" type="enum" required="true" default="Favorite4">
+          <activiti:value id="Favorite4" name="Так, фаворит2"></activiti:value>
+          <activiti:value id="NotFavorite4" name="Ні, нефаворит2"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite5" name="Фаворит5;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite5" type="enum" required="true" default="NotFavorite5">
+          <activiti:value id="Favorite5" name="Так, фаворит5"></activiti:value>
+          <activiti:value id="NotFavorite5" name="Ні, нефаворит5"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="bFavorite6" name="Фаворит6;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite6" type="enum" required="true" default="Favorite6">
+          <activiti:value id="Favorite6" name="Так, фаворит6"></activiti:value>
+          <activiti:value id="NotFavorite6" name="Ні, нефаворит6"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="сопроводительный текст" type="string" default="${tooltiptext}"></activiti:formProperty>
+       </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_fields_bankid">
+    <bpmndi:BPMNPlane bpmnElement="_test_fields_bankid" id="BPMNPlane__test_fields_bankid">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="390.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="185.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="335.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
