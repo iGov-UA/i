@@ -404,12 +404,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
      *    ]
      *  } 
      */
-    private void saveCommentSystemEscalation(JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
+    private void saveCommentSystemEscalation(String sID_Order, JSONObject omRequestBody, HistoricTaskInstance oHistoricTaskInstance) {
         String sComment = null;
         String sTaskId = (String) omRequestBody.get("taskId");
         String sProcessDefinitionId = null;
-        String sID_Order = null;
         Boolean isSystem_escalation = false;
+
+        if (sID_Order == null) {
+            LOG.error("sID_Order первичной заявки эскалации равен null");
+            return;
+        }
 
         // Блок определения - это эскалация или нет
         if (oHistoricTaskInstance != null) {
@@ -444,28 +448,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         if (sComment == null) {
             LOG.error("Комментарий эскалации равен null");
-            return;
-        }
-
-        // Блок получения sID_Order первичной заявки эскалации
-        HistoricTaskInstance taskDetails = historyService
-                .createHistoricTaskInstanceQuery()
-                .includeProcessVariables().taskId(sTaskId)
-                .singleResult();
-        LOG_BIG.trace("taskDetails = {}", taskDetails);
-        if (taskDetails != null) {
-            Map<String, Object> pvs = taskDetails.getProcessVariables();
-            if (pvs != null) {
-                String sProcessID = (String) pvs.get("processID");
-                if (sProcessID != null) {
-                    Long nID_Process = Long.valueOf(sProcessID);
-                    sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-                    LOG_BIG.debug("sID_Order= {}", sID_Order);
-                }
-            }
-        }
-        if (sID_Order == null) {
-            LOG.error("sID_Order первичной заявки эскалации равен null");
             return;
         }
 
@@ -550,11 +532,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 //HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
-                LOG_BIG.debug("aTask={}", aTask);
 
                 boolean bProcessClosed = aTask == null || aTask.isEmpty();
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+
+                LOG_BIG.debug("bProcessClosed: {}, sProcessName: {}, sUserTaskName: {}, aTask: {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
+                
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
@@ -589,16 +573,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                 bProcessClosed
                                         ? EscalationHistoryService.STATUS_CLOSED
                                         : EscalationHistoryService.STATUS_IN_WORK);
-                        //                LOG.info("update escalation history: {}", escalationHistory);
-                        //issue 1038 -- save message
-//                        LOG_BIG.debug("try to save service message for escalation process with (snID_Process={})", snID_Process);
-//                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
-                        saveCommentSystemEscalation(omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
-
-                        //LOG.info("(sServiceMessage={})", sServiceMessage);
-//                        LOG_BIG.debug(
-//                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
-//                                sProcessName, sServiceMessage);
+                        saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
                     }
                 } catch (Exception oException) {
                     //LOG.error("Can't save service message for escalation: {}", oException.getMessage());
