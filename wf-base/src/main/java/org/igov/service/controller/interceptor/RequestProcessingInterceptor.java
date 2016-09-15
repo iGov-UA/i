@@ -482,25 +482,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sResponse = httpRequester.getInside(sURL, mParamComment);
 
             LOG_BIG.debug("sResponse = {}", sResponse);
-
-            JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-            String sCode = (String) oResponseJson.get("code");
-            if ("200".equals(sCode)) {
-                LOG.info("Добавлен комментарий эскалации: {}", sComment);
-            } else {
-                String sMessage = (String) oResponseJson.get("message");
-                LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
-//                new Log(this.getClass(), LOG)
-//                ._Case("saveCommentSystemEscalation")
-//                ._Status(Log.LogStatus.ERROR)
-//                ._Head("Ошибка при добавлении коммменатирия эскалации")
-//                ._Body(sMessage)
-//                ._Param("sURL", sURL)
-//                ._Param("sID_Order", sID_Order)
-//                ._Param("sBody", sComment)
-//                ._Param("nID_SubjectMessageType", SubjectMessageType_ServiceCommentEmployeeAnswer)
-//                .save();
-            }
+            LOG.info("Добавлен комментарий эскалации: {}", sComment);
 
         } catch (Exception e) {
             LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
