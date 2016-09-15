@@ -1,27 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kiev_mreo_common_1_jur" name="Киев МРЭО - Регистрация авто с пробегом ( общий )" isExecutable="true">
+  <process id="kiev_mreo_common_1_jur" name="Зняття з реєстрації для юридичних осіб" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="mreo1" name="название мрэо" type="label" default="ссылка на процесс"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДПОУ юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vin_code" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="Індивідуальний податковий номер (ІПН) довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassSeries " name="Серія громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPassNumber " name="Номер громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="e-mail"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <userTask id="usertask1" name="Створення заявки в НАИС"></userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="e-mail для співробітника"></serviceTask>
+    <userTask id="usertask1" name="Створення заявки в НАИС" activiti:candidateGroups="NAIS">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН) заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДПОУ юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vin_code" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="Індивідуальний податковий номер (ІПН) довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassSeries " name="Серія громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassNumber " name="Номер громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Rонтактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Результат обробки" type="enum" required="true">
+          <activiti:value id="accept" name="Послуга може бути надана"></activiti:value>
+          <activiti:value id="reject" name="Послуга не можу бути надана"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Примітка до результату обробки" type="textArea"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask2" name="e-mail для автора" activiti:delegateExpression="#{MailTaskWithoutAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression>mail</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[%тема письма%]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>loren ipsum
+
+Результат обробки звернення:&lt;br&gt;
+${decide}&lt;br&gt;&lt;br&gt;
+
+Примітка:&lt;br&gt;
+${comment}&lt;br&gt;</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="e-mail для співробітника" activiti:delegateExpression="#{MailTaskWithoutAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression>mail</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[%тема письма%]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>loren ipsum</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mreo_common_1_jur">
     <bpmndi:BPMNPlane bpmnElement="kiev_mreo_common_1_jur" id="BPMNPlane_kiev_mreo_common_1_jur">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="222.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="149.0" x="452.0" y="80.0"></omgdc:Bounds>
@@ -32,14 +93,9 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="816.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="257.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="407.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="125.0" x="290.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="601.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="646.0" y="107.0"></omgdi:waypoint>
@@ -47,6 +103,14 @@
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="771.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="816.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="257.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="415.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
