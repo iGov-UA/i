@@ -49,8 +49,8 @@
           <activiti:value id="sEnamSutZminIm" name="Про зміну імені (прізвища, власного імені, по батькові)"></activiti:value>
           <activiti:value id="sEnamSutZmin148" name="Про внесення змін відповідно до ст. 148 СКУ"></activiti:value>
           <activiti:value id="sEnamSutZminUs" name="Про внесення змін у зв’язку з усиновленням (удочерінням)"></activiti:value>
-          <activiti:value id="sEnamSutResBat" name="Про реєстрацію встановлення батьківства"></activiti:value>
-          <activiti:value id="sEnamSutNarDop" name="Про реєстрацію народження згідно з ч. 1 ст. 135 СКУ для отримання допомоги"></activiti:value>
+          <activiti:value id="sEnamSutResBat" name="Про реєстрацію усиновлення"></activiti:value>
+          <activiti:value id="sEnamSutNarDop" name="Про реєстрацію встановлення батьківства"></activiti:value>
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRod_zvjazok" name="Вкажіть ступінь родинного зв'язку" type="string" required="true"></activiti:formProperty>
@@ -128,7 +128,7 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача витягу з реєстру актів цивільного стану громадян"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача витягу з державного реєстру актів цивільного стану громадян"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -195,7 +195,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSub_Name" name="Повне найменування органу чи юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressFact" name="Адреса реєстрації" type="string" default="${AdressInd} ${AdressCountry} ${AdressOBL} ${AdressRay} ${AdressMisto} ${AdressVul} ${AdressBud} кв.${AdressKimn}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressFact" name="Адреса місця проживання" type="string" default="${AdressInd} ${AdressCountry} ${AdressOBL} ${AdressRay} ${AdressMisto} ${AdressVul} ${AdressBud} кв.${AdressKimn}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeta" name="Мета отримання витягу" type="string" writable="false"></activiti:formProperty>
@@ -225,19 +225,15 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamSutNarDop" name="Про реєстрацію народження згідно з ч. 1 ст. 135 СКУ для отримання допомоги"></activiti:value>
           <activiti:value id="sEnamSutSmerDop" name="Про смерть для отримання допомоги на поховання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRod_zvjazok" name="Ступінь родинного зв'язку" type="enum" writable="false">
-          <activiti:value id="sEnamR1" name="Близький родич"></activiti:value>
-          <activiti:value id="sEnamR2" name="Далекий родич"></activiti:value>
-          <activiti:value id="sEnamR3" name="Опікун з довіреністю"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sZap_LastName" name="Прізвище особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Ім'я особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sZap_MiddleName" name="По батькові особи, щодо якої запитується інформація" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressCountry_born" name="Країна" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressOBL_born" name="Область" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressRay_born" name="Район" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressFact" name="Місце народження особи щодо якої запитується інформація" type="string" default="${AdressCountry_born} ${AdressOBL_born} ${AdressRay_born} ${AdressMisto_born}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressCountry_born" name="Країна" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressOBL_born" name="Область" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressRay_born" name="Район" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressMisto_born" name="Населений пункт" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_Date" name="Вкажіть місце і дату РЕЄСТРАЦІЇ народження особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_Registr" name="Найменування органу що здійснив реєстрацію" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSvid_Ser" name="Серія свідоцтва" type="string" writable="false"></activiti:formProperty>
@@ -251,7 +247,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="acceptVid" name="Запитувані відомості відсутні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Vutiag_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Vutiag_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Vutiag_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressCountry" name="Країна" type="invisible"></activiti:formProperty>
@@ -314,12 +310,12 @@ ${sNameOrgan}.&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
 Ви можете отримати Витяг за адресою вказаною нижче. &lt;br /&gt;
 Дата та час візиту: ${comment} &lt;br /&gt;
-Для отримання Витягу потрібно особисто звернутися до РАГСу з документом, що посвідчує особу (паспорт), оригіналом документу про оплату послуги та з іншими оригіналами документів які ви докладали до заяви.&lt;br /&gt;
+Для отримання Витягу потрібно особисто звернутися до відділу ДРАЦС з документом, що посвідчує особу (паспорт), оригіналом документу про оплату послуги (якщо такий є) та з іншими оригіналами документів, які Ви долучили до заяви.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+Будь ласка, оцініть якість наданої Вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -356,7 +352,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
 За результатами опрацювання Вашої заяви повідомляємо, що відповідного актового запису цивільного стану не виявлено.&lt;br /&gt;
-У разі необхідності отримання витягу з Державного реєстру актів цивільного стану громадян про відсутність актового запису Ви можете звернутись до відділу державної реєстрації актів цивільного стану особисто.&lt;br /&gt;
+У разі необхідності отримання витягу з Державного реєстру актів цивільного стану громадян про відсутність актового запису Ви можете звернутись до відділу ДРАЦС особисто.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
