@@ -130,40 +130,40 @@ ${sNameOrgan}<br />
     <serviceTask id="servicetask8" name="Лист про обробку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obroblyaetsya. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obroblyaetsya. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання допомоги при народженні дитини"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання допомоги при народженні дитини"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-&lt;p&gt;Ваше звернення №[sID_Order] щодо отримання допомоги при народженні дитини розглядається працівниками УПСЗН. Незабаром Ви отримаєте результат розгляду Вашої заяви.&lt;/p&gt;
-&lt;p&gt;Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment1}&lt;/p&gt;
-&lt;p&gt;Контакти підрозділу соцзахисту, який обробляє Ваше звернення:&lt;/p&gt;
-&lt;p&gt;${sNameOrgan}.&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>Ваше звернення №[sID_Order] щодо отримання допомоги при народженні дитини розглядається працівниками УПСЗН. Незабаром Ви отримаєте результат розгляду Вашої заяви.</p>
+<p>Коментарі держслужбовців щодо Вашої заяви (за наявності): ${comment1}</p>
+<p>Контакти підрозділу соцзахисту, який обробляє Ваше звернення:</p>
+<p>${sNameOrgan}.<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}</p>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-      </serviceTask>
+    </serviceTask>
     <userTask id="usertask2_red" name="обработка этап 2" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва району" type="string" writable="false"></activiti:formProperty>
@@ -336,17 +336,17 @@ execution.setVariable('area', per3)</script>
 <p>Причина: ${comment1}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua">iGov.org.ua</a></p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
+<p>${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway1" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="servicetask8" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_socialhelp_kidsUkraine">
     <bpmndi:BPMNPlane bpmnElement="socialhelp_kidsUkraine" id="BPMNPlane_socialhelp_kidsUkraine">
@@ -367,6 +367,9 @@ execution.setVariable('area', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="259.0" y="251.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="227.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
         <omgdc:Bounds height="55.0" width="105.0" x="227.0" y="44.0"></omgdc:Bounds>
@@ -394,9 +397,6 @@ execution.setVariable('area', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="244.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="227.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="38.0" y="71.0"></omgdi:waypoint>
@@ -435,11 +435,6 @@ execution.setVariable('area', per3)</script>
         <omgdi:waypoint x="299.0" y="271.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="271.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="465.0" y="271.0"></omgdi:waypoint>
-        <omgdi:waypoint x="423.0" y="271.0"></omgdi:waypoint>
-        <omgdi:waypoint x="545.0" y="271.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="159.0" y="71.0"></omgdi:waypoint>
         <omgdi:waypoint x="106.0" y="110.0"></omgdi:waypoint>
@@ -455,6 +450,10 @@ execution.setVariable('area', per3)</script>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="279.0" y="134.0"></omgdi:waypoint>
         <omgdi:waypoint x="279.0" y="99.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="465.0" y="271.0"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="271.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
