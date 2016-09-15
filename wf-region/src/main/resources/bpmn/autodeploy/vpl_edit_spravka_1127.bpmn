@@ -4,7 +4,7 @@
     <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -51,7 +51,7 @@
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду звернення (1-й крок)" activiti:candidateGroups="vpl_upszn${nArea}">
       <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Орган надання послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -83,7 +83,7 @@
           <activiti:value id="accept" name="З інформацією все гаразд, звернення буде розглянуто"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -91,7 +91,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -243,6 +243,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -291,10 +292,11 @@ if (execution.getVariable('asEnumGet_Help') == 'sEnumElement_Yes' &amp;&amp; exe
 {
 	per1 ='&lt;b&gt;Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи та одночасним оформленням щомісячної адресної допомоги:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+ 
 		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-		'2. Заява про подовження (призначення) виплати щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління праці та соціального захисту населення). Заява доступна за цим &lt;a href="http://goo.gl/JOaDvm"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
-	    "3. Оригінал і копія довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"+
-		"4. Оригінал і копія свідоцтва про шлюб, завірена особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані чоловік і дружина).&lt;br&gt;"+
-		"5. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані діти).&lt;br&gt;"+
+		'2. Заява про подовження (призначення) виплати щомісячної адресної допомоги внутрішньо переміщеним особам (Просимо роздрукувати і заповнити її перед візитом до управління соціального захисту населення). Заява доступна за цим &lt;a href="http://goo.gl/JOaDvm"&gt; посиланням &lt;/a&gt;.&lt;br&gt;'+  
+	    "3. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
+	    "4. Оригінал і копія довідки про присвоєння індивідуального податкового номера (ІПН) уповноваженого представника сім'ї.&lt;br&gt;"+
+		"5. Оригінал і копія свідоцтва про шлюб, завірена особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані чоловік і дружина).&lt;br&gt;"+
+		"6. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві на отримання грошової допомоги вказані діти).&lt;br&gt;"+
 		"7. Письмова згода про виплату допомоги представнику сім'ї від інших членів сім'ї та згоду на обробку персональних даних в довільній формі (якщо адресна допомога призначається вперше).&lt;br&gt;"+
 		"8. Інформація щодо поточного рахунку, відкритого уповноваженому представнику сім'ї в установі" + '"Ощадбанку" (якщо адресна допомога призначається вперше).&lt;br&gt;'
 }
@@ -302,7 +304,8 @@ else
 {
 	per1 = '&lt;b&gt;Необхідні документи, які треба принести для переоформлення довідки про взяття на облік внутрішньо переміщеної особи:&lt;/b&gt;&lt;br&gt;&lt;br&gt;'+
 		"1. Оригінал та копія паспорта громадянина України (уповноваженого представника сім'ї).&lt;br&gt;"+
-		"2. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві вказані діти).&lt;br&gt;"
+	    "2. Оригінал і копія довідки про взяття на облік внутрішньо переміщеної особи.&lt;br&gt;"+
+		"3. Оригінал та копії свідоцтв про народження дітей, завірені особистим підписом уповноваженого представника сім'ї (якщо в заяві вказані діти).&lt;br&gt;"
 }
 
 execution.setVariable('sAdd_SpisokDocs', per1)
