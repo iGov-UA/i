@@ -524,15 +524,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
+                String sID_Order = null;
 
-                LOG_BIG.debug("!!! sID_Order1 = {}", sID_Order);
                 // Блок получения sID_Order первичной заявки эскалации
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
                         .singleResult();
-                LOG_BIG.trace("taskDetails = {}", taskDetails);
+                LOG_BIG.debug("taskDetails = {}", taskDetails);
                 if (taskDetails != null) {
                     Map<String, Object> pvs = taskDetails.getProcessVariables();
                     if (pvs != null) {
@@ -544,7 +543,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         }
                     }
                 }
-                LOG_BIG.debug("!!! sID_Order2 = {}", sID_Order);
+                LOG_BIG.debug("sID_Order = {}", sID_Order);
 
                 String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
