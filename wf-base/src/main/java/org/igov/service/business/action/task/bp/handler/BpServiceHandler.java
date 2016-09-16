@@ -161,7 +161,7 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-//        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskID"+"-"+"sTaskName"));
 //        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
 //        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
