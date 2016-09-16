@@ -1,46 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head lang="ua">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Надання довідки про доходи фізичних осіб</title>
     <style type="text/css">
 
-/* свойства для печати*/
-@media print {
-	* {
-		-webkit-print-color-adjust: exact;
-		print-color-adjust: exact;
-	}
-
-	html {
-		text-rendering: optimizeLegibility !important;
-		-webkit-font-smoothing: antialiased !important;
-	}
-
-	body {
-        font-size: 14pt;
+      section.PrintFormClaim {        
+      	font-size: 14pt;
         font-family: "Times New Roman";
-        padding: 1cm 1.5cm 1cm 2.5cm;
-        width: 21cm;
-        min-height: 100%;
-        height: 100%;
-	}
-	
-	a[href^="http://"]:after, a[href^="ftp://"]:after {
-	  content: " (" attr(href) ")";
-	  color: blue;
-	  font-size: small;
-	}
-	
-	section {page-break-after: always;}
-	h1 {page-break-after: avoid;}
-	p {page-break-inside: avoid; orphans:3; widows:2;}
-	ul, img {page-break-inside: avoid;}
-}
-
-
-      body section.PrintFormClaim {
-
+        width: 17cm;
       }
 
       section.PrintFormClaim div {  
@@ -338,14 +301,34 @@
 
 
       .test{ border: 1px solid red;}
+      
+/* свойства для печати*/
+@media print {
+    @page {
+        margin: 1cm 1.5cm 1cm 2.5cm;
+    }
+
+	* {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	
+	a[href^="http://"]:after, a[href^="ftp://"]:after {
+	  content: " (" attr(href) ")";
+	  color: blue;
+	}
+	
+	section {page-break-after: avoid;}
+	h1 {page-break-after: avoid;}
+	p {page-break-inside: avoid; orphans:3; widows:2;}
+	ul, img {page-break-inside: avoid;}
+}      
 
     </style>
-  </head>
-  <body>
+
     <section class="PrintFormClaim">
       <div class="whomBlock ml-10">
-        Начальнику<br>
-        [sNameOrgan673]<br>
+        Начальнику [sNameOrgan673]<br>
         [sFIOGolova673]
       </div>
       <br> <br>
@@ -378,7 +361,7 @@
         Прошу надати мені довідку про доходи за період 
         з <em>[dStart1]</em> по <em>[dStop1]</em> 
         для надання до <em>[sAim]</em> 
-        (віддлення банку,Пенсійного фонду, працевлаштування УПСЗН тощо).
+        (віддлення банку, Пенсійного фонду, працевлаштування, УПСЗН тощо).
       </div>
 
       <br>       
@@ -402,5 +385,3 @@
         </div>
       </div>
     </section>
-  </body>
-</html>
