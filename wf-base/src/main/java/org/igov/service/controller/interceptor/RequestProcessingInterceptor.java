@@ -506,9 +506,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-                String sID_Order = null;
 
                 // Блок получения sID_Order первичной заявки эскалации
+                String sID_Order = null;
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
@@ -521,11 +521,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         if (sProcessID != null) {
                             Long nID_ProcessV = Long.valueOf(sProcessID);
                             sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
-                            LOG_BIG.debug("sID_Order= {}", sID_Order);
                         }
                     }
                 }
-                LOG_BIG.debug("sID_Order = {}", sID_Order);
 
                 String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
@@ -537,7 +535,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
 
-                LOG_BIG.debug("bProcessClosed: {}, sProcessName: {}, sUserTaskName: {}, aTask: {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
+                LOG_BIG.debug("bProcessClosed = {}, sProcessName = {}, sUserTaskName = {}, aTask = {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
                 
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
