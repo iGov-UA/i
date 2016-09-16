@@ -292,15 +292,15 @@ module.exports.signFormMultiple = function (req, res) {
       if (error) {
         callbackAsync(error, null);
       } else {
-        callbackAsync(null, body);
+        callbackAsync(null, {loadedForm : body});
       }
     });
   }
 
   var objectsToSign = [];
 
-  function getHtmlAsync(formData, callbackAsync) {
-    createHtml(formData, function (formToUpload) {
+  function getHtmlAsync(result, callbackAsync) {
+    createHtml(result.loadedForm, function (formToUpload) {
       objectsToSign.push({
         name: 'file',
         text: formToUpload,
@@ -309,11 +309,12 @@ module.exports.signFormMultiple = function (req, res) {
           contentType: 'text/html;charset=utf-8'
         }
       });
-      callbackAsync(null, formData);
+      callbackAsync(null, result);
     });
   }
 
-  function getFileBuffersAsync(formData, callbackAsync) {
+  function getFileBuffersAsync(result, callbackAsync) {
+    var formData = result.loadedForm;
     var filesToSign = [];
     async.forEach(findFileFields(formData), function (fileField, callbackEach) {
       uploadFileService.downloadBuffer(fileField.value, function (error, response, buffer) {
@@ -333,17 +334,18 @@ module.exports.signFormMultiple = function (req, res) {
         callbackAsync(error, null);
       } else {
         objectsToSign = objectsToSign.concat(filesToSign);
-        callbackAsync(null, formData);
+        callbackAsync(null, result);
       }
     });
   }
 
-  function signFilesAsync(formData, callbackAsync) {
+  function signFilesAsync(result, callbackAsync) {
     var accessToken = req.session.access.accessToken;
-    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, result) {
+    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, signResult) {
       if (error) {
-        callbackAsync(error, null);
+        callbackAsync(error, result);
       } else {
+        result.signResult = signResult;
         callbackAsync(null, result)
       }
     });
@@ -356,9 +358,11 @@ module.exports.signFormMultiple = function (req, res) {
     signFilesAsync
   ], function (error, result) {
     if (error) {
-      res.status(500).send(error);
+      res.redirect(result.loadedForm.restoreFormUrl
+        + '?formID=' + formID
+        + '&error=' + JSON.stringify(error));
     } else {
-      res.redirect(result.desc);
+      res.redirect(result.signResult.desc);
     }
   });
 };
