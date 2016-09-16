@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService) {
+                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -302,8 +302,15 @@
         };
 
 
+        $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
           $scope.validateForm(form);
+          if(form.$invalid){
+            $scope.isFormInvalid = true;
+            return;
+          } else {
+            $scope.isFormInvalid = false;
+          }
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
@@ -571,13 +578,16 @@
         };
 
         $scope.getAttachmentTable = function (taskId, attachId, attachName) {
-          if(!$scope.taskData.oTable){
+          $rootScope.attachIsLoading = true;
             var tableName = attachName;
             tasks.getTableAttachment(taskId, attachId).then(function (res) {
-              $scope.taskData.oTable = JSON.parse(res);
-              $scope.taskData.oTable.sName = tableName;
+              var table = {};
+              $scope.taskData.aTable = [];
+              table.aRows = JSON.parse(res);
+              table.sName = tableName;
+              $scope.taskData.aTable.push(table);
               // TODO поменять на фильтр
-              angular.forEach($scope.taskData.oTable.aRow, function (row) {
+              angular.forEach($scope.taskData.aTable[0].aRows, function (row) {
                 angular.forEach(row.aField, function (field) {
                   if(field.type === 'date') {
                     var onlyDate = field.props.value.split('T')[0];
@@ -592,9 +602,9 @@
                     })
                   }
                 })
-              })
+              });
+              $rootScope.attachIsLoading = false;
             });
-          }
           $scope.tableContentShow = !$scope.tableContentShow;
         };
 
