@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-1133fo" name="Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб" isExecutable="true">
+  <process id="dnepr_dms-1133uo" name="Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -9,10 +9,12 @@
         <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС, до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Поштова адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -39,13 +41,13 @@
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -84,7 +86,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -101,7 +103,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -130,7 +132,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dms_inozem_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dms_inozem_${sID_UA}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для отримання штампу про реєстрацію"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
@@ -198,7 +200,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -245,11 +247,11 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                                         Спеціалісти підрозділу ДМС успішно опрацювли Вашу заяву.<br>
 										Для того щоб закінчити процедуру подання заяви необхідно:<br>
@@ -260,11 +262,8 @@ execution.setVariable('sMaxPay', maxpay)
 										</ul>
 									</p>
 									<p>
-										<b>Реквізити для сплати держмита:</b><br>
-										<i>Сума: 5,10 грн. При необхідності термінового (до 10 днів) оформлення сума: 10,20 грн</i><br>
-										<i>${sRecviziti}</i><br>
-										<b>Реквізити для сплати адмінпослуги:</b><br>
-										<i>Сума: 58,20 грн. При необхідності термінового (до 10 днів) оформлення сума: 114,72 грн</i><br>
+									<b>Реквізити для сплати адмінпослуги:</b><br>
+										<i>Сума: 171,38 грн. При необхідності термінового (до 10 днів) оформлення сума: 341,08 грн</i><br>
 										<i>${sRecvizitiInozem}</i><br>
 										</p>
 									<p>
@@ -272,7 +271,7 @@ execution.setVariable('sMaxPay', maxpay)
 										День та час - ${date_of_visit}
 									</p>
 									<p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні заяви:</b><br />
+										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні клопотання:</b><br />
 										<ul>
 										<li>оригінал та копію паспорту того, хто подавав заяву;</li>
 										<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
@@ -303,7 +302,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dms_inozem_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dms_inozem_${sID_UA}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та знімаєте з реєстрації дитину."></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
@@ -342,8 +341,8 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sReestr" name="Громадянин з'явився для оформлення запрошення"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_inozem_FOFront.html]" type="invisible" default="Заява для оформлення запрошення лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_FOBack.html]" type="invisible" default="Заява для оформлення запрошення зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_inozem_UOFront.html]" type="invisible" default="Заява для оформлення запрошення лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Заява для оформлення запрошення зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -370,13 +369,13 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за заявами фізичних осіб".<br>
+                              		Ви отримали послугу "Оформлення запрошень іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну за клопотанням юридичних осіб".<br>
                               		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
                               		Дякуємо.
 									</p>
@@ -390,8 +389,8 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-1133fo">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-1133fo" id="BPMNPlane_dnepr_dms-1133fo">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-1133uo">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-1133uo" id="BPMNPlane_dnepr_dms-1133uo">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="125.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
