@@ -177,9 +177,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sName"));   
+        mParam.put("Place", getPlaceByProcess("sID_Process"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!getPlaceByProcess(sID_Process): " + getPlaceByProcess("sName") + " sID_Process: " + sID_Process);
+        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -250,7 +250,7 @@ public class BpServiceHandler {
         Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces";
+        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getOrderPlaces"; 
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
         try {
@@ -267,11 +267,11 @@ public class BpServiceHandler {
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
-        LOG.info("!!!!!!!!!!!!!sID_Process: " + sID_Process);
+        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("!!!!!!!!!!!!!generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("!!!!!!!!!!!!!ssURL: " + sURL);
+        LOG.info("444444444444444444444ssURL: " + sURL);
         LOG.info("(sURL={},mParam={})", sURL, param); 
         String soResponse = null;
         try {
