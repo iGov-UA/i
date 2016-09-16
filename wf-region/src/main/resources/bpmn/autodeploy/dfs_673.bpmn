@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dfs_673" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
-	<documentation>Рефакторинг на основі dnepr_spravka_o_doxodax: Ставицький В.Д, 24.05.16</documentation>
+	<documentation>
+		24.05.16 Рефакторинг: на основі dnepr_spravka_o_doxodax: Ставицький В.Д
+		15.09.16 Рефакторинг: Добавление маркеров на все стадии, переделка принтформы, добавление даты создание процесса
+	</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="select" default="0" required="true"></activiti:formProperty>
@@ -35,7 +38,8 @@
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу" type="invisible" default=" "></activiti:formProperty>        
-        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible" default=" "></activiti:formProperty>     
+        <activiti:formProperty id="sDateStart" name="Дата замовлення" type="invisible" default=" "></activiti:formProperty>
         
 		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_start.json')}"></activiti:formProperty>
@@ -53,6 +57,7 @@
       <script>
       	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
       	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
+      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
       </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
@@ -142,8 +147,9 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_673_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу" type="invisible"></activiti:formProperty>        
-        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible"></activiti:formProperty>
-
+        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible"></activiti:formProperty>    
+        <activiti:formProperty id="sDateStart" name="Дата замовлення" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_user.json')}"></activiti:formProperty>
 
 
