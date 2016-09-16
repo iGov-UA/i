@@ -178,10 +178,10 @@ public class BpServiceHandler {
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
         
-        mParam.put("Place", getPlaceByProcess("sName"));   
         //////////////////////////  проверка правильности верхнего оператора
-        LOG.debug("Place = {}", getPlaceByProcess(sID_Process));
+        LOG.debug("pppPlace = {}", getPlaceByProcess(sID_Process));
         //////////////////////////
+        mParam.put("Place", getPlaceByProcess("sName"));   
         
         
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
