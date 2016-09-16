@@ -583,7 +583,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 }
 
 
-                // Cохранение статуса задачи
+                // Cохранение нового события для задачи
                 HistoryEvent_Service_StatusType status;
                 if (bProcessClosed) {
                     status = HistoryEvent_Service_StatusType.CLOSED;
@@ -594,8 +594,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nID_StatusType", status.getnID().toString());
                 mParam.put("sUserTaskName", sUserTaskName);
                 mParam.put("sID_Order", sID_Order);
-                historyEventService
+                try {
+                    historyEventService
                         .updateHistoryEvent(sID_Order, mParam);//sID_Process
+                } catch (Exception oException) {
+            		new Log(oException, LOG)
+            			._Case("IC_SaveTaskHistoryEvent")
+                		._Status(Log.LogStatus.ERROR)
+                		._Head("Can't save history event for task")
+                		._Param("nID_Process", nID_Process)
+                		.save();
+                }
 
 
                 // Сохранение комментария эскалации
@@ -604,9 +613,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 	saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
                     } catch (Exception oException) {
                 	new Log(oException, LOG)
-                    		._Case("IC_SaveEscalation")
+                    		._Case("IC_SaveCommentVolonter")
                     		._Status(Log.LogStatus.ERROR)
-                    		._Head("Can't save service message for escalation")
+                    		._Head("Can't save volonter's comment")
                     		._Param("nID_Process", nID_Process)
                     		.save();
                     }
