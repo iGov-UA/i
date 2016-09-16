@@ -160,8 +160,8 @@ public class BpServiceHandler {
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
-        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"+sProcessName));
-        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
+        mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
+//        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
 //        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
 //        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
