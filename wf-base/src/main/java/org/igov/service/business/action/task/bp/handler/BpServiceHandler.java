@@ -177,9 +177,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess(sID_Process));   
+        mParam.put("Place", getPlaceByProcess("sName"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+        LOG.info("1111111111111111111111111111getPlaceByProcess(sName): " + getPlaceByProcess("sName") + " sName: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -191,7 +191,7 @@ public class BpServiceHandler {
         String organ = trimGroups(organs);
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-
+        mParam.put("sEmployeeContacts", "aSubjectAccountContact");
         mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
@@ -266,7 +266,7 @@ public class BpServiceHandler {
 
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> param = new HashMap<String, String>();
-        param.put("nID_Process", sID_Process);
+        param.put("sID_Process", sID_Process);
         LOG.info("2222222222222222222222sID_Process: " + sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
         LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
@@ -280,7 +280,7 @@ public class BpServiceHandler {
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
             soResponse = (String) res.get("sName");
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse = (String): " + soResponse);
+            LOG.info("555555555555555soResponse = (String): " + soResponse);
         } catch (Exception ex) {
             LOG.error("[getPlaceByProcess]: ", ex);
         }
