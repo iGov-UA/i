@@ -506,9 +506,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-                String sID_Order = null;
 
                 // Блок получения sID_Order первичной заявки эскалации
+                String sID_Order = null;
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
@@ -521,11 +521,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         if (sProcessID != null) {
                             Long nID_ProcessV = Long.valueOf(sProcessID);
                             sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
-                            LOG_BIG.debug("sID_Order= {}", sID_Order);
                         }
                     }
                 }
-                LOG_BIG.debug("sID_Order = {}", sID_Order);
 
                 String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
@@ -537,7 +535,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
 
-                LOG_BIG.debug("bProcessClosed: {}, sProcessName: {}, sUserTaskName: {}, aTask: {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
+                LOG_BIG.debug("bProcessClosed = {}, sProcessName = {}, sUserTaskName = {}, aTask = {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
                 
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
@@ -566,26 +564,26 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             ._LogTrace()
                             .save();
                 }
-                try {
-                    if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
+
+                if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
+                    try {
                         //issue 981 -- save history
                         escalationHistoryService.updateStatus(nID_Process,
                                 bProcessClosed
                                         ? EscalationHistoryService.STATUS_CLOSED
                                         : EscalationHistoryService.STATUS_IN_WORK);
-                        saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
-                    }
-                } catch (Exception oException) {
-                    //LOG.error("Can't save service message for escalation: {}", oException.getMessage());
-                    //LOG.trace("FAIL:", oException);
-                    new Log(oException, LOG)//this.getClass()
+                    } catch (Exception oException) {
+                	new Log(oException, LOG)//this.getClass()
                             ._Case("IC_SaveEscalation")
                             ._Status(Log.LogStatus.ERROR)
                             ._Head("Can't save service message for escalation")
-                            //                        ._Body(oException.getMessage())
                             ._Param("nID_Process", nID_Process)
                             .save();
+                    }
                 }
+
+
+                // Cохранение нового события для задачи
                 HistoryEvent_Service_StatusType status;
                 if (bProcessClosed) {
                     status = HistoryEvent_Service_StatusType.CLOSED;
@@ -596,10 +594,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nID_StatusType", status.getnID().toString());
                 mParam.put("sUserTaskName", sUserTaskName);
                 mParam.put("sID_Order", sID_Order);
-                historyEventService
+                try {
+                    historyEventService
                         .updateHistoryEvent(sID_Order, mParam);//sID_Process
+                } catch (Exception oException) {
+            		new Log(oException, LOG)
+            			._Case("IC_SaveTaskHistoryEvent")
+                		._Status(Log.LogStatus.ERROR)
+                		._Head("Can't save history event for task")
+                		._Param("nID_Process", nID_Process)
+                		.save();
+                }
+
+
+                // Сохранение комментария эскалации
+                if ( sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && !bProcessClosed ) {
+                    try {
+                	saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
+                    } catch (Exception oException) {
+                	new Log(oException, LOG)
+                    		._Case("IC_SaveCommentVolonter")
+                    		._Status(Log.LogStatus.ERROR)
+                    		._Head("Can't save volonter's comment")
+                    		._Param("nID_Process", nID_Process)
+                    		.save();
+                    }
+                }
+
                 LOG.info("saving closed task finished");
-                
             }
         }
         LOG.info("Method saveClosedTaskInfo finished");
