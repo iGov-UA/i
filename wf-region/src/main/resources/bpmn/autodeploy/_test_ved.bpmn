@@ -13,9 +13,14 @@
           <activiti:value id="atr2" name="атрибут 2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Поле з типом дата" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Поле з типом файл1" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDoc2" name="Поле з типом файл2" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDoc3" name="Поле з типом файл3" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_0" name="Країна призначення" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_0" name="Код країни призначення;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+       
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="sales">
@@ -29,6 +34,15 @@
           <activiti:value id="atr2" name="атрибут 2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Поле з типом дата" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_0" name="Країна призначення" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_0" name="Код країни призначення;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
+       
+    
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]" type="invisible" default="принтформа с тейблом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
