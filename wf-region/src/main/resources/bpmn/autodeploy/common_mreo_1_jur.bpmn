@@ -10,15 +10,15 @@
         <activiti:formProperty id="edrpou" name="ЄДПОУ юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vin_code" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInn" name="Індивідуальний податковий номер (ІПН) довіреної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPassSeries " name="Серія громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPassNumber " name="Номер громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPassSeries" name="Серія громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPassNumber" name="Номер громадянського паспорту довіреної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/mvd/kiev_mreo_common_1_jur.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Створення заявки в НАИС" activiti:candidateGroups="NAIS">
+    <userTask id="usertask1" name="Створення заявки в НАИС" activiti:candidateGroups="nais">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
@@ -27,8 +27,8 @@
         <activiti:formProperty id="edrpou" name="ЄДПОУ юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vin_code" name="VIN-номер авто;можна знайти у свідоцтві про реєстрацію чи в технічному паспорті транспортного засобу. Приклад: 1HGEG644387712345" type="string"></activiti:formProperty>
         <activiti:formProperty id="sInn" name="Індивідуальний податковий номер (ІПН) довіреної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPassSeries " name="Серія громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPassNumber " name="Номер громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassSeries" name="Серія громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPassNumber" name="Номер громадянського паспорту довіреної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Rонтактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат обробки" type="enum" required="true">
           <activiti:value id="accept" name="Послуга може бути надана"></activiti:value>
@@ -47,7 +47,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[%тема письма%]]></activiti:string>
+          <activiti:string><![CDATA[тема письма]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>loren ipsum
@@ -72,7 +72,7 @@ ${comment}&lt;br&gt;</activiti:expression>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[%тема письма%]]></activiti:string>
+          <activiti:string><![CDATA[тема письма]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>loren ipsum</activiti:expression>
