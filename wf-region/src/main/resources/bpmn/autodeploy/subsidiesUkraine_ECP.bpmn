@@ -337,10 +337,10 @@
           <activiti:value id="sign" name="запросити громадянина до підписання (якщо заявка без ЕЦП)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="название р-на соцзащиты в принтформу с ЕЦП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_zayava.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/UPSZN/subsidy_declaration.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_zayava_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${ScanPassport},${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${form_signed}]]></activiti:expression>
@@ -546,8 +546,8 @@ ${sNameOrgan}<br />
           <activiti:value id="attr5" name="субсидія потребує розгляду комісії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення про надання субсидії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${ScanPassport},${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5},${rent},${form_signed}]]></activiti:expression>
