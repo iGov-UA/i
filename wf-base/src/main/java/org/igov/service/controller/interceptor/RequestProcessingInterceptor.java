@@ -571,7 +571,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                 bProcessClosed
                                         ? EscalationHistoryService.STATUS_CLOSED
                                         : EscalationHistoryService.STATUS_IN_WORK);
-                        saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
+                        
+                        if (!bProcessClosed) {
+                            saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance); // Новое сохранение комментария
+                        }
                     }
                 } catch (Exception oException) {
                     //LOG.error("Can't save service message for escalation: {}", oException.getMessage());
