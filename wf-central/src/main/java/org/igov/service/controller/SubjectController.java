@@ -820,6 +820,7 @@ public class SubjectController {
                 LOG.info("1111111111111111111login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
                 List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
                 LOG.info("2222222222222222222login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
+                LOG.info("subjectAccounts: " + subjectAccounts);
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     for (SubjectAccount subjectAccount : subjectAccounts) {
                         nID_Subject = subjectAccount.getnID_Subject();
