@@ -41,7 +41,7 @@ angular.module('dashboardJsApp')
             password: user.password
           }
         };
-        
+
         $http(req).
         success(function (data) {
           currentUser = data;
