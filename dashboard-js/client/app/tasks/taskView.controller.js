@@ -18,6 +18,67 @@
           }
         };
 
+        activate();
+
+        function activate(){
+          angular.forEach(taskForm, function(item){
+            var checkbox = getCheckbox((item.name || '').split(';')[2]);
+
+            if(checkbox){
+              bindEnumToCheckbox({
+                id: item.id,
+                enumValues: item.enumValues,
+                sID_CheckboxTrue: checkbox.sID_CheckboxTrue,
+                self: item
+              });
+            }
+
+            if(checkbox && item.type === 'enum'){
+              item.type = 'checkbox';
+            }
+          });
+
+
+          function getCheckbox(param){
+            if(!param || !typeof param === 'string') return null;
+
+            var input = param.trim(),
+                finalArray,
+                result = {};
+
+            var checkboxExp = input.split(',').filter(function(item){
+              return (item && typeof item === 'string' ? item.trim() : '')
+                      .split('=')[0]
+                      .trim() === 'sID_CheckboxTrue';
+            })[0];
+
+            if(!checkboxExp) return null;
+
+            finalArray = checkboxExp.split('=');
+
+            if(!finalArray || !finalArray[1]) return null;
+
+            result[finalArray[0].trim()] = finalArray[1].trim();
+
+            return result;
+          }
+
+          function bindEnumToCheckbox(param){
+            if(!param || !param.self || !param.id || !param.enumValues || !param.sID_CheckboxTrue) return;
+
+            var checkbox = {};
+
+            checkbox[param.id] = {
+                  trueValue: param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue})[0].id,
+                  falseValue: param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue})[0].id
+            };
+
+            angular.extend(param.self, {
+                checkbox: checkbox
+            });
+          }
+        }
+
         $scope.isShowExtendedLink = function () {
           return tasks.isFullProfileAvailableForCurrentUser(taskData);
         };
