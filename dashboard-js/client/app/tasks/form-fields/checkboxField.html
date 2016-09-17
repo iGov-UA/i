@@ -4,15 +4,19 @@
             <field-title></field-title>
         </div>
         <div class="col-sm-6">
-            <input type="checkbox"
-                   name="{{item.id}}"
-                   ng-disabled="isFormPropertyDisabled(item)"
-                   ng-model="item.value"
-                   ng-true-value="'{{item.checkbox[item.id].trueValue}}'"
-                   ng-false-value="'{{item.checkbox[item.id].falseValue}}'"
-                   checkbox-indeterminate="item.value === null"
-                   ng-required="isRequired(item) && item.value === null"
-                   ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
+            <div ng-class="{'checkbox-indeterminate': item.value === null}">
+                <input type="checkbox"
+                       id="{{item.id}}"
+                       name="{{item.id}}"
+                       ng-disabled="isFormPropertyDisabled(item)"
+                       ng-model="item.value"
+                       ng-true-value="'{{item.checkbox[item.id].trueValue}}'"
+                       ng-false-value="'{{item.checkbox[item.id].falseValue}}'"
+                       checkbox-indeterminate="item.value === null"
+                       ng-required="isRequired(item) && item.value === null"
+                       ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
+                <label for="{{item.id}}"></label>
+            </div>
             <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
                     <span ng-message="required">Необхідно заповнити.</span>
                   </span>
