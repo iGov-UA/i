@@ -285,6 +285,8 @@ module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callbac
   activiti.uploadContent(bankIDURLs.resource.path.signFiles, params, content, function (error, response, body) {
     if (!body) {
       callback('Unable to sign a file. bankid.privatbank.ua return an empty response', null);
+    } else if (body && errors.isHttpError(response.statusCode)) {
+      callback(errors.createExternalServiceError('Uknown error in the process of uploading content for adding eds', body), null);
     } else if (error || (error = body.error)) {
       callback(error, null);
     } else if (body.state && body.state === 'err'){
