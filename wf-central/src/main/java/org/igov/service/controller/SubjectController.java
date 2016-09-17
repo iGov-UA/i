@@ -791,7 +791,7 @@ public class SubjectController {
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
-            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = true) String saAccount,
+            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = true) String saAccount, 
             @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Integer nID_Server,
             @ApiParam(value = "Не показывать подробности про организации и чиновников", required = false, defaultValue = "false") @RequestParam(value = "bSkipDetails", required = false, defaultValue = "false") boolean bSkipDetails,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false, defaultValue = "1") Long nID_SubjectAccountType) throws CommonServiceException {
@@ -812,22 +812,29 @@ public class SubjectController {
     private List<NewSubjectAccount> getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server, boolean bSkipDetails) {
         List<NewSubjectAccount> newSubjectSet = new ArrayList<>();
         Long nID_Subject;
+        //LOG.info("nID_Subject: " + nID_Subject);
         Subject subject;
+//         LOG.info("subject: " + subject);
+        LOG.info("saLogin: " + saLogin);
         if (saLogin != null) {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
-            LOG.info("asLogin: " + asLogin);
+            LOG.info("000000000000000000000saLogin: " + saLogin);
             for (String login : asLogin) {
                 LOG.info("1111111111111111111login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
                 List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
                 LOG.info("2222222222222222222login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
-                LOG.info("subjectAccounts: " + subjectAccounts);
+                LOG.info("3333333333333333333subjectAccounts: " + subjectAccounts);
+                for (SubjectAccount subjectAccount : subjectAccounts) {
+                    LOG.info("subjectAccount: "+subjectAccount);
+                }
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     for (SubjectAccount subjectAccount : subjectAccounts) {
                         nID_Subject = subjectAccount.getnID_Subject();
-                        LOG.info("nID_Subject: " + nID_Subject);
+                        
+                        LOG.info("5555555555555555nID_Subject: " + nID_Subject);
                         subject = subjectDao.getSubject(nID_Subject);
                         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        LOG.info("subjectContacts: " + subjectContacts);
+                        LOG.info("6666666666666666subjectContacts: " + subjectContacts);
                         subject.setaSubjectAccountContact(subjectContacts);
                         SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                         SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(subject);
