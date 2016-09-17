@@ -547,6 +547,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.trace("FAIL:", e);
                 }
                 if (bProcessClosed){
+                    LOG.info("Get sDateCreate");
+                    String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+                    LOG.info("sDateStart={}", sDateStart);
+                    String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+                    LOG.info("sDateClosed={}", sDateClosed);
+                    
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
 	                                mParam);//sID_Process
