@@ -1,6 +1,8 @@
 'use strict';
 
 var activiti = require('../../components/activiti');
+var nodeLocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new nodeLocalStorage('./scratch');
 
 exports.getSchedule = function(req, res) {
   var options = {
@@ -193,7 +195,8 @@ exports.deleteFlowSlots = function(req, res) {
 };
 
 exports.getFlowSlotTickets = function(req, res) {
-  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(req.cookies.user);
+  var user = JSON.parse(localStorage.getItem('user'));
   var query = {
     sLogin: user.id
   };
