@@ -31,7 +31,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   ParameterFactory,
   $modal,
   FileFactory,
-  DatepickerFactory
+  DatepickerFactory,
+  autocompletesDataFactory,
+  TableService
   ,ErrorsFactory
 ) {
 
@@ -749,73 +751,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   }
 
-  function addProtoToTableDate() {
-    angular.forEach($scope.activitiForm.formProperties, function(prop) {
-      if (prop.type === 'table') {
-        angular.forEach(prop.aRow, function (fields) {
-          angular.forEach(fields.aField, function (item, key, obj) {
-            if (item.type === 'date') {
-              if (!item.props) {
-                obj[key].props = DatepickerFactory.prototype.createFactory();
-              } else {
-                obj[key].props.open = function ($event) {
-                  $event.preventDefault();
-                  $event.stopPropagation();
-                  this.opened = true;
-                };
-                obj[key].props.get = function () {
-                  return $filter('date')(this.value, this.format);
-                };
-                obj[key].props.clear = function () {
-                  this.value = null;
-                };
-                obj[key].props.today = function () {
-                  this.value = new Date();
-                };
-                obj[key].props.isFit = function (property) {
-                  return property.type === 'date';
-                };
-              }
-            }
-          })
-        })
-      }
-    });
-  }
-
-
-  angular.forEach($scope.activitiForm.formProperties, function(item, key, obj) {
-    if(item.type === 'table') {
-      if(sessionStorage.getItem("TableParams") !== null){
-      } else {
-        if(!item.aRow) {
-          item.aRow = [];
-        }
-        var parsedTable = JSON.parse(item.value);
-        obj[key].aRow.push(parsedTable);
-      }
-      addProtoToTableDate();
-    }
-  });
+  TableService.init($scope.activitiForm.formProperties);
 
   $scope.addRow = function (form, id, index) {
     if(!form.$invalid) {
       $scope.tableIsInvalid = false;
-      angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
-        if(item.id === id) {
-          var defaultCopy = angular.copy(obj[key].aRow[0]);
-          angular.forEach(defaultCopy.aField, function (field) {
-            if(field.default) {
-              delete field.default;
-            } else if(field.props) {
-              field.props.value = ""
-            }
-            field.value = "";
-          });
-          addProtoToTableDate();
-          obj[key].aRow.push(defaultCopy);
-        }
-      });
+      TableService.addRow(id, $scope.activitiForm.formProperties);
     } else {
       $scope.tableIsInvalid = true;
       $scope.invalidTableNum = index;
