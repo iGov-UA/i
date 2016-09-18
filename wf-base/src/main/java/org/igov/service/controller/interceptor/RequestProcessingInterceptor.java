@@ -501,7 +501,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            
+             LOG.info("Get sDateCreate");
+             String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+             LOG.info("(sDateStart={})", sDateStart);
+             String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+             LOG.info("(sDateClosed={})", sDateClosed);
+                   
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
@@ -547,11 +552,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.trace("FAIL:", e);
                 }
                 if (bProcessClosed){
-                    LOG.info("Get sDateCreate");
-                    String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                    LOG.info("(sDateStart={})", sDateStart);
-                    String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-                    LOG.info("(sDateClosed={})", sDateClosed);
                     
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
