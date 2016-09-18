@@ -8,11 +8,11 @@
                           ng-disabled="isFormPropertyDisabled(item)"
                           style="margin-bottom: 15px; width:100%; height:25px;;"
                           ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
-                          ng-required="{{item.required}}"
+                          ng-required="isRequired(item)"
                           ng-model="item.value"
-                          ng-class="{submitted:item.required && isTaskSubmitted()}"></select>
+                          ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"></select>
 
-                  <span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
+                  <span class="validation-message" ng-messages="isFormInvalid && isRequired(item) && form[item.id].$error">
                     <span ng-message="required">Необхідно заповнити.</span>
                     <span ng-message="pattern">Значення має бути числом.</span>
                     <span ng-message="email">Помилка в email.</span>

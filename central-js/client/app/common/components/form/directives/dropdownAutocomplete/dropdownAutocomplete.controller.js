@@ -13,6 +13,8 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
             el.sFind = el.sID + " " + el.sNote;
           } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
             el.sFind = el.sID + " " + el.sName_UA;
+          } else if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
+            el.sFind = el.sID_UA + " " + el.sName_UA;
           }
         });
       }
@@ -81,10 +83,22 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
     }
   };
 
-  $scope.onSelectDataList = function (item) {
+  $scope.onSelectDataList = function (item, tableName, rowIndex) {
     var additionalPropertyName = getAdditionalPropertyName();
-    if ($scope.formData.params[additionalPropertyName]) {
-      $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
+    if(rowIndex || rowIndex >= 0) {
+      angular.forEach($scope.activitiForm.formProperties, function(property) {
+        if(property.id === tableName) {
+          angular.forEach(property.aRow[rowIndex].aField, function (field, key, obj) {
+            if(field.id === additionalPropertyName) {
+              obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+            }
+          });
+        }
+      });
+    } else {
+      if ($scope.formData.params[additionalPropertyName]) {
+        $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
+      }
     }
   }
 });

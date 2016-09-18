@@ -55,14 +55,14 @@ function FieldMotionService(MarkersFactory) {
   };
 
   this.isFieldRequired = function(fieldId, formData) {
-    var b = grepByPrefix('RequiredFieldsOnCondition_').some(function(entry) {
+    var b = grepByPrefix('RequiredFieldsOnCondition').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
     });
     return b;
   };
   var fieldId_entryTriggered = {};
   var aFieldIDs = [];
-  this.calcFieldValue = function(fieldId, formData) {
+  this.calcFieldValue = function(fieldId, formData, formProperties) {
     var entry = _.find(grepByPrefix('ValuesFieldsOnCondition'), function(entry) {
       return evalCondition(entry, fieldId, formData)
     });
@@ -76,7 +76,7 @@ function FieldMotionService(MarkersFactory) {
       result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
       entry.asID_Field_sValue_Interpolated = [];
       angular.forEach(entry.asID_Field_sValue, function (sValue) {
-        var interpolatedEntry = MarkersFactory.interpolateString(sValue, formData, '[', ']', aFieldIDs);
+        var interpolatedEntry = MarkersFactory.interpolateString(sValue, formData, '[', ']', aFieldIDs, formProperties);
         entry.asID_Field_sValue_Interpolated.push(interpolatedEntry.value);
         if (interpolatedEntry.differentTriggered){
           result.differentTriggered = true;
@@ -124,6 +124,9 @@ function FieldMotionService(MarkersFactory) {
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
+    if(fieldId === 'sTestRequired'){
+      debugger;
+    }
     if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
       return false;
     } else if(mentioned) {

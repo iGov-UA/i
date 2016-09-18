@@ -9,7 +9,7 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     },
     ObjectCustoms: {
       valueProperty: 'sName_UA',
-      titleProperty: 'sName_UA',
+      titleProperty: 'sFind',
       prefixAssociatedField: 'sID_UA',
       orderBy: 'sName_UA',
       apiUrl: './api/object-customs',
