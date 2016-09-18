@@ -503,10 +503,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("Get sDateStart и sDateClosed");
             
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-            LOG.info("(sDateStart={})", sDateStart);
-            String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-            LOG.info("(sDateClosed={})", sDateClosed);
+           // String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+           // LOG.info("(sDateStart={})", sDateStart);
+           // String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+           // LOG.info("(sDateClosed={})", sDateClosed);
                     
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
