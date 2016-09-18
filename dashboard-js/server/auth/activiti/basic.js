@@ -3,6 +3,8 @@
 var activiti = require('../../components/activiti');
 var config = require('../../config/environment');
 var async = require('async');
+var nodeLocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new nodeLocalStorage('./scratch');
 
 var guid = function guid() {
   function s4() {
@@ -34,6 +36,7 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
+      localStorage.removeItem('user');
       res.send(result);
     }
   });
@@ -57,9 +60,9 @@ exports.authenticate = function (req, res) {
   };
 
   var getGoups = {
-    path: 'identity/groups',
+    path: 'action/identity/getGroups',
     query: {
-      member : user.login
+      sLogin : user.login
     },
     json : true
   };
@@ -97,9 +100,15 @@ exports.authenticate = function (req, res) {
         if (error) {
           callback(error, null);
         } else {
-          userWithCookie.userResult['roles'] = !result.data ? [] : result.data.map(function (group) {
-            return group.id;
-          });
+          if((typeof result == "object") && (result instanceof Array)){
+            //debugger;
+            userWithCookie.userResult['roles'] = result.map(function (group) {
+              return group.id;
+            });
+          } else {
+            //debugger;
+            userWithCookie.userResult['roles'] = [];
+          }
 
           callback(null, {
             jsessionCookie: userWithCookie.jsessionCookie,
@@ -113,7 +122,12 @@ exports.authenticate = function (req, res) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
       req.session = result.userResult;
+      /*
       res.cookie('user', JSON.stringify(result.userResult), {
+        expires: expiresUserInMs()
+      });
+      */
+      localStorage.setItem('user', JSON.stringify(result.userResult), {
         expires: expiresUserInMs()
       });
       res.cookie('JSESSIONID', result.jsessionCookie, {

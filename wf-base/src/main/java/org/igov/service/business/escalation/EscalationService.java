@@ -280,8 +280,8 @@ public class EscalationService {
         result.put("sTaskName", oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         
-//        result.put("sTaskIDPlusName", oTask.getId());
-//        BpServiceHandler.mGuideTaskParamKey.put("sTaskIDPlusName", "ИД таски+Имя таски");
+        result.put("sTaskID", oTask.getId());
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskID", "ИД таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
