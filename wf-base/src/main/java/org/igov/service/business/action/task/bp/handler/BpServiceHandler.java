@@ -272,10 +272,10 @@ public class BpServiceHandler {
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
         LOG.info("444444444444444444444ssURL: " + sURL);
         LOG.info("(sURL={},mParam={})", sURL, param); 
-        String soResponse = null;
+        String soResponse = null; 
         try {
             soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param); 
+            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
             soResponse = (String) res.get("place");
