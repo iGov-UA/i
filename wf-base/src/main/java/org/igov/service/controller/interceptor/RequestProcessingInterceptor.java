@@ -501,7 +501,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-             
+            String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+            LOG.debug("(sDateStart={})", sDateStart);
+            String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+            LOG.debug("(sDateClosed={})", sDateClosed);
+                    
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
@@ -547,13 +551,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.trace("FAIL:", e);
                 }
                 if (bProcessClosed){
-                     LOG.debug("Get sDateCreate");
-                     String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                     LOG.debug("(sDateStart={})", sDateStart);
-                     String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-                     LOG.debug("(sDateClosed={})", sDateClosed);
-                     mParam.put("sDateStart", sDateStart);
-                     mParam.put("sDateClosed", sDateClosed);
+                     //LOG.debug("Get sDateCreate");
+                     //String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+                     //LOG.debug("(sDateStart={})", sDateStart);
+                     //String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+                     //LOG.debug("(sDateClosed={})", sDateClosed);
+                     //mParam.put("sDateStart", sDateStart);
+                     //mParam.put("sDateClosed", sDateClosed);
 	                historyEventService
 	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
 	                                mParam);//sID_Process
