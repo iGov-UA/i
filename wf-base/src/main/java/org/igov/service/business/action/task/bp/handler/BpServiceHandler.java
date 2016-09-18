@@ -95,7 +95,7 @@ public class BpServiceHandler {
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
-                LOG.error("ex!: {}", oException.getMessage());
+                LOG.error("ex!: {}", oException.getMessage()); 
                 LOG.debug("FAIL:", oException);
 
             }
@@ -107,7 +107,7 @@ public class BpServiceHandler {
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
+            LOG.debug("FAIL:", oException); 
         }
         return feedbackProcessId;
     }
@@ -161,7 +161,7 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));  
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskID"+"-"+"sTaskName"));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
 //        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
 //        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
@@ -191,7 +191,7 @@ public class BpServiceHandler {
         String organ = trimGroups(organs);
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-       mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
+        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));

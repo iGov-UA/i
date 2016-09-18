@@ -43,7 +43,7 @@ public class SubjectCover {
         try {
             Map<String, String> param = new HashMap();
             param.put("saAccount", JsonRestUtils.toJson(accounts));
-            param.put("nID_Server", String.valueOf(generalConfig.getSelfServerId())); 
+//            param.put("nID_Server", String.valueOf(generalConfig.getSelfServerId()));  
             String responce = doRemoteRequest(URI_GET_GetSubjects, param);
             result = JsonRestUtils.readObject(responce, Map.class); 
         } catch (JsonProcessingException ex) {
