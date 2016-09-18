@@ -588,11 +588,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("Get sDateStart и sDateClosed");
                 String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
                 LOG.info("(sDateStart={})", sDateStart);
-                String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+                String sDateClosed = "";
                 LOG.info("(sDateClosed={})", sDateClosed);
            
                 if (bProcessClosed) {
                     status = HistoryEvent_Service_StatusType.CLOSED;
+                    sDateClosed = oHistoricTaskInstance.getEndTime().toString();
                 } else{
                     status = HistoryEvent_Service_StatusType.OPENED;
                 }
