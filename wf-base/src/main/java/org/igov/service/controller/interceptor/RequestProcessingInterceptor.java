@@ -501,12 +501,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("Get sDateStart и sDateClosed");
-            String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-            LOG.info("(sDateStart={})", sDateStart);
-            String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-            LOG.info("(sDateClosed={})", sDateClosed);
-           
             
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
@@ -591,6 +585,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                 // Cохранение нового события для задачи
                 HistoryEvent_Service_StatusType status;
+                LOG.info("Get sDateStart и sDateClosed");
+                String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+                LOG.info("(sDateStart={})", sDateStart);
+                String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+                LOG.info("(sDateClosed={})", sDateClosed);
+           
                 if (bProcessClosed) {
                     status = HistoryEvent_Service_StatusType.CLOSED;
                 } else{
@@ -600,6 +600,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParam.put("nID_StatusType", status.getnID().toString());
                 mParam.put("sUserTaskName", sUserTaskName);
                 mParam.put("sID_Order", sID_Order);
+                mParam.put("sDateStart", sDateStart);
+                mParam.put("sDateClosed", sDateClosed);
                 try {
                     historyEventService
                         .updateHistoryEvent(sID_Order, mParam);//sID_Process
