@@ -169,7 +169,7 @@ public class BpServiceHandler {
 
         mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
-        mParam.put("sEmployeeContacts", "sEmployeeContacts");
+        mParam.put("sEmployeeContacts",mTaskParam.get("sEmployeeContacts"));
         mGuideTaskParamKey.put("sEmployeeContacts", "ПІБ та контактні телефони відповідальних посадовців");
         mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
@@ -191,8 +191,7 @@ public class BpServiceHandler {
         String organ = trimGroups(organs);
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-        mParam.put("sEmployeeContacts", "aSubjectAccountContact");
-        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
+       mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
