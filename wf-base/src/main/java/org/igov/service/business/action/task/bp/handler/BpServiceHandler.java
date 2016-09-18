@@ -130,7 +130,7 @@ public class BpServiceHandler {
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
+            LOG.debug("FAIL:", oException); 
         }
         String taskName = (String) mTaskParam.get("sTaskName");
         String LoginAssigned = (String) mTaskParam.get("sLoginAssigned");

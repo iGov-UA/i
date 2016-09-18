@@ -39,7 +39,7 @@ public class SubjectCover {
     
     public Map getSubjectsBy(Set<String> accounts) {
         Map<String, Map> result = null;
-        //String URL = String.format(URI_GET_GetSubjects, accounts, generalConfig.getSelfServerId());
+        //String URL = String.format(URI_GET_GetSubjects, accounts, generalConfig.getSelfServerId()); 
         try {
             Map<String, String> param = new HashMap();
             param.put("saAccount", JsonRestUtils.toJson(accounts));
