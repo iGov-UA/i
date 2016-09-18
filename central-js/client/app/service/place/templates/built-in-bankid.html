@@ -579,6 +579,22 @@
                         ng-class="getBpAndFieldID(property)"
                         class="form-control"></select>
 
+                  <div class="input-group"
+                       ng-switch-when="checkbox">
+                  <div ng-class="{'checkbox-indeterminate': data.formData.params[property.id].value === null}">
+                    <input type="checkbox"
+                           id="{{property.id}}"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-true-value="'{{data.checkbox[property.id].trueValue}}'"
+                           ng-false-value="'{{data.checkbox[property.id].falseValue}}'"
+                           checkbox-indeterminate="data.formData.params[property.id].value === null"
+                           ng-required="isFieldRequired(property) && data.formData.params[property.id].value === null"
+                    >
+                    <label for="{{property.id}}"></label>
+                  </div>
+                  </div>
+
                 <p class="input-group"
                    ng-switch-when="file">
                   <label ng-if="data.formData.params[property.id].scan && data.formData.params[property.id].isLoading"

@@ -18,6 +18,91 @@
           }
         };
 
+        activate();
+
+        function activate(){
+          angular.forEach(taskForm, function(item){
+            var checkbox = getCheckbox((item.name || '').split(';')[2]);
+
+            if(checkbox){
+              bindEnumToCheckbox({
+                id: item.id,
+                enumValues: item.enumValues,
+                sID_CheckboxTrue: checkbox.sID_CheckboxTrue,
+                self: item
+              });
+            }
+
+            if(checkbox && item.type === 'enum'){
+              item.type = 'checkbox';
+            }
+          });
+
+
+          function getCheckbox(param){
+            if(!param || !typeof param === 'string') return null;
+
+            var input = param.trim(),
+                finalArray,
+                result = {};
+
+            var checkboxExp = input.split(',').filter(function(item){
+              return (item && typeof item === 'string' ? item.trim() : '')
+                      .split('=')[0]
+                      .trim() === 'sID_CheckboxTrue';
+            })[0];
+
+            if(!checkboxExp) return null;
+
+            finalArray = checkboxExp.split('=');
+
+            if(!finalArray || !finalArray[1]) return null;
+
+            var indexes = finalArray[1].trim().match(/\d+/ig),
+                index;
+
+            if(Array.isArray(indexes)){
+              index = isNaN(+indexes[0]) || +indexes[0];;
+            }
+
+            result[finalArray[0].trim()] = index !== undefined
+            && index !== null
+            || index === 0 ? index : finalArray[1].trim();
+
+            return result;
+          }
+
+          function bindEnumToCheckbox(param){
+            if(!param || !param.id || !param.enumValues ||
+                param.sID_CheckboxTrue === null ||
+                param.sID_CheckboxTrue === undefined) return;
+
+            var checkbox = {},
+                trueValues,
+                falseValues;
+
+            if(isNaN(+param.sID_CheckboxTrue)){
+              trueValues = param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue});
+              falseValues = param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue});
+              checkbox[param.id] = {
+                trueValue: trueValues[0] ? trueValues[0].id : null,
+                falseValue: falseValues[0] ? falseValues[0].id : null
+              };
+            }else{
+              falseValues = param.enumValues.filter(function(o, i){return i !== param.sID_CheckboxTrue});
+              checkbox[param.id] = {
+                trueValue: param.enumValues[param.sID_CheckboxTrue] ?
+                    param.enumValues[param.sID_CheckboxTrue].id : null,
+                falseValue: falseValues[0] ? falseValues[0].id : null
+              };
+            }
+
+            angular.extend(param.self, {
+                checkbox: checkbox
+            });
+          }
+        }
+
         $scope.isShowExtendedLink = function () {
           return tasks.isFullProfileAvailableForCurrentUser(taskData);
         };
