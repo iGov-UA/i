@@ -265,7 +265,7 @@ public class BpServiceHandler {
 
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> param = new HashMap<String, String>();
-        param.put("sID_Process", sID_Process);
+        param.put("nID_Process", sID_Process);
         LOG.info("2222222222222222222222sID_Process: " + sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
         LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
@@ -278,7 +278,7 @@ public class BpServiceHandler {
             LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param); 
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("sName");
+            soResponse = (String) res.get("place");
             LOG.info("555555555555555soResponse = (String): " + soResponse);
         } catch (Exception ex) {
             LOG.error("[getPlaceByProcess]: ", ex);
