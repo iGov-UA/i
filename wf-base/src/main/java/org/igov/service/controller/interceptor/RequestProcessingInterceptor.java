@@ -500,6 +500,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
+            LOG.info("Get sDateStart и sDateClosed");
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
             String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
             LOG.info("(sDateStart={})", sDateStart);
