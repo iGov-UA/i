@@ -191,36 +191,61 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   });
 
     function getCheckbox(param){
-        if(!param || !typeof param === 'string') return null;
+      if(!param || !typeof param === 'string') return null;
 
-        var input = param.trim(),
-            finalArray,
-            result = {};
+      var input = param.trim(),
+          finalArray,
+          result = {};
 
-        var checkboxExp = input.split(',').filter(function(item){
-            return (item && typeof item === 'string' ? item.trim() : '')
-                    .split('=')[0]
-                    .trim() === 'sID_CheckboxTrue';
-        })[0];
+      var checkboxExp = input.split(',').filter(function(item){
+          return (item && typeof item === 'string' ? item.trim() : '')
+                  .split('=')[0]
+                  .trim() === 'sID_CheckboxTrue';
+      })[0];
 
-        if(!checkboxExp) return null;
+      if(!checkboxExp) return null;
 
-        finalArray = checkboxExp.split('=');
+      finalArray = checkboxExp.split('=');
 
-        if(!finalArray || !finalArray[1]) return null;
+      if(!finalArray || !finalArray[1]) return null;
 
-        result[finalArray[0].trim()] = finalArray[1].trim();
+      var indexes = finalArray[1].trim().match(/\d+/ig),
+          index;
 
-        return result;
+      if(Array.isArray(indexes)){
+        index = isNaN(+indexes[0]) || +indexes[0];;
+      }
+
+      result[finalArray[0].trim()] = index !== undefined
+          && index !== null
+          || index === 0 ? index : finalArray[1].trim();
+
+      return result;
     }
 
     function bindEnumToCheckbox(param){
-        if(!param || !param.id || !param.enumValues || !param.sID_CheckboxTrue) return;
+      if(!param || !param.id || !param.enumValues ||
+          param.sID_CheckboxTrue === null ||
+          param.sID_CheckboxTrue === undefined) return;
 
+      var trueValues,
+          falseValues;
+
+      if(isNaN(+param.sID_CheckboxTrue)){
+          trueValues = param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue});
+          falseValues = param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue});
         $scope.data.checkbox[param.id] = {
-            trueValue: param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue})[0].id,
-            falseValue: param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue})[0].id
+          trueValue: trueValues[0] ? trueValues[0].id : null,
+          falseValue: falseValues[0] ? falseValues[0].id : null
         };
+      }else{
+        falseValues = param.enumValues.filter(function(o, i){return i !== param.sID_CheckboxTrue});
+        $scope.data.checkbox[param.id] = {
+          trueValue: param.enumValues[param.sID_CheckboxTrue] ?
+              param.enumValues[param.sID_CheckboxTrue].id : null,
+          falseValue: falseValues[0] ? falseValues[0].id : null
+        };
+      }
     }
 
   iGovMarkers.validateMarkers(formFieldIDs);
