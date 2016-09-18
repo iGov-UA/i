@@ -177,9 +177,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sName"));   
+        mParam.put("Place", getPlaceByProcess("sID_Process"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sName): " + getPlaceByProcess("sName") + " sName: " + sID_Process);
+        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
