@@ -501,7 +501,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-
+            LOG.info("Get sDateStart и sDateClosed");
+            String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+            LOG.info("(sDateStart={})", sDateStart);
+            String sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+            LOG.info("(sDateClosed={})", sDateClosed);
+           
+            
             closeEscalationProcessIfExists(snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
