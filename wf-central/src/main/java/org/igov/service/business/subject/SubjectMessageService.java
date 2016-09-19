@@ -75,7 +75,7 @@ public class SubjectMessageService {
         } else if (nID_SubjectMessageType == 11l) {
             sHead = "Коментар служби підтримки за результатами контакту з відповідальним посадовцем по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 10l) {
-            sHead = "Отправлено письмо";
+            sHead = "Відправлено листа";
         }
 
         return sHead;
