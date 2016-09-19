@@ -980,7 +980,7 @@ public class SubjectMessageController {
     		
     		//content of the message file
     		String res = null;
-    		try{
+    		//try{
     			Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
 	    		Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
@@ -988,8 +988,12 @@ public class SubjectMessageController {
 	            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
 
 	            if(bAuth && oHistoryEvent_Service.isPresent()){
-	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
-	            }
+                    try {
+                        actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+                    } catch (Exception e) {
+                        LOG.error("Exception actionEventService.checkAuth: " + e.getMessage());
+                    }
+                }
 	    		if(message == null || isBlank(message.getsID_DataLink())){
 	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
 	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
@@ -1004,11 +1008,19 @@ public class SubjectMessageController {
 	    			
 	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
 	    			res = new String(resBytes, Charset.forName("UTF-8"));
-	    			
-	    			httpResponse.getWriter().print(res);
-	    			httpResponse.getWriter().close();
-	    		}
-    		}catch(Exception e){
+
+                    try {
+                        httpResponse.getWriter().print(res);
+                    } catch (IOException e) {
+                        LOG.error("Exception httpResponse.getWriter().print(res): " + e.getMessage());;
+                    }
+                    try {
+                        httpResponse.getWriter().close();
+                    } catch (IOException e) {
+                        LOG.error("Exception httpResponse.getWriter().close(): " + e.getMessage());
+                    }
+                }
+    		/*}catch(Exception e){
     			if(e instanceof CommonServiceException)
     				throw (CommonServiceException)e;
     			else
@@ -1017,7 +1029,7 @@ public class SubjectMessageController {
     	            LOG.trace("FAIL:", e);
     	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
     			}
-    		}
+    		}*/
     }
 
 }
