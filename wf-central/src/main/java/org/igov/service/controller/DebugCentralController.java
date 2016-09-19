@@ -1,5 +1,7 @@
 package org.igov.service.controller;
 
+import com.google.common.base.*;
+import com.google.common.base.Objects;
 import io.swagger.annotations.*;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricIdentityLink;
@@ -7,10 +9,12 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
 //import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
@@ -30,11 +34,15 @@ import org.springframework.web.bind.annotation.*;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import org.igov.io.Log;
 import org.igov.io.sms.ManagerSMS_New;
 import org.igov.service.business.msg.MsgType;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.business.msg.IMsgSend;
 
@@ -70,6 +78,11 @@ public class DebugCentralController {
 
     @Autowired
     private SubjectMessageService subjectMessageService;
+
+    @Autowired
+    private ActionEventService actionEventService;
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
 
     @Deprecated //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
     /**
@@ -435,6 +448,130 @@ public class DebugCentralController {
 	}
 
 	return retObj;
+    }
+
+    @ApiOperation(value = " Возвращает содержимое отсылаемого сообщения, если такое существует.", notes = ""
+            + "Возвращает содержимое отсылаемого сообщения, если такое существует.:\n"
+            + "Если не найдена запись SubjectMessage по ID или у найденного сообщения пустое поле, указывающее на контект сообщения, то метод возвращает ошибку с текстом сообщения \"Record not found\"\n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage=111111")
+    @RequestMapping(value = "/subject/message/getSubjectMessageDataTest", method = { RequestMethod.GET })
+    public @ResponseBody String getSubjectMessageData(
+            @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            HttpServletResponse httpResponse) throws CommonServiceException{
+
+        Map<String, String> result = new HashMap<>();
+
+        //content of the message file
+        String res = null;
+        Long nID_SubjectMessage = 0L;
+        try {
+            nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
+            result.put("472 nID_SubjectMessage)", nID_SubjectMessage.toString());
+        } catch (Exception e){
+            result.put("474 Exception nID_SubjectMessage)", e.getMessage());
+        }
+        Long nID_HistoryEvent_Service = 0L;
+        SubjectMessage message = null;
+
+        try{
+            message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+            result.put("481 subjectMessagesDao.getMessage(nID_SubjectMessage)", message.toString());
+            try {
+                nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+                result.put("484 nID_HistoryEvent_Service)", nID_HistoryEvent_Service.toString());
+            } catch (Exception e){
+                result.put("486 Exception nID_HistoryEvent_Service)", e.getMessage());
+            }
+
+        } catch (Exception e){
+            result.put("490 Exception subjectMessagesDao.getMessage(nID_SubjectMessage)", e.getMessage());
+        }
+
+
+
+        com.google.common.base.Optional<HistoryEvent_Service> oHistoryEvent_Service = null;
+
+        try {
+            oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+            result.put("499 historyEventServiceDao.findById(nID_HistoryEvent_Service)", oHistoryEvent_Service.toString());
+        }catch (Exception e){
+            result.put("501 Exception historyEventServiceDao.findById(nID_HistoryEvent_Service)", e.getMessage());
+        }
+
+        try {
+            oHistoryEvent_Service.isPresent();
+            result.put("506 oHistoryEvent_Service.isPresent()", (new Boolean(oHistoryEvent_Service.isPresent())).toString());
+        } catch (Exception e){
+            result.put("508 Exception oHistoryEvent_Service.isPresent()", e.getMessage());
+        }
+
+        if(bAuth && oHistoryEvent_Service.isPresent()){
+            result.put("512 bAuth && oHistoryEvent_Service.isPresent() is", (new Boolean(bAuth && oHistoryEvent_Service.isPresent())).toString());
+            try {
+                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+                result.put("515 actionEventService.checkAuth", "ok");
+            } catch (Exception e) {
+                result.put("517 Exception actionEventService.checkAuth", e.getMessage());
+            }
+        }
+
+        if(message == null || isBlank(message.getsID_DataLink())){
+            result.put("522 message == null || isBlank(message.getsID_DataLink()) is", (new Boolean(message == null || isBlank(message.getsID_DataLink()))).toString());
+            LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+            CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+            throw newErr;
+        }
+        LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+        result.put("528 Message is recieved by nID_Message", nID_SubjectMessage.toString());
+
+        try {
+            isNotBlank(message.getsID_DataLink());
+            result.put("532 isNotBlank(message.getsID_DataLink())", "ok");
+        } catch (Exception e){
+            result.put("534 Exception isNotBlank(message.getsID_DataLink())",  e.getMessage());
+        }
+
+        if (isNotBlank(message.getsID_DataLink())){
+            LOG.info("Field sID_DataLink in message is not null");
+            result.put("539 isNotBlank(message.getsID_DataLink())", (new Boolean(isNotBlank(message.getsID_DataLink()))).toString());
+
+            byte[] resBytes = null;
+            try {
+                resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
+                result.put("544 resBytes", "ok");
+            } catch (Exception e){
+                result.put("546 Exception resBytes",  e.getMessage());
+            }
+
+            try {
+                httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+                result.put("551 httpResponse.setHeader", "ok");
+                res = new String(resBytes, Charset.forName("UTF-8"));
+                result.put("553 res = new String", "ok");
+            } catch (Exception e){
+                result.put("555 Exception httpResponse.setHeader",  e.getMessage());
+            }
+
+
+            try {
+                httpResponse.getWriter().print(res);
+                result.put("561 httpResponse.getWriter().print(res)",  "ok");
+            } catch (IOException e) {
+                result.put("563 Exception httpResponse.getWriter().print(res)",  e.getMessage());
+            }
+            try {
+                httpResponse.getWriter().close();
+                result.put("567 httpResponse.getWriter().close()",  "ok");
+            } catch (IOException e) {
+                result.put("569 Exception httpResponse.getWriter().close()",  e.getMessage());
+            }
+        }
+        result.put("572 Controller",  "ok");
+
+        return JSONValue.toJSONString(result);
     }
 
 }
