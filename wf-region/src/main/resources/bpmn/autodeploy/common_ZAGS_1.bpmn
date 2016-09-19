@@ -3,6 +3,7 @@
   <process id="common_zags_1" name="Подати заяву про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. Ви матимете можливість підписати заяву за допомогою ЕЦП або в продовж 3 днів з моменту замовлення послуги приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
@@ -28,6 +29,7 @@
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
@@ -115,6 +117,7 @@
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
@@ -213,6 +216,7 @@
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
@@ -318,6 +322,7 @@
           <activiti:value id="signed2" name="Отримано обидва підписа наречених в електроній формі"></activiti:value>
           <activiti:value id="notSigned" name="Після 3 днів очикування підписи наречених не отримано. Закрити звернення."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
@@ -498,7 +503,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow41" name="${decide == 'accept'}" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3_yellow" name="${sSourceType} - Очикування підпису" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_yellow" name="${sSourceType} - Очікування підпису" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
