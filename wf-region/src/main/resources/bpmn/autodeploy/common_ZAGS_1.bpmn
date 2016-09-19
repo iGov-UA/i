@@ -14,7 +14,7 @@
           <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.)" type="enum" required="true">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.)" type="enum" required="true">
           <activiti:value id="sEnum1" name="маю пільги"></activiti:value>
           <activiti:value id="sEnum2" name="бажаю сплатити онлайн"></activiti:value>
           <activiti:value id="sEnum3" name="відобразити реквізити для оплати"></activiti:value>
@@ -28,6 +28,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText4" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливостю оплатити держ. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
@@ -141,7 +142,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Спосіб сплати держ.мита; ;writable=false" type="enum">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
           <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
@@ -247,7 +248,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Спосіб сплати держ.мита" type="enum" writable="false">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
           <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
@@ -535,7 +536,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Спосіб сплати держ.мита" type="enum" writable="false">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
           <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
@@ -743,11 +744,11 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow58" name="${asEnjoyingPrivileges == 'sEnum2'}" sourceRef="exclusivegateway6" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPrivileges == 'sEnum2'}]]></conditionExpression>
+    <sequenceFlow id="flow58" name="${asEnjoyingPaymentMethod == 'sEnum2'}" sourceRef="exclusivegateway6" targetRef="servicetask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPaymentMethod == 'sEnum2'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow59" name="${asEnjoyingPrivileges == 'sEnum1'||asEnjoyingPrivileges == 'sEnum3'}" sourceRef="exclusivegateway6" targetRef="exclusivegateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPrivileges == 'sEnum1'||asEnjoyingPrivileges == 'sEnum3'}]]></conditionExpression>
+    <sequenceFlow id="flow59" name="${asEnjoyingPaymentMethod == 'sEnum1'||asEnjoyingPaymentMethod == 'sEnum3'}" sourceRef="exclusivegateway6" targetRef="exclusivegateway4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPaymentMethod == 'sEnum1'||asEnjoyingPaymentMethod == 'sEnum3'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="servicetask16" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask4" name="Очикування оплати" activiti:candidateGroups="common_zags">
@@ -760,7 +761,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.)" type="enum">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.)" type="enum">
           <activiti:value id="sEnum1" name="маю пільги"></activiti:value>
           <activiti:value id="sEnum2" name="бажаю сплатити онлайн"></activiti:value>
           <activiti:value id="sEnum3" name="відобразити реквізити для оплати"></activiti:value>
