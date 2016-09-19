@@ -43,7 +43,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
       return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
           .then(function(response) {
             Array.prototype.push.apply(collection, $filter('orderBy')(response.data, $scope.autocompleteData.orderBy));
-            if (!$scope.autocompleteData.hasPaging || response.data.lenght < count) {
+            if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
               hasNextChunk = false;
             }
             if ($scope.autocompleteData.hasPaging) {
@@ -63,7 +63,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
       hasNextChunk = true;
     }
     if (!angular.equals(queryParams.params[queryKey], queryValue)) {
-      if ($scope.autocompleteData.hasPaging || !angular.isDefined(queryParams.params[queryKey])) {
+      // if ($scope.autocompleteData.hasPaging || !angular.isDefined(queryParams.params[queryKey])) {
         if ($scope.autocompleteData.hasPaging) {
           queryParams.params.count = count;
           queryParams.params.skip = 0;
@@ -80,7 +80,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
         tempCollection = tempCollection || $scope.$select.items;
         $scope.$select.items = $filter('filter')(tempCollection, queryValue);
       }
-    }
+    // }
   };
 
   $scope.onSelectDataList = function (item, tableName, rowIndex) {
