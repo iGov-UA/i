@@ -132,7 +132,7 @@ public class BpServiceHandler {
             LOG.error("ex!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException); 
         }
-        String taskName = (String) mTaskParam.get("sTaskName"); 
+        String taskName = (String) mTaskParam.get("sTaskName");  
         String LoginAssigned = (String) mTaskParam.get("sLoginAssigned");
         LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
@@ -177,9 +177,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sID_Process"));   
+        mParam.put("Place", getPlaceForProcess("sID_Process"));   
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceForProcess("sID_Process") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
