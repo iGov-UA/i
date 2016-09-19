@@ -580,14 +580,20 @@ public class ActionEventService {
             {
                  String sDateCreateTemp = oHistoryEvent_Service.getsDateCreate();
                  if(sDateCreateTemp.trim() == "" || sDateCreateTemp == null)
+                 {
                      oHistoryEvent_Service.setsDateCreate(sDateCreate);
+                     isChanged = true;
+                 }
                      
             }
             if(sDateClosed != null && sDateClosed.trim() != "")
             {
                  String sDateClosedTemp = oHistoryEvent_Service.getsDateClosed();
                  if(sDateClosedTemp.trim() == "" || sDateClosedTemp == null)
+                 {
                      oHistoryEvent_Service.setsDateClosed(sDateClosed);
+                     isChanged = true;
+                 }
             }
             /*
             nID;sName;sDescription
