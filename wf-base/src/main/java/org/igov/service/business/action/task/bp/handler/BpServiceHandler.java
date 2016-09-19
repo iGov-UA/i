@@ -85,6 +85,8 @@ public class BpServiceHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
+            variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
+            variables.put("Place", getPlaceForProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -254,29 +256,29 @@ public class BpServiceHandler {
         return soResponse;
     }
 
-    private String getPlaceByProcess(String sID_Process) {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("nID_Process", sID_Process);
-        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
-        param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
-        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("444444444444444444444ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, param); 
-        String soResponse = null; 
-        try {
-            soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
-            Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("place");
-            LOG.info("555555555555555soResponse = (String): " + soResponse);
-        } catch (Exception ex) {
-            LOG.error("[getPlaceByProcess]: ", ex);
-        }
-        LOG.info("(soResponse={})", soResponse);
-        return soResponse;
-    }
+//    private String getPlaceByProcess(String sID_Process) {
+//        Map<String, String> param = new HashMap<String, String>();
+//        param.put("nID_Process", sID_Process);
+//        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
+//        param.put("nID_Server", generalConfig.getSelfServerId().toString());
+//        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+//        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
+//        LOG.info("444444444444444444444ssURL: " + sURL);
+//        LOG.info("(sURL={},mParam={})", sURL, param); 
+//        String soResponse = null; 
+//        try {
+//            soResponse = httpRequester.getInside(sURL, param);
+//            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
+//            Map res = JsonRestUtils.readObject(soResponse, Map.class);
+//            LOG.info("!!!!!res: " + res);
+//            soResponse = (String) res.get("place");
+//            LOG.info("555555555555555soResponse = (String): " + soResponse);
+//        } catch (Exception ex) {
+//            LOG.error("[getPlaceByProcess]: ", ex);
+//        }
+//        LOG.info("(soResponse={})", soResponse);
+//        return soResponse;
+//    }
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();
