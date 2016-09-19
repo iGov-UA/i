@@ -571,6 +571,30 @@ ul.dropdown-menu {
 
 .field-table {
   table {
+    width:95%;
+    table-layout: fixed;
+    thead {
+      tr {
+        th {
+          background: -moz-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* ff3.6+ */
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(252,252,252,1)), color-stop(100%, rgba(239,239,239,1))); /* safari4+,chrome */
+          background: -webkit-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* safari5.1+,chrome10+ */
+          background: -o-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* opera 11.10+ */
+          background: -ms-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* ie10+ */
+          background: linear-gradient(180deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* w3c */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FCFCFC', endColorstr='#EFEFEF',GradientType=0 ); /* ie6-9 */
+          padding: 5px;
+          border: 1px solid lightgrey;
+          text-align: center;
+          &:last-of-type {
+            background: transparent;
+          }
+          span {
+            font-weight: normal;
+          }
+        }
+      }
+    }
     tbody {
       tr {
         td {
@@ -581,15 +605,6 @@ ul.dropdown-menu {
         }
       }
     }
-  }
-  .table-thead {
-    background: -moz-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* ff3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(252,252,252,1)), color-stop(100%, rgba(239,239,239,1))); /* safari4+,chrome */
-    background: -webkit-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* safari5.1+,chrome10+ */
-    background: -o-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* opera 11.10+ */
-    background: -ms-linear-gradient(270deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* ie10+ */
-    background: linear-gradient(180deg, rgba(252,252,252,1) 0%, rgba(239,239,239,1) 100%); /* w3c */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FCFCFC', endColorstr='#EFEFEF',GradientType=0 ); /* ie6-9 */
   }
 }
 
@@ -2440,3 +2455,31 @@ table.QuestionFields td {
 /*
     Feedback end
 */
+
+/* Checkbox indeterminate start */
+
+.checkbox-indeterminate {
+  position: relative;
+  clear: both;
+}
+
+.checkbox-indeterminate label {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  background: #9acfea;
+  border-radius: 3px;
+  border: 1px solid #c0c0c0;
+  -webkit-box-shadow: inset 0px 0px 0px 2px rgba(255,255,255,1);
+  -moz-box-shadow: inset 0px 0px 0px 2px rgba(255,255,255,1);
+  box-shadow: inset 0px 0px 0px 2px rgba(255,255,255,1);
+}
+
+.checkbox-indeterminate input[type=checkbox]:indeterminate {
+  visibility: hidden;
+}
+
+/* Checkbox indterminate end */
