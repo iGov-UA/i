@@ -177,9 +177,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sID_Process"));   
-        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+//        mParam.put("Place", getPlaceByProcess("sID_Process"));   
+//        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+//        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -197,20 +197,11 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
+        mParam.put("Place", getPlaceForProcess(sID_Process));
+        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
-        try {//issue 1350
-            String jsonPlace = placeService.getPlaceByProcess(sID_Process);
-            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace); 
-            JSONObject Place = new JSONObject(jsonPlace); 
-            mParam.put("Place", Place.get("sName"));
-            nID_Server = Place.getInt("nID_Server");
-        } catch (Exception oException) {
-            LOG.error("ex!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
-
-        }
         try {
             String soProcessEscalation = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, mParam);
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
