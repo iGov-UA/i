@@ -42,7 +42,10 @@
         <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -140,6 +143,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, для якої оформлюється запрошення"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -166,6 +170,10 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_inozem_FOFront.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_inozem_FOBack.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -244,10 +252,10 @@ execution.setVariable('sMaxPay', maxpay)
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                                         Спеціалісти підрозділу ДМС успішно опрацювли Вашу заяву.<br>
-										Для того щоб закінчити процедуру зняття з реєстрації необхідно:<br>
+										Для того щоб закінчити процедуру подання заяви необхідно:<br>
 										<ul>
 										<li>У будь-якому банку сплатити необхідні платежі і отримати квитанцію про сплату.</li>
-										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
+										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами.</li>
 										<li>Підписати необхідні документи.</li>
 										</ul>
 									</p>
@@ -264,8 +272,7 @@ execution.setVariable('sMaxPay', maxpay)
 										День та час - ${date_of_visit}
 									</p>
 									<p>
-										<b>Необхідні документи, які треба принести до підрозділу ДМС при знятті з реєстрації місця проживання:</b><br />
-										<ul>
+										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні заяви:</b><br />
 										<ul>
 										<li>оригінал та копію паспорту того, хто подавав заяву;</li>
 										<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
@@ -310,6 +317,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, для якої оформлюється запрошення"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
