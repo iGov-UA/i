@@ -462,8 +462,7 @@ public class DebugCentralController {
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             HttpServletResponse httpResponse) throws CommonServiceException{
 
-        return "getSubjectMessageDataTesting";
-        /*
+
 
         Map<String, String> result = new HashMap<>();
 
@@ -575,7 +574,7 @@ public class DebugCentralController {
         result.put("572 Controller",  "ok");
 
         return JSONValue.toJSONString(result);
-        */
+        
     }
 
 }
