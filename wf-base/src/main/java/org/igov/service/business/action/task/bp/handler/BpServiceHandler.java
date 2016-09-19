@@ -85,6 +85,8 @@ public class BpServiceHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
+            variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
+            variables.put("Place", getPlaceForProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -95,7 +97,7 @@ public class BpServiceHandler {
                 variables.put("nID_Rate", historyEvent.get("nRate"));
                 nID_Server = historyEvent.getInt("nID_Server");
             } catch (Exception oException) {
-                LOG.error("ex!: {}", oException.getMessage());
+                LOG.error("ex!: {}", oException.getMessage()); 
                 LOG.debug("FAIL:", oException);
 
             }
@@ -107,7 +109,7 @@ public class BpServiceHandler {
             feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
         } catch (Exception oException) {
             LOG.error("error during starting feedback process!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
+            LOG.debug("FAIL:", oException); 
         }
         return feedbackProcessId;
     }
@@ -130,9 +132,9 @@ public class BpServiceHandler {
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
             LOG.error("ex!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
+            LOG.debug("FAIL:", oException); 
         }
-        String taskName = (String) mTaskParam.get("sTaskName");
+        String taskName = (String) mTaskParam.get("sTaskName");  
         String LoginAssigned = (String) mTaskParam.get("sLoginAssigned");
         LOG.info("Escalation task params: {}", mTaskParam);
         String escalationProcessId = startEscalationProcess(mTaskParam, snID_Process, processName, nID_Server);
@@ -158,10 +160,10 @@ public class BpServiceHandler {
         mParam.put("processID", sID_Process);
         mParam.put("processName", sProcessName);
         mParam.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(sID_Process)));
-        mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));
+        mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));  
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskID"+"-"+"sTaskName"));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskIDPlusName"));
 //        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
 //        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
@@ -177,9 +179,9 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("Place", getPlaceByProcess("sID_Process"));   
-        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+//        mParam.put("Place", getPlaceByProcess("sID_Process"));   
+//        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+//        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
         // mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -191,26 +193,17 @@ public class BpServiceHandler {
         String organ = trimGroups(organs);
         LOG.info("!!!organ: " + organ);
         mParam.put("organ", organ);
-       mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
+        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
+        mParam.put("Place", getPlaceForProcess(sID_Process));
+        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
-        try {//issue 1350
-            String jsonPlace = placeService.getPlaceByProcess(sID_Process);
-            LOG.info("get Place for bp:(jsonPlace={})", jsonPlace); 
-            JSONObject Place = new JSONObject(jsonPlace); 
-            mParam.put("Place", Place.get("sName"));
-            nID_Server = Place.getInt("nID_Server");
-        } catch (Exception oException) {
-            LOG.error("ex!: {}", oException.getMessage());
-            LOG.debug("FAIL:", oException);
-
-        }
         try {
             String soProcessEscalation = bpService.startProcessInstanceByKey(nID_Server, PROCESS_ESCALATION, mParam);
             snID_ProcessEscalation = new JSONObject(soProcessEscalation).get("id").toString();
@@ -263,29 +256,29 @@ public class BpServiceHandler {
         return soResponse;
     }
 
-    private String getPlaceByProcess(String sID_Process) {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("sID_Process", sID_Process);
-        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
-        param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
-        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("444444444444444444444ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, param); 
-        String soResponse = null;
-        try {
-            soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param); 
-            Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("sName");
-            LOG.info("555555555555555soResponse = (String): " + soResponse);
-        } catch (Exception ex) {
-            LOG.error("[getPlaceByProcess]: ", ex);
-        }
-        LOG.info("(soResponse={})", soResponse);
-        return soResponse;
-    }
+//    private String getPlaceByProcess(String sID_Process) {
+//        Map<String, String> param = new HashMap<String, String>();
+//        param.put("nID_Process", sID_Process);
+//        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
+//        param.put("nID_Server", generalConfig.getSelfServerId().toString());
+//        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+//        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
+//        LOG.info("444444444444444444444ssURL: " + sURL);
+//        LOG.info("(sURL={},mParam={})", sURL, param); 
+//        String soResponse = null; 
+//        try {
+//            soResponse = httpRequester.getInside(sURL, param);
+//            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
+//            Map res = JsonRestUtils.readObject(soResponse, Map.class);
+//            LOG.info("!!!!!res: " + res);
+//            soResponse = (String) res.get("place");
+//            LOG.info("555555555555555soResponse = (String): " + soResponse);
+//        } catch (Exception ex) {
+//            LOG.error("[getPlaceByProcess]: ", ex);
+//        }
+//        LOG.info("(soResponse={})", soResponse);
+//        return soResponse;
+//    }
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {
         Set<String> asCandidateCroupToCheck = new HashSet<>();

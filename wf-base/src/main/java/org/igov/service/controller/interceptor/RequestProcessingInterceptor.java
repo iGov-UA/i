@@ -508,7 +508,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 Long nID_Process = Long.valueOf(snID_Process);
 
                 // Блок получения sID_Order первичной заявки эскалации
-               
                 String sID_Order = null;
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
