@@ -218,6 +218,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні.Повідомити заявника "></activiti:value>
           <activiti:value id="accept2" name="Звернення потребує підписів.Повідомити заявника"></activiti:value>
@@ -867,7 +868,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow61" sourceRef="boundarytimer1" targetRef="exclusivegateway7"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
+        <timeDuration>PT120S</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway7" targetRef="exclusivegateway4">
