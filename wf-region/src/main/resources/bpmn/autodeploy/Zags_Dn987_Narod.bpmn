@@ -115,7 +115,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
+    <userTask id="usertask1" name="Опрацювання звернення, перевірка наявності відомостей" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sbankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -243,7 +243,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask5">
@@ -360,6 +360,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptVid'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask2" name="Надання відповіді" activiti:candidateGroups="Obl_zaks_test"></userTask>
+    <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Narod">
     <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Narod" id="BPMNPlane_Zags_Dn987_Narod">
@@ -379,16 +381,16 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="134.0" x="456.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="134.0" x="456.0" y="195.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="502.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="331.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="273.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="331.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="352.0" y="351.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="505.0" y="440.0"></omgdc:Bounds>
@@ -397,7 +399,10 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="350.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="570.0" y="351.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="305.0" y="147.0"></omgdi:waypoint>
@@ -409,7 +414,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="522.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="523.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="523.0" y="266.0"></omgdi:waypoint>
@@ -417,24 +422,24 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="542.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="652.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="300.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="87.0" x="624.0" y="285.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="502.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="392.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="404.0" y="351.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="81.0" x="333.0" y="285.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="410.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="652.0" y="386.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="457.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="392.0" y="386.0"></omgdi:waypoint>
+        <omgdi:waypoint x="404.0" y="406.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -452,14 +457,18 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="522.0" y="320.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="622.0" y="351.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="456.0" y="319.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="500.0" y="362.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="522.0" y="405.0"></omgdi:waypoint>
+        <omgdi:waypoint x="622.0" y="406.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="792.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
