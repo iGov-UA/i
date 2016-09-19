@@ -86,7 +86,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
-            variables.put("Place", getPlaceForProcess(snID_Process));
+            variables.put("sPlace", getPlaceForProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -179,10 +179,10 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-//        mParam.put("Place", getPlaceByProcess("sID_Process"));   
-//        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-//        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
-        // mParam.put("email", mTaskParam.get("email"));
+        mParam.put("sPlace", getPlaceForProcess("sID_Process"));   
+        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceForProcess("sID_Process") + " sID_Process: " + sID_Process);
+         mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
         LOG.info("mTaskParam={}, mTaskParamConverted={}", mTaskParam, mTaskParamConverted); 
