@@ -23,7 +23,6 @@
         <activiti:formProperty id="sName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові" type="string" required="true"></activiti:formProperty>
-       
         <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -178,7 +177,8 @@
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження" type="file" required="true"></activiti:formProperty>
-         <activiti:formProperty id="markers1" name="якщо змінюється ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо змінюється ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо змінюється прізвище" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'surname'||[sClient] == 'власне прізвище'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо змінюється по батькові" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'secondname'||[sClient] == 'по батькові'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="якщо перебуває на обліку" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sNameRVK&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asMilitary&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'перебуваю на обліку'&quot;}}}"></activiti:formProperty>
@@ -213,8 +213,8 @@
         <activiti:formProperty id="markers33" name="якщо паспорт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasport'||[sClient] == 'паспорт'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers34" name="якщо свідоцтво про народження" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_34&quot;:{&quot;aField_ID&quot;:[&quot;sDocBirth&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasportdoc'||[sClient] == 'свідоцтво про народження'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers35" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sSum2&quot;,&quot;sDescription2&quot;],&quot;asID_Field_sValue&quot;:[&quot;51.92&quot;,&quot;державне мито за повторну державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та ім'я'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, ім'я та по батькові'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -226,17 +226,13 @@
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
-        
-       
-       </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask3_yellow" name="перевірка документів і вхідних данних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-       
         <activiti:formProperty id="sName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
-       
         <activiti:formProperty id="sDateBirth" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
@@ -406,10 +402,10 @@
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
- 		<activiti:formProperty id="sName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>        
-		<activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
@@ -571,10 +567,10 @@
     </userTask>
     <userTask id="usertask2_green" name="очікується відповідь з МВС" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-		<activiti:formProperty id="sName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>        
-		<activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
@@ -1389,7 +1385,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="631.0" y="357.0"></omgdi:waypoint>
         <omgdi:waypoint x="656.0" y="322.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="664.0" y="326.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="679.0" y="311.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
