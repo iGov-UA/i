@@ -214,6 +214,7 @@
         <activiti:formProperty id="markers35" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sSum2&quot;,&quot;sDescription2&quot;],&quot;asID_Field_sValue&quot;:[&quot;51.92&quot;,&quot;державне мито за повторну державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -382,8 +383,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit1" name="Вкажіть дату і час - коли прийти громадянину для надання оригіналів документів" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers36" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers37" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers47" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_47&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers48" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
@@ -391,6 +393,8 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -553,6 +557,7 @@
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_3" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
@@ -560,6 +565,8 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+       
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -719,6 +726,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документом" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
@@ -726,6 +734,8 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+       
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -882,6 +892,7 @@
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
@@ -889,6 +900,8 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+       
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
