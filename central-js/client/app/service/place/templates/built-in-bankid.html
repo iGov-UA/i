@@ -154,7 +154,11 @@
 
                     <tr class="table-thead">
                       <th ng-repeat="item in property.aRow[0].aField">
-                        <span>{{item.name}}</span>
+                        <span>{{item.sFieldLabel || item.name}}</span>
+                        <span style="display: block; text-align: center" class="s-field-notes"
+                             ng-if="item.sFieldNotes!=null">
+                          {{item.sFieldNotes}}
+                        </span>
                       </th>
                       <th style="width:30px;border:none; background-color: transparent"></th>
                     </tr>
