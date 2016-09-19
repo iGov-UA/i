@@ -13,20 +13,20 @@
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="invisible" default="Державна реєстрація громадського об'єднання з правом юридичної особи"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлу"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку"></serviceTask>
-    <serviceTask id="servicetask3" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (без SMS)"></serviceTask>
+    <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask3" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (без SMS)" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <userTask id="usertask1" name="Надання послуги"></userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку"></serviceTask>
+    <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
