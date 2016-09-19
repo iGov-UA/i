@@ -179,8 +179,8 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-        mParam.put("sPlace", getPlaceForProcess("sID_Process"));   
-        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
+//        mParam.put("sPlace", getPlaceForProcess("sID_Process"));   
+//        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceForProcess("sID_Process") + " sID_Process: " + sID_Process);
          mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
@@ -248,7 +248,7 @@ public class BpServiceHandler {
         try {
             soResponse = httpRequester.getInside(sURL, param);
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            soResponse = (String) res.get("place");
+            soResponse = (String) res.get("Place");
         } catch (Exception ex) {
             LOG.error("[getPlaceForProcess]: ", ex);
         }
