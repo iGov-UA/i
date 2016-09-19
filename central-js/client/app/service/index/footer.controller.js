@@ -168,6 +168,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }    
  
+    ,{
+      url: 'http://www.skywell.com.ua',
+      alt: 'skywell',
+      image: 'assets/images/ads/skywell.png',
+      height: 50
+    }
  
   ];
 
