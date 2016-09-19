@@ -57,6 +57,11 @@
           <enum-field></enum-field>
         </div>
 
+        <!--поле типа checkbox-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <checkbox-field></checkbox-field>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
@@ -135,6 +140,9 @@
 
         <!--поле типа enum-->
         <enum-field></enum-field>
+
+        <!--поле типа checkbox-->
+        <checkbox-field></checkbox-field>
 
         <!--поле типа file-->
         <span ng-if="item.type == 'file' && item.id.indexOf('PrintForm') === -1"
