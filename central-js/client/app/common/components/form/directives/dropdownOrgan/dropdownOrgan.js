@@ -144,7 +144,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
 
       angular.forEach(Object.keys(scope.formData.params), function (key) {
         scope.$watch('formData.params.' + key + '.value', function () {
-          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying){
+          if (scope.ngModel !== null && scope.ngModel !== undefined && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying){
               loadAttributesData(key);
           }
         });
