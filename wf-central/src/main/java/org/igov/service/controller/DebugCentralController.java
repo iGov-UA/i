@@ -455,12 +455,15 @@ public class DebugCentralController {
             + "Если не найдена запись SubjectMessage по ID или у найденного сообщения пустое поле, указывающее на контект сообщения, то метод возвращает ошибку с текстом сообщения \"Record not found\"\n"
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage=111111")
-    @RequestMapping(value = "/subject/message/getSubjectMessageDataTest", method = { RequestMethod.GET })
+    @RequestMapping(value = "/test/getSubjectMessageDataTesting", method = { RequestMethod.GET })
     public @ResponseBody String getSubjectMessageData(
             @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             HttpServletResponse httpResponse) throws CommonServiceException{
+
+        return "getSubjectMessageDataTesting";
+        /*
 
         Map<String, String> result = new HashMap<>();
 
@@ -572,6 +575,7 @@ public class DebugCentralController {
         result.put("572 Controller",  "ok");
 
         return JSONValue.toJSONString(result);
+        */
     }
 
 }
