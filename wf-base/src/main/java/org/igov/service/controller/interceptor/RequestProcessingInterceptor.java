@@ -519,9 +519,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     Map<String, Object> pvs = taskDetails.getProcessVariables();
                     if (pvs != null) {
                         String sProcessID = (String) pvs.get("processID");
+                        LOG.info("sProcessID ={}", sProcessID);
                         if (sProcessID != null) {
                             Long nID_ProcessV = Long.valueOf(sProcessID);
+                            LOG.info("nID_ProcessV={}", nID_ProcessV);
                             sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
+                            LOG.info("sID_Order={}",sID_Order);
                         }
                     }
                 }
