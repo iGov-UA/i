@@ -230,7 +230,7 @@
     <userTask id="usertask3_yellow" name="перевірка документів і вхідних данних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sSurname" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sName" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
@@ -1165,10 +1165,10 @@ if(execution.getVariable('asFullName') == 'secondname'){
 per15 = execution.getVariable('sSecondName')
 }
 if(execution.getVariable('asFullName') == 'namesurname'){
-per15 = execution.getVariable('sName')+execution.getVariable('sSurname')
+per15 = execution.getVariable('sName')+" "+execution.getVariable('sSurname')
 }
 if(execution.getVariable('asFullName') == 'pib'){
-per15 = execution.getVariable('sName')+execution.getVariable('sSecondName')+execution.getVariable('sSurname')
+per15 = execution.getVariable('sSurname')+" "+execution.getVariable('sName')+" "+execution.getVariable('sSecondName')
 }
 
 res = '&lt;ol&gt;'+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
@@ -1250,8 +1250,12 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow105" sourceRef="timerintermediatecatchevent1" targetRef="endevent3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow106" sourceRef="usertask5" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow107" name="прийшов" sourceRef="exclusivegateway4" targetRef="usertask2_green"></sequenceFlow>
-    <sequenceFlow id="flow108" name="не прийшов" sourceRef="exclusivegateway4" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow107" name="прийшов" sourceRef="exclusivegateway4" targetRef="usertask2_green">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_4=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow108" name="не прийшов" sourceRef="exclusivegateway4" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_4=='reject'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow109" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow111" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow112" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
@@ -1385,7 +1389,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="631.0" y="357.0"></omgdi:waypoint>
         <omgdi:waypoint x="656.0" y="322.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="679.0" y="311.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="694.0" y="296.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
@@ -1415,14 +1419,14 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="709.0" y="236.0"></omgdi:waypoint>
         <omgdi:waypoint x="630.0" y="237.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="45.0" x="640.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="640.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
         <omgdi:waypoint x="729.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="176.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="680.0" y="180.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="680.0" y="180.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
