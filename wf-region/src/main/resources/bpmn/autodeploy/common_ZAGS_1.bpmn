@@ -386,7 +386,7 @@
 <li>натисніть кнопку “Відправити”.</li>
 </ul>
 <br>
-Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна віправити.<br>
+Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
 <br>
 <b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
 Впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
@@ -884,7 +884,7 @@ ${sMail_Signature}<br /><br />
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway7" targetRef="exclusivegateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask18" name="Лист про несплату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -921,7 +921,7 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow63" sourceRef="exclusivegateway7" targetRef="servicetask18">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask19" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow64" sourceRef="servicetask18" targetRef="servicetask19"></sequenceFlow>
