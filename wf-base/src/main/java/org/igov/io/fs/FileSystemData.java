@@ -43,6 +43,7 @@ public class FileSystemData {
     private static final String SUB_PATH_PATTERNS_SERVICE_FILES = SUB_PATH_PATTERNS_FILES + "services/";
     private static final String SUB_PATH_PATTERNS_DICTONARY = SUB_PATH_PATTERNS_FILES + "dictionary/";
     private static final String SUB_PATH_MARKERS_MOTION_FILES = "bpmn/markers/motion/";
+    public static final String SUB_PATH_XML = "pattern.xml/";
 
     public static BufferedReader getBufferedReader_PatternDictonary(String sSubPathFile) throws UnsupportedEncodingException{
         try{
@@ -75,7 +76,25 @@ public class FileSystemData {
         }
     }
     
+    public static File getFile(String SUB_PATH_FILES, String sPathFile) throws IOException, URISyntaxException {
+        try{
+            return ToolFS.getFile(SUB_PATH_FILES, getCheckedPathFileOnReturn(sPathFile));
+        }catch(IOException | URISyntaxException oException){
+            LOG.warn("FAIL: {} (sPathFile={})", oException.getMessage(), sPathFile);
+            throw oException;
+        }
+    }
+    
     public static byte[] getFileData_MarkersMotionJson(String sPathFile) throws IOException, URISyntaxException {
+        try{
+            return ToolFS.aFileByte(SUB_PATH_MARKERS_MOTION_FILES, getCheckedPathFileOnReturn(sPathFile));
+        }catch(IOException | URISyntaxException oException){
+            LOG.warn("FAIL: {} (sPathFile={})", oException.getMessage(), sPathFile);
+            throw oException;
+        }
+    }
+    
+    public static byte[] getFile(String sPathFile) throws IOException, URISyntaxException {
         try{
             return ToolFS.aFileByte(SUB_PATH_MARKERS_MOTION_FILES, getCheckedPathFileOnReturn(sPathFile));
         }catch(IOException | URISyntaxException oException){

@@ -177,6 +177,8 @@ public class ActionEventController {
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
             @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
             @ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+           // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
+           // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
         return oActionEventService.updateActionStatus_Central(
             sID_Order,
@@ -190,6 +192,8 @@ public class ActionEventController {
                 nID_StatusType,
                 sSubjectInfo,
                 nID_Subject
+             //   sDateCreate,
+              //  sDateClosed
         );
     }
 
