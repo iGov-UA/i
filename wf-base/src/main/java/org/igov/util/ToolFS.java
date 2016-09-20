@@ -132,6 +132,11 @@ public class ToolFS {
         Path osFullPathFile = oFullPathFile(sSubPath, asSubPathFile);
         return aFileByte(osFullPathFile);
     }
+    
+    public static File getFile(String sSubPath, String... asSubPathFile) throws IOException, URISyntaxException {
+        Path osFullPathFile = oFullPathFile(sSubPath, asSubPathFile);
+        return aFile(osFullPathFile);
+    }
 
     public static byte[] aFileByte(Path osFullPathFile) throws IOException {
         try {
@@ -139,6 +144,10 @@ public class ToolFS {
         } catch (IOException e) {
             throw e;
         }
+    }
+    
+    public static File aFile(Path osFullPathFile) throws IOException {
+            return osFullPathFile.toFile();
     }
     
 }

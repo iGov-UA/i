@@ -6,6 +6,22 @@ angular.module('app')
         if (prop.type === 'table') {
           angular.forEach(prop.aRow, function (fields) {
             angular.forEach(fields.aField, function (item, key, obj) {
+
+              var sFieldName = item.name || '';
+              var aNameParts = sFieldName.split(';');
+              var sFieldNotes = aNameParts[0].trim();
+              item.sFieldLabel = sFieldNotes;
+
+              sFieldNotes = null;
+
+              if (aNameParts.length > 1) {
+                sFieldNotes = aNameParts[1].trim();
+                if (sFieldNotes === '') {
+                  sFieldNotes = null;
+                }
+              }
+              item.sFieldNotes = sFieldNotes;
+
               if (item.type === 'date') {
                 if (!item.props) {
                   obj[key].props = DatepickerFactory.prototype.createFactory();

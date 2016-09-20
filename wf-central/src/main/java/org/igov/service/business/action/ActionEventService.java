@@ -426,9 +426,9 @@ public class ActionEventService {
             Long nID_Proccess_Escalation,
             Long nID_StatusType,
             String sSubjectInfo,
-            Long nID_Subject,
-            String sDateCreate,
-            String sDateClosed
+            Long nID_Subject
+          //  String sDateCreate,
+           // String sDateClosed
     ) throws CommonServiceException {
         LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
         LOG.info("Status type is "+nID_StatusType);
@@ -576,7 +576,25 @@ public class ActionEventService {
                     //historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
             }
                 
-            
+        /*    if(sDateCreate != null && sDateCreate.trim() != "")
+            {
+                 String sDateCreateTemp = oHistoryEvent_Service.getsDateCreate();
+                 if(sDateCreateTemp.trim() == "" || sDateCreateTemp == null)
+                 {
+                     oHistoryEvent_Service.setsDateCreate(sDateCreate);
+                     isChanged = true;
+                 }
+                     
+            }
+            if(sDateClosed != null && sDateClosed.trim() != "")
+            {
+                 String sDateClosedTemp = oHistoryEvent_Service.getsDateClosed();
+                 if(sDateClosedTemp.trim() == "" || sDateClosedTemp == null)
+                 {
+                     oHistoryEvent_Service.setsDateClosed(sDateClosed);
+                     isChanged = true;
+                 }
+            }*/
             /*
             nID;sName;sDescription
             0;ServiceNeed;Просьба добавить услугу
@@ -591,24 +609,6 @@ public class ActionEventService {
             9;ServiceCommentEmployeeAnswer;Работника ответ/комментарий по услуге
             */
             
-        }
-        if(sDateCreate != null && sDateCreate.trim() != "")
-        {
-            String sDateCreateTemp = oHistoryEvent_Service.getsDateCreate();
-            if(sDateCreateTemp == null || sDateCreateTemp.trim() == "")
-            {
-                oHistoryEvent_Service.setsDateCreate(sDateCreate);
-                isChanged = true;
-            }
-        }
-        if(sDateClosed != null && sDateClosed.trim() != "")
-        {
-             String sDateClosedTemp = oHistoryEvent_Service.getsDateClosed();
-            if(sDateClosedTemp == null || sDateClosedTemp.trim() == "")
-            {
-               oHistoryEvent_Service.setsDateClosed(sDateClosed);
-               isChanged = false;
-            }
         }
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);

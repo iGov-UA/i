@@ -4,6 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sURL_OrderHistory" name="Посилання на первинне звернення" type="label" default="&lt;a href=&quot;https://igov.org.ua/search?sID_Order=[nID_Protected]&quot;&gt;[nID_Protected]&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
@@ -34,6 +35,7 @@
     <userTask id="usertask1" name="опрацювання волонтером" activiti:candidateGroups="volont_escalation">
       <extensionElements>
         <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sURL_OrderHistory" name="Посилання на первинне звернення" type="string" default="&lt;a href=&quot;https://igov.org.ua/search?sID_Order=[nID_Protected]&quot;&gt;[nID_Protected]&lt;/a&gt;" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_BP" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Place" name="Обраний населений пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -174,7 +176,7 @@ ${sEmployeeContacts}<br /><br />
         <omgdi:waypoint x="455.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="455.0" y="77.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="458.0" y="83.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="74.0" x="458.0" y="83.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -201,7 +203,7 @@ ${sEmployeeContacts}<br /><br />
         <omgdi:waypoint x="455.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="308.0" y="77.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="323.0" y="73.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="98.0" x="323.0" y="73.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

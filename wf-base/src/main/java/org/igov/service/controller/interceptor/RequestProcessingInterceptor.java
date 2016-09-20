@@ -508,8 +508,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 Long nID_Process = Long.valueOf(snID_Process);
 
                 // Блок получения sID_Order первичной заявки эскалации
-                //String sID_Order = null;
-                String sID_Order = "";
+                String sID_Order = null;
                 HistoricTaskInstance taskDetails = historyService
                         .createHistoricTaskInstanceQuery()
                         .includeProcessVariables().taskId(snID_Task)
@@ -519,9 +518,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     Map<String, Object> pvs = taskDetails.getProcessVariables();
                     if (pvs != null) {
                         String sProcessID = (String) pvs.get("processID");
+                        LOG.info("sProcessID ={}", sProcessID);
                         if (sProcessID != null) {
                             Long nID_ProcessV = Long.valueOf(sProcessID);
+                            LOG.info("nID_ProcessV={}", nID_ProcessV);
                             sID_Order = generalConfig.getOrderId_ByProcess(nID_ProcessV);
+                            LOG.info("sID_Order={}",sID_Order);
                         }
                     }
                 }

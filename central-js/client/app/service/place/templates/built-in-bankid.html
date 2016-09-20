@@ -149,11 +149,16 @@
 
                 <div class="col-md-12 field-table" ng-switch-when="table">
                   <table ng-init="tableName = property.id">
+
                     <thead>
 
                     <tr class="table-thead">
                       <th ng-repeat="item in property.aRow[0].aField">
-                        <span>{{item.name}}</span>
+                        <span>{{item.sFieldLabel || item.name}}</span>
+                        <span style="display: block; text-align: center" class="s-field-notes"
+                             ng-if="item.sFieldNotes!=null">
+                          {{item.sFieldNotes}}
+                        </span>
                       </th>
                       <th style="width:30px;border:none; background-color: transparent"></th>
                     </tr>
@@ -163,6 +168,7 @@
                     <tbody ng-form='{{tableName}}'>
 
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
+
                       <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
 
                         <div ng-if="item.type == 'string'">
@@ -324,7 +330,6 @@
                             </script>
 
                           </p>
-
                           <!--заменить на директиву-->
                         </div>
 
@@ -397,8 +402,8 @@
                       </td>
 
                     </tr>
-                    </tbody>
 
+                    </tbody>
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
@@ -642,18 +647,18 @@
                              reach-infinity="requestMoreItems($select.items)"
                              on-select="onSelectDataList($item)">
 
-                             <ui-select-match>
-                               {{$select.selected[autocompleteData.titleProperty]}}
-                             </ui-select-match>
-                             <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                                refresh-delay="50"
-                                                repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
-                               <span title="{{item[property.autocompleteData.titleProperty]}}">
-                                 {{item[property.autocompleteData.titleProperty]}}
-                               </span>
-                             </ui-select-choices>
-                  </ui-select>
+                    <ui-select-match>
+                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                    </ui-select-match>
 
+                    <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
+                                       refresh-delay="50"
+                                       repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
+                      <span title="{{item[property.autocompleteData.titleProperty]}}">
+                        {{item[property.autocompleteData.titleProperty]}}
+                      </span>
+                    </ui-select-choices>
+                  </ui-select>
                 </div>
               </div>
 
