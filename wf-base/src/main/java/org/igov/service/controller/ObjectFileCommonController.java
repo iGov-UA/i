@@ -726,7 +726,7 @@ public class ObjectFileCommonController {
         
         Map<String, String> result = new HashMap<>();
         LOG.info("data: " + data);
-        File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern);
+        File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
         String declarContent = Files.toString(file, Charset.defaultCharset());
         LOG.info("Created document with customer info: {}", declarContent);
         String regex, replacement;
