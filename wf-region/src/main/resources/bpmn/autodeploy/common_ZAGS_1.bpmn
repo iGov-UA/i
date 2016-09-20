@@ -884,7 +884,7 @@ ${sMail_Signature}<br /><br />
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway7" targetRef="exclusivegateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask18" name="Лист про несплату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -921,7 +921,7 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow63" sourceRef="exclusivegateway7" targetRef="servicetask18">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask19" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow64" sourceRef="servicetask18" targetRef="servicetask19"></sequenceFlow>
