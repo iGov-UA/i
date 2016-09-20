@@ -39,7 +39,7 @@ public class DFS_Controller {
     @ApiOperation(value = "/send", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы\n")
     @RequestMapping(value = {"/send"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
-    byte[] send(@RequestBody(required = false) Map<String, String> data,
+    String send(@RequestBody(required = false) Map<String, String> data,
             HttpServletResponse httpResponse) throws Exception {
         //генерируем хмл в виде файла и проставляем значения в него. отдаем на клиента
         LOG.info("data: " + data);
@@ -101,8 +101,8 @@ public class DFS_Controller {
         String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                     .multipartFileToByteArray(file, file.getOriginalFilename())
                     .toByteArray());
-        //return key;
-        return declarContent.getBytes();
+        return key;
+        //return declarContent.getBytes();
     }
 
 }
