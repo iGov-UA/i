@@ -200,6 +200,8 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
+        mParam.put("sURL_OrderHistory", mTaskParam.get("https://igov.org.ua/search?sID_Order=[nID_Protected]"));
+        mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!mParam: "+mParam);
@@ -273,7 +275,7 @@ public class BpServiceHandler {
             LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("place");
+            soResponse = (String) res.get("sName");
             LOG.info("555555555555555soResponse = (String): " + soResponse);
         } catch (Exception ex) {
             LOG.error("[getPlaceByProcess]: ", ex);
