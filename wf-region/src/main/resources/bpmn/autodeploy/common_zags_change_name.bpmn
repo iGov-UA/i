@@ -1111,9 +1111,15 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+Вам необхідно сплатити державне мито.<br />
+Якщо ім'я змінюєте впереше - 5.2UAH (в т.ч комісія 10 копійок)/<br />
+Якщо вже раніше змінювали ім'я, державне мито складає - 51.92UAH (в т.ч. комісія 92 копійки)/<br />
 Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
 [paymentButton_LiqPay_2]<br />
+У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
+Вас буде перенаправлено на софрмований платіж у liqPay.<br />
+Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
 Якщо впродовж 2-х днів з моменту подання звернення оплата не надійде, ваше звернення буде відхілено.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -1124,7 +1130,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vam neobhidno splatiti dergavne mito. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vy zamovyly poslugu zminy imeni. Vam potribno splatyty derzhavne myto XX grn. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -1145,7 +1151,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 На жаль, Ваше звернення відхилено.
 Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
@@ -1160,7 +1166,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno cherez vidsutnist oplaty. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -1204,9 +1210,9 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 На жаль, Ваше звернення відхилено через недостатню або неправильну інформацію.<br />
-${comment_1}<br />
+Коментар співробітника ДРАЦС: ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
@@ -1240,13 +1246,19 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 Ваше звернення отримано, вхідні данні пройшли первинну перевірку.<br />
 Для передачі документів на подальший розгляд в МВС Вам необхідно надати оригінали документів до обраного Вами відділу ДРАЦС.<br />
 Призначено дату і час візиту - ${sDateVisit1}.<br />
+Якщо Ви не зможете з'явитись у призначений час, приходьте у будь який зручний для Вас час згідно графіку роботи обраного Вами ДРАЦС:<br />
+Понеділок - вихідний день;<br />
+Вівторок-п'ятниця  – з 9.00 до 18.00;<br />
+Субота – з 9.00 до 17.00;<br />
+обідня перерва з 13:00 до 13:45;<br />
+останній четвер місяця – санітарний день.<br /><br />
 Адреса: ${sAddress}<br /><br />
 Перелік документів, які треба мати при собі:<br />
-${sListDocumentsLetter}
+${sListDocumentsLetter}<br /><br />
 Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -1282,8 +1294,15 @@ ${sNameOrgan}<br />
 Вам надано дозвіл на зміну імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Вам призначено дату і час візиту для державної реєстрації зміни імені і отримання оригіналу свідоцтва - ${sDateVisit2}.<br />
+Якщо Ви не зможете з'явитись у призначений час, приходьте у будь який зручний для Вас час згідно графіку роботи обраного Вами ДРАЦС:<br />
+Понеділок - вихідний день;<br />
+Вівторок-п'ятниця  – з 9.00 до 18.00;<br />
+Субота – з 9.00 до 17.00;<br />
+обідня перерва з 13:00 до 13:45;<br />
+останній четвер місяця – санітарний день.<br /><br />
 Адреса: ${sAddress}<br /><br />
 Зазначаємо, що після державної реєстрації зміни імені та отримання свідоцтва про зміну імені паспорт громадянина України підлягає обміну протягом місяця, про що на його першій сторінці буде зроблено відмітку.<br /><br />
+Ви можете подати заявку на обмін паспорту через портал iGov.org.ua (послуга: <a href="https://igov.org.ua/service/173/general" target="_blank">Обмін паспорта громадянина в разі зміни (переміни) прізвища, імені або по батькові)</a>.
 ВАЖЛИВО! Якщо впродовж 90 днів Ви не з'явитесь для проведення державної реєстрації зміни імені та отримання свідоцтва,  дозвіл на зміну імені втратить силу.<br /><br />
 Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
@@ -1317,7 +1336,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 На жаль, Вам відмовлено у зміні імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
@@ -1353,7 +1372,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[sID_Order]<br>
 [pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${sName} ${sSurname}</strong><br />
+<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
 80 днів тому Ви отримали дозвіл на зміну імені.<br />
 Нагадуємо, що Вам треба з'явитись до обраного Вами органу ДРАЦС для отримання оригіналу свідоцтва. <br />
 Якщо впродовж 10 днів свідоцтво Вами не буде отримано, дозвіл на зміну імені втратить силу.<br />
@@ -1369,7 +1388,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vam treba priyti dlya reestracii zmini imeni. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Dlya reestracii zminy imeni u Vas zalyshylos 10 dniv. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -1378,11 +1397,11 @@ ${sNameOrgan}<br />
     </serviceTask>
     <scriptTask id="scripttask1" name="Формування переліку документів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = "&lt;li&gt;Документ, що посвідчує особу;&lt;/li&gt;"
-var per2 = "&lt;li&gt;Заява, яка була подана в електронному вигляді (знаходиться у додатку до листа - завантажте, роздрукуйте і підпишіть);&lt;/li&gt;"
+var per1 = "&lt;li&gt;Документ, що посвідчує особу (паспорт, свідоцтво про народження);&lt;/li&gt;"
+var per2 = "&lt;li&gt;Заява, яка була подана в електронному вигляді (знаходиться у додатку до листа). Завантажте, роздрукуйте і підпишіть її, будь ласка;&lt;/li&gt;"
 var per4 = "&lt;li&gt;Свідоцтво про народження;&lt;/li&gt;"
 var per5 = "&lt;li&gt;Кольорова фотокартка для документів - розмір 3х4;&lt;/li&gt;"
-var per6 = "&lt;li&gt;Копія квитанції про сплату державного мита;&lt;/li&gt;"
+var per6 = " "
 var per7 = " "
 var per8 = " "
 var per9 = " "
@@ -1393,8 +1412,12 @@ var per13 = "&lt;li&gt;Фотокартка заявника;&lt;/li&gt;"
 var per14 = " "
 var per15 = " "
 var per16 = " "
+var per17 = "&lt;li&gt;Квитанція про сплату державного мита;&lt;/li&gt;"
 var res = 'res'
 var res2 = 'res2'
+if(execution.getVariable('sDocPay') != null){
+per6 = '&lt;li&gt;Квитанція про сплату державного мита;&lt;/li&gt;'
+}
 if(execution.getVariable('sDocMarriage') != null){
 per7 = '&lt;li&gt;Свідоцтво про шлюб;&lt;/li&gt;'
 }
@@ -1445,8 +1468,8 @@ if(execution.getVariable('asFullName') == 'pib'){
 per15 = execution.getVariable('sSurname')+" "+execution.getVariable('sName')+" "+execution.getVariable('sSecondName')
 }
 
-res = '&lt;ol&gt;'+per4+per6+per7+per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+per12+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per4+per7+per8+per9+per10+per11+per12+per13+per17+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
 execution.setVariable('asFullNamepf', per14)
@@ -1703,7 +1726,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="160.0" y="297.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="44.0" y="210.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="29.0" y="195.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
