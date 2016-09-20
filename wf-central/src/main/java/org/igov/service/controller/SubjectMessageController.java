@@ -126,7 +126,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
     ) throws CommonServiceException {
-        LOG.info("Start create message: sHead={}, sBody={}, nID_Subject={}, sMail={}, sContacts={}, sData={}, nID_SubjectMessageType={}", sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
+        //LOG.info("Start create message: sHead={}, sBody={}, nID_Subject={}, sMail={}, sContacts={}, sData={}, nID_SubjectMessageType={}", sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
 
         SubjectMessage message
                 = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
@@ -134,7 +134,7 @@ public class SubjectMessageController {
 
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
-        LOG.info("End create message id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
+        //LOG.info("End create message id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
 
         return JsonRestUtils.toJsonResponse(message);
     }
@@ -501,6 +501,17 @@ public class SubjectMessageController {
             }
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
+
+            Long messageID = oSubjectMessage.getId();
+            LOG.info("Set message id={}, Mail={}", messageID, oSubjectMessage.getMail());
+            LOG.info("Set message id={}, Contacts={}", messageID, oSubjectMessage.getContacts());
+            LOG.info("Set message id={}, Data={}", messageID, oSubjectMessage.getData());
+            LOG.info("Set message id={}, Date={}", messageID, oSubjectMessage.getDate());
+            LOG.info("Set message id={}, Head={}", messageID, oSubjectMessage.getHead());
+            LOG.info("Set message id={}, Body={}", messageID, oSubjectMessage.getBody());
+            LOG.info("Set message id={}, Id_subject={}", messageID, oSubjectMessage.getId_subject());
+            LOG.info("Set message id={}, ID_DataLink={}", messageID, oSubjectMessage.getsID_DataLink());
+            LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 

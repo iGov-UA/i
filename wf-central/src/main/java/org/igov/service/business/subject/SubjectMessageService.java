@@ -151,7 +151,16 @@ public class SubjectMessageService {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
             message.setSubjectMessageType(subjectMessageType);
         }
-      
+        Long messageID = message.getId();
+        LOG.info("Created message id={}, Mail={}", messageID, message.getMail());
+        LOG.info("Created message id={}, Contacts={}", messageID, message.getContacts());
+        LOG.info("Created message id={}, Data={}", messageID, message.getData());
+        LOG.info("Created message id={}, Date={}", messageID, message.getDate());
+        LOG.info("Created message id={}, Head={}", messageID, message.getHead());
+        LOG.info("Created message id={}, Body={}", messageID, message.getBody());
+        LOG.info("Created message id={}, Id_subject={}", messageID, message.getId_subject());
+        LOG.info("Created message id={}, Id_subject={}", messageID, message.getsID_DataLink());
+        LOG.info("Created message id={}, ID_HistoryEvent_Service={}", messageID, message.getnID_HistoryEvent_Service());
         return message;
     }
 
