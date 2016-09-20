@@ -22,12 +22,12 @@
           <activiti:value id="sEnamMeta3" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMeta4" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject_2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" default="0.53"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сума платежу" type="invisible" default="0.53"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="опис платежу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
@@ -151,13 +151,12 @@ ${sNameOrgan}.&lt;br /&gt;
 Для оплати послуги Ви можете скористатись кнопкою для он-лайн оплат нижче, або сплатити самостійно за цим рахунком:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;
 В разі самостійної оплати при візиті до відділу ДРАЦС візьміть квитанцію із собою.&lt;br /&gt;
-[paymentButton_LiqPay_2]
+[paymentButton_LiqPay]&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -192,7 +191,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
-Причина відмови: ${comment} &lt;br /&gt;
+Причина відмови: ${comment} &lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -243,13 +242,12 @@ ${sNameOrgan}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
 За результатами опрацювання Вашої заяви повідомляємо, що відповідного актового запису цивільного стану не виявлено.&lt;br /&gt;
-У разі необхідності отримання витягу з Державного реєстру актів цивільного стану громадян про відсутність актового запису Ви можете звернутись до відділу ДРАЦС особисто.&lt;br /&gt;
+У разі необхідності отримання витягу з Державного реєстру актів цивільного стану громадян про відсутність актового запису Ви можете звернутись до відділу ДРАЦС особисто.&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
