@@ -134,7 +134,7 @@ public class SubjectMessageController {
 
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
-        LOG.info("Created messeges id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
+        LOG.info("End create message id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
 
         return JsonRestUtils.toJsonResponse(message);
     }
