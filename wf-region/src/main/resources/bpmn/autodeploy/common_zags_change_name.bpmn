@@ -1560,7 +1560,6 @@ execution.setVariable('sNotification_day', timer)</script>
       </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow122" sourceRef="escalationTimer2" targetRef="exclusivegateway5"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="48"}]]></conditionExpression>
@@ -1589,10 +1588,10 @@ execution.setVariable('sNotification_day', timer)</script>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow137" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Script Task" activiti:autoStoreVariables="false">
-    var src=execution.getVariable('sCountPayment')
+    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script> var src=execution.getVariable('sCountPayment')
     src=(+src + +1)
-    execution.setVariable('sCountPayment', src)
+    execution.setVariable('sCountPayment', src)</script>
     </scriptTask>
     <sequenceFlow id="flow138" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow139" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent2">
@@ -1749,7 +1748,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="160.0" y="297.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="-31.0" y="135.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="-76.0" y="90.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
@@ -1796,10 +1795,6 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
         <omgdi:waypoint x="449.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="477.0" y="101.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
-        <omgdi:waypoint x="627.0" y="35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="670.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
         <omgdi:waypoint x="710.0" y="55.0"></omgdi:waypoint>
