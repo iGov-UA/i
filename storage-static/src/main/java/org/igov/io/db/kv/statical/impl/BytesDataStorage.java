@@ -59,13 +59,21 @@ public class BytesDataStorage implements IBytesDataStorage {
     }
 
     private GridFSDBFile findLatestEdition(String sKey) {
+        LOG.info("sKey = ", sKey);
         List<GridFSDBFile> aGridFSDBFile = oGridFsTemplate.find(
                 getKeyQuery(sKey)
                 .with(new Sort(Direction.DESC, "uploadDate"))
                 .limit(1));
         if (aGridFSDBFile == null || aGridFSDBFile.isEmpty()) {
+            if(aGridFSDBFile == null){
+                LOG.info("aGridFSDBFile == null");
+            } else {
+                LOG.info("aGridFSDBFile.isEmpty");
+            }
+            LOG.warn("findLatestEdition return NULL");
             return null;
         }
+        LOG.warn("findLatestEdition return GridFSDBFile");
         return aGridFSDBFile.get(0);
     }
 
@@ -78,12 +86,29 @@ public class BytesDataStorage implements IBytesDataStorage {
     @Override
     public byte[] getData(String sKey) {
 
+        LOG.info("Start getData sKey = {}", sKey);
         GridFSDBFile oGridFSDBFile = findLatestEdition(sKey);
+        try {
+            if (oGridFSDBFile != null) {
+                LOG.info("oGridFSDBFile = null");
+                oGridFSDBFile.getInputStream();
+                LOG.info("InputStream created");
+            } else {
+                LOG.info("oGridFSDBFile = null");
+            }
+        } catch (Exception e){
+            LOG.error("getData oGridFSDBFile.getInputStream Exeption: " + e.getMessage());
+        }
+
         try (InputStream is = oGridFSDBFile.getInputStream()) {
-            return IOUtils.toByteArray(is);
+            LOG.info("Strrt fill InputStream");
+            byte[] result = IOUtils.toByteArray(is);
+            LOG.info("IOUtils.toByteArray(InputStream) size = {}", result.length);
+            return result;
         } catch (NullPointerException | IOException oException) {
             LOG.error("Bad: {}, (sKey={})",oException.getMessage(), sKey);
             LOG.trace("FAIL:", oException);
+            LOG.error("Error message: {}", oException.getMessage());
             return null;
         }
     }
