@@ -33,19 +33,24 @@ public class BytesDataStorage implements IBytesDataStorage {
 
     @Override
     public String saveData(byte[] aByte) {
-
+        LOG.info("Start seve Data aByte  size = {}", aByte.length);
         String sKey = UUID.randomUUID().toString();
         if (setData(sKey, aByte)) {
+            LOG.info("Save data completed with sKey = {}", sKey);
             return sKey;
         }
+        LOG.info("Save data completed NULL");
         return null;
     }
 
     @Override
     public boolean setData(String sKey, byte[] data) {
         try (InputStream oInputStream = new ByteArrayInputStream(data)) {
+            LOG.info("Start create oGridFSFile");
             GridFSFile oGridFSFile = oGridFsTemplate.store(oInputStream, sKey);
+            LOG.info("Start save oGridFSFile");
             oGridFSFile.save();
+            LOG.info("End save oGridFSFile");
         } catch (IOException oException) {
         	LOG.error("Bad: {}, (sKey={}, sData={})",oException.getMessage(), sKey, data);
             LOG.trace("FAIL:", oException);
@@ -59,7 +64,7 @@ public class BytesDataStorage implements IBytesDataStorage {
     }
 
     private GridFSDBFile findLatestEdition(String sKey) {
-        LOG.info("sKey = ", sKey);
+        LOG.info("sKey = {}", sKey);
         List<GridFSDBFile> aGridFSDBFile = oGridFsTemplate.find(
                 getKeyQuery(sKey)
                 .with(new Sort(Direction.DESC, "uploadDate"))
