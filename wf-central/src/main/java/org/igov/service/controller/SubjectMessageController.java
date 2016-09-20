@@ -977,47 +977,47 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             HttpServletResponse httpResponse) throws CommonServiceException{
-    		
-    		//content of the message file
-    		String res = null;
-    		try{
-    			Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
-	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
-	    		Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
 
-	            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+        //content of the message file
+        String res = null;
+        try{
+            Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
+            SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+            Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
 
-	            if(bAuth && oHistoryEvent_Service.isPresent()){
-	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
-	            }
-	    		if(message == null || isBlank(message.getsID_DataLink())){
-	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
-	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
-	                throw newErr;
-	    		}    	    	
-	    		LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);    		
-	    		
-	    		if (isNotBlank(message.getsID_DataLink())){
-	    			LOG.info("Field sID_DataLink in message is not null");	    			
-	    	        
-	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
-	    			
-	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
-	    			res = new String(resBytes, Charset.forName("UTF-8"));
-	    			
-	    			httpResponse.getWriter().print(res);
-	    			httpResponse.getWriter().close();
-	    		}
-    		}catch(Exception e){
-    			if(e instanceof CommonServiceException)
-    				throw (CommonServiceException)e;
-    			else
-    			{
-    				LOG.error("FAIL: {}", e.getMessage());
-    	            LOG.trace("FAIL:", e);
-    	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
-    			}
-    		}
+            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+
+            if(bAuth && oHistoryEvent_Service.isPresent()){
+                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+            }
+            if(message == null || isBlank(message.getsID_DataLink())){
+                LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+                CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+                throw newErr;
+            }
+            LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+
+            if (isNotBlank(message.getsID_DataLink())){
+                LOG.info("Field sID_DataLink in message is not null");
+
+                byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
+
+                httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+                res = new String(resBytes, Charset.forName("UTF-8"));
+
+                httpResponse.getWriter().print(res);
+                httpResponse.getWriter().close();
+            }
+        }catch(Exception e){
+            if(e instanceof CommonServiceException)
+                throw (CommonServiceException)e;
+            else
+            {
+                LOG.error("FAIL: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
+                throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
+            }
+        }
     }
 
 }

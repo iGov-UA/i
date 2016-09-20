@@ -776,6 +776,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
 	protected void saveServiceMessage(String sHead, String sTo, String sBody,
 			String sID_Order) {
+            
+                if(sBody!=null&&sBody.contains("Шановний колего!")){
+                    //Не сохраняем в истории заявки гражданина письмо чиновнику //Юлия
+                    return;
+                }
+            
 		final Map<String, String> params = new HashMap<>();
 		params.put("sID_Order", sID_Order);
 		params.put("sHead", "Відправлено листа");
