@@ -119,19 +119,19 @@ public class DHead {
     @XmlSchemaType(name = "nonNegativeInteger")
     protected BigInteger cdoccnt;
     @XmlElement(name = "C_REG")
-    protected int creg;
+    protected Integer creg;
     @XmlElement(name = "C_RAJ")
-    protected int craj;
+    protected Integer craj;
     @XmlElement(name = "PERIOD_MONTH")
-    protected int periodmonth;
+    protected Integer periodmonth;
     @XmlElement(name = "PERIOD_TYPE")
-    protected int periodtype;
+    protected Integer periodtype;
     @XmlElement(name = "PERIOD_YEAR")
-    protected int periodyear;
+    protected Integer periodyear;
     @XmlElement(name = "C_STI_ORIG")
-    protected int cstiorig;
+    protected Integer cstiorig;
     @XmlElement(name = "C_DOC_STAN")
-    protected int cdocstan;
+    protected Integer cdocstan;
     @XmlElementRef(name = "LINKED_DOCS", type = JAXBElement.class, required = false)
     protected JAXBElement<DHead.LINKEDDOCS> linkeddocs;
     @XmlElement(name = "D_FILL", required = true)
@@ -295,7 +295,7 @@ public class DHead {
      * Sets the value of the creg property.
      * 
      */
-    public void setCREG(int value) {
+    public void setCREG(Integer value) {
         this.creg = value;
     }
 
@@ -311,7 +311,7 @@ public class DHead {
      * Sets the value of the craj property.
      * 
      */
-    public void setCRAJ(int value) {
+    public void setCRAJ(Integer value) {
         this.craj = value;
     }
 
@@ -327,7 +327,7 @@ public class DHead {
      * Sets the value of the periodmonth property.
      * 
      */
-    public void setPERIODMONTH(int value) {
+    public void setPERIODMONTH(Integer value) {
         this.periodmonth = value;
     }
 
@@ -343,7 +343,7 @@ public class DHead {
      * Sets the value of the periodtype property.
      * 
      */
-    public void setPERIODTYPE(int value) {
+    public void setPERIODTYPE(Integer value) {
         this.periodtype = value;
     }
 
@@ -359,7 +359,7 @@ public class DHead {
      * Sets the value of the periodyear property.
      * 
      */
-    public void setPERIODYEAR(int value) {
+    public void setPERIODYEAR(Integer value) {
         this.periodyear = value;
     }
 
@@ -375,7 +375,7 @@ public class DHead {
      * Sets the value of the cstiorig property.
      * 
      */
-    public void setCSTIORIG(int value) {
+    public void setCSTIORIG(Integer value) {
         this.cstiorig = value;
     }
 
@@ -391,7 +391,7 @@ public class DHead {
      * Sets the value of the cdocstan property.
      * 
      */
-    public void setCDOCSTAN(int value) {
+    public void setCDOCSTAN(Integer value) {
         this.cdocstan = value;
     }
 

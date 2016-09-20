@@ -647,18 +647,18 @@
                              reach-infinity="requestMoreItems($select.items)"
                              on-select="onSelectDataList($item)">
 
-                             <ui-select-match>
-                               {{$select.selected[autocompleteData.titleProperty]}}
-                             </ui-select-match>
-                             <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                                refresh-delay="50"
-                                                repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
-                               <span title="{{item[property.autocompleteData.titleProperty]}}">
-                                 {{item[property.autocompleteData.titleProperty]}}
-                               </span>
-                             </ui-select-choices>
-                  </ui-select>
+                    <ui-select-match>
+                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                    </ui-select-match>
 
+                    <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
+                                       refresh-delay="50"
+                                       repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
+                      <span title="{{item[property.autocompleteData.titleProperty]}}">
+                        {{item[property.autocompleteData.titleProperty]}}
+                      </span>
+                    </ui-select-choices>
+                  </ui-select>
                 </div>
               </div>
 
