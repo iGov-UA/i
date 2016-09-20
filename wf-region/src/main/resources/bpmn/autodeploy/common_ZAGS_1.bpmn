@@ -14,10 +14,10 @@
           <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.)" type="enum" required="true">
-          <activiti:value id="sEnum1" name="маю пільги"></activiti:value>
-          <activiti:value id="sEnum2" name="бажаю сплатити онлайн"></activiti:value>
-          <activiti:value id="sEnum3" name="відобразити реквізити для оплати"></activiti:value>
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
+          <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
+          <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
+          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Категорія" type="enum" required="true">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -28,7 +28,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливостю оплатити держ. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливостю оплатити держ. мито онлайн&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
@@ -79,7 +79,7 @@
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де пербуваєте на обліку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum">
-          <activiti:value id="sEnum1" name="у шлюбі не перебуваю"></activiti:value>
+          <activiti:value id="sEnum1" name="у шлюбі не перебував"></activiti:value>
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удівець"></activiti:value>
         </activiti:formProperty>
@@ -109,7 +109,7 @@
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де пербуваєте на обліку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum">
-          <activiti:value id="sEnum1" name="у шлюбі не перебуваю"></activiti:value>
+          <activiti:value id="sEnum1" name="у шлюбі не перебувала"></activiti:value>
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удова"></activiti:value>
         </activiti:formProperty>
@@ -218,6 +218,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні.Повідомити заявника "></activiti:value>
           <activiti:value id="accept2" name="Звернення потребує підписів.Повідомити заявника"></activiti:value>
@@ -349,7 +350,7 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина про необхідніст підпису та сплати послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -385,7 +386,7 @@
 <li>натисніть кнопку “Відправити”.</li>
 </ul>
 <br>
-Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС.<br>
+Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
 <br>
 <b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
 Впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
@@ -402,17 +403,17 @@
 
 
 <br>
-<b>Реквізити для сплати вартості церемонії: </b><br>
+<b>Реквізити для сплати вартості обраної церемонії: </b><br>
 Отримувач: <b>Головне територіальне управління юстиції у Дніпропетровській області  </b><br>
 Банк отримувача: <b>Державна казначейська служба України м.Київ </b><br>
 МФО: <b>820172</b><br>
 Код ЄДРПОУ: <b>34984907</b><br>
 Розрахунковий рахунок: <b>31258232100157</b><br>
-Вартість повного обряду: <b> 337 грн </b><br>
-Вартість скороченого обряду: <b> 140 грн </b><br>
+Вартість повного обряду (45 хвилин): <b> 337 грн </b><br>
+Вартість скороченого обряду (15 хвилин): <b> 140 грн </b><br>
 <br>
 <br>
-                                  
+Телефон для довідок: ${sPhoneOrgan} <br>                                 
 [pattern/mail/_common_signature_start.html]
 ${sMail_Signature} <br><br>
 [pattern/mail/_common_signature_end.html]
@@ -425,7 +426,7 @@ ${sMail_Signature} <br><br>
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -444,10 +445,11 @@ ${sMail_Signature} <br><br>
           <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
-На жаль, Вам відмовлено в наданні послуги.<br />
-Підстава: <br />
-${comment}<br />
+На жаль, Вам відмовлено в наданні послуги.<br>
+Підстава: <br>
+${comment}<br><br>
 
+Телефон для довідок: ${sPhoneOrgan} <br>
 [pattern/mail/_common_signature_start.html]
 ${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html] 
@@ -481,7 +483,7 @@ ${sMail_Signature}<br /><br />
           <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
  <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
-Дякуємо, Вам що скористались нашим сервісом!<br /><br />
+Дякуємо, Вам що скористались нашим сервісом подачи заяви про державну реєстрацію шлюбу!<br /><br />
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]   
@@ -507,7 +509,7 @@ ${sMail_Signature}<br /><br />
  <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
                                     
 Ваше звернення [sID_Order] успішно зареєстровано. <br />
-Результат обробки звернення будуть спрямовані на цей е-мейл. <br />
+Результат обробки звернення будуть спрямовані на цей е-мейл протягом 3-х днів. <br />
 [pattern/mail/_common_signature_start.html]
 ${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_end.html] 
@@ -517,7 +519,7 @@ ${sMail_Signature}<br /><br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -721,7 +723,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow56" sourceRef="servicetask12" targetRef="servicetask15"></sequenceFlow>
     <endEvent id="endevent11" name="End"></endEvent>
     <sequenceFlow id="flow57" sourceRef="servicetask15" targetRef="endevent11"></sequenceFlow>
-    <serviceTask id="servicetask16" name="Лист для оплати" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask16" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -735,8 +737,10 @@ ${sMail_Signature}<br /><br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-<br><br>
-Ви обрали спосіб оплати - сплатити послугу online.<br> 
+<br>
+Щоб завершити процедуру подання заявки, Вам потрібно сплатити державне мито 0.87 грн. Ви можете зробити це прямо зараз, натиснувши на цю кнопку.<br>
+Після натискання кнопки “Оплатить” Вас буде перенаправлено на сторінку оплати.
+Вам потрібно буде ввести реквізити Вашої картки (номер, строк дії та CVV-код).<br>
 <br>
 [paymentButton_LiqPay]
 <br>
@@ -744,6 +748,15 @@ ${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy zamovyly poslugu reestrciya braku. Vam potribno splatyty derzhavne myto 0,87 grn. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -867,11 +880,11 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow61" sourceRef="boundarytimer1" targetRef="exclusivegateway7"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
+        <timeDuration>P1DT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway7" targetRef="exclusivegateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment !=""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask18" name="Лист про несплату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -908,7 +921,7 @@ ${sMail_Signature}<br /><br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow63" sourceRef="exclusivegateway7" targetRef="servicetask18">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask19" name="Звільнення черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow64" sourceRef="servicetask18" targetRef="servicetask19"></sequenceFlow>
@@ -1036,7 +1049,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="735.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="735.0" y="551.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="95.0" x="633.0" y="497.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="633.0" y="497.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -1044,7 +1057,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="551.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="446.0" y="497.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="446.0" y="497.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -1067,14 +1080,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="891.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="446.0" y="696.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="446.0" y="696.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="416.0" y="676.0"></omgdi:waypoint>
         <omgdi:waypoint x="234.0" y="676.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="332.0" y="631.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="332.0" y="631.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
@@ -1086,14 +1099,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="756.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="891.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="200.0" y="713.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="200.0" y="713.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="144.0" y="776.0"></omgdi:waypoint>
         <omgdi:waypoint x="145.0" y="802.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="28.0" y="753.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="28.0" y="753.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
@@ -1104,14 +1117,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="562.0" y="69.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="110.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="572.0" y="69.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="572.0" y="69.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="582.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="683.0" y="49.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="571.0" y="0.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="571.0" y="0.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -1122,14 +1135,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="940.0" y="50.0"></omgdi:waypoint>
         <omgdi:waypoint x="985.0" y="50.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="84.0" x="936.0" y="9.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="84.0" x="936.0" y="9.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="920.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="920.0" y="128.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="90.0" x="820.0" y="89.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="90.0" x="820.0" y="89.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -1158,7 +1171,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="171.0" y="115.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="181.0" y="91.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="181.0" y="91.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
@@ -1167,7 +1180,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="561.0" y="-15.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="29.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="96.0" width="100.0" x="301.0" y="-46.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="301.0" y="-46.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">

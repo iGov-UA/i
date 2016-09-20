@@ -6,27 +6,42 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть Ваш контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="invisible" default="Державна реєстрація громадського об'єднання з правом юридичної особи"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлу"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку"></serviceTask>
-    <serviceTask id="servicetask3" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (без SMS)"></serviceTask>
-    <userTask id="usertask1" name="Надання послуги"></userTask>
+    <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask3" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (без SMS)" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="just_khmelnitskiy">
+      <extensionElements>
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть Ваш контактний номер телефону" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string"></activiti:formProperty>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку"></serviceTask>
+    <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
