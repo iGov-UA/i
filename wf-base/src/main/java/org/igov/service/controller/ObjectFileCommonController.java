@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.igov.io.fs.FileSystemData;
@@ -715,14 +716,15 @@ public class ObjectFileCommonController {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
     
-    @ApiOperation(value = "/dfs/putPatternFilledToTempDB", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы\n")
-    @RequestMapping(value = {"/dfs/putPatternFilledToTempDB"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
+    @ApiOperation(value = "/dfs/putPatternFilledToDB", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @RequestMapping(value = {"/dfs/putPatternFilledToDB"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
-    String putPatternFilledToTempDB(
+    Map<String, String> putPatternFilledToDB(
             @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
             @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
         
+        Map<String, String> result = new HashMap<>();
         LOG.info("data: " + data);
         File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern);
         String declarContent = Files.toString(file, Charset.defaultCharset());
@@ -742,7 +744,9 @@ public class ObjectFileCommonController {
         String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                 .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
                 .toByteArray());
-        return key;
+        result.put("sID_Redis", key);
+        result.put("soPatternFilled", key);
+        return result;
     }
     
     /*
