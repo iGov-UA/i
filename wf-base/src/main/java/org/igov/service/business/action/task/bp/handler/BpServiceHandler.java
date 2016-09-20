@@ -174,7 +174,7 @@ public class BpServiceHandler {
 //        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sEmployeeContacts",mTaskParam.get("sEmployeeContacts"));
         mGuideTaskParamKey.put("sEmployeeContacts", "ПІБ та контактні телефони відповідальних посадовців");
-        mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
+        mParam.put("nElapsedDays", (String) mTaskParam.get("nElapsedDays"));
         mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         mParam.put("email", mTaskParam.get("email"));
         mGuideTaskParamKey.put("email", "email"); 
@@ -200,7 +200,7 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("sURL_OrderHistory", mTaskParam.get("https://igov.org.ua/search?sID_Order=[nID_Protected]"));
+        mParam.put("sURL_OrderHistory", "processLink");
         mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
