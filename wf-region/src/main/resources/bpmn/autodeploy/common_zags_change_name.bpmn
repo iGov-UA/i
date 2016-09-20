@@ -233,6 +233,7 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -1552,17 +1553,16 @@ execution.setVariable('sNotification_day', timer)</script>
     </sequenceFlow>
     <sequenceFlow id="flow109" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow113" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow121" sourceRef="servicetask15" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow121" sourceRef="servicetask15" targetRef="timerintermediatecatchevent2"></sequenceFlow>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>P2DT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow122" sourceRef="escalationTimer2" targetRef="exclusivegateway5"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="48"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
@@ -1582,6 +1582,21 @@ execution.setVariable('sNotification_day', timer)</script>
     </sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow136" sourceRef="boundaryerror1" targetRef="endevent6"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDuration>PT1H</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow137" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script> var src=execution.getVariable('sCountPayment')
+    src=(+src + +1)
+    execution.setVariable('sCountPayment', src)</script>
+    </scriptTask>
+    <sequenceFlow id="flow138" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow139" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 =="" && sCountPayment!="48"}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1675,6 +1690,12 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="75.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="460.0" y="101.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="512.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="751.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="784.0" y="154.0"></omgdi:waypoint>
@@ -1727,7 +1748,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="160.0" y="297.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="-16.0" y="150.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="-91.0" y="75.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
@@ -1773,24 +1794,20 @@ execution.setVariable('sNotification_day', timer)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
         <omgdi:waypoint x="449.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
-        <omgdi:waypoint x="627.0" y="35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="670.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="101.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
         <omgdi:waypoint x="710.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="786.0" y="56.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="710.0" y="55.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="71.0" x="710.0" y="55.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
         <omgdi:waypoint x="690.0" y="75.0"></omgdi:waypoint>
         <omgdi:waypoint x="690.0" y="119.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="690.0" y="75.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="45.0" x="690.0" y="75.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
@@ -1827,6 +1844,21 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow136" id="BPMNEdge_flow136">
         <omgdi:waypoint x="93.0" y="100.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow137" id="BPMNEdge_flow137">
+        <omgdi:waypoint x="495.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow138" id="BPMNEdge_flow138">
+        <omgdi:waypoint x="564.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow139" id="BPMNEdge_flow139">
+        <omgdi:waypoint x="690.0" y="35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="5.0"></omgdi:waypoint>
+        <omgdi:waypoint x="476.0" y="5.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="101.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
