@@ -170,8 +170,8 @@ public class BpServiceHandler {
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
         mGuideTaskParamKey.put("sTaskId", "ИД  таски");
 
-        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
-        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
+//        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
+//        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sEmployeeContacts",mTaskParam.get("sEmployeeContacts"));
         mGuideTaskParamKey.put("sEmployeeContacts", "ПІБ та контактні телефони відповідальних посадовців");
         mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
