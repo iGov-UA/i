@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDaniPassport" name="Паспортні дані;(Серія, номер, дата видачі, ким видано)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспортного документу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -16,7 +16,7 @@
         <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькаові що були в вас до зміни імені" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Вкажіть дату і місце де проводилась зміна імені" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asMeta" name="Мета отримання витягу" type="enum" required="true">
+        <activiti:formProperty id="asMeta" name="Зазначте підставу отримання свідоцтва" type="enum" required="true">
           <activiti:value id="sEnamMeta1" name="Оригінал свідоцтва пошкоджено"></activiti:value>
           <activiti:value id="sEnamMeta2" name="Оригінал свідоцтва загублено"></activiti:value>
           <activiti:value id="sEnamMeta3" name="Оригінал свідоцтва знищено"></activiti:value>
@@ -116,7 +116,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
           <activiti:value id="acceptVid" name="Запитувані відомості відсутні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть час візиту заявника. Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/AK/Zags/Zags_Name_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -146,22 +146,22 @@ ${sNameOrgan}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
+Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито.&lt;br /&gt;
+Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 53 копійки.&lt;br /&gt;
 Реквізити для сплати:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
 Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
 - документ, що посвідчує особу&lt;br /&gt;
-- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;
+- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -287,12 +287,11 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamMeta3" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMeta4" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Payment2" name="ІД транзакції платежу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment_2" name="ІД транзакції платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Послуга оплачена, свідоцтво надане"></activiti:value>
           <activiti:value id="reject" name="Заявник не з'явився для отримання витягу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/AK/Zags/Zags_Name_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/minust/check.html]" type="invisible" default="Квитанція про оплату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -350,7 +349,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 Ви можете отримати свідоцтво. &lt;br /&gt;
 Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито.&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 53 копійки.&lt;br /&gt;
 Реквізити для сплати:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
