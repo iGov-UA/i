@@ -201,7 +201,7 @@ public class BpServiceHandler {
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         mParam.put("sURL_OrderHistory", "processLink");
-        mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
+        mGuideTaskParamKey.put("sURL_OrderHistory", "sURL_OrderHistory");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!mParam: "+mParam);

@@ -45,6 +45,7 @@ public class EscalationService {
     GeneralConfig oGeneralConfig;
 
     private static final String SEARCH_DELAYED_TASKS_URL = "/wf/service/action/task/getStartFormData?nID_Task=";// /task-activiti/
+    private static final String ORDER_HISTORY_URL = "/wf//search?sID_Order="; // #1350 п.11
     //private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
 
     @Autowired
@@ -124,7 +125,9 @@ public class EscalationService {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
-                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Ссылка");
+                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
+                    mTaskParam.put("sURL_OrderHistory", regionalServerPath + ORDER_HISTORY_URL + oTask.getId());
+                    BpServiceHandler.mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
                     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
