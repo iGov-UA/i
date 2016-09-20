@@ -126,6 +126,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
     ) throws CommonServiceException {
+        LOG.info("Start create message: sHead={}, sBody={}, nID_Subject={}, sMail={}, sContacts={}, sData={}, nID_SubjectMessageType={}", sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
 
         SubjectMessage message
                 = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
@@ -133,6 +134,7 @@ public class SubjectMessageController {
 
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
+        LOG.info("Created messeges id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
 
         return JsonRestUtils.toJsonResponse(message);
     }
@@ -984,6 +986,7 @@ public class SubjectMessageController {
             Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
             SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
             Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+            LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
 
             Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
 
