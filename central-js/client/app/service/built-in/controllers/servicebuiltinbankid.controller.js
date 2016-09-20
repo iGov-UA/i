@@ -285,6 +285,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.data.formData.params[prop.id].value = prop.aRow;
       }
     });
+
+    angular.forEach(aFormProperties, function(i){
+      if(i.type === 'select' &&
+          i.hasOwnProperty('autocompleteData') &&
+          $scope.data.formData.params[i.id].value.hasOwnProperty(i.autocompleteData.valueProperty)) {
+        $scope.data.formData.params[i.id].value = $scope.data.formData.params[i.id].value[i.autocompleteData.valueProperty]
+      }
+    });
+
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -667,7 +676,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
-        sID_UA: oServiceData.oPlace.sID_UA
+        sID_UA: oServiceData.oPlaceRoot.sID_UA
       }
     }).then(function (response) {
       var bFilled = $scope.bFilledSelfPrevious();
@@ -675,17 +684,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = {};
       }
       angular.forEach($scope.activitiForm.formProperties, function (oField){
-        //if (field.type === 'file'){
-        //    $scope.data.formData.params[field.id].value="";
         try{
-          console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
           var key = oField.id;
           var property = $scope.data.formData.params[key];
-          console.log("SET:property="+property);
-          //angular.forEach($scope.data.formData.params, function (property, key) {
+
           if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
-            //&& property.value && property.value!==null && property.value !== undefined
-            //var oFormProperty = $scope.activitiForm.formProperties[key];
+
             if(oField && oField!==null
               && oField.type !== "file"
               && oField.type !== "label"
@@ -695,13 +699,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
               && oField.type !== "select"
             ){
               if(!bFilled){
-                //angular.forEach($scope.activitiForm.formProperties, function(field) {
                 $scope.paramsBackup[key] = property.value;
-                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
               }
               property.value = response.data[key];
             }
-            //console.log("SET:property.value="+property.value);
+
+            if(oField.type === 'select' &&
+                oField.hasOwnProperty('autocompleteData')){
+              property.value = {};
+              property.value[oField.autocompleteData.valueProperty] = response.data[key];
+            }
           }
         }catch(_){
           console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
