@@ -28,6 +28,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         scope.ngModel = null;
       };
 
+      var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
+      var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
+
       scope.$watch('selected.slot', function(newValue) {
         if (newValue) {
           //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
@@ -59,6 +62,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
           data.nID_SubjectOrganDepartment = nID_SubjectOrganDepartment;
         }
 
+        if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 1) {
+          data.nDiffDays = nDiffDaysParam.value;
+        }
+
         return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
           scope.slotsData = response.data;
           scope.slotsLoading = false;
@@ -78,6 +85,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       } else {
         scope.loadList();
       }
+
+      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+        resetData();
+        scope.loadList();
+      });
     }
   };
 });

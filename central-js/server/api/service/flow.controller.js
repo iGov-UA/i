@@ -34,7 +34,8 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
       activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots_ServiceData', {
         nID_Service: req.query.nID_Service,
         nID_ServiceData: req.params.nID,
-        nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment
+        nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment,
+        nDiffDays: req.query.nDiffDays
       }, null, sHost);
     });
 };
