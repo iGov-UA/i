@@ -7,13 +7,13 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true">
+        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true" default="pasport">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNamePassport" name="Назва документу;(у випадку якщо вашу особу посвідчує НЕ паспорт)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/Vutiag.json')}"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу!" type="label" default="Вкажіть повну адресу реєстрації"></activiti:formProperty>
@@ -57,9 +57,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Usin_Nar_Bat" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Батьки та усиновлювачі (незалежно від віку дитини),"></activiti:value>
-          <activiti:value id="sEnamR3" name="Опікуни, піклувальники,"></activiti:value>
-          <activiti:value id="sEnamR4" name="Адміністрації закладу охорони здоров'я, навчального або іншого дитячого закладу, де постійно перебуває дитина,"></activiti:value>
+          <activiti:value id="sEnamR2" name="Батьки та усиновлювачі (незалежно від віку дитини)"></activiti:value>
+          <activiti:value id="sEnamR3" name="Опікуни, піклувальники"></activiti:value>
+          <activiti:value id="sEnamR4" name="Адміністрації закладу охорони здоров'я, навчального або іншого дитячого закладу, де постійно перебуває дитина"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник вищевказаних осіб"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asImaVytag" name="Про що витяг" type="enum" required="true">
@@ -81,7 +81,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Razv_Slub_Ima" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Заявник щодо своїх родичів за умови пред`явлення документів, що підтверджують родинні стосунки,"></activiti:value>
+          <activiti:value id="sEnamR2" name="Заявник щодо своїх родичів за умови пред`явлення документів, що підтверджують родинні стосунки"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник фізичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSmertVytag" name="Про що витяг" type="enum" required="true">
@@ -493,8 +493,7 @@ ${sNameOrgan}.&lt;br /&gt;
         execution.setVariable('V12', Vut12)
         execution.setVariable('V13', Vut13)
         execution.setVariable('V14', Vut14)
-        if(execution.getVariable('asVudVutiagu') == 'sEnamVudZmin'){execution.setVariable('T1', xxx)}
-        if(execution.getVariable('asVudVutiagu') == 'sEnamVudPovn'){execution.setVariable('T2', xxx)}
+        
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar'){execution.setVariable('A1', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert'){execution.setVariable('A2', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub'){execution.setVariable('A3', xxx)}
@@ -502,43 +501,91 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma'){execution.setVariable('A5', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin'){execution.setVariable('A6', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat'){execution.setVariable('A7', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNar'){execution.setVariable('V1', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarBat'){execution.setVariable('V2', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSmer'){execution.setVariable('V3', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSlub'){execution.setVariable('V4', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSlubPodr'){execution.setVariable('V5', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutRoz'){execution.setVariable('V6', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutDoshPriz'){execution.setVariable('V7', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZminIm'){execution.setVariable('V8', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZmin148'){execution.setVariable('V9', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZminUs'){execution.setVariable('V10', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutResBat'){execution.setVariable('V11', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarDop'){execution.setVariable('V12', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarVup'){execution.setVariable('V13', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSmerDop'){execution.setVariable('V14', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag5X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag6X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag4X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag5X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag2'){execution.setVariable('V1', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag1'){execution.setVariable('V2', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag1'){execution.setVariable('V3', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag2'){execution.setVariable('V4', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag3'){execution.setVariable('V5', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag1'){execution.setVariable('V6', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag1'){execution.setVariable('V7', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag1'){execution.setVariable('V8', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag3'){execution.setVariable('V9', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag4'){execution.setVariable('V10', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag1'){execution.setVariable('V11', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag1'){execution.setVariable('V12', xxx)}
         
-        var Rod=execution.getVariable('sRod_zvjazok')
+        var Rod=' '
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar')
           {
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR1'){Rod='Батьки та усиновлювачі'}
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR2'){Rod='Опікуни, піклувальники'}
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR3'){Rod='Адміністрація закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоров&lt;'&gt;я, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudRazv')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin')
+          {
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоров&lt;'&gt;я, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat')
+          {
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоров&lt;'&gt;я, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert')
           {
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS1'){Rod='Другий з подружжя'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS2'){Rod='Батько'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS3'){Rod='Мати'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS4'){Rod='Дитина'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS5'){Rod='Брат'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS6'){Rod='Сестра'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS7'){Rod='Онук'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS8'){Rod='Онука'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS9'){Rod='Дід'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS10'){Rod='Баба'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS11'){Rod='Інший родич померлої особи'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS12'){Rod='Спадкоємці померлої особи'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS13'){Rod='Особа, що є вигодонабувачем'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS1'){Rod='Другий з подружжя'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS2'){Rod='Батько'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS3'){Rod='Мати'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS4'){Rod='Дитина'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS5'){Rod='Брат'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS6'){Rod='Сестра'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS7'){Rod='Онук'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS8'){Rod='Онука'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS9'){Rod='Дід'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS10'){Rod='Баба'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS11'){Rod='Інший родич померлої особи'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS12'){Rod='Спадкоємці померлої особи'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS13'){Rod='Особа, що є вигодонабувачем'}
           }
         execution.setVariable('RodZv', Rod)
       </script>
