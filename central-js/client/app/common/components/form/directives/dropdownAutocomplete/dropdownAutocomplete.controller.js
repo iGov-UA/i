@@ -72,9 +72,11 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
         hasNextChunk = true;
         queryParams.params[queryKey] = queryValue;
         $scope.requestMoreItems([]).then(function (items) {
-          $timeout(function () {
-            $scope.$select.items = items;
-          }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+          // $timeout(function () {
+          //   $scope.$select.items = items;
+          // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+          $scope.$select.items = items;
+          !angular.equals(queryParams.params[queryKey], queryValue);
         });
       } else {
         tempCollection = tempCollection || $scope.$select.items;
