@@ -350,7 +350,7 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина про необхідніст підпису та сплати послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -722,7 +722,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow56" sourceRef="servicetask12" targetRef="servicetask15"></sequenceFlow>
     <endEvent id="endevent11" name="End"></endEvent>
     <sequenceFlow id="flow57" sourceRef="servicetask15" targetRef="endevent11"></sequenceFlow>
-    <serviceTask id="servicetask16" name="Лист для оплати" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask16" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -737,7 +737,9 @@ ${sMail_Signature}<br /><br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br><br>
-Ви обрали спосіб оплати - сплатити послугу online.<br> 
+Ви обрали спосіб оплати держ. мита (0,87 грн.) - online.<br>
+Після натискання кнопки “Оплатить” Вас буде перенаправлено на сторінку оплати.
+На сторінці оплати необхідно ввести номер Вашої карти. При необхідності копію квітанції можна отримати на електронну адресу.<br>
 <br>
 [paymentButton_LiqPay]
 <br>
@@ -745,6 +747,15 @@ ${sMail_Signature}<br /><br />
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy zamovyly poslugu reestrciya braku. Vam potribno splatyty derzhavne myto 0,87 grn. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -868,7 +879,7 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow61" sourceRef="boundarytimer1" targetRef="exclusivegateway7"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT120S</timeDuration>
+        <timeDuration>P1DT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway7" targetRef="exclusivegateway4">
@@ -1037,7 +1048,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="735.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="735.0" y="551.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="95.0" x="633.0" y="497.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="633.0" y="497.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -1045,7 +1056,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="551.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="446.0" y="497.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="446.0" y="497.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -1068,14 +1079,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="891.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="446.0" y="696.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="446.0" y="696.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="416.0" y="676.0"></omgdi:waypoint>
         <omgdi:waypoint x="234.0" y="676.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="332.0" y="631.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="332.0" y="631.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
@@ -1087,14 +1098,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="436.0" y="756.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="891.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="200.0" y="713.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="200.0" y="713.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="144.0" y="776.0"></omgdi:waypoint>
         <omgdi:waypoint x="145.0" y="802.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="28.0" y="753.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="28.0" y="753.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
@@ -1105,14 +1116,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="562.0" y="69.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="110.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="572.0" y="69.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="572.0" y="69.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="582.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="683.0" y="49.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="571.0" y="0.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="571.0" y="0.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -1123,14 +1134,14 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="940.0" y="50.0"></omgdi:waypoint>
         <omgdi:waypoint x="985.0" y="50.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="84.0" x="936.0" y="9.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="84.0" x="936.0" y="9.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="920.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="920.0" y="128.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="90.0" x="820.0" y="89.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="90.0" x="820.0" y="89.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -1159,7 +1170,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="171.0" y="115.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="181.0" y="91.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="181.0" y="91.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
@@ -1168,7 +1179,7 @@ ${sMail_Signature}<br /><br />
         <omgdi:waypoint x="561.0" y="-15.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="29.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="96.0" width="100.0" x="301.0" y="-46.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="301.0" y="-46.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
