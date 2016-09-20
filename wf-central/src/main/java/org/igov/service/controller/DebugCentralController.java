@@ -1,5 +1,8 @@
 package org.igov.service.controller;
 
+import com.google.common.base.*;
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricIdentityLink;
@@ -7,10 +10,12 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
 //import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
@@ -30,11 +35,15 @@ import org.springframework.web.bind.annotation.*;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import org.igov.io.Log;
 import org.igov.io.sms.ManagerSMS_New;
 import org.igov.service.business.msg.MsgType;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.service.business.msg.IMsgSend;
 
@@ -70,6 +79,11 @@ public class DebugCentralController {
 
     @Autowired
     private SubjectMessageService subjectMessageService;
+
+    @Autowired
+    private ActionEventService actionEventService;
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
 
     @Deprecated //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
     /**
@@ -435,6 +449,77 @@ public class DebugCentralController {
 	}
 
 	return retObj;
+    }
+
+    @ApiOperation(value = " Возвращает содержимое отсылаемого сообщения, если такое существует.", notes = ""
+            + "Возвращает содержимое отсылаемого сообщения, если такое существует.:\n"
+            + "Если не найдена запись SubjectMessage по ID или у найденного сообщения пустое поле, указывающее на контект сообщения, то метод возвращает ошибку с текстом сообщения \"Record not found\"\n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage=111111")
+    @RequestMapping(value = "/test/getSubjectMessageDataTesting", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    void getSubjectMessageData(
+            @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            HttpServletResponse httpResponse) throws CommonServiceException{
+
+        //content of the message file
+        String res = null;
+        //try{
+        Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
+        SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+        Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+
+        Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+
+        if(bAuth && oHistoryEvent_Service.isPresent()){
+            try {
+                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+            } catch (Exception e) {
+                LOG.error("Exception actionEventService.checkAuth: " + e.getMessage());
+            }
+        }
+        if(message == null || isBlank(message.getsID_DataLink())){
+            LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+            CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+            throw newErr;
+        }
+        LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+
+        if (isNotBlank(message.getsID_DataLink())){
+            LOG.info("Field sID_DataLink in message is not null");
+
+            byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
+            if(resBytes == null){
+                LOG.error("durableBytesDataStorage.getData(message.getsID_DataLink()) is NULL");
+            }
+
+            httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+            res = new String(resBytes, Charset.forName("UTF-8"));
+
+            try {
+                httpResponse.getWriter().print(res);
+            } catch (IOException e) {
+                LOG.error("Exception httpResponse.getWriter().print(res): " + e.getMessage());;
+            }
+            try {
+                httpResponse.getWriter().close();
+            } catch (IOException e) {
+                LOG.error("Exception httpResponse.getWriter().close(): " + e.getMessage());
+            }
+        }
+    		/*}catch(Exception e){
+    			if(e instanceof CommonServiceException)
+    				throw (CommonServiceException)e;
+    			else
+    			{
+    				LOG.error("FAIL: {}", e.getMessage());
+    	            LOG.trace("FAIL:", e);
+    	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
+    			}
+    		}*/
     }
 
 }

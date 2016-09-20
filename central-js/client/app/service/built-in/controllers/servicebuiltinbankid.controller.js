@@ -215,7 +215,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
           index;
 
       if(Array.isArray(indexes)){
-        index = isNaN(+indexes[0]) || +indexes[0];;
+        index = isNaN(+indexes[0]) || +indexes[0];
       }
 
       result[finalArray[0].trim()] = index !== undefined
