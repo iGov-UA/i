@@ -27,7 +27,7 @@
         <activiti:formProperty id="sID_Merchant_2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" default="0.53"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency_2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible" default="державне мито за повторну видача свідоцтва про зміну імені"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
@@ -37,7 +37,7 @@
         <activiti:formProperty id="sBankDetails2" name="Реквизит" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markerInv" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/name.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Повторна видача свідоцтва про зміну імені"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="Повторної видачі свідоцтва про зміну імені"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="повторної видачі свідоцтва про зміну імені"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -146,12 +146,16 @@ ${sNameOrgan}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС з документом, що посвідчує особу (паспорт).&lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва сплатіть мито в розмірі 53 копійки.&lt;br /&gt;
-Для оплати послуги Ви можете скористатись кнопкою для он-лайн оплат нижче, або сплатити самостійно за цим рахунком:&lt;br /&gt;
-${sBankDetails2}&lt;br /&gt;
-В разі самостійної оплати при візиті до відділу ДРАЦС візьміть квитанцію із собою.&lt;br /&gt;
+Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито.&lt;br /&gt;
+Реквізити для сплати:&lt;br /&gt;
+${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
+або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
+Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
+- документ, що посвідчує особу&lt;br /&gt;
+- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -190,8 +194,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
+На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
 Причина відмови: ${comment} &lt;br /&gt;&lt;br /&gt;
+Якщо Вам необхідно отримати витяг, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -213,7 +218,6 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask5">
@@ -302,6 +306,83 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Лист з оцінкою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow16" name="${decide_2 == 'accept'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_2 == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Лист нагадування" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Нагадуємо Ви подали заяву для ${sPosluga_nameZV}.
+Заява оформлена вірно.&lt;br /&gt;
+Ви можете отримати свідоцтво. &lt;br /&gt;
+Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито.&lt;br /&gt;
+Реквізити для сплати:&lt;br /&gt;
+${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
+або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
+[paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
+Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
+- документ, що посвідчує особу&lt;br /&gt;
+- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Nahaduvannya! Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow17" name="${decide_2 == 'reject'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_2 == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Zags_Dn987_Name">
     <bpmndi:BPMNPlane bpmnElement="Zags_Dn987_Name" id="BPMNPlane_Zags_Dn987_Name">
@@ -342,7 +423,16 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdc:Bounds height="55.0" width="105.0" x="574.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="430.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="772.0" y="437.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="574.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="579.0" y="538.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="305.0" y="147.0"></omgdi:waypoint>
@@ -374,10 +464,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <omgdc:Bounds height="14.0" width="81.0" x="401.0" y="316.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="740.0" y="457.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="457.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="420.0" y="395.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
@@ -404,11 +490,37 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="792.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="626.0" y="395.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="792.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="437.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="772.0" y="457.0"></omgdi:waypoint>
+        <omgdi:waypoint x="679.0" y="457.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="714.0" y="414.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="792.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="631.0" y="538.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="751.0" y="514.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="574.0" y="457.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="457.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="631.0" y="538.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="475.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
