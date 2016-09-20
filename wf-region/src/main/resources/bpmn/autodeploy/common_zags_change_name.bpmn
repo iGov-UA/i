@@ -1118,8 +1118,9 @@
 Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
 [paymentButton_LiqPay_2]<br />
 У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
-Вас буде перенаправлено на софрмований платіж у liqPay.<br />
+Вас буде перенаправлено на сформований платіж у liqPay.<br />
 Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
+Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних данних та документів.<br />
 Якщо впродовж 2-х днів з моменту подання звернення оплата не надійде, ваше звернення буде відхілено.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -1302,7 +1303,7 @@ ${sNameOrgan}<br />
 останній четвер місяця – санітарний день.<br /><br />
 Адреса: ${sAddress}<br /><br />
 Зазначаємо, що після державної реєстрації зміни імені та отримання свідоцтва про зміну імені паспорт громадянина України підлягає обміну протягом місяця, про що на його першій сторінці буде зроблено відмітку.<br /><br />
-Ви можете подати заявку на обмін паспорту через портал iGov.org.ua (послуга: <a href="https://igov.org.ua/service/173/general" target="_blank">Обмін паспорта громадянина в разі зміни (переміни) прізвища, імені або по батькові)</a>.
+Ви можете подати заявку на обмін паспорту через портал iGov.org.ua (послуга: <a href="https://igov.org.ua/service/173/general" target="_blank">Обмін паспорта громадянина в разі зміни (переміни) прізвища, імені або по батькові)</a>.<br /><br />
 ВАЖЛИВО! Якщо впродовж 90 днів Ви не з'явитесь для проведення державної реєстрації зміни імені та отримання свідоцтва,  дозвіл на зміну імені втратить силу.<br /><br />
 Телефони для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
@@ -1554,17 +1555,17 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow121" sourceRef="servicetask15" targetRef="usertask6"></sequenceFlow>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>P1DT1M</timeDuration>
+        <timeDuration>P2DT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow122" sourceRef="escalationTimer2" targetRef="exclusivegateway5"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow128" sourceRef="usertask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow130" sourceRef="servicetask13" targetRef="endevent3"></sequenceFlow>
@@ -1726,7 +1727,7 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="160.0" y="297.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="29.0" y="195.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="-16.0" y="150.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
@@ -1782,14 +1783,14 @@ execution.setVariable('sNotification_day', timer)</script>
         <omgdi:waypoint x="710.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="786.0" y="56.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="71.0" x="710.0" y="55.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="710.0" y="55.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
         <omgdi:waypoint x="690.0" y="75.0"></omgdi:waypoint>
         <omgdi:waypoint x="690.0" y="119.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="45.0" x="690.0" y="75.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="690.0" y="75.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
