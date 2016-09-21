@@ -676,7 +676,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
-        sID_UA: oServiceData.oPlace.sID_UA
+        sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
       }
     }).then(function (response) {
       var bFilled = $scope.bFilledSelfPrevious();
