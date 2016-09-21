@@ -356,7 +356,7 @@
                                      on-select="onSelectDataList($item, tableName, rowIndex)">
 
                             <ui-select-match>
-                              {{$select.selected[autocompleteData.titleProperty]}}
+                              {{$select.selected[autocompleteData.titleProperty] || item.value}}
                             </ui-select-match>
                             <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search)"
                                                refresh-delay="50"

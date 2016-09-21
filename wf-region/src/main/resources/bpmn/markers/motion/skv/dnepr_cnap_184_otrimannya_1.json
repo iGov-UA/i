@@ -4,7 +4,7 @@
 		"ShowFieldsOnCondition_0":
 		{
 			"sNote":				["For Hide Invisible"],
-			"aField_ID":			["asPurpose", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184", "nFile_Rekvizity", "nFile_Dogovor","date_today","sAdd_doc","sAdd_doc_table"],
+			"aField_ID":			["asPurpose", "sAddress","sNameOrgan", "sPhoneOrgan","sWorkTime", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184", "nFile_Rekvizity", "nFile_Dogovor","date_today","sAdd_doc","sAdd_doc_table","markers11","markers12","markers13","markers14"],
 			"asID_Field":			{"sClient":"asSubect"},
 			"sCondition":			"[sClient] == 'Not_Correct'"
 		},
@@ -58,27 +58,27 @@
 		{
 			"sNote":		["Annulyuvannya - hide files"],
 			"aField_ID":	["nFile_PlacePhoto"],
-			"asID_Field":	{"sPerson":"asPurpose"},
-			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] != 'zp_zpT'"
 		},
 		"RequiredFieldsOnCondition_41": 
 		{
 			"aField_ID":	["nFile_PlacePhoto"],
-			"asID_Field":	{"sPerson":"asPurpose"},
-			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] != 'zp_zpT'"
 		},
 		"ShowFieldsOnCondition_42":
 		{
 			"sNote":		["hide files nFile_Advert for Chernigov"],
 			"aField_ID":	["nFile_Advert"],
-			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
-			"sCondition":	"([sReason] == 'second_permission' || [sReason] == 'first_permission'|| [sReason] == 'continuation'|| [sReason] == 'restructuring') && [sClient]!= 'mvk_chernT'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]!= 'mvk_chernT' && [sClient] != 'zp_zpT'"
 		},
 		"RequiredFieldsOnCondition_42": 
 		{
 			"aField_ID":	["nFile_Advert"],
-			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sReason":"asPurpose"},
-			"sCondition":	"([sReason] == 'second_permission' || [sReason] == 'first_permission'|| [sReason] == 'continuation'|| [sReason] == 'restructuring') && [sClient]!= 'mvk_chernT'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]!= 'mvk_chernT' && [sClient] != 'zp_zpT'"
 		}
 	}
 }
