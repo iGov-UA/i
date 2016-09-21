@@ -568,24 +568,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             .save();
                 }
 
-                if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
-                    try {
-                        //issue 981 -- save history
-                        escalationHistoryService.updateStatus(nID_Process,
-                                bProcessClosed
-                                        ? EscalationHistoryService.STATUS_CLOSED
-                                        : EscalationHistoryService.STATUS_IN_WORK);
-                    } catch (Exception oException) {
-                	new Log(oException, LOG)//this.getClass()
-                            ._Case("IC_SaveEscalation")
-                            ._Status(Log.LogStatus.ERROR)
-                            ._Head("Can't save service message for escalation")
-                            ._Param("nID_Process", nID_Process)
-                            .save();
-                    }
-                }
-
-
                 // Сохраняем только после выполнения запроса afterCompletion 
                 if ( bSaveHistory ) {
 		    // Cохранение нового события для задачи
@@ -617,6 +599,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
 		    // Сохранение комментария эскалации
 		    if (sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION)) {
+			try {
+			    // issue 981 -- save history
+			    escalationHistoryService.updateStatus(nID_Process, bProcessClosed
+				    ? EscalationHistoryService.STATUS_CLOSED : EscalationHistoryService.STATUS_IN_WORK);
+			} catch (Exception oException) {
+			    new Log(oException, LOG)// this.getClass()
+				    ._Case("IC_SaveEscalation")._Status(Log.LogStatus.ERROR)
+				    ._Head("Can't save status for escalation")
+				    ._Param("nID_Process", nID_Process).save();
+			}
 			try {
 			    saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
 			} catch (Exception oException) {
