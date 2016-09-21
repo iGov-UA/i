@@ -239,7 +239,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 sType = "Close";
                 LOG.info("saveClosedTaskInfo block started");
-                saveClosedTaskInfo(sRequestBody, snTaskId);
+                saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
                 LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 sType = "Update";
@@ -483,7 +483,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     //(#1234) added additional parameter snClosedTaskId
-    private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
+    private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
@@ -516,7 +516,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG_BIG.debug("taskDetails = {}", taskDetails);
                 if (taskDetails != null) {
                     Map<String, Object> pvs = taskDetails.getProcessVariables();
-                    LOG_BIG.debug("taskDetails pvs= {}", pvs);
                     if (pvs != null) {
                         String sProcessID = (String) pvs.get("processID");
                         LOG.info("sProcessID ={}", sProcessID);
@@ -621,7 +620,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
 
                 // Сохранение комментария эскалации
-                if ( sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && !bProcessClosed ) {
+                if ( sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && bSaveHistory ) {
                     try {
                 	saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
                     } catch (Exception oException) {
