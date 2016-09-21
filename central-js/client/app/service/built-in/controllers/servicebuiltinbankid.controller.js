@@ -676,11 +676,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
-<<<<<<< HEAD
         sID_UA: oServiceData.oPlaceRoot.sID_UA || oServiceData.oPlace.sID_UA
-=======
-        sID_UA: oServiceData.oPlace.sID_UA || oServiceData.oPlaceRoot.sID_UA
->>>>>>> 1ab9b83d36ab64b1fd31fdb3f1eeac90ffe55837
       }
     }).then(function (response) {
       var bFilled = $scope.bFilledSelfPrevious();
