@@ -70,7 +70,9 @@ public class ToolFS {
 
     public static Path oFullPathFile(Path osSubPathFile) throws IOException, URISyntaxException {
         String sSubPathFile = osSubPathFile.toString();
+        //System.out.println("!!!!!!!!!!!!!!!sSubPathFile: " + sSubPathFile);
         URL oURL = Tool.class.getClassLoader().getResource(sSubPathFile);
+        //System.out.println("!!!!!!!!!!!!!!!oURL: " + oURL);
         if (oURL == null) {
             throw new IOException("oURL == null");
         }
