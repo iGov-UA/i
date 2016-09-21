@@ -605,7 +605,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 				    ? EscalationHistoryService.STATUS_CLOSED : EscalationHistoryService.STATUS_IN_WORK);
 			} catch (Exception oException) {
 			    new Log(oException, LOG)// this.getClass()
-				    ._Case("IC_SaveEscalation")._Status(Log.LogStatus.ERROR)
+				    ._Case("IC_SaveHistoryEscalation")._Status(Log.LogStatus.ERROR)
 				    ._Head("Can't save status for escalation")
 				    ._Param("nID_Process", nID_Process).save();
 			}
