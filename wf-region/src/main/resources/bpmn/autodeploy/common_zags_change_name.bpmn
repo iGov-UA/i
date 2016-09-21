@@ -10,12 +10,8 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asPaymentMethod" name="Для отримання послуги необхідно сплатити державне мито. Оберіть бажаний спосіб" type="enum" required="true">
-          <activiti:value id="online" name="сплатити онлайн"></activiti:value>
-          <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита; якщо ім'я змінюєте вперше - 5,1 грн, повторна зміна - 51 грн" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sText88" name=" " type="label" default="Після замовлення послуги Ви отримаєте лист з кнопкою для сплати"></activiti:formProperty>
+        <activiti:formProperty id="sText88" name=" " type="label" default="&lt;b&gt;Ви можете завантажити квитанцію, сформовану в інтернет банку&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністративного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" required="true"></activiti:formProperty>
@@ -214,8 +210,6 @@
         <activiti:formProperty id="markers35" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sSum_2&quot;,&quot;sDescription_2&quot;],&quot;asID_Field_sValue&quot;:[&quot;51.92&quot;,&quot;державне мито за повторну державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers38" name="якщо онлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;sText88&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'online'||[sClient] == 'сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers39" name="якщо офлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sBankDetails2&quot;,&quot;sDocPay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -223,12 +217,6 @@
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject_2" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_2" name="Послуга є платною" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
@@ -239,10 +227,6 @@
     </startEvent>
     <userTask id="usertask3_yellow" name="перевірка документів і вхідних данних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="asPaymentMethod" name="Для отримання послуги необхідно сплатити державне мито. Оберіть бажаний спосіб" type="enum" writable="false">
-          <activiti:value id="online" name="сплатити онлайн"></activiti:value>
-          <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
@@ -407,13 +391,6 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -424,10 +401,6 @@
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-          <activiti:formProperty id="asPaymentMethod" name="Для отримання послуги необхідно сплатити державне мито. Оберіть бажаний спосіб" type="enum" writable="false">
-          <activiti:value id="online" name="сплатити онлайн"></activiti:value>
-          <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
@@ -589,13 +562,6 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -931,83 +897,6 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask15" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
-Вам необхідно сплатити державне мито.<br />
-Якщо ім'я змінюєте впереше - 5.2UAH (в т.ч комісія 10 копійок)/<br />
-Якщо вже раніше змінювали ім'я, державне мито складає - 51.92UAH (в т.ч. комісія 92 копійки)/<br />
-Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
-[paymentButton_LiqPay_2]<br />
-У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
-Вас буде перенаправлено на сформований платіж у liqPay.<br />
-Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
-Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних данних та документів.<br />
-Якщо впродовж 2-х днів з моменту подання звернення оплата не надійде, ваше звернення буде відхілено.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vy zamovyly poslugu zminy imeni. Vam potribno splatyty derzhavne myto. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask16" name="повідомлення громадянина про відсутність оплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
-На жаль, Ваше звернення відхилено.
-Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
-<br />
-Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno cherez vidsutnist oplaty. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держ.органу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -1303,7 +1192,7 @@ if(execution.getVariable('asFullName') == 'pib'){
 per15 = execution.getVariable('sSurname')+" "+execution.getVariable('sName')+" "+execution.getVariable('sSecondName')
 }
 
-res = '&lt;ol&gt;'+per4+per7+per8+per9+per10+per11+per12+per13+per17+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per4+per7+per6++per8+per9+per10+per11+per12+per13+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per1+per2+per4+per5+per6+per7+per8+per9+per10+per11+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
@@ -1380,215 +1269,13 @@ execution.setVariable('sNotification_day', timer)</script>
     </sequenceFlow>
     <sequenceFlow id="flow109" sourceRef="servicetask8" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow113" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="48"}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow128" sourceRef="usertask4" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow130" sourceRef="servicetask13" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow131" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow132" sourceRef="servicetask1" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow133" sourceRef="exclusivegateway6" targetRef="servicetask15">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPaymentMethod =='online'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow134" sourceRef="servicetask16" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow135" sourceRef="exclusivegateway6" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPaymentMethod =='offline'}]]></conditionExpression>
-    </sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow136" sourceRef="boundaryerror1" targetRef="endevent6"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sCountPayment')
-src=(+src + +1)
-execution.setVariable('sCountPayment', src)</script>
-    </scriptTask>
-    <userTask id="usertask6" name="Очікування оплати від заявника" activiti:candidateGroups="common_zags">
-      <extensionElements>
-        <activiti:formProperty id="sSurname" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName" name="Ім’я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSecondName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirth" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFullName" name="Яку частину імені планується змінити?" type="enum" writable="false">
-          <activiti:value id="name" name="власне ім'я"></activiti:value>
-          <activiti:value id="surname" name="прізвище"></activiti:value>
-          <activiti:value id="secondname" name="по батькові"></activiti:value>
-          <activiti:value id="namesurname" name="прізвище та ім'я"></activiti:value>
-          <activiti:value id="pib" name="прізвище, ім'я та по батькові"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNewName" name="Нове обране ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNewSurname" name="Нове обране прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNewSecondname" name="Нове по батькові; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asMilitary" name="Відношення до військової служби" type="enum" writable="false">
-          <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
-          <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
-          <activiti:value id="yesMilitary" name="перебуваю на військовій службі"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
-          <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
-          <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
-          <activiti:value id="widow" name="удова (удівець)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="saChildren" name="Чи маєте дітей?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="saConviction" name="Чи маєте судимість, яку не погашено або не знято в установленому законом порядку?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="saChangeName" name="Чи міняли раніше прізвище, власне ім’я, по батькові?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
-          <activiti:value id="pasport" name="паспорт"></activiti:value>
-          <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNowName" name="частина імені у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_2" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow139" sourceRef="servicetask15" targetRef="usertask6"></sequenceFlow>
-    <sequenceFlow id="flow140" sourceRef="escalationTimer2" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow141" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
-    <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT1H</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
+    <sequenceFlow id="flow137" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1607,14 +1294,8 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="68.0" width="118.0" x="169.0" y="262.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
-        <omgdc:Bounds height="71.0" width="119.0" x="269.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
-        <omgdc:Bounds height="66.0" width="120.0" x="831.0" y="23.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="123.0" x="829.0" y="119.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="123.0" x="829.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="66.0" width="119.0" x="536.0" y="263.0"></omgdc:Bounds>
@@ -1632,7 +1313,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="66.0" width="120.0" x="12.0" y="263.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="71.0" width="121.0" x="675.0" y="119.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="680.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="62.0" width="113.0" x="15.0" y="354.0"></omgdc:Bounds>
@@ -1658,33 +1339,15 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="575.0" y="441.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="715.0" y="35.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="372.0" y="191.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="207.0" y="35.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="996.0" y="39.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="75.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="69.0" width="119.0" x="570.0" y="21.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="71.0" width="121.0" x="429.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="521.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="796.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="829.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="801.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="829.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="830.0" y="295.0"></omgdi:waypoint>
@@ -1705,7 +1368,7 @@ execution.setVariable('sCountPayment', src)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
-        <omgdi:waypoint x="890.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="890.0" y="91.0"></omgdi:waypoint>
         <omgdi:waypoint x="890.0" y="260.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow92" id="BPMNEdge_flow92">
@@ -1771,20 +1434,6 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="50.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="78.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
-        <omgdi:waypoint x="755.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="56.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="71.0" x="755.0" y="55.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
-        <omgdi:waypoint x="735.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="735.0" y="119.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="45.0" x="735.0" y="75.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
         <omgdi:waypoint x="228.0" y="262.0"></omgdi:waypoint>
         <omgdi:waypoint x="228.0" y="208.0"></omgdi:waypoint>
@@ -1799,38 +1448,13 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="595.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="407.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow132" id="BPMNEdge_flow132">
-        <omgdi:waypoint x="193.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow133" id="BPMNEdge_flow133">
-        <omgdi:waypoint x="247.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="269.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow134" id="BPMNEdge_flow134">
-        <omgdi:waypoint x="951.0" y="56.0"></omgdi:waypoint>
-        <omgdi:waypoint x="996.0" y="56.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow135" id="BPMNEdge_flow135">
-        <omgdi:waypoint x="227.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="675.0" y="154.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow136" id="BPMNEdge_flow136">
         <omgdi:waypoint x="93.0" y="100.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow139" id="BPMNEdge_flow139">
-        <omgdi:waypoint x="388.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="429.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow140" id="BPMNEdge_flow140">
-        <omgdi:waypoint x="551.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="570.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow141" id="BPMNEdge_flow141">
-        <omgdi:waypoint x="689.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="715.0" y="55.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow137" id="BPMNEdge_flow137">
+        <omgdi:waypoint x="193.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
