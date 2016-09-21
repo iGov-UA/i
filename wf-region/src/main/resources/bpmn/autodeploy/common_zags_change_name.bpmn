@@ -424,7 +424,7 @@
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-          <activiti:formProperty id="asPaymentMethod" name="Для отримання послуги необхідно сплатити державне мито. Оберіть бажаний спосіб" type="enum" writable="false">
+        <activiti:formProperty id="asPaymentMethod" name="Для отримання послуги необхідно сплатити державне мито. Оберіть бажаний спосіб" type="enum" writable="false">
           <activiti:value id="online" name="сплатити онлайн"></activiti:value>
           <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
         </activiti:formProperty>
@@ -1383,7 +1383,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="48"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="6"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
@@ -1586,9 +1586,12 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow141" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask6" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT1H</timeDuration>
+        <timeDuration>PT5M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
+    <sequenceFlow id="flow142" name="чекаємо пів години" sourceRef="exclusivegateway5" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment !="6"}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1775,7 +1778,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="755.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="831.0" y="56.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="71.0" x="755.0" y="55.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="755.0" y="55.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
@@ -1831,6 +1834,16 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow141" id="BPMNEdge_flow141">
         <omgdi:waypoint x="689.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="715.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow142" id="BPMNEdge_flow142">
+        <omgdi:waypoint x="735.0" y="35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="-11.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="-11.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="-11.0"></omgdi:waypoint>
+        <omgdi:waypoint x="489.0" y="20.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="735.0" y="35.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
