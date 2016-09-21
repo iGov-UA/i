@@ -52,8 +52,8 @@ public class EscalationHistoryService {
         newEscalationHistory.setnIdEscalationStatus(newStatus);
         newEscalationHistory.setsDate(new DateTime());
         
-        if ( !newStatus.equals(oldStatus)) { // историю записываем только если статус изменился
-            LOG.info("Update escalation status from {} to {}", oldStatus, newStatus);
+        LOG.info("Updating escalation status from {} to {}", oldStatus, newStatus);
+        if ( !newStatus.equals(oldStatus)) { // в историю записываем только если статус изменился #1257
             escalationHistoryDao.saveOrUpdate(newEscalationHistory);
         }            
         
