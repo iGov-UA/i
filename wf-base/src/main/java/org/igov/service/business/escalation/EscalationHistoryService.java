@@ -40,10 +40,13 @@ public class EscalationHistoryService {
         if (escalationHistory == null) {
             LOG.error("entity not found for escalation process {}", escalationInstanceId);
         } else {
-            LOG.info("Update escalation status from {} to {}", escalationHistory.getnIdEscalationStatus(), newStatus);
+            Long oldStatus = escalationHistory.getnIdEscalationStatus();
+            if ( !oldStatus.equals(newStatus)) { // историю записываем только если статус изменился
+                LOG.info("Update escalation status from {} to {}", oldStatus, newStatus);
 
-            newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
-            newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());
+                newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
+                newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());
+            }
         }
         newEscalationHistory.setnIdEscalationStatus(newStatus);
         newEscalationHistory.setsDate(new DateTime());
