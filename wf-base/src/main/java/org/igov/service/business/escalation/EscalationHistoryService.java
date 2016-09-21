@@ -55,6 +55,7 @@ public class EscalationHistoryService {
         LOG.info("Updating escalation status from {} to {}", oldStatus, newStatus);
         if ( !newStatus.equals(oldStatus)) { // в историю записываем только если статус изменился #1257
             escalationHistoryDao.saveOrUpdate(newEscalationHistory);
+            LOG.info("Escalation status updated");
         }            
         
         return newEscalationHistory;
