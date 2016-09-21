@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Адреса реєстраці; Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="people" name="Яка кількість осіб зареєстрована за цією адресою?" type="enum" default="one" required="true">
           <activiti:value id="one" name="1"></activiti:value>
@@ -60,8 +60,12 @@
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSots" name="соцзахист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/forma3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('scadovsk_mvk-302.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -298,8 +302,13 @@
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dms/forma_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma3.html]" type="invisible" default="Довідка про склад сім'ї" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma3_1.html]" type="invisible" default="Довідка про склад сім'ї (розширена)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3_lubin.html]" type="invisible" default="Довідка про склад сім'ї (Великий Любінь)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSots" name="соцзахист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Pasportyst" name="в прінтформу 1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Nachalnyk" name="в прінтформу 2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
