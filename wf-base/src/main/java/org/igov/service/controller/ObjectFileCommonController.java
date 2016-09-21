@@ -716,10 +716,10 @@ public class ObjectFileCommonController {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
     
-    @ApiOperation(value = "/dfs/putPatternFilledToDB", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
-    @RequestMapping(value = {"/dfs/putPatternFilledToDB"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
+    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
-    Map<String, String> putPatternFilledToDB(
+    Map<String, String> getPatternFilled(
             @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
             @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
