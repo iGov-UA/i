@@ -736,16 +736,16 @@ public class ObjectFileCommonController {
             declarContent = declarContent.replaceAll(regex, replacement);
         }
         //запись контента в xml файл
-        MultipartFile multipartFile = new ByteArrayMultipartFile(declarContent.getBytes(),
-                sID_Pattern, sID_Pattern, "application/xml");
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
-        httpResponse.setHeader("Content-Type", multipartFile.getContentType());
-        httpResponse.setContentLength(multipartFile.getBytes().length);
-        String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
-                .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
-                .toByteArray());
-        result.put("sID_Redis", key);
-        result.put("soPatternFilled", key);
+        //MultipartFile multipartFile = new ByteArrayMultipartFile(declarContent.getBytes(),
+        //        sID_Pattern, sID_Pattern, "application/xml");
+        //httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+        //httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+        //httpResponse.setContentLength(multipartFile.getBytes().length);
+        //String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
+        //        .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
+        //        .toByteArray());
+        //result.put("sID_Redis", key);
+        result.put("soPatternFilled", declarContent);
         return result;
     }
     
