@@ -387,6 +387,46 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask8" name="Запрошення підписати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto, zaproshennya pidpysaty. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг розглянуте, правильність заповнення документів перевірена, документи пройшли процедуру попередньої реєстрації.</p>
+<p>Оскільки при заповненні заяви на порталі <a href="https://igov.org.ua">iGov.org.ua</a> 
+Ви не підписали заявку електронно-цифровим підписом, Вам необхідно навідатись до УПСЗН і надати підписані особисто Заяву і Декларацію (можна зберегти локально і потім роздрукувати додатки до цього електронного листа) не пізніше ніж у 30-денний термін від дати, вказаної на заяві.</p>
+<p>Коментар працівника УПСЗН (за наявності): ${comment}</p>
+<p>
+<br />
+<p>${sNameOrgan}.<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}</p>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <userTask id="usertask2" name="Рішення про призначення субсидії" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="label2" name="На цьому етапі необхідно вказати, яке рішення прийнято по заяві громадянина, та завантажити відповідний документ для відправки його громадянину електронною поштою" type="label" default=" "></activiti:formProperty>
@@ -778,46 +818,7 @@ execution.setVariable('area', per3)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Запрошення підписати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto, zaproshennya pidpysaty. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг розглянуте, правильність заповнення документів перевірена.</p>
-<p>Оскільки при заповненні заяви на порталі <a href="https://igov.org.ua">iGov.org.ua</a> 
-Ви не підписали заявку електронно-цифровим підписом, Вам необхідно навідатись до УПСЗН і надати підписані особисто Заяву і Декларацію (можна зберегти локально і потім роздрукувати додатки до цього електронного листа) не пізніше ніж у 30-денний термін від дати, вказаної на заяві.</p>
-<p>Коментар працівника УПСЗН (за наявності): ${comment}</p>
-<p>
-<br />
-<p>${sNameOrgan}.<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}</p>
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    
     <sequenceFlow id="flow32" name="подпись" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='sign'}]]></conditionExpression>
     </sequenceFlow>
