@@ -516,6 +516,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG_BIG.debug("taskDetails = {}", taskDetails);
                 if (taskDetails != null) {
                     Map<String, Object> pvs = taskDetails.getProcessVariables();
+                    LOG_BIG.debug("taskDetails pvs= {}", pvs);
                     if (pvs != null) {
                         String sProcessID = (String) pvs.get("processID");
                         LOG.info("sProcessID ={}", sProcessID);
