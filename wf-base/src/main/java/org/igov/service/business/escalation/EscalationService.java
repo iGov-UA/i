@@ -129,6 +129,7 @@ public class EscalationService {
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
                     mTaskParam.put("sURL_OrderHistory", "<a href=" + ORDER_HISTORY_URL + onID_Task+">[nID_Protected]</a>");
                     LOG.info("!!!!!!!!!!!!!!!regionalServerPath: "+regionalServerPath); // <a href="URL">текст ссылки</a>
+                    LOG.info("ORDER_HISTORY_URL + onID_Task"+ORDER_HISTORY_URL + onID_Task);
 
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
