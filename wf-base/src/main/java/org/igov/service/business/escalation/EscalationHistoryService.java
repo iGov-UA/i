@@ -44,13 +44,11 @@ public class EscalationHistoryService {
             if ( !oldStatus.equals(newStatus)) { // историю записываем только если статус изменился
                 LOG.info("Update escalation status from {} to {}", oldStatus, newStatus);
 
-                newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
-                newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());
+                newEscalationHistory.setnIdEscalationStatus(newStatus);
+                newEscalationHistory.setsDate(new DateTime());
+                escalationHistoryDao.saveOrUpdate(newEscalationHistory);
             }
         }
-        newEscalationHistory.setnIdEscalationStatus(newStatus);
-        newEscalationHistory.setsDate(new DateTime());
-        escalationHistoryDao.saveOrUpdate(newEscalationHistory);
         return newEscalationHistory;
     }
 
