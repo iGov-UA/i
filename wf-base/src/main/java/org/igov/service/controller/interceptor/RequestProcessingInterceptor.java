@@ -586,51 +586,44 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 }
 
 
-                // Cохранение нового события для задачи
-                HistoryEvent_Service_StatusType status;
-                LOG.info("Get sDateStart и sDateClosed");
-                String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                LOG.info("(sDateStart={})", sDateStart);
-                String sDateClosed = "";
-                LOG.info("(sDateClosed={})", sDateClosed);
-           
-                if (bProcessClosed) {
-                    status = HistoryEvent_Service_StatusType.CLOSED;
-                    sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-                } else{
-                    status = HistoryEvent_Service_StatusType.OPENED;
-                }
-                LOG.info("Saving closed task");
-                mParam.put("nID_StatusType", status.getnID().toString());
-                mParam.put("sUserTaskName", sUserTaskName);
-                mParam.put("sID_Order", sID_Order);
-                mParam.put("sDateStart", sDateStart);
-                mParam.put("sDateClosed", sDateClosed);
-                try {
-                    historyEventService
-                        .updateHistoryEvent(sID_Order, mParam);//sID_Process
-                } catch (Exception oException) {
-            		new Log(oException, LOG)
-            			._Case("IC_SaveTaskHistoryEvent")
-                		._Status(Log.LogStatus.ERROR)
-                		._Head("Can't save history event for task")
-                		._Param("nID_Process", nID_Process)
-                		.save();
-                }
+                // Сохраняем только после выполнения запроса afterCompletion 
+                if ( bSaveHistory ) {
+		    // Cохранение нового события для задачи
+		    HistoryEvent_Service_StatusType status;
+		    LOG.info("Get sDateStart и sDateClosed");
+		    String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
+		    LOG.info("(sDateStart={})", sDateStart);
+		    String sDateClosed = "";
+		    LOG.info("(sDateClosed={})", sDateClosed);
 
+		    if (bProcessClosed) {
+			status = HistoryEvent_Service_StatusType.CLOSED;
+			sDateClosed = oHistoricTaskInstance.getEndTime().toString();
+		    } else {
+			status = HistoryEvent_Service_StatusType.OPENED;
+		    }
+		    LOG.info("Saving closed task");
+		    mParam.put("nID_StatusType", status.getnID().toString());
+		    mParam.put("sUserTaskName", sUserTaskName);
+		    mParam.put("sID_Order", sID_Order);
+		    mParam.put("sDateStart", sDateStart);
+		    mParam.put("sDateClosed", sDateClosed);
+		    try {
+			historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
+		    } catch (Exception oException) {
+			new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
+				._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
+		    }
 
-                // Сохранение комментария эскалации
-                if ( sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && bSaveHistory ) {
-                    try {
-                	saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
-                    } catch (Exception oException) {
-                	new Log(oException, LOG)
-                    		._Case("IC_SaveCommentVolonter")
-                    		._Status(Log.LogStatus.ERROR)
-                    		._Head("Can't save volonter's comment")
-                    		._Param("nID_Process", nID_Process)
-                    		.save();
-                    }
+		    // Сохранение комментария эскалации
+		    if (sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION)) {
+			try {
+			    saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
+			} catch (Exception oException) {
+			    new Log(oException, LOG)._Case("IC_SaveCommentVolonter")._Status(Log.LogStatus.ERROR)
+				    ._Head("Can't save volonter's comment")._Param("nID_Process", nID_Process).save();
+			}
+		    }
                 }
 
                 LOG.info("saving closed task finished");
