@@ -14,7 +14,7 @@
           <activiti:value id="online" name="сплатити онлайн"></activiti:value>
           <activiti:value id="offline" name="отримати реквізити для сплати"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати державного мита; якщо ім'я змінюєте вперше - 5,1 грн, повторна зміна - 51 грн" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText88" name=" " type="label" default="Після замовлення послуги Ви отримаєте лист з кнопкою для сплати"></activiti:formProperty>
         <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністративного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" required="true"></activiti:formProperty>
@@ -404,6 +404,8 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -580,6 +582,8 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment_2" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum_2" name="сумма платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency_2" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
@@ -953,7 +957,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vy zamovyly poslugu zminy imeni. Vam potribno splatyty derzhavne myto XX grn. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vy zamovyly poslugu zminy imeni. Vam potribno splatyty derzhavne myto. Detali na igov.org.ua/journal abo u Vashomy email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -1558,7 +1562,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="160.0" y="297.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="36.0" x="-121.0" y="45.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="-136.0" y="30.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
