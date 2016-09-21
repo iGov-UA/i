@@ -127,8 +127,8 @@ public class EscalationService {
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
-                    mTaskParam.put("sURL_OrderHistory", "<a href="+regionalServerPath + ORDER_HISTORY_URL + onID_Task+">[nID_Protected]</a>");
-                    LOG.info("!!!!!!!!!!!!!!!regionalServerPath + ORDER_HISTORY_URL + oTask.getParentTaskId(): "+regionalServerPath + ORDER_HISTORY_URL + onID_Task); // <a href="URL">текст ссылки</a>
+                    mTaskParam.put("sURL_OrderHistory", "<a href=" + ORDER_HISTORY_URL + onID_Task+">[nID_Protected]</a>");
+                    LOG.info("!!!!!!!!!!!!!!!regionalServerPath: "+regionalServerPath); // <a href="URL">текст ссылки</a>
 
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
