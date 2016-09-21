@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків; Одержувача допомоги АБО його законного представника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Місце проживання (реєстрації); Вкажіть район та назву населеного пункту, вулицю, номер будинку та квартири" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого Ви звертаєтесь" type="select" default="0"></activiti:formProperty>
@@ -99,7 +99,7 @@ execution.setVariable('sMailClerk', per1)
     <serviceTask id="servicetask5" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -113,13 +113,22 @@ execution.setVariable('sMailClerk', per1)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask5" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання одноразової матеріальної допомоги громадянам]]></activiti:string>
@@ -128,7 +137,7 @@ execution.setVariable('sMailClerk', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
 									&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 	
+										Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.&lt;br /&gt; 	
 										Спеціалісти ${sOrganID} повинні дати відповідь найближчим часом. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
@@ -204,13 +213,22 @@ execution.setVariable('sMailClerk', per1)
     <sequenceFlow id="flow6" name="${workerDecision=='decline'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання одноразової матеріальної допомоги громадянам]]></activiti:string>
@@ -219,7 +237,7 @@ execution.setVariable('sMailClerk', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-				На жаль, ми змушені відмовити Вам у реєстрації звернення. 
+				На жаль, ми змушені відмовити Вам у реєстрації звернення №[sID_Order]. 
 			&lt;/p&gt;
 			&lt;p&gt;
 			Коментар державного службовця:&lt;br&gt;
@@ -237,13 +255,22 @@ execution.setVariable('sMailClerk', per1)
     <sequenceFlow id="flow5" name="${workerDecision=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Звернення передане до коміссії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="Звернення передане до коміссії" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order]  pryznacheno rozglyad komisieyu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання одноразової матеріальної допомоги громадянам]]></activiti:string>
@@ -252,7 +279,7 @@ execution.setVariable('sMailClerk', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш звернення було передане на розгляд коміссії.&lt;br&gt; 	
+										Ваш звернення №[sID_Order] було передане на розгляд коміссії.&lt;br&gt; 	
 										Ви отримаєте відповідь у визначений законом термін.
 									&lt;/p&gt;
                                    [pattern/mail/_common_signature_start.html]
@@ -328,13 +355,19 @@ execution.setVariable('sMailClerk', per1)
     <sequenceFlow id="flow15" name="${workerDecision1 == 'accept'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision1 == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="Емейл призначення допомоги" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Емейл призначення допомоги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання одноразової матеріальної допомоги громадянам]]></activiti:string>
@@ -346,7 +379,7 @@ execution.setVariable('sMailClerk', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Ваше звернення щодо надання одноразової матеріальної допомоги громадянам було успішно розглянуте.&lt;br&gt;
+                                        Ваше звернення №[sID_Order] щодо надання одноразової матеріальної допомоги громадянам було успішно розглянуте.&lt;br&gt;
 										Ви отримаєте допомогу обраним Вами способом.
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -367,13 +400,19 @@ execution.setVariable('sMailClerk', per1)
     <sequenceFlow id="flow17" name="${workerDecision1 == 'decline'}" sourceRef="exclusivegateway2" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision1 == 'decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Емейл відмови у призначенні допомоги" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Емейл відмови у призначенні допомоги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання одноразової матеріальної допомоги громадянам]]></activiti:string>

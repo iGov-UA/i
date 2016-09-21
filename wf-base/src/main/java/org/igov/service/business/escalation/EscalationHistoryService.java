@@ -36,16 +36,28 @@ public class EscalationHistoryService {
     public EscalationHistory updateStatus(Long escalationInstanceId, Long newStatus) {
         EscalationHistory escalationHistory = escalationHistoryDao.getByProcessId(escalationInstanceId);
         EscalationHistory newEscalationHistory = new EscalationHistory();
+
         newEscalationHistory.setnIdProcess(escalationInstanceId);
+        Long oldStatus = null;
+
         if (escalationHistory == null) {
             LOG.error("entity not found for escalation process {}", escalationInstanceId);
         } else {
             newEscalationHistory.setnIdUserTask(escalationHistory.getnIdUserTask());
-            newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());
+            newEscalationHistory.setnIdProcessRoot(escalationHistory.getnIdProcessRoot());            
+
+            oldStatus = escalationHistory.getnIdEscalationStatus();
         }
+
         newEscalationHistory.setnIdEscalationStatus(newStatus);
         newEscalationHistory.setsDate(new DateTime());
-        escalationHistoryDao.saveOrUpdate(newEscalationHistory);
+        
+        LOG.info("Updating escalation status from {} to {}", oldStatus, newStatus);
+        if ( !newStatus.equals(oldStatus)) { // в историю записываем только если статус изменился #1257
+            escalationHistoryDao.saveOrUpdate(newEscalationHistory);
+            LOG.info("Escalation status updated");
+        }            
+        
         return newEscalationHistory;
     }
 
