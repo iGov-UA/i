@@ -31,6 +31,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
       var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
 
+      var departmentProperty = 'nID_Department_' + scope.property.id;
+      var departmentParam = scope.formData.params[departmentProperty];
+
       scope.$watch('selected.slot', function(newValue) {
         if (newValue) {
           //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
@@ -50,16 +53,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       scope.slotsData = {};
       scope.slotsLoading = true;
 
-      scope.loadList = function(nID_SubjectOrganDepartment){
+      scope.loadList = function(){
         scope.slotsLoading = true;
         var data = {
           //sURL: scope.serviceData.sURL,
           nID_Server: scope.serviceData.nID_Server,
           nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
         };
-        if (angular.isDefined(nID_SubjectOrganDepartment))
-        {
-          data.nID_SubjectOrganDepartment = nID_SubjectOrganDepartment;
+        if (departmentParam && parseInt(departmentParam.value) > 0) {
+          data.nID_SubjectOrganDepartment = departmentParam.value;
         }
 
         if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 1) {
@@ -72,24 +74,26 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         });
       };
 
-      var departmentProperty = 'nID_Department_' + scope.property.id;
-      var departmentParam = scope.formData.params[departmentProperty];
       if (angular.isDefined(departmentParam)) {
         scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
           resetData();
           if (newValue)
           {
-            scope.loadList(newValue);
+            scope.loadList();
           }
         });
       } else {
         scope.loadList();
       }
 
-      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
-        resetData();
-        scope.loadList();
-      });
+      if (angular.isDefined(nDiffDaysParam)) {
+        scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+          resetData();
+          if (newValue) {
+            scope.loadList();
+          }
+        });
+      }
     }
   };
 });
