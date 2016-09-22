@@ -201,8 +201,11 @@
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_RishenZP" name="Завантажте копію рішення або оригінал дозволу у форматі PDF з накладеним ЕЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers30" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="Перевірка на ЕЦП" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_32.json')}"></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -329,7 +332,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Опрацьовано звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_Opis}</activiti:expression>
+          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_Opis},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -573,7 +576,7 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
