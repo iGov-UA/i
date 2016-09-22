@@ -60,7 +60,7 @@
         <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/6RU4HV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -128,6 +128,11 @@
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnum_decision_001" name="Test" type="enum">
+          <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sINN_fiz001" name="Test required string" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sComment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Opis" name="Завантажте опис прийнятих документів " type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
@@ -201,7 +206,7 @@
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_RishenZP" name="Завантажте копію рішення або оригінал дозволу у форматі PDF з накладеним ЕЦП" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers30" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_31.json')}"></activiti:formProperty>
