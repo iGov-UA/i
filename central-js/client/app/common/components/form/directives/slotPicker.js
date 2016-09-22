@@ -54,19 +54,23 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       scope.slotsLoading = true;
 
       scope.loadList = function(){
-        scope.slotsLoading = true;
         var data = {
           //sURL: scope.serviceData.sURL,
           nID_Server: scope.serviceData.nID_Server,
           nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
         };
-        if (departmentParam && parseInt(departmentParam.value) > 0) {
-          data.nID_SubjectOrganDepartment = departmentParam.value;
+
+        if (departmentParam) {
+          if (parseInt(departmentParam.value) > 0)
+            data.nID_SubjectOrganDepartment = departmentParam.value;
+          else return;
         }
 
-        if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 1) {
+        if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 0) {
           data.nDiffDays = nDiffDaysParam.value;
         }
+
+        scope.slotsLoading = true;
 
         return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
           scope.slotsData = response.data;
@@ -75,10 +79,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       };
 
       if (angular.isDefined(departmentParam)) {
-        scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
+        scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue, oldValue) {
           resetData();
-          if (newValue)
-          {
+          if (parseInt(newValue) > 0) {
             scope.loadList();
           }
         });
@@ -87,11 +90,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       }
 
       if (angular.isDefined(nDiffDaysParam)) {
-        scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+        scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
           resetData();
-          if (newValue) {
-            scope.loadList();
-          }
+          scope.loadList();
         });
       }
     }
