@@ -112,7 +112,7 @@ public class EscalationService {
             TaskQuery oTaskQuery = taskService.createTaskQuery()
                     .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
             if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
-                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
+                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP); 
             }
             Integer nRowStart = 0;
             Integer nRowsMax = 1000;

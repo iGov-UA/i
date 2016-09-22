@@ -86,7 +86,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
-            variables.put("sPlace", getPlaceByProcess(snID_Process));
+            variables.put("Place", getPlaceByProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
