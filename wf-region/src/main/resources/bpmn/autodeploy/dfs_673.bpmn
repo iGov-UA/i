@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dfs_673" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
-	<documentation>Рефакторинг на основі dnepr_spravka_o_doxodax: Ставицький В.Д, 24.05.16</documentation>
+	<documentation>
+		24.05.16 Рефакторинг: на основі dnepr_spravka_o_doxodax: Ставицький В.Д
+		15.09.16 Рефакторинг: Добавление маркеров на все стадии, переделка принтформы, добавление даты создание процесса
+	</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="select" default="0" required="true"></activiti:formProperty>
@@ -24,7 +27,7 @@
 
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAim" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, для оформлення субсидій, інше" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -33,9 +36,14 @@
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sFIOGolova736" name="ПІБ голови органу" type="invisible" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameOrgan673" name="назва органу органу" type="invisible" default=" "></activiti:formProperty>        
+        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible" default=" "></activiti:formProperty>     
+        <activiti:formProperty id="sDateStart" name="Дата замовлення" type="invisible" default=" "></activiti:formProperty>
         
 		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_start.json')}"></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -49,6 +57,7 @@
       <script>
       	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
       	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
+      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
       </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
@@ -111,34 +120,37 @@
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="dfs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
        	<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>	
-        <activiti:formProperty id="sAddressFactual" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="dStart1" name="Період, за який Ви хочете отримати довідку, з" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dStop1" name="Період, за який Ви хочете отримати довідку, по" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAim" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, для оформлення субсидій, інше" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dStart1" name="Період, за який Ви хочете отримати довідку, з; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dStop1" name="Період, за який Ви хочете отримати довідку, по; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAim" name="Довідку буде надано до; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" required="true">
-          <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
+          <activiti:value id="accept" name="Надати довідку про доходи фізичних осіб"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aComment" name="Результат обробки" type="textArea"></activiti:formProperty>
         
         
-        <activiti:formProperty id="sFIOGolova736" name="ПІБ голови органу" type="invisible" default=" "></activiti:formProperty>
-		<activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_673_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameOrgan673" name="назва органу органу" type="invisible"></activiti:formProperty>        
+        <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible"></activiti:formProperty>    
+        <activiti:formProperty id="sDateStart" name="Дата замовлення" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_user.json')}"></activiti:formProperty>
 
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -226,7 +238,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
           	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання довідки про доходи прийнята в роботу.
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання довідки про доходи фізичних осіб прийнята в роботу.
 			</p>
           	<p>
           		Коментар чиновника:<br>

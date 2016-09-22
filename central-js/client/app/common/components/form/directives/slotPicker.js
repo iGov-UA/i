@@ -47,6 +47,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var nSlotsKey = 'nSlots_' + scope.property.id;
       var nSlotsParam = scope.formData.params[nSlotsKey];
+
+      var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
+      var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
+
       scope.$watch('selected.slot', function(newValue) {
         if (isQueueDataType.DMS) {
           if(newValue){
@@ -151,8 +155,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
             data.nSlots = nSlotsParam.value;
           }
+          if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 1) {
+            data.nDiffDays = nDiffDaysParam.value;
+          }
           sURL = '/api/service/flow/' + scope.serviceData.nID;
-
         } else {
           scope.slotsLoading = false;
           ErrorsFactory.push({
@@ -204,6 +210,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       });
 
       scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue) {
+        resetData();
+        scope.loadList();
+      });
+
+      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
         resetData();
         scope.loadList();
       });
