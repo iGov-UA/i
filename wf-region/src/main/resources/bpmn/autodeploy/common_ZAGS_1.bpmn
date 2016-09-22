@@ -233,7 +233,14 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:field name="aFieldInheritedAttachmentID">
+          <activiti:expression>${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -921,11 +928,16 @@ execution.setVariable('sCountPayment', src)</script>
         <timeDuration>PT40M</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow70" sourceRef="usertask4" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow70" sourceRef="escalationTimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow71" sourceRef="timerintermediatecatchevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow72" sourceRef="exclusivegateway7" targetRef="timerintermediatecatchevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="48"}]]></conditionExpression>
     </sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT30S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_1">
     <bpmndi:BPMNPlane bpmnElement="common_zags_1" id="BPMNPlane_common_zags_1">
@@ -1030,6 +1042,9 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="150.0" x="98.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="198.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="153.0" y="310.0"></omgdc:Bounds>
@@ -1212,7 +1227,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="173.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
-        <omgdi:waypoint x="173.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="213.0" y="280.0"></omgdi:waypoint>
         <omgdi:waypoint x="170.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
