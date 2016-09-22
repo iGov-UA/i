@@ -1,5 +1,6 @@
 package org.igov.service.business.escalation;
 
+import java.net.URL;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
@@ -125,9 +126,10 @@ public class EscalationService {
                 try {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
+                    URL sURL_OrderHistory = new URL(ORDER_HISTORY_URL + onID_Task);
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
-                    mTaskParam.put("sURL_OrderHistory", ORDER_HISTORY_URL + onID_Task);
+                    mTaskParam.put("sURL_OrderHistory", sURL_OrderHistory);
                     LOG.info("ORDER_HISTORY_URL + onID_Task"+ORDER_HISTORY_URL + onID_Task);
                     mTaskParam.put("sID_State_BP", sID_State_BP);
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
