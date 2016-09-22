@@ -163,7 +163,7 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));  
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskIDPlusName", mTaskParam.get("sTaskID")+" - "+ mTaskParam.get("sTaskName"));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sID_State_BP")+" - "+ mTaskParam.get("sTaskName"));
         
 //        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
 //        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
@@ -200,7 +200,7 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
-        mParam.put("sURL_OrderHistory", "sURL_OrderHistory");
+        mParam.put("sURL_OrderHistory", mTaskParam.get("sURL_OrderHistory"));
         mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
