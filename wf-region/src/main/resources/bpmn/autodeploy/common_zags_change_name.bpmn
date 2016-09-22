@@ -1373,9 +1373,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow113" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment=="5"}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16"></sequenceFlow>
     <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
     </sequenceFlow>
@@ -1572,8 +1570,6 @@ execution.setVariable('sCountPayment', src)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow139" sourceRef="servicetask15" targetRef="usertask6"></sequenceFlow>
-    <sequenceFlow id="flow141" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>P80DT1M</timeDuration>
@@ -1582,14 +1578,11 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow142" sourceRef="escalationTimer1" targetRef="servicetask14"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT35M</timeDuration>
+        <timeCycle>R3/PT1M/${sID_Payment_2 ==""}</timeCycle>
       </timerEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow143" sourceRef="usertask6" targetRef="timerintermediatecatchevent2"></sequenceFlow>
-    <sequenceFlow id="flow144" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow145" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment!="5"}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow146" sourceRef="servicetask15" targetRef="timerintermediatecatchevent2"></sequenceFlow>
+    <sequenceFlow id="flow147" sourceRef="timerintermediatecatchevent2" targetRef="exclusivegateway5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1678,10 +1671,10 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="75.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="71.0" width="119.0" x="654.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="119.0" x="1114.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="71.0" width="121.0" x="409.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="1140.0" y="18.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="575.0" y="38.0"></omgdc:Bounds>
@@ -1779,7 +1772,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="839.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="915.0" y="56.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="839.0" y="55.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="71.0" x="839.0" y="55.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
@@ -1824,31 +1817,17 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="93.0" y="100.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow139" id="BPMNEdge_flow139">
-        <omgdi:waypoint x="388.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="409.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow141" id="BPMNEdge_flow141">
-        <omgdi:waypoint x="773.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="799.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow142" id="BPMNEdge_flow142">
         <omgdi:waypoint x="160.0" y="315.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow143" id="BPMNEdge_flow143">
-        <omgdi:waypoint x="530.0" y="55.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow146" id="BPMNEdge_flow146">
+        <omgdi:waypoint x="388.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="575.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow144" id="BPMNEdge_flow144">
+      <bpmndi:BPMNEdge bpmnElement="flow147" id="BPMNEdge_flow147">
         <omgdi:waypoint x="610.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="654.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow145" id="BPMNEdge_flow145">
-        <omgdi:waypoint x="819.0" y="35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="818.0" y="3.0"></omgdi:waypoint>
-        <omgdi:waypoint x="592.0" y="3.0"></omgdi:waypoint>
-        <omgdi:waypoint x="592.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="799.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
