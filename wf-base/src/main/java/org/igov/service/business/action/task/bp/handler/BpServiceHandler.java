@@ -43,7 +43,9 @@ public class BpServiceHandler {
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
     private static final String INDIRECTLY_GROUP_PREFIX = "Indirectly_";
-
+    private static final String ORDER_HISTORY_URL = "/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
+    
+    
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceHandler.class);
     @Autowired
     private GeneralConfig generalConfig;
@@ -86,7 +88,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
-            variables.put("sPlace", getPlaceByProcess(snID_Process));
+            variables.put("Place", getPlaceByProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -119,6 +121,9 @@ public class BpServiceHandler {
         String processName = (String) mTaskParam.get("sID_BP_full");
         Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
+        mTaskParam.put("sURL_OrderHistory", generalConfig.getSelfHostCentral() + ORDER_HISTORY_URL + sID_Order);
+        LOG.info("ORDER_HISTORY_URL + onID_Task" + generalConfig.getSelfHostCentral() + ORDER_HISTORY_URL + sID_Order);
+                    
         try {
             String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
