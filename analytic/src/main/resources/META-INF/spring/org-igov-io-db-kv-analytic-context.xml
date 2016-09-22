@@ -15,22 +15,22 @@
     <context:component-scan base-package="org.igov.io.db.kv.analytic" />
         
     <beans profile="prod">
-        <bean id="mongoProps"
+        <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="file:${catalina.home}/conf/DB.NoSQL.Mongo.Analytic.properties" />
+            <property name="location" value="file:${catalina.home}/conf/DB.NoSQL.Mongo.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbAnalyticFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
-                                  username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
+        <mongo:db-factory id="mongoDbFactory" host="${mongodb.host}" port="${mongodb.port}" dbname="${mongodb.database}"
+                                  username="${mongodb.login}" password="${mongodb.password}" authentication-dbname="${mongodb.database}"/>
                 
-        <mongo:mapping-converter id="converter" db-factory-ref="mongoDbAnalyticFactory"/>
+        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/> <!--base-package="com.x.y.core.beans"-->
 		 
         <!-- MongoDB GridFS Template -->
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-            <constructor-arg ref="mongoDbAnalyticFactory"/>
-            <constructor-arg ref="converter"/>
+            <constructor-arg ref="mongoDbFactory"/>
+            <constructor-arg ref="converterAnalytic"/>
         </bean>
 	
         <bean id="durableAnalyticBytesDataStorage" class="org.igov.io.db.kv.analytic.impl.BytesDataStorage">
@@ -39,28 +39,28 @@
         </bean>
 
         <bean id="mongoAnalyticTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-            <constructor-arg name="mongoDbAnalyticFactory" ref="mongoDbAnalyticFactory" />
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         </bean>
     </beans>
 	
     <beans profile="test">
-        <bean id="mongoProps"
+        <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="classpath:DB.NoSQL.Mongo.Analytic.properties" />
+            <property name="location" value="classpath:DB.NoSQL.Mongo.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbAnalyticFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
-                                  username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
+        <mongo:db-factory id="mongoDbFactory" host="${mongodb.host}" port="${mongodb.port}" dbname="${mongodb.database}"
+                                  username="${mongodb.login}" password="${mongodb.password}" authentication-dbname="${mongodb.database}"/>
                 
-        <mongo:mapping-converter id="converter" db-factory-ref="mongoDbAnalyticFactory"/>
+        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-            <constructor-arg ref="mongoDbAnalyticFactory"/>
-            <constructor-arg ref="converter"/>
-            <constructor-arg name="bucket" value="${mongodb.analytic.bucket}" />
+            <constructor-arg ref="mongoDbFactory"/>
+            <constructor-arg ref="converterAnalytic"/>
+            <constructor-arg name="bucket" value="${mongodb.bucket}" />
         </bean>
         
         <bean id="durableAnalyticBytesDataStorage" class="org.igov.io.db.kv.analytic.impl.BytesDataStorage">
@@ -69,28 +69,28 @@
         </bean>
 
         <bean id="mongoAnalyticTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-            <constructor-arg name="mongoDbAnalyticFactory" ref="mongoDbAnalyticFactory" />
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         </bean>
     </beans>        
         
     <beans profile="local,default">
-        <bean id="mongoProps"
+        <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="classpath:DB.NoSQL.Mongo.Analytic.properties" />
+            <property name="location" value="classpath:DB.NoSQL.Mongo.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbAnalyticFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
-                                  username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
+        <mongo:db-factory id="mongoDbFactory" host="${mongodb.host}" port="${mongodb.port}" dbname="${mongodb.database}"
+                                  username="${mongodb.login}" password="${mongodb.password}" authentication-dbname="${mongodb.database}"/>
                 
-        <mongo:mapping-converter id="converter" db-factory-ref="mongoDbAnalyticFactory"/>
+        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-            <constructor-arg ref="mongoDbAnalyticFactory"/>
-            <constructor-arg ref="converter"/>
-            <constructor-arg name="bucket" value="${mongodb.analytic.bucket}" />
+            <constructor-arg ref="mongoDbFactory"/>
+            <constructor-arg ref="converterAnalytic"/>
+            <constructor-arg name="bucket" value="${mongodb.bucket}" />
         </bean>
         
         <bean id="durableAnalyticBytesDataStorage" class="org.igov.io.db.kv.analytic.impl.BytesDataStorage">
@@ -99,7 +99,7 @@
         </bean>
 
         <bean id="mongoAnalyticTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-            <constructor-arg name="mongoDbAnalyticFactory" ref="mongoDbAnalyticFactory" />
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         </bean>
     </beans>
 </beans>
