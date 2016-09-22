@@ -19,11 +19,14 @@
           <activiti:value id="physical" name="Фізична копія"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vik" name="викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vlasn" name="документи на право власності на нерухоме майно, розміщене на земельній ділянці" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально;У разі вилучення земельної ділянки, що перебуває у користуванні у інших осіб" type="file"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markersVisit" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOchered.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
@@ -106,6 +109,8 @@
           <activiti:value id="digital" name="Електронна копія"></activiti:value>
           <activiti:value id="physical" name="Фізична копія"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersVisitDash" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOcheredDagbord.json')}"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про долю звернення" type="enum" required="true">
           <activiti:value id="accept" name="Передати документи спеціалістам"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
@@ -208,7 +213,7 @@
     <serviceTask id="servicetask8" name="Повідомлення спеціаліста про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>

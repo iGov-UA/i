@@ -3,27 +3,25 @@
   <head lang="ua">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Надання довідки про доходи фізичних осіб</title>
+    
     <style type="text/css">
 
-      body div.PrintFormClaim {
-        font-size: 14pt;
+      section.PrintFormClaim {        
+      	font-size: 14pt;
         font-family: "Times New Roman";
-        padding: 1cm 1.5cm 1cm 2.5cm;
-        width: 21cm;
-        min-height: 100%;
-        height: 100%;
+        width: 17cm;
       }
 
-      div.PrintFormClaim div {  
+      section.PrintFormClaim div {  
         margin-top: 6pt;
       }
 
-      div.PrintFormClaim u{
+      section.PrintFormClaim u{
         padding: 0 10px;
       }
 
       /* Подчеркивание с отступами не подходит для  */
-      div.PrintFormClaim em{
+      section.PrintFormClaim em{
         padding: 0 15px;
         font-style: normal;
         border-bottom: 1px  solid  black;  
@@ -31,10 +29,6 @@
 
 
       .whomBlock {
-        text-align: juice;
-      }
-
-      .whoBlock {
         text-align: juice;
       }
 
@@ -51,30 +45,30 @@
         line-height: 1.1;
       }
 
-      div.PrintFormClaim table {
+      section.PrintFormClaim table {
         align-self: center;
       }
 
-      div.PrintFormClaim td.bb {
+      section.PrintFormClaim td.bb {
         border: 0px solid black;
         border-bottom: 1px solid black;
       }
 
-      div.PrintFormClaim td.notb {
+      section.PrintFormClaim td.notb {
         border: 0px solid black;
       }
 
-      div.PrintFormClaim td {
+      section.PrintFormClaim td {
         border: 1px solid black;
         text-align:justify;
       }
 
-      div.PrintFormClaim table {
+      section.PrintFormClaim table {
         align-self: center;
         border-collapse: collapse; /* Отображать двойные линии как одинарные */
       }
 
-      div.PrintFormClaim th {
+      section.PrintFormClaim th {
         border: 1px solid black;
       }
 
@@ -224,10 +218,17 @@
       }
 
       /* выравнивание текста */
-      div.PrintFormClaim .ta-l { text-align: left;}
-      div.PrintFormClaim .ta-j { text-align: justify;}
-      div.PrintFormClaim .ta-r { text-align: right;}
-      div.PrintFormClaim .ta-c { text-align: center;}
+      section.PrintFormClaim .ta-l { text-align: left;}
+      section.PrintFormClaim .ta-j { 
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
+      section.PrintFormClaim .ta-r { text-align: right;}
+      section.PrintFormClaim .ta-c { text-align: center;}
 
       /* ширина в процентах */            
       .w1p {width: 1%;}      
@@ -250,8 +251,11 @@
       .w500 {	width: 500px;}
 
       /* отступ  */
+      .pl-paragraph { text-indent: 1cm;}
+      .pl-paragraph>div,
+      .pl-paragraph>span  
+      { text-indent: initial;} 
 
-      .pl-paragraph { padding-left: 1cm;}
       .pl-25 { padding-left: 25px;}
       .pl-50 { padding-left: 50px;}
       .pl-75 { padding-left: 75px;}
@@ -299,95 +303,90 @@
 
 
       .test{ border: 1px solid red;}
+      
+/* свойства для печати*/
+@media print {
+    @page {
+        margin: 1cm 1.5cm 1cm 2.5cm;
+    }
+
+	* {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	
+	a[href^="http://"]:after, a[href^="ftp://"]:after {
+	  content: " (" attr(href) ")";
+	  color: blue;
+	}
+	
+	section {page-break-after: avoid;}
+	h1 {page-break-after: avoid;}
+	p {page-break-inside: avoid; orphans:3; widows:2;}
+	ul, img {page-break-inside: avoid;}
+}      
 
     </style>
   </head>
   <body>
-    <div class="PrintFormClaim">
-
-      <div class="whomBlock ml-8">
-        Додаток 13 <br>
-        до Положення про реєстрацію<br>
-        фізичних осіб у Державному<br>
-        реєстрі фізичних осіб - платників податків<br>
-        (пункт 4 розділу Х) <br>
-      </div><br> <br>
-      
-      <div class="whomBlock ml-10">
-		Голові/начальнику<br>
-		[sNameOrgan]<br>
-		[sFIOGolova736]
+  
+    <section class="PrintFormClaim">
+      <div class="ta-j ml-9">
+        Начальнику [sNameOrgan673]<br>
+        [sFIOGolova673]
       </div>
       <br> <br>
-      <div class="whoBlock ml-10">
-        <div class="under_field w100p ta-l">
-          <u>[sFIO]</u> <span>(прізвище, ім’я, по батькові особи, яка подає заяву)</span>
+      <div class="ta-j ml-9">
+        <div class="under_multifield w100p ta-j">
+          <b>від</b> <u>[sFIO]</u>          
         </div>
         <br>
-        <div class="under_field w100p ta-l">
-          <u>[bankIdinn]</u> <span>(реєстраційний номер облікової картки платника податків)</span>
+        <div class="under_multifield w100p ta-j">
+          <b>ідентиф. номер</b> <u>[bankIdinn]</u>
         </div>
-        <div class="under_field w100p ta-l">
+        <div class="under_multifield w100p ta-j">
+          <b>адреса, телефон</b>
           <u>          
-            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
-            <span id="spanAdressFactual">[sAddressFactual]</span>
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span><span id="spanAdressFactual">[sAddressFactual]</span>, 
+            [phone]
           </u>
-          <span>(місце проживання)</span>
         </div>
         <br>
       </div>
+      <br>
+      <br>
       <br>
 
       <div class="claimBlock">ЗАЯВА</div>
 
       <br>
-      <div class="ta-j">
-        <span class="pl-paragraph"></span> Прошу надати мені відомості з 
-        Державного реєстру фізичних осіб – платників податків 
-        про суми виплачених доходів та утриманих податків/джерела 
-        виплачених доходів та утриманих податків
+      <div class="ta-j pl-paragraph">
+        Прошу надати мені довідку про доходи за період 
+        з <em>[dStart1]</em> по <em>[dStop1]</em> 
+        для надання до <em>[sAim]</em> 
+        (віддлення банку, Пенсійного фонду, працевлаштування, УПСЗН тощо).
       </div>
-      <div class="ta-j">
-        за період* з <em>[dStart1]</em>   по <em>[dStop1]</em> 
-      </div>
-      <div class="under_field ta-j w100p">
-        <b>для</b>
-        <u>[sAim]</u> 
-        <span>(мета)</span>
-      </div>
-      <div class="under_multifield  ta-j w100p">
-        <b>Паспортні дані </b>
-        <u>[bankIdPassport]</u> 
-      </div> 
-    
+
       <br>       
       <br> 
       <div class="layout">        
         <div class="w50"></div>
-        <div class="w250">          
-          <div class="under_field w250">
-            <i>&#160;</i> 
+        <div class="w30p">          
+          <div class="under_field w100p ta-c">
+            <i>[sDateStart]</i> 
             <span>(дата)</span>
           </div>
           &#160;
         </div>
         <div class="w100"></div>
-        <div class="w250">
-          <div class="under_field w250">
+        <div class="w30p">
+          <div class="under_field w100p">
             <i>&#160;</i> 
             <span>(підпис фізичної особи)</span>
           </div>
           &#160;
         </div>
       </div>
-            <br>       
-      <br> 
-      <div class="smallText">
-        _____________<br>    
-        * Відомості про доходи фізичних осіб накопичуються 
-        у Державному реєстрі  фізичних осіб – платників  податків, 
-        починаючи з 01 січня 1998 року.
-      </div>
-    </div>
+    </section>
   </body>
-</html>
+</html>    

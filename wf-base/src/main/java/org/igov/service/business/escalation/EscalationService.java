@@ -45,6 +45,7 @@ public class EscalationService {
     GeneralConfig oGeneralConfig;
 
     private static final String SEARCH_DELAYED_TASKS_URL = "/wf/service/action/task/getStartFormData?nID_Task=";// /task-activiti/
+    private static final String ORDER_HISTORY_URL = "https://igov.org.ua/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
     //private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
 
     @Autowired
@@ -98,6 +99,7 @@ public class EscalationService {
     }
 
     private void runEscalationRule(EscalationRule oEscalationRule, String regionalServerPath) {
+        LOG.info("!!!!!!regionalServerPath: "+regionalServerPath);
         String sID_BP = null;
         String sID_State_BP = null;
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
@@ -125,6 +127,9 @@ public class EscalationService {
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
+                    mTaskParam.put("sURL_OrderHistory", ORDER_HISTORY_URL + onID_Task);
+                    LOG.info("ORDER_HISTORY_URL + onID_Task"+ORDER_HISTORY_URL + onID_Task);
+                    mTaskParam.put("sID_State_BP", sID_State_BP);
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
                     //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
@@ -249,6 +254,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
         
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
+        LOG.info("!!!!!!!!!!!oTaskFormData: "+oTaskFormData);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
@@ -278,9 +284,11 @@ public class EscalationService {
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "Удалить");
         result.put("sTaskName", oTask.getName());
+        LOG.info("!!!!oTask.getName(): "+oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         
         result.put("sTaskID", oTask.getId());
+        LOG.info("!!!!oTask.getId(): "+oTask.getId()+"taskId: "+taskId);
         BpServiceHandler.mGuideTaskParamKey.put("sTaskID", "ИД таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
