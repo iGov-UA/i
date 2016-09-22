@@ -1276,6 +1276,12 @@ execution.setVariable('sNotification_day', timer)</script>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow136" sourceRef="boundaryerror1" targetRef="endevent6"></sequenceFlow>
     <sequenceFlow id="flow137" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>P80DT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow138" name="80 дней" sourceRef="escalationTimer1" targetRef="servicetask14"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1293,6 +1299,9 @@ execution.setVariable('sNotification_day', timer)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="68.0" width="118.0" x="169.0" y="262.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="160.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="123.0" x="829.0" y="20.0"></omgdc:Bounds>
@@ -1455,6 +1464,13 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow137" id="BPMNEdge_flow137">
         <omgdi:waypoint x="193.0" y="55.0"></omgdi:waypoint>
         <omgdi:waypoint x="680.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow138" id="BPMNEdge_flow138">
+        <omgdi:waypoint x="160.0" y="315.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="296.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="126.0" y="327.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
