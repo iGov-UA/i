@@ -545,7 +545,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
                         //if (!generalConfig.isSelfTest()) {
-                        if (true) {
+                        if (false) {
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
