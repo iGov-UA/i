@@ -45,7 +45,7 @@ public class EscalationService {
     GeneralConfig oGeneralConfig;
 
     private static final String SEARCH_DELAYED_TASKS_URL = "/wf/service/action/task/getStartFormData?nID_Task=";// /task-activiti/
-    private static final String ORDER_HISTORY_URL = "/wf/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
+    private static final String ORDER_HISTORY_URL = "https://igov.org.ua/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
     //private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
 
     @Autowired
@@ -128,7 +128,6 @@ public class EscalationService {
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
                     mTaskParam.put("sURL_OrderHistory", "<a href=" + ORDER_HISTORY_URL + onID_Task+">[nID_Protected]</a>");
-                    LOG.info("!!!!!!!!!!!!!!!regionalServerPath: "+regionalServerPath); // <a href="URL">текст ссылки</a>
                     LOG.info("ORDER_HISTORY_URL + onID_Task"+ORDER_HISTORY_URL + onID_Task);
 
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
@@ -255,6 +254,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
         
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
+        LOG.info("!!!!!!!!!!!oTaskFormData: "+oTaskFormData);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
