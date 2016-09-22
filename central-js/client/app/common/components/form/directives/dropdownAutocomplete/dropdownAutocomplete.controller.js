@@ -43,7 +43,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
       return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
           .then(function(response) {
             Array.prototype.push.apply(collection, $filter('orderBy')(response.data, $scope.autocompleteData.orderBy));
-            if (!$scope.autocompleteData.hasPaging || response.data.lenght < count) {
+            if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
               hasNextChunk = false;
             }
             if ($scope.autocompleteData.hasPaging) {
@@ -63,7 +63,7 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
       hasNextChunk = true;
     }
     if (!angular.equals(queryParams.params[queryKey], queryValue)) {
-      if ($scope.autocompleteData.hasPaging || !angular.isDefined(queryParams.params[queryKey])) {
+      // if ($scope.autocompleteData.hasPaging || !angular.isDefined(queryParams.params[queryKey])) {
         if ($scope.autocompleteData.hasPaging) {
           queryParams.params.count = count;
           queryParams.params.skip = 0;
@@ -72,21 +72,35 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
         hasNextChunk = true;
         queryParams.params[queryKey] = queryValue;
         $scope.requestMoreItems([]).then(function (items) {
-          $timeout(function () {
-            $scope.$select.items = items;
-          }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+          // $timeout(function () {
+          //   $scope.$select.items = items;
+          // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+          $scope.$select.items = items;
+          !angular.equals(queryParams.params[queryKey], queryValue);
         });
       } else {
         tempCollection = tempCollection || $scope.$select.items;
         $scope.$select.items = $filter('filter')(tempCollection, queryValue);
       }
-    }
+    // }
   };
 
-  $scope.onSelectDataList = function (item) {
+  $scope.onSelectDataList = function (item, tableName, rowIndex) {
     var additionalPropertyName = getAdditionalPropertyName();
-    if ($scope.formData.params[additionalPropertyName]) {
-      $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
+    if (rowIndex || rowIndex >= 0) {
+      angular.forEach($scope.activitiForm.formProperties, function (property) {
+        if (property.id === tableName) {
+          angular.forEach(property.aRow[rowIndex].aField, function (field, key, obj) {
+            if (field.id === additionalPropertyName) {
+              obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+            }
+          });
+        }
+      });
+    } else {
+      if ($scope.formData.params[additionalPropertyName]) {
+        $scope.formData.params[additionalPropertyName].value = item[$scope.autocompleteData.prefixAssociatedField];
+      }
     }
-  }
+  };
 });

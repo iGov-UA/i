@@ -22,6 +22,21 @@ angular.module('app').factory('autocompletesDataFactory', function () {
       prefixAssociatedField: 'sID_UA',
       apiUrl: './api/subject/organs/join-tax',
       init: function (scope) {
+        // данный $watch нужен для полей в таблице
+        angular.forEach(scope.activitiForm.formProperties, function (table, tableKey) {
+          if(table.type === 'table') {
+            angular.forEach(table.aRow, function (row, rowKey) {
+              angular.forEach(row.aField, function (field, fieldKey) {
+                if(field.id === 'sID_Public_SubjectOrganJoin') {
+                  scope.$watch('activitiForm.formProperties['+ tableKey +'].aRow['+ rowKey + '].aField[' + fieldKey + '].nID', function (newValue) {
+                    scope.refreshList('nID_SubjectOrganJoin', newValue);
+                  })
+                }
+              });
+            });
+          }
+        });
+        // данный $watch нужен для формы
         scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
           scope.refreshList('nID_SubjectOrganJoin', newValue);
         });
