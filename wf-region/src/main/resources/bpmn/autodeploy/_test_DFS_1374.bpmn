@@ -7,7 +7,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writible=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writible=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;Електронна адреса;writible=true,sID_Field_SWinEd=HEMAIL" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання заяви;Дата формування запиту;writible=true,sID_Field_SWinEd=HFILL" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заяви;Дата формування запиту;writible=true,sID_Field_SWinEd=HFILL" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -18,19 +18,13 @@
     </boundaryEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Отримання дати подання звернення" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
-    </scriptTask>
-    <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="test_dfs">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writible=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writible=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writible=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;Електронна адреса;writible=true,sID_Field_SWinEd=HEMAIL" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання заяви;Дата формування запиту;writible=true,sID_Field_SWinEd=HFILL" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заяви;Дата формування запиту;writible=true,sID_Field_SWinEd=HFILL" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -66,6 +60,7 @@ execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())<
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_DFS_1374">
     <bpmndi:BPMNPlane bpmnElement="_test_DFS_1374" id="BPMNPlane__test_DFS_1374">
@@ -73,49 +68,42 @@ execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())<
         <omgdc:Bounds height="41.0" width="41.0" x="57.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="67.0" width="105.0" x="156.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="159.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="162.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="153.0" y="162.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="67.0" width="105.0" x="310.0" y="113.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="67.0" width="105.0" x="460.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="360.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="67.0" width="105.0" x="610.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="540.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="770.0" y="129.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="98.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="156.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="159.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="165.0" y="192.0"></omgdi:waypoint>
+        <omgdi:waypoint x="168.0" y="192.0"></omgdi:waypoint>
         <omgdi:waypoint x="77.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="261.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="310.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="415.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="565.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="610.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="715.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="645.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="264.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
