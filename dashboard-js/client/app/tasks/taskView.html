@@ -137,20 +137,7 @@
         <enum-field></enum-field>
 
         <!--поле типа file-->
-        <span ng-if="item.type == 'file' && item.id.indexOf('PrintForm') === -1"
-              ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"
-              class="col-sm-12">
-          <span class="col-sm-6 task-form-title">
-            <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable" style="color: red">*</span></label>
-          </span>
-          <span class="col-sm-6">
-            <file-field name="{{item.id}}"
-                        ng-disabled="isFormPropertyDisabled(item)"
-                        ng-model="item.value"
-                        ng-required="isRequired(item)">Add File
-            </file-field>
-          </span>
-        </span>
+        <file-formfield></file-formfield>
       </div>
 
       <!--атачи-->
