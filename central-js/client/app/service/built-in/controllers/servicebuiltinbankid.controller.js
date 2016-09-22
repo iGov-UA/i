@@ -851,4 +851,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     });
   };
+  $scope.rowLengthCheckLimit = function (table) {
+    return table.aRow.length >= table.nRowsLimit
+  };
 });
