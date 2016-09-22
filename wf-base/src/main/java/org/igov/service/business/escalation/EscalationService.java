@@ -1,5 +1,6 @@
 package org.igov.service.business.escalation;
 
+import java.net.URL;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
@@ -45,7 +46,7 @@ public class EscalationService {
     GeneralConfig oGeneralConfig;
 
     private static final String SEARCH_DELAYED_TASKS_URL = "/wf/service/action/task/getStartFormData?nID_Task=";// /task-activiti/
-    private static final String ORDER_HISTORY_URL = "https://igov.org.ua/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
+    private static final String ORDER_HISTORY_URL = "/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
     //private static final String REGIONAL_SERVER_PATH = "https://region.org.gov.ua";
 
     @Autowired
@@ -99,7 +100,7 @@ public class EscalationService {
     }
 
     private void runEscalationRule(EscalationRule oEscalationRule, String regionalServerPath) {
-        LOG.info("!!!!!!regionalServerPath: "+regionalServerPath);
+        LOG.info("regionalServerPath: "+regionalServerPath);
         String sID_BP = null;
         String sID_State_BP = null;
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
@@ -127,14 +128,12 @@ public class EscalationService {
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
-                    mTaskParam.put("sURL_OrderHistory", ORDER_HISTORY_URL + onID_Task);
-                    LOG.info("ORDER_HISTORY_URL + onID_Task"+ORDER_HISTORY_URL + onID_Task);
+                    mTaskParam.put("sURL_OrderHistory", oGeneralConfig.getSelfHostCentral() + ORDER_HISTORY_URL + onID_Task);
+                    LOG.info("ORDER_HISTORY_URL + onID_Task" + oGeneralConfig.getSelfHostCentral() + ORDER_HISTORY_URL + onID_Task);
                     mTaskParam.put("sID_State_BP", sID_State_BP);
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
-                    //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
-                    //send emails (or processing by other bean-handlers)
-                    escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
+                   escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
                     );
                 } catch (Exception oException) {
                     nFails++;
@@ -173,10 +172,10 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
 
         long nDiffMS = 0;
-        LOG.info("!!!!!!!!!!!!!!!!oTask.getDueDate(): "+oTask.getDueDate());
+        LOG.info("oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
-            LOG.info("!!!!!!if!!!!!!!!!!nDiffMS: "+nDiffMS);
+            LOG.info("if nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
              LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
