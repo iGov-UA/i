@@ -16,12 +16,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.misc.URLClassPath;
 
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
 public class ToolFS {
+    
+    private final static Logger LOG = LoggerFactory.getLogger(ToolFS.class);
 
     public static String getFileString(File file, String sCodepage) throws IOException {
         byte[] aByte = getFileBytes(file);
@@ -70,8 +75,10 @@ public class ToolFS {
 
     public static Path oFullPathFile(Path osSubPathFile) throws IOException, URISyntaxException {
         String sSubPathFile = osSubPathFile.toString();
+        LOG.info("sSubPathFile: " + sSubPathFile);
         URL oURL = Tool.class.getClassLoader().getResource(sSubPathFile);
         if (oURL == null) {
+            LOG.error("\"oURL == null sSubPathFile: " + sSubPathFile);
             throw new IOException("oURL == null");
         }
         Path osFullPathFile = null;

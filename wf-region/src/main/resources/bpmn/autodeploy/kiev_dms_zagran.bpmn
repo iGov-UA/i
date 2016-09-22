@@ -136,6 +136,9 @@ execution.setVariable('sNotification_day', timer)</script>
 										&lt;li&gt;Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати і захопити з собою ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.&lt;/li&gt;
 									&lt;/ul&gt;
 								&lt;/p&gt;
+								&lt;p&gt;Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05&lt;br&gt;
+								При цьому потрібно буде вказати ID послуги = ${nID_ServiceCustomPrivate_visitDay} та код, який Ви отримали на телефон після реєстрації
+								&lt;/p&gt;                
 								
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan},&lt;br&gt;
@@ -154,7 +157,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomNo'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -207,20 +210,13 @@ ${sNameOrgan},&lt;br&gt;
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
-								&lt;p&gt;[cancelTask]&lt;/p&gt;                
+								&lt;p&gt;Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05&lt;br&gt;
+								При цьому потрібно буде вказати ID послуги = ${nID_ServiceCustomPrivate_visitDay} та код, який Ви отримали на телефон після реєстрації
+								&lt;/p&gt;                
 								[pattern/mail/_common_signature_start.html]
 								${sNameOrgan},&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -228,7 +224,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomYes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -282,20 +278,13 @@ ${sNameOrgan},&lt;br&gt;
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
-								&lt;p&gt;[cancelTask]&lt;/p&gt;                
+								&lt;p&gt;Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05&lt;br&gt;
+								При цьому потрібно буде вказати ID послуги = ${nID_ServiceCustomPrivate_visitDay} та код, який Ви отримали на телефон після реєстрації
+								&lt;/p&gt;                
 								[pattern/mail/_common_signature_start.html]
 								${sNameOrgan},&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

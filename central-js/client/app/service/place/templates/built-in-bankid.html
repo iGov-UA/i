@@ -335,6 +335,7 @@
 
                         <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
                           <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
+                                          ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                           ng-model="item.value"
                                           form-data-property="item"
                                           service-data="oServiceData"
@@ -368,7 +369,10 @@
                           </ui-select>
                         </div>
 
-                        <div style="padding:5px" class="error-popup" ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
+                        <div style="padding:5px"
+                             class="error-popup"
+                             ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid
+                                          || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
                           <span ng-message="required">Необхідно заповнити.</span>
                           <span ng-message="pattern">Значення має бути числом.</span>
                           <span ng-message="email">Помилка в email.</span>
@@ -407,7 +411,7 @@
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <input type="button" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
                   </div>
                 </div>
 
