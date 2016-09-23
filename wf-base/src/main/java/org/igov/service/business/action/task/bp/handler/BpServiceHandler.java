@@ -43,7 +43,9 @@ public class BpServiceHandler {
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
     private static final String INDIRECTLY_GROUP_PREFIX = "Indirectly_";
-
+    private static final String ORDER_HISTORY_URL = "/search?sID_Order="; // #1350 п.11 <a href="URL">текст ссылки</a>
+    
+    
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceHandler.class);
     @Autowired
     private GeneralConfig generalConfig;
@@ -86,7 +88,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
-            variables.put("sPlace", getPlaceByProcess(snID_Process));
+            variables.put("Place", getPlaceByProcess(snID_Process));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -119,6 +121,9 @@ public class BpServiceHandler {
         String processName = (String) mTaskParam.get("sID_BP_full");
         Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
+        mTaskParam.put("sURL_OrderHistory", generalConfig.getSelfHostCentral() + ORDER_HISTORY_URL + sID_Order);
+        LOG.info("ORDER_HISTORY_URL + onID_Task" + generalConfig.getSelfHostCentral() + ORDER_HISTORY_URL + sID_Order);
+                    
         try {
             String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
@@ -163,15 +168,11 @@ public class BpServiceHandler {
         mParam.put("bankIdfirstName", mTaskParam.get("bankIdfirstName"));  
         mParam.put("bankIdmiddleName", mTaskParam.get("bankIdmiddleName"));
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
-        mParam.put("sTaskName", "UserTask1 - " + mTaskParam.get("sTaskName"));
+        mParam.put("sTaskIDPlusName", mTaskParam.get("sID_State_BP")+" - "+ mTaskParam.get("sTaskName"));
         
-//        mParam.put("sTaskName", mTaskParam.get("sTaskName" + " - " + "sTaskId"));
-//        mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         mParam.put("sTaskId", mTaskParam.get("sTaskId"));
         mGuideTaskParamKey.put("sTaskId", "ИД  таски");
 
-        mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
-        mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
         mParam.put("sEmployeeContacts",mTaskParam.get("sEmployeeContacts"));
         mGuideTaskParamKey.put("sEmployeeContacts", "ПІБ та контактні телефони відповідальних посадовців");
         mParam.put("nElapsedDays", mTaskParam.get("nElapsedDays"));
@@ -180,9 +181,7 @@ public class BpServiceHandler {
         mGuideTaskParamKey.put("email", "email"); 
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mGuideTaskParamKey.put("phone", "Контактний телефон громадянина");
-//        mParam.put("sPlace", getPlaceForProcess("sID_Process"));   
-//        mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("1111111111111111111111111111getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
+        LOG.info("getPlaceByProcess(sID_Process): " + getPlaceByProcess("sID_Process") + " sID_Process: " + sID_Process);
          mParam.put("email", mTaskParam.get("email"));
         Map mTaskParamConverted = convertTaskParam(mTaskParam);
         String sField = convertTaskParamToString(mTaskParamConverted);
@@ -192,7 +191,7 @@ public class BpServiceHandler {
 
         Set<String> organs = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
         String organ = trimGroups(organs);
-        LOG.info("!!!organ: " + organ);
+        LOG.info("organ: " + organ);
         mParam.put("organ", organ);
         mParam.put("sLoginAssigned", mTaskParam.get("sLoginAssigned"));
         mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
@@ -200,9 +199,11 @@ public class BpServiceHandler {
         mParam.put("sOrganName", mTaskParam.get("area"));
         mParam.put("sDate_BP", mTaskParam.get("sDate_BP"));
         mGuideTaskParamKey.put("sDate_BP", "Дата БП");
+        mParam.put("sURL_OrderHistory", mTaskParam.get("sURL_OrderHistory"));
+        mGuideTaskParamKey.put("sURL_OrderHistory", "Посилання на первинне звернення");
         mParam.put("Place", getPlaceByProcess(sID_Process));
         mGuideTaskParamKey.put("Place", "Обраний населений пункт");
-        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!mParam: "+mParam);
+        LOG.info("mParam: "+mParam);
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
@@ -270,11 +271,11 @@ public class BpServiceHandler {
         String soResponse = null; 
         try {
             soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("!!!!!!!!!!!!!!!!!!!!soResponse: " + soResponse + " param: " + param);  
+            LOG.info("soResponse: " + soResponse + " param: " + param);  
             Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("!!!!!res: " + res);
-            soResponse = (String) res.get("place");
-            LOG.info("555555555555555soResponse = (String): " + soResponse);
+            LOG.info("res: " + res);
+            soResponse = (String) res.get("sName");
+            LOG.info("soResponse = (String): " + soResponse);
         } catch (Exception ex) {
             LOG.error("[getPlaceByProcess]: ", ex);
         }
@@ -299,9 +300,9 @@ public class BpServiceHandler {
 
     private Set<String> getCandidateGroups(final String sProcessName, final String snID_Task,
             final Map<String, Object> mTaskVariable, String prefix) {
-        LOG.info("!!!!!!!!!!!!!sProcessName: " + sProcessName + "snID_Task: " + snID_Task + "mTaskVariable: " + mTaskVariable + "prefix: " + prefix);
+        LOG.info("sProcessName: " + sProcessName + "snID_Task: " + snID_Task + "mTaskVariable: " + mTaskVariable + "prefix: " + prefix);
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
-        LOG.info("!!!!!!!!!!!asCandidateCroupToCheck: " + asCandidateCroupToCheck);
+        LOG.info("asCandidateCroupToCheck: " + asCandidateCroupToCheck);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
         //if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
         Map<String, Object> mProcessVariable = null;
@@ -405,16 +406,16 @@ public class BpServiceHandler {
 
     private String getContact(List<Map> aSubjectAccountContact) {
         StringBuilder sbContact = new StringBuilder();
-        LOG.info("!!!aSubjectAccountContact: " + aSubjectAccountContact);
+        LOG.info("aSubjectAccountContact: " + aSubjectAccountContact);
         if (aSubjectAccountContact != null && !aSubjectAccountContact.isEmpty()) {
             for (Map subjectAccountContact : aSubjectAccountContact) {
-                LOG.info("!!!subjectAccountContact: " + subjectAccountContact);
+                LOG.info("subjectAccountContact: " + subjectAccountContact);
                 if (subjectAccountContact != null && !subjectAccountContact.isEmpty()
                         && subjectAccountContact.get("sValue") != null
                         && !"".equals(subjectAccountContact.get("sValue"))
                         && subjectAccountContact.get("oSubjectContactType") != null
                         && "Phone".equalsIgnoreCase((String) ((Map) subjectAccountContact.get("oSubjectContactType")).get("sName_EN"))) {
-                    LOG.info("!!!sValue: " + subjectAccountContact.get("sValue"));
+                    LOG.info("sValue: " + subjectAccountContact.get("sValue"));
                     sbContact.append(subjectAccountContact.get("sValue")).append("; ");
                 }
             }

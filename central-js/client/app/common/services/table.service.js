@@ -65,6 +65,17 @@ angular.module('app')
       });
     };
 
+    var checkRowsLimit = function (formProps) {
+      angular.forEach(formProps, function(item, key, obj) {
+        if(item.type === 'table') {
+          var isRowLimit = item.name.split(';');
+          if(isRowLimit.length === 3 && isRowLimit[2].indexOf('nRowsLimit') !== -1) {
+            obj[key].nRowsLimit = isRowLimit[2].split('=')[1];
+          }
+        }
+      })
+    };
+
     this.init = function (formProps) {
       angular.forEach(formProps, function(item, key, obj) {
         if(item.type === 'table') {
@@ -76,6 +87,7 @@ angular.module('app')
             var parsedTable = JSON.parse(item.value);
             obj[key].aRow.push(parsedTable);
           }
+          checkRowsLimit(formProps);
           addTableFieldsProperties(formProps);
         }
       });

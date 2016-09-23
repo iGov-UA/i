@@ -44,6 +44,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -716,10 +717,10 @@ public class ObjectFileCommonController {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
     
-    @ApiOperation(value = "/dfs/putPatternFilledToDB", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
-    @RequestMapping(value = {"/dfs/putPatternFilledToDB"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
+    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
-    Map<String, String> putPatternFilledToDB(
+    Map<String, String> getPatternFilled(
             @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
             @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
@@ -732,20 +733,20 @@ public class ObjectFileCommonController {
         String regex, replacement;
         for (Map.Entry<String, String> entry : data.entrySet()) {
             regex = "<" + entry.getKey().trim().toUpperCase() + ">";
-            replacement = regex + entry.getValue();
+            replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
             declarContent = declarContent.replaceAll(regex, replacement);
         }
         //запись контента в xml файл
-        MultipartFile multipartFile = new ByteArrayMultipartFile(declarContent.getBytes(),
-                sID_Pattern, sID_Pattern, "application/xml");
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
-        httpResponse.setHeader("Content-Type", multipartFile.getContentType());
-        httpResponse.setContentLength(multipartFile.getBytes().length);
-        String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
-                .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
-                .toByteArray());
-        result.put("sID_Redis", key);
-        result.put("soPatternFilled", key);
+        //MultipartFile multipartFile = new ByteArrayMultipartFile(declarContent.getBytes(),
+        //        sID_Pattern, sID_Pattern, "application/xml");
+        //httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+        //httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+        //httpResponse.setContentLength(multipartFile.getBytes().length);
+        //String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
+        //        .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
+        //        .toByteArray());
+        //result.put("sID_Redis", key);
+        result.put("soPatternFilled", declarContent.replaceAll(" ", "").replaceAll(System.getProperty("line.separator"), ""));
         return result;
     }
     

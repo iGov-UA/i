@@ -1,5 +1,6 @@
 package org.igov.service.business.escalation;
 
+import java.net.URL;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
@@ -98,6 +99,7 @@ public class EscalationService {
     }
 
     private void runEscalationRule(EscalationRule oEscalationRule, String regionalServerPath) {
+        LOG.info("regionalServerPath: "+regionalServerPath);
         String sID_BP = null;
         String sID_State_BP = null;
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
@@ -109,7 +111,7 @@ public class EscalationService {
             TaskQuery oTaskQuery = taskService.createTaskQuery()
                     .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
             if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
-                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
+                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP); 
             }
             Integer nRowStart = 0;
             Integer nRowsMax = 1000;
@@ -125,11 +127,10 @@ public class EscalationService {
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
                     BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
+                    mTaskParam.put("sID_State_BP", sID_State_BP);
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
-                    //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
-                    //send emails (or processing by other bean-handlers)
-                    escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
+                   escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
                     );
                 } catch (Exception oException) {
                     nFails++;
@@ -168,10 +169,10 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
 
         long nDiffMS = 0;
-        LOG.info("!!!!!!!!!!!!!!!!oTask.getDueDate(): "+oTask.getDueDate());
+        LOG.info("oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
-            LOG.info("!!!!!!if!!!!!!!!!!nDiffMS: "+nDiffMS);
+            LOG.info("if nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
              LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
@@ -249,6 +250,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
         
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
+        LOG.info("!!!!!!!!!!!oTaskFormData: "+oTaskFormData);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
@@ -278,9 +280,11 @@ public class EscalationService {
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
         BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "Удалить");
         result.put("sTaskName", oTask.getName());
+        LOG.info("!!!!oTask.getName(): "+oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
         
         result.put("sTaskID", oTask.getId());
+        LOG.info("!!!!oTask.getId(): "+oTask.getId()+"taskId: "+taskId);
         BpServiceHandler.mGuideTaskParamKey.put("sTaskID", "ИД таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
