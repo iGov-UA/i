@@ -14,19 +14,7 @@
     .form-control.ui-select-search {
       width: 100% !important;
     }
-    table>tbody>tr>td:hover {
-      background-color: #e2e2e2;
-      border-radius: 5px;
-    }
-    table>tbody>tr>td>.btn-link:hover {
-      text-decoration: none;
-    }
-    table>tbody>tr>td>.btn-info.active{
-      border-radius: 5px;
-    }
-    table {
-      font-family: Times;
-    }
+
     .dropdown-menu {
       padding-top: 0;
     }
@@ -148,28 +136,30 @@
                                   ng-required="isFieldRequired(property)"></dropdown-country>
 
                 <div class="col-md-12 field-table" ng-switch-when="table">
-
                   <table ng-init="tableName = property.id">
 
                     <thead>
+
                     <tr class="table-thead">
                       <th ng-repeat="item in property.aRow[0].aField">
                         <span>{{item.sFieldLabel || item.name}}</span>
-                        <span style="display: block; text-align: center"
-                              class="s-field-notes"
-                              ng-if="item.sFieldNotes!=null">
+                        <span style="display: block; text-align: center" class="s-field-notes"
+                             ng-if="item.sFieldNotes!=null">
                           {{item.sFieldNotes}}
                         </span>
                       </th>
                       <th style="width:30px;border:none; background-color: transparent"></th>
                     </tr>
+
                     </thead>
 
                     <tbody ng-form='{{tableName}}'>
-                    <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
-                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
-                        <div ng-if="item.type == 'string'">
 
+                    <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
+
+                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+
+                        <div ng-if="item.type == 'string'">
                           <input class="inputs-in-table"
                                  ng-if='item.hasOwnProperty("default") || !item.hasOwnProperty("default") && !item.hasOwnProperty("value")'
                                  name="{{item.id + rowIndex}}"
@@ -215,7 +205,7 @@
 
                         <div ng-if="item.type == 'date'">
                           <!--заменить на директиву-->
-                          <p class="input-group">
+                          <p class="input-group datepicker-central">
                             <input type="text"
                                    ng-required="item.required"
                                    name="{{item.id + rowIndex}}"
@@ -333,6 +323,7 @@
 
                         <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
                           <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
+                                          ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                           ng-model="item.value"
                                           form-data-property="item"
                                           service-data="oServiceData"
@@ -366,7 +357,10 @@
                           </ui-select>
                         </div>
 
-                        <div style="padding:5px" class="error-popup" ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
+                        <div style="padding:5px"
+                             class="error-popup"
+                             ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid
+                                          || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
                           <span ng-message="required">Необхідно заповнити.</span>
                           <span ng-message="pattern">Значення має бути числом.</span>
                           <span ng-message="email">Помилка в email.</span>
@@ -400,14 +394,13 @@
                       </td>
 
                     </tr>
-                    </tbody>
 
+                    </tbody>
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <input type="button" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
                   </div>
-
                 </div>
 
                 <input ng-switch-when="string"
@@ -462,7 +455,7 @@
                        class="form-control"
                        value="">
 
-                <p class="input-group"
+                <p class="input-group datepicker-central"
                    ng-switch-when="date">
 
                   <input type="text"
@@ -583,6 +576,22 @@
                         ng-class="getBpAndFieldID(property)"
                         class="form-control"></select>
 
+                  <div class="input-group"
+                       ng-switch-when="checkbox">
+                  <div ng-class="{'checkbox-indeterminate': data.formData.params[property.id].value === null}">
+                    <input type="checkbox"
+                           id="{{property.id}}"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-true-value="'{{data.checkbox[property.id].trueValue}}'"
+                           ng-false-value="'{{data.checkbox[property.id].falseValue}}'"
+                           checkbox-indeterminate="data.formData.params[property.id].value === null"
+                           ng-required="isFieldRequired(property) && data.formData.params[property.id].value === null"
+                    >
+                    <label for="{{property.id}}"></label>
+                  </div>
+                  </div>
+
                 <p class="input-group"
                    ng-switch-when="file">
                   <label ng-if="data.formData.params[property.id].scan && data.formData.params[property.id].isLoading"
@@ -630,18 +639,18 @@
                              reach-infinity="requestMoreItems($select.items)"
                              on-select="onSelectDataList($item)">
 
-                             <ui-select-match>
-                               {{$select.selected[autocompleteData.titleProperty]}}
-                             </ui-select-match>
-                             <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                                refresh-delay="50"
-                                                repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
-                               <span title="{{item[property.autocompleteData.titleProperty]}}">
-                                 {{item[property.autocompleteData.titleProperty]}}
-                               </span>
-                             </ui-select-choices>
-                  </ui-select>
+                    <ui-select-match>
+                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                    </ui-select-match>
 
+                    <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
+                                       refresh-delay="50"
+                                       repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
+                      <span title="{{item[property.autocompleteData.titleProperty]}}">
+                        {{item[property.autocompleteData.titleProperty]}}
+                      </span>
+                    </ui-select-choices>
+                  </ui-select>
                 </div>
               </div>
 

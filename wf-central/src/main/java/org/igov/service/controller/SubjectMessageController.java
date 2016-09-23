@@ -126,6 +126,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
     ) throws CommonServiceException {
+        //LOG.info("Start create message: sHead={}, sBody={}, nID_Subject={}, sMail={}, sContacts={}, sData={}, nID_SubjectMessageType={}", sHead, sBody, nID_Subject, sMail, sContacts, sData, nID_SubjectMessageType);
 
         SubjectMessage message
                 = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
@@ -133,6 +134,7 @@ public class SubjectMessageController {
 
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
+        //LOG.info("End create message id={}, Mail={}, Contacts={}, Data={}, Date={}, Head={}, Body={}, Id_subject={}, ID_HistoryEvent_Service={}, sID_DataLink={}, nID_HistoryEvent_Service={}", message.getId(), message.getMail(), message.getContacts(), message.getData(), message.getDate(), message.getHead(), message.getBody(), message.getId_subject(), message.getnID_HistoryEvent_Service(), message.getsID_DataLink(), message.getnID_HistoryEvent_Service());
 
         return JsonRestUtils.toJsonResponse(message);
     }
@@ -499,6 +501,17 @@ public class SubjectMessageController {
             }
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
             subjectMessagesDao.setMessage(oSubjectMessage);
+
+            Long messageID = oSubjectMessage.getId();
+            LOG.info("Set message id={}, Mail={}", messageID, oSubjectMessage.getMail());
+            LOG.info("Set message id={}, Contacts={}", messageID, oSubjectMessage.getContacts());
+            LOG.info("Set message id={}, Data={}", messageID, oSubjectMessage.getData());
+            LOG.info("Set message id={}, Date={}", messageID, oSubjectMessage.getDate());
+            LOG.info("Set message id={}, Head={}", messageID, oSubjectMessage.getHead());
+            LOG.info("Set message id={}, Body={}", messageID, oSubjectMessage.getBody());
+            LOG.info("Set message id={}, Id_subject={}", messageID, oSubjectMessage.getId_subject());
+            LOG.info("Set message id={}, ID_DataLink={}", messageID, oSubjectMessage.getsID_DataLink());
+            LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 
@@ -977,47 +990,48 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             HttpServletResponse httpResponse) throws CommonServiceException{
-    		
-    		//content of the message file
-    		String res = null;
-    		try{
-    			Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
-	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
-	    		Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
 
-	            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+        //content of the message file
+        String res = null;
+        try{
+            Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
+            SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+            Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+            LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
 
-	            if(bAuth && oHistoryEvent_Service.isPresent()){
-	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
-	            }
-	    		if(message == null || isBlank(message.getsID_DataLink())){
-	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
-	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
-	                throw newErr;
-	    		}    	    	
-	    		LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);    		
-	    		
-	    		if (isNotBlank(message.getsID_DataLink())){
-	    			LOG.info("Field sID_DataLink in message is not null");	    			
-	    	        
-	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
-	    			
-	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
-	    			res = new String(resBytes, Charset.forName("UTF-8"));
-	    			
-	    			httpResponse.getWriter().print(res);
-	    			httpResponse.getWriter().close();
-	    		}
-    		}catch(Exception e){
-    			if(e instanceof CommonServiceException)
-    				throw (CommonServiceException)e;
-    			else
-    			{
-    				LOG.error("FAIL: {}", e.getMessage());
-    	            LOG.trace("FAIL:", e);
-    	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
-    			}
-    		}
+            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+
+            if(bAuth && oHistoryEvent_Service.isPresent()){
+                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+            }
+            if(message == null || isBlank(message.getsID_DataLink())){
+                LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+                CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+                throw newErr;
+            }
+            LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+
+            if (isNotBlank(message.getsID_DataLink())){
+                LOG.info("Field sID_DataLink in message is not null");
+
+                byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
+
+                httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+                res = new String(resBytes, Charset.forName("UTF-8"));
+
+                httpResponse.getWriter().print(res);
+                httpResponse.getWriter().close();
+            }
+        }catch(Exception e){
+            if(e instanceof CommonServiceException)
+                throw (CommonServiceException)e;
+            else
+            {
+                LOG.error("FAIL: {}", e.getMessage());
+                LOG.trace("FAIL:", e);
+                throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
+            }
+        }
     }
 
 }

@@ -814,19 +814,29 @@ public class SubjectController {
     private List<NewSubjectAccount> getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server, boolean bSkipDetails) {
         List<NewSubjectAccount> newSubjectSet = new ArrayList<>();
         Long nID_Subject;
+        //LOG.info("nID_Subject: " + nID_Subject);
         Subject subject;
+//         LOG.info("subject: " + subject);
+        LOG.info("saLogin: " + saLogin);
         if (saLogin != null) {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
-            LOG.info("asLogin: " + asLogin);
+            LOG.info("000000000000000000000saLogin: " + saLogin);
             for (String login : asLogin) {
+                LOG.info("1111111111111111111login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
                 List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
+                LOG.info("2222222222222222222login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
+                LOG.info("3333333333333333333subjectAccounts: " + subjectAccounts);
+                for (SubjectAccount subjectAccount : subjectAccounts) {
+                    LOG.info("subjectAccount: "+subjectAccount);
+                }
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     for (SubjectAccount subjectAccount : subjectAccounts) {
                         nID_Subject = subjectAccount.getnID_Subject();
-                        LOG.info("nID_Subject: " + nID_Subject);
+                        
+                        LOG.info("5555555555555555nID_Subject: " + nID_Subject);
                         subject = subjectDao.getSubject(nID_Subject);
                         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        LOG.info("subjectContacts: " + subjectContacts);
+                        LOG.info("6666666666666666subjectContacts: " + subjectContacts);
                         subject.setaSubjectAccountContact(subjectContacts);
                         SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                         SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(subject);

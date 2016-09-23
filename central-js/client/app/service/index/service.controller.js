@@ -82,6 +82,7 @@ angular.module('app')
     };
 
     $scope.$on('$stateChangeStart', function(event, toState) {
+      $scope.spinner = true;
       if(toState.name === 'index') {
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;

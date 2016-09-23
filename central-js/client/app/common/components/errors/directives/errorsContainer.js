@@ -12,7 +12,7 @@ angular.module("app").directive("errorsContainer", function ($modal) {
         if (value > 0) {
           var modalInstance = $modal.open({
             animation: true,
-            size: 'md',
+            size: $scope.errors[0].sSize ? $scope.errors[0].sSize : 'md',
             templateUrl: 'app/common/components/errors/modal/errorsModal.html',
             controller: 'ErrorsModelController',
             resolve: {

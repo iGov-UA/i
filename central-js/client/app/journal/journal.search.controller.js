@@ -2,6 +2,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $rootScope,
   $scope,
   $location,
+  $modal,
   $window,
   $state,
   $stateParams,
@@ -319,7 +320,7 @@ console.log($scope)
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
       if(angular.isString(res.data)){
-        ErrorsFactory.push({type:"success", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"')})
+        ErrorsFactory.push({type:"message", size:"lg", text: res.data});
       } else {
         ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }

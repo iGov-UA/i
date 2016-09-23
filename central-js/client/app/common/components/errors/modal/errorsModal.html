@@ -3,6 +3,7 @@
 </div>
 
 <div class="modal-body">
+  <div ng-if="error.sType !== 'message'">
   <p ng-show="error.nID" class="text-{{error.sType}}">
       <b>Відослано на сервер під номером: {{error.nID}}</b>
   </p>
@@ -46,6 +47,13 @@
   <p ng-show="false && error.bSending" class="text-{{error.sType}}">
       Дані відсилаються на сервер...
   </p>
+  </div>
+
+  <div ng-if="error.sType === 'message'">
+    <p ng-bind-html="error.sBody">
+      <!--{{error.sBody}}-->
+    </p>
+  </div>
 </div>
 
 <div class="modal-footer">

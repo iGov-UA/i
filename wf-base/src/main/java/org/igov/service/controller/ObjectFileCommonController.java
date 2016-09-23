@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,10 +41,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.fs.FileSystemData;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
@@ -480,19 +486,6 @@ public class ObjectFileCommonController {
             HttpServletResponse httpResponse) throws IOException {
 
         String processInstanceId = oActionTaskService.getProcessInstanceIDByTaskID(taskId);
-
-        // получаем по ид процесса сам процесс
-        /* issue 1076 - блок вынесен в oActionTaskService.getProcessInstancyByID(processInstanceId)
-        HistoricProcessInstance processInstance = historyService
-                .createHistoricProcessInstanceQuery()
-                .processInstanceId(processInstanceId).includeProcessVariables()
-                .singleResult();
-        if (processInstance == null) {
-            throw new ActivitiObjectNotFoundException(String.format(
-                    "ProcessInstance for processInstanceId '{%s}' not found.",
-                    processInstanceId), Attachment.class);
-        }
-        */
         HistoricProcessInstance processInstance = oActionTaskService.getProcessInstancyByID(processInstanceId);
 
         // получаем коллекцию переменных процеса и прикрепленный файл
@@ -721,72 +714,112 @@ public class ObjectFileCommonController {
     	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
             @ApiParam(value = "строка-размер блока для выборки процесса на обработку", required = false) @RequestParam(value = "nChunkSize", required = false) String nChunkSize,
             @ApiParam(value = "строка-ИД конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId) {
-        /* issue # 1076
-        long totalMaxProcesses = historyService.createHistoricProcessInstanceQuery().count();
-    	long maxProcesses = totalMaxProcesses;
-    	
-    	long nStartFromProcess = 0;
-    	if (nStartFrom != null){
-    		nStartFromProcess = Long.valueOf(nStartFrom);
-    	}
-    	
-    	int nStep = 100;
-    	if (nChunkSize != null){
-    		nStep = Integer.valueOf(nChunkSize);
-    		maxProcesses = nStartFromProcess + nStep;
-    	}
-    	
-    	LOG.info("Total number of processes: {}. Processing instances from {} to {}", totalMaxProcesses, nStartFromProcess, maxProcesses);
-    	
-    	for (long i = nStartFromProcess; i < maxProcesses; i = i + 10){
-    		
-    		LOG.info("Processing processes from {} to {}", i, (i + 10));
-    		List<HistoricProcessInstance> processInstances = new LinkedList<HistoricProcessInstance>();
-    		if (nProcessId != null){
-    			HistoricProcessInstance task = historyService.createHistoricProcessInstanceQuery().processInstanceId(nProcessId).singleResult();
-    			LOG.info("Found process by ID:{}", nProcessId);
-    			processInstances.add(task);
-    		} else {
-    			processInstances = historyService.createHistoricProcessInstanceQuery().listPage((int)i, (int)(i + 10));
-    		}
-    		LOG.info("Number of process:{}", processInstances.size());
-    		for (HistoricProcessInstance procesInstance : processInstances){
-    			List<Attachment> attachments = taskService.getProcessInstanceAttachments(procesInstance.getId());
-    			if (attachments != null && !attachments.isEmpty()){
-    				LOG.info("Found {} attachments for the process instance:{}", attachments.size(), procesInstance.getId());
-    				
-    				for (Attachment attachment : attachments){
-    					if (!((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId().startsWith(MongoCreateAttachmentCmd.MONGO_KEY_PREFIX)){
-    						try {
-	    						LOG.info("Found process with attachment not in mongo. Attachment ID:{}", attachment.getId());
-	    						InputStream is = taskService.getAttachmentContent(attachment.getId());
-	    						LOG.info("Got content for attachment. Attachment ID: {}", attachment.getId());
-	    						Attachment newAttachment = taskService.createAttachment(attachment.getType(), attachment.getTaskId(), 
-	    								attachment.getProcessInstanceId(), attachment.getName(), attachment.getDescription(), is);
-	    						LOG.info("Created new attachment with ID:{} new attachment:{} old attachment:{} ", newAttachment.getId(), newAttachment, attachment);
-	    						taskService.deleteAttachment(attachment.getId());
-	    						LOG.info("Removed old attachment with ID: {}", attachment.getId());
-    						} catch (Exception e){
-    							LOG.error("Exception occured while moving attachment: {}", e.getMessage());
-    							LOG.trace("FAIL:", e);
-    						}
-    					} else {
-    						LOG.info("Attachment {} is already in Mongo with ID:{}",
-                                    attachment.getId(), ((org.activiti.engine.impl.persistence.entity.AttachmentEntity)attachment).getContentId());
-    					}
-    				}
-    			} else {
-    				LOG.info("No attachments found for the process with ID:{}", procesInstance.getId());
-    			}
-    		}
-			if (nProcessId != null){
-				break;
-			}
-    	}
-    	
-    	return "OK";
-    	*/
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
+    
+    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
+    public @ResponseBody
+    Map<String, String> getPatternFilled(
+            @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
+            @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
+            HttpServletResponse httpResponse) throws Exception {
+        
+        Map<String, String> result = new HashMap<>();
+        LOG.info("data: " + data);
+        File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
+        String declarContent = Files.toString(file, Charset.defaultCharset());
+        LOG.info("Created document with customer info: {}", declarContent);
+        String regex, replacement;
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            regex = "<" + entry.getKey().trim().toUpperCase() + ">";
+            replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
+            declarContent = declarContent.replaceAll(regex, replacement);
+        }
+        //запись контента в xml файл
+        //MultipartFile multipartFile = new ByteArrayMultipartFile(declarContent.getBytes(),
+        //        sID_Pattern, sID_Pattern, "application/xml");
+        //httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
+        //httpResponse.setHeader("Content-Type", multipartFile.getContentType());
+        //httpResponse.setContentLength(multipartFile.getBytes().length);
+        //String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
+        //        .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
+        //        .toByteArray());
+        //result.put("sID_Redis", key);
+        result.put("soPatternFilled", declarContent.replaceAll(" ", "").replaceAll(System.getProperty("line.separator"), ""));
+        return result;
+    }
+    
+    /*
+    @ApiOperation(value = "/putAttachmentToRedis_old", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы\n")
+    @RequestMapping(value = {"/putAttachmentToRedis_old"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
+    public @ResponseBody
+    String putAttachmentToRedis_old(@RequestBody(required = false) Map<String, String> data,
+            HttpServletResponse httpResponse) throws Exception {
+        //генерируем хмл в виде файла и проставляем значения в него. отдаем на клиента
+        LOG.info("data: " + data);
+        DBody body = new DBody();
+        ObjectFactory factory = new ObjectFactory();
+        body.setHLNAME(data.get("hlname"));
+        body.setHPNAME(data.get("hpname"));
+        body.setHFNAME(factory.createDBodyHFNAME(data.get("hfname")));
+        body.setHTIN(data.get("htin"));
+        body.setHEMAIL(data.get("hemail"));
+        body.setHPASS(factory.createDBodyHPASS(data.get("hpass")));
+        body.setHPASSDATE(factory.createDBodyHPASSDATE(data.get("hpassDate")));
+        body.setHPASSISS(factory.createDBodyHPASS(data.get("hpassiss")));
+        body.setHSTREET(data.get("hstreet"));
+        body.setHBUILD(data.get("hbuild"));
+        body.setHAPT(factory.createDBodyHAPT(data.get("hapart")));
+        body.setHCOUNTRY(data.get("country"));
+        body.setR01G01(Integer.valueOf(data.get("kvStart")));
+        body.setR01G02(Integer.valueOf(data.get("yStart")));
+        body.setR02G01(Integer.valueOf(data.get("kvEnd")));
+        body.setR02G02(Integer.valueOf(data.get("yEnd")));
+
+        DHead head = new DHead();
+        head.setTIN(null);
+        head.setLINKEDDOCS(factory.createDHeadLINKEDDOCS(null));
+        head.setCDOC(null);
+        head.setCDOCSUB(null);
+        head.setCDOCVER(null);
+        head.setCDOCTYPE(null);
+        head.setCDOCCNT(null);
+        head.setCREG(null);
+        head.setCRAJ(null);
+        head.setPERIODMONTH(null);
+        head.setPERIODTYPE(null);
+        head.setPERIODYEAR(null);
+        head.setCSTIORIG(null);
+        head.setCDOCSTAN(null);
+        head.setDFILL(null);
+        head.setSOFTWARE(null);
+        head.setTIN(null);
+
+        DeclarContent declar = new DeclarContent();
+        declar.setDECLARHEAD(head);
+        declar.setDECLARBODY(body);
+
+        StringWriter sw = new StringWriter();
+        JAXBContext jc = JAXBContext.newInstance(DeclarContent.class);
+        Marshaller m = jc.createMarshaller();
+        m.marshal(declar, sw);
+
+        String declarContent = sw.toString();
+        LOG.info("Created document with customer info to embedd to message: {}", declarContent);
+        //запись контента в xml файл
+        MultipartFile file = new ByteArrayMultipartFile(declarContent.getBytes(),
+                "SwinEd", "SwinEd", "application/xml");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + file.getName());
+        httpResponse.setHeader("Content-Type", file.getContentType());
+        httpResponse.setContentLength(declarContent.getBytes().length);
+        String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
+                .multipartFileToByteArray(file, file.getOriginalFilename())
+                .toByteArray());
+        return key + " " + declarContent;
+        //return declarContent.getBytes();
+    }
+
+    */
     
 }

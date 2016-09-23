@@ -85,6 +85,8 @@ public class ActionTaskCentralController {
                 HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID(), //nID_StatusType
                     null,//sSubjectInfo
                     null //nID_Subject
+                   // null, //sDateCreate
+                  // null //sDateClosed
             );
             
             /*

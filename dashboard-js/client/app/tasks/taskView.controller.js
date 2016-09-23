@@ -18,6 +18,91 @@
           }
         };
 
+        activate();
+
+        function activate(){
+          angular.forEach(taskForm, function(item){
+            var checkbox = getCheckbox((item.name || '').split(';')[2]);
+
+            if(checkbox){
+              bindEnumToCheckbox({
+                id: item.id,
+                enumValues: item.enumValues,
+                sID_CheckboxTrue: checkbox.sID_CheckboxTrue,
+                self: item
+              });
+            }
+
+            if(checkbox && item.type === 'enum'){
+              item.type = 'checkbox';
+            }
+          });
+
+
+          function getCheckbox(param){
+            if(!param || !typeof param === 'string') return null;
+
+            var input = param.trim(),
+                finalArray,
+                result = {};
+
+            var checkboxExp = input.split(',').filter(function(item){
+              return (item && typeof item === 'string' ? item.trim() : '')
+                      .split('=')[0]
+                      .trim() === 'sID_CheckboxTrue';
+            })[0];
+
+            if(!checkboxExp) return null;
+
+            finalArray = checkboxExp.split('=');
+
+            if(!finalArray || !finalArray[1]) return null;
+
+            var indexes = finalArray[1].trim().match(/\d+/ig),
+                index;
+
+            if(Array.isArray(indexes)){
+              index = isNaN(+indexes[0]) || +indexes[0];;
+            }
+
+            result[finalArray[0].trim()] = index !== undefined
+            && index !== null
+            || index === 0 ? index : finalArray[1].trim();
+
+            return result;
+          }
+
+          function bindEnumToCheckbox(param){
+            if(!param || !param.id || !param.enumValues ||
+                param.sID_CheckboxTrue === null ||
+                param.sID_CheckboxTrue === undefined) return;
+
+            var checkbox = {},
+                trueValues,
+                falseValues;
+
+            if(isNaN(+param.sID_CheckboxTrue)){
+              trueValues = param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue});
+              falseValues = param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue});
+              checkbox[param.id] = {
+                trueValue: trueValues[0] ? trueValues[0].id : null,
+                falseValue: falseValues[0] ? falseValues[0].id : null
+              };
+            }else{
+              falseValues = param.enumValues.filter(function(o, i){return i !== param.sID_CheckboxTrue});
+              checkbox[param.id] = {
+                trueValue: param.enumValues[param.sID_CheckboxTrue] ?
+                    param.enumValues[param.sID_CheckboxTrue].id : null,
+                falseValue: falseValues[0] ? falseValues[0].id : null
+              };
+            }
+
+            angular.extend(param.self, {
+                checkbox: checkbox
+            });
+          }
+        }
+
         $scope.isShowExtendedLink = function () {
           return tasks.isFullProfileAvailableForCurrentUser(taskData);
         };
@@ -301,7 +386,6 @@
           }
         };
 
-
         $scope.isFormInvalid = false;
         $scope.submitTask = function (form) {
           $scope.validateForm(form);
@@ -579,32 +663,32 @@
 
         $scope.getAttachmentTable = function (taskId, attachId, attachName) {
           $rootScope.attachIsLoading = true;
-            var tableName = attachName;
-            tasks.getTableAttachment(taskId, attachId).then(function (res) {
-              var table = {};
-              $scope.taskData.aTable = [];
-              table.aRows = JSON.parse(res);
-              table.sName = tableName;
-              $scope.taskData.aTable.push(table);
-              // TODO поменять на фильтр
-              angular.forEach($scope.taskData.aTable[0].aRows, function (row) {
-                angular.forEach(row.aField, function (field) {
-                  if(field.type === 'date') {
-                    var onlyDate = field.props.value.split('T')[0];
-                    var splitDate = onlyDate.split('-');
-                    field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
-                  }
-                  if(field.type === 'enum') {
-                    angular.forEach(field.a, function (item) {
-                      if(field.value === item.id){
-                        field.value = item.name;
-                      }
-                    })
-                  }
-                })
-              });
-              $rootScope.attachIsLoading = false;
+          var tableName = attachName;
+          tasks.getTableAttachment(taskId, attachId).then(function (res) {
+            var table = {};
+            $scope.taskData.aTable = [];
+            table.aRows = JSON.parse(res);
+            table.sName = tableName;
+            $scope.taskData.aTable.push(table);
+            // TODO поменять на фильтр
+            angular.forEach($scope.taskData.aTable[0].aRows, function (row) {
+              angular.forEach(row.aField, function (field) {
+                if(field.type === 'date') {
+                  var onlyDate = field.props.value.split('T')[0];
+                  var splitDate = onlyDate.split('-');
+                  field.props.value = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0]
+                }
+                if(field.type === 'enum') {
+                  angular.forEach(field.a, function (item) {
+                    if(field.value === item.id){
+                      field.value = item.name;
+                    }
+                  })
+                }
+              })
             });
+            $rootScope.attachIsLoading = false;
+          });
           $scope.tableContentShow = !$scope.tableContentShow;
         };
 
@@ -614,28 +698,4 @@
       }
 
     ])
-    .filter('cut', function () {
-      return function (value, wordwise, max, tail) {
-        if (!value) return '';
-
-        max = parseInt(max, 10);
-        if (!max) return value;
-        if (value.length <= max) return value;
-
-        value = value.substr(0, max);
-        if (wordwise) {
-          var lastspace = value.lastIndexOf(' ');
-          if (lastspace != -1) {
-            value = value.substr(0, lastspace);
-          }
-        }
-        return value + (tail || '…');
-      };
-    })
-  .filter('fixDate', function () {
-    return function (value) {
-      return  value.split('.')[0];
-    }
-  })
-
 })();
