@@ -147,6 +147,9 @@ public class GeneralConfig {
     private String sSuffixDateMask_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.nDaysOffset}")
     private String snDaysOffset_Pay_Yuzhny_FTP;
+    
+    @Value("${general.feedbackCountLimit}")
+    private String feedbackCountLimit;
    
     
     
@@ -438,5 +441,13 @@ public class GeneralConfig {
 	public Integer getDaysOffset_FTP_Yuzhny_Pay() {
 		return Integer.valueOf(snDaysOffset_Pay_Yuzhny_FTP);
 	}
+
+	public Long getFeedbackCountLimit() {
+		return Long.valueOf(feedbackCountLimit);
+	}
+	
+	 public boolean isFeedbackCountExpired(Long feedbackCount) {
+			return feedbackCount > getFeedbackCountLimit();
+	 }
     
 }
