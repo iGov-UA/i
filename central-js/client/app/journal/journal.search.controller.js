@@ -321,12 +321,12 @@ console.log($scope)
     MessagesService.getSubjectMessageData(nID).then(function (res) {
       if(angular.isString(res.data)){
 
-        ErrorsFactory.push({type:"info", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"').replace(new RegExp('width="765"','g'),'width="568"')});
-        /*
+        //ErrorsFactory.push({type:"info", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"').replace(new RegExp('width="765"','g'),'width="568"')});
+
         var modalInstance = $modal.open({
           animation: true,
           size: 'lg',
-          templateUrl: 'app/service/allowOrderModal.html',
+          templateUrl: 'app/journal/letterModal.html',
           controller: function ($scope, $modalInstance, message) {
             $scope.message = message;
 
@@ -340,7 +340,7 @@ console.log($scope)
             }
           }
         });
-        */
+
       } else {
         ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }
