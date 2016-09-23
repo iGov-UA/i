@@ -1374,7 +1374,7 @@ execution.setVariable('sNotification_day', timer)</script>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow126" name="немає оплати" sourceRef="exclusivegateway5" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment =='5'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment =='48'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow127" name="є оплата" sourceRef="exclusivegateway5" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 !=""}]]></conditionExpression>
@@ -1580,12 +1580,12 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow142" sourceRef="escalationTimer1" targetRef="servicetask14"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT1M</timeDuration>
+        <timeDuration>PT40M</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow150" sourceRef="servicetask15" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow152" name="оплати немає, але час іще є" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment !='5'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment_2 ==""&& sCountPayment !='48'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow153" sourceRef="timerintermediatecatchevent2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow155" sourceRef="scripttask3" targetRef="exclusivegateway5"></sequenceFlow>
@@ -1787,7 +1787,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="841.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="917.0" y="73.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="71.0" x="841.0" y="72.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="841.0" y="72.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
