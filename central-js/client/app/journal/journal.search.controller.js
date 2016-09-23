@@ -2,6 +2,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $rootScope,
   $scope,
   $location,
+  $modal,
   $window,
   $state,
   $stateParams,
@@ -319,7 +320,27 @@ console.log($scope)
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
       if(angular.isString(res.data)){
-        ErrorsFactory.push({type:"success", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"')})
+
+        ErrorsFactory.push({type:"info", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"').replace(new RegExp('width="765"','g'),'width="568"')});
+        /*
+        var modalInstance = $modal.open({
+          animation: true,
+          size: 'lg',
+          templateUrl: 'app/service/allowOrderModal.html',
+          controller: function ($scope, $modalInstance, message) {
+            $scope.message = message;
+
+            $scope.close = function () {
+              $modalInstance.close();
+            }
+          },
+          resolve: {
+            message: function () {
+              return res.data;
+            }
+          }
+        });
+        */
       } else {
         ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }

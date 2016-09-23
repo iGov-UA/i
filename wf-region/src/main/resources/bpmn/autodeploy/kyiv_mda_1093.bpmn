@@ -14,6 +14,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" type="string" default="false" writable="false" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="7. Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника" activiti:candidateGroups="kyiv_dabi_boss_contr">
@@ -32,7 +33,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -46,19 +47,19 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Ознайомлення з документом ${sID_NumberASKOD}]]></activiti:expression>
+          <activiti:expression>Ознайомлення з документом ${sID_NumberASKOD}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br><br>
 У Вас на ознайомлені документ за номером ${sID_NumberASKOD}.<br>
 Документ в додатку до листа.<br><br>
-Гарного дня!<br>
+Гарного дня!<br>]]>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile1}"]]></activiti:expression>
+          <activiti:expression>"${nFile1}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -72,19 +73,19 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Ознайомлення з документом ${sID_NumberASKOD}]]></activiti:expression>
+          <activiti:expression>Ознайомлення з документом ${sID_NumberASKOD}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br><br>
 У Вас на ознайомлені документ за номером ${sID_NumberASKOD}.<br>
 Документ в додатку до листа.<br><br>
-Гарного дня!<br>
+Гарного дня!<br>]]>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile1}"]]></activiti:expression>
+          <activiti:expression>"${nFile1}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -105,7 +106,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -136,7 +137,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -156,10 +157,11 @@
           <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
           <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" default="true" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -226,7 +228,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -464,7 +466,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -635,7 +637,6 @@
         <activiti:formProperty id="sPrescriptionEstablished_10" name="Встановлено (10 особа)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPrescriptionDemand_10" name="Вимагаю (10 особа) (заходи щодо усунення порушень із визначенням терміну виконання)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPrescriptionPersonMade_10" name="Особа, що склала припис (10 особа)" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="asQuantityOffenses" name="Кількість правопорушень" type="enum">
           <activiti:value id="sEnumOffenses_1" name="1"></activiti:value>
           <activiti:value id="sEnumOffenses_2" name="2"></activiti:value>
@@ -676,7 +677,6 @@
         <activiti:formProperty id="sDateCase" name="Дата та час розгляду справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceCase" name="Місце розгляду справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressPlaceCase" name="Адреса місця розгляду справи" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
@@ -699,7 +699,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -753,18 +753,27 @@
         <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року"></activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcess}">
+          <activiti:field name="paramName">
+            <activiti:expression>sOpenGate</activiti:expression>
+          </activiti:field>
+          <activiti:field name="checkValue">
+            <activiti:expression>true</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sErrorMessage">
+            <activiti:expression>Неможливо опрацювати задачу. Будь ласка, зачекайте інформацію про об'єкт від співробітника відділу дозвільних документів.</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask8"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow23" sourceRef="usertask8" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask9" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_boss_permit">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -777,7 +786,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -791,19 +800,19 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Ознайомлення з документом ${sID_NumberASKOD}]]></activiti:expression>
+          <activiti:expression>Ознайомлення з документом ${sID_NumberASKOD}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br><br>
 У Вас на ознайомлені документ за номером ${sID_NumberASKOD}.<br>
 Документ в додатку до листа.<br><br>
-Гарного дня!<br>
+Гарного дня!<br>]]>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile1}"]]></activiti:expression>
+          <activiti:expression>"${nFile1}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1030,7 +1039,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1056,7 +1065,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1085,7 +1094,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileAppeal},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileAppeal},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1111,7 +1120,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
+            <activiti:expression>${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1124,6 +1133,9 @@
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow36" sourceRef="usertask12" targetRef="endevent6"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="usertask9" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="usertask8"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask8" targetRef="parallelgateway2"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Управління дозвільних документів</text>
     </textAnnotation>
@@ -1139,25 +1151,25 @@
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="184.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="75.0" width="105.0" x="910.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="810.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="75.0" width="105.0" x="618.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="550.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="75.0" width="105.0" x="758.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="682.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="71.0" width="105.0" x="618.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="72.0" width="105.0" x="1062.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="72.0" width="105.0" x="936.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="71.0" width="105.0" x="758.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="71.0" width="105.0" x="1325.0" y="264.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="1325.0" y="166.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="1357.0" y="379.0"></omgdc:Bounds>
@@ -1190,7 +1202,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="499.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
-        <omgdc:Bounds height="69.0" width="105.0" x="1325.0" y="167.0"></omgdc:Bounds>
+        <omgdc:Bounds height="69.0" width="105.0" x="1080.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="1240.0" y="181.0"></omgdc:Bounds>
@@ -1235,15 +1247,15 @@
         <omgdc:Bounds height="50.0" width="100.0" x="976.0" y="275.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
-        <omgdc:Bounds height="50.0" width="100.0" x="1167.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="50.0" width="100.0" x="1039.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="723.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="758.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="863.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="910.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="45.0" y="201.0"></omgdi:waypoint>
@@ -1252,7 +1264,7 @@
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="519.0" y="181.0"></omgdi:waypoint>
         <omgdi:waypoint x="518.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="618.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="519.0" y="221.0"></omgdi:waypoint>
@@ -1260,8 +1272,8 @@
         <omgdi:waypoint x="618.0" y="265.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="1015.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1062.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="915.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="936.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="723.0" y="265.0"></omgdi:waypoint>
@@ -1273,14 +1285,14 @@
         <omgdi:waypoint x="1260.0" y="221.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1377.0" y="335.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1377.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="1377.0" y="379.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="1397.0" y="399.0"></omgdi:waypoint>
         <omgdi:waypoint x="1442.0" y="399.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="1479.0" y="379.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1479.0" y="379.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -1315,19 +1327,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="155.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="154.0" y="260.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="1280.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="1167.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="181.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="1377.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1377.0" y="264.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="469.0" y="202.0"></omgdi:waypoint>
@@ -1387,13 +1386,26 @@
         <omgdi:waypoint x="325.0" y="203.0"></omgdi:waypoint>
         <omgdi:waypoint x="364.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="1280.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="1041.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1080.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="1185.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1260.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1260.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="976.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="863.0" y="265.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association2" id="BPMNEdge_association2">
-        <omgdi:waypoint x="1217.0" y="80.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1114.0" y="113.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1089.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="988.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

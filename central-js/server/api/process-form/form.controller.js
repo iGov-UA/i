@@ -40,7 +40,7 @@ module.exports.submit = function (req, res) {
   var formData = req.body;
   var nID_Subject = req.session.subject.nID;
   var sHost = req.region.sHost;
-  var table = req.body.params.sTable;
+  var keys = [];
   var properties = [];
 
   function formSubmit() {
@@ -86,35 +86,22 @@ module.exports.submit = function (req, res) {
     activiti.post('/service/form/form-data', qs, body, callback, sHost);
   }
 
-  if('sTable' in formData.params) {
-    async.waterfall([
-        function (callback) {
-          if('sTable' in formData.params) {
+  for(var key in formData.params) {
+    if(Array.isArray(formData.params[key])) keys.push(key);
+  }
 
-            function putTableToRedis (table, callback) {
-              var url = '/object/file/upload_file_to_redis';
-              activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
-            }
-
-            putTableToRedis(table, function (error, response, body) {
-              if (error || body.code) {
-                callback(createError(body, 'error while caching data. ' + body.message, response), null);
-              } else {
-                callback(null, response, body);
-              }
-            })
-
-          }
-        },
-
-        function (response, body, callback) {
-          if(body) {
-            formData.params.sTable = body;
-            callback(null, body)
-          }
+  if(keys.length > 0) {
+    async.forEach(keys, function (key, next) {
+        function putTableToRedis (table, callback) {
+          var url = '/object/file/upload_file_to_redis';
+          activiti.upload(url, {}, 'tableField.json', JSON.stringify(table), callback);
         }
-      ],
-      function (err, body) {
+        putTableToRedis(formData.params[key], function (error, response, data) {
+          formData.params[key] = data;
+          next()
+        })
+      },
+      function(err) {
         formSubmit();
       });
   } else {
@@ -305,15 +292,15 @@ module.exports.signFormMultiple = function (req, res) {
       if (error) {
         callbackAsync(error, null);
       } else {
-        callbackAsync(null, body);
+        callbackAsync(null, {loadedForm : body});
       }
     });
   }
 
   var objectsToSign = [];
 
-  function getHtmlAsync(formData, callbackAsync) {
-    createHtml(formData, function (formToUpload) {
+  function getHtmlAsync(result, callbackAsync) {
+    createHtml(result.loadedForm, function (formToUpload) {
       objectsToSign.push({
         name: 'file',
         text: formToUpload,
@@ -322,11 +309,12 @@ module.exports.signFormMultiple = function (req, res) {
           contentType: 'text/html;charset=utf-8'
         }
       });
-      callbackAsync(null, formData);
+      callbackAsync(null, result);
     });
   }
 
-  function getFileBuffersAsync(formData, callbackAsync) {
+  function getFileBuffersAsync(result, callbackAsync) {
+    var formData = result.loadedForm;
     var filesToSign = [];
     async.forEach(findFileFields(formData), function (fileField, callbackEach) {
       uploadFileService.downloadBuffer(fileField.value, function (error, response, buffer) {
@@ -346,17 +334,18 @@ module.exports.signFormMultiple = function (req, res) {
         callbackAsync(error, null);
       } else {
         objectsToSign = objectsToSign.concat(filesToSign);
-        callbackAsync(null, formData);
+        callbackAsync(null, result);
       }
     });
   }
 
-  function signFilesAsync(formData, callbackAsync) {
+  function signFilesAsync(result, callbackAsync) {
     var accessToken = req.session.access.accessToken;
-    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, result) {
+    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, signResult) {
       if (error) {
-        callbackAsync(error, null);
+        callbackAsync(error, result);
       } else {
+        result.signResult = signResult;
         callbackAsync(null, result)
       }
     });
@@ -369,9 +358,11 @@ module.exports.signFormMultiple = function (req, res) {
     signFilesAsync
   ], function (error, result) {
     if (error) {
-      res.status(500).send(error);
+      res.redirect(result.loadedForm.restoreFormUrl
+        + '?formID=' + formID
+        + '&error=' + JSON.stringify(error));
     } else {
-      res.redirect(result.desc);
+      res.redirect(result.signResult.desc);
     }
   });
 };

@@ -57,22 +57,27 @@
           <enum-field></enum-field>
         </div>
 
+        <!--поле типа checkbox-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <checkbox-field></checkbox-field>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
           <input class="form-control"
                  name="{{item.id}}"
                  ng-disabled="true"
-                 ng-required="{{item.required}}"
+                 ng-required="isRequired(item)"
                  ng-model="item.value"
-                 ng-class="{submitted:item.required && isTaskSubmitted()}"/>
+                 ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"/>
         </p>
 
         <!--поле типа marker-->
         <label style="display: none;"
                ng-if="item.type == 'markers'"
                name="{{item.id}}"
-               ng-required="{{item.required}}"
+               ng-required="isRequired(item)"
                class="form-control_">{{item.value}}
         </label>
 
@@ -87,12 +92,12 @@
         <!--</div>-->
 
         <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
-          <label>{{sFieldLabel(item.name)}} {{item.required && item.writable ? "*" : ""}}</label>
+          <label>{{sFieldLabel(item.name)}} {{isRequired(item) && item.writable ? "*" : ""}}</label>
         </span>
 
         <span ng-if="['label'].indexOf(item.type) > -1 && item.value">
           <span class="col-sm-6 task-form-title" >
-            <label>{{sFieldLabel(item.name)}} {{item.required && item.writable ? "*" : ""}}</label>
+            <label>{{sFieldLabel(item.name)}} {{isRequired(item) && item.writable ? "*" : ""}}</label>
           </span>
           <span class="col-sm-6 task-form-written-right-sight">
             <label>{{item.value}}</label>
@@ -101,7 +106,7 @@
 
         <span ng-if="['queueData'].indexOf(item.type) > -1">
           <span class="col-sm-6 task-form-title">
-            <label>{{sFieldLabel(item.name)}} {{item.required && item.writable ? "*" : ""}}</label>
+            <label>{{sFieldLabel(item.name)}} {{isRequired(item) && item.writable ? "*" : ""}}</label>
           </span>
           <span class="col-sm-6 task-form-written-right-sight">
             <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
@@ -136,21 +141,11 @@
         <!--поле типа enum-->
         <enum-field></enum-field>
 
+        <!--поле типа checkbox-->
+        <checkbox-field></checkbox-field>
+
         <!--поле типа file-->
-        <span ng-if="item.type == 'file' && item.id.indexOf('PrintForm') === -1"
-              ng-class="{submitted:item.required && isTaskSubmitted()}"
-              class="col-sm-12">
-          <span class="col-sm-6 task-form-title">
-            <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
-          </span>
-          <span class="col-sm-6">
-            <file-field name="{{item.id}}"
-                        ng-disabled="isFormPropertyDisabled(item)"
-                        ng-model="item.value"
-                        ng-required="{{item.required}}">Add File
-            </file-field>
-          </span>
-        </span>
+        <file-formfield></file-formfield>
       </div>
 
       <!--атачи-->
@@ -185,7 +180,8 @@
                     type="button"
                     class="btn btn-link attach-btn dropdown-toggle"
                     data-toggle="dropdown"
-                    ng-model="some">
+                    ng-model="some"
+                    title="{{item.description}}">
                     <!--ng-click="openModalWindow($event)">-->
               {{item.description | cut : true : 25}}
             </button>
@@ -250,7 +246,7 @@
             </div>
           </div>
 
-          <div style="display:inline-block;" ng-if="!inUnassigned()">
+          <div style="display:none;" ng-if="!inUnassigned()">
             <button class="btn btn-warning" style="border: none">Очікую відповідь</button>
           </div>
 
