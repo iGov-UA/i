@@ -44,7 +44,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     FormService formService;
     
     //@Autowired
-    //private IBytesDataStorage oBytesDataStorage;
+    private IBytesDataStorage oBytesDataStorage;
 
     private Expression sID_File_XML_SWinEd;
 
@@ -54,7 +54,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         //достать по ид атача ид в монге и достать контент из монги.
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
-        //byte[] oFile_XML_SWinEd = oBytesDataStorage.getData(sID_File_XML_SWinEdValue);
+        byte[] oFile_XML_SWinEd = oBytesDataStorage.getData(sID_File_XML_SWinEdValue);
         
         //отправить рест с контентом файла, вычитать ответ и поместить результат в поле таски
         /*LOG.info("Setting SwinEd status response variable to {} for the process {}", handler.value.getValue(), delegateTask.getProcessInstanceId());
