@@ -27,7 +27,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплатити держ. мито онлайн&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
@@ -362,7 +361,7 @@
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
 <br><br>
@@ -370,8 +369,8 @@
 Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
-Тепер вам обом впродовж 3-х днів з моменту отримання цього листа потрібно підписати заповнений бланк. Ви можете обрати один з двох варіантів, який Вам зручніше.<br><br>
-
+Тепер вам обом впродовж 3-х днів з моменту отримання цього листа потрібно підписати заповнений бланк. Ви можете обрати один з двох варіантів, який Вам зручніше.<br>
+<br>
 <b>Варіант 1. Ви можете підписати заяву в електронній формі.</b><br>
 Завантажте на свій комп’ютер файл, який додано до цього листа, та підпишіть його за допомогою електронно-цифрового підпису (ЕЦП). Якщо у Вас немає ЕЦП, за цим <a href="https://goo.gl/1OioXt" target="_blank">посиланням</a> Ви можете знайти перелік організацій, де Ви можете його отримати (в тому числі безкоштовно).<br>
 <br>
@@ -441,7 +440,7 @@ ${sMail_Signature} <br><br>
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Вам відмовлено в наданні послуги.<br>
@@ -460,7 +459,7 @@ ${sMail_Signature}<br /><br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -479,10 +478,10 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
  <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
-Дякуємо, Вам що скористались нашим сервісом подачи заяви про державну реєстрацію шлюбу!<br /><br />
+Дякуємо, Вам що скористались нашим сервісом подання заяви про державну реєстрацію шлюбу!<br /><br />
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]   
@@ -652,12 +651,12 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
-<br />
-На жаль, Вам відмовлено в реєстраціі шлюбу.<br />
-Підстава: <br />
-${comment}<br />
+<br>
+На жаль, Вам відмовлено в реєстраціі шлюбу.<br>
+Підстава: <br>
+${comment}<br>
 
 [pattern/mail/_common_signature_start.html]
 ${sMail_Signature}<br /><br />
