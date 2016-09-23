@@ -2,8 +2,6 @@ package org.igov.service.conf;
 
 import java.io.InputStream;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
 import org.activiti.engine.impl.cmd.CreateAttachmentCmd;
@@ -11,13 +9,9 @@ import org.activiti.engine.impl.db.DbSqlSession;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.AttachmentEntity;
-import org.activiti.engine.impl.persistence.entity.ByteArrayEntity;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.IoUtil;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.Task;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
