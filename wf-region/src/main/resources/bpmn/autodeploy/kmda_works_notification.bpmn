@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Works_notification" name="ГАСК Повідомлення про виконання робіт" isExecutable="true">
+  <process id="kmda_works_notification" name="ДАБІ Реєстрація повідомлення про початок виконання підготовчих робіт" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Замовник:&lt;/b&gt;"></activiti:formProperty>
@@ -48,7 +48,7 @@
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalPhone" name="Номер телефону підрядника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон документа" type="invisible" default="pattern/print/KMDA/**************"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон документа" type="invisible" default="pattern/print/kiev/DABI_prep_works_app1.html"></activiti:formProperty>
         <activiti:formProperty id="marker_hide" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -492,8 +492,8 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="usertask_step16" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Works_notification">
-    <bpmndi:BPMNPlane bpmnElement="Works_notification" id="BPMNPlane_Works_notification">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kmda_works_notification">
+    <bpmndi:BPMNPlane bpmnElement="kmda_works_notification" id="BPMNPlane_kmda_works_notification">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
