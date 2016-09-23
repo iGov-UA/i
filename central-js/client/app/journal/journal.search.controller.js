@@ -320,7 +320,27 @@ console.log($scope)
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
       if(angular.isString(res.data)){
-        ErrorsFactory.push({type:"message", size:"lg", text: res.data});
+
+        //ErrorsFactory.push({type:"info", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"').replace(new RegExp('width="765"','g'),'width="568"')});
+
+        var modalInstance = $modal.open({
+          animation: true,
+          size: 'lg',
+          templateUrl: 'app/journal/letterModal.html',
+          controller: function ($scope, $modalInstance, message) {
+            $scope.message = message;
+
+            $scope.close = function () {
+              $modalInstance.close();
+            }
+          },
+          resolve: {
+            message: function () {
+              return res.data;
+            }
+          }
+        });
+
       } else {
         ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }
