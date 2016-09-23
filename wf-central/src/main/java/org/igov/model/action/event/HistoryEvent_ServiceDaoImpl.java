@@ -254,7 +254,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         if(nID_Service != null){
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        if(sID_UA != null && sID_UA != ""){
+        if(sID_UA != null && !"".equals(sID_UA)){
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 

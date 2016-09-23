@@ -18,7 +18,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="test_dfs">
+    <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writible=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writible=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
@@ -29,6 +29,11 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
+          <activiti:field name="oFile_XML_SWinEd">
             <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
