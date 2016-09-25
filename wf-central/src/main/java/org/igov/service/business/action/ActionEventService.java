@@ -109,13 +109,8 @@ public class ActionEventService {
                 Date oDateCreate = task.getCreateTime();
                 if(oDateCreate != null)
                     LOG.info(String.format("oDateCreate = {}", oDateCreate.toString()));
-                //taskId(snId_Task).singleResult().getStartTime();
-               // Date oDateClosed = oHistoryService.createHistoricTaskInstanceQuery().taskId(snId_Task).singleResult().getEndTime();
                 listDate.add(oDateCreate);
-               // listDate.add(oDateClosed);
-                historyEventService.setsDateCreate(oDateCreate.toString());
-               // historyEventService.setsDateClosed(oDateClosed.toString());
-               // this.historyEventServiceDao.saveOrUpdate(historyEventService);
+                historyEventService.setsDateCreate(new DateTime(oDateCreate));
 
              }
              catch(NullPointerException ex)
