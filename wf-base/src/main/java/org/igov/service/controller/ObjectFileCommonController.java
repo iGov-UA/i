@@ -44,6 +44,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -732,7 +733,7 @@ public class ObjectFileCommonController {
         String regex, replacement;
         for (Map.Entry<String, String> entry : data.entrySet()) {
             regex = "<" + entry.getKey().trim().toUpperCase() + ">";
-            replacement = regex + entry.getValue();
+            replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
             declarContent = declarContent.replaceAll(regex, replacement);
         }
         //запись контента в xml файл
@@ -745,7 +746,7 @@ public class ObjectFileCommonController {
         //        .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
         //        .toByteArray());
         //result.put("sID_Redis", key);
-        result.put("soPatternFilled", declarContent);
+        result.put("soPatternFilled", declarContent.replaceAll(" ", "").replaceAll(System.getProperty("line.separator"), ""));
         return result;
     }
     
