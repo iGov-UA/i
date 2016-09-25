@@ -62,6 +62,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             LOG.info("create new historyEventService");/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
+        historyEventService.setsDateCreate(new DateTime());
         Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
@@ -73,6 +74,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     @Override
     public HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service event_service) {
         event_service.setsDate(new DateTime());
+        if(event_service.getnID_StatusType()!= null && event_service.getnID_StatusType() == 8){
+            event_service.setsDateClosed(new DateTime());
+        }
         return saveOrUpdate(event_service);
     }
 
