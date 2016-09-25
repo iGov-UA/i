@@ -84,8 +84,12 @@ angular.module('app')
             if(!item.aRow) {
               item.aRow = [];
             }
-            var parsedTable = JSON.parse(item.value);
-            obj[key].aRow.push(parsedTable);
+            try {
+              var parsedTable = JSON.parse(item.value);
+              obj[key].aRow.push(parsedTable);
+            } catch (e) {
+              return
+            }
           }
           checkRowsLimit(formProps);
           addTableFieldsProperties(formProps);
