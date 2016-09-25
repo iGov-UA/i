@@ -219,6 +219,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.loadList();
       });
 
+      scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function () {
+        resetData();
+        scope.loadList();
+      });
+
       scope.loadList();
     }
   }
