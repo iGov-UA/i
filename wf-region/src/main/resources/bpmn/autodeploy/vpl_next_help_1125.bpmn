@@ -76,6 +76,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -306,8 +307,8 @@ execution.setVariable('sAdd_SpisokDocs', per1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-      <activiti:expression>smoktii.igov@gmail.com</activiti:expression>
-            </activiti:field>
+          <activiti:expression>smoktii.igov@gmail.com</activiti:expression>
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Подано звернення референтом: Призначення щомісячної адресної допомоги внутрішньо переміщеним особам на наступний шестимісячний строк]]></activiti:string>
         </activiti:field>
@@ -327,7 +328,7 @@ ${sPhoneOrgan}&lt;br /&gt;
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow18" name="Подал референт" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='false'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="Подал референт" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='true'}]]></conditionExpression>
@@ -449,7 +450,7 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="406.0" y="121.0"></omgdi:waypoint>
         <omgdi:waypoint x="405.0" y="142.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="415.0" y="101.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="84.0" x="415.0" y="101.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
