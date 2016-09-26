@@ -42,14 +42,43 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   }
 
   return {
-    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
+    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter, table) {
       var _printTemplate = printTemplate;
       var templates = [], ids = [], found;
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
       }
-      if (templates.length > 0 && ids.length > 0) {
+      if(table) {
+        if(templates.length > 0) {
+          angular.forEach(templates, function (item, key, obj) {
+            obj[key] = item.slice(13, -13);
+            var arrOfRows = [], arrOfIds = [];
+            angular.forEach(templates, function (template) {
+              var matches = template.match(/[^[\]]+(?=])/g);
+              if(matches.length > 0) arrOfIds.push(matches);
+            });
+            if(arrOfIds) {
+              var idMatches = 0;
+              angular.forEach(arrOfIds[0], function(id) {
+                angular.forEach(form.taskData.aTable, function(table) {
+                  angular.forEach(table.content, function(row) {
+                    angular.forEach(row.aField, function(field) {
+                      if(field.id === id) {
+                        idMatches++;
+                      }
+                    })
+                  })
+                })
+              });
+            }
+            var addRows = templates[0].repeat(idMatches/arrOfIds[0].length);
+            _printTemplate = _printTemplate.replace(item, addRows);
+            return _printTemplate
+          })
+        }
+      }
+      if (templates.length > 0 && ids.length > 0 && !table) {
         templates.forEach(function (templateID, i) {
           var id = ids[i];
           if (id) {
@@ -68,14 +97,18 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       }
       return _printTemplate;
     },
-    populateSystemTag: function (printTemplate, tag, replaceWith) {
+    populateSystemTag: function (printTemplate, tag, replaceWith, table) {
       var replacement;
       if (replaceWith instanceof Function) {
         replacement = replaceWith();
       } else {
         replacement = replaceWith;
       }
-      return printTemplate.replace(new RegExp(this.escapeRegExp(tag), 'g'), replacement);
+      if(table) {
+        return printTemplate.replace(new RegExp(this.escapeRegExp(tag)), replacement);
+      } else {
+        return printTemplate.replace(new RegExp(this.escapeRegExp(tag), 'g'), replacement);
+      }
     },
     escapeRegExp: function (str) {
       return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -141,6 +174,15 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       printTemplate = this.populateSystemTag(printTemplate, "[sCurrentDateTime]", $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime.replace(' ', 'T'), 'yyyy-MM-dd HH:mm'));
 
+      printTemplate = this.processPrintTemplate(task, form, printTemplate, /(?=<!--\[table)([\s\S]*?table]-->)/g, null, true);
+      var that = this;
+      angular.forEach(form.taskData.aTable, function (table) {
+        angular.forEach(table.content, function (row) {
+          angular.forEach(row.aField, function (field) {
+            printTemplate = that.populateSystemTag(printTemplate, "[" + field.id + "]", field.value?field.value:(field.default?field.default:field.props.value), true)
+          })
+        });
+      });
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(

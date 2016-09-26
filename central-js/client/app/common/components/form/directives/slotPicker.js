@@ -51,7 +51,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
       var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
 
-      scope.$watch('selected.slot', function(newValue) {
+      function selectedSlot(newValue) {
         if (isQueueDataType.DMS) {
           if(newValue){
             if (isInvalidServiceCustomPrivate()) return;
@@ -99,6 +99,16 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             });
           }
         }
+      }
+
+      function updateReservedSlot(newValue) {
+        if (newValue && isQueueDataType.DMS){
+          selectedSlot(scope.selected.slot);
+        }
+      }
+
+      scope.$watch('selected.slot', function(newValue) {
+        selectedSlot(newValue);
       });
 
       function getPasportLastFourNumbers(str) {
@@ -124,8 +134,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       var departmentParam = scope.formData.params[departmentProperty];
 
       scope.loadList = function(){
-
-        scope.slotsLoading = true;
         var data = {};
         var sURL = '';
 
@@ -145,19 +153,21 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             nID_Server: scope.serviceData.nID_Server,
             nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
           };
+
           if (departmentParam) {
-            if (!departmentParam.value) {
-              return false;
-            } else {
+            if (parseInt(departmentParam.value) > 0)
               data.nID_SubjectOrganDepartment = departmentParam.value;
-            }
+            else return;
           }
+
           if (nSlotsParam && parseInt(nSlotsParam.value) > 1) {
             data.nSlots = nSlotsParam.value;
           }
-          if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 1) {
+
+          if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 0) {
             data.nDiffDays = nDiffDaysParam.value;
           }
+
           sURL = '/api/service/flow/' + scope.serviceData.nID;
         } else {
           scope.slotsLoading = false;
@@ -168,6 +178,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           console.error('slotsData for field id [' + this.property.id + '] not loading');
           return;
         }
+
+        scope.slotsLoading = true;
 
         return $http.get(sURL, {params:data}).then(function(response) {
           if (isQueueDataType.DMS){
@@ -180,18 +192,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       };
 
       function convertSlotsDataDMS(data) {
-        var result = {
-          aDay: []
-        };
+        var aDay = [];
         var nSlotID = 1;
         for (var sDate in data) if (data.hasOwnProperty(sDate)) {
-          result.aDay.push({
+          aDay.push({
             aSlot: [],
-            //bHasFree : true,
             sDate: sDate
           });
           angular.forEach(data[sDate], function (slot) {
-            result.aDay[result.aDay.length - 1].aSlot.push({
+            aDay[aDay.length - 1].aSlot.push({
               bFree: true,
               nID: nSlotID,
               nMinutes: slot.t_length,
@@ -199,19 +208,74 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             });
             nSlotID++;
           });
-          result.aDay[result.aDay.length - 1].bHasFree = result.aDay[result.aDay.length - 1].aSlot.length > 0;
+          aDay[aDay.length - 1].bHasFree = aDay[aDay.length - 1].aSlot.length > 0;
         }
+        var result = {
+          aDay: []
+        };
+        angular.forEach(aDay, function (day) {
+          if(day.aSlot.length > 0){
+            result.aDay.push(day);
+          }
+        });
+        result.aDay.sort(function (a, b) {
+          return Date.parse(a.sDate) - Date.parse(b.sDate);
+        });
         return result;
       }
 
-      scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue) {
+      if (angular.isDefined(departmentParam)) {
+        scope.$watch('formData.params.' + departmentProperty + '.value', function (newValue, oldValue) {
+          resetData();
+          if (parseInt(newValue) > 0) {
+            scope.loadList();
+          }
+        });
+      } else {
+        scope.loadList();
+      }
+
+      if (angular.isDefined(nSlotsParam)) {
+        scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+          scope.loadList();
+        });
+      }
+
+      if (angular.isDefined(nDiffDaysParam)) {
+        scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+          scope.loadList();
+        });
+      }
+
+      scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function () {
         resetData();
         scope.loadList();
       });
 
-      scope.$watch('formData.params.' + nSlotsKey + '.value', function (newValue) {
-        resetData();
-        scope.loadList();
+      scope.$watch('formData.params.bankIdlastName.value', function (newValue) {
+        updateReservedSlot(newValue);
+      });
+
+      scope.$watch('formData.params.bankIdfirstName.value', function (newValue) {
+        updateReservedSlot(newValue);
+      });
+
+      scope.$watch('formData.params.bankIdmiddleName.value', function (newValue) {
+        updateReservedSlot(newValue);
+      });
+
+      scope.$watch('formData.params.bankIdPassport.value', function (newValue) {
+        updateReservedSlot(newValue);
+      });
+
+      scope.$watch('formData.params.phone.value', function (newValue) {
+        updateReservedSlot(newValue);
       });
 
       scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
