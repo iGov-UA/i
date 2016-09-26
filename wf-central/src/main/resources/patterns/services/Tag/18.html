@@ -1,174 +1,228 @@
-﻿<meta charset="utf-8" />
-<style>
-    .article-block {
-        font-family: Open Sans, Arial, sans-serif;
-        color: #333333;
+﻿<style>
+.article-block {
+    font-family: Open Sans, Arial, sans-serif;
+    color: #333333;
+}
+
+    .article-block li {
+        margin: 10px 0;
     }
 
-        .article-block li {
-            margin: 10px 0;
+    .article-block ol,
+    .article-block ul {
+        margin-bottom: 36px;
+    }
+
+     .article-block .content-art ol,
+     .article-block .content-art ul,
+     .article-block ol ul,
+     .article-block ol ol,
+     .article-block ul ul,
+     .article-block ul ol {
+         margin-bottom: 12px;
+     }
+
+    .article-block table ol,
+    .article-block table ul {
+        margin: 0 0 0 25px;
+        padding: 0;
+    }
+
+    .article-block table li {
+        padding: 5px 0 0 0;
+        margin: 0;
+    }
+
+
+    .article-block .notmarker > li {
+        list-style-type: none; /* Убираем маркеры */
+    }
+
+    .article-block sup {
+        color: #428bca;
+        font-size: 10.8333px;
+    }
+
+    .article-block a {
+        color: #428bca;
+    }
+
+    .article-block h1,
+    .article-block .ind-section {
+        margin-top: 46px;
+    }
+
+        .article-block h1.topic {
+            margin-top: 12px;
         }
 
-        .article-block ol,
-        .article-block ul {
-            margin-bottom: 46px;
+    .article-block h2 {
+        margin-top: 36px;
+    }
+
+    .article-block h3 {
+        margin-top: 24px;
+    }
+
+    .article-block h1 > sup {
+        color: #428bca;
+        font-size: 15.8333px;
+    }
+
+    .article-block table {
+        border-spacing: 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        border-collapse: separate;
+    }
+
+    .article-block th {
+        background: #eeeeee;
+        text-align: center;
+    }
+
+    .article-block td,
+    .article-block th {
+        padding: 16px 10px;
+        vertical-align: central;
+        border-left: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+    }
+
+    .article-block .tableNotHead tr:first-child > td,
+    .article-block tr:first-child > th {
+        border-top: none;
+    }
+
+        .article-block td:first-child,
+        .article-block tr:first-child > th:first-child {
+            border-left: none;
+        }
+        /* из-за background */
+        .article-block tr:first-child > th:first-child {
+            border-top-left-radius: 5px;
         }
 
-        .article-block .content-art ol,
-        .article-block .content-art ul
-         {
-            margin-bottom: 12px;
+        .article-block tr:first-child > th:last-child {
+            border-top-right-radius: 5px;
         }
 
-        .article-block .notmarker>li {
-            list-style-type: none; /* Убираем маркеры */
+    .article-block tr > td.small-text,
+    .article-block .small-text {
+        font-size: 10pt;
+    }
+
+
+    .article-block tr > td.va-c,
+    .article-block .va-c {
+        vertical-align: central;
+    }
+
+    .article-block tr > td.va-b,
+    .article-block .va-b {
+        vertical-align: bottom;
+    }
+
+    .article-block tr > td.va-t,
+    .article-block .va-t {
+        vertical-align: top;
+    }
+
+
+    .article-block tr > td.ta-c,
+    .article-block .ta-c {
+        text-align: center;
+    }
+
+    .article-block tr > td.ta-l,
+    .article-block .ta-l {
+        text-align: left;
+    }
+
+    .article-block tr > td.ta-r,
+    .article-block .ta-r {
+        text-align: right;
+    }
+
+    .article-block tr > td.ta-j,
+    .article-block p,
+    .article-block li,
+    .article-block .ta-j {
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+    }
+
+    .article-block .attention-block {
+        margin: 20px;
+        padding: 20px;
+        border-left: 3px solid #eee;
+    }
+
+        .article-block .attention-block h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
         }
 
-        .article-block sup {
-            color: #428bca;
-            font-size: 10.8333px;
+        .article-block .attention-block p:last-child {
+            margin-bottom: 0;
         }
 
-        .article-block h1,
-        .article-block .ind-section {
-            margin-top: 46px;
+    .article-block .attention-block-info {
+        background-color: #f4f8fa;
+        border-color: #5bc0de;
+    }
+
+        .article-block .attention-block-info h4 {
+            color: #5bc0de;
         }
 
-            .article-block h1.topic {
-                margin-top: 12px;
-            }
+    .article-block .attention {
+        padding: 16px 10px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
 
-        .article-block a {
-            color: #428bca;
-        }
+    .article-block .note {
+        color: #999;
+    }
 
-        .article-block h1 > sup {
-            color: #428bca;
-            font-size: 15.8333px;
-        }
+    .article-block .b {
+        font-weight: bold;
+    }
 
-        .article-block table {
-            border-spacing: 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            border-collapse: separate;
-        }
+    .article-block .notb {
+        font-weight: 100;
+    }
 
-        .article-block th {
-            background: #eeeeee;
-            text-align: center;
-        }
-
-        .article-block td,
-        .article-block th {
-            padding: 16px 10px;
-            vertical-align: central;
-            border-left: 1px solid #ddd;
-            border-top: 1px solid #ddd;
-        }
-
-
-        .article-block tr:first-child > th {
-            border-top: none;
-        }
-
-            .article-block td:first-child,
-            .article-block tr:first-child > th:first-child {
-                border-left: none;
-            }
-            /* из-за background */
-            .article-block tr:first-child > th:first-child {
-                border-top-left-radius: 5px;
-            }
-
-            .article-block tr:first-child > th:last-child {
-                border-top-right-radius: 5px;
-            }
-
-        .article-block tr > td.small-text,
-        .article-block .small-text {
-            font-size: 10pt;
-        }
-
-
-        .article-block tr > td.va-c,
-        .article-block .va-c {
-            vertical-align: central;
-        }
-
-        .article-block tr > td.va-b,
-        .article-block .va-b {
-            vertical-align: bottom;
-        }
-
-        .article-block tr > td.va-t,
-        .article-block .va-t {
-            vertical-align: top;
-        }
-
-
-        .article-block tr > td.ta-c,
-        .article-block .ta-c {
-            text-align: center;
-        }
-
-        .article-block tr > td.ta-l,
-        .article-block .ta-l {
-            text-align: left;
-        }
-
-        .article-block tr > td.ta-r,
-        .article-block .ta-r {
-            text-align: right;
-        }
-
-        .article-block tr > td.ta-j,
-        .article-block .ta-j {
-            text-align: justify;
-        }
-
-        .article-block .attention-block {
-            margin: 20px;
-            padding: 20px;
-            border-left: 3px solid #eee;
-        }
-            .article-block .attention-block h4 {
-                margin-top: 0;
-                margin-bottom: 5px;
-            }
-            .article-block .attention-block p:last-child {
-                margin-bottom: 0;
-            }
-
-        .article-block .attention-block-info {
-            background-color: #f4f8fa;
-            border-color: #5bc0de;
-        }
-            .article-block .attention-block-info h4 {
-                color: #5bc0de;
-            }
-
-        .article-block .attention {
-            padding: 16px 10px;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-            background-color: #ffffff;
-        }
-
-        .article-block .note {
-            color: #999;
-        }
-
-        .article-block .b {
-            font-weight: bold;
-        }
-
-        .article-block .notb {
-            font-weight: 100;
-        }
+    .formula em,
+    .variables em,
+    .variable {
+        font-weight: bold;
+    }
+	    .article-block .formula table {
+	        border-spacing: 0;
+	        border: 0;
+	        border-radius: 0px;
+	        border-collapse: separate;
+	        margin: auto;
+	        padding:0;
+	    }
+	    .article-block .formula tr,
+	    .article-block .formula td {
+	        vertical-align: central;
+	        margin:0;
+	        padding: 3px 5px;
+	        border: 0;
+	    }
 </style>
 
-<article class="article-block">
+
+<article lang="uk" class="article-block">
     <h1 class="topic">Що потрібно знати, коли укладаєш шлюб?</h1>
     <p>
         Отже, Ви знайшли свою любов і вирішили одружитися. Ми зібрали корисну інформацію, щоб найщасливіший день у Вашому житті пройшов ідеально! У цьому тексті Ви дізнаєтеся:
@@ -178,13 +232,13 @@
             які вимоги до молодят;
         </li>
         <li>
-            як подати заяву в РАЦС;
+            як подати заяву в ДРАЦС;
         </li>
         <li>
             як призначити дату розпису і яку церемонію вибрати;
         </li>
         <li>
-            як змінити прізвище і адресe реєстрації.
+            як змінити прізвище і адресу реєстрації.
         </li>
     </ul>
 
@@ -197,7 +251,7 @@
         </li>
         <li>
             <a href="" ng-click="gotoAnchor(2)">
-                Крок 2. Подайте заяву в РАЦС.
+                Крок 2. Подайте заяву в ДРАЦС.
             </a>
         </li>
         <li>
@@ -247,22 +301,22 @@
             </ul>
         </li>
     </ol>
-    <h1 id="anchor2">Крок 2. Подайте заяву в РАЦС.</h1>
+    <h1 id="anchor2">Крок 2. Подайте заяву в ДРАЦС.</h1>
     <p>
-        Подати заяву на реєстрацію шлюбу Ви можете в будь-який РАЦС на території України незалежно від адреси реєстрації.
+        Подати заяву на реєстрацію шлюбу Ви можете в будь-який ДРАЦС на території України незалежно від адреси реєстрації.
     </p>
     <p>
-        Заява подається майбутнім подружжям спільно, з'явившись в РАЦС особисто або в електронному вигляді за допомогою порталу 
-        <a href="https://igov.org.ua/service/703/general">iGov</a> 
-        (детальна інструкція, як додати електронну заявку, наведена <a href="https://igov.org.ua/service/703/instruction">тут</a>).
+        Заява подається майбутнім подружжям спільно, з'явившись в ДРАЦС особисто, або можна подати заяву також в електронному вигляді за допомогою порталу 
+        <a href="https://igov.org.ua/service/703/general" target="_blank">iGov</a> 
+        (детальна інструкція, як додати електронну заявку, наведена <a href="https://igov.org.ua/service/703/instruction" target="_blank">тут</a>).
     </p>
-    <h2>Документи, необхідні для подачі заяви в РАЦСі</h2>
-    <h3>Молодята громадяни України</h3>
+    <h2>Документи, необхідні для подачі заяви в ДРАЦСі</h2>
+    <h3>Молодята - громадяни України</h3>
     <ul>
         <li>паспорти;</li>
-        <li>ідентифікаційні коди;</li>
+        <li>ідентифікаційні податкові коди;</li>
         <li>свідоцтво про народження та дозвіл суду на вступ в шлюб, якщо хто-небудь з молодят неповнолітній;</li>
-        <li>квитанція про оплату державного мита та послуг РАЦСу.</li>
+        <li>квитанція про оплату державного мита та послуг ДРАЦСу.</li>
     </ul>
     <h3>Не перший шлюб</h3>
     <p>
@@ -271,7 +325,7 @@
     <ul>
         <li>свідоцтво про розірвання попереднього шлюбу;</li>
         <li>рішення суду про розірвання шлюбу;</li>
-        <li>рішення суду або висновок РАЦСу про визнання шлюбу недійсним;</li>
+        <li>рішення суду або висновок ДРАЦСу про визнання шлюбу недійсним;</li>
         <li>свідоцтво про смерть одного з подружжя.</li>
     </ul>
     <h3>Один з наречених іноземний громадянин</h3>
@@ -285,7 +339,7 @@
     </p>
     <h1 id="anchor3">Крок 3. Виберіть дату реєстрації шлюбу</h1>
     <p>
-        У момент подачі заяви в РАЦС Вам необхідно вибрати дату реєстрації. Вона повинна бути не раніше ніж через місяць після подачі заяви.
+        У момент подачі заяви в ДРАЦС Вам необхідно вибрати дату реєстрації. Вона повинна бути не раніше ніж через місяць після подачі заяви.
     </p>
     <p>
         Зареєструвати шлюб можна швидше з поважних причин, наприклад, важка хвороба, майбутнє тривале відрядження, призов на строкову військову службу тощо.
@@ -304,13 +358,13 @@
     <h1 id="anchor4">Крок 4. Зареєструйте шлюб</h1>
     <p>
         У призначений час наречений і наречена особисто повинні з'явитися на реєстрацію шлюбу. 
-        Зареєструвати шлюб можна в РАЦСі або замовити виїзну реєстрацію шлюбу.
+        Зареєструвати шлюб можна в ДРАЦСі або замовити виїзну реєстрацію шлюбу.
     </p>
     <h2>Неурочиста реєстрація шлюбу</h2>
     <ol>
-        <li>Ви приходите в РАЦС і пред'являєте співробітнику паспорта.</li>
-        <li>Співробітник РАЦСу формує актовий запис про шлюб і дає його Вам на підпис. Уважно перевірте всі дані, задля уникнення помилок.</li>
-        <li>Співробітник РАЦСу оформляє Свідоцтво про шлюб, з підписом і печаткою начальника РАЦСу вручає його подружжю.</li>
+        <li>Ви приходите в ДРАЦС і пред'являєте співробітнику паспорти.</li>
+        <li>Співробітник ДРАЦСу формує актовий запис про шлюб і дає його Вам на підпис. Уважно перевірте всі дані, задля уникнення помилок.</li>
+        <li>Співробітник ДРАЦСу оформляє Свідоцтво про шлюб, з підписом і печаткою начальника ДРАЦСу вручає його подружжю.</li>
         <li>
             У паспортах на сторінці «про сімейний стан» ставиться відмітка із зазначенням прізвища, імені, по батькові і року народження другого з подружжя, місця і дати реєстрації шлюбу.
             Якщо подружжя змінюють прізвище, на першій сторінці паспорта поставлять позначку про те, що паспорт підлягає обміну протягом місяця з дня реєстрації шлюбу.
@@ -323,15 +377,15 @@
     </p>
     <h2>Виїзна реєстрація шлюбу</h2>
     <p>
-        Ви можете самостійно вибрати місце урочистості, куди приїде співробітник РАЦСу для проведення обряду. Актовий запис про реєстрацію шлюбу та Свідоцтво про шлюб 
-        готуються і підписуються заздалегідь в приміщенні РАЦСу. 
-        Тому молодятам в той же день до початку виїзної церемонії потрібно буде з паспортами з'явитися в РАЦС і підписати необхідні документи.
+        Ви можете самостійно вибрати місце урочистості, куди приїде співробітник ДРАЦСу для проведення обряду. Актовий запис про реєстрацію шлюбу та Свідоцтво про шлюб 
+        готуються і підписуються заздалегідь в приміщенні ДРАЦСу. 
+        Тому молодятам в той же день до початку виїзної церемонії потрібно буде з паспортами з'явитися в ДРАЦС і підписати необхідні документи.
     </p>
     <h1 id="anchor5">Крок 5. Якщо Ви змінили прізвище, то отримайте нові документи</h1>
     <p>
-        Найчастіше після шлюбу змінюють паспорта, ідентифікаційний код і водійські права.
-        Що необхідно зробити для отримання нових документів при зміні прізвища, детально описано <a href="https://igov.org.ua/subcategory/1/1/situation/16">тут</a> 
-        і <a href="https://igov.org.ua/subcategory/1/4/situation/24">тут</a>.
+        Найчастіше після шлюбу змінюють паспорт, ідентифікаційний код і водійські права.
+        Що необхідно зробити для отримання нових документів при зміні прізвища, детально описано <a href="https://igov.org.ua/subcategory/1/1/situation/16" target="_blank">тут</a> 
+        і <a href="https://igov.org.ua/subcategory/1/4/situation/24" target="_blank">тут</a>.
     </p>
     <p>
         Увага! Якщо не поміняти паспорт громадянина України протягом місяця, паспорт вважається недійсним!
@@ -342,7 +396,7 @@
     </p>
     <h1 id="anchor6">Крок 6. При необхідності змінить адресу місця реєстрації</h1>
     <p>
-        Що необхідно зробити при зміні адреси місця реєстрації, детально описано <a href="https://igov.org.ua/subcategory/1/6/situation/29">тут</a>.
+        Що необхідно зробити при зміні адреси місця реєстрації, детально описано <a href="https://igov.org.ua/subcategory/1/6/situation/29" target="_blank">тут</a>.
     </p>
     <h1 id="anchor7">Посилання на законодавство</h1>
     <ol>

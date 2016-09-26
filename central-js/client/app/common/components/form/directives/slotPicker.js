@@ -232,6 +232,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
         });
       } else {
+
         scope.loadList();
       }
 
@@ -256,7 +257,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function () {
         resetData();
         scope.loadList();
-      });
+      }
 
       scope.$watch('formData.params.bankIdlastName.value', function (newValue) {
         updateReservedSlot(newValue);
