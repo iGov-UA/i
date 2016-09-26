@@ -925,7 +925,7 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow69" sourceRef="servicetask16" targetRef="usertask4"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT40M</timeDuration>
+        <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow70" sourceRef="escalationTimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
@@ -935,7 +935,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT60M</timeDuration>
+        <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
   </process>
