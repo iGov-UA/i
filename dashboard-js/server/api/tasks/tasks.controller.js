@@ -475,9 +475,12 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
+    var currentUser = JSON.parse(req.cookies.user);
+    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
+    currentUser.roles = UserFromStorage.roles;
     // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
     // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
-    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : JSON.parse(localStorage.getItem('user'))))
+    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
       res.status(200).send(body);
     else {
       error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
