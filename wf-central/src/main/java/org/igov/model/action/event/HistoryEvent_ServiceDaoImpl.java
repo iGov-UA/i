@@ -75,7 +75,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service event_service) {
         event_service.setsDate(new DateTime());
         if(event_service.getnID_StatusType()!= null && event_service.getnID_StatusType() == 8){
-            event_service.setsDateClosed(new DateTime());
+            event_service.setsDateClose(new DateTime());
         }
         return saveOrUpdate(event_service);
     }
