@@ -312,6 +312,7 @@ public abstract class AbstractModelTask {
      *
      * @param oFormData FormData from task where we search file fields.
      * @param oTask where we add Attachments.
+     * @return list of Attachment
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
