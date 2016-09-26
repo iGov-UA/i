@@ -71,7 +71,7 @@
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry1" name="Громадянство" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum" required="true">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -97,11 +97,11 @@
         <activiti:formProperty id="sAge2" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви особою без громадянства" type="enum">
+        <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви особою без громадянства або біженцем" type="enum">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry2" name="Громадянство" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство" type="string" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" required="true">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -168,7 +168,7 @@
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -196,7 +196,7 @@
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -284,7 +284,7 @@
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -312,7 +312,7 @@
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -370,7 +370,7 @@
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
 <br><br>
@@ -385,10 +385,10 @@
 <br>
 На документі має бути накладено два електронні підписи – нареченого та нареченої. Якщо Ви не знаєте, як накласти ЕЦП на документ, за цим <a href="https://www.youtube.com/watch?v=tnBUGbqvYLs&feature=youtu.be" target="_blank">посиланням Ви знайдете відеоінструкцію</a>, як це можна зробити на прикладі одного сервісу.<br>
 <br>
-Після цього Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику ДРАЦС:
+Після цього Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику відділу ДРАЦС:
 <ul>
-<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником ДРАЦС;</li>
-<li>в полі залиште коментар, який побачить співробітник ДРАЦС;</li>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;</li>
+<li>в полі залиште коментар, який побачить співробітник відділу ДРАЦС;</li>
 <li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;</li>
 <li>натисніть кнопку “Відправити”.</li>
 </ul>
@@ -449,7 +449,7 @@ ${sMail_Signature} <br><br>
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Вам відмовлено в наданні послуги.<br>
@@ -487,10 +487,10 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
  <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
-Дякуємо, Вам що скористались нашим сервісом подачи заяви про державну реєстрацію шлюбу!<br /><br />
+Дякуємо, Вам що скористались нашим сервісом подання заяви про державну реєстрацію шлюбу!<br /><br />
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]   
@@ -572,7 +572,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -600,7 +600,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -660,7 +660,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Вам відмовлено в реєстраціі шлюбу.<br />
@@ -790,7 +790,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Ви не сплатили держ. мито протягом одного дня.<br>
@@ -859,7 +859,7 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -887,7 +887,7 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountry2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -935,7 +935,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT30S</timeDuration>
+        <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
   </process>
