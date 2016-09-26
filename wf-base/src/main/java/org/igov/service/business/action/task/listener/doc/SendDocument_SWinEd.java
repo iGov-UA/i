@@ -1,8 +1,5 @@
 package org.igov.service.business.action.task.listener.doc;
 
-import java.util.List;
-
-
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -10,10 +7,6 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.impl.form.FormPropertyImpl;
-import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.service.business.action.task.core.AbstractModelTask;
