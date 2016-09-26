@@ -27,7 +27,6 @@ function FieldAttributesService(MarkersFactory) {
     for (var i = 0; i < markers.length; i++){
       for (var j = 0; j < markers[i].aElement_ID.length; j++){
         if(markers[i].aElement_ID[j] === sID){
-          //debugger;
           return {
             bShow: true,
             sText: markers[i].sValue ? markers[i].sValue : ''
