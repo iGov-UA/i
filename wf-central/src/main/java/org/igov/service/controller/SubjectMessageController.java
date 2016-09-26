@@ -503,6 +503,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
 
             Long messageID = oSubjectMessage.getId();
+            /*
             LOG.info("Set message id={}, Mail={}", messageID, oSubjectMessage.getMail());
             LOG.info("Set message id={}, Contacts={}", messageID, oSubjectMessage.getContacts());
             LOG.info("Set message id={}, Data={}", messageID, oSubjectMessage.getData());
@@ -512,6 +513,7 @@ public class SubjectMessageController {
             LOG.info("Set message id={}, Id_subject={}", messageID, oSubjectMessage.getId_subject());
             LOG.info("Set message id={}, ID_DataLink={}", messageID, oSubjectMessage.getsID_DataLink());
             LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
+            */
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 
@@ -997,7 +999,7 @@ public class SubjectMessageController {
             Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
             SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
             Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
-            LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
+            //LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
 
             Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
 
@@ -1005,14 +1007,14 @@ public class SubjectMessageController {
                 actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
             }
             if(message == null || isBlank(message.getsID_DataLink())){
-                LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+                //LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
                 CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
                 throw newErr;
             }
-            LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+            //LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
 
             if (isNotBlank(message.getsID_DataLink())){
-                LOG.info("Field sID_DataLink in message is not null");
+                //LOG.info("Field sID_DataLink in message is not null");
 
                 byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
 
