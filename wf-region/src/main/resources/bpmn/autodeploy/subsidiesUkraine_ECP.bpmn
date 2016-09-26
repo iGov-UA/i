@@ -427,7 +427,7 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask2" name="Рішення про призначення субсидії" activiti:candidateGroups="upszn${nArea}">
+    <userTask id="usertask2_yellow" name="Рішення про призначення субсидії" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="label2" name="На цьому етапі необхідно вказати, яке рішення прийнято по заяві громадянина, та завантажити відповідний документ для відправки його громадянину електронною поштою" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва району" type="invisible"></activiti:formProperty>
@@ -802,8 +802,8 @@ execution.setVariable('area', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask6" name="Загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="servicetask7" targetRef="usertask2_yellow"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="usertask2_yellow" targetRef="exclusivegateway1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask6">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -818,11 +818,10 @@ execution.setVariable('area', per3)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    
     <sequenceFlow id="flow32" name="подпись" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='sign'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="usertask2_yellow"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_subsidiesUkraine_ECP">
@@ -836,7 +835,10 @@ execution.setVariable('area', per3)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
         <omgdc:Bounds height="79.0" width="105.0" x="480.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
@@ -874,9 +876,6 @@ execution.setVariable('area', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="290.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="640.0" y="60.0"></omgdi:waypoint>
@@ -941,7 +940,7 @@ execution.setVariable('area', per3)</script>
         <omgdi:waypoint x="330.0" y="40.0"></omgdi:waypoint>
         <omgdi:waypoint x="350.0" y="40.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="309.0" y="13.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="309.0" y="13.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
