@@ -96,6 +96,36 @@
                  ng-repeat="property in activitiForm.formProperties track by property.id"
                  ng-if="isFieldVisible(property)">
 
+              <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
+                <!--
+                <table>
+                  <tr>
+                    <td><hr class="hr-divider side-left"></td>
+                    <td>{{insertSeparator(property.id).sText}}</td>
+                    <td><hr class="hr-divider side-right"></td>
+                  </tr>
+                </table>
+                -->
+                <hr class="hr-divider side-left"
+                    style="width: 41%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                <span style="position: relative; bottom: 10px">{{insertSeparator(property.id).sText}}</span>
+                <hr class="hr-divider side-right"
+                    style="width: 41%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+
+              </div>
+
               <div class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"

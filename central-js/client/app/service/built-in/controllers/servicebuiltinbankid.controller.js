@@ -736,6 +736,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   };
 
+  $scope.insertSeparator = function(sPropertyId){
+    return FieldAttributesService.insertSeparators(sPropertyId);
+  };
 
   // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
   $rootScope.isFileProcessUploading = {
