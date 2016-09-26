@@ -121,12 +121,12 @@ public class HistoryEvent_Service extends AbstractEntity {
     @Column(name = "sDateCreate", length = 25)
     private DateTime sDateCreate;
 
-    @JsonProperty(value = "sDateClosed")
+    @JsonProperty(value = "sDateClose")
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     @JsonDeserialize(using = JsonDateTimeDeserializer.class)
     @Type(type = DATETIME_TYPE)
-    @Column(name = "sDateClosed", length = 25)
-    private DateTime sDateClosed;
+    @Column(name = "sDateClose", length = 25)
+    private DateTime sDateClose;
 
     public String getsID() {
         return sID;
@@ -320,12 +320,12 @@ public class HistoryEvent_Service extends AbstractEntity {
         this.sDateCreate = sDateCreate;
     }
 
-    public DateTime getsDateClosed() {
-        return sDateClosed;
+    public DateTime getsDateClose() {
+        return sDateClose;
     }
 
-    public void setsDateClosed(DateTime sDateClosed) {
-        this.sDateClosed = sDateClosed;
+    public void setsDateClose(DateTime sDateClose) {
+        this.sDateClose = sDateClose;
     }
 
     @Override
@@ -344,7 +344,7 @@ public class HistoryEvent_Service extends AbstractEntity {
                 + ", nID_StatusType=" + nID_StatusType + ", nID_ServiceData="
                 + nID_ServiceData + ", sID_StatusType=" + sID_StatusType
                 + ", sName_UA_StatusType=" + sName_UA_StatusType
-                + ", sDateCreate=" + sDateCreate + ", sDateClosed=" + sDateClosed + "]";
+                + ", sDateCreate=" + sDateCreate + ", sDateClose=" + sDateClose + "]";
     }
 
 }

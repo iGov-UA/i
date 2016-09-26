@@ -1477,5 +1477,17 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="issue-1315-Drop" author="olga">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateClosed" />
+    </changeSet>
+    
+    <changeSet id="issue-1315-Add" author="olga">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateClose" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

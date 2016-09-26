@@ -571,7 +571,7 @@ public class ActionEventController {
 
         String[] headersMainField = {"sID_Order", "nID_Server",
             "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead",
-            "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClosed"};
+            "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClose"};
         List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headersMainField));
 
@@ -661,7 +661,7 @@ public class ActionEventController {
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     line.add(historyEventService.getsDateCreate() != null ? sdf.format(historyEventService.getsDateCreate().toDate()) : "");
-                    line.add(historyEventService.getsDateClosed() != null ? sdf.format(historyEventService.getsDateClosed().toDate()) : "");
+                    line.add(historyEventService.getsDateClose() != null ? sdf.format(historyEventService.getsDateClose().toDate()) : "");
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
                 }
             }
