@@ -238,9 +238,6 @@
             <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:field name="aFieldInheritedAttachmentID">
-          <activiti:expression>${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -392,7 +389,7 @@
 <li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;</li>
 <li>натисніть кнопку “Відправити”.</li>
 </ul>
-<br>
+
 Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
 <br>
 <b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
@@ -918,14 +915,18 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${Scan_DocPrivileges},${Scan_FeePay},${Scan_MarriageTerm},${Scan_MarriageDoc1},${Scan_Passport1},${Scan_MarriageDoc2},${Scan_Passport2}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow69" sourceRef="servicetask16" targetRef="usertask4"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDuration>PT40M</timeDuration>
+        <timeDuration>PT1H</timeDuration>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow70" sourceRef="escalationTimer1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
@@ -935,7 +936,7 @@ execution.setVariable('sCountPayment', src)</script>
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT60M</timeDuration>
+        <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
   </process>
