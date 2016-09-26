@@ -1330,7 +1330,8 @@ public class ActionTaskService {
             tasks = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
             LOG.info("Looking for unassigned tasks. Found {} tasks", (tasks != null ? tasks.size() : 0));
         } else {
-            tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            //tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            tasks = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).active().list();
             LOG.info("Looking for tasks assigned to user:{}. Found {} tasks", sLogin, (tasks != null ? tasks.size() : 0));
         }
         return tasks;

@@ -704,10 +704,9 @@ public class FlowService implements ApplicationContextAware {
                 List<FormProperty> aProperty = oFormService.getTaskFormData(oTask.getId()).getFormProperties();
                 for (FormProperty oProperty : aProperty) {
                     if(oProperty.getType() instanceof QueueDataFormType){
-                        bQueue=true;
                         String sValue = oProperty.getValue();
                         if(sValue!=null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())){
-                            bQueueDMS=true;
+                            bQueue=true;
                             LOG.info("sValue is present, so queue is filled");
                             //long nID_FlowSlotTicket = 0;
                             Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
@@ -716,6 +715,7 @@ public class FlowService implements ApplicationContextAware {
                             String sID_Type = QueueDataFormType.get_sID_Type(m);
                             LOG.info("(sID_Type={})", sID_Type);
                             if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
+                                bQueueDMS=true;
                                 LOG.info("Found DMS flow slot tickets.");
                                 String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
                                 LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);

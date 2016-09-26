@@ -1,4 +1,4 @@
-angular.module('app').service('FieldAttributesService', ['iGovMarkers', FieldAttributesService]);
+angular.module('iGovMarkers').service('FieldAttributesService', ['iGovMarkers', FieldAttributesService]);
 
 function FieldAttributesService(MarkersFactory) {
   var self = this;

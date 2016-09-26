@@ -92,7 +92,11 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
         if (property.id === tableName) {
           angular.forEach(property.aRow[rowIndex].aField, function (field, key, obj) {
             if (field.id === additionalPropertyName) {
-              obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+              if(obj[key].hasOwnProperty('default')) {
+                obj[key].default = item[$scope.autocompleteData.prefixAssociatedField];
+              } else {
+                obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
+              }
             }
           });
         }
