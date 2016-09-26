@@ -659,7 +659,7 @@ public class ActionEventController {
                     JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                     line.add(json.get("phone") != null ? json.get("phone").toString() : "");
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     line.add(historyEventService.getsDateCreate() != null ? sdf.format(historyEventService.getsDateCreate().toDate()) : "");
                     line.add(historyEventService.getsDateClose() != null ? sdf.format(historyEventService.getsDateClose().toDate()) : "");
                     csvWriter.writeNext(line.toArray(new String[line.size()]));
