@@ -86,8 +86,8 @@ function loadAllTasks(tasks, wfCallback, assigneeID) {
 
 // Get list of tasks
 exports.index = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
   query.size = 50;
@@ -322,8 +322,8 @@ exports.getTasksByOrder = function (req, res) {
 };
 
 exports.getTasksByText = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
     path: 'action/task/getTasksByText',
@@ -358,8 +358,8 @@ exports.getProcesses = function (req, res) {
 };
 
 exports.getFile = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   var options = {
     path: 'analytic/process/getFile',
     query: {
