@@ -91,7 +91,6 @@
         <activiti:formProperty id="asSmertVytag" name="Про що витяг" type="enum" required="true">
           <activiti:value id="sEnamSmertVytag1" name="Про смерть"></activiti:value>
           <activiti:value id="sEnamSmertVytag2X" name="Витяг з Державного реєстру про внесення змін до актового запису"></activiti:value>
-          <activiti:value id="sEnamSmertVytag3X" name="Повний витяг з Державного реєстру"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Smert" name="Ким ви є особі, щодо якої запитується документ" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Другий з подружжя"></activiti:value>
@@ -197,7 +196,7 @@
           <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
@@ -519,7 +518,6 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag2X'){execution.setVariable('T1', xxx)}
         if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag3X'){execution.setVariable('T2', xxx)}
         if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag2X'){execution.setVariable('T1', xxx)}
-        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag3X'){execution.setVariable('T2', xxx)}
         if(execution.getVariable('asNarVytag') == 'sEnamNarVytag2'){execution.setVariable('V1', xxx)}
         if(execution.getVariable('asNarVytag') == 'sEnamNarVytag1'){execution.setVariable('V2', xxx)}
         if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag1'){execution.setVariable('V3', xxx)}
