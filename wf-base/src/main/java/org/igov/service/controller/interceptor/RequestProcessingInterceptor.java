@@ -536,7 +536,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 //HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
 
                 boolean bProcessClosed = aTask == null || aTask.isEmpty();
-                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                String sUserTaskName = (bProcessClosed) ? "закрита" : oHistoricTaskInstance.getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
 
                 LOG_BIG.debug("bProcessClosed = {}, sProcessName = {}, sUserTaskName = {}, aTask = {}", bProcessClosed, sProcessName, sUserTaskName, aTask);
