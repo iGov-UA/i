@@ -38,14 +38,18 @@ public class JobFeedBack extends IAutowiredSpringJob {
             LOG.debug("FAIL:", oException);
         }
         LocalDate today = LocalDate.now();
+        LOG.info("1111111today: "+today);
         LocalDate deadline = today.minusDays(20);
+        LOG.info("2222222deadline: "+deadline);
         Date date = java.sql.Date.valueOf(deadline);
+        LOG.info("2222222date: "+date);
         List<HistoricProcessInstance> feedbackProcces = historyService.createHistoricProcessInstanceQuery()
                 .processDefinitionId(BpServiceHandler.PROCESS_FEEDBACK)
                 .startedBefore(date).unfinished().list();
-             LOG.info("List feedbackProcces: " + feedbackProcces.size());   
+              LOG.info("3333333feedbackProcces: " + feedbackProcces);    
+             LOG.info("44444444List feedbackProcces: " + feedbackProcces.size());   
         for (HistoricProcessInstance feedbackProcce : feedbackProcces) {
-            LOG.info("Delete feedbackProcce.getId(): " + feedbackProcce.getId());
+            LOG.info("555555555Delete feedbackProcce.getId(): " + feedbackProcce.getId());
             runtimeService.deleteProcessInstance(feedbackProcce.getId(), " - deprecated");
             
         }
