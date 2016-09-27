@@ -340,11 +340,11 @@ public class BpServiceHandler {
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
-        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
+        LOG.info("2sID_Process: " + sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+        LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("444444444444444444444ssURL: " + sURL);
+        LOG.info("ssURL: " + sURL);
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
         try {
