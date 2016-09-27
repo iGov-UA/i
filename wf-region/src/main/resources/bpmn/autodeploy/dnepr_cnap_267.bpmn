@@ -78,6 +78,8 @@
         <activiti:formProperty id="markers1" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо фіз особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
+       
         <activiti:formProperty id="markers10" name="Якщо експорт то додати документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;pogodgennya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;type_lic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'export'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="валідатор поля fiz_drfo" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_drfo&quot;],&quot;sFormat&quot;:&quot;##########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ДРФО має складатися з 10 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="валідатор поля ur_edrpou" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_12&quot;:{&quot;aField_ID&quot;:[&quot;ur_edrpou&quot;],&quot;sFormat&quot;:&quot;########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ЕДРПОУ має складатися з 8 цифр&quot;}}}"></activiti:formProperty>
@@ -149,7 +151,7 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -221,7 +223,7 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -294,9 +296,9 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -367,11 +369,11 @@
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html]" type="invisible" default="Бланк ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
