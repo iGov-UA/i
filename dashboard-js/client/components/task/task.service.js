@@ -346,7 +346,8 @@ angular.module('dashboardJsApp')
           method: 'GET',
           url: '/api/tasks/getProcesses',
           params: {
-            sID: sID
+            sID: sID,
+            asID_Group: Auth.getCurrentUser().roles
           }
         });
       },
@@ -387,7 +388,8 @@ angular.module('dashboardJsApp')
             bIncludeGroups: true,
             bIncludeStartForm: true,
             bIncludeAttachments: true,
-            bIncludeMessages: true
+            bIncludeMessages: true,
+            oCurrentUser: Auth.getCurrentUser()
           });
         return simpleHttpPromise({
             method: 'GET',

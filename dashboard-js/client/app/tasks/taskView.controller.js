@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -656,6 +656,11 @@
             activeFieldsList.push(item);
           }
         });
+
+        $scope.insertSeparator = function(sPropertyId){
+          debugger;
+          return FieldAttributesService.insertSeparators(sPropertyId);
+        };
 
         $scope.isTableAttachment = function (item) {
           return item.indexOf('[table]') > -1;
