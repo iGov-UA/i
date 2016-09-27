@@ -1,6 +1,11 @@
 package org.igov.run.schedule;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.history.HistoricProcessInstance;
 
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationService;
@@ -16,6 +21,10 @@ public class JobFeedBack extends IAutowiredSpringJob {
     private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
     @Autowired
     private EscalationService escalationService;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    private RuntimeService runtimeService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -27,6 +36,18 @@ public class JobFeedBack extends IAutowiredSpringJob {
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
             LOG.debug("FAIL:", oException);
+        }
+        LocalDate today = LocalDate.now();
+        LocalDate deadline = today.minusDays(20);
+        Date date = java.sql.Date.valueOf(deadline);
+        List<HistoricProcessInstance> feedbackProcces = historyService.createHistoricProcessInstanceQuery()
+                .processDefinitionId(BpServiceHandler.PROCESS_FEEDBACK)
+                .startedBefore(date).unfinished().list();
+             LOG.info("List feedbackProcces: " + feedbackProcces.size());   
+        for (HistoricProcessInstance feedbackProcce : feedbackProcces) {
+            LOG.info("Delete feedbackProcce.getId(): " + feedbackProcce.getId());
+            runtimeService.deleteProcessInstance(feedbackProcce.getId(), " - deprecated");
+            
         }
     }
 }
