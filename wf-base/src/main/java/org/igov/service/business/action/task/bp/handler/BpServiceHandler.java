@@ -67,7 +67,7 @@ public class BpServiceHandler {
     SubjectCover subjectCover;
     @Autowired
     private HttpRequester httpRequester;
-
+    
     /**
      * Текущее количество генерируемых заявок
      */
