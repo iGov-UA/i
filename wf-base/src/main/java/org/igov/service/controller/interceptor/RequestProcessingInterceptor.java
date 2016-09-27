@@ -545,15 +545,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
-                    //LOG.info("Get sDateStart и sDateClosed");
-                    //String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                    //LOG.info("(sDateStart={})", sDateStart);
-                    //String sDateClosed = "";
-                    //LOG.info("(sDateClosed={})", sDateClosed);
-
                     if (bProcessClosed) {
                         status = HistoryEvent_Service_StatusType.CLOSED;
-                        //sDateClosed = oHistoricTaskInstance.getEndTime().toString();
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
                     }
@@ -561,8 +554,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParam.put("nID_StatusType", status.getnID().toString());
                     mParam.put("sUserTaskName", sUserTaskName);
                     mParam.put("sID_Order", sID_Order);
-                    //mParam.put("sDateStart", sDateStart);
-                    //mParam.put("sDateClosed", sDateClosed);
                     try {
                         historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
                     } catch (Exception oException) {
