@@ -7,9 +7,6 @@ var userService = require('../user/user.service');
 var async = require('async');
 var tasksService = require('./tasks.service');
 
-var nodeLocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new nodeLocalStorage('./scratch');
-
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
 }
@@ -340,15 +337,12 @@ exports.getTasksByText = function (req, res) {
 };
 
 exports.getProcesses = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
-  var roles = JSON.stringify(user.roles);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
     path: 'analytic/process/getProcesses',
     query: {
       'sID_': req.query.sID,
-      'asID_Group': roles
+      'asID_Group': JSON.parse(req.query.asID_Group)
     }
   };
   activiti.get(options, function (error, statusCode, result) {
@@ -465,7 +459,13 @@ exports.unassign = function (req, res) {
 exports.getTaskData = function(req, res) {
   var options = {
     path: 'action/task/getTaskData',
-    query: req.query,
+    query: {
+      bIncludeAttachments : req.query.bIncludeAttachments,
+      bIncludeGroups : req.query.bIncludeGroups,
+      bIncludeMessages : req.query.bIncludeMessages,
+      bIncludeStartForm : req.query.bIncludeStartForm,
+      nID_Task : req.query.nID_Task
+    },
     json: true
   };
 
@@ -475,9 +475,7 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
-    var currentUser = JSON.parse(req.cookies.user);
-    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
-    currentUser.roles = UserFromStorage.roles;
+    var currentUser = JSON.parse(req.query.oCurrentUser);
     // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
     // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
     if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))

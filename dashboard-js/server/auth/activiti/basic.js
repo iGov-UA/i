@@ -3,8 +3,6 @@
 var activiti = require('../../components/activiti');
 var config = require('../../config/environment');
 var async = require('async');
-var nodeLocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new nodeLocalStorage('./scratch');
 
 var guid = function guid() {
   function s4() {
@@ -36,7 +34,6 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
-      localStorage.removeItem('user');
       res.send(result);
     }
   });
@@ -127,11 +124,6 @@ exports.authenticate = function (req, res) {
         lastName : result.userResult.lastName,
         pictureUrl : result.userResult.pictureUrl,
         url : result.userResult.url
-      }), {
-        expires: expiresUserInMs()
-      });
-      localStorage.setItem('user', JSON.stringify({
-        roles : result.userResult.roles
       }), {
         expires: expiresUserInMs()
       });
