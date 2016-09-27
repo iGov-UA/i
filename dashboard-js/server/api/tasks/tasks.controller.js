@@ -338,11 +338,20 @@ exports.getTasksByText = function (req, res) {
 
 exports.getProcesses = function (req, res) {
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+  var currentUser = JSON.parse(req.cookies.user);
+  currentUser.roles = [];
+  for (var i = 1; i <= currentUser.userGroupsSlots; i++){
+    var sCookieName = "user_roles_part" + i;
+    var extGroups = JSON.parse(req.cookies[sCookieName]);
+    for(var j = 0; j < extGroups.roles.length; j++){
+      currentUser.roles.push(extGroups.roles[j]);
+    }
+  }
   var options = {
     path: 'analytic/process/getProcesses',
     query: {
       'sID_': req.query.sID,
-      'asID_Group': JSON.parse(req.query.asID_Group)
+      'asID_Group': currentUser.roles
     }
   };
   activiti.get(options, function (error, statusCode, result) {
@@ -459,13 +468,7 @@ exports.unassign = function (req, res) {
 exports.getTaskData = function(req, res) {
   var options = {
     path: 'action/task/getTaskData',
-    query: {
-      bIncludeAttachments : req.query.bIncludeAttachments,
-      bIncludeGroups : req.query.bIncludeGroups,
-      bIncludeMessages : req.query.bIncludeMessages,
-      bIncludeStartForm : req.query.bIncludeStartForm,
-      nID_Task : req.query.nID_Task
-    },
+    query: req.query,
     json: true
   };
 
@@ -475,7 +478,17 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
-    var currentUser = JSON.parse(req.query.oCurrentUser);
+
+    var currentUser = JSON.parse(req.cookies.user);
+    currentUser.roles = [];
+    for (var i = 1; i <= currentUser.userGroupsSlots; i++){
+      var sCookieName = "user_roles_part" + i;
+      var extGroups = JSON.parse(req.cookies[sCookieName]);
+      for(var j = 0; j < extGroups.roles.length; j++){
+        currentUser.roles.push(extGroups.roles[j]);
+      }
+    }
+
     // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
     // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
     if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))

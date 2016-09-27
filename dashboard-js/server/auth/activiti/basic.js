@@ -117,13 +117,36 @@ exports.authenticate = function (req, res) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
       req.session = result.userResult;
+
+      // разбивка длинного массива групп на части и сохранение их в Куках
+      var userGroupCookieSize = 25; // максимальное количество элементов в массиве
+      var userGroupSlots = 0; // счетчик
+      var indGr = 0;
+      var aUserGroups = result.userResult.roles;
+      while (indGr < aUserGroups.length){
+        var aPartGroups = [];
+        userGroupSlots++;
+        for (var j = 0; j < userGroupCookieSize; j++){
+          if(indGr <  aUserGroups.length){
+            aPartGroups.push(aUserGroups[indGr]);
+            indGr++;
+          }
+        }
+        var sCookieName = "user_roles_part" + userGroupSlots;
+        res.cookie(sCookieName, JSON.stringify({
+          roles : aPartGroups
+        }), {
+          expires: expiresUserInMs()
+        });
+      }
       res.cookie('user', JSON.stringify({
         email : result.userResult.email,
         firstName : result.userResult.firstName,
         id : result.userResult.id,
         lastName : result.userResult.lastName,
         pictureUrl : result.userResult.pictureUrl,
-        url : result.userResult.url
+        url : result.userResult.url,
+        userGroupsSlots : userGroupSlots
       }), {
         expires: expiresUserInMs()
       });
