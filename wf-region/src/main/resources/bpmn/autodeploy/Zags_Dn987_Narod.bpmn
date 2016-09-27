@@ -98,7 +98,7 @@
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом 3х днів.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -183,19 +183,20 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлена вірно.&lt;br /&gt;
+Співробітник ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
 Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
 Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 53 копійки.&lt;br /&gt;
-Реквізити для сплати:&lt;br /&gt;
+Для отримання свідоцтва Вам необхідно сплатити державне мито у розмірі: 51 копійка.&lt;br /&gt;
+Ви можете сплатити його звичайним банківським плетежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
-або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
+або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
+(до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
 Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
 - документ, що посвідчує особу&lt;br /&gt;
-- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;&lt;br /&gt;
+- квитанція про сплату державного мита (не потрібно, якщо Ви скористалися для оплати кнопкою вище)&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -412,8 +413,11 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Nar_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Nar_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check.html]" type="invisible" default="Квитанція про оплату" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check_Sv_Vt.html]" type="invisible" default="Квитанція про оплату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails2" name="Реквизит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

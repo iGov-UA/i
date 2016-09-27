@@ -7,13 +7,13 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true">
+        <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true" default="pasport">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNamePassport" name="Назва документу" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNamePassport" name="Назва документу;(у випадку якщо вашу особу посвідчує НЕ паспорт)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDaniPassport" name="Серія, номер документа, дата видачі, ким видано документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/Vutiag.json')}"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу!" type="label" default="Вкажіть повну адресу реєстрації"></activiti:formProperty>
@@ -57,9 +57,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Usin_Nar_Bat" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Батьки та усиновлювачі (незалежно від віку дитини),"></activiti:value>
-          <activiti:value id="sEnamR3" name="Опікуни, піклувальники,"></activiti:value>
-          <activiti:value id="sEnamR4" name="Адміністрації закладу охорони здоров'я, навчального або іншого дитячого закладу, де постійно перебуває дитина,"></activiti:value>
+          <activiti:value id="sEnamR2" name="Батьки та усиновлювачі (незалежно від віку дитини)"></activiti:value>
+          <activiti:value id="sEnamR3" name="Опікуни, піклувальники"></activiti:value>
+          <activiti:value id="sEnamR4" name="Адміністрації закладу охорони здоров'я, навчального або іншого дитячого закладу, де постійно перебуває дитина"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник вищевказаних осіб"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asImaVytag" name="Про що витяг" type="enum" required="true">
@@ -81,7 +81,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Razv_Slub_Ima" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Заявник щодо своїх родичів за умови пред`явлення документів, що підтверджують родинні стосунки,"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник фізичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSmertVytag" name="Про що витяг" type="enum" required="true">
@@ -89,7 +88,7 @@
           <activiti:value id="sEnamSmertVytag2X" name="Витяг з Державного реєстру про внесення змін до актового запису"></activiti:value>
           <activiti:value id="sEnamSmertVytag3X" name="Повний витяг з Державного реєстру"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRod_Smert" name="Ким ви доводитесь особі, щодо якої запитується документ" type="enum" required="true">
+        <activiti:formProperty id="asRod_Smert" name="Ким ви є особі, щодо якої запитується документ" type="enum" required="true">
           <activiti:value id="sEnamS1" name="Другий з подружжя"></activiti:value>
           <activiti:value id="sEnamS2" name="Батько"></activiti:value>
           <activiti:value id="sEnamS3" name="Мати"></activiti:value>
@@ -125,7 +124,7 @@
         <activiti:formProperty id="sID_Payment_2" name="ІД транзакції платежу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject_2" name="ІД-номер суб'єкткта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant_2" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" default="0.53"></activiti:formProperty>
+        <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" default="74.31"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency_2" name="ІД-строкової валюти" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible" default="державне мито за видачу витягу з державного реєстру актів цивільного стану громадян"></activiti:formProperty>
         <activiti:formProperty id="T1" name="T1" type="invisible"></activiti:formProperty>
@@ -197,7 +196,7 @@
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом 3х днів.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -324,19 +323,20 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлена вірно.&lt;br /&gt;
-Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
+Співробітник ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
+Ви можете отримати Витяг. &lt;br /&gt;
+Для отримання Витягу потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
-Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 73 гривні.&lt;br /&gt;
-Реквізити для сплати:&lt;br /&gt;
+Дата і час візиту для отримання витягу: ${comment} &lt;br /&gt;&lt;br /&gt;
+Для отримання витягу Вам необхідно сплатити державне мито у розмірі: 73 гривні.&lt;br /&gt;
+Ви можете сплатити його звичайним банківським плетежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
-або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
+або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
+(до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
 Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
 - документ, що посвідчує особу&lt;br /&gt;
-- квитанція про сплату державного мита (в разі самостійної оплати)&lt;br /&gt;&lt;br /&gt;
+- квитанція про сплату державного мита (не потрібно, якщо Ви скористалися для оплати кнопкою вище)&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -493,8 +493,7 @@ ${sNameOrgan}.&lt;br /&gt;
         execution.setVariable('V12', Vut12)
         execution.setVariable('V13', Vut13)
         execution.setVariable('V14', Vut14)
-        if(execution.getVariable('asVudVutiagu') == 'sEnamVudZmin'){execution.setVariable('T1', xxx)}
-        if(execution.getVariable('asVudVutiagu') == 'sEnamVudPovn'){execution.setVariable('T2', xxx)}
+        
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar'){execution.setVariable('A1', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert'){execution.setVariable('A2', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub'){execution.setVariable('A3', xxx)}
@@ -502,43 +501,88 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma'){execution.setVariable('A5', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin'){execution.setVariable('A6', xxx)}
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat'){execution.setVariable('A7', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNar'){execution.setVariable('V1', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarBat'){execution.setVariable('V2', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSmer'){execution.setVariable('V3', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSlub'){execution.setVariable('V4', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSlubPodr'){execution.setVariable('V5', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutRoz'){execution.setVariable('V6', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutDoshPriz'){execution.setVariable('V7', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZminIm'){execution.setVariable('V8', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZmin148'){execution.setVariable('V9', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutZminUs'){execution.setVariable('V10', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutResBat'){execution.setVariable('V11', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarDop'){execution.setVariable('V12', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutNarVup'){execution.setVariable('V13', xxx)}
-        if(execution.getVariable('asSutVytagu') == 'sEnamSutSmerDop'){execution.setVariable('V14', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag5X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag6X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag4X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag5X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag2X'){execution.setVariable('T1', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag3X'){execution.setVariable('T2', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag2'){execution.setVariable('V1', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag1'){execution.setVariable('V2', xxx)}
+        if(execution.getVariable('asSmertVytag') == 'sEnamSmertVytag1'){execution.setVariable('V3', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag2'){execution.setVariable('V4', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag3'){execution.setVariable('V5', xxx)}
+        if(execution.getVariable('asRazvVytag') == 'sEnamRazvVytag1'){execution.setVariable('V6', xxx)}
+        if(execution.getVariable('asSlubVytag') == 'sEnamSlubVytag1'){execution.setVariable('V7', xxx)}
+        if(execution.getVariable('asImaVytag') == 'sEnamImaVytag1'){execution.setVariable('V8', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag3'){execution.setVariable('V9', xxx)}
+        if(execution.getVariable('asNarVytag') == 'sEnamNarVytag4'){execution.setVariable('V10', xxx)}
+        if(execution.getVariable('asBatVytag') == 'sEnamBatVytag1'){execution.setVariable('V11', xxx)}
+        if(execution.getVariable('asUsinVytag') == 'sEnamUsinVytag1'){execution.setVariable('V12', xxx)}
         
-        var Rod=execution.getVariable('sRod_zvjazok')
+        var Rod=' '
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudNar')
           {
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR1'){Rod='Батьки та усиновлювачі'}
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR2'){Rod='Опікуни, піклувальники'}
-          if(execution.getVariable('asRod_zvjazokNarodj') == 'sEnamR3'){Rod='Адміністрація закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudRazv')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma')
+          {
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin')
+          {
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
+          }
+        if(execution.getVariable('asVudVutiagu') == 'sEnamVudBat')
+          {
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR1'){Rod='Заявник особисто на себе'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR2'){Rod='Батьки та усиновлювачі'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR3'){Rod='Опікуни, піклувальники'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamR4'){Rod='Адміністрації закладу охорони здоровя, навчального або іншого дитячого закладу, де постійно перебуває дитина'}
+          if(execution.getVariable('asRod_Usin_Nar_Bat') == 'sEnamRP'){Rod='Представник за довіреністю'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSmert')
           {
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS1'){Rod='Другий з подружжя'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS2'){Rod='Батько'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS3'){Rod='Мати'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS4'){Rod='Дитина'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS5'){Rod='Брат'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS6'){Rod='Сестра'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS7'){Rod='Онук'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS8'){Rod='Онука'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS9'){Rod='Дід'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS10'){Rod='Баба'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS11'){Rod='Інший родич померлої особи'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS12'){Rod='Спадкоємці померлої особи'}
-          if(execution.getVariable('asRod_zvjazokSmerrtr') == 'sEnamS13'){Rod='Особа, що є вигодонабувачем'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS1'){Rod='Другий з подружжя'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS2'){Rod='Батько'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS3'){Rod='Мати'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS4'){Rod='Дитина'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS5'){Rod='Брат'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS6'){Rod='Сестра'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS7'){Rod='Онук'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS8'){Rod='Онука'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS9'){Rod='Дід'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS10'){Rod='Баба'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS11'){Rod='Інший родич померлої особи'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS12'){Rod='Спадкоємці померлої особи'}
+          if(execution.getVariable('asRod_Smert') == 'sEnamS13'){Rod='Особа, що є вигодонабувачем'}
           }
         execution.setVariable('RodZv', Rod)
       </script>
@@ -595,8 +639,11 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Vutiag_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Vutiag_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check.html]" type="invisible" default="Квитанція про оплату" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check_Sv_Vt.html]" type="invisible" default="Квитанція про оплату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails2" name="Реквизит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum_2" name="сума платежу" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sDescription_2" name="опис платежу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressCountry" name="Країна" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressInd" name="Індекс" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="AdressOBL" name="Область" type="invisible"></activiti:formProperty>
@@ -659,7 +706,7 @@ ${sNameOrgan}.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
 Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 53 копійки.&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 73 гривні.&lt;br /&gt;
 Реквізити для сплати:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;

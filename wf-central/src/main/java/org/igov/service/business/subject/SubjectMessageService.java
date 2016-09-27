@@ -152,6 +152,7 @@ public class SubjectMessageService {
             message.setSubjectMessageType(subjectMessageType);
         }
         Long messageID = message.getId();
+        /*
         LOG.info("Created message id={}, Mail={}", messageID, message.getMail());
         LOG.info("Created message id={}, Contacts={}", messageID, message.getContacts());
         LOG.info("Created message id={}, Data={}", messageID, message.getData());
@@ -161,6 +162,7 @@ public class SubjectMessageService {
         LOG.info("Created message id={}, Id_subject={}", messageID, message.getId_subject());
         LOG.info("Created message id={}, Id_subject={}", messageID, message.getsID_DataLink());
         LOG.info("Created message id={}, ID_HistoryEvent_Service={}", messageID, message.getnID_HistoryEvent_Service());
+        */
         return message;
     }
 
