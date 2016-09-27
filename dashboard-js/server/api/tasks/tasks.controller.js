@@ -7,6 +7,9 @@ var userService = require('../user/user.service');
 var async = require('async');
 var tasksService = require('./tasks.service');
 
+var nodeLocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new nodeLocalStorage('./scratch');
+
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
 }
@@ -337,21 +340,15 @@ exports.getTasksByText = function (req, res) {
 };
 
 exports.getProcesses = function (req, res) {
+  //var user = JSON.parse(req.cookies.user);
+  var user = JSON.parse(localStorage.getItem('user'));
+  var roles = JSON.stringify(user.roles);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-  var currentUser = JSON.parse(req.cookies.user);
-  currentUser.roles = [];
-  for (var i = 1; i <= currentUser.userGroupsSlots; i++){
-    var sCookieName = "user_roles_part" + i;
-    var extGroups = JSON.parse(req.cookies[sCookieName]);
-    for(var j = 0; j < extGroups.roles.length; j++){
-      currentUser.roles.push(extGroups.roles[j]);
-    }
-  }
   var options = {
     path: 'analytic/process/getProcesses',
     query: {
       'sID_': req.query.sID,
-      'asID_Group': currentUser.roles
+      'asID_Group': roles
     }
   };
   activiti.get(options, function (error, statusCode, result) {
@@ -478,17 +475,9 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
-
     var currentUser = JSON.parse(req.cookies.user);
-    currentUser.roles = [];
-    for (var i = 1; i <= currentUser.userGroupsSlots; i++){
-      var sCookieName = "user_roles_part" + i;
-      var extGroups = JSON.parse(req.cookies[sCookieName]);
-      for(var j = 0; j < extGroups.roles.length; j++){
-        currentUser.roles.push(extGroups.roles[j]);
-      }
-    }
-
+    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
+    currentUser.roles = UserFromStorage.roles;
     // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
     // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
     if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))

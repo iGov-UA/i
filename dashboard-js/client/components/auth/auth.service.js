@@ -97,10 +97,6 @@ angular.module('dashboardJsApp')
        * @param  {Function}
        */
       logout: function (callback) {
-        for (var i = 1; i <= currentUser.userGroupsSlots; i++){
-          var sCookieName = "user_roles_part" + i;
-          $cookieStore.remove(sCookieName);
-        }
         $cookieStore.remove('user');
         $cookieStore.remove('sessionSettings');
         $cookieStore.remove('JSESSIONID');

@@ -3,6 +3,8 @@
 var activiti = require('../../components/activiti');
 var config = require('../../config/environment');
 var async = require('async');
+var nodeLocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new nodeLocalStorage('./scratch');
 
 var guid = function guid() {
   function s4() {
@@ -34,6 +36,7 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
+      localStorage.removeItem('user');
       res.send(result);
     }
   });
@@ -117,36 +120,18 @@ exports.authenticate = function (req, res) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
       req.session = result.userResult;
-
-      // разбивка длинного массива групп на части и сохранение их в Куках
-      var userGroupCookieSize = 25; // максимальное количество элементов в массиве
-      var userGroupSlots = 0; // счетчик
-      var indGr = 0;
-      var aUserGroups = result.userResult.roles;
-      while (indGr < aUserGroups.length){
-        var aPartGroups = [];
-        userGroupSlots++;
-        for (var j = 0; j < userGroupCookieSize; j++){
-          if(indGr <  aUserGroups.length){
-            aPartGroups.push(aUserGroups[indGr]);
-            indGr++;
-          }
-        }
-        var sCookieName = "user_roles_part" + userGroupSlots;
-        res.cookie(sCookieName, JSON.stringify({
-          roles : aPartGroups
-        }), {
-          expires: expiresUserInMs()
-        });
-      }
       res.cookie('user', JSON.stringify({
         email : result.userResult.email,
         firstName : result.userResult.firstName,
         id : result.userResult.id,
         lastName : result.userResult.lastName,
         pictureUrl : result.userResult.pictureUrl,
-        url : result.userResult.url,
-        userGroupsSlots : userGroupSlots
+        url : result.userResult.url
+      }), {
+        expires: expiresUserInMs()
+      });
+      localStorage.setItem('user', JSON.stringify({
+        roles : result.userResult.roles
       }), {
         expires: expiresUserInMs()
       });
