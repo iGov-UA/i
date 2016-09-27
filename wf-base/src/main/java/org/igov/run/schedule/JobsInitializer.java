@@ -42,6 +42,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     @Override
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
+        addFeedBackJob(scheduler);
         //addBuilderFlowSlotsJob(scheduler);
     }
 
@@ -63,6 +64,29 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         if (!generalConfig.isSelfTest() && !"https://prod-double-region.tech.igov.org.ua".equalsIgnoreCase(generalConfig.getSelfHost())) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
+        } else {
+            LOG.info("scheduleJob... SKIPED(test)!");
+        }
+    }
+    
+    private void addFeedBackJob(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_FeedBack_Standart = new JobDetail("oJobDetail_FeedBack_Standart",
+                "oJobDetail_FeedBack_Group", JobFeedBack.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
+                "oCronTrigger_EveryNight_Group");
+        try {
+            LOG.info("oCronExpression__EveryNight_Deep...");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+        if (!generalConfig.isSelfTest() && !"https://prod-double-region.tech.igov.org.ua".equalsIgnoreCase(generalConfig.getSelfHost())) {
+            LOG.info("scheduleJob...");
+            scheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep);
         } else {
             LOG.info("scheduleJob... SKIPED(test)!");
         }
