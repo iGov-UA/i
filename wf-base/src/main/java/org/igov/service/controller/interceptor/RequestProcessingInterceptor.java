@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.igov.io.Log;
-import org.igov.service.business.feedback.FeedBackService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 
 import static org.igov.util.Tool.sCut;
@@ -84,9 +83,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private BpServiceHandler bpHandler;
     @Autowired
-    private EscalationHistoryService escalationHistoryService;
-    @Autowired
-    private FeedBackService feedBackService;
+    private EscalationHistoryService escalationHistoryService;;
 
     private JSONParser oJSONParser = new JSONParser();
 
