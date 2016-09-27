@@ -101,12 +101,10 @@ exports.authenticate = function (req, res) {
           callback(error, null);
         } else {
           if((typeof result == "object") && (result instanceof Array)){
-            //debugger;
             userWithCookie.userResult['roles'] = result.map(function (group) {
               return group.id;
             });
           } else {
-            //debugger;
             userWithCookie.userResult['roles'] = [];
           }
 
@@ -122,11 +120,22 @@ exports.authenticate = function (req, res) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
       req.session = result.userResult;
-      /*
-      res.cookie('user', JSON.stringify(result.userResult), {
+      res.cookie('user', JSON.stringify({
+        email : result.userResult.email,
+        firstName : result.userResult.firstName,
+        id : result.userResult.id,
+        lastName : result.userResult.lastName,
+        pictureUrl : result.userResult.pictureUrl,
+        url : result.userResult.url
+      }), {
         expires: expiresUserInMs()
       });
-      */
+      localStorage.setItem('user', JSON.stringify({
+        roles : result.userResult.roles
+      }), {
+        expires: expiresUserInMs()
+      });
+
       localStorage.setItem('user', JSON.stringify(result.userResult), {
         expires: expiresUserInMs()
       });

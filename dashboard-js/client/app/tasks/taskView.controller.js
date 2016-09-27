@@ -661,17 +661,22 @@
           return item.indexOf('[table]') > -1;
         };
 
-        $scope.getAttachmentTable = function (taskId, attachId, attachName) {
-          $rootScope.attachIsLoading = true;
-          var tableName = attachName;
-          tasks.getTableAttachment(taskId, attachId).then(function (res) {
-            var table = {};
-            $scope.taskData.aTable = [];
-            table.aRows = JSON.parse(res);
-            table.sName = tableName;
-            $scope.taskData.aTable.push(table);
-            // TODO поменять на фильтр
-            angular.forEach($scope.taskData.aTable[0].aRows, function (row) {
+        $scope.isUnDisabledFields = function () {
+          return activeFieldsList.length > 0;
+        };
+
+        $scope.openTableAttachment = function (id) {
+          angular.forEach($scope.taskData.aTable, function (table) {
+            if(table.id === id) {
+              $scope.openedAttachTable = table;
+            }
+          });
+          $scope.tableContentShow = !$scope.tableContentShow;
+        };
+
+        var fixFieldsForTable = function () {
+          angular.forEach($scope.taskData.aTable, function (table) {
+            angular.forEach(table.content, function (row) {
               angular.forEach(row.aField, function (field) {
                 if(field.type === 'date') {
                   var onlyDate = field.props.value.split('T')[0];
@@ -687,14 +692,30 @@
                 }
               })
             });
-            $rootScope.attachIsLoading = false;
-          });
-          $scope.tableContentShow = !$scope.tableContentShow;
+          })
         };
 
-        $scope.isUnDisabledFields = function () {
-          return activeFieldsList.length > 0;
+        $scope.getListOfTables = function () {
+          var itemsProcessed = 0;
+          $scope.taskData.aTable = [];
+          if($scope.taskData.aAttachment.length > 0)
+          angular.forEach($scope.taskData.aAttachment, function (attach) {
+            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
+              ++itemsProcessed;
+              try {
+                var table = {};
+                table.name = attach.description;
+                table.id = attach.id;
+                table.content = JSON.parse(res);
+                $scope.taskData.aTable.push(table);
+              } catch (e) {
+
+              }
+              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
+            })
+          });
         };
+        $scope.getListOfTables();
       }
 
     ])

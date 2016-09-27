@@ -1,39 +1,54 @@
 {
     "motion": 
     	{
-            "ShowFieldsOnCondition_ConstructionOnBasis_Ownersip": 
+            "ShowFieldsOnCondition_Ownership": 
                 {"aField_ID": 	["sOwnershipDoc"], 
                  "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
                  "sCondition": 	"[sCondit] == 'sEnumOwnership'"
                 },
                 
-            "RequiredFieldsOnCondition_ConstructionOnBasis_Ownersip": 
+            "RequiredFieldsOnCondition_Ownership": 
                 {"aField_ID": ["sOwnershipDoc"],
                  "asID_Field": {"sCondit": "asConstructionOnBasis"},
                  "sCondition": "[sCondit] == 'sEnumOwnership'"
                 },
                
-            "ShowFieldsOnCondition_ConstructionOnBasis_Superficies": 
+            "ShowFieldsOnCondition_Superficies": 
                 {"aField_ID": 	["sSuperficiesDoc"], 
                  "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
                  "sCondition": 	"[sCondit] == 'sEnumSuperficies'"
                 },
-            "RequiredFieldsOnCondition_ConstructionOnBasis_Superficies": 
+            "RequiredFieldsOnCondition_Superficies": 
                 {"aField_ID": ["sSuperficiesDoc"],
                  "asID_Field": {"sCondit": "asConstructionOnBasis"},
                  "sCondition": "[sCondit] == 'sEnumSuperficies'"
                 },
                               
-            "ShowFieldsOnCondition_GeneralContractor_Person": 
-                {"aField_ID": 	["sPersonName", "sPersonPassport", "sPersonAddress", "sPersonINN"], 
+            "ShowFieldsOnCondition_Person": 
+                {"aField_ID": 	["sGenPersonName", "sGenPersonPassport", 
+                                 "sGenPersonAddress", "sGenPersonINN"], 
                  "asID_Field": 	{"sCondit":"asGeneralContractor"},
                  "sCondition": "[sCondit] == 'sEnumPerson'"
                 },
             
-            "ShowFieldsOnCondition_GeneralContractor_Legal": 
-                {"aField_ID": 	["sLegalName", "sLegalAddress", "sLegalEDRPOU", "sLegalPhone"], 
+            "RequiredFieldsOnCondition_Person": 
+                {"aField_ID": 	["sGenPersonName", "sGenPersonPassport", 
+                                 "sGenPersonAddress", "sGenPersonINN"], 
+                 "asID_Field": 	{"sCondit":"asGeneralContractor"},
+                 "sCondition": "[sCondit] == 'sEnumPerson'"
+                },
+
+            "ShowFieldsOnCondition_Legal": 
+                {"aField_ID": 	["sGenLegalName", "sGenLegalAddress", "sGenLegalEDRPOU", "sGenLegalPhone"], 
+                 "asID_Field": 	{"sCondit":"asGeneralContractor"},
+                 "sCondition": 	"[sCondit] == 'sEnumLegalEntity'"
+                },
+
+            "RequiredFieldsOnCondition_Legal": 
+                {"aField_ID": 	["sGenLegalName", "sGenLegalAddress", "sGenLegalEDRPOU", "sGenLegalPhone"], 
                  "asID_Field": 	{"sCondit":"asGeneralContractor"},
                  "sCondition": 	"[sCondit] == 'sEnumLegalEntity'"
                 }
+
         }
 }
