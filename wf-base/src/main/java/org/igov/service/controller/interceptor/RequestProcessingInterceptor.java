@@ -525,7 +525,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                            LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})",
+                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
                                     sProcessName,
                                     snID_Proccess_Feedback);
                         } else {
