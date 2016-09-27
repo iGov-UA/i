@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.igov.io.Log;
+import org.igov.service.business.feedback.FeedBackService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 
 import static org.igov.util.Tool.sCut;
@@ -84,6 +85,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private BpServiceHandler bpHandler;
     @Autowired
     private EscalationHistoryService escalationHistoryService;
+    @Autowired
+    private FeedBackService feedBackService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -517,9 +520,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
                         //if (!generalConfig.isSelfTest()) {
-                        if (false) {
-                            String snID_Proccess_Feedback = bpHandler
-                                    .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                        if (true) {
+                            //String snID_Proccess_Feedback = bpHandler
+                            //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
                             LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})",
                                     sProcessName,

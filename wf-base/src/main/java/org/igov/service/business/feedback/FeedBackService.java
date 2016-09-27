@@ -10,24 +10,25 @@ import org.springframework.stereotype.Service;
 public class FeedBackService {
 
     @SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory.getLogger(FeedBackService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FeedBackService.class);
 
     @Autowired
     private BpServiceHandler bpHandler;
 
-
     /**
      * Запуск процесса фидбэка
+     *
      * @param snID_Process
      * @throws Exception
      */
-    public void runFeedBack(String snID_Process) throws Exception {
-    	BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount()+1);
-    	String snID_Proccess_Feedback = bpHandler
+    public String runFeedBack(String snID_Process) throws Exception {
+        BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount() + 1);
+        String snID_Proccess_Feedback = bpHandler
                 .startFeedbackProcessNew(snID_Process);
-    	if(snID_Proccess_Feedback==null || snID_Proccess_Feedback.isEmpty()) {
-    		 throw new Exception("FeedBack proces not started");
-    	}
+        if (snID_Proccess_Feedback == null || snID_Proccess_Feedback.isEmpty()) {
+            throw new Exception("FeedBack proces not started");
+        }
+        return snID_Proccess_Feedback;
     }
 
 }
