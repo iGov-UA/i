@@ -289,6 +289,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     angular.forEach(aFormProperties, function(i){
       if(i.type === 'select' &&
           i.hasOwnProperty('autocompleteData') &&
+          $scope.data.formData.params[i.id].value &&
           $scope.data.formData.params[i.id].value.hasOwnProperty(i.autocompleteData.valueProperty)) {
         $scope.data.formData.params[i.id].value = $scope.data.formData.params[i.id].value[i.autocompleteData.valueProperty]
       }
@@ -736,6 +737,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   };
 
+  $scope.insertSeparator = function(sPropertyId){
+    return FieldAttributesService.insertSeparators(sPropertyId);
+  };
 
   // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
   $rootScope.isFileProcessUploading = {

@@ -30,9 +30,12 @@
         <activiti:formProperty id="markers_st_1" name="Присвоить значение sVarTest_1 + sVarTest_4 + asTestEnum + _ + email + sID_SubjectActionKVED_1" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_st_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarTest_2&quot;,&quot;sVarTest_3&quot;,&quot;sVarTest_4&quot;,&quot;sVarTest_5&quot;,&quot;sVarTest_6&quot;,&quot;sVarTest_7&quot;],&quot;asID_Field_sValue&quot;:[&quot;[sVarTest_1]&quot;,&quot;[sVarTest_4]&quot;,&quot;[asTestEnum]&quot;,&quot;_&quot;,&quot;[email]&quot;,&quot;[sID_SubjectActionKVED_1]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTestEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'enVarTest_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_st_2" name="Присвоить значение sVarTest_4 + asTestEnum + email + sVarTest_1 + sID_SubjectActionKVED_1 + _" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_st_2&quot;:{&quot;aField_ID&quot;:[&quot;sVarTest_2&quot;,&quot;sVarTest_3&quot;,&quot;sVarTest_4&quot;,&quot;sVarTest_5&quot;,&quot;sVarTest_6&quot;,&quot;sVarTest_7&quot;],&quot;asID_Field_sValue&quot;:[&quot;sVarTest_4&quot;,&quot;[asTestEnum]&quot;,&quot;[email]&quot;,&quot;[sVarTest_1]&quot;,&quot;[sID_SubjectActionKVED_1]&quot;,&quot;_&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTestEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'enTestNumber'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_st_3" name="Присвоить значение нескольких полей в sVarTest_2" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_st_3&quot;:{&quot;aField_ID&quot;:[&quot;sVarTest_2&quot;],&quot;asID_Field_sValue&quot;:[&quot;[email]+_+[sVarTest_1]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTestEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'enTestNumber2'&quot;}}}"></activiti:formProperty>
-          <activiti:formProperty id="markers_st_4" name="Маркер-разделитель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sCurrency_1&quot;,&quot;sVarTest_1&quot;],&quot;sValue&quot;:&quot;Общая группа&quot;}}}"></activiti:formProperty>
+          <activiti:formProperty id="markers_st_4" name="Маркер-разделитель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sCurrency_1&quot;,&quot;sVarTest_1&quot;],&quot;sValue&quot;:&quot;Первый маркер-сепаратор&quot;}}}"></activiti:formProperty>
+          <activiti:formProperty id="markers_st_5" name="Маркер-разделитель2" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asTestEnum&quot;],&quot;sValue&quot;:&quot;Управление тестом маркера ValuesFieldsOnCondition Это заголовок с очень-очень длинной текстовой строкой&quot;}}}"></activiti:formProperty>
+          <activiti:formProperty id="markers_st_6" name="Маркер-разделитель3 без текста" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectActionKVED_1&quot;]}}}"></activiti:formProperty>
+          <!--
           <activiti:formProperty id="Info_st_1" name="= Тест маркера ValuesFieldsOnCondition конец =v2============================" type="label" default="======"></activiti:formProperty>
-        
+        -->
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
@@ -45,7 +48,9 @@
         <activiti:formProperty id="sID_SubjectActionKVED_1" name="sID_SubjectActionKVED_1" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_ObjectPlace_UA_1" name="sID_ObjectPlace_UA_1" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="Info_ut1_0" name="Тест маркера RequiredFieldsOnCondition начало" type="label" default=" "></activiti:formProperty>
+        <!--
+         <activiti:formProperty id="Info_ut1_0" name="Тест маркера RequiredFieldsOnCondition начало" type="label" default=" "></activiti:formProperty>
+        -->
         <activiti:formProperty id="asTestEnum" name="asTestEnum-Установить свойство Required у поля sTestRequired в состояние - true" type="enum" default="NotReq" >
           <activiti:value id="Req" name="Req-Обязательное поле"></activiti:value>
           <activiti:value id="NotReq" name="NotReq-Необязательное поле"></activiti:value>
@@ -53,9 +58,14 @@
         <activiti:formProperty id="markers_Req_01" name="Сделать поле sTestRequired обязательным если asTestEnum=Req" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_01&quot;:{&quot;aField_ID&quot;:[&quot;sTestRequired&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTestEnum&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Req'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTestRequired" name="sTestRequired" type="string" ></activiti:formProperty>
         <activiti:formProperty id="sTestRequired2" name="sTestRequired2" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Info_ut1_1" name="Тест маркера RequiredFieldsOnCondition конец" type="label" default=" "></activiti:formProperty>
-        
-      </extensionElements>
+        <!--
+         <activiti:formProperty id="Info_ut1_1" name="Тест маркера RequiredFieldsOnCondition конец" type="label" default=" "></activiti:formProperty>
+         -->
+         <activiti:formProperty id="markers_st_4" name="Маркер-разделитель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectActionKVED_1&quot;],&quot;sValue&quot;:&quot;Первый маркер-сепаратор&quot;}}}"></activiti:formProperty>
+         <activiti:formProperty id="markers_st_5" name="Маркер-разделитель2" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asTestEnum&quot;],&quot;sValue&quot;:&quot;Управление тестом маркера Это заголовок с очень-очень длинной текстовой строкой&quot;}}}"></activiti:formProperty>
+         <activiti:formProperty id="markers_st_6" name="Маркер-разделитель3 без текста" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTestRequired&quot;]}}}"></activiti:formProperty>
+
+     </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>

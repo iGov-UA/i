@@ -11,8 +11,11 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
+import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.subject.Server;
+import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.message.*;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.action.ActionEventService;
@@ -21,6 +24,7 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.MethodsCallRunnerUtil;
 import org.joda.time.DateTime;
@@ -73,6 +77,11 @@ public class SubjectMessageController {
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
+    @Autowired
+    private ServerDao serverDao;
+    
+    @Autowired
+    HttpRequester httpRequester;
 
     @ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -503,6 +512,7 @@ public class SubjectMessageController {
             subjectMessagesDao.setMessage(oSubjectMessage);
 
             Long messageID = oSubjectMessage.getId();
+            /*
             LOG.info("Set message id={}, Mail={}", messageID, oSubjectMessage.getMail());
             LOG.info("Set message id={}, Contacts={}", messageID, oSubjectMessage.getContacts());
             LOG.info("Set message id={}, Data={}", messageID, oSubjectMessage.getData());
@@ -512,6 +522,7 @@ public class SubjectMessageController {
             LOG.info("Set message id={}, Id_subject={}", messageID, oSubjectMessage.getId_subject());
             LOG.info("Set message id={}, ID_DataLink={}", messageID, oSubjectMessage.getsID_DataLink());
             LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
+            */
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 
@@ -608,6 +619,32 @@ public class SubjectMessageController {
             }
         }
         oJSONObject.put("sURL", responseMessage);
+        if(nID_Rate.compareTo(1L)==0 || nID_Rate.compareTo(2L)==0||nID_Rate.compareTo(3L)==0) {
+            String sHost = null;
+            try {
+    	        HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+    	   if(oHistoryEvent_Service.getnID_Proccess_Feedback()==null) {
+    	        int nID_Server = oHistoryEvent_Service.getnID_Server();
+    	        nID_Server = generalConfig.getServerId(nID_Server);
+    	        Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
+    	        if (!oOptionalServer.isPresent()) {
+    	            throw new RecordNotFoundException();
+    	        } else {//https://test.region.igov.org.ua/wf
+    	            sHost = oOptionalServer.get().getsURL();
+    	        }
+    	        String sURL = sHost + "/service/action/feedback/runFeedBack";
+    	        Map<String, String> mParam = new HashMap<>();
+    	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Task()));
+    	        LOG.info("mParam={}", mParam);
+    	        String sReturnRegion = httpRequester.getInside(sURL, mParam);
+    	        LOG.info("(sReturnRegion={})", sReturnRegion);
+            }
+            } catch (Exception e) {
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        e.getMessage(), e, HttpStatus.FORBIDDEN);
+            }
+            }
         return new ResponseEntity<>(oJSONObject.toString(), HttpStatus.CREATED);
         
     }
@@ -997,7 +1034,7 @@ public class SubjectMessageController {
             Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
             SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
             Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
-            LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
+            //LOG.info("nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
 
             Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
 
@@ -1005,14 +1042,14 @@ public class SubjectMessageController {
                 actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
             }
             if(message == null || isBlank(message.getsID_DataLink())){
-                LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+                //LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
                 CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
                 throw newErr;
             }
-            LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
+            //LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);
 
             if (isNotBlank(message.getsID_DataLink())){
-                LOG.info("Field sID_DataLink in message is not null");
+                //LOG.info("Field sID_DataLink in message is not null");
 
                 byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
 

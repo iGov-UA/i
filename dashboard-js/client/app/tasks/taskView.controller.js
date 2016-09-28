@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -657,6 +657,10 @@
           }
         });
 
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
+        };
+
         $scope.isTableAttachment = function (item) {
           return item.indexOf('[table]') > -1;
         };
@@ -695,6 +699,7 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
@@ -707,6 +712,12 @@
                 table.name = attach.description;
                 table.id = attach.id;
                 table.content = JSON.parse(res);
+                for(var i=0; i<table.content.length; i++) {
+                  if(typeof table.content[i] === "string") {
+                    table.idName = table.content[i];
+                    delete table.content[i];
+                  }
+                }
                 $scope.taskData.aTable.push(table);
               } catch (e) {
 

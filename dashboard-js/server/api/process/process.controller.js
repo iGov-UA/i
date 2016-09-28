@@ -3,8 +3,6 @@
 var activiti = require('../../components/activiti');
 var NodeCache = require("node-cache");
 var cache = new NodeCache();
-var nodeLocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new nodeLocalStorage('./scratch');
 //var logger = require('../../components/logger').setup();
       //logger.info('Express server listening on %d, in %s mode', config.port, app.get('env'));
 
@@ -34,7 +32,6 @@ exports.index = function (req, res) {
 
 exports.getLoginBPs = function (req, res) {
   var user = JSON.parse(req.cookies.user);
-  //var user = JSON.parse(localStorage.getItem('user'));
 
   var query = {
     'sLogin' : user.id
