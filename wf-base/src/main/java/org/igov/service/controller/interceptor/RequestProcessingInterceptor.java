@@ -516,21 +516,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
-                    if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
-                        LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        //if (!generalConfig.isSelfTest()) {
-                        if (true) { //
-                            //String snID_Proccess_Feedback = bpHandler
-                            //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
-                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
-                            mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
-                                    sProcessName,
-                                    snID_Proccess_Feedback);
-                        } else {
-                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
-                        }
-                    }
+//                    if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
+//                        LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
+//                        //if (!generalConfig.isSelfTest()) {
+//                        if (true) { //
+//                            //String snID_Proccess_Feedback = bpHandler
+//                            //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+//                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+//                            mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+//                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
+//                                    sProcessName,
+//                                    snID_Proccess_Feedback);
+//                        } else {
+//                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+//                        }
+//                    }
                 } catch (Exception oException) {
                     new Log(oException, LOG)//this.getClass()
                             ._Case("IC_CreateEscalation")
