@@ -48,14 +48,14 @@
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file" ></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон документа" type="invisible" default="pattern/print/kiev/DABI_prep_works_app1.html"></activiti:formProperty>
         
         <activiti:formProperty id="marker_hide" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask_step3"></sequenceFlow>
-    <userTask id="usertask_step3" name="3. Реєстрація вхідного документу ">
+    <userTask id="usertask_step3" name="3. Реєстрація вхідного документу "  activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Ідентифікаційні дані:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
