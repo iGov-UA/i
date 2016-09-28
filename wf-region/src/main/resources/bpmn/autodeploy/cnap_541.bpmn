@@ -17,13 +17,13 @@
           <activiti:value id="sEnumFiz" name="Фізична особа, суб'єкт підприємницької діяльності"></activiti:value>
           <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення:" type="enum" required="true">
+        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення" type="enum" required="true">
           <activiti:value id="sEnumFood" name="відкритого майданчика для харчування"></activiti:value>
           <activiti:value id="sEnumKiosk" name="тимчасової споруди - павільону (кіоску)"></activiti:value>
           <activiti:value id="sEnumOther" name="тимчасової споруди - інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOther" name="Вкажіть тип тимчасової споруди" type="string" required="true"  default=" "></activiti:formProperty>
-        <activiti:formProperty id="asAdd" name="Додаткове обладнання:" type="enum" required="true">
+        <activiti:formProperty id="asAdd" name="Додаткове обладнання" type="enum" required="true">
           <activiti:value id="sEnumAddYes" name="без розміщення вітрин, холодильного та іншого обладнання"></activiti:value>
           <activiti:value id="sEnumAddNo" name="з розміщенням вітрин, холодильного та іншого обладнання"></activiti:value>
         </activiti:formProperty>
@@ -109,7 +109,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Обробка звернення">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -123,13 +123,13 @@
           <activiti:value id="sEnumFiz" name="Фізична особа, суб'єкт підприємницької діяльності"></activiti:value>
           <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення:" type="enum" writable="false">
+        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення" type="enum" writable="false">
           <activiti:value id="sEnumFood" name="відкритого майданчика для харчування"></activiti:value>
           <activiti:value id="sEnumKiosk" name="тимчасової споруди - павільону (кіоску)"></activiti:value>
           <activiti:value id="sEnumOther" name="тимчасової споруди - інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOther" name="Тип тимчасової споруди; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAdd" name="Додаткове обладнання:" type="enum" writable="false">
+        <activiti:formProperty id="asAdd" name="Додаткове обладнання" type="enum" writable="false">
           <activiti:value id="sEnumAddYes" name="без розміщення вітрин, холодильного та іншого обладнання"></activiti:value>
           <activiti:value id="sEnumAddNo" name="з розміщенням вітрин, холодильного та іншого обладнання"></activiti:value>
         </activiti:formProperty>
