@@ -48,9 +48,9 @@
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номе" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" required="true"></activiti:formProperty>
         
-        <!--activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file" ></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон документа" type="invisible" default="pattern/print/kiev/DABI_prep_works_app1.html"></activiti:formProperty>
-        /!-->
+        
         <activiti:formProperty id="marker_hide" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -106,13 +106,13 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_hide" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main.json')}"></activiti:formProperty>
-        <!--activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        /!-->
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask_step3" targetRef="servicetask_step4"></sequenceFlow>
