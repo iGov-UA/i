@@ -704,7 +704,7 @@
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment.length > 0)
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
           angular.forEach($scope.taskData.aAttachment, function (attach) {
             tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
               ++itemsProcessed;
