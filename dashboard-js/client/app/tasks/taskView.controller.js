@@ -658,7 +658,6 @@
         });
 
         $scope.insertSeparator = function(sPropertyId){
-          debugger;
           return FieldAttributesService.insertSeparators(sPropertyId);
         };
 
