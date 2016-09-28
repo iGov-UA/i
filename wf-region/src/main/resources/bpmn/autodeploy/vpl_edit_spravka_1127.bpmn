@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_edit_spravka_1127" name="Переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 27.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1523</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -18,7 +18,8 @@
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Other" name="Копія документів, що підтверджують зміни в інформації; наприклад, свідоцтво про шлюб і тому інше" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
           <activiti:value id="sEnumElement_Yes" name="Так, надати щомісячну допомогу"></activiti:value>
           <activiti:value id="sEnumElement_No" name="Ні, не потрібно надання допомоги"></activiti:value>
@@ -96,7 +97,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_SvodoztvoOdruzennya},${nFile_SvodoztvoNarodzennya},${nFile_Other}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
