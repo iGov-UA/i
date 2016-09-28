@@ -137,15 +137,14 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamTak" name="Наявні приміщення що здаються в оренду"></activiti:value>
           <activiti:value id="sEnamNi" name="Відсутні приміщення що здатьбся в оренду"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPloshaOrendi" name="Загальна площа приміщень, які здаються в оренду" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sSubsidi" name="Загальний розмір пільг які" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sBorg" name="Cума заборгованості мешканців за останній рік" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sPloshaOrendi" name="Загальна площа приміщень, які здаються в оренду" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSubsidi" name="Загальний розмір пільг та субсидій" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBorg" name="Cума заборгованості мешканців за останній рік" type="string" default=" "></activiti:formProperty>
                 
         <activiti:formProperty id="sDocVidpovid" name="Відповідь в електронному форматі" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="Komment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker" name="initiativ" type="markers" default="${markerService.loadFromFile('AK/OSBB/Initiativ_Dash.json')}"></activiti:formProperty>
-        
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -159,18 +158,130 @@ ${sNameOrgan}.&lt;br /&gt;
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Онлайн документ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    
-    
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Заява оформлена вірно.&lt;br /&gt;
+Відповідь у вкладенні до цього листа.&lt;br /&gt;&lt;br /&gt;
+Додатково. За результатами опрацювання Вашої заяви повідомляємо:&lt;br /&gt;
+Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}&lt;br /&gt;
+Кількість зареєстрованих в будинку осіб: ${sPropisano}&lt;br /&gt;
+Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}&lt;br /&gt;
+Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}&lt;br /&gt;
+Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}&lt;br /&gt;
+Загальний розмір пільг та субсидій: ${sSubsidi}&lt;br /&gt;
+Cума заборгованості мешканців за останній рік ${sBorg}&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${sDocVidpovid}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask5" name="Видача на руки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    
-    
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Заява оформлена вірно.&lt;br /&gt;
+Ви можете отримати документ за вказаною нижче адресою.&lt;br /&gt;&lt;br /&gt;
+Додатково. За результатами опрацювання Вашої заяви повідомляємо:&lt;br /&gt;
+Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}&lt;br /&gt;
+Кількість зареєстрованих в будинку осіб: ${sPropisano}&lt;br /&gt;
+Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}&lt;br /&gt;
+Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}&lt;br /&gt;
+Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}&lt;br /&gt;
+Загальний розмір пільг та субсидій: ${sSubsidi}&lt;br /&gt;
+Cума заборгованості мешканців за останній рік ${sBorg}&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-    
-    
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
+Причина відмови: ${Komment} &lt;br /&gt;&lt;br /&gt;
+Якщо Вам необхідно отримати витяг, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
