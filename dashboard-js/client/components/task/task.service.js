@@ -400,7 +400,11 @@ angular.module('dashboardJsApp')
             data.aMessage = JSON.parse(data.aMessage);
           angular.forEach(data.aMessage, function(message) {
             if (angular.isString(message.sData) && message.sData.length > 1) {
-              message.osData = JSON.parse(message.sData);
+              try{
+                message.osData = JSON.parse(message.sData);
+              } catch (e){
+                message.osData = {};
+              }
             }
           });
           return data;
