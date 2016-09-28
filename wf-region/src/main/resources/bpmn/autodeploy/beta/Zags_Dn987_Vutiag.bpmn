@@ -81,7 +81,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Razv_Slub_Ima" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Заявник щодо своїх родичів за умови пред`явлення документів, що підтверджують родинні стосунки"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник фізичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSmertVytag" name="Про що витяг" type="enum" required="true">
@@ -193,7 +192,7 @@
           <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
@@ -541,19 +540,16 @@ ${sNameOrgan}.&lt;br /&gt;
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudSlub')
           {
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
-          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudRazv')
           {
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
-          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudIma')
           {
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR1'){Rod='Заявник особисто на себе'}
-          if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamR2'){Rod='Заявник щодо своїх родичів'}
           if(execution.getVariable('asRod_Razv_Slub_Ima') == 'sEnamRP'){Rod='Представник фізичної особи'}
           }
         if(execution.getVariable('asVudVutiagu') == 'sEnamVudUsin')

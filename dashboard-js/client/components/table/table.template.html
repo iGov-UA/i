@@ -6,15 +6,15 @@
     </div>
     <div class='col-md-12 table-ng-modal-dialog-content-view' ng-style='dialogStyle'>
       <div class='table-ng-modal-dialog-content' ng-if="!attachIsLoading">
-        <h1>{{taskData.aTable[0].sName}}</h1>
+        <h1>{{openedAttachTable.name}}</h1>
         <table>
           <thead>
           <tr>
-            <th ng-repeat="item in taskData.aTable[0].aRows[0].aField">{{item.name}}</th>
+            <th ng-repeat="item in openedAttachTable.content[0].aField">{{item.name}}</th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="row in taskData.aTable[0].aRows">
+          <tr ng-repeat="row in openedAttachTable.content">
             <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
           </tr>
           </tbody>

@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiParam;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
@@ -39,9 +38,7 @@ import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.ArchiveServiceImpl;
-import org.igov.service.exception.CommonServiceException;
 import org.igov.util.VariableMultipartFile;
-import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 

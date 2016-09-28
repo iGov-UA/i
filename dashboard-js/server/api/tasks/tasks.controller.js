@@ -342,8 +342,7 @@ exports.getTasksByText = function (req, res) {
 
 /*
 exports.getProcesses = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
   var roles = JSON.stringify(user.roles);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
@@ -422,7 +421,6 @@ exports.getProcesses = function (req, res) {
 
 exports.getFile = function (req, res) {
   var user = JSON.parse(req.cookies.user);
-  //var user = JSON.parse(localStorage.getItem('user'));
   var options = {
     path: 'analytic/process/getFile',
     query: {

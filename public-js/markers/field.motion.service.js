@@ -55,7 +55,7 @@ function FieldMotionService(MarkersFactory) {
   };
 
   this.isFieldRequired = function(fieldId, formData) {
-    var b = grepByPrefix('RequiredFieldsOnCondition_').some(function(entry) {
+    var b = grepByPrefix('RequiredFieldsOnCondition').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
     });
     return b;
@@ -124,6 +124,9 @@ function FieldMotionService(MarkersFactory) {
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
+    if(fieldId === 'sTestRequired'){
+      debugger;
+    }
     if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
       return false;
     } else if(mentioned) {

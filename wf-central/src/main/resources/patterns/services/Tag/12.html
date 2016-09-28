@@ -1,175 +1,228 @@
-﻿<meta charset="utf-8" />
-<style>
-    .article-block {
-        font-family: Open Sans, Arial, sans-serif;
-        color: #333333;
+﻿<style>
+.article-block {
+    font-family: Open Sans, Arial, sans-serif;
+    color: #333333;
+}
+
+    .article-block li {
+        margin: 10px 0;
     }
 
-        .article-block li {
-            margin: 10px 0;
+    .article-block ol,
+    .article-block ul {
+        margin-bottom: 36px;
+    }
+
+     .article-block .content-art ol,
+     .article-block .content-art ul,
+     .article-block ol ul,
+     .article-block ol ol,
+     .article-block ul ul,
+     .article-block ul ol {
+         margin-bottom: 12px;
+     }
+
+    .article-block table ol,
+    .article-block table ul {
+        margin: 0 0 0 25px;
+        padding: 0;
+    }
+
+    .article-block table li {
+        padding: 5px 0 0 0;
+        margin: 0;
+    }
+
+
+    .article-block .notmarker > li {
+        list-style-type: none; /* Убираем маркеры */
+    }
+
+    .article-block sup {
+        color: #428bca;
+        font-size: 10.8333px;
+    }
+
+    .article-block a {
+        color: #428bca;
+    }
+
+    .article-block h1,
+    .article-block .ind-section {
+        margin-top: 46px;
+    }
+
+        .article-block h1.topic {
+            margin-top: 12px;
         }
 
-        .article-block ol,
-        .article-block ul {
-            margin-bottom: 46px;
+    .article-block h2 {
+        margin-top: 36px;
+    }
+
+    .article-block h3 {
+        margin-top: 24px;
+    }
+
+    .article-block h1 > sup {
+        color: #428bca;
+        font-size: 15.8333px;
+    }
+
+    .article-block table {
+        border-spacing: 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        border-collapse: separate;
+    }
+
+    .article-block th {
+        background: #eeeeee;
+        text-align: center;
+    }
+
+    .article-block td,
+    .article-block th {
+        padding: 16px 10px;
+        vertical-align: central;
+        border-left: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+    }
+
+    .article-block .tableNotHead tr:first-child > td,
+    .article-block tr:first-child > th {
+        border-top: none;
+    }
+
+        .article-block td:first-child,
+        .article-block tr:first-child > th:first-child {
+            border-left: none;
+        }
+        /* из-за background */
+        .article-block tr:first-child > th:first-child {
+            border-top-left-radius: 5px;
         }
 
-        .article-block .content-art ol,
-        .article-block .content-art ul
-         {
-            margin-bottom: 12px;
+        .article-block tr:first-child > th:last-child {
+            border-top-right-radius: 5px;
         }
 
-        .article-block .notmarker>li {
-            list-style-type: none; /* Убираем маркеры */
+    .article-block tr > td.small-text,
+    .article-block .small-text {
+        font-size: 10pt;
+    }
+
+
+    .article-block tr > td.va-c,
+    .article-block .va-c {
+        vertical-align: central;
+    }
+
+    .article-block tr > td.va-b,
+    .article-block .va-b {
+        vertical-align: bottom;
+    }
+
+    .article-block tr > td.va-t,
+    .article-block .va-t {
+        vertical-align: top;
+    }
+
+
+    .article-block tr > td.ta-c,
+    .article-block .ta-c {
+        text-align: center;
+    }
+
+    .article-block tr > td.ta-l,
+    .article-block .ta-l {
+        text-align: left;
+    }
+
+    .article-block tr > td.ta-r,
+    .article-block .ta-r {
+        text-align: right;
+    }
+
+    .article-block tr > td.ta-j,
+    .article-block p,
+    .article-block li,
+    .article-block .ta-j {
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+    }
+
+    .article-block .attention-block {
+        margin: 20px;
+        padding: 20px;
+        border-left: 3px solid #eee;
+    }
+
+        .article-block .attention-block h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
         }
 
-        .article-block sup {
-            color: #428bca;
-            font-size: 10.8333px;
+        .article-block .attention-block p:last-child {
+            margin-bottom: 0;
         }
 
-        .article-block h1,
-        .article-block .ind-section {
-            margin-top: 46px;
+    .article-block .attention-block-info {
+        background-color: #f4f8fa;
+        border-color: #5bc0de;
+    }
+
+        .article-block .attention-block-info h4 {
+            color: #5bc0de;
         }
 
-            .article-block h1.topic {
-                margin-top: 12px;
-            }
+    .article-block .attention {
+        padding: 16px 10px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
 
-        .article-block a {
-            color: #428bca;
-        }
+    .article-block .note {
+        color: #999;
+    }
 
-        .article-block h1 > sup {
-            color: #428bca;
-            font-size: 15.8333px;
-        }
+    .article-block .b {
+        font-weight: bold;
+    }
 
-        .article-block table {
-            border-spacing: 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            border-collapse: separate;
-        }
+    .article-block .notb {
+        font-weight: 100;
+    }
 
-        .article-block th {
-            background: #eeeeee;
-            text-align: center;
-        }
-
-        .article-block td,
-        .article-block th {
-            padding: 16px 10px;
-            vertical-align: central;
-            border-left: 1px solid #ddd;
-            border-top: 1px solid #ddd;
-        }
-
-
-        .article-block tr:first-child > th {
-            border-top: none;
-        }
-
-            .article-block td:first-child,
-            .article-block tr:first-child > th:first-child {
-                border-left: none;
-            }
-            /* из-за background */
-            .article-block tr:first-child > th:first-child {
-                border-top-left-radius: 5px;
-            }
-
-            .article-block tr:first-child > th:last-child {
-                border-top-right-radius: 5px;
-            }
-
-        .article-block tr > td.small-text,
-        .article-block .small-text {
-            font-size: 10pt;
-        }
-
-
-        .article-block tr > td.va-c,
-        .article-block .va-c {
-            vertical-align: central;
-        }
-
-        .article-block tr > td.va-b,
-        .article-block .va-b {
-            vertical-align: bottom;
-        }
-
-        .article-block tr > td.va-t,
-        .article-block .va-t {
-            vertical-align: top;
-        }
-
-
-        .article-block tr > td.ta-c,
-        .article-block .ta-c {
-            text-align: center;
-        }
-
-        .article-block tr > td.ta-l,
-        .article-block .ta-l {
-            text-align: left;
-        }
-
-        .article-block tr > td.ta-r,
-        .article-block .ta-r {
-            text-align: right;
-        }
-
-        .article-block tr > td.ta-j,
-        .article-block .ta-j {
-            text-align: justify;
-        }
-
-        .article-block .attention-block {
-            margin: 20px;
-            padding: 20px;
-            border-left: 3px solid #eee;
-        }
-            .article-block .attention-block h4 {
-                margin-top: 0;
-                margin-bottom: 5px;
-            }
-            .article-block .attention-block p:last-child {
-                margin-bottom: 0;
-            }
-
-        .article-block .attention-block-info {
-            background-color: #f4f8fa;
-            border-color: #5bc0de;
-        }
-            .article-block .attention-block-info h4 {
-                color: #5bc0de;
-            }
-
-        .article-block .attention {
-            padding: 16px 10px;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-            background-color: #ffffff;
-        }
-
-        .article-block .note {
-            color: #999;
-        }
-
-        .article-block .b {
-            font-weight: bold;
-        }
-
-        .article-block .notb {
-            font-weight: 100;
-        }
+    .formula em,
+    .variables em,
+    .variable {
+        font-weight: bold;
+    }
+	    .article-block .formula table {
+	        border-spacing: 0;
+	        border: 0;
+	        border-radius: 0px;
+	        border-collapse: separate;
+	        margin: auto;
+	        padding:0;
+	    }
+	    .article-block .formula tr,
+	    .article-block .formula td {
+	        vertical-align: central;
+	        margin:0;
+	        padding: 3px 5px;
+	        border: 0;
+	    }
 </style>
 
 
-<article class="article-block">
+<article lang="uk" class="article-block">
     <h1 class="topic">Як отримати закордонний паспорт</h1>
     <p>Зміст:</p>
     <ol class="content-art">
@@ -231,7 +284,7 @@
          Він також є підтвердженням громадянства України осіб, які виїхали з України на <a href="#" target="_blank">постійне місце проживання</a> до інших країн.
     </p>
     <p>
-        Термін дії закордонного паспорту для дітей до 16 років - 4 роки, для осіб старших 16 років - 10 років.
+        Термін дії закордонного паспорту для дітей до 16 років - 4 роки, для осіб старше 16 років - 10 років.
     </p>
     <h1 id="anchor2">2. Як і куди подавати заяву на оформлення закордонного паспорту</h1>
     <p>
@@ -251,7 +304,7 @@
     <h3>Як особисто подати заяву на оформлення закордонного паспорта до ДМС</h3>
     <p>
         Ви також можете подати заяву на оформлення закордонного паспорту, звернувшись у підрозділ ДМС особисто. Для цього потрібно принести з собою необхідні документи та квитанції про сплату. 
-        Заяви в такому разі ви зможете буде заповнити на місці.
+        Заяви в такому разі ви зможете заповнити на місці.
     </p>
     <p>
         Реквізити для сплати можна отримати у підрозділі ДМС або  на <a href="http://dmsu.gov.ua/invoice/invoice.php" target="_blank">сайті ДМСУ</a>. 
@@ -265,7 +318,7 @@
     <p>
         Щоб мати можливість вибору зручної дати та часу візиту до підрозділу ДМС, скористайтеся відповідною <a href="https://igov.org.ua/service/176/general" target="_blank">послугою</a> на порталі iGov. 
         У листі на електронну пошту Ви отримаєте необхідні реквізити для сплати державного мита та адміністративної послуги, а також перелік документів. 
-        Особи, яким виповнилося 16 років подають заяву на оформлення закордонного паспорта самостійно. З собою необхідно мати такі документи:
+        Особи, яким виповнилося 16 років, подають заяву на оформлення закордонного паспорта самостійно. З собою необхідно мати такі документи:
     </p>
     <ul>
         <li>оригінал та копію <a href="https://igov.org.ua/subcategory/1/1/situation/11" target="_blank">паспорта громадянина України</a> або іншого документу, 
@@ -292,7 +345,7 @@
         </li>
     </ul>
     <p>
-        Якщо дитина проживає з одним із батьків, для оформлення закордонного паспорту заявник додатково подає оригінал та копію одного з таких документів:
+        Якщо дитина проживає з одним із батьків, для оформлення закордонного паспорта заявник додатково подає оригінал та копію одного з таких документів:
     </p>
     <ul>
         <li><a href="https://igov.org.ua/service/1052/general" target="_blank">свідоцтво про смерть</a> другого з батьків;</li>
@@ -326,7 +379,7 @@
         Другий закордонний паспорт видається особам, яким виповнилося 18 років, які регулярно їздять за кордон у відрядження і яким необхідно для цього завчасно оформляти візи. 
         Ця потреба обґрунтовується у <a href="https://docs.google.com/document/d/1Ntj6r4Nv_bjqk5_NWsZrMKOVIsjLsb8dBtrYlv_JXZo" target="_blank">заяві</a>, 
         яка подається  разом з іншими документами. Для оформлення потрібно оплатити окрему квитанцію за послугу у будь-якому відділенні банку. 
-        Оформлення другого паспорту громадянина України для виїзду за кордон можливе лише за наявності діючого закордонного паспорту. 
+        Оформлення другого паспорта громадянина України для виїзду за кордон можливе лише за наявності діючого закордонного паспорта. 
         Громадянин України не може мати більше двох діючих закордонних паспортів.
     </p>
     <h1 id="anchor7">7. Якщо ви втратили або у вас вкрали закордонний паспорт</h1>

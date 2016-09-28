@@ -57,6 +57,11 @@
           <enum-field></enum-field>
         </div>
 
+        <!--поле типа checkbox-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <checkbox-field></checkbox-field>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
@@ -136,6 +141,9 @@
         <!--поле типа enum-->
         <enum-field></enum-field>
 
+        <!--поле типа checkbox-->
+        <checkbox-field></checkbox-field>
+
         <!--поле типа file-->
         <file-formfield></file-formfield>
       </div>
@@ -155,8 +163,7 @@
                  ng-if="!isTableAttachment(item.description)"
                  class="btn btn-info">Завантажити
               </a>
-              <a href="#"
-                 ng-click="getAttachmentTable(item.taskId, item.id, item.description)"
+              <a ng-click="openTableAttachment(item.id)"
                  ng-if="isTableAttachment(item.description)"
                  class="btn btn-info">Переглянути
               </a>
@@ -172,7 +179,8 @@
                     type="button"
                     class="btn btn-link attach-btn dropdown-toggle"
                     data-toggle="dropdown"
-                    ng-model="some">
+                    ng-model="some"
+                    title="{{item.description}}">
                     <!--ng-click="openModalWindow($event)">-->
               {{item.description | cut : true : 25}}
             </button>

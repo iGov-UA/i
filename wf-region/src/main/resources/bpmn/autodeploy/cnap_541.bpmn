@@ -17,19 +17,19 @@
           <activiti:value id="sEnumFiz" name="Фізична особа, суб'єкт підприємницької діяльності"></activiti:value>
           <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення:" type="enum" required="true">
+        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення" type="enum" required="true">
           <activiti:value id="sEnumFood" name="відкритого майданчика для харчування"></activiti:value>
           <activiti:value id="sEnumKiosk" name="тимчасової споруди - павільону (кіоску)"></activiti:value>
           <activiti:value id="sEnumOther" name="тимчасової споруди - інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOther" name="Вкажіть тип тимчасової споруди" type="string" required="true"  default=" "></activiti:formProperty>
-        <activiti:formProperty id="asAdd" name="Додаткове обладнання:" type="enum" required="true">
+        <activiti:formProperty id="asAdd" name="Додаткове обладнання" type="enum" required="true">
           <activiti:value id="sEnumAddYes" name="без розміщення вітрин, холодильного та іншого обладнання"></activiti:value>
           <activiti:value id="sEnumAddNo" name="з розміщенням вітрин, холодильного та іншого обладнання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObject" name="Об’єкт, на який надається адміністративна послуга" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName" name="У давальному відмінку повне найменування особи – отримувача адміністративної послуги" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Місце знаходження (адреса) об’єкта; вкажіть повну адресу: місто, вулицю, будинок, приміщення тощо" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress1" name="Місце знаходження (адреса) об’єкта; вкажіть повну адресу: місто, вулицю, будинок, приміщення тощо" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; цифри, розділені крапкою, згідно до національного класифікатора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFio" name="Прізвище, ім’я, по батькові керівника юридичної особи/фізичної особи – підприємця/уповноваженої особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" required="true" default=" "></activiti:formProperty>
@@ -50,7 +50,7 @@
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="markers1" type="markers" default="${markerService.loadFromFile('cnap_541.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="markers1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_541.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -109,7 +109,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Обробка звернення">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -123,19 +123,19 @@
           <activiti:value id="sEnumFiz" name="Фізична особа, суб'єкт підприємницької діяльності"></activiti:value>
           <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення:" type="enum" writable="false">
+        <activiti:formProperty id="asType" name="Договір особистого строкового сервітуту для розміщення" type="enum" writable="false">
           <activiti:value id="sEnumFood" name="відкритого майданчика для харчування"></activiti:value>
           <activiti:value id="sEnumKiosk" name="тимчасової споруди - павільону (кіоску)"></activiti:value>
           <activiti:value id="sEnumOther" name="тимчасової споруди - інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOther" name="Тип тимчасової споруди; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAdd" name="Додаткове обладнання:" type="enum" writable="false">
+        <activiti:formProperty id="asAdd" name="Додаткове обладнання" type="enum" writable="false">
           <activiti:value id="sEnumAddYes" name="без розміщення вітрин, холодильного та іншого обладнання"></activiti:value>
           <activiti:value id="sEnumAddNo" name="з розміщенням вітрин, холодильного та іншого обладнання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObject" name="Об’єкт, на який надається адміністративна послуга; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName" name="У давальному відмінку повне найменування особи – отримувача адміністративної послуги; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Місце знаходження (адреса) об’єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress1" name="Місце знаходження (адреса) об’єкта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFio" name="ПІБ керівника юридичної особи/фізичної особи – підприємця/уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
@@ -153,7 +153,7 @@
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/cnap_541_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_541_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Принтформа" type="markers" default="${markerService.loadFromFile('zhytomyr/zhytomyr_mvk_families-8_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Принтформа" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_541_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

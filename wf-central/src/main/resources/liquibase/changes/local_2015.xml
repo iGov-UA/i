@@ -1461,5 +1461,33 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="issue-1315-drop" author="olga">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateCreate" />
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateClosed" />
+    </changeSet>
+    
+    <changeSet id="issue-1315-add" author="olga">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateCreate" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDateClosed" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1315-Droping" author="olga">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateClosed" />
+    </changeSet>
+    
+    <changeSet id="issue-1315-Adding" author="olga">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateClose" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
