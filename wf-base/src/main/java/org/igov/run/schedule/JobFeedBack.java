@@ -50,7 +50,7 @@ public class JobFeedBack extends IAutowiredSpringJob {
              LOG.info("44444444List feedbackProcces: " + feedbackProcces.size());   
         for (HistoricProcessInstance feedbackProcce : feedbackProcces) {
             LOG.info("555555555Delete feedbackProcce.getId(): " + feedbackProcce.getId());
-            runtimeService.deleteProcessInstance(feedbackProcce.getId(), " - deprecated");
+            runtimeService.deleteProcessInstance(feedbackProcce.getId(), " deprecated");
             
         }
     }
