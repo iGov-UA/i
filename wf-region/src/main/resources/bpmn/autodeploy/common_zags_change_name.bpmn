@@ -20,6 +20,7 @@
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністративного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; свідоцтво про зміну імені заявника, його батька, матері, якщо раніше здійснювалась державна реєстрація зміни імені" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSecondName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -52,8 +53,8 @@
           <activiti:value id="widow" name="удова (удівець)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; або інший документ, який підтверджує припинення шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; або інший документ, який підтверджує припинення шлюбу (якщо Ви раніше перебували у шлюбі)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; або відповідне рішення суду" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="saChildren" name="Чи маєте дітей?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -216,7 +217,6 @@
         <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers38" name="якщо онлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;sText88&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'online'||[sClient] == 'сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers39" name="якщо офлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sBankDetails2&quot;,&quot;sDocPay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>

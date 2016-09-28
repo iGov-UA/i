@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_cancel_spravka_1126" name="Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 27.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1522</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -67,6 +67,7 @@
           <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину (не обов'язково)" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -175,7 +176,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${nFile_Answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -227,7 +228,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${nFile_Answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

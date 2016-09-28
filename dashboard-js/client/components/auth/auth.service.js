@@ -13,8 +13,15 @@ angular.module('dashboardJsApp')
     var currentUser = {};
     var sessionSettings;
 
-    if ($cookieStore.get('user')) {
+    if ($cookieStore.get('user') && window.localStorage.getItem('iGovUserRoles')) {
       currentUser = $cookieStore.get('user');
+      if(!currentUser.roles){
+        try{
+          currentUser.roles = angular.fromJson(window.localStorage.getItem('iGovUserRoles'));
+        }catch(e) {
+          window.localStorage.removeItem('iGovUserRoles');
+        }
+      }
     }
 
     if ($cookieStore.get('sessionSettings')) {
@@ -30,6 +37,10 @@ angular.module('dashboardJsApp')
        * @return {Promise}
        */
       login: function (user, callback) {
+        if(window.localStorage.getItem("iGovUserRoles")){
+          window.localStorage.removeItem("iGovUserRoles");
+        }
+
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
@@ -45,6 +56,7 @@ angular.module('dashboardJsApp')
         $http(req).
         success(function (data) {
           currentUser = data;
+          window.localStorage.setItem("iGovUserRoles", angular.toJson(currentUser.roles));
           deferred.resolve(data);
           return cb();
         }).
@@ -88,6 +100,9 @@ angular.module('dashboardJsApp')
         $cookieStore.remove('user');
         $cookieStore.remove('sessionSettings');
         $cookieStore.remove('JSESSIONID');
+        if(window.localStorage.getItem("iGovUserRoles")){
+          window.localStorage.removeItem("iGovUserRoles");
+        }
         currentUser = {};
         sessionSettings = undefined;
 
@@ -118,6 +133,9 @@ angular.module('dashboardJsApp')
        * @return {Object} user
        */
       getCurrentUser: function () {
+        if(!currentUser.roles){
+          currentUser.roles = angular.fromJson(window.localStorage.getItem('iGovUserRoles'));
+        }
         return currentUser;
       },
 
@@ -165,6 +183,9 @@ angular.module('dashboardJsApp')
        * @returns {boolean} if user has a role from the input set
        */
       hasOneOfRoles: function () {
+        if(!currentUser.roles && currentUser.id && window.localStorage.getItem("iGovUserRoles")){
+          currentUser.roles = angular.fromJson(window.localStorage.getItem("iGovUserRoles"));
+        }
         var hasRole = false;
         if (arguments && arguments.length > 0) {
           for (var i = 0; i < arguments.length; i++) {
