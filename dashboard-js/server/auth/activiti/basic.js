@@ -3,8 +3,12 @@
 var activiti = require('../../components/activiti');
 var config = require('../../config/environment');
 var async = require('async');
+var NodeCache = require("node-cache");
+var cache = new NodeCache();
+/*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new nodeLocalStorage('./scratch');
+*/
 
 var guid = function guid() {
   function s4() {
@@ -36,7 +40,12 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
-      localStorage.removeItem('user');
+      var currentUser = JSON.parse(req.cookies.user);
+      cache.del({
+        id: currentUser.id,
+        url: currentUser.url
+      });
+      //localStorage.removeItem('user');
       res.send(result);
     }
   });
@@ -130,11 +139,18 @@ exports.authenticate = function (req, res) {
       }), {
         expires: expiresUserInMs()
       });
+
+      cache.set({
+        id: result.userResult.id,
+        url: result.userResult.url
+      }, result.userResult.roles, 86400);
+      /*
       localStorage.setItem('user', JSON.stringify({
         roles : result.userResult.roles
       }), {
         expires: expiresUserInMs()
       });
+      */
       res.cookie('JSESSIONID', result.jsessionCookie, {
         expires: expiresUserInMs()
       });
@@ -150,3 +166,26 @@ exports.authenticate = function (req, res) {
     }
   });
 };
+
+exports.getCashedUserGroups = function (oUser) {
+  return cache.get({
+    id: oUser.id,
+    url: oUser.url
+  });
+};
+
+exports.setCashedUserGroups = function (oUser, aGroups) {
+  var result = [];
+  if(oUser.roles && oUser.roles.length > 0){
+    result = oUser.roles;
+  } else if (aGroups && aGroups.length > 0) {
+    result = aGroups;
+  } else {
+    result = [];
+  }
+  cache.set({
+    id: oUser.id,
+    url: oUser.url
+  }, result, 86400);
+};
+
