@@ -699,6 +699,7 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
@@ -711,6 +712,12 @@
                 table.name = attach.description;
                 table.id = attach.id;
                 table.content = JSON.parse(res);
+                for(var i=0; i<table.content.length; i++) {
+                  if(typeof table.content[i] === "string") {
+                    table.idName = table.content[i];
+                    delete table.content[i];
+                  }
+                }
                 $scope.taskData.aTable.push(table);
               } catch (e) {
 

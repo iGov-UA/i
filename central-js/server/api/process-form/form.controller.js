@@ -87,7 +87,10 @@ module.exports.submit = function (req, res) {
   }
 
   for(var key in formData.params) {
-    if(Array.isArray(formData.params[key])) keys.push(key);
+    if(Array.isArray(formData.params[key])) {
+      formData.params[key].push(key);
+      keys.push(key);
+    }
   }
 
   if(keys.length > 0) {

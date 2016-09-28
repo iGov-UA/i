@@ -485,8 +485,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-
-                String sID_Order = null;
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
 
                 //------------
                 HistoricTaskInstance taskDetails = historyService
@@ -513,7 +512,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
 
-                boolean bProcessClosed = aTask == null || aTask.isEmpty();
+                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
@@ -546,15 +545,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
-                    LOG.info("Get sDateStart и sDateClosed");
-                    String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                    LOG.info("(sDateStart={})", sDateStart);
-                    String sDateClosed = "";
-                    LOG.info("(sDateClosed={})", sDateClosed);
-
                     if (bProcessClosed) {
                         status = HistoryEvent_Service_StatusType.CLOSED;
-                        sDateClosed = oHistoricTaskInstance.getEndTime().toString();
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
                     }
@@ -562,8 +554,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParam.put("nID_StatusType", status.getnID().toString());
                     mParam.put("sUserTaskName", sUserTaskName);
                     mParam.put("sID_Order", sID_Order);
-                    mParam.put("sDateStart", sDateStart);
-                    mParam.put("sDateClosed", sDateClosed);
                     try {
                         historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
                     } catch (Exception oException) {

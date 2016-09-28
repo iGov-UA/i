@@ -39,7 +39,7 @@ public class BpServiceHandler {
 
     public static Map<String, String> mGuideTaskParamKey = new TreeMap<>();
     public static final String PROCESS_ESCALATION = "system_escalation";
-    private static final String PROCESS_FEEDBACK = "system_feedback";
+    public static final String PROCESS_FEEDBACK = "system_feedback";
     private static final String ESCALATION_FIELD_NAME = "nID_Proccess_Escalation";
     private static final String BEGIN_GROUPS_PATTERN = "${";
     private static final String END_GROUPS_PATTERN = "}";
@@ -340,11 +340,11 @@ public class BpServiceHandler {
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> param = new HashMap<String, String>();
         param.put("nID_Process", sID_Process);
-        LOG.info("2222222222222222222222sID_Process: " + sID_Process);
+        LOG.info("2sID_Process: " + sID_Process);
         param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("333333333333333333333333generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+        LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("444444444444444444444ssURL: " + sURL);
+        LOG.info("ssURL: " + sURL);
         LOG.info("(sURL={},mParam={})", sURL, param);
         String soResponse = null;
         try {
