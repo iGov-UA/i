@@ -22,15 +22,14 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee" type="select" name="Исполнитель;Выбор исполнителя;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_GroupNext"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee" name="Исполнитель;Выбор исполнителя;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_GroupNext" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_GroupNext" name="Група виконавців" type="string"></activiti:formProperty>
-        
         <activiti:taskListener event="assignment" delegateExpression="${assignGroupByPrefix}">
           <activiti:field name="prefix">
-            <activiti:string><![CDATA[kyiv_dabi_law]]></activiti:string>
+            <activiti:expression><![CDATA[kyiv_dabi_law]]></activiti:expression>
           </activiti:field>
           <activiti:field name="resultField_Group">
-            <activiti:string><![CDATA[sID_GroupNext]]></activiti:string>
+            <activiti:expression><![CDATA[sID_GroupNext]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -43,8 +42,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-
-          <activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:string><![CDATA[sLoginAsignee]]></activiti:string>
           </activiti:field>
