@@ -6,7 +6,7 @@
         <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocInitiativ" name="Протокол ініціативної групи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Дані заявника-----------------------" type="label" default="Перший член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="Дані заявника---------------------------------------------------------------------------" type="label" default="Перший член ініціативної групи"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
@@ -14,11 +14,11 @@
         <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText2" name="------------------------------" type="label" default="Другий член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sText2" name="-----------------------------------------------------------------------------------" type="label" default="Другий член ініціативної групи"></activiti:formProperty>
         <activiti:formProperty id="PIB_Init_2" name="ПІБ другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport_2" name="Паспорта другого члена ініціативної групи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText3" name="------------------------------" type="label" default="Третій член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sText3" name="-----------------------------------------------------------------------------------" type="label" default="Третій член ініціативної групи"></activiti:formProperty>
         <activiti:formProperty id="PIB_Init_3" name="ПІБ третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport_3" name="Паспорта третього члена ініціативної групи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
@@ -118,8 +118,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText5" name="Увага!" type="label" default="Обов'язково заповніть вказані нижче поля"></activiti:formProperty>
-        <activiti:formProperty id="sPlosha" name="Загальна площа окремих квартир і окремих нежитлових приміщень будинку" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sPropisano" name="Кількість зареєстрованих в будинку осіб" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPlosha" name="Загальна площа окремих квартир і окремих нежитлових приміщень будинку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPropisano" name="Кількість зареєстрованих в будинку осіб" type="string"></activiti:formProperty>
         <activiti:formProperty id="taVlasn_Nejit" name="Інформація про власників нежитлових приміщень" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="taTexDoc" name="Інформація про технічну документацію, перелічити наявні документи" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="asPrimOREnda" name="Чи є допоміжні приміщення, що здаються в оренду?" type="enum" writable="false">
@@ -189,7 +189,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptElectro'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Видача на руки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -237,7 +237,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptPapir'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -273,7 +273,9 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow9" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow9" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
