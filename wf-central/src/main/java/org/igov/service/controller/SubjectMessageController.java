@@ -633,7 +633,7 @@ public class SubjectMessageController {
     	            sHost = oOptionalServer.get().getsURL();
     	        }
     	        String sURL = sHost + "/service/action/feedback/runFeedBack";
-    	        Map<String, String> mParam = new HashMap<String, String>();
+    	        Map<String, String> mParam = new HashMap<>();
     	        mParam.put("snID_Process", String.valueOf(oHistoryEvent_Service.getnID_Task()));
     	        LOG.info("mParam={}", mParam);
     	        String sReturnRegion = httpRequester.getInside(sURL, mParam);

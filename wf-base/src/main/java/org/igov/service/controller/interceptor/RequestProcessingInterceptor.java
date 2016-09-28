@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.igov.io.Log;
+import org.igov.service.business.feedback.FeedBackService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 
 import static org.igov.util.Tool.sCut;
@@ -84,6 +85,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private BpServiceHandler bpHandler;
     @Autowired
     private EscalationHistoryService escalationHistoryService;
+    @Autowired
+    private FeedBackService feedBackService;
 
     private JSONParser oJSONParser = new JSONParser();
 
@@ -482,8 +485,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-
-                String sID_Order = null;
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
 
                 //------------
                 HistoricTaskInstance taskDetails = historyService
@@ -510,18 +512,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
 
-                boolean bProcessClosed = aTask == null || aTask.isEmpty();
+                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
                         //if (!generalConfig.isSelfTest()) {
-                        if (false) {
-                            String snID_Proccess_Feedback = bpHandler
-                                    .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                        if (true) { //
+                            //String snID_Proccess_Feedback = bpHandler
+                            //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                            LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})",
+                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
                                     sProcessName,
                                     snID_Proccess_Feedback);
                         } else {
@@ -542,15 +545,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
-                    LOG.info("Get sDateStart и sDateClosed");
-                    String sDateStart = oHistoricTaskInstance.getCreateTime().toString();
-                    LOG.info("(sDateStart={})", sDateStart);
-                    String sDateClosed = "";
-                    LOG.info("(sDateClosed={})", sDateClosed);
-
                     if (bProcessClosed) {
                         status = HistoryEvent_Service_StatusType.CLOSED;
-                        sDateClosed = oHistoricTaskInstance.getEndTime().toString();
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
                     }
@@ -558,8 +554,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParam.put("nID_StatusType", status.getnID().toString());
                     mParam.put("sUserTaskName", sUserTaskName);
                     mParam.put("sID_Order", sID_Order);
-                    mParam.put("sDateStart", sDateStart);
-                    mParam.put("sDateClosed", sDateClosed);
                     try {
                         historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
                     } catch (Exception oException) {

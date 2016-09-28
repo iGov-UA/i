@@ -16,7 +16,6 @@
         <activiti:formProperty id="sBody" name="Коментар громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nID_Rate" name="Оцінка громадянина" type="long"></activiti:formProperty>
         <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group_prefix" name="Префикс для группы"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
@@ -37,7 +36,6 @@
         <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_Indirectly" name="Коментар волонтера" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nID_Rate_Indirectly" name="Оцінка волонтера" type="long"></activiti:formProperty>
-        <activiti:formProperty id="group_prefix"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -45,16 +43,16 @@
     <serviceTask id="servicetask1" name="Завантаження у базу" activiti:delegateExpression="#{setMessageFeedback_Indirectly}">
       <extensionElements>
         <activiti:field name="sBody_Indirectly">
-          <activiti:expression><![CDATA[${sBody_Indirectly}]]></activiti:expression>
+          <activiti:expression>${sBody_Indirectly}</activiti:expression>
         </activiti:field>
         <activiti:field name="nID_Rate_Indirectly">
-          <activiti:expression><![CDATA[${nID_Rate_Indirectly}]]></activiti:expression>
+          <activiti:expression>${nID_Rate_Indirectly}</activiti:expression>
         </activiti:field>
         <activiti:field name="nID_Protected">
-          <activiti:expression><![CDATA[${nID_Protected}]]></activiti:expression>
+          <activiti:expression>${nID_Protected}</activiti:expression>
         </activiti:field>
         <activiti:field name="nID_Proccess_Feedback">
-          <activiti:expression><![CDATA[${nID_Proccess_Feedback}]]></activiti:expression>
+          <activiti:expression>${nID_Proccess_Feedback}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
