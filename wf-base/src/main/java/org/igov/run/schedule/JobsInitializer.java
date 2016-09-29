@@ -43,7 +43,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
-        //addBuilderFlowSlotsJob(scheduler);
+        addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
