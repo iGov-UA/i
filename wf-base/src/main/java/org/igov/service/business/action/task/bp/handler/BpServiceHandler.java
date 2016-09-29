@@ -470,9 +470,11 @@ public class BpServiceHandler {
             String sResult = (String) mParam.get("sEmployeeContacts");
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            if (task.getAssignee() != null) {
+            LOG.info("taskkkkkkkkkkkkkkkkkkkkkk: " + task);
+          //TODO:раскомнтаить
+            /*if (task.getAssignee() != null) {
                 accounts.add(task.getAssignee());
-            }
+            }*/
             accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables));
             LOG.info("accounts: " + accounts);
             Map<String, Map<String, Map>> result = subjectCover.getSubjectsBy(accounts);
