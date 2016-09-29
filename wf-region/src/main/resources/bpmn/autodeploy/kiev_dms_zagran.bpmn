@@ -27,6 +27,8 @@
         <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay" type="invisible" default="DMS"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMito" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
@@ -49,7 +51,12 @@
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay')
 var date_of_visit=src.substr(27,16)
-execution.setVariable('sNotification_day', date_of_visit)</script>
+var tickNum=src.substr(99,3)
+var tickCode=src.substr(119,9)
+execution.setVariable('sNotification_day', date_of_visit)
+execution.setVariable('sTicketNumber', tickNum)
+execution.setVariable('sTicketCode', tickCode)
+</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="exclusivegateway2"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
@@ -157,7 +164,7 @@ ${sNameOrgan},<br>
 								</p>
 								<p>
 									<b>Деталі зустрічі:</b><br>
-									День та час - ${sNotification_day}
+									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 								</p>
 								<p>
 									<b>Реквізити для сплати держмита доступні за <a href="${sMito}" target="_blank">посиланням</a></b><br>
@@ -184,7 +191,7 @@ ${sNameOrgan},<br>
 								</p>
 								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 								<p>Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
-								При цьому потрібно буде вказати ID послуги = ${nID_ServiceCustomPrivate_visitDay} та код, який Ви отримали на телефон після реєстрації
+								При цьому потрібно буде вказати код талону = ${sTicketCode}.
 								</p>                
 								[pattern/mail/_common_signature_start.html]
 								${sNameOrgan},<br>
@@ -223,13 +230,12 @@ ${sNameOrgan},<br>
 								</ul>
 								</p>
 								<p>
-										<b>Деталі зустрічі:</b><br>
-										День та час - ${sNotification_day}
-									</p>
-								<p>
+									<b>Деталі зустрічі:</b><br>
+									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
+								</p>
 								<p>
 									<b>Реквізити для сплати держмита доступні за <a href="${sMito}" target="_blank">посиланням</a></b><br>
-									<b>Реквізити для сплати адміністративної послуги з оформлення біометричного паспорту доступні за <a href="${sAdminBio}" target="_blank">посиланням</a></b><br>
+									<b>Реквізити для сплати адміністративної послуги з оформлення небіометричного паспорту доступні за <a href="${sAdminNotBio}" target="_blank">посиланням</a></b><br>
 									<b>Зверніть увагу:</b> В квитанції дані платника  повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.<br>
 									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за <a href="${sTwoZagran}" target="_blank"><b>реквізитами</b></a>, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формармах нижче в листі.
 								</p>
@@ -252,8 +258,7 @@ ${sNameOrgan},<br>
 								</p>
 								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
 								<p>Якщо Вам потрібно скасувати заявку - зверніться будь-ласка за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
-								При цьому потрібно буде вказати ID послуги = ${nID_ServiceCustomPrivate_visitDay} та код, який Ви отримали на телефон після реєстрації
-								</p>                
+								При цьому потрібно буде вказати код талону = ${sTicketCode}.
 								[pattern/mail/_common_signature_start.html]
 								${sNameOrgan},<br>
  								[pattern/mail/_common_signature_end.html]
