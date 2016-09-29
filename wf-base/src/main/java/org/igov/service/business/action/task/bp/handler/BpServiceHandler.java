@@ -132,12 +132,11 @@ public class BpServiceHandler {
     public String startFeedbackProcessNew(String snID_Process) {
         String feedbackProcessId = null;
         if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
-            HistoricProcessInstance historicProcessInstance = historyService
-                    .createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
-
+            
+            
             Map<String, Object> variables = new HashMap<>();
             variables.put("nID_Proccess_Feedback", snID_Process);
-            variables.put("processName", historicProcessInstance.getName());
+            
 
             Integer nID_Server = generalConfig.getSelfServerId();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
@@ -146,7 +145,17 @@ public class BpServiceHandler {
                     .createHistoricTaskInstanceQuery()
                     .processInstanceId(snID_Process)
                     .list();
-            Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
+            
+            LOG.info("tasksssssssssssssssssssssssssssssssss  "+tasks);
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                    .taskId(tasks.get(0).getId()).singleResult();
+            
+            variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
+            
+            LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
+            
+            LOG.info("oHistoricTaskInstance.getProcessVariablessssssssssssssssssssssssssssss  "+oHistoricTaskInstance.getProcessVariables());
+            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
@@ -158,11 +167,12 @@ public class BpServiceHandler {
             Set<String> organ = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
-                organ.addAll(getCandidateGroups(historicProcessInstance.getName(), task.getId(), processVariables));
+                organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
             }
+            LOG.info("organnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn ", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             for (HistoricTaskInstance task : tasks) {
-                setSubjectParams(task.getId(), historicProcessInstance.getName(), variables, processVariables);
+                setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
             }
             LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
 
@@ -455,12 +465,16 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
+        	 LOG.info("mParamgetKeyyyyyyyyyyyyyy : " + mParam.entrySet().iterator().next().getKey());
+        	 LOG.info("mParamgetValueeeeeeeeeeeee: " + mParam.entrySet().iterator().next().getValue());
             String sResult = (String) mParam.get("sEmployeeContacts");
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            if (task.getAssignee() != null) {
+            LOG.info("taskkkkkkkkkkkkkkkkkkkkkk: " + task);
+          //TODO:раскомнтаить
+            /*if (task.getAssignee() != null) {
                 accounts.add(task.getAssignee());
-            }
+            }*/
             accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables));
             LOG.info("accounts: " + accounts);
             Map<String, Map<String, Map>> result = subjectCover.getSubjectsBy(accounts);
