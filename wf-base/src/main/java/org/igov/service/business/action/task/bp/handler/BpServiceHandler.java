@@ -145,6 +145,8 @@ public class BpServiceHandler {
                     .createHistoricTaskInstanceQuery()
                     .processInstanceId(snID_Process)
                     .list();
+            
+            LOG.info("tasksssssssssssssssssssssssssssssssss  "+tasks);
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(tasks.get(0).getId()).singleResult();
             
@@ -152,8 +154,8 @@ public class BpServiceHandler {
             
             LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
             
-            LOG.info("oHistoricTaskInstanceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "+oHistoricTaskInstance.getProcessDefinitionId());
-            Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
+            LOG.info("oHistoricTaskInstance.getProcessVariablessssssssssssssssssssssssssssss  "+oHistoricTaskInstance.getProcessVariables());
+            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
@@ -167,6 +169,7 @@ public class BpServiceHandler {
             for (HistoricTaskInstance task : tasks) {
                 organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
             }
+            LOG.info("organnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn ", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             for (HistoricTaskInstance task : tasks) {
                 setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
@@ -462,6 +465,8 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
+        	 LOG.info("mParamgetKeyyyyyyyyyyyyyy : " + mParam.entrySet().iterator().next().getKey());
+        	 LOG.info("mParamgetValueeeeeeeeeeeee: " + mParam.entrySet().iterator().next().getValue());
             String sResult = (String) mParam.get("sEmployeeContacts");
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
