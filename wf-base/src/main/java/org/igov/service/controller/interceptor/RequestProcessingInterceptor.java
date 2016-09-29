@@ -476,14 +476,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         }
         LOG.info("Task id is - " + snID_Task);
         if (snID_Task != null) {
-        	 LOG.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - " + snID_Task);
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("snID_Processssssssssssssssssssssssssssssssssssssssssssssss - " + snID_Process);
             closeEscalationProcessIfExists(snID_Process);
-            LOG.info("snID_Processssssssssssssssssssssssssssssssssssssssssssssss - " + snID_Process);
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
@@ -517,27 +514,29 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
-                LOG.info("sProcessNameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", sProcessName);
                 try {
-                	LOG.info("bProcessClosedddddddddddddddddddddddddddddddddddddddddddddddd ", bProcessClosed);
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
-                    	 LOG.info("bProcessClosedddddddddddddddddddddddddddddddddddddddddddddddd ", bProcessClosed);
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        //if (!generalConfig.isSelfTest()) {
-                       // if (true) { //
+                       //if (!generalConfig.isSelfTest()) {
+                        if (false) { 
                             //String snID_Proccess_Feedback = bpHandler
                             //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+                           if(snID_Proccess_Feedback!=null) {
                            mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
                             LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
                                     sProcessName,
                                     snID_Proccess_Feedback);
-                       /* } else {
+                           }else {
+                        	   LOG.info("Feedback process not start! (sProcessName={}, nID_Proccess_Feedback={})",
+                                       sProcessName,
+                                       snID_Proccess_Feedback);
+                           }
+                        } else {
                             LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
-                        }*/
+                        }
                     }
                 } catch (Exception oException) {
-                	LOG.info("bProcessCloseExceptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn ", oException.getMessage());
                     new Log(oException, LOG)//this.getClass()
                             ._Case("IC_CreateEscalation")
                             ._Status(Log.LogStatus.ERROR)

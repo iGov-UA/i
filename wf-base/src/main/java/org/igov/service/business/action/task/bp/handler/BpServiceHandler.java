@@ -131,8 +131,6 @@ public class BpServiceHandler {
 
     public String startFeedbackProcessNew(String snID_Process) {
         String feedbackProcessId = null;
-        if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
-            
             
             Map<String, Object> variables = new HashMap<>();
             variables.put("nID_Proccess_Feedback", snID_Process);
@@ -146,15 +144,11 @@ public class BpServiceHandler {
                     .processInstanceId(snID_Process)
                     .list();
             
-            LOG.info("tasksssssssssssssssssssssssssssssssss  "+tasks);
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(tasks.get(0).getId()).singleResult();
             
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
-            LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
-            
-            LOG.info("oHistoricTaskInstance.getProcessVariablessssssssssssssssssssssssssssss  "+oHistoricTaskInstance.getProcessVariables());
             Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
@@ -169,7 +163,7 @@ public class BpServiceHandler {
             for (HistoricTaskInstance task : tasks) {
                 organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
             }
-            LOG.info("organnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn ", organ);
+            LOG.info("get organ:(organ={})", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             for (HistoricTaskInstance task : tasks) {
                 setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
@@ -191,16 +185,10 @@ public class BpServiceHandler {
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
                 feedbackProcessId = new JSONObject(feedbackProcess).get("id").toString();
-                BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount() + 1);
             } catch (Exception oException) {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
             }
-
-        } else {
-            LOG.info("Skip start process feedback: " + BpServiceHandler.getFeedBackCount());
-            return null;
-        }
 
         return feedbackProcessId;
     }
@@ -465,13 +453,11 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
-        	 LOG.info("mParamgetKeyyyyyyyyyyyyyy : " + mParam.entrySet().iterator().next().getKey());
-        	 LOG.info("mParamgetValueeeeeeeeeeeee: " + mParam.entrySet().iterator().next().getValue());
             String sResult = (String) mParam.get("sEmployeeContacts");
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            LOG.info("taskkkkkkkkkkkkkkkkkkkkkk: " + task);
-          //TODO:раскомнтаить
+            LOG.info("task: " + task);
+          //TODO:раскомнтаить - ??????
             /*if (task.getAssignee() != null) {
                 accounts.add(task.getAssignee());
             }*/

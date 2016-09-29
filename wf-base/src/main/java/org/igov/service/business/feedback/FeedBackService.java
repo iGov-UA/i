@@ -21,28 +21,26 @@ public class FeedBackService {
 
     /**
      * Запуск процесса фидбэка
+     * Сброс счетчика в JobFeedBack
      *
      * @param snID_Process
      * @return 
      * @throws Exception
      */
     public String runFeedBack(String snID_Process) throws Exception {
-    	LOG.info("snID_Processssssssssssssssssssssssssssssssssssssssssssssssssssssssssss: " + snID_Process);
-    	 LOG.info("BpServiceHandler.getFeedBackCounttttttttttttttttttttttttttttttttttt : " + BpServiceHandler.getFeedBackCount());
-        String snID_Proccess_Feedback = bpHandler
-                    .startFeedbackProcessNew(snID_Process);
-        LOG.info("snID_Proccess_Feedbackkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: " + snID_Proccess_Feedback);
+        String snID_Proccess_Feedback = null;
        
         if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
-            BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount() + 1);
-            
+            snID_Proccess_Feedback = bpHandler
+                    .startFeedbackProcessNew(snID_Process);
             if (snID_Proccess_Feedback == null || snID_Proccess_Feedback.isEmpty()) {
-                throw new Exception("FeedBack proces not started");
+                throw new Exception("FeedBack proces not started for snID_Process: "+snID_Process);
             }
+            BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount() + 1);
             return snID_Proccess_Feedback;
         } else {
             LOG.info("Skip start process feedback: " + BpServiceHandler.getFeedBackCount());
-            return null;
+            return snID_Proccess_Feedback;
         }
     }
 

@@ -84,6 +84,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
+        //TODO:раскомментировать после тестирования
        // if (!generalConfig.isSelfTest() && !"https://prod-double-region.tech.igov.org.ua".equalsIgnoreCase(generalConfig.getSelfHost())) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep);
