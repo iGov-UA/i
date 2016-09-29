@@ -184,16 +184,16 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення: Отримання субсидії на оплату житлово-комунальних послуг</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення: Отримання субсидії на оплату житлово-комунальних послуг]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-      </serviceTask>
+    </serviceTask>
     <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="label1" name="На цьому етапі Ви можете ознайомитись з відомостями, наданими громадянином при заповненні заяви, роздрукувати документи (за потреби), та прийняти рішення щодо подальшої обробки заяви, або відмови громадянину (через відсутність усіх необхідних відомостей для надання адміністративної послуги або через наявність в особовій справі неправильно оформлених  довідок  тощо)" type="label" default=" "></activiti:formProperty>
@@ -846,6 +846,9 @@ execution.setVariable('area', per3)</script>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="65.0" y="298.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="30.0" y="93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -893,9 +896,6 @@ execution.setVariable('area', per3)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="290.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="30.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="640.0" y="60.0"></omgdi:waypoint>
