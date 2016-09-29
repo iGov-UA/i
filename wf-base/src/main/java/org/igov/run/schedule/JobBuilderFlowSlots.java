@@ -59,8 +59,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
     
-    @Autowired
-    private Flow_ServiceData flow_ServiceData;
+//    @Autowired
+//    private Flow_ServiceData flow_ServiceData;
 
     //Maxline: TODO исправить потом на получение flowServiceData с признаком auto в названии
     private static final long[] A_TESTS_ID_FLOW_SERVICE_DATA = {1L, 12L};
@@ -98,8 +98,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
-            dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
+//            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
+            dateEnd = oDateStart.plusDays(nStartDay + DAYS_IN_MONTH);
             LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
@@ -117,7 +117,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         boolean bAll = false; //Получаем только свободные дни
         int nFreeWorkDaysFact;
         Long nID_Service = null; 
-        String sID_BP = null;
+        String sID_BP = null; 
 
         DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
         LOG.info(" oDateEnd = {}", oDateEnd);
