@@ -131,8 +131,6 @@ public class BpServiceHandler {
 
     public String startFeedbackProcessNew(String snID_Process) {
         String feedbackProcessId = null;
-        if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
-            
             
             Map<String, Object> variables = new HashMap<>();
             variables.put("nID_Proccess_Feedback", snID_Process);
@@ -191,11 +189,6 @@ public class BpServiceHandler {
                 LOG.error("error during starting feedback process!: {}", oException.getMessage());
                 LOG.debug("FAIL:", oException);
             }
-
-        } else {
-            LOG.info("Skip start process feedback: " + BpServiceHandler.getFeedBackCount());
-            return null;
-        }
 
         return feedbackProcessId;
     }
