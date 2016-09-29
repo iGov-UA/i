@@ -132,15 +132,11 @@ public class BpServiceHandler {
     public String startFeedbackProcessNew(String snID_Process) {
         String feedbackProcessId = null;
         if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
-            HistoricProcessInstance historicProcessInstance = historyService
-                    .createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
-            LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
             
-            LOG.info("historicProcessInstanceeeeeeeeeeeeeeeeeeeeeeeeeee "+historicProcessInstance);
             
             Map<String, Object> variables = new HashMap<>();
             variables.put("nID_Proccess_Feedback", snID_Process);
-            variables.put("processName", historicProcessInstance.getName());
+            
 
             Integer nID_Server = generalConfig.getSelfServerId();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
@@ -149,6 +145,14 @@ public class BpServiceHandler {
                     .createHistoricTaskInstanceQuery()
                     .processInstanceId(snID_Process)
                     .list();
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                    .taskId(tasks.get(0).getId()).singleResult();
+            
+            variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
+            
+            LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
+            
+            LOG.info("oHistoricTaskInstanceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "+oHistoricTaskInstance.getProcessDefinitionId());
             Map<String, Object> processVariables = tasks.get(0).getProcessVariables();
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
@@ -161,11 +165,11 @@ public class BpServiceHandler {
             Set<String> organ = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
-                organ.addAll(getCandidateGroups(historicProcessInstance.getName(), task.getId(), processVariables));
+                organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
             }
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             for (HistoricTaskInstance task : tasks) {
-                setSubjectParams(task.getId(), historicProcessInstance.getName(), variables, processVariables);
+                setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
             }
             LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
 
