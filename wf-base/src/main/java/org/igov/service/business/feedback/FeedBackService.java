@@ -27,8 +27,11 @@ public class FeedBackService {
      * @throws Exception
      */
     public String runFeedBack(String snID_Process) throws Exception {
+    	LOG.info("snID_Processssssssssssssssssssssssssssssssssssssssssssssssssssssssssss: " + snID_Process);
         String snID_Proccess_Feedback = bpHandler
                     .startFeedbackProcessNew(snID_Process);
+        LOG.info("snID_Proccess_Feedbackkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: " + snID_Proccess_Feedback);
+        LOG.info("BpServiceHandler.getFeedBackCounttttttttttttttttttttttttttttttttttt : " + BpServiceHandler.getFeedBackCount());
         if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
             BpServiceHandler.setFeedBackCount(BpServiceHandler.getFeedBackCount() + 1);
             
