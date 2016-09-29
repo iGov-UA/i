@@ -134,7 +134,10 @@ public class BpServiceHandler {
         if (!generalConfig.isFeedbackCountExpired(BpServiceHandler.getFeedBackCount())) {
             HistoricProcessInstance historicProcessInstance = historyService
                     .createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
-
+            LOG.info("snID_ProcessssssssssssssssssstartFeedbackProcessNewwwwwwwwwwwwwwwwwwww "+snID_Process);
+            
+            LOG.info("historicProcessInstanceeeeeeeeeeeeeeeeeeeeeeeeeee "+historicProcessInstance);
+            
             Map<String, Object> variables = new HashMap<>();
             variables.put("nID_Proccess_Feedback", snID_Process);
             variables.put("processName", historicProcessInstance.getName());
