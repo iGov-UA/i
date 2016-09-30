@@ -248,27 +248,26 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
   }
 
   function refreshList() {
-    $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
-      FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
+    FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)
       .then(function (response) {
         var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
         ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
         if (ErrorsFactory.bSuccessResponse(response)) {
         }
 
-        $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
+        $scope.feedback.messageList = _.sortBy(service.aFeedbacks, function (o) {
           return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
 
-        $scope.feedback.rating = response[1].data.nID_Rate || 5;
-        $scope.feedback.exist = !!response[1].data.oSubjectMessage;
-        $scope.feedback.messageBody = response[1].data.oSubjectMessage ? response[1].data.oSubjectMessage.sBody : null;
+        $scope.feedback.rating = response.data.nID_Rate || 5;
+        $scope.feedback.exist = !!response.data.oSubjectMessage;
+        $scope.feedback.messageBody = response.data.oSubjectMessage ? response.data.oSubjectMessage.sBody : null;
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
         });
 
-        $scope.feedback.currentFeedback = angular.copy(response[1].data);
+        $scope.feedback.currentFeedback = angular.copy(response.data);
 
       }, function (error) {
 
