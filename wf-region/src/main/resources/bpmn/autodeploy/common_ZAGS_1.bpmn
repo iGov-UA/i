@@ -122,6 +122,7 @@
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
@@ -248,7 +249,7 @@
     <sequenceFlow id="flow6" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow7" name="${decide == 'accept' || decide == 'accept2'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
+    <sequenceFlow id="flow7" name="${decide == 'accept' || decide == 'accept2'}" sourceRef="exclusivegateway1" targetRef="exclusivegateway8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' || decide == 'accept2'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -359,7 +360,7 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина про необхідніст підпису та сплати послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (скорочений 140 грн.)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -418,7 +419,6 @@
 МФО: <b>820172</b><br>
 Код ЄДРПОУ: <b>34984907</b><br>
 Розрахунковий рахунок: <b>31258232100157</b><br>
-Вартість повного обряду (45 хвилин): <b> 337 грн </b><br>
 Вартість скороченого обряду (15 хвилин): <b> 140 грн </b><br>
 <br>
 Телефон для довідок: ${sPhoneOrgan} <br>                                 
@@ -701,12 +701,14 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="sEnum1" name="Скорочений обряд - 15 хвилин"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд - 45 хвилин"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDate1" name="Дату та час проведення обряду" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Джерело надходження звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="isOk" name="Чи відбулась церемонія?" type="enum" required="true">
           <activiti:value id="accept" name="Реєстрація відбулась"></activiti:value>
           <activiti:value id="reject" name="Реєстрація скасована. Звільнити місця в електронній черзі."></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow49" name="${bReferent == 'true'}" sourceRef="exclusivegateway4" targetRef="usertask3">
@@ -949,6 +951,92 @@ execution.setVariable('sCountPayment', src)</script>
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow73" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask20" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (повний 337 грн.)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[<br>[pattern/mail/_common_header.html]
+<h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
+
+<br><br>
+
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
+Примітка співробітника: ${comment}<br>
+<br>
+Тепер вам обом впродовж 3-х днів з моменту отримання цього листа потрібно підписати заповнений бланк. Ви можете обрати один з двох варіантів, який Вам зручніше.<br><br>
+
+<b>Варіант 1. Ви можете підписати заяву в електронній формі.</b><br>
+Завантажте на свій комп’ютер файл, який додано до цього листа, та підпишіть його за допомогою електронно-цифрового підпису (ЕЦП). Якщо у Вас немає ЕЦП, за цим <a href="https://goo.gl/1OioXt" target="_blank">посиланням</a> Ви можете знайти перелік організацій, де Ви можете його отримати (в тому числі безкоштовно).<br>
+<br>
+На документі має бути накладено два електронні підписи – нареченого та нареченої. Якщо Ви не знаєте, як накласти ЕЦП на документ, за цим <a href="https://www.youtube.com/watch?v=tnBUGbqvYLs&feature=youtu.be" target="_blank">посиланням Ви знайдете відеоінструкцію</a>, як це можна зробити на прикладі одного сервісу.<br>
+<br>
+Після цього Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику відділу ДРАЦС:
+<ul>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;</li>
+<li>в полі залиште коментар, який побачить співробітник відділу ДРАЦС;</li>
+<li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;</li>
+<li>натисніть кнопку “Відправити”.</li>
+</ul>
+
+Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
+<br>
+<b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
+Впродовж 3-х днів відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
+<br>
+Під час візиту до ДРАЦСу обов'язково при собі мати:<br>
+1. Квитанцію про сплату держ.мита (якщо Ви сплатили онлайн на порталі - необов’язково).<br>
+2. Квитанцію про сплату вартості обряду.<br>
+3. Оригінали паспортів нареченого та нареченої.<br>
+4. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, які набрали законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним).<br>
+5. У разі скорочення місячного строку реєстрації шлюбу з поважних причин - відповідний документ (медична довідка про вагітність нареченої, засвідчена належним чином; свідоцтво про народження спільної дитини; медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої).<br>
+<br>
+Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
+<br><br>
+Також Вам необхідно сплатити послугу “Організація та проведення індивідуального обряду державної реєстрації шлюбу” згідно з обраним типом при заповнені заяви (повний або скорочений).<br>
+Платіжний документ про сплату послуги Ви повині надати до відділу ДРАЦС не пізніше дня реєстрації Вашого шлюбу.<br>
+<br>
+
+<b>Реквізити для сплати вартості обраної церемонії: </b><br>
+Отримувач: <b>Головне територіальне управління юстиції у Дніпропетровській області  </b><br>
+Банк отримувача: <b>Державна казначейська служба України м.Київ </b><br>
+МФО: <b>820172</b><br>
+Код ЄДРПОУ: <b>34984907</b><br>
+Розрахунковий рахунок: <b>31258232100157</b><br>
+Вартість повного обряду (45 хвилин): <b> 337 грн </b><br>
+<br>
+Телефон для довідок: ${sPhoneOrgan} <br>                                 
+[pattern/mail/_common_signature_start.html]
+${sMail_Signature} <br><br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow74" name="${asMarriageType == 'sEnum2'}" sourceRef="exclusivegateway8" targetRef="servicetask20">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asMarriageType == 'sEnum2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow75" name="${asMarriageType == 'sEnum1'}" sourceRef="exclusivegateway8" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asMarriageType == 'sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow76" sourceRef="servicetask20" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_1">
     <bpmndi:BPMNPlane bpmnElement="common_zags_1" id="BPMNPlane_common_zags_1">
@@ -968,37 +1056,37 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="55.0" width="185.0" x="926.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="998.0" y="552.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="998.0" y="620.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="220.0" x="783.0" y="995.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="220.0" x="624.0" y="1195.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="875.0" y="1175.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="717.0" y="1370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="65.0" width="220.0" x="783.0" y="633.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="220.0" x="784.0" y="801.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="65.0" width="202.0" x="1090.0" y="633.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="202.0" x="1090.0" y="701.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="214.0" x="787.0" y="1075.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="214.0" x="628.0" y="1275.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="71.0" width="185.0" x="926.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="872.0" y="760.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="713.0" y="960.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
-        <omgdc:Bounds height="71.0" width="178.0" x="512.0" y="745.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="178.0" x="353.0" y="945.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="580.0" y="840.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="421.0" y="1040.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="65.0" width="202.0" x="500.0" y="906.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="202.0" x="341.0" y="1106.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="998.0" y="29.0"></omgdc:Bounds>
@@ -1019,16 +1107,16 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="1476.0" y="128.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
-        <omgdc:Bounds height="55.0" width="202.0" x="1090.0" y="738.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="202.0" x="1090.0" y="806.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent10" id="BPMNShape_endevent10">
-        <omgdc:Bounds height="35.0" width="35.0" x="1173.0" y="839.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1173.0" y="907.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
-        <omgdc:Bounds height="55.0" width="202.0" x="500.0" y="995.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="202.0" x="341.0" y="1195.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
-        <omgdc:Bounds height="35.0" width="35.0" x="583.0" y="1085.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="424.0" y="1285.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
         <omgdc:Bounds height="55.0" width="151.0" x="637.0" y="30.0"></omgdc:Bounds>
@@ -1049,7 +1137,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="695.0" y="545.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="220.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="150.0" x="374.0" y="23.0"></omgdc:Bounds>
@@ -1063,6 +1151,12 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="61.0" y="22.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
+        <omgdc:Bounds height="40.0" width="40.0" x="713.0" y="726.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask20" id="BPMNShape_servicetask20">
+        <omgdc:Bounds height="63.0" width="213.0" x="473.0" y="803.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="61.0" y="49.0"></omgdi:waypoint>
@@ -1073,71 +1167,72 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="1018.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1018.0" y="552.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1018.0" y="620.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="1038.0" y="572.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1191.0" y="572.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1191.0" y="633.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1038.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1191.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1191.0" y="701.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="95.0" x="1089.0" y="579.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="1059.0" y="620.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="998.0" y="572.0"></omgdi:waypoint>
-        <omgdi:waypoint x="892.0" y="572.0"></omgdi:waypoint>
-        <omgdi:waypoint x="893.0" y="633.0"></omgdi:waypoint>
+        <omgdi:waypoint x="998.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="726.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="52.0" width="100.0" x="902.0" y="579.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="842.0" y="599.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="894.0" y="1130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="892.0" y="1175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="735.0" y="1330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="1370.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="1018.0" y="181.0"></omgdi:waypoint>
         <omgdi:waypoint x="1018.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="893.0" y="1050.0"></omgdi:waypoint>
-        <omgdi:waypoint x="894.0" y="1075.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="1250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="735.0" y="1275.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="893.0" y="698.0"></omgdi:waypoint>
-        <omgdi:waypoint x="892.0" y="760.0"></omgdi:waypoint>
+        <omgdi:waypoint x="894.0" y="866.0"></omgdi:waypoint>
+        <omgdi:waypoint x="893.0" y="980.0"></omgdi:waypoint>
+        <omgdi:waypoint x="753.0" y="980.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="892.0" y="800.0"></omgdi:waypoint>
-        <omgdi:waypoint x="893.0" y="995.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="1000.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="1195.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="902.0" y="800.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="742.0" y="1016.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="872.0" y="780.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="713.0" y="980.0"></omgdi:waypoint>
+        <omgdi:waypoint x="531.0" y="980.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="788.0" y="735.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="587.0" y="950.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="601.0" y="816.0"></omgdi:waypoint>
-        <omgdi:waypoint x="600.0" y="840.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="1016.0"></omgdi:waypoint>
+        <omgdi:waypoint x="441.0" y="1040.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="620.0" y="860.0"></omgdi:waypoint>
-        <omgdi:waypoint x="892.0" y="860.0"></omgdi:waypoint>
-        <omgdi:waypoint x="893.0" y="995.0"></omgdi:waypoint>
+        <omgdi:waypoint x="461.0" y="1060.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="1060.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="1195.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="656.0" y="817.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="497.0" y="1017.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="600.0" y="880.0"></omgdi:waypoint>
-        <omgdi:waypoint x="601.0" y="906.0"></omgdi:waypoint>
+        <omgdi:waypoint x="441.0" y="1080.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="1106.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="484.0" y="857.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="325.0" y="1057.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
@@ -1148,14 +1243,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1018.0" y="69.0"></omgdi:waypoint>
         <omgdi:waypoint x="1018.0" y="110.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="1028.0" y="69.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1028.0" y="69.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="1038.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="1139.0" y="49.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="1027.0" y="0.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1027.0" y="0.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -1166,14 +1261,14 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1396.0" y="50.0"></omgdi:waypoint>
         <omgdi:waypoint x="1441.0" y="50.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="84.0" x="1392.0" y="9.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="84.0" x="1392.0" y="9.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="1376.0" y="70.0"></omgdi:waypoint>
         <omgdi:waypoint x="1376.0" y="128.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="90.0" x="1276.0" y="89.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="90.0" x="1276.0" y="89.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -1181,26 +1276,26 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1493.0" y="128.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="1191.0" y="698.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1191.0" y="738.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1191.0" y="766.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1191.0" y="806.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="1191.0" y="793.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1190.0" y="839.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1191.0" y="861.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1190.0" y="907.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
-        <omgdi:waypoint x="601.0" y="971.0"></omgdi:waypoint>
-        <omgdi:waypoint x="601.0" y="995.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="1171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="1195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="601.0" y="1050.0"></omgdi:waypoint>
-        <omgdi:waypoint x="600.0" y="1085.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="1250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="441.0" y="1285.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="599.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="637.0" y="57.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="52.0" width="100.0" x="490.0" y="79.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="490.0" y="79.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
@@ -1209,7 +1304,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="1018.0" y="-15.0"></omgdi:waypoint>
         <omgdi:waypoint x="1018.0" y="29.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="78.0" width="100.0" x="590.0" y="-41.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="590.0" y="-41.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
@@ -1231,7 +1326,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="712.0" y="545.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="765.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="265.0"></omgdi:waypoint>
         <omgdi:waypoint x="712.0" y="286.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
@@ -1244,7 +1339,7 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
         <omgdi:waypoint x="712.0" y="183.0"></omgdi:waypoint>
-        <omgdi:waypoint x="712.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
         <omgdi:waypoint x="692.0" y="306.0"></omgdi:waypoint>
@@ -1255,6 +1350,27 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
         <omgdi:waypoint x="166.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="197.0" y="50.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
+        <omgdi:waypoint x="713.0" y="746.0"></omgdi:waypoint>
+        <omgdi:waypoint x="579.0" y="746.0"></omgdi:waypoint>
+        <omgdi:waypoint x="579.0" y="803.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="613.0" y="713.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="753.0" y="746.0"></omgdi:waypoint>
+        <omgdi:waypoint x="892.0" y="746.0"></omgdi:waypoint>
+        <omgdi:waypoint x="894.0" y="801.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="769.0" y="713.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
+        <omgdi:waypoint x="686.0" y="834.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="834.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="960.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
