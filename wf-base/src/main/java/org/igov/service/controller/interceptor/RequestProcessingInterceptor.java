@@ -64,6 +64,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long SubjectMessageType_CommentEscalation = 11L;
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
+    private static final String URI_COUNT_CLAIM_HISTORY = "/action/event/getCountClaimHistory";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -520,17 +521,44 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                      //  if (!generalConfig.isSelfTest()) {
                             //String snID_Proccess_Feedback = bpHandler
                             //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
-                           String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
-                           if(snID_Proccess_Feedback!=null) {
-                           mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                            LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
-                                    sProcessName,
-                                    snID_Proccess_Feedback);
-                           }else {
-                        	   LOG.info("Feedback process not start! (sProcessName={}, nID_Proccess_Feedback={})",
-                                       sProcessName,
-                                       snID_Proccess_Feedback);
-                           }
+                        String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
+                        org.activiti.engine.impl.util.json.JSONObject historyEvent = new org.activiti.engine.impl.util.json.JSONObject(jsonHistoryEvent);
+                        	String nID_Server = (String) historyEvent.get("nID_Server");
+                        	String sID_UA = historyEvent.getString("sID_UA");
+                        	Map<String, String> mParamforcountClaim = new HashMap<>();
+                        	mParamforcountClaim.put("sID_UA", sID_UA);
+                        	mParamforcountClaim.put("nID_Server", nID_Server);
+                        	mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+
+                            String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
+
+                            try {
+                                String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
+
+                                LOG_BIG.debug("sResponse = {}", sResponse);
+
+                                JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+                                Long countClaim = (Long) oResponseJson.get("countClaim");
+                                if (countClaim.compareTo(50L)>0) {
+                                	String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+                                    
+                                    if(snID_Proccess_Feedback!=null) {
+                                    mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+                                     LOG.info("Create Feedback process! (sProcessName={}, nID_Proccess_Feedback={})",
+                                             sProcessName,
+                                             snID_Proccess_Feedback);
+                                    }else {
+                                 	   LOG.info("Feedback process not start! (sProcessName={}, nID_Proccess_Feedback={})",
+                                                sProcessName,
+                                                snID_Proccess_Feedback);
+                                    }
+                                } 
+
+                            } catch (Exception e) {
+                                LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
+                            }
+                        	
+                        	
                        /* } else {
                             LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
                         }*/
