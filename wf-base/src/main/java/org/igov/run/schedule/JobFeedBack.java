@@ -31,9 +31,9 @@ public class JobFeedBack extends IAutowiredSpringJob {
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
         try {
-        	 LOG.info("setFeedBackCountBeforeeeeeeeeeeee : "+BpServiceHandler.getFeedBackCount());
+        	 LOG.info("getFeedBackCountBefore : "+BpServiceHandler.getFeedBackCount());
             BpServiceHandler.setFeedBackCount(0L);
-            LOG.info("setFeedBackCountAfterrrrrrrrrrrrrrrrreeeeeeeeeee : "+BpServiceHandler.getFeedBackCount());
+            LOG.info("getFeedBackCountAfter : "+BpServiceHandler.getFeedBackCount());
             escalationService.runEscalationAll();
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
