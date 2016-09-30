@@ -8,7 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.igov.io.GeneralConfig;
+import org.igov.io.GeneralConfig; 
 
 /**
  * User: goodg_000 Date: 27.08.2015 Time: 1:05
@@ -43,7 +43,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
-        //addBuilderFlowSlotsJob(scheduler);
+//        addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
