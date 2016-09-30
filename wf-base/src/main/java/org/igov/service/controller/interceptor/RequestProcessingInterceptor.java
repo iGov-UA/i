@@ -523,21 +523,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         org.activiti.engine.impl.util.json.JSONObject historyEvent = new org.activiti.engine.impl.util.json.JSONObject(jsonHistoryEvent);
-                        	String nID_Server = (String) historyEvent.get("nID_Server");
+                        	Integer nID_Server = historyEvent.getInt("nID_Server");
                         	String sID_UA = historyEvent.getString("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
-                        	mParamforcountClaim.put("nID_Server", nID_Server);
+                        	mParamforcountClaim.put("nID_Server", String.valueOf(nID_Server));
                         	mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
                             String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
 
                             try {
                                 String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
+                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm ", sResponse);
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
                                 JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
                                 Long countClaim = (Long) oResponseJson.get("countClaim");
                                 if (countClaim.compareTo(50L)>0) {
                                 	String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
