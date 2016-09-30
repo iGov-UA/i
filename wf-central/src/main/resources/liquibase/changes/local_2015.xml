@@ -1112,4 +1112,382 @@
             </column>
         </addColumn>
      </changeSet>
+
+    <changeSet id="issue-1289-1" author="brunneng">
+        <createTable tableName="ServiceTag">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ServiceTagLink">
+            <column name="nID_Service" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_Service"
+                             referencedTableName    ="Service"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_ServiceTag"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_Service, nID_ServiceTag"
+                             constraintName="ServiceTagLink_Unique"
+                             tableName="ServiceTagLink"/>
+
+        <createTable tableName="ServiceTagRelation">
+            <column name="nID_ServiceTag_Parent" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_P"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag_Child" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_C"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_ServiceTag_Parent, nID_ServiceTag_Child"
+                             constraintName="ServiceTagRelation_Unique"
+                             tableName="ServiceTagRelation"/>
+    </changeSet>
+
+    <changeSet id="issue-1289-2" author="brunneng">
+
+        <createTable tableName="ServiceTagType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <dropColumn tableName="ServiceTag" columnName="sName"/>
+        <addColumn tableName="ServiceTag">
+            <column name="sID" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_RU" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ServiceTagType" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTag_Type"
+                             referencedTableName    ="ServiceTagType"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1298" author="olga">
+        <addColumn tableName="ServiceTag">
+            <column name="nOrder" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="ServiceTag">
+            <column name="sLinkImage" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addColumn tableName="ServiceTag">
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1298-drop_table" author="olga">
+        
+        <dropTable tableName="ServiceTagLink"/>
+        <dropTable tableName="ServiceTagRelation"/>
+        
+    </changeSet> 
+    
+    <changeSet id="issue-1298-create_table" author="olga">
+        
+        <createTable tableName="ServiceTagLink">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_Service" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_Service"
+                             referencedTableName    ="Service"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_ServiceTag"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_Service, nID_ServiceTag"
+                             constraintName="ServiceTagLink_Unique"
+                             tableName="ServiceTagLink"/>
+        
+        <createTable tableName="ServiceTagRelation">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_ServiceTag_Parent" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_P"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag_Child" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_C"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_ServiceTag_Parent, nID_ServiceTag_Child"
+                             constraintName="ServiceTagRelation_Unique"
+                             tableName="ServiceTagRelation"/>
+  
+    </changeSet>  
+    
+    <changeSet id="issue-1298-addAutoIncremen" author="olga">  
+        <addAutoIncrement tableName="ServiceTagRelation" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ServiceTagLink" columnName="nID" startWith="1000" columnDataType="bigint"/> 
+    </changeSet>
+
+    <changeSet id="issue-1290" author="IgorMaksymov">
+        <createTable tableName="SubjectMessageFeedback">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID_Source" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sAuthorFIO" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sMail" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sHead" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sBody" type="varchar(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Rate" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Service" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            DROP TABLE SubjectMessageFeedback;
+        </rollback>
+    </changeSet>
+
+    <!--<changeSet id="issue-1290-sID_Token" author="IgorMaksymov" failOnError="false">-->
+        <!--<addColumn tableName="SubjectMessageFeedback">-->
+            <!--<column name="sID_Token" type="varchar" defaultValue="null" />-->
+        <!--</addColumn>-->
+    <!--</changeSet>-->
+
+    <changeSet id="issue-1290-sID_Token-new2" author="IgorMaksymov" failOnError="false">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="sID_Token" type="varchar" defaultValue="null" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1290-sID_Token-notNull" author="IgorMaksymov" failOnError="false">
+        <addNotNullConstraint columnDataType="varchar"
+                              columnName="sID_Token"
+                              defaultNullValue="empty"
+                              tableName="SubjectMessageFeedback" />
+    </changeSet>
+
+    <changeSet id="issue-1290-autoIncrement" author="IgorMaksymov" failOnError="false">
+        <addAutoIncrement tableName="SubjectMessageFeedback" columnName="nID" columnDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="issue-1290-addColumns-sEmployeeFIO-sPlace-saAnswer" author="IgorMaksymov">
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sEmployeeFIO" type="varchar(200)" defaultValue="null" />
+    </addColumn>
+
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sPlace" type="varchar(200)" defaultValue="null" />
+    </addColumn>
+
+    <addColumn tableName="SubjectMessageFeedback">
+    <column name="sAnswer" type="varchar" defaultValue="null" />
+    </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1290-dropNotNull-sHead" author="IgorMaksymov">
+    <dropNotNullConstraint tableName="SubjectMessageFeedback" columnName="sHead" columnDataType="varchar(500)" />
+    </changeSet>
+
+    <changeSet id="issue-1312" author="kr110666kai">
+        <createTable tableName="SubjectActionKVED">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="issue-1312-2" author="kr110666kai">
+        <addUniqueConstraint columnNames="sID"
+                             constraintName="sID_Unique"
+                             tableName="SubjectActionKVED"/>
+    </changeSet>
+
+    <changeSet id="issue-1312-3" author="kr110666kai">
+        <addAutoIncrement tableName="SubjectActionKVED" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="issue-1316" author="kr110666kai">
+        <createTable tableName="ObjectPlace_UA">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sName_UA" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_PlaceType" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ObjectPlace_UA_PlaceType"
+                             referencedTableName    ="PlaceType"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="ObjectPlace_UA" columnName="nID" startWith="1000" columnDataType="bigint"/>
+
+    </changeSet>
+
+    <changeSet id="issue-1321-2" author="taaraora" failOnError="false">
+        <createTable tableName="SubjectMessageFeedbackAnswer">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+
+            <column name="nID_SubjectMessage" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_SubjectMessageFeedbackAnswer_SubjectMessage"
+                             referencedTableName    ="SubjectMessage"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_SubjectMessageFeedback" type="bigint">
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedbackAnswer_SubjectMessageFeedback"
+                             referencedTableName    ="SubjectMessageFeedback"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="false"/>
+            </column>
+            <column name="bSelf" type="boolean" defaultValue="false" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            DROP TABLE SubjectMessageFeedbackAnswer;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="issue-1321" author="taaraora">
+        <addColumn tableName="SubjectMessageFeedback">
+            <column name="nID_SubjectMessageFeedbackAnswers" type="bigint" >
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedback_SubjectMessageFeedbackAnswers"
+                             referencedTableName    ="SubjectMessageFeedbackAnswer"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_SubjectMessage" type="bigint" >
+                <constraints nullable               ="true"
+                             foreignKeyName         ="FK_SubjectMessageFeedback_SubjectMessage"
+                             referencedTableName    ="SubjectMessage"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+<!---####################################################################################-->
+
+    <changeSet id="issue-1315" author="lesha1980">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateCreate" type="varchar(25)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDateClosed" type="varchar(25)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1315-drop" author="olga">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateCreate" />
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateClosed" />
+    </changeSet>
+    
+    <changeSet id="issue-1315-add" author="olga">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateCreate" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDateClosed" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1315-Droping" author="olga">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sDateClosed" />
+    </changeSet>
+    
+    <changeSet id="issue-1315-Adding" author="olga">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="sDateClose" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

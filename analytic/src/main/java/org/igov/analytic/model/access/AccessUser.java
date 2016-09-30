@@ -1,0 +1,69 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.igov.analytic.model.access;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import org.igov.analytic.model.process.ProcessTask;
+import org.igov.model.core.AbstractEntity;
+
+/**
+ *
+ * @author olga
+ */
+@javax.persistence.Entity
+public class AccessUser extends AbstractEntity{
+    
+    @JsonProperty(value = "sID")
+    @Column
+    private String sID;
+    
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
+    @JoinTable(name = "AccessUser_ProcessTask",
+            joinColumns = @JoinColumn(name = "nID_AccessUser"),
+            inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
+    private List<ProcessTask> aProcessTask = new ArrayList<>();
+    
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
+    @JoinTable(name = "AccessUser_ProcessTask",
+            joinColumns = @JoinColumn(name = "nID_AccessUser"),
+            inverseJoinColumns = @JoinColumn(name = "nID_Process"))
+    private List<org.igov.analytic.model.process.Process> aProcess = new ArrayList<>();
+
+    public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
+    }
+
+    public List<ProcessTask> getaProcessTask() {
+        return aProcessTask;
+    }
+
+    public void setaProcessTask(List<ProcessTask> aProcessTask) {
+        this.aProcessTask = aProcessTask;
+    }
+
+    public List<org.igov.analytic.model.process.Process> getaProcess() {
+        return aProcess;
+    }
+
+    public void setaProcess(List<org.igov.analytic.model.process.Process> aProcess) {
+        this.aProcess = aProcess;
+    }
+    
+}

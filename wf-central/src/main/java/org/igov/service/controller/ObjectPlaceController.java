@@ -9,7 +9,7 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
-import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
@@ -50,6 +48,9 @@ public class ObjectPlaceController {
 
     @Autowired
     private PlaceTypeDao placeTypeDao;
+
+    @Autowired
+    private ObjectPlace_UADao objectPlace_UADao;
 
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
@@ -958,24 +959,20 @@ public class ObjectPlaceController {
                 + "Возвращает название сущности Place исходной заявки или кидает ошибку 403. Record not found!.\n")
         @ApiResponses(value = {
             @ApiResponse(code = 403, message = "Record not found")})
-        @RequestMapping(value = "/getOrderPlaces", method = RequestMethod.GET)
+        @RequestMapping(value = "/getPlaceByProcess", method = RequestMethod.GET)
         public @ResponseBody
-        ResponseEntity<String> getOrderPlaces(
+        Place getPlaceByProcess(
                 @ApiParam(value = "ИД-номер, идентификатор заявки", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
                 @ApiParam(value = "ИД-номер сервера", required = true) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
                 HttpServletResponse response) {
-
-        	ResponseEntity<String> result = null;
-        	
+        	Place result = null;
             try {
             	HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
             	LOG.info("Found history event by process ID {}", nID_Process);
             	Optional<Place> place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
                 if (place.isPresent()) {
                 	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
-                	Map<String, String> resMap = new HashMap<String, String>();
-                	resMap.put("place", place.get().getName());
-                	result = JsonRestUtils.toJsonResponse(resMap);
+                	result = place.get();
                 }
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
@@ -984,6 +981,51 @@ public class ObjectPlaceController {
                 response.setHeader("Reason", e.getMessage());
             } 
             return result;
+        }
+
+        @ApiOperation(value = "Получение данных из справочника КОАТУУ", notes = "Получаем данные из справочника КОАТУУ. "
+                + "Пример:\n"
+                + "https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA?sFind=днепр\n\n"
+                + "Ответ:\n"
+                + "\n```json\n"
+                + "[\n"
+                + "  {\n"
+                + "    \"sID\": \"00008000\",\n"
+                + "    \"sName_UA\": \"Дніпропетровська обл.\",\n"
+                + "    \"nID_PlaceType\": 1,\n"
+                + "    \"nID\": 1\n"
+                + "  }\n"
+                + "]\n"
+                + "\n```\n")
+        @RequestMapping(value = "/getObjectPlace_UA", method = RequestMethod.GET, headers = {JSON_TYPE})
+        public @ResponseBody
+        List<ObjectPlace_UA> getObjectPlace_UA(
+                @ApiParam(value = "sFind - кретерий поиска в sID или sName_UA (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+            	    throws CommonServiceException {
+    		return objectPlace_UADao.getObjectPlace_UA(sFind); 
+        }
+
+        @ApiOperation(value = "Получение данных из справочника КОАТУУ", notes = "Получаем данные из справочника КОАТУУ. "
+                + "Пример:\n"
+                + "https://alpha.test.igov.org.ua/wf/service/object/place/getObjectPlace_UA2?sID=09&sName_UA=дніпр\n\n"
+                + "Ответ:\n"
+                + "\n```json\n"
+                + "[\n"
+                + "  {\n"
+                + "    \"sID\": \"00008000\",\n"
+                + "    \"sName_UA\": \"Дніпропетровська обл.\",\n"
+                + "    \"nID_PlaceType\": 1,\n"
+                + "    \"nID\": 1\n"
+                + "  }\n"
+                + "]\n"
+                + "\n```\n")
+        @RequestMapping(value = "/getObjectPlace_UA2", method = RequestMethod.GET, headers = {JSON_TYPE})
+        public @ResponseBody
+        List<ObjectPlace_UA> getObjectPlace_UA2(
+                @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+                @ApiParam(value = "sName_UA - кретерий поиска в sName_UA (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sName_UA", required = false) String sName_UA)
+            	    throws CommonServiceException {
+    		return objectPlace_UADao.getObjectPlace_UA(sID, sName_UA); 
         }
 
 }

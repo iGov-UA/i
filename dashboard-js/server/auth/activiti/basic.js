@@ -3,6 +3,12 @@
 var activiti = require('../../components/activiti');
 var config = require('../../config/environment');
 var async = require('async');
+var NodeCache = require("node-cache");
+var cache = new NodeCache();
+/*
+var nodeLocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new nodeLocalStorage('./scratch');
+*/
 
 var guid = function guid() {
   function s4() {
@@ -34,6 +40,12 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
+      var currentUser = JSON.parse(req.cookies.user);
+      cache.del({
+        id: currentUser.id,
+        url: currentUser.url
+      });
+      //localStorage.removeItem('user');
       res.send(result);
     }
   });
@@ -57,9 +69,9 @@ exports.authenticate = function (req, res) {
   };
 
   var getGoups = {
-    path: 'identity/groups',
+    path: 'action/identity/getGroups',
     query: {
-      member : user.login
+      sLogin : user.login
     },
     json : true
   };
@@ -97,9 +109,13 @@ exports.authenticate = function (req, res) {
         if (error) {
           callback(error, null);
         } else {
-          userWithCookie.userResult['roles'] = !result.data ? [] : result.data.map(function (group) {
-            return group.id;
-          });
+          if((typeof result == "object") && (result instanceof Array)){
+            userWithCookie.userResult['roles'] = result.map(function (group) {
+              return group.id;
+            });
+          } else {
+            userWithCookie.userResult['roles'] = [];
+          }
 
           callback(null, {
             jsessionCookie: userWithCookie.jsessionCookie,
@@ -113,9 +129,28 @@ exports.authenticate = function (req, res) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
       req.session = result.userResult;
-      res.cookie('user', JSON.stringify(result.userResult), {
+      res.cookie('user', JSON.stringify({
+        email : result.userResult.email,
+        firstName : result.userResult.firstName,
+        id : result.userResult.id,
+        lastName : result.userResult.lastName,
+        pictureUrl : result.userResult.pictureUrl,
+        url : result.userResult.url
+      }), {
         expires: expiresUserInMs()
       });
+
+      cache.set({
+        id: result.userResult.id,
+        url: result.userResult.url
+      }, result.userResult.roles, 86400);
+      /*
+      localStorage.setItem('user', JSON.stringify({
+        roles : result.userResult.roles
+      }), {
+        expires: expiresUserInMs()
+      });
+      */
       res.cookie('JSESSIONID', result.jsessionCookie, {
         expires: expiresUserInMs()
       });
@@ -131,3 +166,26 @@ exports.authenticate = function (req, res) {
     }
   });
 };
+
+exports.getCashedUserGroups = function (oUser) {
+  return cache.get({
+    id: oUser.id,
+    url: oUser.url
+  });
+};
+
+exports.setCashedUserGroups = function (oUser, aGroups) {
+  var result = [];
+  if(oUser.roles && oUser.roles.length > 0){
+    result = oUser.roles;
+  } else if (aGroups && aGroups.length > 0) {
+    result = aGroups;
+  } else {
+    result = [];
+  }
+  cache.set({
+    id: oUser.id,
+    url: oUser.url
+  }, result, 86400);
+};
+

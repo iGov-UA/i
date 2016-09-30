@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.igov.service.business.action.task.form.TableFormType;
 
 public abstract class AbstractModelTask {
 
@@ -111,7 +112,34 @@ public abstract class AbstractModelTask {
         return getVariableValues(execution.getEngineServices().getRuntimeService(), execution.getProcessInstanceId(),
                 formFieldIds);
     }
+    
+    public static FormProperty getField(FormData oFormData, String sID) {
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                if(sID.equals(oFormProperty.getId())){
+                    return oFormProperty;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+    public static String getVariableValue(DelegateExecution execution, String sID) {
+        RuntimeService runtimeService = execution.getEngineServices().getRuntimeService();
+        if(runtimeService!=null){
+            Map<String, Object> variables = runtimeService.getVariables(execution.getProcessInstanceId());
+            if(variables!=null){
+                if (variables.containsKey(sID)) {
+                    return String.valueOf(variables.get(sID));
+                }
+            }
+        }
+        return null;
+    }
 
+    
     public static List<String> getVariableValues(RuntimeService runtimeService, String processInstanceId,
             List<String> formFieldIds) {
         List<String> listValueKeys = new ArrayList<String>();
@@ -128,7 +156,7 @@ public abstract class AbstractModelTask {
     }
 
     /**
-     * Получить ид поля с кастомным типом file
+     * Получить ид поля с кастомным типом file или table
      *
      * @param oFormData
      * @return
@@ -138,7 +166,7 @@ public abstract class AbstractModelTask {
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                if (oFormProperty.getType() instanceof FormFileType) {
+                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
                     asFieldID.add(oFormProperty.getId());
                 }
             }
@@ -166,28 +194,29 @@ public abstract class AbstractModelTask {
     /**
      * Получить имя поля
      *
-     * @param formData
+     * @param oFormData
      * @return
      */
-    public static List<String> getListCastomFieldName(FormData formData) {
+    public static List<String> getListCastomFieldName(FormData oFormData) {
         List<String> filedName = new ArrayList<String>();
-        List<FormProperty> formDataList = formData.getFormProperties();
-        if (!formDataList.isEmpty()) {
-            for (FormProperty prop : formDataList) {
-                if (prop.getType() instanceof FormFileType) {
-                    filedName.add(prop.getName());
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
+                    filedName.add(oFormProperty.getName());
                 }
             }
         }
         return filedName;
     }
 
-    public static String getCastomFieldValue(FormData formData, String fieldName) {
-        List<FormProperty> formDataList = formData.getFormProperties();
-        if (!formDataList.isEmpty()) {
-            for (FormProperty prop : formDataList) {
-                if (prop.getType() instanceof FormFileType && prop.getName().equalsIgnoreCase(fieldName)) {
-                    return prop.getValue() != null ? prop.getValue() : "";
+    public static String getCastomFieldValue(FormData oFormData, String sFieldName) {
+        List<FormProperty> aFormProperty = oFormData.getFormProperties();
+        if (!aFormProperty.isEmpty()) {
+            for (FormProperty oFormProperty : aFormProperty) {
+                //if (oFormProperty.getType() instanceof FormFileType && oFormProperty.getName().equalsIgnoreCase(fieldName)) {
+                if (oFormProperty.getName().equalsIgnoreCase(sFieldName)) {
+                    return oFormProperty.getValue() != null ? oFormProperty.getValue() : "";
                 }
             }
         }
@@ -283,10 +312,11 @@ public abstract class AbstractModelTask {
      *
      * @param oFormData FormData from task where we search file fields.
      * @param oTask where we add Attachments.
+     * @return list of Attachment
      */
     public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
-        List<Attachment> res = new LinkedList<>();
+        List<Attachment> aAttachment = new LinkedList<>();
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
         LOG.info("[addAttachmentsToTask]");
@@ -295,6 +325,9 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldValue={})", asFieldValue.toString());
         List<String> asFieldName = getListCastomFieldName(oFormData);
         LOG.info("(asFieldName={})", asFieldName.toString());
+        
+        //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
+
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
@@ -303,15 +336,24 @@ public abstract class AbstractModelTask {
                         .equals(sKeyRedis.trim())) {
                     if (sKeyRedis.length() > 15) {
                         if (!asFieldName.isEmpty() && n < asFieldName.size()) {
+                            
+                            String sID_Field = asFieldID.get(n);
+                            LOG.info("(sID_Field={})", sID_Field);
+                            
                             //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
                             String sDescription = asFieldName.get(n);
                             if(sDescription!=null&&sDescription.contains(";")){
-                                LOG.info("BEFORE:(sDescription={})", sDescription);
+                                //LOG.info("BEFORE:(sDescription={})", sDescription);
                                 sDescription=sDescription.split(";")[0];
                             }
+                            if(sDescription==null){
+                                sDescription="";
+                            }
+                            if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
+                                sDescription = sDescription+"[table]";
+                            }
                             LOG.info("(sDescription={})", sDescription);
-                            String sID_Field = asFieldID.get(n);
-                            LOG.info("(sID_Field={})", sID_Field);
+                            
                             //получение контента файла из временного хранилища
                             byte[] aByteFile;
                             ByteArrayMultipartFile oByteArrayMultipartFile = null;
@@ -325,7 +367,7 @@ public abstract class AbstractModelTask {
                             if (oAttachment != null) {
                                 LOG.info("Added attachment with ID {} to the task:process {}:{}",
                                         oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                                res.add(oAttachment);
+                                aAttachment.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
                                         sID_Field, nID_Attachment);
@@ -344,7 +386,7 @@ public abstract class AbstractModelTask {
                             try {
                                     LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
                                     Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                                    res.add(oAttachment);
+                                    aAttachment.add(oAttachment);
                             } catch (Exception e){
                                     LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
                             }
@@ -355,7 +397,7 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        return res;
+        return aAttachment;
 
     }
 
@@ -398,64 +440,81 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldValue={})", asFieldValue.toString());
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
+            String sID = asFieldID.get(0);
             LOG.info("(sValue={})", sValue);
             if(sValue!=null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())){
                 LOG.info("sValue is present, so queue is filled");
                 long nID_FlowSlotTicket = 0;
                 Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
-                nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-                LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+                
                 String sDate = (String) m.get(QueueDataFormType.sDate);
                 LOG.info("(sDate={})", sDate);
-                int nSlots = QueueDataFormType.get_nSlots(m);
-
-                try {
-
-                    long nID_Task_Activiti = 1; //TODO set real ID!!!
-
+                String sID_Type = QueueDataFormType.get_sID_Type(m);
+                LOG.info("(sID_Type={})", sID_Type);
+                
+                if("DMS".equals(sID_Type)){//Нет ни какой обработки т.к. это внешняя ЭО
+                    String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
+                    LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
+                    String sTicket_Number = (String) m.get("ticket_number");
+                    LOG.info("(sTicket_Number={})", sTicket_Number);
+                    String sTicket_Code = (String) m.get("ticket_code");
+                    LOG.info("(sTicket_Code={})", sTicket_Code);
+                //}else if("iGov".equals(sID_Type)){
+                }else{
+                    nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+                    LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+                    //int nSlots = QueueDataFormType.get_nSlots(m);
+                    String snSlots = getVariableValue(oExecution, "nSlots_"+sID);
+                    int nSlots = snSlots!=null?Integer.valueOf(snSlots):1;
                     try {
-                        nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
-                        LOG.info("nID_Task_Activiti:Ok!");
-                    } catch (Exception oException) {
-                        LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
-                        LOG.debug("FAIL:", oException);
-                    }
-                    LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
-                    FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
-                    if (oFlowSlotTicket == null) {
-                        String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
-                        LOG.error(sError);
-                        throw new Exception(sError);
-                    } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
-                        if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
-                            String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
-                                    + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                            LOG.warn(sWarn);
-                        } else {
-                            String sError
-                                    = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
-                                    + oFlowSlotTicket.getnID_Task_Activiti();
+                        long nID_Task_Activiti = 1; //TODO set real ID!!!
+
+                        try {
+                            nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
+                            LOG.info("nID_Task_Activiti:Ok!");
+                        } catch (Exception oException) {
+                            LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
+                            LOG.debug("FAIL:", oException);
+                        }
+                        LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+
+                        FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
+                        if (oFlowSlotTicket == null) {
+                            String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
                             LOG.error(sError);
                             throw new Exception(sError);
-                        }
-                    } else {
-                        LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
-                                oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
-                        long nID_Subject = oFlowSlotTicket.getnID_Subject();
-                        LOG.info("(nID_Subject={})", nID_Subject);
+                        } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
+                            if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
+                                String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
+                                        + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+                                LOG.warn(sWarn);
+                            } else {
+                                String sError
+                                        = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
+                                        + oFlowSlotTicket.getnID_Task_Activiti();
+                                LOG.error(sError);
+                                throw new Exception(sError);
+                            }
+                        } else {
+                            LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
+                                    oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
+                            long nID_Subject = oFlowSlotTicket.getnID_Subject();
+                            LOG.info("(nID_Subject={})", nID_Subject);
 
-                        oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-                        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                        LOG.info("(JSON={})", JsonRestUtils
-                                .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
-                        oExecution.setVariable("date_of_visit", sDate);
-                        LOG.info("(date_of_visit={})", sDate);
-                    }
-                } catch (Exception oException) {
-                    LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
-                    LOG.debug("FAIL:", oException);
-                }                
+                            oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
+                            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+                            LOG.info("(JSON={})", JsonRestUtils
+                                    .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
+                            oExecution.setVariable("date_of_visit", sDate);
+                            LOG.info("(date_of_visit={})", sDate);
+                        }
+                    } catch (Exception oException) {
+                        LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                        LOG.debug("FAIL:", oException);
+                    }                    
+                }
+
             }
         }
 

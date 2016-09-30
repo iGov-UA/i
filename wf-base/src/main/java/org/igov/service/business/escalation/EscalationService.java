@@ -1,8 +1,10 @@
 package org.igov.service.business.escalation;
 
+import java.net.URL;
 import org.igov.model.escalation.EscalationRuleFunctionDao;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
@@ -11,7 +13,8 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.igov.service.exception.CommonServiceException;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,15 +26,20 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.model.escalation.EscalationRule;
 import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.escalation.EscalationRuleFunction;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 
+import static org.igov.service.business.action.task.bp.handler.BpServiceHandler.mGuideTaskParamKey;
+
 @Service
 public class EscalationService {
+
     private static final Logger LOG = LoggerFactory.getLogger(EscalationService.class);
 
     @Autowired
@@ -56,9 +64,11 @@ public class EscalationService {
     private EscalationHelper escalationHelper;
     @Autowired
     private EscalationRuleFunctionDao escalationRuleFunctionDao;
+    @Autowired
+    private RuntimeService runtimeService;
 
-    private int nFailsTotal=0;
-    private int nFails=0;
+    private int nFailsTotal = 0;
+    private int nFails = 0;
 
     public void runEscalationAll() throws CommonServiceException {
         nFailsTotal = 0;
@@ -68,9 +78,9 @@ public class EscalationService {
             for (EscalationRule oEscalationRule : aEscalationRule) {
                 runEscalationRule(oEscalationRule, oGeneralConfig.getSelfHost());//REGIONAL_SERVER_PATH
             }
-            if(nFailsTotal>0){
+            if (nFailsTotal > 0) {
                 //LOG.warn("FAIL: (nFailsTotal={})", nFailsTotal);
-                throw new Exception("Has fails! (nFailsTotal="+nFailsTotal+")");
+                throw new Exception("Has fails! (nFailsTotal=" + nFailsTotal + ")");
             }
         } catch (Exception oException) {
             //LOG.error("FAIL: ", oException);
@@ -82,25 +92,26 @@ public class EscalationService {
 
     public void runEscalationRule(Long nID_escalationRule, String regionalServerPath) throws Exception {
         runEscalationRule(escalationRuleDao.findById(nID_escalationRule).orNull(), regionalServerPath);
-        if(nFailsTotal>0){
+        if (nFailsTotal > 0) {
             //LOG.warn("FAIL: (nFailsTotal={})", nFailsTotal);
-            throw new Exception("Has fails! (nFailsTotal="+nFailsTotal+")");
+            throw new Exception("Has fails! (nFailsTotal=" + nFailsTotal + ")");
         }
     }
 
     private void runEscalationRule(EscalationRule oEscalationRule, String regionalServerPath) {
+        LOG.info("regionalServerPath: "+regionalServerPath);
         String sID_BP = null;
         String sID_State_BP = null;
         EscalationRuleFunction oEscalationRuleFunction = oEscalationRule.getoEscalationRuleFunction();
         Object onID_Task = null;
-        nFails=0;
+        nFails = 0;
         try {
             sID_BP = oEscalationRule.getsID_BP();
             sID_State_BP = oEscalationRule.getsID_UserTask();
             TaskQuery oTaskQuery = taskService.createTaskQuery()
                     .processDefinitionKey(sID_BP);//.taskCreatedAfter(dateAt).taskCreatedBefore(dateTo)
             if (sID_State_BP != null && !"*".equals(sID_State_BP)) {
-                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP);
+                oTaskQuery = oTaskQuery.taskDefinitionKey(sID_State_BP); 
             }
             Integer nRowStart = 0;
             Integer nRowsMax = 1000;
@@ -110,28 +121,32 @@ public class EscalationService {
             //LOG.info("Found {} tasks for specified business process and state", aTask.size());
             for (Task oTask : aTask) {
                 onID_Task = null;
-                Map<String, Object> mTaskParam = null;
+                Map<String, Object> mTaskParam = null; 
                 try {
                     mTaskParam = getTaskData(oTask);
                     onID_Task = mTaskParam.get("nID_task_activiti");
                     mTaskParam.put("processLink", regionalServerPath + SEARCH_DELAYED_TASKS_URL + onID_Task);
-                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Ссылка");
+                    BpServiceHandler.mGuideTaskParamKey.put("processLink", "Удалить");
+                    mTaskParam.put("sID_State_BP", sID_State_BP);
                     mTaskParam.put("nID_EscalationRule", oEscalationRule.getId());
                     BpServiceHandler.mGuideTaskParamKey.put("nID_EscalationRule", "ИД эскалации правила");
-                    //                LOG.info("checkTaskOnEscalation (mTaskParam={})", mTaskParam);
-                    //send emails (or processing by other bean-handlers)
-                    escalationHelper.checkTaskOnEscalation(mTaskParam
-                            , oEscalationRule.getsCondition()
-                            , oEscalationRule.getSoData()
-                            , oEscalationRule.getsPatternFile()
-                            , oEscalationRuleFunction.getsBeanHandler()
+                   escalationHelper.checkTaskOnEscalation(mTaskParam, oEscalationRule.getsCondition(), oEscalationRule.getSoData(), oEscalationRule.getsPatternFile(), oEscalationRuleFunction.getsBeanHandler()
                     );
-                } catch (Exception e) {
+                } catch (Exception oException) {
                     nFails++;
                     nFailsTotal++;
                     //LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, sID_BP={}, sID_State_BP={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(), sID_BP, sID_State_BP);
-                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", e.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(),mTaskParam);
-                    LOG.trace("FAIL:", e);
+                    LOG.error("Can't run handler escalation for task: {} (nFails={}, oTask.getId()={}, getsBeanHandler()={}, mTaskParam={})", oException.getMessage(), nFails, oTask.getId(), oEscalationRuleFunction.getsBeanHandler(), mTaskParam);
+                    LOG.trace("FAIL:", oException);
+                    new Log(oException, LOG)//this.getClass()
+                            ._Case("Escalation")
+                            ._Status(Log.LogStatus.ERROR)
+                            ._Head("Can't run handler escalation for task")
+                            //                            ._Body(oException.getMessage())
+                            ._Param("oTask.getId()", oTask.getId())
+                            ._Param("oEscalationRuleFunction.getsBeanHandler()", oEscalationRuleFunction.getsBeanHandler())
+                            ._Param("mTaskParam", mTaskParam)
+                            .save();
                 }
             }
         } catch (Exception e) {
@@ -151,23 +166,29 @@ public class EscalationService {
 
         Map<String, Object> result = new HashMap<>();
         result.put("sTaskId", taskId);
-        BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "ИД таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskId", "Удалить");
+
         long nDiffMS = 0;
+        LOG.info("oTask.getDueDate(): "+oTask.getDueDate());
         if (oTask.getDueDate() != null) {
             nDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
+            LOG.info("if nDiffMS: "+nDiffMS);
         } else {
             nDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
+             LOG.info("!!!!!!else!!!!!!!!!!nDiffMS: "+nDiffMS);
         }
         LOG.debug("(nDiffMS={})", nDiffMS);
 
         long nElapsedHours = nDiffMS / 1000 / 60 / 60;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedHours: "+nElapsedHours); 
         LOG.debug("(nElapsedHours={})", nElapsedHours);
         result.put("nElapsedHours", nElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nElapsedHours", "Удалить");
         long nElapsedDays = nElapsedHours / 24;
+        LOG.info("!!!!!!!!!!!!!!!!nElapsedDays: "+nElapsedDays);  
         LOG.debug("(nElapsedDays={})", nElapsedDays);
-        result.put("nElapsedDays", nElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Прошло дней");
+        result.put("nElapsedDays", nElapsedDays); 
+        BpServiceHandler.mGuideTaskParamKey.put("nElapsedDays", "Заявка знаходиться на цій стадії");
         result.put("nDays", nElapsedDays);
         BpServiceHandler.mGuideTaskParamKey.put("nDays", "Удалить");
         result.put("bSuspended", oTask.isSuspended());
@@ -176,9 +197,9 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("bAssigned", "Удалить");
         //m.put("isSuspended", oTask.getAssignee()isSuspended());
 
-        long nDueElapsedHours = -1;
+        long nDueElapsedHours = -1; 
         long nDueElapsedDays = -1;
-        if (oTask.getDueDate() != null ) {
+        if (oTask.getDueDate() != null) {
             long nDueDiffMS = 0;
             //nAssignedDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
             nDueDiffMS = DateTime.now().toDate().getTime() - oTask.getDueDate().getTime();
@@ -188,18 +209,18 @@ public class EscalationService {
             nDueElapsedDays = nDueElapsedHours / 24;
             LOG.debug("(nDueElapsedDays={})", nDueElapsedDays);
 //            nDueDiffMS = DateTime.now().toDate().getTime() - oTask.getCreateTime().getTime();
-        }else{
+        } else {
             LOG.debug("(oTask.getDueDate() = null)");
         }
         result.put("nDueElapsedHours", nDueElapsedHours);
         BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedHours", "Удалить");
         result.put("nDueElapsedDays", nDueElapsedDays);
-        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Кол-во просроченных дней");
+        BpServiceHandler.mGuideTaskParamKey.put("nDueElapsedDays", "Удалить");
         //m.put("nDueDays", nDueElapsedDays);
 
         long nCreateElapsedHours = -1;
         long nCreateElapsedDays = -1;
-        if (oTask.getCreateTime() != null ) {
+        if (oTask.getCreateTime() != null) {
             long nCreateDiffMS = 0;
             //nAssignedDiffMS = oTask.getDueDate().getTime() - oTask.getCreateTime().getTime();
             //nDueDiffMS = oTask.getDueDate().getTime() - DateTime.now().toDate().getTime();
@@ -209,7 +230,7 @@ public class EscalationService {
             LOG.debug("(nCreateElapsedHours={})", nCreateElapsedHours);
             nCreateElapsedDays = nCreateElapsedHours / 24;
             LOG.debug("(nCreateElapsedDays={})", nCreateElapsedDays);
-        }else{
+        } else {
             LOG.debug("(oTask.getCreateDate() = null)");
         }
         result.put("nCreateElapsedHours", nCreateElapsedHours);
@@ -218,11 +239,22 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("nCreateElapsedDays", "Создание");
         //m.put("nDueDays", nDueElapsedDays);
 
+        StartFormData startFormData = formService.getStartFormData(oTask.getProcessDefinitionId());
+        Map<String, Object> variables = runtimeService.getVariables(oTask.getProcessInstanceId());
+        
+        result.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
+        result.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
+        result.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        BpServiceHandler.mGuideTaskParamKey.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
+        
         TaskFormData oTaskFormData = formService.getTaskFormData(taskId);
+        LOG.info("!!!!!!!!!!!oTaskFormData: "+oTaskFormData);
         for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
             String sType = oFormProperty.getType().getName();
             String sValue = null;
-            LOG.debug(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
+            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", oFormProperty.getId(),
                     oFormProperty.getName(), sType));
             if ("long".equalsIgnoreCase(oFormProperty.getType().getName())
                     && StringUtils.isNumeric(oFormProperty.getValue())) {
@@ -237,23 +269,27 @@ public class EscalationService {
                 if (sValue != null) {
                     result.put(oFormProperty.getId(), sValue);
                     BpServiceHandler.mGuideTaskParamKey.put(oFormProperty.getId(), oFormProperty.getName());
-                    
                 }
             }
         }
 
         result.put("sID_BP_full", oTask.getProcessDefinitionId());
-        BpServiceHandler.mGuideTaskParamKey.put("sID_BP_full", "ИД БП (полный)");
+        BpServiceHandler.mGuideTaskParamKey.put("sID_BP_full", "Удалить");
         result.put("sID_BP", StringUtils.substringBefore(oTask.getProcessDefinitionId(), ":"));
         BpServiceHandler.mGuideTaskParamKey.put("sID_BP", "ИД БП");
         result.put("nID_task_activiti", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "ИД таски активити");
+        BpServiceHandler.mGuideTaskParamKey.put("nID_task_activiti", "Удалить");
         result.put("sTaskName", oTask.getName());
+        LOG.info("!!!!oTask.getName(): "+oTask.getName());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя  таски");
+        
+        result.put("sTaskID", oTask.getId());
+        LOG.info("!!!!oTask.getId(): "+oTask.getId()+"taskId: "+taskId);
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskID", "ИД таски");
         result.put("sTaskDescription", oTask.getDescription());
         BpServiceHandler.mGuideTaskParamKey.put("sTaskDescription", "Описание");
         result.put("sProcessInstanceId", oTask.getProcessInstanceId());
-        BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "ИД процесса");
+        BpServiceHandler.mGuideTaskParamKey.put("sProcessInstanceId", "Удалить");
         result.put("sLoginAssigned", oTask.getAssignee());
         BpServiceHandler.mGuideTaskParamKey.put("sLoginAssigned", "Логин сотрудника");
 
@@ -284,9 +320,9 @@ public class EscalationService {
         result.put("sTaskName", String.format("%s", oTask.getName()));
         BpServiceHandler.mGuideTaskParamKey.put("sTaskName", "Имя таски"); 
         result.put("sTaskNumber", ToolLuna.getProtectedNumber(Long.valueOf(oTask.getProcessInstanceId())));
-        BpServiceHandler.mGuideTaskParamKey.put("sTaskNumber", "Номер  таски");
+        BpServiceHandler.mGuideTaskParamKey.put("sTaskNumber", "Удалить");
         result.put("sElapsedInfo", String.format("%d", nElapsedDays));
-        BpServiceHandler.mGuideTaskParamKey.put("sElapsedInfo", "Прошедшая информация");
+        BpServiceHandler.mGuideTaskParamKey.put("sElapsedInfo", "Удалить");
         result.put("sResponsiblePersons", String.format("%s", osaUser.toString()));
         BpServiceHandler.mGuideTaskParamKey.put("sResponsiblePersons", "Ответ  гражданину");
 
@@ -297,6 +333,7 @@ public class EscalationService {
         BpServiceHandler.mGuideTaskParamKey.put("sDate_BP", "Дата БП");
         result.putAll(processInstance.getProcessVariables());
 
+        LOG.info("Result with parameters for the escalation {}", result);
         return result;
     }
 

@@ -408,7 +408,9 @@ public class ActionTaskService {
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
+        LOG.info("asID_Field: " + asID_Field);
         List<String> queueDataList = AbstractModelTask.getVariableValues(oRuntimeService, nID_Process, asID_Field);
+        LOG.info("queueDataList: " + queueDataList);
         if (queueDataList.isEmpty()) {
             LOG.error(String.format("Queue data list for Process Instance [id = '%s'] not found", nID_Process));
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
@@ -643,6 +645,9 @@ public class ActionTaskService {
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, 
     		Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
+        LOG.info("!!!!!csvLines: "+csvLines);
+         
+        LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
@@ -661,6 +666,7 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
+            LOG.info("!!!!!!!!!!!!!!!variablessb= "+variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -671,18 +677,24 @@ public class ActionTaskService {
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
             String[] values = currentRow.split(";");
+            LOG.info("values= "+values);
             if (headers.length != values.length) {
                 LOG.info("Size of header :{} Size of values array:{}", headers.length, values.length);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < headers.length; i++) {
                     sb.append(headers[i]);
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                     sb.append(";");
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 }
                 LOG.info("(headers={})", sb.toString());
                 sb = new StringBuilder();
+                LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 for (int i = 0; i < values.length; i++) {
                     sb.append(values[i]);
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                     sb.append(";");
+                    LOG.info("!!!!!!!!!!!!!!!sb= "+sb);
                 }
                 LOG.info("(values={})", sb.toString());
             }
@@ -691,6 +703,8 @@ public class ActionTaskService {
                 currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
+            LOG.info("csvLines= " + csvLines);
+            LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_end---------------------------------------------------------->");
         }
     }
 
@@ -838,14 +852,18 @@ public class ActionTaskService {
             LOG.info("Fields have custom header names");
             StringBuilder sb = new StringBuilder();
             String[] fields = saFields.split(";");
+            LOG.info("fields: "+fields);
             for (int i = 0; i < fields.length; i++) {
                 if (fields[i].contains("\\=")) {
                     sb.append(StringUtils.substringBefore(fields[i], "\\="));
+                    LOG.info("if (fields[i].contains(\"\\\\=\"))_sb: "+sb);
                 } else {
                     sb.append(fields[i]);
+                    LOG.info("else_sb: "+sb);
                 }
                 if (i < fields.length - 1) {
                     sb.append(";");
+                     LOG.info("(i < fields.length - 1)_sb: "+sb);
                 }
             }
             res = sb.toString();
@@ -865,6 +883,7 @@ public class ActionTaskService {
                     }
                 }
                 res = sb.toString();
+                LOG.info("res: "+res);
             }
             LOG.info("Formed header from all the fields of a task: {}", res);
         }
@@ -928,19 +947,24 @@ public class ActionTaskService {
         for (TaskReportField field : TaskReportField.values()) { 
             if (res.contains(field.getPattern())) {
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);//sID_Order
+                LOG.info("!!!!!!!!!!res: "+res);
             }
         }
         return res;
     }
 
     private String replaceReportFields(SimpleDateFormat sDateCreateDF, HistoricTaskInstance curTask, String currentRow) {
+        LOG.info("<--------------------------------replaceReportFields_begin-------------------------------------------->");
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
+                LOG.info("!!!!!!!!!!res: "+res);
             }
         }
+         LOG.info("<--------------------------------replaceReportFields_end-------------------------------------------->");
         return res;
+        
     }
 
     /*private String createTable(String soData) throws UnsupportedEncodingException {
@@ -989,7 +1013,8 @@ public class ActionTaskService {
      */
     public String processSaFields(String saFields, List<HistoricTaskInstance> foundHistoricResults) {
         String res = null;
-        if (saFields != null) {
+         
+        if (saFields != null) {          
             LOG.info("saFields has custom header names");
             StringBuilder sb = new StringBuilder();
             String[] fields = saFields.split(";");
@@ -1080,8 +1105,11 @@ public class ActionTaskService {
 
     }
 
-    public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader) {
+    public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF, 
+            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader) {
         if (CollectionUtils.isEmpty(aTaskFound)) {
+            
+            
             LOG.info(String.format("No tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
@@ -1096,7 +1124,8 @@ public class ActionTaskService {
             LOG.trace("Process task - {}", oTask);
             TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
             sRow = replaceFormProperties(sRow, oTaskFormData);
-            if (saFieldsCalc != null) {
+            LOG.info("!!!!!!!!!!!!!!!!!!!!!!fillTheCSVMap!_!sRows= "+sRow);
+           if (saFieldsCalc != null) {
                 sRow = addCalculatedFields(saFieldsCalc, oTask, sRow);
             }
             if (pattern != null) {
@@ -1301,7 +1330,8 @@ public class ActionTaskService {
             tasks = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskUnassigned().active().list();
             LOG.info("Looking for unassigned tasks. Found {} tasks", (tasks != null ? tasks.size() : 0));
         } else {
-            tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            //tasks = oTaskService.createTaskQuery().taskAssignee(sLogin).active().list();
+            tasks = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).active().list();
             LOG.info("Looking for tasks assigned to user:{}. Found {} tasks", sLogin, (tasks != null ? tasks.size() : 0));
         }
         return tasks;
@@ -2042,24 +2072,35 @@ public class ActionTaskService {
     }
 
     private Map<String, Object> parseQueueDataFromFormProperty(FormProperty oFormProperty){
-        Map<String, Object> result = new HashMap<>();
-
+        Map<String, Object> mItemReturn = new HashMap<>();
+        Map<String, Object> mPropertyReturn = new HashMap<>();
         String sValue = oFormProperty.getValue();
         LOG.info("sValue = {}", sValue);
-
         Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
-        Long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-        LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
         String sDate = (String) m.get(QueueDataFormType.sDate);
         LOG.info("(sDate={})" + sDate);
-
-        Map<String, Object> element = new HashMap<>();
-        element.put("nID_FlowSlotTicket", nID_FlowSlotTicket);
-        element.put("sDate", sDate);
-
-        result.put(oFormProperty.getId(), element);
-
-        return result;
+        String sID_Type = QueueDataFormType.get_sID_Type(m);
+        LOG.info("(sID_Type={})", sID_Type);
+        if("DMS".equals(sID_Type)){
+        //}else if("iGov".equals(sID_Type)){
+            String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate")+"";
+            LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
+            String sTicket_Number = (String) m.get("ticket_number");
+            LOG.info("(sTicket_Number={})", sTicket_Number);
+            String sTicket_Code = (String) m.get("ticket_code");
+            LOG.info("(sTicket_Code={})", sTicket_Code);
+            //element.put("nID_FlowSlotTicket", sTicket_Number);
+            mPropertyReturn.put("snID_ServiceCustomPrivate", snID_ServiceCustomPrivate);
+            mPropertyReturn.put("sTicket_Number", sTicket_Number);
+            mPropertyReturn.put("sTicket_Code", sTicket_Code);
+        }else{
+            Long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+            LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+            mPropertyReturn.put("nID_FlowSlotTicket", nID_FlowSlotTicket);
+        }
+        mPropertyReturn.put("sDate", sDate);
+        mItemReturn.put(oFormProperty.getId(), mPropertyReturn);
+        return mItemReturn;
     }
 
     /**

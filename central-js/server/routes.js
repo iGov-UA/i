@@ -32,12 +32,15 @@ module.exports = function (app) {
   app.use('/api/service/flow', require('./api/service/flow'));
   app.use('/api/messages', require('./api/messages/index'));
   app.use('/api/catalog', require('./api/catalog'));
-  app.post('/api/uploadfile', require('./api/uploadfile/post'));
+  app.use('/api/uploadfile', auth.isAuthenticated(), require('./api/uploadfile'));
   app.use('/api/countries', require('./api/countries'));
   app.use('/api/currencies', require('./api/currencies'));
   app.use('/api/object-customs', require('./api/object-customs'));
   app.use('/api/subject', require('./api/subject'));
+  app.use('/api/payment-liqpay', require('./api/payment-liqpay'));
   app.use('/api/object-earth-target', require('./api/object-earth-target'));
+  app.use('/api/subject-action-kved', require('./api/subject-action-kved'));
+  app.use('/api/object-place', require('./api/object-place'));
   app.use('/api/markers', require('./api/markers'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets|public-js)/*')

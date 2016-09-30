@@ -2,17 +2,20 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
+import org.igov.util.ToolLuna;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -20,7 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.util.ToolLuna;
 
 @Repository
 public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryEvent_Service>
@@ -33,6 +35,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     private static final String NAME_FIELD = "sName";
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
+    private static final String GET_SERVICES_STATISTICS_QUERY = "get_ServicesStatistics.sql";
+
+    @Autowired
+    private QueryLoader sqlStorage;
     
     protected HistoryEvent_ServiceDaoImpl() {
         super(HistoryEvent_Service.class);
@@ -56,6 +62,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             LOG.info("create new historyEventService");/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
+        historyEventService.setsDateCreate(new DateTime());
         Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
@@ -67,6 +74,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     @Override
     public HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service event_service) {
         event_service.setsDate(new DateTime());
+        if(event_service.getnID_StatusType()!= null && event_service.getnID_StatusType() == 8){
+            event_service.setsDateClose(new DateTime());
+        }
         return saveOrUpdate(event_service);
     }
 
@@ -147,6 +157,21 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         LOG.info("Found {} records based on nID_Service={}", resHistoryEventService.size(), nID_Service);
 
         return resHistoryEventService;
+    }
+
+    @Override
+    public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
+        String queryString = sqlStorage.get(GET_SERVICES_STATISTICS_QUERY);
+
+        List<ServicesStatistics> servicesStatistics = null;
+        SQLQuery query = getSession().createSQLQuery(queryString);
+        query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
+        query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
+        query.addEntity(ServicesStatistics.class);
+
+        servicesStatistics = query.list();
+
+        return servicesStatistics;
     }
     
     @Override
@@ -233,7 +258,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         if(nID_Service != null){
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        if(sID_UA != null && sID_UA != ""){
+        if(sID_UA != null && !"".equals(sID_UA)){
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 

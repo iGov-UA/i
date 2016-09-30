@@ -20,7 +20,7 @@ angular.module('dashboardJsApp').directive('fileField', function() {
         fileField[0].click();
       });
     },
-    template: '<form><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-file" aria-hidden="true"></span><span ng-disabled="isFormPropertyDisabled(item)">Завантажити файл</span><input type="file" style="display:none" ng-disabled="isFormPropertyDisabled(item)"></button> <label ng-if="item.fileName">Файл: {{item.fileName}}</label></form>', //ID: {{item.value}}
+    template: '<form><button type="button" class="btn btn-link attach-btn"><span ng-disabled="isFormPropertyDisabled(item)">Завантажити файл</span><input type="file" style="display:none" ng-disabled="isFormPropertyDisabled(item)"></button> <label ng-if="item.fileName">Файл: {{item.fileName}}</label></form>', //ID: {{item.value}}
     replace: true,
     transclude: true
   };

@@ -119,6 +119,13 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+      getTableAttachment: function (taskId, attachId) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + taskId + '/attachments/' + attachId + '/table'
+        })
+      },
+
       taskFormFromHistory: function(taskId) {
         return simpleHttpPromise({
           method: 'GET',
@@ -334,6 +341,15 @@ angular.module('dashboardJsApp')
           }
         );
       },
+      getProcesses: function (sID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/getProcesses',
+          params: {
+            sID: sID
+          }
+        });
+      },
       getPatternFile: function(sPathFile) {
         return simpleHttpPromise({
             method: 'GET',
@@ -384,7 +400,11 @@ angular.module('dashboardJsApp')
             data.aMessage = JSON.parse(data.aMessage);
           angular.forEach(data.aMessage, function(message) {
             if (angular.isString(message.sData) && message.sData.length > 1) {
-              message.osData = JSON.parse(message.sData);
+              try{
+                message.osData = JSON.parse(message.sData);
+              } catch (e){
+                message.osData = {};
+              }
             }
           });
           return data;

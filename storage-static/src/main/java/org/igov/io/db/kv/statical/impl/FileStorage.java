@@ -24,12 +24,14 @@ import org.igov.io.db.kv.statical.model.UploadedFileMetadata;
 
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
 
     @Autowired
+    @Qualifier("gridTemplate")
     private GridFsTemplate oGridFsTemplate;
 
     private static String getExtension(MultipartFile oFile) {

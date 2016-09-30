@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
-import org.igov.io.sms.ManagerSMS;
 
 /**
  * @author BW

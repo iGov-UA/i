@@ -10,11 +10,9 @@
     'taskFilterService', 'defaultSearchHandlerService',
     '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel'
   ];
-  function tasksCtrl(
-    $scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
-    taskFilterService, defaultSearchHandlerService,
-    $stateParams, $q, $timeout, $state, tasksStateModel, stateModel
-  ) {
+  function tasksCtrl($scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
+                     taskFilterService, defaultSearchHandlerService,
+                     $stateParams, $q, $timeout, $state, tasksStateModel, stateModel) {
 
     $scope.tasks = null;
     $scope.sSelectedTask = $stateParams.type;
@@ -35,15 +33,15 @@
       unassignedTaskDefinitionFilter: $scope.taskDefinitions[0]
     });
 
-    $scope.resetTaskDefinition = function() {
+    $scope.resetTaskDefinition = function () {
       $scope.model.taskDefinition = $scope.taskDefinitions[0];
       $scope.taskDefinitionsFilterChange();
     };
-    $scope.resetStrictTaskDefinition = function() {
+    $scope.resetStrictTaskDefinition = function () {
       $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
       $scope.strictTaskDefinitionFilterChange();
     };
-    $scope.resetUserProcess = function() {
+    $scope.resetUserProcess = function () {
       $scope.model.userProcess = $scope.userProcesses[0];
       $scope.userProcessFilterChange();
     };
@@ -91,10 +89,10 @@
       $scope.model.taskDefinition = $scope.$storage[$stateParams.type + 'TaskDefinitionFilter'];
     }
 
-    var filterLoadedTasks = function() {
+    var filterLoadedTasks = function () {
       $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
 
-      $timeout(function(){
+      $timeout(function () {
         // trigger scroll event to load more tasks
         $('#tasks-list-holder').trigger('scroll');
       });
@@ -156,7 +154,7 @@
     var tasksPage = 0;
     var lastTasksResult = null;
 
-    var loadNextTasksPage = function() {
+    var loadNextTasksPage = function () {
       var defer = $q.defer();
       var data = {
         page: tasksPage
@@ -179,12 +177,13 @@
       tasks.list($stateParams.type, data)
         .then(function (oResult) {
           try {
-			if (oResult.data.code) {
+            if (oResult.data.code) {
               var e = new Error(oResult.data.message);
               e.name = oResult.data.code;
 
               throw e;
             }
+
             if (oResult.data !== null && oResult.data !== undefined) {
               // build tasks array
               var aTaskFiltered = _.filter(oResult.data, function (oTask) {
@@ -199,7 +198,7 @@
               filterLoadedTasks();
 
               defer.resolve(aTaskFiltered);
-              tasksPage ++;
+              tasksPage++;
             }
 
           } catch (e) {
@@ -227,11 +226,11 @@
       restoreUserProcessesFilter();
       $scope.error = null;
 
-      if ($stateParams.type == tasks.filterTypes.finished){
+      if ($stateParams.type == tasks.filterTypes.finished) {
         $scope.predicate = 'startTime';
       }
 
-      loadNextTasksPage().then(function(tasks){
+      loadNextTasksPage().then(function (tasks) {
         // загружаем список пока не будет найдена задача из стейта tasks.typeof.view
         // tasksStateModel.taskId устанавливается при резолве этого стейта
         updateTaskSelection(tasks, tasksStateModel.taskId);
@@ -249,7 +248,7 @@
     };
 
     $scope.selectTask = function (oTask) {
-      $state.go('tasks.typeof.view', {id:oTask.id});
+      $state.go('tasks.typeof.view', {id: oTask.id});
     };
 
     $scope.sDateShort = function (sDateLong) {
@@ -333,7 +332,7 @@
 
     $scope.lunaService = lunaService;
 
-    var updateTaskSelection = function(tasks, nID_Task) {
+    var updateTaskSelection = function (tasks, nID_Task) {
       if (nID_Task && tasks && tasks.length > 0) {
         var foundTask = null;
         for (var i = 0; i < tasks.length; i++) {
@@ -349,7 +348,7 @@
           loadNextTasksPage().then(function (nextTasks) {
             updateTaskSelection(nextTasks, nID_Task);
           });
-      } else if($state.current.name != 'tasks.typeof.view')
+      } else if ($state.current.name != 'tasks.typeof.view')
         initDefaultTaskSelection();
     };
 
@@ -364,8 +363,8 @@
       defaultSearchHandlerService.handleError(response, msgMapping);
     };
 
-    $scope.whenScrolled = function() {
-      if ($scope.tasksLoading===false && $scope.isLoadMoreAvailable())
+    $scope.whenScrolled = function () {
+      if ($scope.tasksLoading === false && $scope.isLoadMoreAvailable())
         $scope.loadMoreTasks();
     };
 
@@ -373,7 +372,7 @@
       return lastTasksResult !== null && lastTasksResult.start + lastTasksResult.size < lastTasksResult.total;
     };
 
-    $scope.loadMoreTasks = function() {
+    $scope.loadMoreTasks = function () {
       loadNextTasksPage();
     };
 

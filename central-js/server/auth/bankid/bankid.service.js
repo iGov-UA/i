@@ -3,12 +3,12 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
-//, config = require('../../config')
-  , syncSubject = require('../../api/subject/subject.service.js')
+  , syncSubject = require('../../api/subject/subject.service')
   , Admin = require('../../components/admin/index')
   , url = require('url')
   , StringDecoder = require('string_decoder').StringDecoder
-  , bankidUtil = require('./bankid.util.js')
+  , uploadFileService = require('../../api/uploadfile/uploadfile.service')
+  , bankidUtil = require('./bankid.util')
   , errors = require('../../components/errors')
   , activiti = require('../../components/activiti');
 
@@ -22,8 +22,38 @@ var createError = function (error, error_description, response) {
   };
 };
 
+module.exports.decryptCallback = function (callback) {
+ return bankidUtil.decryptCallback(callback);
+};
+
+module.exports.convertToCanonical = function (customer) {
+  // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+  customer.isAuthTypeFromBankID = true;
+  return customer;
+};
+
+module.exports.getUserKeyFromSession = function (session){
+  return session.access.accessToken;
+};
+
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
+
+  function validateResponse(errorCallback, successCallback) {
+    return function (error, repsonse, body) {
+      if(error){
+        errorCallback(error, repsonse, body);
+      } else if (body && (body.state === 'err' ||  body.error)) {
+        errorCallback(error, repsonse, body);
+      } else {
+        successCallback(error, repsonse, body);
+      }
+    }
+  }
+
+  function errorCallback(error, response, body) {
+    callback(error, response, body);
+  }
 
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
@@ -56,9 +86,9 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
   var resultCallback;
 
   if (disableDecryption) {
-    resultCallback = adminCheckCallback;
+    resultCallback = validateResponse(errorCallback, adminCheckCallback);
   } else {
-    resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
+    resultCallback = validateResponse(errorCallback, bankidUtil.decryptCallback(adminCheckCallback));
   }
 
   return request.post({
@@ -162,19 +192,33 @@ module.exports.scanContentRequest = function (documentScanType, documentScanLink
 };
 
 module.exports.cacheCustomer = function (customer, callback) {
-  var url = '/object/file/upload_file_to_redis';
-  activiti.upload(url, {}, 'customerData.json', JSON.stringify(customer), callback);
+  uploadFileService.upload([{
+      name: 'file',
+      text: JSON.stringify(customer),
+      options: {
+        filename: 'customerData.json'
+      }
+    }], callback);
 };
 
 module.exports.syncWithSubject = function (accessToken, done) {
   var self = this;
   var disableDecryption = true;
 
+  function errorFromBody(body) {
+    if(body && (body.error || body.state === 'err')){
+      return body;
+    } else {
+      return null;
+    }
+  }
+
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
-        if (error || body.error || !body.customer) {
-          callback(createError(error || body.error || body, body.error_description, response), null);
+        var err = errorFromBody(body);
+        if (error || err) {
+          callback(errors.createErrorOnResponse(err)(error, response, body), null);
         } else {
           callback(null, {
             customer: body.customer,
@@ -200,7 +244,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
-          result.usercacheid = body;
+          result.usercacheid = body.fileID;
 
           if (result.customer.inn) {
             result.customer.inn = bankidUtil.decryptField(result.customer.inn);
@@ -222,6 +266,69 @@ module.exports.syncWithSubject = function (accessToken, done) {
   ], function (err, result) {
     done(err, result);
   });
+};
+
+module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback) {
+  var bankIDURLs = bankidUtil.getBaseURLs();
+  var params = {
+    headers: {
+      Authorization: bankidUtil.getAuth(accessToken),
+      acceptKeyUrl: acceptKeyUrl
+    }
+  };
+
+  console.log('[signFiles] : accessToken=', accessToken, 'acceptKeyUrl=', acceptKeyUrl, ' content=', JSON.stringify(content.map(function(contentObj) {
+      return contentObj.name + ', ' + (contentObj.options ? JSON.stringify(contentObj.options) : '')
+    }))
+  );
+
+  activiti.uploadContent(bankIDURLs.resource.path.signFiles, params, content, function (error, response, body) {
+    if (!body) {
+      callback('Unable to sign a file. bankid.privatbank.ua return an empty response', null);
+    } else if (body && errors.isHttpError(response.statusCode)) {
+      callback(errors.createExternalServiceError('Uknown error in the process of uploading content for adding eds', body), null);
+    } else if (error || (error = body.error)) {
+      callback(error, null);
+    } else if (body.state && body.state === 'err'){
+      callback(errors.createExternalServiceError(body.desc, body), null);
+    } else {
+      callback(null, body);
+    }
+  }, bankIDURLs.resource.base);
+};
+
+/**
+ *
+ * @param accessToken
+ * @param codeValue
+ * @param callback function(error, content)
+ */
+module.exports.downloadSignedContent = function (accessToken, codeValue, callback) {
+  var r = {
+    url: bankidUtil.getClientPdfClaim(codeValue),
+    headers: {
+      Authorization: bankidUtil.getAuth(accessToken)
+    },
+    encoding: null
+  };
+
+  request.get(r, function (error, response, buffer) {
+    callback(null, {
+      buffer: buffer,
+      contentType: response.headers['content-type'],
+      fileName: response.headers['content-disposition'].split('filename=')[1]
+    });
+  })
+};
+/**
+ * После отработки п.3 (подписание), BankID делает редирект на https://{PI:port}/URL_callback?code=code_value с передачей
+ * параметра авторизационного ключа code, тем самым заканчивая фазу п.4.
+ * https://{PI:port}/ResourceService/checked/claim/code_value/clientPdfClaim
+ * @param accessToken
+ * @param codeValue
+ */
+module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
+  return module.exports.getScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
 };
 
 /**

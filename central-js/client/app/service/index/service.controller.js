@@ -1,10 +1,10 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location) {
-
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location', '$stateParams', '$state', '$anchorScroll', 'TitleChangeService',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location, $stateParams, $state, $anchorScroll, TitleChangeService) {
+    $rootScope.catalogTab = 1;
     $scope.catalog = [];
-    $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
+    // $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
     $scope.limit = 4;
     $scope.nLimitCategory = function(nID){
         if(statesRepository.isCatalogCategoryShowAll(nID)){
@@ -15,7 +15,7 @@ angular.module('app')
     };
     $scope.bAdmin = AdminService.isAdmin();
     $scope.recalcCounts = true;
-    $scope.spinner = true;
+    $scope.mainSpinner = true;
 
     /*$scope.isCatalogCategoryShowAll = function(nID){
         return statesRepository.isSearch(nID);
@@ -27,18 +27,15 @@ angular.module('app')
 
     var subscriptions = [];
     var subscriberId = messageBusService.subscribe('catalog:update', function(data) {
-      $scope.spinner = false;
+      $scope.mainSpinner = false;
       $scope.fullCatalog = data;
       $scope.catalog = data;
-      console.log('new catalog', $scope.catalog);
-      // TODO: move other handlers here, like update counters, etc
-      $scope.catalogCounts = CatalogService.getCatalogCounts(data);
+      $rootScope.rand = (Math.random()*10).toFixed(2);
     }, false);
     subscriptions.push(subscriberId);
 
 
     subscriberId = messageBusService.subscribe('catalog:updatePending', function() {
-      $scope.spinner = true;
       $scope.catalog = [];
     });
     subscriptions.push(subscriberId);
@@ -68,5 +65,41 @@ angular.module('app')
         return false
       }
     };
-    
+
+    $scope.stateCheck = $state.params.catID;
+
+    $scope.changeCategory = function (num) {
+      if(num){
+        $rootScope.catalogTab = num;
+      }
+      else if($state.params) {
+        $rootScope.catalogTab = $state.params.catID;
+        return $rootScope.catalogTab;
+      }
+      else {
+        return $rootScope.catalogTab;
+      }
+    };
+
+    $scope.$on('$stateChangeStart', function(event, toState) {
+      $scope.spinner = true;
+      if(toState.name === 'index') {
+        CatalogService.getCatalogTreeTag(1).then(function (res) {
+          $scope.catalog = res;
+          $scope.changeCategory();
+          $scope.spinner = false;
+          $scope.mainSpinner = false;
+          TitleChangeService.defaultTitle();
+        });
+      }
+      if (toState.resolve) {
+        $scope.spinner = true;
+      }
+    });
+    $scope.$on('$stateChangeError', function(event, toState) {
+      if (toState.resolve) {
+        $scope.spinner = false;
+      }
+    });
+    $anchorScroll();
   }]);

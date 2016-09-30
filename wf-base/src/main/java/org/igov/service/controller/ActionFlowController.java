@@ -1,10 +1,7 @@
 package org.igov.service.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.subject.SubjectOrganDepartment;
@@ -18,6 +15,10 @@ import org.igov.util.JSON.JsonDateSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolQuartz;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,9 @@ public class ActionFlowController {
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
 	@Autowired
     private FlowService oFlowService;
+
+	@Autowired
+	Cherg cherg;
 
 
     /**
@@ -817,4 +821,245 @@ public class ActionFlowController {
         LOG.info("Result:{}", jsonRes);
         return jsonRes;
     }
+
+	@ApiOperation(value = "Получение списка тайм слотов", notes = "##### Пример:\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/getSlots\n\n"
+			+ "nID_Service_Private - 428"
+			+ "nDays - 2"
+			+ "Пример результата\n\n"
+			+ "\n```json\n"
+			+ "{\n"
+			+ "  \"2016-08-15\": [\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"09:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"09:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"09:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"09:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"10:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"10:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"10:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"10:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"11:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"11:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"11:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"11:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"12:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"12:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"12:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"12:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"14:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"14:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"14:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"14:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"15:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"15:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"15:35:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"15:50:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"16:05:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"16:20:00\"\n"
+			+ "    },\n"
+			+ "    {\n"
+			+ "      \"date\": \"2016-08-15\",\n"
+			+ "      \"t_length\": 15,\n"
+			+ "      \"time\": \"16:35:00\"\n"
+			+ "    }\n"
+			+ "  ],\n"
+			+ "  \"2016-08-14\": []\n"
+			+ "}"
+			+ "\n```\n" )
+	@RequestMapping(value = "/DMS/getSlots", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String getSlots(
+			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
+			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
+	) throws Exception {
+		if (nDays > 7) {
+			nDays = 7;
+		}
+		DateTime oDate = DateTime.now();
+		JSONObject result = new JSONObject();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+
+		JSONArray slots = null;
+		for (int i = 0; i < nDays; i++) {
+			slots = cherg.getFreeTime(oDate, nID_Service_Private);
+			result.put(dateTimeFormatter.print(oDate), slots);
+			oDate = oDate.plusDays(1);
+		}
+
+		return result.toString();
+	}
+
+	@ApiOperation(value = "Резервирование тайм слота.", notes = "##### Пример:\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setSlotHold\n\n"
+			+ "nID_Service_Private - 428"
+			+ "sDateTime - 2016-08-17 14:05:00"
+			+ "sSubjectFamily - Sidorov"
+			+ "sSubjectName - Vladimir"
+			+ "sSubjectSurname - Petrovich"
+			+ "sSubjectPassport - 0101"
+			+ "sSubjectPhone - +380666800000"
+			+ "Пример результата\n\n"
+			+ "\n```json\n"
+			+ "{\n"
+			+ "  \"reserved_to\": \"2016-08-14 22:28:15\",\n"
+			+ "  \"reserve_id\": \"18573\",\n"
+			+ "  \"interval\": \"15\"\n"
+			+ "}"
+			+ "\n```\n" )
+	@RequestMapping(value = "/DMS/setSlotHold", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String setSlotHold(
+			@ApiParam(value = "ИД услуги", required = true) @RequestParam(value = "nID_Service_Private") String sID_Service_Private,
+			@ApiParam(value = "Дата и время в формате \"YYYY-MM-DD hh:ii:ss\"", required = true) @RequestParam(value = "sDateTime") String sDateTime,
+			@ApiParam(value = "Фамилия клиента", required = true) @RequestParam(value = "sSubjectFamily") String sSubjectFamily,
+			@ApiParam(value = "Имя клиента", required = true) @RequestParam(value = "sSubjectName") String sSubjectName,
+			@ApiParam(value = "Отчество клиента", required = true) @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
+			@ApiParam(value = "Последние 4 цифры паспорта", required = true) @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
+			@ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
+	) throws Exception {
+		JSONObject result;
+
+		result = cherg.setReserve(sID_Service_Private,
+				sDateTime,
+				sSubjectPhone,
+				sSubjectPassport,
+				sSubjectFamily,
+				sSubjectName,
+				sSubjectSurname);
+
+		return result.toString();
+	}
+
+	@ApiOperation(value = "Подтверждение резервации тайм слота.", notes = "##### Пример:\n"
+			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setSlot\n\n"
+			+ "nID_SlotHold - 18573"
+			+ "Пример результата\n\n"
+			+ "\n```json\n"
+			+ "{\n"
+			+ "  \"patronymic\": \"Petrovich\",\n"
+			+ "  \"date_time\": \"2016-08-17 14:05:00\",\n"
+			+ "  \"ticket_code\": \"418303677\",\n"
+			+ "  \"service_id\": \"428\",\n"
+			+ "  \"name\": \"Vladimir\",\n"
+			+ "  \"ticket_number\": \"501\",\n"
+			+ "  \"lastname\": \"Sidorov\"\n"
+			+ "}"
+			+ "\n```\n" )
+	@RequestMapping(value = "/DMS/setSlot", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String setSlot(
+			@ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold
+	) throws Exception {
+		JSONObject result;
+
+		result = cherg.confirmReserve(nID_SlotHold);
+
+		return result.toString();
+	}
 }

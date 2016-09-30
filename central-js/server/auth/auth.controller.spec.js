@@ -1,20 +1,22 @@
 'use strict';
 
-var should = require('should');
-var appTest = require('../app.spec');
-var testRequest = appTest.testRequest;
+var should = require('should')
+  , appTest = require('../app.spec')
+  , bankidData = require('./bankid/bankid.data.spec')
+  , testRequest = appTest.testRequest;
 
 describe('auth service tests', function () {
   var agent;
   before(function (done) {
-    appTest.loginWithBankID(function (error, loginAgent) {
+    appTest.loginWithBankID(function (error) {
       if (error) {
         done(error)
       } else {
-        agent = loginAgent;
         done();
       }
-    });
+    }, function (loginAgent) {
+      agent = loginAgent;
+    }, bankidData.codes.forCustomerDataResponse);
   });
 
   it('should respond with 200 and remove cookie session', function (done) {
@@ -26,7 +28,7 @@ describe('auth service tests', function () {
         //TODO check why cookies are not removed
         done();
       }).catch(function (err) {
-        done(err)
-      });
+      done(err)
+    });
   });
 });

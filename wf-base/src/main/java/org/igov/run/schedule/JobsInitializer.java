@@ -90,5 +90,28 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.info("scheduleJob... SKIPED(test)!");
         }
     }
+    
+    private void addPaymentProcessorJob(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_PaymentProcessor_Standart = new JobDetail("oJobDetail_PaymentProcessor_Standart",
+                "oJobDetail_PaymentProcesor_Group", JobPaymentProcessor.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
+                "oCronTrigger_EveryNight_Group");
+        try {
+            LOG.info("oCronExpression__EveryNight_Deep...");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 9 1/1 * ?");  
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+        if (!generalConfig.isSelfTest() && !"https://prod-double-region.tech.igov.org.ua".equalsIgnoreCase(generalConfig.getSelfHost())) {
+            LOG.info("scheduleJob...");
+            scheduler.scheduleJob(oJobDetail_PaymentProcessor_Standart, oCronTrigger_EveryNight_Deep);
+        } else {
+            LOG.info("scheduleJob... SKIPED(test)!");
+        }
+    }
 
 }

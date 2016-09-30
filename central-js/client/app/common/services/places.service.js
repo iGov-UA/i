@@ -26,7 +26,7 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
   self.decode_utf8 = function ( s ) {
       return decodeURIComponent( escape( s ) );
     }
-    
+
   self.saveLocal = function(oSavedPlaceData) {
     if (self.rememberMyData) {
       localStorage.setItem('igSavedPlaceData', JSON.stringify(oSavedPlaceData));
@@ -50,7 +50,7 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
   /**
    * returns saved place data
    */
-  
+
   self.getPlaceData = function() {
     var localData = JSON.parse(localStorage.getItem('igSavedPlaceData'));
     if (self.rememberMyData && localData) {
@@ -215,34 +215,57 @@ angular.module('app').service('PlacesService', function($http, $state, ServiceSe
       if (self.findServiceDataByCountry() !== null) {
         result.thisCountry = true;
       }
-
-      // сервіс доступний у якомусь із регіонів
-      if (srv.hasOwnProperty('nID_Region') && srv.nID_Region.nID !== null) {
+      
+      if(srv.hasOwnProperty('oPlace') && !srv.hasOwnProperty('oPlaceRoot') && srv.oPlace.nID !== null) {
         result.someRegion = true;
-        // сервіс доступний у вибраному регіоні
-        if (oPlace && oPlace.region && oPlace.region.nID === srv.nID_Region.nID) {
-          // сервіс доступний у якомусь із міст вибраного регіону
+        if(oPlace && oPlace.region && oPlace.region.sID_UA === srv.oPlace.sID_UA) {
           result.thisRegion = true;
         }
       }
 
-      // сервіс доступний у якомусь із міст
-      if (srv.hasOwnProperty('nID_City') && srv.nID_City.nID !== null){
+      if (srv.hasOwnProperty('oPlace') && srv.hasOwnProperty('oPlaceRoot') && srv.oPlace.nID !== null) {
         result.someCity = true;
-        // ...і доступний у вибраному місті
-        if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
+        if (oPlace && oPlace.city && oPlace.city.sID_UA === srv.oPlace.sID_UA) {
           result.thisCity = true;
         }
 
-        if(oPlace && oPlace.region && oPlace.region.nID === srv.nID_City.nID_Region.nID) {
+        if (oPlace && oPlace.region && oPlace.region.nID === srv.oPlaceRoot.nID) {
           result.someCityInThisRegion = true;
 
-          // ...і у вибраному місті, що знаходиться у вибраній області
-          if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
+          if (oPlace && oPlace.city && oPlace.city.sID_UA === srv.oPlace.sID_UA) {
             result.thisCityInThisRegion = true;
           }
         }
       }
+
+
+      // // сервіс доступний у якомусь із регіонів
+      // if (srv.hasOwnProperty('nID_Region') && srv.nID_Region.nID !== null) {
+      //   result.someRegion = true;
+      //   // сервіс доступний у вибраному регіоні
+      //   if (oPlace && oPlace.region && oPlace.region.nID === srv.nID_Region.nID) {
+      //     // сервіс доступний у якомусь із міст вибраного регіону
+      //     result.thisRegion = true;
+      //   }
+      // }
+      //
+      // // сервіс доступний у якомусь із міст
+      // if (srv.hasOwnProperty('nID_City') && srv.nID_City.nID !== null){
+      //   result.someCity = true;
+      //   // ...і доступний у вибраному місті
+      //   if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
+      //     result.thisCity = true;
+      //   }
+      //
+      //   if(oPlace && oPlace.region && oPlace.region.nID === srv.nID_City.nID_Region.nID) {
+      //     result.someCityInThisRegion = true;
+      //
+      //     // ...і у вибраному місті, що знаходиться у вибраній області
+      //     if (oPlace && oPlace.city && oPlace.city.nID === srv.nID_City.nID) {
+      //       result.thisCityInThisRegion = true;
+      //     }
+      //   }
+      // }
     });
     return result;
   };

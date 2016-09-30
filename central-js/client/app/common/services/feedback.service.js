@@ -23,4 +23,77 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
       $http.post('./api/messages/feedback', data).then(function(response) {});
     };
 
+    this.getFeedbackForService = function (serviceId, id, token) {
+      var deferred = $q.defer();
+      $http.get('./api/service/' + serviceId + '/feedback?sID_Order='+id+'&sID_Token='+token+'').then(function(data){
+        if(data.code === 'SYSTEM_ERR' || data.code==='BUSINESS_ERR'){
+          deferred.reject(data);
+        }else{
+          deferred.resolve(data);
+        }
+      });
+
+      return deferred.promise;
+    };
+
+    this.getFeedbackListForService = function (serviceId) {
+      var deferred = $q.defer();
+      $http.get('./api/service/' + serviceId + '/feedback').then(function(data){
+        if(data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR'){
+          deferred.reject(data);
+        }else{
+          deferred.resolve(data);
+        }
+      });
+
+      return deferred.promise;
+    };
+
+    this.postFeedbackForService =function(feedbackParams){
+      var deferred = $q.defer();
+      var data = {
+        'sID_Token': feedbackParams.sID_Token,
+        'sBody': feedbackParams.sBody,
+        'nID': feedbackParams.nID,
+        'sID_Source': feedbackParams.sID_Source,
+        'sAuthorFIO': feedbackParams.sAuthorFIO,
+        'sMail': feedbackParams.sMail,
+        'sHead': feedbackParams.sHead,
+        'nID_Rate': feedbackParams.nID_Rate,
+        'nID_Service': feedbackParams.nID_Service,
+        'sAnswer': feedbackParams.sAnswer
+      };
+
+      $http.post('./api/service/'+feedbackParams.nID_Service+'/feedback', data).then(function(response) {
+        if(response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR'){
+          deferred.reject(response);
+        }else{
+          deferred.resolve(response);
+        }
+      });
+
+      return deferred.promise;
+    };
+
+  this.postFeedbackAnswerForService =function(feedbackParams){
+    var deferred = $q.defer();
+    var data = {
+      'sID_Token': feedbackParams.sID_Token,
+      'sBody': feedbackParams.sBody,
+      'nID_SubjectMessageFeedback': feedbackParams.nID_SubjectMessageFeedback,
+      'nID_Subject': feedbackParams.nID_Subject,
+      'sAuthorFIO': feedbackParams.sAuthorFIO
+    };
+
+    $http.post('./api/service/'+feedbackParams.nID_Service+'/feedbackAnswer', data).then(function(response) {
+      if(response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR'){
+        deferred.reject(response);
+      }else{
+        deferred.resolve(response);
+      }
+    });
+
+    return deferred.promise;
+  };
+
 });

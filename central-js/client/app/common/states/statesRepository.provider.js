@@ -32,7 +32,15 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "mvd": {
       "header": "mvd.header.html",
       "footer": "mvd.footer.html",
-      "placesID": ['3200000000', '8000000000']
+      "placesID": []
+      ,"asOrgan": []
+      ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
+    },
+    "alpha_mvd": {
+      "header": "mvd.header.html",
+      "footer": "mvd.footer.html",
+      "placesID": []
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
@@ -55,6 +63,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     ,"kharkiv": modeModel.kharkiv
     ,"kharkov": modeModel.kharkiv
     ,"mvd": modeModel.mvd
+    ,"alpha_mvd": modeModel.alpha_mvd
     ,"dfs": modeModel.dfs
   };
   this.init = function (domen) {
@@ -68,7 +77,11 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
-      } else if (domen.indexOf('mvs') >= 0) {
+      }else if (domen.indexOf('alpha-mvd') >= 0) {
+        //alpha-mvd.test.igov.org.ua
+        this.mode = 'alpha_mvd';
+        //this.mode = modes.kyiv;
+      }else if (domen.indexOf('mvd') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'mvd';
         //this.mode = modes.kyiv;
@@ -80,12 +93,21 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         this.mode = 'dfs';
       } else {
         var matches = findModeRegexp.exec(domen);
+        // проверка на старые домены test & test-version устарела, со временем их нужно будет убрать. добавлена проверка на новые домена.
         if (matches[1] === 'test') {// || matches[1] === 'test-version'
           if (matches[2] === 'version') {
             this.mode = matches[3];
           } else {
             this.mode = matches[2];
           }
+        } else if (matches[1] === 'delta'
+          || matches[1] === 'alpha'
+          || matches[1] === 'beta'
+          || matches[1] === 'omega') {
+          this.mode = matches[3];
+        } else if ( (matches[1] === 'alpha' && matches[2] === 'old')
+          || (matches[1] === 'beta' && matches[2] === 'old')) {
+          this.mode = matches[4];
         } else {
           this.mode = matches[1];
         }
@@ -106,7 +128,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[mode]) {
       hdr = modes[mode].header;
     } else {
-      hdr = 'header.html';
+      hdr = 'new.header.html';
     }
     return 'app/header/' + hdr;
   };
@@ -131,7 +153,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'IndexController'
         },
         'main@': {
-          templateUrl: 'app/service/index/services.html',
+          templateUrl: 'app/service/index/new.services.html',
           controller: 'ServiceController'
         },
         footer: {
@@ -154,7 +176,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     }
     return [];
   };
-  
+
   StatesRepository.prototype.getOrgan = function () {
     if (!!modes[this.mode]) {
         if(modes[this.mode].asOrgan.length>0){
@@ -163,21 +185,21 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     }
     return "";
   };
-  
+
   StatesRepository.prototype.getOrgans = function () {
     if (!!modes[this.mode]) {
       return modes[this.mode].asOrgan;
     }
     return [];
   };
-  
+
   StatesRepository.prototype.isSearch = function () {
     if (!!modes[this.mode]) {
       return modes[this.mode].bSearch;
     }
     return true;
   };
-  
+
   StatesRepository.prototype.isCatalogCategoryShowAll = function (nID) {
     var bAll=false;
     if (!!modes[this.mode] && nID) {
@@ -191,7 +213,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     }
     return bAll;
   };
-  
+
 
   StatesRepository.prototype.getRegion = function (regions) {
     var result = null;

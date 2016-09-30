@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Create index" author="olga" runOnChange="false" failOnError="false">
+       
+        <createIndex indexName="idx_nID_Process" tableName="Attribute" unique="false">
+            <column name="nID_Process"/>
+        </createIndex> 
+        
+         <createIndex indexName="idx_nID_ProcessTask" tableName="Attribute" unique="false">
+            <column name="nID_ProcessTask"/>
+        </createIndex>
+        
+    </changeSet>
+    
+    <changeSet id="Add colum access" author="olga" runOnChange="false">
+        
+        <!--dropPrimaryKey tableName="AccessGroup_ProcessTask"/>
+        
+        <dropNotNullConstraint columnDataType="bigint" columnName="nID_ProcessTask" tableName="AccessGroup_ProcessTask"/-->
+       
+        <addColumn tableName="AccessGroup_ProcessTask">
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <!--addPrimaryKey constraintName="PK_AccessGroup_Process_ProcessTask"
+                             columnNames="nID_AccessGroup, nID_Process, nID_ProcessTask"
+                             tableName="AccessGroup_ProcessTask"/-->
+        
+        <!--dropPrimaryKey tableName="AccessUser_ProcessTask"/>
+        
+        <dropNotNullConstraint columnDataType="bigint" columnName="nID_ProcessTask" tableName="AccessUser_ProcessTask"/-->
+       
+        <addColumn tableName="AccessUser_ProcessTask">
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <!--addPrimaryKey constraintName="PK_AccessUser_Process_ProcessTask"
+                             columnNames="nID_AccessUser, nID_Process, nID_ProcessTask"
+                             tableName="AccessUser_ProcessTask"/-->
+        
+    </changeSet>
+    
+    <changeSet id="Add AttributeName" author="bw" runOnChange="false" failOnError="false">
+        <createTable tableName="AttributeName">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addColumn tableName="Attribute">
+             <column name="nID_AttributeName" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Attribute_AttributeName"
+                             referencedTableName="AttributeName" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </addColumn>
+       <addAutoIncrement tableName="AttributeName" columnName="nID" startWith="2000" columnDataType="bigint"/>
+    </changeSet>
+    
+     <changeSet id="Add_sID_AttributeName" author="inna" runOnChange="false">
+        <addColumn tableName="AttributeName">
+             <column name="sID" type="varchar(255)">
+              <constraints nullable="false"/>
+             </column>
+        </addColumn>
+    </changeSet>
+     
+    <!--changeSet id="Add AttributeName 1" author="bw" runOnChange="false">
+        <createTable tableName="AttributeName">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addColumn tableName="Attribute">
+             <column name="nID_AttributeName" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Attribute_AttributeName"
+                             referencedTableName="AttributeName" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </addColumn>
+       <addAutoIncrement tableName="AttributeName" columnName="nID" startWith="2000" columnDataType="bigint"/>
+    </changeSet-->
+        
+</databaseChangeLog>

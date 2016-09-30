@@ -15,6 +15,11 @@ module.exports.syncedCustomer = {
   nID: 20049
 };
 
+module.exports.customerShort = {
+  "type": "physical",
+  "clId": "111111dfdfd22222"
+};
+
 module.exports.customer = {
   "type": "physical",
   "clId": "111111dfdfd22222",

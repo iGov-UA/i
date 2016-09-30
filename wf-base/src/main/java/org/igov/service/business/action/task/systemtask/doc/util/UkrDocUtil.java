@@ -115,7 +115,7 @@ public class UkrDocUtil {
         attributes.put("Дата документа юридического лица", sDateDocIncoming);
         attributes.put("Номер документа юридического лица", sNumberDocIncoming);
         
-        
+
         Map<String, Object> extensions = new HashMap<String, Object>();
         if (attachmentsIds != null && !attachmentsIds.isEmpty()) {
             Map<String, List<?>> tables = new HashMap<String, List<?>>();

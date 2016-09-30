@@ -186,4 +186,13 @@ public class ServiceData extends AbstractEntity {
     public void setnID_Server(Long nID_Server) {
         this.nID_Server = nID_Server;
     }
+
+    public SubjectOrgan getSubject_Operator() {
+        return subject_Operator;
+    }
+
+    public void setSubject_Operator(SubjectOrgan subject_Operator) {
+        this.subject_Operator = subject_Operator;
+    }
+
 }

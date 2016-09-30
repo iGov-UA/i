@@ -35,6 +35,7 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
         nID_Service: req.query.nID_Service,
         nID_ServiceData: req.params.nID,
         nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment,
+        nSlots: req.query.nSlots,
         nDiffDays: req.query.nDiffDays
       }, null, sHost);
     });
@@ -46,6 +47,7 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
 //          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
 
     var nID_Server = req.query.nID_Server;
+    var nSlots = req.query.nSlots;
     activiti.getServerRegionHost(nID_Server, function(sHost){
         //var sURL = sHost+'/service/object/file/upload_file_to_redis';
         //console.log("sURL="+sURL);
@@ -54,7 +56,45 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
       //sHost = buildSHost(req.query.sURL);
     //	activiti.sendPostRequest(req, res, '/action/flow/setFlowSlot_ServiceData', {
         activiti.sendPostRequest(req, res, '/service/action/flow/setFlowSlot_ServiceData', {
-                nID_FlowSlot: req.params.nID
+                nID_FlowSlot: req.params.nID,
+                nSlots: nSlots
         }, null, sHost);
     });
+};
+
+module.exports.getSlotsDMS = function (req, res) {
+  var nID_Server = req.query.nID_Server;
+  var nID_Service_Private = req.query.nID_Service_Private;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/getSlots', {
+      nID_Service_Private: nID_Service_Private,
+      nDays: 7
+    }, null, sHost);
+  });
+};
+
+module.exports.setSlotHoldDMS = function (req, res) {
+  var nID_Server = req.body.nID_Server;
+  var oData = req.body;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlotHold', {
+      nID_Service_Private: oData.nID_Service_Private,
+      sDateTime: oData.sDateTime,
+      sSubjectFamily: oData.sSubjectFamily,
+      sSubjectName: oData.sSubjectName,
+      sSubjectSurname: oData.sSubjectSurname,
+      sSubjectPassport: oData.sSubjectPassport,
+      sSubjectPhone: oData.sSubjectPhone
+    }, null, sHost);
+  });
+};
+
+module.exports.setSlotDMS = function (req, res) {
+  var nID_Server = req.body.nID_Server;
+  var oData = req.body;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlot', {
+      nID_SlotHold: oData.nID_SlotHold
+    }, null, sHost);
+  });
 };

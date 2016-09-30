@@ -1,7 +1,6 @@
 'use strict';
 
 var config = require('../../config/environment')
-//var config = require('../../config')
   , fs = require('fs')
   , crypto = require('crypto')
   , constants = require('constants')
@@ -60,8 +59,10 @@ var baseURls = {
   resource: {
     base: getResourceURL(),
     path: {
+      scan: '/ResourceService/checked/scan',
       info: '/ResourceService/checked/data',
       sign: '/ResourceService/checked/uploadFileForSignature',
+      signFiles: '/ResourceService/checked/uploadFilesForSignature',
       claim: '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
     }
   }

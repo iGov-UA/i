@@ -59,59 +59,6 @@ public class ActionItemService {
     @Autowired
     private PlaceDao placeDao;
 
-    public SerializableResponseEntity<String> categoriesToJsonResponse(List<Category> categories) {
-        for (Category c : categories) {
-            for (Subcategory sc : c.getSubcategories()) {
-                sc.setCategory(null);
-
-                for (Service service : sc.getServices()) {
-                    service.setFaq(null);
-                    service.setInfo(null);
-                    service.setLaw(null);
-                    //service.setSub(service.getServiceDataList().size());
-
-                    List<ServiceData> serviceDataFiltered = service.getServiceDataFiltered(generalConfig.isSelfTest());
-                    service.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);
-                    //service.setTests(service.getTestsCount());
-                    //service.setStatus(service.getTests(); service.getTestsCount());
-                    service.setStatus(service.getStatusID());
-                    service.setServiceDataList(null);
-                    service.setSubcategory(null);
-                }
-            }
-        }
-
-        return new SerializableResponseEntity<>(JsonRestUtils.toJsonResponse(categories));
-    }
-
-    public void filterOutServicesByServiceNamePrefix(List<Category> aCategory, String sPrefix) {
-        for (Category oCategory : aCategory) {
-            for (Subcategory oSubcategory : oCategory.getSubcategories()) {
-                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
-                        .hasNext();) {
-                    Service oService = oServiceIterator.next();
-                    if (oService.getName().startsWith(sPrefix)) {
-                        oServiceIterator.remove();
-                    }
-                }
-            }
-        }
-    }
-
-    public void filterServicesByServiceName(List<Category> aCategory, String sFind) {
-        for (Category oCategory : aCategory) {
-            for (Subcategory oSubcategory : oCategory.getSubcategories()) {
-                for (Iterator<Service> oServiceIterator = oSubcategory.getServices().iterator(); oServiceIterator
-                        .hasNext();) {
-                    Service oService = oServiceIterator.next();
-                    if (!bFoundText(oService.getName(), sFind)) {
-                        oServiceIterator.remove();
-                    }
-                }
-            }
-        }
-    }
-
     public static boolean checkIdPlacesContainsIdUA(PlaceDao placeDao, Place place, List<String> asID_Place_UA) {
         boolean res = false;
 

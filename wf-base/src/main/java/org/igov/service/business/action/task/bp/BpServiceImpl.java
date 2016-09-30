@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.bp;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * @author OlgaPrylypko
@@ -40,7 +40,7 @@ public class BpServiceImpl implements BpService {
     @Override
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
-        String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
+        String organ = (variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null);
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
         Map<String, String> params = new HashMap<>();
@@ -52,11 +52,14 @@ public class BpServiceImpl implements BpService {
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
-                Object value = variables.get(keyValue);
-                setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
+                if(!"organ".equalsIgnoreCase(keyValue)){
+                    Object value = variables.get(keyValue);
+                    setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
+                }
             }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
+            LOG.warn("error stacktrace!: {}", ExceptionUtils.getStackTrace(oException));
             LOG.debug("FAIL:", oException);
         }
         return jsonProcessInstance;

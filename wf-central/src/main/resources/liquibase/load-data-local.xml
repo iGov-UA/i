@@ -15,6 +15,10 @@
             DELETE FROM "City";
             DELETE FROM "Category";
             DELETE FROM "Subcategory";
+            DELETE FROM "ServiceTagRelation";
+            DELETE FROM "ServiceTagLink";
+            DELETE FROM "ServiceTag";
+            DELETE FROM "ServiceTagType";
             DELETE FROM "ServiceType";
             DELETE FROM "Service";
             DELETE FROM "ServiceData";
@@ -110,7 +114,11 @@
             <column name="sNote" type="STRING"/>
         </loadUpdateData>
 
-        <!-- 2 связанные таблицы Service, ServiceData перезагружаются каждый раз -->
+        <!-- 5 связанных таблиц ServiceTag, ServiceTagLink, ServiceTagRelation, Service, ServiceData  перезагружаются каждый раз -->
+        <delete tableName="ServiceTagRelation"/>
+        <delete tableName="ServiceTagLink"/>
+        <delete tableName="ServiceTag"/>
+        <delete tableName="ServiceTagType"/>
         <delete tableName="ServiceData"/>
         <delete tableName="Service"/>
         <loadData encoding="UTF-8" file="data/Service.csv" tableName="Service" separator=";">
@@ -123,6 +131,28 @@
             <column name="sLaw" type="STRING"/>
             <column name="nOpenedLimit" type="NUMERIC"/>
             <column name="sSubjectOperatorName" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagType.csv" tableName="ServiceTagType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTag.csv" tableName="ServiceTag" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName_RU" type="STRING"/>
+            <column name="sName_UA" type="STRING"/>
+            <column name="nID_ServiceTagType" type="NUMERIC"/>
+            <column name="nOrder" type="NUMERIC"/>
+            <column name="sLinkImage" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagLink.csv" tableName="ServiceTagLink" separator=";">
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_ServiceTag" type="NUMERIC"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagRelation.csv" tableName="ServiceTagRelation" separator=";">
+            <column name="nID_ServiceTag_Parent" type="NUMERIC"/>
+            <column name="nID_ServiceTag_Child" type="NUMERIC"/>
         </loadData>
 
         <loadUpdateData primaryKey  = "nID"
@@ -374,7 +404,19 @@
             <column name="nID_Server"     type="NUMERIC"/>
             <column name="nID_Subject"    type="NUMERIC"/>
         </loadUpdateData>
+
+         <loadUpdateData tableName="SubjectActionKVED" primaryKey="nID" encoding="UTF-8" file="data/SubjectActionKVED.csv" separator=";" >
+            <column name="nID" type = "NUMERIC" />
+            <column name="sID" type = "STRING" />
+            <column name="sNote" type = "STRING" />
+        </loadUpdateData>
         
+         <loadUpdateData tableName="ObjectPlace_UA" primaryKey="nID" encoding="UTF-8" file="data/ObjectPlace_UA.csv" separator=";" >
+            <column name="nID" type = "NUMERIC" />
+            <column name="sID" type = "STRING" />
+            <column name="sName_UA" type = "STRING" />
+            <column name="nID_PlaceType" type = "NUMERIC" />
+        </loadUpdateData>
     </changeSet>
 
     <changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">

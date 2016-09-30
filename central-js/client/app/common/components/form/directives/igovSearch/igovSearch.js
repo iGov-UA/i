@@ -4,7 +4,7 @@ angular.module('app')
   var directive = {
     restrict: 'E',
     scope: {},
-    templateUrl: 'app/common/components/form/directives/igovSearch/igovSearch.html',
+    templateUrl: 'app/common/components/form/directives/igovSearch/new.igovSearch.html',
     link: function($scope, $el, $attr) {
       var fullCatalog = [];
       var subscriptions = [];

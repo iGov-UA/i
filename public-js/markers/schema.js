@@ -7,6 +7,7 @@
  *
  * Более подробная документация:
  * http://epoberezkin.github.io/ajv/
+ * alpha
  */
 angular.module('iGovMarkers')
     .constant('iGovMarkersSchema', {
@@ -51,7 +52,7 @@ angular.module('iGovMarkers')
                             required: ["sID_Field", "nSymbols", "sValueNew", "sID_Element_sValue"],
                             additionalProperties: false
                         },
-                        "^RequiredFieldsOnCondition_": {
+                        "^RequiredFieldsOnCondition": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
@@ -73,7 +74,7 @@ angular.module('iGovMarkers')
                             required: ["aField_ID", "asID_Field", "sCondition"],
                             additionalProperties: false
                         },
-                        "^ValuesFieldsOnCondition_": {
+                        "^ValuesFieldsOnCondition": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"},
@@ -145,6 +146,15 @@ angular.module('iGovMarkers')
                                 bValue: {type: "boolean"}
                             },
                             required: ["aField_ID", "bValue"],
+                            additionalProperties: false
+                        },
+                        "^Line_": {
+                            type: "object",
+                            properties: {
+                                aElement_ID: {"$ref": "#/definitions/stringArray"},
+                                sValue: {type: "string"}
+                            },
+                            required: ["aElement_ID"],
                             additionalProperties: false
                         }
                     },

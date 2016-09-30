@@ -28,7 +28,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплатити держ. мито онлайн&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливостю оплатити держ. мито онлайн&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
@@ -147,7 +147,7 @@
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
-          <activiti:value id="sEnum3" name="оплата через банк (квитанція)"></activiti:value>
+          <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -258,7 +258,7 @@
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
-          <activiti:value id="sEnum3" name="оплата через банк (квитанція)"></activiti:value>
+          <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -364,7 +364,7 @@
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
 <br><br>
@@ -443,7 +443,7 @@ ${sMail_Signature} <br><br>
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Вам відмовлено в наданні послуги.<br>
@@ -481,7 +481,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
  <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 
 Дякуємо, Вам що скористались нашим сервісом подачи заяви про державну реєстрацію шлюбу!<br /><br />
@@ -546,7 +546,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Спосіб сплати держ.мита" type="enum" writable="false">
           <activiti:value id="sEnum1" name="пільги"></activiti:value>
           <activiti:value id="sEnum2" name="оплата онлайн"></activiti:value>
-          <activiti:value id="sEnum3" name="оплата через банк (квитанція)"></activiti:value>
+          <activiti:value id="sEnum3" name="оплата квитанцієй"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -654,7 +654,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Вам відмовлено в реєстраціі шлюбу.<br />
@@ -784,7 +784,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановні ${firstName_UA1} ${middleName_UA1} та ${firstName_UA2} ${middleName_UA2}.</h3>
 <br />
 На жаль, Ви не сплатили держ. мито протягом одного дня.<br>

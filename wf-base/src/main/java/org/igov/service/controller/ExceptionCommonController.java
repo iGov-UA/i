@@ -43,57 +43,60 @@ public class ExceptionCommonController {
     @ExceptionHandler(value = CommonServiceException.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchCommonServiceException(CommonServiceException exception) {
-        String sClass = exception.getStackTrace()[0].getClassName();
-        String sFileName = exception.getStackTrace()[0].getFileName();
-        String sMethod = exception.getStackTrace()[0].getMethodName();
-        LOG.error("Error:{}. REST API Exception", exception.getMessage());
-        LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+    ResponseEntity<String> catchCommonServiceException(CommonServiceException oException) {
+                //LOG.error("Error:{}. REST API Exception", oException.getMessage());
+                //LOG.trace("FAIL:", oException);
+                new Log(oException, LOG)
+                ._Case("REST_API")
                 ._Head("REST API Exception")
                 ._Status(LogStatus.ERROR)
-                ._StatusHTTP(exception.getHttpStatus().value())
-                ._StatusHTTP(exception.getHttpStatus().value())
-                ._Send()
+                ._StatusHTTP(oException.getHttpStatus().value())
+                ._StatusHTTP(oException.getHttpStatus().value())
+                ._LogTrace()
+                .save()
                 ;
-        return JsonRestUtils.toJsonResponse(exception.getHttpStatus(),
-                new ErrorResponse(exception.getErrorCode(), exception.getMessage()));
+        return JsonRestUtils.toJsonResponse(oException.getHttpStatus(),
+                new ErrorResponse(oException.getErrorCode(), oException.getMessage()));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
-        LOG.error("Error:{}. REST System Exception", exception.getMessage());
-        LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+    ResponseEntity<String> catchRuntimeException(RuntimeException oException) {
+                //LOG.error("Error:{}. REST System Exception", oException.getMessage());
+                //LOG.trace("FAIL:", oException);
+                new Log(oException, LOG)
+                ._Case("REST_System")
                 ._Head("REST System Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                ._Send()
+                ._LogTrace()
+                .save()
                 ;
-        if(exception.getMessage() != null && exception.getMessage().contains("act_fk_tskass_task")){
+        if(oException.getMessage() != null && oException.getMessage().contains("act_fk_tskass_task")){
             return JsonRestUtils.toJsonResponse("");
         } else{
             return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
+                new ErrorResponse(SYSTEM_ERROR_CODE, oException.getMessage()));
         }
     }
 
     @ExceptionHandler(value = Exception.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchException(Exception exception) {
-        LOG.error("Error:{}. REST Exception", exception.getMessage());
-        LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+    ResponseEntity<String> catchException(Exception oException) {
+                //LOG.error("Error:{}. REST Exception", oException.getMessage());
+                //LOG.trace("FAIL:", oException);
+                new Log(oException, LOG)
+                ._Case("REST_Unknown")
                 ._Head("REST Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                ._Send()
+                ._LogTrace()
+                .save()
                 ;
         return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
+                new ErrorResponse(SYSTEM_ERROR_CODE, oException.getMessage()));
     }
 
     @Ignore
@@ -101,33 +104,37 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchMissingServletRequestParameterException(
-            MissingServletRequestParameterException exception) {
-        LOG.error("Error:{}. REST Wrong Input Parameters Exception", exception.getMessage());
-        LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+            MissingServletRequestParameterException oException) {
+                //LOG.error("Error:{}. REST Wrong Input Parameters Exception", oException.getMessage());
+                //LOG.trace("FAIL:", oException);
+                new Log(oException, LOG)
+                ._Case("REST_FailArgs")
                 ._Head("REST Wrong Input Parameters Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
-                ._Send()
+                ._LogTrace()
+                .save()
                 ;
         return JsonRestUtils.toJsonResponse(HttpStatus.BAD_REQUEST,
-                new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
+                new ErrorResponse(BUSINESS_ERROR_CODE, oException.getMessage()));
     }
 
     @Ignore
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public
     @ResponseBody
-    ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        LOG.error("Error:{}. REST Wrong Input Body Exception", exception.getMessage());
-        LOG.trace("FAIL:", exception);
-        new Log(this.getClass(), exception)
+    ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException oException) {
+                //LOG.error("Error:{}. REST Wrong Input Body Exception", oException.getMessage());
+                //LOG.trace("FAIL:", oException);
+                new Log(oException, LOG)
+                ._Case("REST_FailBody")
                 ._Head("REST Wrong Input Body Exception")
                 ._Status(LogStatus.ERROR)
                 ._StatusHTTP(HttpStatus.BAD_REQUEST.value())
-                ._Send()
+                ._LogTrace()
+                .save()
                 ;
         return JsonRestUtils.toJsonResponse(HttpStatus.BAD_REQUEST,
-                new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
+                new ErrorResponse(BUSINESS_ERROR_CODE, oException.getMessage()));
     }
 }

@@ -10,7 +10,6 @@ var keypair = require('keypair')
   , should = require('should')
   , assert = require('assert')
   , config = require('../../config/environment');
-  //, config = require('../../config');
 
 describe('decrypt object fields', function () {
   before(function (done) {
@@ -24,7 +23,7 @@ describe('decrypt object fields', function () {
     var testCustomer = JSON.parse(JSON.stringify(appData.customer));
 
     var publicKey = {
-      key: fs.readFileSync(config.bankid.publicKey),
+      key: fs.readFileSync(__dirname + '/../../../iGov_sgn_cert.pem'),
       padding: constants.RSA_PKCS1_PADDING
     };
 

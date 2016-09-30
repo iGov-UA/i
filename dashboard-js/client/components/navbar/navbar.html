@@ -3,26 +3,41 @@
     <div class="navbar navbar-default navbar-static-top i-gov-navbar" ng-controller="NavbarCtrl">
 
       <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" class="navbar-header i-gov-navbar-instruments-container">
-        <a href="#" class="i-gov-navbar-instruments" ng-click="iGovNavbarHelper.areInstrumentsVisible = !iGovNavbarHelper.areInstrumentsVisible">
+        <a href="#" class="i-gov-navbar-instruments"
+           ng-click="iGovNavbarHelper.areInstrumentsVisible = !iGovNavbarHelper.areInstrumentsVisible">
           <img ng-show="!iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u93.png">
           <img ng-show="iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u95.png">
         </a>
       </div>
 
-      <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed"
+           class="navbar-collapse collapse" id="navbar-main">
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
           <li class="navbar-search">
-            <span class="find-field-tooltip">
-              <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
-              <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
-            </span>
+            <table>
+              <tr>
+                <td>
+                  <span class="find-field-tooltip">
+                    <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value"
+                           ng-class="{'archive-error': tasksSearch.archive && archiveTextValue()}" placeholder="Пошук"
+                           style="height: 22px"/>
+                      <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
+                  </span><br>
+                  <div>
+                    <input type="checkbox" ng-model="tasksSearch.archive"><span class="small"> шукати в архіві</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="label label-info"
+                        ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
+                        ng-bind="tasksSearch.count"></span>
 
-
-            <span class="label label-info" ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
-              ng-bind="tasksSearch.count"></span>
-
-            <span class="label label-info" ng-if="tasksSearch.value && tasksSearch.loading && tasksSearch.submited">...</span>
+                  <span class="label label-info"
+                        ng-if="tasksSearch.value && tasksSearch.loading && tasksSearch.submited">...</span>
+                </td>
+              </tr>
+            </table>
           </li>
 
           <li ng-repeat="menu in iGovNavbarHelper.menus"
@@ -30,7 +45,7 @@
               ng-class="{active: isTaskFilterActive(menu.type)}">
 
             <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
-              ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
+               ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
           </li>
@@ -55,6 +70,33 @@
             </ul>
           </li>
         </ul>
+
+        <div class="archive-container" ng-if="tasksSearch.archive && switchArchive && archive">
+          <div class="archive-close" ng-click="closeArchive()">X</div>
+          <div class="archive-main-content">
+            <label for="sID">ІД заявки:</label><span id="sID"> {{archive.sID_}}</span><br>
+            <label for="sName">Джерело:</label><span id="sName"> {{archive.oSourceDB.sName}}</span><br>
+            <label for="oDateStart">Дата початку:</label><span id="oDateStart"> {{archive.oDateStart}}</span><br>
+            <label for="oDateFinish">Дата закінчення:</label><span id="oDateFinish"> {{archive.oDateFinish}}</span><br>
+            <table>
+              <tr ng-repeat="attr in archive.aAttribute">
+                <td style="width: 50%; text-align: right; padding-right: 5px">
+                  <label for="sFieldValue">{{attr.sName}} </label>
+                </td>
+                <td style="width: 50%; text-align: left; padding-left: 5px">
+                  <span id="sFieldValue" ng-repeat="attrValue in attr">{{attrValue.sValue || attrValue.nValue || attrValue.oValue || attrValue.bValue}}</span><br>
+                  <a href="/api/tasks/getFile/{{attr.oAttribute_File.nID}}"
+                     target="_blank"
+                     ng-if="attr.oAttribute_File.sID_Data">
+                    <b>Завантажити</b>
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div>
+          </div>
+        </div>
 
       </div>
     </div>

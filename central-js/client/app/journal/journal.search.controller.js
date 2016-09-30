@@ -2,6 +2,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $rootScope,
   $scope,
   $location,
+  $modal,
   $window,
   $state,
   $stateParams,
@@ -318,12 +319,30 @@ console.log($scope)
 
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
-      var windowWithLetter = window.open("","letter", "width=800,height=500,left=350,top=200,scrollbars=yes,resizable=yes,location=no");
-      try{
-        windowWithLetter.document.open();
-        windowWithLetter.document.write(res.data)
-      } catch (e) {
-        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно з вмістом електронного листа. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте переглянути лист ще раз."});
+      if(angular.isString(res.data)){
+
+        //ErrorsFactory.push({type:"info", text: res.data.replace(new RegExp('table width="800"','g'),'table width="568"').replace(new RegExp('width="765"','g'),'width="568"')});
+
+        var modalInstance = $modal.open({
+          animation: true,
+          size: 'lg',
+          templateUrl: 'app/journal/letterModal.html',
+          controller: function ($scope, $modalInstance, message) {
+            $scope.message = message;
+
+            $scope.close = function () {
+              $modalInstance.close();
+            }
+          },
+          resolve: {
+            message: function () {
+              return res.data;
+            }
+          }
+        });
+
+      } else {
+        ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }
     })
   };

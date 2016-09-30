@@ -48,8 +48,19 @@ public class ToolWeb {
     }
 
     public static String deleteContextFromURL(String sURL) {
-        String temp = sURL.substring(sURL.indexOf("//") + 2);
-        return temp.substring(temp.indexOf("/"));
+        if(sURL==null){
+            return null;
+        }
+        int nAt=sURL.indexOf("//");
+        if(nAt<0){
+            return null;
+        }
+        String sContext = sURL.substring(nAt + 2);
+        int nTo=sContext.indexOf("/");
+        if(nTo<0){
+            return null;
+        }
+        return sContext.substring(nTo);
     }
 
     public static String contentByteToString(byte[] contentByte) {

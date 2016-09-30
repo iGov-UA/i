@@ -1,21 +1,6 @@
 package org.igov.io.mail.unisender;
 
-import static org.igov.util.Tool.sCut;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import com.mongodb.util.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -30,8 +15,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.mongodb.util.JSON;
+import javax.annotation.PostConstruct;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import static org.igov.io.mail.Mail.sMailOnly;
+import static org.igov.util.Tool.sCut;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
@@ -39,19 +30,19 @@ import static org.igov.io.mail.Mail.sMailOnly;
 
 @Component
 public class UniSender {
-    
+
     MethodsCallRunnerUtil methodCallRunner;
-    
+
     @Autowired
-    GeneralConfig generalConfig;	   
-    
+    GeneralConfig generalConfig;
+
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
-    
+
     final static private String sContext_Subscribe = "/api/subscribe";
     final static private String sContext_CreateMail = "/api/createEmailMessage";
     final static private String sContext_CreateCompain = "/api/createCampaign";
-    
+
     final static private String AND = "&";
     private String sAuthKey;
     private String sLang;
@@ -59,7 +50,7 @@ public class UniSender {
 
     /**
      * @param sAuthKey - api_key - this is access key for UniSender API
-     * @param sLang   - LANG language of UniSender API messages
+     * @param sLang    - LANG language of UniSender API messages
      */
     public UniSender(String sAuthKey, String sLang) {
 
@@ -75,22 +66,23 @@ public class UniSender {
 
     public UniSender() {
 
-	}
+    }
 
     @PostConstruct
     public void initialize() {
-    	this.sAuthKey = generalConfig.getKey_UniSender_Mail();
-        if(StringUtils.isBlank(sAuthKey)){
+        this.sAuthKey = generalConfig.getKey_UniSender_Mail();
+        if (StringUtils.isBlank(sAuthKey)) {
             LOG.error("Please check api_key in UniSender property file configuration");
-        }        
+        }
         this.sLang = "en";
-        
+
         this.osURL = new StringBuilder(generalConfig.getURL_UniSender_Mail());
         osURL.append(this.sLang);
     }
+
     /**
      * @param sAuthKey - api_key - this is access key for UniSender API.
-     *               LANG parameter will be "EN".
+     *                 LANG parameter will be "EN".
      */
     public UniSender(String sAuthKey) {
         this(sAuthKey, "en");
@@ -103,6 +95,8 @@ public class UniSender {
      * @return
      */
     public UniResponse subscribe(SubscribeRequest oSubscribeRequest) throws Exception {
+        LOG.info("Initializing subscribe for user in UniSender. sEmail={} sPhone={} sToName={}",
+                oSubscribeRequest.getEmail(), oSubscribeRequest.getPhone(), oSubscribeRequest.getName());
 
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<String, Object>();
 
@@ -117,6 +111,8 @@ public class UniSender {
             mParam.add("fields[email]", oSubscribeRequest.getEmail());
         if (!StringUtils.isBlank(oSubscribeRequest.getPhone()))
             mParam.add("fields[phone]", oSubscribeRequest.getPhone());
+        if (!StringUtils.isBlank(oSubscribeRequest.getName()))
+            mParam.add("fields[ToName]", oSubscribeRequest.getName());
         //optional
         if (oSubscribeRequest.getTags() != null && !oSubscribeRequest.getTags().isEmpty())
             mParam.add("tags", StringUtils.join(
@@ -134,21 +130,10 @@ public class UniSender {
                     oSubscribeRequest.getConfirmTime()));
         mParam.add("overwrite", Integer.toString(oSubscribeRequest.getOverwrite()));
 
-        //LOG.info("RESULT osURL: {}", osURL.toString());
-        //LOG.info("RESULT mParam: {}", mParam);
+        LOG_BIG.info("RESULT osURL: {}", osURL.toString());
+        LOG_BIG.info("RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
-       /* UniResponse oUniResponse = null;
-        try{
-        	LOG.info("Calling registrateMethod with params{}", mParam);
-        	
-        	LOG.info("methodCallRunner is {}",methodCallRunner);
-        	oUniResponse = (UniResponse) methodCallRunner.registerMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
-        	LOG.info("Response from UniSender{}", oUniResponse);
-        }catch(Exception e){
-        	LOG.info("Error during sending email{} ", e);
-        }   */     
-
         return oUniResponse;
     }
 
@@ -159,10 +144,11 @@ public class UniSender {
      * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> asID, String sMail) throws Exception {
+    public UniResponse subscribe(List<String> asID, String sMail, String sToName) throws Exception {
         SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
                 .setListIds(asID)
                 .setEmail(sMail)
+                .setName(sToName)
                 .setDoubleOptin(3)
                 .setOverwrite(1).build();
 
@@ -197,7 +183,7 @@ public class UniSender {
         mParamObject.add("sender_name", oCreateEmailMessageRequest.getSenderName());
         mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
         mParamObject.add("lang", "ua");
-        
+
         //parametersMap.add("subject", createEmailMessageRequest.getSubject());
         //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
         /*mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
@@ -219,7 +205,8 @@ public class UniSender {
             ByteArrayResource oAttachment = mAttachment.get(sFileName);
             mParamByteArray.add("attachments[" + sFileName + "]", oAttachment);
         }
-        mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
+        mParamByteArray.add("subject",
+                new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
         String sBody = /*oCreateEmailMessageRequest.getSubject();// + " | " +*/  oCreateEmailMessageRequest.getBody();
         //oLogBig_Mail.info("(sBody={})", sBody);
         mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));
@@ -274,20 +261,20 @@ public class UniSender {
         mParam.add("api_key", sAuthKey);
         mParam.add("message_id", oCreateCampaignRequest.getMessageId());
         StringBuilder oToMailOnly = new StringBuilder("");
-        for(String s : sToMail.split("\\,")){
-            if(oToMailOnly.length()>0){
+        for (String s : sToMail.split("\\,")) {
+            if (oToMailOnly.length() > 0) {
                 oToMailOnly.append(",");
             }
             oToMailOnly.append(sMailOnly(s));
         }
         mParam.add("contacts", oToMailOnly.toString());//sToMail
-        
+
         //LOG.info("RESULT osURL: {}", osURL.toString());
         //LOG.info("RESULT mParam: {}", mParam);
 
         //LOG.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), sCut(100, mParamObject.toString()));
         //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
-        
+
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
        /* UniResponse oUniResponse = null;
         try{
@@ -297,7 +284,7 @@ public class UniSender {
         }catch(Exception e){
         	LOG.info("Error during sending email{} ", e);
         }*/
-        	
+
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         
@@ -311,7 +298,7 @@ public class UniSender {
 
         return oUniResponse;
     }
-    
+
     private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String sURL,
             MultiValueMap<String, ByteArrayResource> mParamByteArray) throws Exception {
         /*
@@ -326,7 +313,11 @@ public class UniSender {
         //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
         //let's construct main HTTP entity
         HttpHeaders oHttpHeaders = new HttpHeaders();
-        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // unisender не всегда корректно поддерживает multipart/form_data (с) Техподдержка Unisender
+        // https://support.unisender.com/index.php?/Knowledgebase/Article/View/51/0/szhatie-zaprosov-k-api
+        oHttpHeaders.setContentType(mParamByteArray != null ? MediaType.MULTIPART_FORM_DATA 
+                : MediaType.APPLICATION_FORM_URLENCODED);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
         /*
@@ -347,42 +338,44 @@ public class UniSender {
         }
         */
         //result HTTP Request httpEntity
-//        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
+        //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
         //LOG.info("SENDING... (sURL={})", sURL);
         LOG_BIG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
-        
-//        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-//        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
-//        return getUniResponse(osResponseEntity.getBody());
-//        LOG.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
-        
+
+        //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
+        //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+        //        return getUniResponse(osResponseEntity.getBody());
+        //        LOG.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
+
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(sURL)
                 ._Data(mParamObject)
                 ._DataArray(mParamByteArray)
                 ._Header(oHttpHeaders)
                 ._Send();
-        
+
         String sReturn = oHttpEntityCover.sReturn();
-        if(!oHttpEntityCover.bStatusOk()){
+        if (!oHttpEntityCover.bStatusOk()) {
             //oHttpEntityCover.
-            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sReturn);
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL,
+                    mParamObject.toString(), oHttpEntityCover.nStatus(), sReturn);
             //oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
-            throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
+            throw new Exception("[sendRequest](sURL=" + sURL + "): nStatus()=" + oHttpEntityCover.nStatus());
         }
-        LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL, sCut(100, mParamObject.toString()), sCut(100, sReturn));
+        LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL,
+                sCut(100, mParamObject.toString()), sCut(100, sReturn));
         LOG_BIG.debug("RESULT GOT! (sReturn={})", sReturn);
-        
+
         //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         UniResponse oUniResponse = getUniResponse(sReturn);
-        if(oUniResponse.getWarnings().size()>0){
+        if (oUniResponse.getWarnings().size() > 0) {
             LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})", oUniResponse.getWarnings());
         }
-        if(oUniResponse.getError().size()>0){
+        if (oUniResponse.getError().size() > 0) {
             LOG.error("RESULT FAIL (oUniResponse.getError()={})", oUniResponse.getError());
-            throw new Exception("RESULT "+oUniResponse.getError());
+            throw new Exception("RESULT " + oUniResponse.getError());
         }
-        
+
         return getUniResponse(sReturn);
     }
 
@@ -426,7 +419,7 @@ public class UniSender {
     }
 
     public void setMethodCallRunner(MethodsCallRunnerUtil methodCallRunner) {
-		this.methodCallRunner = methodCallRunner;
-	}
+        this.methodCallRunner = methodCallRunner;
+    }
 }
 

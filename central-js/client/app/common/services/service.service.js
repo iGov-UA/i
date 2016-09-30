@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function ($http, $q) {
+angular.module('app').service('ServiceService', function ($http, $q, FeedbackService, ErrorsFactory) {
 
   var self = this;
 
@@ -47,7 +47,14 @@ angular.module('app').service('ServiceService', function ($http, $q) {
       }]
     }).then(function (response) {
       self.oService = response.data;
-      return self.oService;
+      return FeedbackService.getFeedbackListForService(data.nID).then(function (feedback) {
+        if (feedback.status == 200) {
+          self.oService.aFeedbacks = feedback.data;
+        } else {
+          self.oService.aFeedbacks = [];
+        }
+        return self.oService;
+      });
     });
   };
 
@@ -292,4 +299,5 @@ angular.module('app').service('ServiceService', function ($http, $q) {
         return response.data;
       });
   };
+
 });

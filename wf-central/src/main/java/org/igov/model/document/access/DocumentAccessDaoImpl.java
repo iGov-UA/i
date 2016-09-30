@@ -36,7 +36,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
     private ApplicationContext context;
 
     @Autowired
-    public ManagerOTP oManagerOTP;
+    private ManagerSMS_New managerSMS_New;
     
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);
@@ -95,8 +95,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
                     "З повагою,<br>" +
                     "команда порталу державних послу iGov";
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(saToMail)._Head(sHead)._Body(sBody);
-//                    ._ToName(sFIO)
+            oMail._To(saToMail)._Head(sHead)._Body(sBody)._ToName(sFIO);
             oMail.send();
         }
 
@@ -168,7 +167,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
             if (generalConfig.isSelfTest()) {
                 sReturn = "test";
             } else {
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer, false);
+                sReturn = managerSMS_New.sendSMS(sPhone, sAnswer);
             }
 
             LOG.info("[bSentDocumentAccessOTP]sReturn={}",  sReturn);

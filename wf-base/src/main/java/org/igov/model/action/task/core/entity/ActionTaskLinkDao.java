@@ -1,9 +1,6 @@
 package org.igov.model.action.task.core.entity;
 
-import org.igov.model.action.task.core.entity.ActionTaskLink;
 import org.igov.model.core.EntityDao;
-
-import java.util.List;
 
 /**
  * @author NickVeremeichyk

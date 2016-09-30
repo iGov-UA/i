@@ -10,7 +10,7 @@ function createHttpError(error, statusCode) {
 }
 
 
-exports.index = function (req, res) {
+exports.getSubjects = function (req, res) {
   var saAccount = req.params.saAccount;
   var nID_SubjectAccountType = req.params.nID_SubjectAccountType;
 

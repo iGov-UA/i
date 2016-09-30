@@ -8,13 +8,14 @@
     </div>
     <div class="slot-time">
         <select class="form-control"
-                ng-disabled="!selected.date || slotsLoading"
+                ng-disabled="!selected.date || slotsLoading || unreadyRequestDMS()"
                 ng-model="selected.slot"
                 ng-options="slot.sTime for slot in selected.date.aSlot"></select>
     </div>
   </div>
 
   <div ng-show="!slotsLoading && slotsData.aDay.length == 0">
-    Нажаль, в електронній черзі тимчасово відсутні вільні місця
+    На жаль, по обраній послузі більше не залишилось місць в електронній черзі.
+    Спробуйте пізніше, коли з'являться нові доступні місця у черзі, або інше територіальне відділення.
   </div>
 </div>

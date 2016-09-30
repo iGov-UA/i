@@ -28,6 +28,7 @@
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" required="true">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
@@ -42,10 +43,10 @@
         <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -56,7 +57,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var src=execution.getVariable('date_of_visit')
@@ -452,9 +453,8 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="68.0" y="216.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="221.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="285.0" y="54.0"></omgdi:waypoint>

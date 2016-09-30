@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cd ./..
 
 pm2 start process.json --name central-js

@@ -55,20 +55,34 @@ function FieldMotionService(MarkersFactory) {
   };
 
   this.isFieldRequired = function(fieldId, formData) {
-    var b = grepByPrefix('RequiredFieldsOnCondition_').some(function(entry) {
+    var b = grepByPrefix('RequiredFieldsOnCondition').some(function(entry) {
       return evalCondition(entry, fieldId, formData);
     });
     return b;
   };
   var fieldId_entryTriggered = {};
-  this.calcFieldValue = function(fieldId, formData) {
+  var aFieldIDs = [];
+  this.calcFieldValue = function(fieldId, formData, formProperties) {
     var entry = _.find(grepByPrefix('ValuesFieldsOnCondition'), function(entry) {
       return evalCondition(entry, fieldId, formData)
     });
     var result = {value: '', differentTriggered: false};
     if (entry) {
+      if(aFieldIDs.length == 0){
+        for(var key in formData) if (formData.hasOwnProperty(key)){
+          aFieldIDs.push(key);
+        }
+      }
       result.differentTriggered = fieldId_entryTriggered[fieldId] ? (fieldId_entryTriggered[fieldId] != entry) : true;
-      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue[$.inArray(fieldId, entry.aField_ID)];
+      entry.asID_Field_sValue_Interpolated = [];
+      angular.forEach(entry.asID_Field_sValue, function (sValue) {
+        var interpolatedEntry = MarkersFactory.interpolateString(sValue, formData, '[', ']', aFieldIDs, formProperties);
+        entry.asID_Field_sValue_Interpolated.push(interpolatedEntry.value);
+        if (interpolatedEntry.differentTriggered){
+          result.differentTriggered = true;
+        }
+      });
+      result.value = entry.sValue ? entry.sValue : entry.asID_Field_sValue_Interpolated[$.inArray(fieldId, entry.aField_ID)];
     }
     fieldId_entryTriggered[fieldId] = entry;
     return result;
@@ -110,6 +124,9 @@ function FieldMotionService(MarkersFactory) {
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
+    if(fieldId === 'sTestRequired'){
+      debugger;
+    }
     if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
       return false;
     } else if(mentioned) {
@@ -125,7 +142,7 @@ function FieldMotionService(MarkersFactory) {
         } else if (formData.hasOwnProperty(fId)) {
           result = formData[fId].value;
         } else {
-          console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
+          //console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
         }
       }else{
         angular.forEach(formData, function (item) {
@@ -135,7 +152,7 @@ function FieldMotionService(MarkersFactory) {
             } else if (item.hasOwnProperty(fId)) {
               result = item.value;
             } else {
-              console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
+              //console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
             }
           }
         })

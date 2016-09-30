@@ -787,18 +787,21 @@ public class SubjectController {
             + "https://test.igov.org.ua/wf/service/subject/getSubjectsBy\n\n"
             + "что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
             + " 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
-            + "Ответ:\n"
-            + "\n```\n")
+            + "Ответ:\n")
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = true) String saAccount,
-            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Long nID_Server,
+            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
             @ApiParam(value = "Не показывать подробности про организации и чиновников", required = false, defaultValue = "false") @RequestParam(value = "bSkipDetails", required = false, defaultValue = "false") boolean bSkipDetails,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false, defaultValue = "1") Long nID_SubjectAccountType) throws CommonServiceException {
 
         Map<String, List<NewSubjectAccount>> result = new HashMap<>();
         SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+        if(nID_Server!=null){
+            nID_Server = Long.valueOf(generalConfig.getServerId(Integer.valueOf(nID_Server+""))+"");
+        }
+        
         if (subjectAccountType == null) {
             throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Error! SubjectAccountType not found for id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
@@ -811,19 +814,29 @@ public class SubjectController {
     private List<NewSubjectAccount> getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server, boolean bSkipDetails) {
         List<NewSubjectAccount> newSubjectSet = new ArrayList<>();
         Long nID_Subject;
+        //LOG.info("nID_Subject: " + nID_Subject);
         Subject subject;
+//         LOG.info("subject: " + subject);
+        LOG.info("saLogin: " + saLogin);
         if (saLogin != null) {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
-            LOG.info("asLogin: " + asLogin);
+            LOG.info("000000000000000000000saLogin: " + saLogin);
             for (String login : asLogin) {
+                LOG.info("1111111111111111111login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
                 List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
+                LOG.info("2222222222222222222login: "+login+" nID_Server: "+nID_Server+" nID_SubjectAccountType: "+nID_SubjectAccountType);
+                LOG.info("3333333333333333333subjectAccounts: " + subjectAccounts);
+                for (SubjectAccount subjectAccount : subjectAccounts) {
+                    LOG.info("subjectAccount: "+subjectAccount);
+                }
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     for (SubjectAccount subjectAccount : subjectAccounts) {
                         nID_Subject = subjectAccount.getnID_Subject();
-                        LOG.info("nID_Subject: " + nID_Subject);
+                        
+                        LOG.info("5555555555555555nID_Subject: " + nID_Subject);
                         subject = subjectDao.getSubject(nID_Subject);
                         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        LOG.info("subjectContacts: " + subjectContacts);
+                        LOG.info("6666666666666666subjectContacts: " + subjectContacts);
                         subject.setaSubjectAccountContact(subjectContacts);
                         SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
                         SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(subject);
@@ -835,4 +848,57 @@ public class SubjectController {
         return newSubjectSet;
     }
 
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED?sFind=рибальство\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.11\",\n"
+            + "    \"sNote\": \"Морське рибальство \",\n"
+            + "    \"nID\": 36\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getActionKVED", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED(
+            @ApiParam(value = "sFind - кретерий поиска в sID или sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sFind", required = true) String sFind)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sFind); 
+    }
+
+    @ApiOperation(value = "Получение данных из справочника КВЕД", notes = "Получаем данные из справочника КВЕД. "
+            + "Пример:\n"
+            + "https://alpha.test.igov.org.ua/wf/service/subject/getActionKVED2?sID=03&sNote=Прісноводне\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "    \"sID\": \"03.12\",\n"
+            + "    \"sNote\": \"Прісноводне рибальство \",\n"
+            + "    \"nID\": 37\n"
+            + "  },\n"
+            + "  {\n"
+            + "    \"sID\": \"03.22\",\n"
+            + "    \"sNote\": \"Прісноводне рибництво (аквакультура) \",\n"
+            + "    \"nID\": 39\n"
+            + "  }\n"
+            + "]\n"            
+            + "\n```\n")
+    @RequestMapping(value = "/getActionKVED2", method = RequestMethod.GET, headers = {JSON_TYPE})
+    public @ResponseBody
+    List<SubjectActionKVED> getActionKVED2(
+            @ApiParam(value = "sID - кретерий поиска в sID (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sID", required = false) String sID,
+            @ApiParam(value = "sNote - кретерий поиска в sNote (без учета регистра, в любой части текста)", required = true) @RequestParam(value = "sNote", required = false) String sNote)
+        	    throws CommonServiceException {
+	return subjectService.getSubjectActionKVED(sID, sNote); 
+    }
+    
 }

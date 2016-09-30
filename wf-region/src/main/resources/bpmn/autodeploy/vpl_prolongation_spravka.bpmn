@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_prolongation_spravka" name="Продовження строка дії довідки про взяття на облік внутрішньо переміщеної особи" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 02.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1504</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -35,6 +35,7 @@
         <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для надання щомісячної адресної допомоги" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_SvodoztvoOdruzennya" name="Копія свідоцтва про одруження;якщо в заяві на отримання грошової допомоги вказані чоловік і дружина" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти (завантажте одним файлом формату PDF, якщо дітей декілька)" type="file"></activiti:formProperty>
+		<activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -60,12 +61,12 @@
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnumGet_Help" name="Чи потрібно надання щомісячної адресної допомоги внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_Yes" name="Так, надати"></activiti:value>
-          <activiti:value id="sEnumElement_No" name="Ні, не потрібна"></activiti:value>
+          <activiti:value id="sEnumElement_Yes" name="Так, надати щомісячну допомогу"></activiti:value>
+          <activiti:value id="sEnumElement_No" name="Ні, не потрібно надання допомоги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEnumExist_Flat" name="Наявність у будь-кого з членів сім’ї у власності житлового приміщення, розташованого в регіонах, інших ніж тимчасово окупована територія України, райони проведення антитерористичної операції та населені пункти, що розташовані на лінії зіткнення" type="enum" writable="false">
-          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є "></activiti:value>
-          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, не потрібна"></activiti:value>
+          <activiti:value id="sEnumElement_ExistFlat_Yes" name="Так, є таке житло"></activiti:value>
+          <activiti:value id="sEnumElement_ExistFlat_No" name="Ні, немає такого житла"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEnumExist_Deposit" name="Наявність у будь-кого з членів сім’ї на депозитному банківському рахунку коштів у розмірі, що перевищує 10-кратний розмір прожиткового мінімуму, встановленого для працездатних осіб?" type="enum" writable="false">
           <activiti:value id="sEnumElement_ExistDeposit_Yes" name="Так, є такі депозити"></activiti:value>
@@ -264,7 +265,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Зареєстровано звернення на тему: відновлення порушеного права споживача у сфері торговельного обслуговування]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо відновлення порушеного права споживача у сфері торговельного обслуговування успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;

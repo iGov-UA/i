@@ -4,8 +4,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.hibernate.Query;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
-import org.igov.model.document.DocumentOperator_SubjectOrgan;
-import org.igov.model.subject.Subject;
 import org.igov.util.db.QueryBuilder;
 import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.EntityDao;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.io.db.kv.statical.impl.BytesDataStorage;
 
 import java.io.IOException;
 import java.util.List;
