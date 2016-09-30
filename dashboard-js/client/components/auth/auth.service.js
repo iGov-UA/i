@@ -97,15 +97,6 @@ angular.module('dashboardJsApp')
        * @param  {Function}
        */
       logout: function (callback) {
-        $cookieStore.remove('user');
-        $cookieStore.remove('sessionSettings');
-        $cookieStore.remove('JSESSIONID');
-        if(window.localStorage.getItem("iGovUserRoles")){
-          window.localStorage.removeItem("iGovUserRoles");
-        }
-        currentUser = {};
-        sessionSettings = undefined;
-
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
@@ -122,7 +113,17 @@ angular.module('dashboardJsApp')
         error(function (err) {
           deferred.reject(err);
           return cb(err);
-        }.bind(this));
+        }.bind(this))
+          .finally(function () {
+            $cookieStore.remove('user');
+            $cookieStore.remove('sessionSettings');
+            $cookieStore.remove('JSESSIONID');
+            if(window.localStorage.getItem("iGovUserRoles")){
+              window.localStorage.removeItem("iGovUserRoles");
+            }
+            currentUser = {};
+            sessionSettings = undefined;
+          });
 
         return deferred.promise;
       },
