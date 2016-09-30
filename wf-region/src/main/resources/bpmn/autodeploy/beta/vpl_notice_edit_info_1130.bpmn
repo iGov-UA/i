@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_notice_edit_info_1130" name="Повідомлення уповноваженого органу (за місцем отримання довідки ВПО) про наявність змін в інформації, що може впливати на призначення грошової допомоги (зміна составу сім’ї, працевлаштування працездатних членів сім’ї і тому інше)" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 14.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1526</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -20,10 +20,11 @@
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReasonEdit" name="Причина зміни інформації та що конкретно було змінено" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/CVvCAV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо повідомлення уповноваженого органу (за місцем отримання довідки ВПО) про наявність змін в інформації, що може впливати на призначення грошової допомоги (зміна составу сім’ї, працевлаштування працездатних членів сім’ї і тому інше)"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про наявність змін в інформації, що може впливати на призначення грошової допомоги" type="file" required="true" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Other" name="Копія документів, що підтверджують зміни в інформації; наприклад, довідка про працевлаштування працездатного члена сім’ї, свідоцтво про смерть або народження і тому інше" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про наявність змін в інформації, що може впливати на призначення грошової допомоги" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Other" name="Копія документів, що підтверджують зміни в інформації; наприклад, довідка про працевлаштування працездатного члена сім’ї, свідоцтво про смерть або народження і тому інше" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -59,13 +60,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -272,10 +273,43 @@ execution.setVariable('sAdd_SpisokDocs', per1)
 
       </script>
     </scriptTask>
-    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення СКВ про подання звернення референтом" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+      <activiti:expression>smoktii.igov@gmail.com</activiti:expression>
+            </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подано звернення референтом: Повідомлення уповноваженого органу (за місцем отримання довідки ВПО) про наявність змін в інформації, що може впливати на призначення грошової допомоги]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>&lt;b&gt;Подано на громадянина: ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Звернення № [sID_Order].&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow18" name="Без референта" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow19" name="Подал референт" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_vpl_edit_spravka_1127">
-    <bpmndi:BPMNPlane bpmnElement="vpl_edit_spravka_1127" id="BPMNPlane_vpl_edit_spravka_1127">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_vpl_notice_edit_info_1130">
+    <bpmndi:BPMNPlane bpmnElement="vpl_notice_edit_info_1130" id="BPMNPlane_vpl_notice_edit_info_1130">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -286,28 +320,28 @@ execution.setVariable('sAdd_SpisokDocs', per1)
         <omgdc:Bounds height="30.0" width="30.0" x="196.0" y="178.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="71.0" width="131.0" x="550.0" y="142.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="131.0" x="570.0" y="341.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="598.0" y="351.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="618.0" y="550.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="71.0" width="121.0" x="260.0" y="142.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="575.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="75.0" width="130.0" x="400.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="171.0" x="550.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="75.0" width="105.0" x="700.0" y="230.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="720.0" y="429.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="75.0" width="111.0" x="430.0" y="230.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="111.0" x="450.0" y="429.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="595.0" y="247.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="615.0" y="446.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="66.0" width="105.0" x="120.0" y="50.0"></omgdc:Bounds>
@@ -315,13 +349,19 @@ execution.setVariable('sAdd_SpisokDocs', per1)
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="66.0" width="105.0" x="268.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="71.0" width="151.0" x="330.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="510.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="752.0" y="305.0"></omgdi:waypoint>
-        <omgdi:waypoint x="615.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="772.0" y="504.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="530.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="550.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="341.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="177.0"></omgdi:waypoint>
@@ -332,42 +372,64 @@ execution.setVariable('sAdd_SpisokDocs', per1)
         <omgdi:waypoint x="172.0" y="116.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="381.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="400.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="211.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="615.0" y="213.0"></omgdi:waypoint>
-        <omgdi:waypoint x="615.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="412.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="446.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="635.0" y="267.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="466.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="92.0" x="624.0" y="268.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="92.0" x="644.0" y="467.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="595.0" y="267.0"></omgdi:waypoint>
-        <omgdi:waypoint x="541.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="466.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="95.0" x="551.0" y="227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="95.0" x="571.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="485.0" y="305.0"></omgdi:waypoint>
-        <omgdi:waypoint x="615.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="505.0" y="504.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="225.0" y="83.0"></omgdi:waypoint>
         <omgdi:waypoint x="268.0" y="83.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="320.0" y="116.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="529.0" y="82.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="115.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="550.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="634.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="160.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="549.0" y="115.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="510.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="160.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="415.0" y="115.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="405.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
