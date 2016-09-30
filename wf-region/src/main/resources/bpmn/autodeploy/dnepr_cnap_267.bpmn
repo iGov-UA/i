@@ -64,9 +64,9 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="text12" name=" " type="label" default="Перелік усіх додатків та специфікацій до договору"></activiti:formProperty>
         <activiti:formProperty id="sTable11" name="Перелік усіх додатків та специфікацій до договору" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameDodatok&quot;,&quot;name&quot;:&quot;Назва документа (додатка до договору)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumberDodatok&quot;,&quot;name&quot;:&quot;Номер документу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDateDodatok&quot;,&quot;name&quot;:&quot;Дата укладання&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="appeal" name="Лист-звернення щодо оформлення ліцензії в довільній формі;підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string"></activiti:formProperty>
         <activiti:formProperty id="dogovor" name="Копія зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку;завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="appeal" name="Лист-звернення щодо оформлення ліцензії в довільній формі;підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="pogodgennya" name="Сертифікат про походження товару або експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньоекономічної діяльності; виданий Торгово-промисловою палатою України або регіональними торгово-промисловими палатами" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file"></activiti:formProperty>
         <activiti:formProperty id="other_docs" name="Документи та інформація, які засвідчують ужиття практичних заходів щодо припинення правопорушення, яке призвело до застосування режиму індивідуального ліцензування" type="file"></activiti:formProperty>
@@ -144,7 +144,7 @@
         <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_0" name="Призначення виконавця для поточного звернення" type="enum" required="true">
           <activiti:value id="accept" name="виконавець1"></activiti:value>
-          <activiti:value id="reject" name="виконавець1"></activiti:value>
+          <activiti:value id="reject" name="виконавець2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
@@ -294,6 +294,12 @@
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport}, ${dogovor},${pogodgennya},${visnovok},${other_docs},${appeal}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="погодження ліцензії - Тернопіль" activiti:candidateGroups="zed_${group}">
@@ -367,9 +373,15 @@
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html]" type="invisible" default="Бланк ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport}, ${dogovor},${pogodgennya},${visnovok},${other_docs},${appeal}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="очікування оплати від заявника" activiti:candidateGroups="zed_${group}">
+    <userTask id="usertask2" name="очікування оплати і візиту заявника" activiti:candidateGroups="zed_${group}">
       <extensionElements>
         <activiti:formProperty id="sNameUnit" name="Адміністративний орган" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
