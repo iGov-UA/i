@@ -77,7 +77,8 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_Group");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
+            //CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 13 1/1 * ?"); 
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
