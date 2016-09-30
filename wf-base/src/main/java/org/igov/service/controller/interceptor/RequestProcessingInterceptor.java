@@ -517,8 +517,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                       //if (!generalConfig.isSelfTest()) {
-                        if (false) { 
+                     //  if (!generalConfig.isSelfTest()) {
                             //String snID_Proccess_Feedback = bpHandler
                             //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                            String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
@@ -532,9 +531,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                        sProcessName,
                                        snID_Proccess_Feedback);
                            }
-                        } else {
+                       /* } else {
                             LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
-                        }
+                        }*/
                     }
                 } catch (Exception oException) {
                     new Log(oException, LOG)//this.getClass()
