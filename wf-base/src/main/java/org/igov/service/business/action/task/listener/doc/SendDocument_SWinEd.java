@@ -38,7 +38,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     FormService formService;
 
     @Autowired
-    private IBytesDataStorage oBytesDataStorage;
+    private IBytesDataStorage durableBytesDataStorage;
     
     private Expression sID_File_XML_SWinEd;
     
@@ -49,7 +49,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         try {
-            byte[] oFile_XML_SWinEd = oBytesDataStorage.getData(sID_File_XML_SWinEdValue);
+            byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
             if (oFile_XML_SWinEd != null) {
                 String content = new String(oFile_XML_SWinEd);
                 String body = createBody(content);
