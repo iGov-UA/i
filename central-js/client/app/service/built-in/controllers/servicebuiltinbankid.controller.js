@@ -316,6 +316,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }
         });
 
+        console.log('[**taxTemplateFileHandlerConfig.oFile_XML_SWinEd]',taxTemplateFileHandlerConfig.oFile_XML_SWinEd);
+        console.log('[**$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]',
+            $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]);
         if ($scope.sign.checked) {
           $scope.fixForm(form, aFormProperties);
           $scope.signForm();
