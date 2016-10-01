@@ -49,6 +49,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         try {
+            LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
             byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
             if (oFile_XML_SWinEd != null) {
                 String content = new String(oFile_XML_SWinEd);
