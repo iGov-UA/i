@@ -837,6 +837,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   TableService.init($scope.activitiForm.formProperties);
 
   $scope.addRow = function (form, id, index) {
+    ValidationService.validateByMarkers(form, null, true, this.data, true);
     if(!form.$invalid) {
       $scope.tableIsInvalid = false;
       TableService.addRow(id, $scope.activitiForm.formProperties);
