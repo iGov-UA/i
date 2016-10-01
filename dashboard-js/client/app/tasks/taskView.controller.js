@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -657,21 +657,30 @@
           }
         });
 
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
+        };
+
         $scope.isTableAttachment = function (item) {
           return item.indexOf('[table]') > -1;
         };
 
-        $scope.getAttachmentTable = function (taskId, attachId, attachName) {
-          $rootScope.attachIsLoading = true;
-          var tableName = attachName;
-          tasks.getTableAttachment(taskId, attachId).then(function (res) {
-            var table = {};
-            $scope.taskData.aTable = [];
-            table.aRows = JSON.parse(res);
-            table.sName = tableName;
-            $scope.taskData.aTable.push(table);
-            // TODO поменять на фильтр
-            angular.forEach($scope.taskData.aTable[0].aRows, function (row) {
+        $scope.isUnDisabledFields = function () {
+          return activeFieldsList.length > 0;
+        };
+
+        $scope.openTableAttachment = function (id) {
+          angular.forEach($scope.taskData.aTable, function (table) {
+            if(table.id === id) {
+              $scope.openedAttachTable = table;
+            }
+          });
+          $scope.tableContentShow = !$scope.tableContentShow;
+        };
+
+        var fixFieldsForTable = function () {
+          angular.forEach($scope.taskData.aTable, function (table) {
+            angular.forEach(table.content, function (row) {
               angular.forEach(row.aField, function (field) {
                 if(field.type === 'date') {
                   var onlyDate = field.props.value.split('T')[0];
@@ -687,14 +696,37 @@
                 }
               })
             });
-            $rootScope.attachIsLoading = false;
-          });
-          $scope.tableContentShow = !$scope.tableContentShow;
+          })
         };
 
-        $scope.isUnDisabledFields = function () {
-          return activeFieldsList.length > 0;
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
+        $scope.getListOfTables = function () {
+          var itemsProcessed = 0;
+          $scope.taskData.aTable = [];
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
+          angular.forEach($scope.taskData.aAttachment, function (attach) {
+            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
+              ++itemsProcessed;
+              try {
+                var table = {};
+                table.name = attach.description;
+                table.id = attach.id;
+                table.content = JSON.parse(res);
+                for(var i=0; i<table.content.length; i++) {
+                  if(typeof table.content[i] === "string") {
+                    table.idName = table.content[i];
+                    delete table.content[i];
+                  }
+                }
+                $scope.taskData.aTable.push(table);
+              } catch (e) {
+
+              }
+              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
+            })
+          });
         };
+        $scope.getListOfTables();
       }
 
     ])

@@ -270,6 +270,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         angular.forEach(aFormProperties, function (i) {
           if (i.type === 'select' &&
               i.hasOwnProperty('autocompleteData') &&
+              $scope.data.formData.params[i.id].value &&
               $scope.data.formData.params[i.id].value.hasOwnProperty(i.autocompleteData.valueProperty)) {
             $scope.data.formData.params[i.id].value = $scope.data.formData.params[i.id].value[i.autocompleteData.valueProperty]
           }
@@ -306,9 +307,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                 $scope.data.formData
             ).then(function (result) {
               $window.location.href =
-                  $location.protocol() +'://' +
-                  $location.host() +':' +
-                  $location.port() +'/api/sign-content/sign?formID=' +
+                  $location.protocol() + '://' +
+                  $location.host() + ':' +
+                  $location.port() + '/api/sign-content/sign?formID=' +
                   result.formID + '&nID_Server=' +
                   oServiceData.nID_Server + '&sName=' + oService.sName;
             });
@@ -318,7 +319,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if ($scope.sign.checked) {
           $scope.fixForm(form, aFormProperties);
           $scope.signForm();
-        } else if(!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]){
+        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
           $scope.submitForm(form, aFormProperties);
         }
       };
@@ -856,6 +857,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       TableService.init($scope.activitiForm.formProperties);
 
       $scope.addRow = function (form, id, index) {
+        ValidationService.validateByMarkers(form, null, true, this.data, true);
         if (!form.$invalid) {
           $scope.tableIsInvalid = false;
           TableService.addRow(id, $scope.activitiForm.formProperties);
@@ -873,5 +875,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
             }
           }
         });
+      };
+      $scope.rowLengthCheckLimit = function (table) {
+        return table.aRow.length >= table.nRowsLimit
       };
     });

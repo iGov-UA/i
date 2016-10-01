@@ -4,12 +4,13 @@ var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
 var userService = require('../user/user.service');
+var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
-
+/*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new nodeLocalStorage('./scratch');
-
+*/
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
 }
@@ -86,8 +87,8 @@ function loadAllTasks(tasks, wfCallback, assigneeID) {
 
 // Get list of tasks
 exports.index = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
   query.size = 50;
@@ -322,8 +323,8 @@ exports.getTasksByOrder = function (req, res) {
 };
 
 exports.getTasksByText = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
     path: 'action/task/getTasksByText',
@@ -339,6 +340,7 @@ exports.getTasksByText = function (req, res) {
   });
 };
 
+/*
 exports.getProcesses = function (req, res) {
   //var user = JSON.parse(req.cookies.user);
   var user = JSON.parse(localStorage.getItem('user'));
@@ -356,10 +358,71 @@ exports.getProcesses = function (req, res) {
     //error ? res.send(error) : res.status(statusCode).json("[\"4585243\"]");
   });
 };
+*/
+exports.getProcesses = function (req, res) {
+  var currentUser = JSON.parse(req.cookies.user);
+  var userRoles = authService.getCashedUserGroups(currentUser);
+  if(userRoles){
+    currentUser.roles = userRoles;
+    var options = {
+      path: 'analytic/process/getProcesses',
+      query: {
+        'sID_': req.query.sID,
+        'asID_Group': currentUser.roles
+      }
+    };
+    activiti.get(options, function (error, statusCode, result) {
+      error ? res.send(error) : res.status(statusCode).json(result);
+    });
+  } else {
+    async.waterfall([
+      function (callback) {
+        activiti.get({
+          path: 'action/identity/getGroups',
+          query: {
+            sLogin : currentUser.id
+          },
+          json : true
+        }, function (error, statusCode, result) {
+          if (error) {
+            callback(error, null);
+          } else {
+            var resultGroups;
+            if((typeof result == "object") && (result instanceof Array)){
+              currentUser['roles'] = result.map(function (group) {
+                return group.id;
+              });
+            } else {
+              currentUser['roles'] = [];
+            }
+            callback(null, {
+              currentUser: currentUser
+            });
+          }
+        });
+      },
+      function (user, callback) {
+        var options = {
+          path: 'analytic/process/getProcesses',
+          query: {
+            'sID_': req.query.sID,
+            'asID_Group': currentUser.roles
+          }
+        };
+        activiti.get(options, function (error, statusCode, result) {
+          callback(error, result);
+        });
+      }
+    ], function (error, result) {
+      authService.setCashedUserGroups(currentUser, currentUser.roles);
+      error ? res.send(error) : res.json(result);
+    })
+  }
+};
 
 exports.getFile = function (req, res) {
-  //var user = JSON.parse(req.cookies.user);
-  var user = JSON.parse(localStorage.getItem('user'));
+  var user = JSON.parse(req.cookies.user);
+  //var user = JSON.parse(localStorage.getItem('user'));
   var options = {
     path: 'analytic/process/getFile',
     query: {
@@ -462,6 +525,7 @@ exports.unassign = function (req, res) {
   });
 };
 
+/*
 exports.getTaskData = function(req, res) {
   var options = {
     path: 'action/task/getTaskData',
@@ -475,15 +539,95 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
+    var currentUser = JSON.parse(req.cookies.user);
+    var UserFromStorage = JSON.parse(localStorage.getItem('user'));
+    currentUser.roles = UserFromStorage.roles;
     // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
     // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
-    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : JSON.parse(localStorage.getItem('user'))))
+    //var cashedGr = authService.getCashedUserGroups(currentUser);
+
+    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
       res.status(200).send(body);
     else {
       error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
       res.status(403).send(error);
     }
   });
+};
+*/
+exports.getTaskData = function (req, res){
+  var options = {
+    path: 'action/task/getTaskData',
+    query: req.query,
+    json: true
+  };
+
+  var currentUser = JSON.parse(req.cookies.user);
+
+  var userRoles = authService.getCashedUserGroups(currentUser);
+  if(userRoles){
+    currentUser.roles = userRoles;
+    activiti.get(options, function (error, statusCode, body) {
+      if (error) {
+        error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
+        res.status(500).send(error);
+        return;
+      }
+
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+        res.status(200).send(body);
+      else {
+        error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
+        res.status(403).send(error);
+      }
+    });
+  } else {
+    async.waterfall([
+      function (callback) {
+        activiti.get({
+          path: 'action/identity/getGroups',
+          query: {
+            sLogin : currentUser.id
+          },
+          json : true
+        }, function (error, statusCode, result) {
+          if (error) {
+            callback(error, null);
+          } else {
+            var resultGroups;
+            if((typeof result == "object") && (result instanceof Array)){
+              currentUser['roles'] = result.map(function (group) {
+                return group.id;
+              });
+            } else {
+              currentUser['roles'] = [];
+            }
+            callback(null, {
+              currentUser: currentUser
+            });
+          }
+        });
+      },
+      function (user, callback) {
+        activiti.get(options, function (error, statusCode, body) {
+          callback(error, body);
+        });
+      }
+    ], function (error, body) {
+      if (error) {
+        error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
+        res.status(500).send(error);
+        return;
+      }
+      authService.setCashedUserGroups(currentUser, currentUser.roles);
+      if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session.roles ? req.session : currentUser))
+        res.status(200).send(body);
+      else {
+        error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
+        res.status(403).send(error);
+      }
+    })
+  }
 };
 
 exports.getMessageFile = function(req, res) {

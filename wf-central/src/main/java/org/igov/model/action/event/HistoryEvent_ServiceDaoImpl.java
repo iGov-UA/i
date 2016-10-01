@@ -2,6 +2,7 @@ package org.igov.model.action.event;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -62,6 +63,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             LOG.info("create new historyEventService");/*NOP*/
         }
         historyEventService.setsDate(new DateTime());
+        historyEventService.setsDateCreate(new DateTime());
         Long nID_Protected = ToolLuna.getProtectedNumber(historyEventService.getnID_Task());
         historyEventService.setnID_Protected(nID_Protected);
         historyEventService.setsID_Order(historyEventService.getnID_Server() + DASH + nID_Protected);
@@ -73,6 +75,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     @Override
     public HistoryEvent_Service updateHistoryEvent_Service(HistoryEvent_Service event_service) {
         event_service.setsDate(new DateTime());
+        if(event_service.getnID_StatusType()!= null && event_service.getnID_StatusType() == 8){
+            event_service.setsDateClose(new DateTime());
+        }
         return saveOrUpdate(event_service);
     }
 
@@ -254,7 +259,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         if(nID_Service != null){
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        if(sID_UA != null && sID_UA != ""){
+        if(sID_UA != null && !"".equals(sID_UA)){
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
@@ -284,5 +289,35 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         }
         
 		return aHistoryEvent_Service;
+	}
+
+	@Override
+	public Long getClaimCountHistory(String sID_UA, Long nID_Service, Long nID_StatusType) {
+		 LOG.info(String.format("Start get getClaimHistory with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
+		 
+		 	Long countClaim = 0L;
+	        Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+	        oCriteria.setProjection(Projections.rowCount());
+	        
+	        if(nID_StatusType == null && nID_Service == null && sID_UA == null){
+	            return countClaim;
+	        }
+	        
+	        if(sID_UA != null && !"".equals(sID_UA)){
+	            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+	        }
+
+	        if(nID_Service != null){
+	            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+	        }
+	        
+	       
+	        if(nID_StatusType != null){
+	            oCriteria.add(Restrictions.eq("nID_StatusType", nID_StatusType));
+	        }
+	       
+	        countClaim = (Long) oCriteria.uniqueResult();
+	        LOG.info("countClaim size = " + countClaim);
+	        return countClaim;
 	}
 }

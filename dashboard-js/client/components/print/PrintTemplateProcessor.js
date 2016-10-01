@@ -42,14 +42,48 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   }
 
   return {
-    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
+    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter, table) {
       var _printTemplate = printTemplate;
-      var templates = [], ids = [], found;
+      var templates = [], ids = [], found, idArray = [];
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
       }
-      if (templates.length > 0 && ids.length > 0) {
+      // проверка на тип 'table'
+      if(table && templates.length > 0) {
+        var matchesIds = [];
+        angular.forEach(templates, function (template) {
+          var comment = template.match(/<!--[\s\S]*?-->/g);
+          if(Array.isArray(comment)) {
+            for(var i=0; i<comment.length; i++) {
+              comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
+            }
+          }
+          if(comment) matchesIds.push(comment);
+        });
+
+        angular.forEach(matchesIds, function (ids) {
+          var arr = ids.filter(function(item, pos, self) {
+            return self.indexOf(item) == pos;
+          });
+          idArray.push(arr);
+        });
+
+        angular.forEach(idArray, function(id) {
+          angular.forEach(form.taskData.aTable, function(table) {
+            if(table.idName === id[0]) {
+              angular.forEach(templates, function (template) {
+                if(template.indexOf(id) !== -1){
+                  var withAddedRowsTemplate = template.repeat(table.content.length - 1);
+                  _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
+                }
+              })
+            }
+          })
+        });
+        return _printTemplate
+      }
+      if (templates.length > 0 && ids.length > 0 && !table) {
         templates.forEach(function (templateID, i) {
           var id = ids[i];
           if (id) {
@@ -59,7 +93,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             if (item) {
               var sValue = fieldGetter(item);
               if (sValue === null){
-                  sValue = "";
+                sValue = "";
               }
               _printTemplate = _printTemplate.replace(templateID, sValue);//fieldGetter(item)
             }
@@ -68,14 +102,18 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       }
       return _printTemplate;
     },
-    populateSystemTag: function (printTemplate, tag, replaceWith) {
+    populateSystemTag: function (printTemplate, tag, replaceWith, table) {
       var replacement;
       if (replaceWith instanceof Function) {
         replacement = replaceWith();
       } else {
         replacement = replaceWith;
       }
-      return printTemplate.replace(new RegExp(this.escapeRegExp(tag), 'g'), replacement);
+      if(table) {
+        return printTemplate.replace(new RegExp(this.escapeRegExp(tag)), replacement);
+      } else {
+        return printTemplate.replace(new RegExp(this.escapeRegExp(tag), 'g'), replacement);
+      }
     },
     escapeRegExp: function (str) {
       return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -105,35 +143,36 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       }
 
 
-        function getLunaValue(id) {
+      function getLunaValue(id) {
 
-          // Number 2187501 must give CRC=3
-          // Check: http://planetcalc.ru/2464/
-          if(id===null || id === 0){
-            return null;
-          }
-          var n = parseInt(id);
-          var nFactor = 1;
-          var nCRC = 0;
-          var nAddend;
-
-          while (n !== 0) {
-            nAddend = Math.round(nFactor * (n % 10));
-            nFactor = (nFactor === 2) ? 1 : 2;
-            nAddend = nAddend > 9 ? nAddend - 9 : nAddend;
-            nCRC += nAddend;
-            n = parseInt(n / 10);
-          }
-
-          nCRC = nCRC % 10;
-          return nCRC;
+        // Number 2187501 must give CRC=3
+        // Check: http://planetcalc.ru/2464/
+        if(id===null || id === 0){
+          return null;
         }
+        var n = parseInt(id);
+        var nFactor = 1;
+        var nCRC = 0;
+        var nAddend;
+
+        while (n !== 0) {
+          nAddend = Math.round(nFactor * (n % 10));
+          nFactor = (nFactor === 2) ? 1 : 2;
+          nAddend = nAddend > 9 ? nAddend - 9 : nAddend;
+          nCRC += nAddend;
+          n = parseInt(n / 10);
+        }
+
+        nCRC = nCRC % 10;
+        return nCRC;
+      }
 
       var printTemplate = this.processPrintTemplate(task, form, originalPrintTemplate, /(\[(\w+)])/g, fieldGetter);
       // What is this for? // Sergey P
       printTemplate = this.processPrintTemplate(task, form, printTemplate, /(\[label=(\w+)])/g, function (item) {
         return item.name;
       });
+      printTemplate = this.processPrintTemplate(task, form, printTemplate, /(?=<!--\[)([\s\S]*?]-->)/g, null, true);
       printTemplate = this.populateSystemTag(printTemplate, "[sUserInfo]", function () {
         var user = Auth.getCurrentUser();
         return user.lastName + ' ' + user.firstName ;
@@ -141,6 +180,17 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       printTemplate = this.populateSystemTag(printTemplate, "[sCurrentDateTime]", $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'));
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime.replace(' ', 'T'), 'yyyy-MM-dd HH:mm'));
 
+      // наполнение принтформы данными из типа "table".
+      var that = this;
+      angular.forEach(form.taskData.aTable, function (table) {
+        angular.forEach(table.content, function (row) {
+          angular.forEach(row.aField, function (field) {
+            printTemplate = that.populateSystemTag(printTemplate, "[" + field.id + "]",
+              field.value ? field.value : (field.default ? field.default : field.props.value),
+              table.content.length > 2)
+          })
+        });
+      });
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(

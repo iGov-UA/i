@@ -14,19 +14,7 @@
     .form-control.ui-select-search {
       width: 100% !important;
     }
-    table>tbody>tr>td:hover {
-      background-color: #e2e2e2;
-      border-radius: 5px;
-    }
-    table>tbody>tr>td>.btn-link:hover {
-      text-decoration: none;
-    }
-    table>tbody>tr>td>.btn-info.active{
-      border-radius: 5px;
-    }
-    table {
-      font-family: Times;
-    }
+
     .dropdown-menu {
       padding-top: 0;
     }
@@ -108,6 +96,58 @@
                  ng-repeat="property in activitiForm.formProperties track by property.id"
                  ng-if="isFieldVisible(property)">
 
+              <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
+                <table style="width: 100%">
+                  <tr ng-if="insertSeparator(property.id).sText.length > 0">
+                    <td style="width: 30%; text-align: right">
+                      <hr class="hr-divider side-left"
+                          style="width: 95%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                    <td colspan="2" style="max-width: 40%; text-align: center">
+                      <span style="position: relative">{{insertSeparator(property.id).sText}}</span>
+                    </td>
+                    <td style="width: 30%; text-align: left">
+                      <hr class="hr-divider side-right"
+                          style="width: 95%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                  </tr>
+                  <tr ng-if="insertSeparator(property.id).sText.length == 0">
+                    <td style="width: 50%; text-align: right">
+                      <hr class="hr-divider side-left"
+                          style="width: 97%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                    <td style="width: 50%; text-align: left">
+                      <hr class="hr-divider side-right"
+                          style="width: 97%;
+                    height: 1px;
+                    display: inline-block;
+                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
               <div class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
@@ -153,7 +193,7 @@
                     <thead>
 
                     <tr class="table-thead">
-                      <th ng-repeat="item in property.aRow[0].aField">
+                      <th ng-repeat="item in property.aRow[0].aField" ng-style="{'width' : item.nWidth}">
                         <span>{{item.sFieldLabel || item.name}}</span>
                         <span style="display: block; text-align: center" class="s-field-notes"
                              ng-if="item.sFieldNotes!=null">
@@ -217,7 +257,7 @@
 
                         <div ng-if="item.type == 'date'">
                           <!--заменить на директиву-->
-                          <p class="input-group">
+                          <p class="input-group datepicker-central">
                             <input type="text"
                                    ng-required="item.required"
                                    name="{{item.id + rowIndex}}"
@@ -335,6 +375,7 @@
 
                         <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
                           <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
+                                          ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                           ng-model="item.value"
                                           form-data-property="item"
                                           service-data="oServiceData"
@@ -368,7 +409,10 @@
                           </ui-select>
                         </div>
 
-                        <div style="padding:5px" class="error-popup" ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
+                        <div style="padding:5px"
+                             class="error-popup"
+                             ng-messages="form[tableName][item.id + rowIndex].$error" ng-if="form.$submitted && form[tableName][item.id + rowIndex].$invalid
+                                          || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName">
                           <span ng-message="required">Необхідно заповнити.</span>
                           <span ng-message="pattern">Значення має бути числом.</span>
                           <span ng-message="email">Помилка в email.</span>
@@ -407,7 +451,7 @@
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <input type="button" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
                   </div>
                 </div>
 
@@ -463,7 +507,7 @@
                        class="form-control"
                        value="">
 
-                <p class="input-group"
+                <p class="input-group datepicker-central"
                    ng-switch-when="date">
 
                   <input type="text"

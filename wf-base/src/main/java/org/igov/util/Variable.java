@@ -6,6 +6,8 @@
 package org.igov.util;
 
 import java.util.List;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.Expression;
 
 /**
  *
@@ -108,6 +110,17 @@ public class Variable {
         }else{
             return false;
         }
+    }
+    
+    public static String getStringFromFieldExpression(Expression expression,
+            DelegateExecution execution) {
+        if (expression != null) {
+            Object value = expression.getValue(execution);
+            if (value != null) {
+                return value.toString();
+            }
+        }
+        return null;
     }
     
 }

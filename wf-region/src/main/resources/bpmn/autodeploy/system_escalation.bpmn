@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nElapsedDays" name="Заявка знаходиться на цій стадії" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -41,7 +41,7 @@
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nElapsedDay" name="Заявка знаходиться на цій стадії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nElapsedDays" name="Заявка знаходиться на цій стадії" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTaskIDPlusName" name="Назва этапу обробки (юзертаски)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string" writable="false"></activiti:formProperty>
@@ -64,7 +64,11 @@
         <activiti:formProperty id="comment" name="Коментар для громадянина за результатами контакту з адміністративним органом" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nCountDays" name="Укажіть кількість днів - через скільки повернутись до розгляду ескалації?" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="commentar" name="Внутрішній коментар волонтера" type="textArea"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${assignGroup}">
+          <activiti:field name="group_prefix">
+            <activiti:string><![CDATA[Indirectly_]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -106,33 +110,33 @@ execution.setVariable('sNotification_day', timer)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Інформація щодо Вашого звернення на iGov]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
+          <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
-<b>Шановний(-а) ${clfio}.</b><br /><br />
+&lt;b&gt;Шановний(-а) ${clfio}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 У зв'язку з порушенням сроків обробки звернення ${nID_Protected} (${sNameProcess})
-волонтери команди iGov зв'язалися з відповідальними представниками адміністративного органу - ${sOrganName}.<br />
-За результатми контакту отримано наступний коментар працівника:<br />
-${comment}<br /><br />
-При необхідності Ви можете зателефонувати до державного органу:<br />
-${sEmployeeContacts}<br /><br />
+волонтери команди iGov зв'язалися з відповідальними представниками адміністративного органу - ${sOrganName}.&lt;br /&gt;
+За результатми контакту отримано наступний коментар працівника:&lt;br /&gt;
+${comment}&lt;br /&gt;&lt;br /&gt;
+При необхідності Ви можете зателефонувати до державного органу:&lt;br /&gt;
+${sEmployeeContacts}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "}]]></activiti:expression>
+          <activiti:expression>" "}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Termin obrobki zvernen. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Termin obrobki zvernen. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

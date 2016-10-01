@@ -39,11 +39,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.joda.time.format.DateTimeFormatter;
 
 @Controller
-@Api(tags = { "ActionEventController -- События по действиям и статистика" })
+@Api(tags = {"ActionEventController -- События по действиям и статистика"})
 @RequestMapping(value = "/action/event")
 public class ActionEventController {
 
@@ -61,8 +63,8 @@ public class ActionEventController {
     @Autowired
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
-    private SubjectMessagesDao subjectMessagesDao; 
-    @Autowired    
+    private SubjectMessagesDao subjectMessagesDao;
+    @Autowired
     private DocumentDao documentDao;
     @Autowired
     private ActionProcessCountDao actionProcessCountDao;
@@ -83,9 +85,9 @@ public class ActionEventController {
             @ApiParam(value = "строка-ид заявки, в формате XXX-XXXXXX = nID_Server-nID_Order, "
                     + "первая часть -- ид сервера, где расположена задача, "
                     + "вторая часть -- nID_Protected, ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
-            //, @ApiParam(value = "номер-ид субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
-            //, @ApiParam(value = "токен", required = false) @RequestParam(value = "sToken", required = false) String sToken
-            ) throws CommonServiceException, CRCInvalidException {
+    //, @ApiParam(value = "номер-ид субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+    //, @ApiParam(value = "токен", required = false) @RequestParam(value = "sToken", required = false) String sToken
+    ) throws CommonServiceException, CRCInvalidException {
 
         return oActionEventService.getHistoryEventService(sID_Order);
     }
@@ -136,7 +138,7 @@ public class ActionEventController {
             @ApiParam(value = "строка тела сообщения (для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "номер-ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
-            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType            
+            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
     ) {
         return oActionEventService.addActionStatus_Central(
                 sID_Order,
@@ -152,7 +154,7 @@ public class ActionEventController {
                 sBody,
                 nID_Proccess_Feedback,
                 nID_Proccess_Escalation,
-                nID_StatusType            
+                nID_StatusType
         );
     }
 
@@ -176,88 +178,88 @@ public class ActionEventController {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
             @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
-            @ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
-           // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
-           // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
+            @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+    // @ApiParam(value = "дата создания таски", required = false) @RequestParam(value = "sDateCreate", required =false) String sDateCreate,
+    // @ApiParam(value = "дата закрытия таски", required = false) @RequestParam(value = "sDateClosed", required = false) String sDateClosed
     ) throws CommonServiceException {
         return oActionEventService.updateActionStatus_Central(
-            sID_Order,
-            sUserTaskName,
-            soData,
-            sToken,
-            sBody,
-            nTimeMinutes,
-            nID_Proccess_Feedback,
-            nID_Proccess_Escalation,
+                sID_Order,
+                sUserTaskName,
+                soData,
+                sToken,
+                sBody,
+                nTimeMinutes,
+                nID_Proccess_Feedback,
+                nID_Proccess_Escalation,
                 nID_StatusType,
                 sSubjectInfo,
                 nID_Subject
-             //   sDateCreate,
-              //  sDateClosed
+        //   sDateCreate,
+        //  sDateClosed
         );
     }
 
-    @ApiOperation(value = "Проверка наличия задачи определенного Бизнес процесса (БП), указанного гражданина", notes =
-            "##### Примеры:\n"
-     + "http://test.igov.org.ua/wf/service/action/task/event/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000\n\n"
-     + "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
-     + "\n```json\n"
-     + "{\n"
-     + "\"sID\": \"2\",\n"
-     + "\"nID_Task\": 2,\n"
-     + "\"nID_Subject\": 2,\n"
-     + "  \"sStatus\": \"processing\",\n"
-     + "  \"sID_Status\": \"заявка в обработке\",\n"
-     + "  \"sDate\": null,\n"
-     + "  \"nID_Service\": 1,\n"
-     + "  \"nID_Region\": 1,\n"
-     + "  \"sID_UA\": \"1200000000\",\n"
-     + "  \"nRate\": 0,\n"
-     + "  \"soData\": \"[]\",\n"
-     + "  \"sToken\": \"\",\n"
-     + "  \"sHead\": \"\",\n"
-     + "  \"sBody\": \"\",\n"
-     + "  \"nTimeMinutes\": 0,\n"
-     + "  \"sID_Order\": \"0-22\",\n"
-     + "  \"nID_Server\": 0,\n"
-     + "  \"nID_Protected\": null,\n"
-     + "  \"nID\": 8\n"
-     + "}\n\n"
-     + "\n```\n"
-     + "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
-     + "\n```json\n"
-     + "{\n"
-     + "  \"code\": \"BUSINESS_ERR\",\n"
-     + "  \"message\": \"Record not found\"\n"
-     + "}\n"
-     + "\n```\n")
-     @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
-     @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
-     public
-     @ResponseBody
-     HistoryEvent_Service getLastTaskHistory(
-     @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
-     @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
-     @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA)
-     throws CommonServiceException {
-
-     HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service, sID_UA);
-     if (oHistoryEvent_Service == null) {
-     throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
-     }
-     return oHistoryEvent_Service;
-     }
-
-    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes =
-            "Возвращает:\\n\\n\"\n" +
-                    "     + \"\\n```json\\n\"\n" +
-                    "     + \"{\\n\"\n" +
-                    "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n" +
-                    "     + \"  \\\"bIsLimitReached\\\": \\\"0 - если лимит по открытым заявкам не достигнут; 1 - лостигнут лимит\\\"\\n\"\n" +
-                    "     + \"}\\n\"\n" +
-                    "     + \"\\n```\\n\"")
+    @ApiOperation(value = "Проверка наличия задачи определенного Бизнес процесса (БП), указанного гражданина", notes
+            = "##### Примеры:\n"
+            + "http://test.igov.org.ua/wf/service/action/task/event/getLastTaskHistory?nID_Subject=2&nID_Service=1&sID_UA=1200000000\n\n"
+            + "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
+            + "\n```json\n"
+            + "{\n"
+            + "\"sID\": \"2\",\n"
+            + "\"nID_Task\": 2,\n"
+            + "\"nID_Subject\": 2,\n"
+            + "  \"sStatus\": \"processing\",\n"
+            + "  \"sID_Status\": \"заявка в обработке\",\n"
+            + "  \"sDate\": null,\n"
+            + "  \"nID_Service\": 1,\n"
+            + "  \"nID_Region\": 1,\n"
+            + "  \"sID_UA\": \"1200000000\",\n"
+            + "  \"nRate\": 0,\n"
+            + "  \"soData\": \"[]\",\n"
+            + "  \"sToken\": \"\",\n"
+            + "  \"sHead\": \"\",\n"
+            + "  \"sBody\": \"\",\n"
+            + "  \"nTimeMinutes\": 0,\n"
+            + "  \"sID_Order\": \"0-22\",\n"
+            + "  \"nID_Server\": 0,\n"
+            + "  \"nID_Protected\": null,\n"
+            + "  \"nID\": 8\n"
+            + "}\n\n"
+            + "\n```\n"
+            + "Ответ, если записи не существует. (HTTP status Code: 500 Internal Server Error):\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"code\": \"BUSINESS_ERR\",\n"
+            + "  \"message\": \"Record not found\"\n"
+            + "}\n"
+            + "\n```\n")
     @ApiResponses(value = {
-            @ApiResponse(code = 500, message = "Record not found")})
+        @ApiResponse(code = 500, message = "Record not found")})
+    @RequestMapping(value = "/getLastTaskHistory", method = RequestMethod.GET)
+    public @ResponseBody
+    HistoryEvent_Service getLastTaskHistory(
+            @ApiParam(value = "Номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+            @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA)
+            throws CommonServiceException {
+
+        HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getLastTaskHistory(nID_Subject, nID_Service, sID_UA);
+        if (oHistoryEvent_Service == null) {
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");
+        }
+        return oHistoryEvent_Service;
+    }
+
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes
+            = "Возвращает:\\n\\n\"\n"
+            + "     + \"\\n```json\\n\"\n"
+            + "     + \"{\\n\"\n"
+            + "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n"
+            + "     + \"  \\\"bIsLimitReached\\\": \\\"0 - если лимит по открытым заявкам не достигнут; 1 - лостигнут лимит\\\"\\n\"\n"
+            + "     + \"}\\n\"\n"
+            + "     + \"\\n```\\n\"")
+    @ApiResponses(value = {
+        @ApiResponse(code = 500, message = "Record not found")})
     @RequestMapping(value = "/getCountOrders", method = RequestMethod.GET)
     public @ResponseBody
     String getCountOrders(
@@ -277,25 +279,44 @@ public class ActionEventController {
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
             if (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")
-                    ) {
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")) {
                 nClosed++;
             }
         }
 
         Long result = nOpened - nClosed;
-        if(bExcludeClosed){
+        if (bExcludeClosed) {
             m.put("nOpened", result);
         } else {
             m.put("nOpened", nOpened);
         }
 
-        if(nLimit == 0 || result <= nLimit){
+        if (nLimit == 0 || result <= nLimit) {
             m.put("bIsLimitReached", false);
         } else {
             m.put("bIsLimitReached", true);
         }
         return JSONValue.toJSONString(m);
+    }
+    
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места, в котором она была подана", notes
+            = "Возвращает:\\n\\n\"\n"
+            + "     + \"\\n```json\\n\"\n"
+            + "     + \"{\\n\"\n"
+            + "     + \"  \\\"countClaim\\\": \\\"число заявок по определенной услуге в рамках места\\\",\\n\"\n"
+            + "     + \"}\\n\"\n"
+            + "     + \"\\n```\\n\"")
+    @ApiResponses(value = {
+        @ApiResponse(code = 500, message = "Record not found")})
+    @RequestMapping(value = "/getCountClaimHistory", method = RequestMethod.GET)
+    public @ResponseBody
+    Long getCountClaimHistory(
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) String nID_Service,
+            @ApiParam(value = "Тип статуса заявки", required = true) @RequestParam(value = "nID_StatusType", required = true) String nID_StatusType) 
+            throws CommonServiceException {
+
+        return historyEventServiceDao.getClaimCountHistory(sID_UA, Long.valueOf(nID_Service), Long.valueOf(nID_StatusType));
     }
 
     //TODO: Сделать оограничение по строкам
@@ -305,8 +326,6 @@ public class ActionEventController {
     List<HistoryEvent_Service> getHistoryEventsService() {
         return historyEventServiceDao.findAll();
     }*/
-    
-    
     //################ HistoryEvent services ###################
     /**
      * сохранение события
@@ -317,7 +336,8 @@ public class ActionEventController {
      * @param sEventName_Custom строка - кастомное описание документа
      * (необязательное поле)
      * @param sMessage строка - сохраняемое содержимое (обязательное поле)
-     * @param nID_HistoryEvent_Service строка - id - сервиса HistoryEven (не обязательное поле)
+     * @param nID_HistoryEvent_Service строка - id - сервиса HistoryEven (не
+     * обязательное поле)
      * @param nID_Document строка - id - документа (не обязательное поле)
      * @param sSubjectInfo строка-информация о субъекте (не обязательное поле)
      */
@@ -334,11 +354,10 @@ public class ActionEventController {
             @ApiParam(value = "номер-id - документа", required = false) @RequestParam(value = "nID_Document", required = false) Long nID_Document,
             @ApiParam(value = "строка-информация о субъекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo)
             throws IOException {
-	
+
         return historyEventDao.setHistoryEvent(nID_Subject,
                 nID_HistoryEventType, sEventName_Custom, sMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
     }
-
 
     @ApiOperation(value = "Получение события истории по его id", notes = "\n"
             + "Пример 1 (Нет документа или HistoryEvent_Service связанных с этим событием):\n"
@@ -435,27 +454,27 @@ public class ActionEventController {
         return historyEventDao.getHistoryEvent(id);
     }
 
-    @ApiOperation(value = "Загрузка событий", notes =
-              "Пример 1: http://test.igov.org.ua/wf/service/action/event/getServicesStatistics?nID_Subject=10\n\n"
+    @ApiOperation(value = "Загрузка событий", notes
+            = "Пример 1: http://test.igov.org.ua/wf/service/action/event/getServicesStatistics?nID_Subject=10\n\n"
             + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getServicesStatistics?nID_Subject=10&nID_HistoryEvent_Service=2\n\n"
             + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
             + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
             + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
-            + "одна с самым большим временем в поле sDate\n\n"             
+            + "одна с самым большим временем в поле sDate\n\n"
             + "Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**\n\n"
             + "Алгоритм сравнения сущностей:\n\n"
-            + "- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные\n" 
-            + "- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**\n" 
-            + "- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**\n" 
+            + "- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные\n"
+            + "- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**\n"
+            + "- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**\n"
             + "- если **oHistoryEvent_Service = не null** и **oDocument = не null** - сравнение идет и по **oHistoryEvent_Service** и по **oDocument**\n")
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
             @ApiParam(value = "id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
             @ApiParam(value = "id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required = false) Long nID_HistoryEvent_Service,
-            @ApiParam(value =
-                    "булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, "
-                            + "у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) @RequestParam(value = "bGrouped", required = false, defaultValue = "false") Boolean bGrouped) {
+            @ApiParam(value
+                    = "булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, "
+                    + "у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) @RequestParam(value = "bGrouped", required = false, defaultValue = "false") Boolean bGrouped) {
         return historyEventDao.getHistoryEvents(nID_Subject, nID_HistoryEvent_Service, bGrouped);
     }
 
@@ -463,8 +482,8 @@ public class ActionEventController {
     /**
      * @param nID_Service ID сервиса.
      */
-    @ApiOperation(value = "Получение количества записей HistoryEvent_Service для сервиса по регионам", notes =
-            "##### Примеры:\n"
+    @ApiOperation(value = "Получение количества записей HistoryEvent_Service для сервиса по регионам", notes
+            = "##### Примеры:\n"
             + "https://test.igov.org.ua/wf/service/action/event/getStatisticServiceCounts?nID_Service=26\n\n"
             + "Результат\n"
             + "\n```json\n"
@@ -492,21 +511,20 @@ public class ActionEventController {
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
     }
 
-    @ApiOperation(value = "Получение статистики по сервисам и регионам за заданный промежуток времени", notes =
-            "##### Примеры:\n"
-                    + "https://test.igov.org.ua/wf/service/action/event/getServicesStatistic?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
-                    + "Результат\n"
-                    + "\n```csv\n"
-                    + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
-                    + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
-                    + "\n```\n")
+    @ApiOperation(value = "Получение статистики по сервисам и регионам за заданный промежуток времени", notes
+            = "##### Примеры:\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServicesStatistic?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
+            + "Результат\n"
+            + "\n```csv\n"
+            + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
+            + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
+            + "\n```\n")
     @RequestMapping(value = "/getServicesStatistic", method = RequestMethod.GET)
     public @ResponseBody
     void getServicesStatistic(
             @ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
             @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
             HttpServletResponse httpResponse) {
-
 
         //parse date to check that it has appropriate form
         DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
@@ -515,7 +533,7 @@ public class ActionEventController {
         List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatistics(from, to);
 
         String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
-                "nCountEscalation", "averageRate", "averageTime"};
+            "nCountEscalation", "averageRate", "averageTime"};
         List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headingFields));
 
@@ -527,7 +545,7 @@ public class ActionEventController {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
-            for(ServicesStatistics item : servicesStatistics){
+            for (ServicesStatistics item : servicesStatistics) {
                 List<String> line = new LinkedList<>();
                 line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
@@ -538,7 +556,7 @@ public class ActionEventController {
                 line.add(item.getnCountEscalation() == null ? "0" : item.getnCountEscalation().toString());
                 line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
                 //divide average time (mins) to 60 to get hours
-                line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue()/60f));
+                line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue() / 60f));
                 csvWriter.writeNext(line.toArray(new String[line.size()]));
             }
             csvWriter.close();
@@ -548,17 +566,17 @@ public class ActionEventController {
         }
     }
 
-    @ApiOperation(value = "Получение отчета о поданных заявках", notes =
-            "##### Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
+    @ApiOperation(value = "Получение отчета о поданных заявках", notes
+            = "##### Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
             + "В результате возвращаются следующий набор полей - sID_Order, nID_Server, nID_Service, sID_Place, nID_Subject, nRate, sTextFeedback, sUserTaskName, sHead, sBody, nTimeMinutes, sPhone\n"
-			+ "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
-			+ "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
-			+ "Примеры:\n"
+            + "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
+            + "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
+            + "Примеры:\n"
             + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00&sanID_Service_Exclude=1,5,24,56\n\n"
             + "Результат\n"
             + "\n```csv\n"
             + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
-			+ "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
+            + "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
             + "\n```\n")
     @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
     public void getServiceHistoryReport(
@@ -567,137 +585,112 @@ public class ActionEventController {
             @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
             HttpServletResponse httpResponse) {
         LOG.info("{Enter into function}");
-    	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
-    	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
-    	
-    	String[] headersMainField = { "sID_Order", "nID_Server",
-                "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
-                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClosed" };
-    	List<String> headers = new ArrayList<String>();
+        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        DateTime dateAt = format.parseDateTime(sDateAt);
+        DateTime dateTo = format.parseDateTime(sDateTo);
+
+        String[] headersMainField = {"sID_Order", "nID_Server",
+            "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead",
+            "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClose"};
+        List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headersMainField));
-    	
-    	httpResponse.setHeader("Content-disposition", "attachment; filename="
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
-    	httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
-    	
-    	CSVWriter csvWriter;
-		try {
+        httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+        CSVWriter csvWriter;
+        try {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';',
                     CSVWriter.NO_QUOTE_CHARACTER);
-	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 
             List<Long> anID_Service_Exclude = null;
 
-            if(sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0){
+            if (sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0) {
                 List<String> asID_Service_Exclude = Arrays.asList(sanID_Service_Exclude);
                 anID_Service_Exclude = asID_Service_Exclude.stream().map(s -> NumberUtils.parseNumber(s, Long.class)).collect(Collectors.toList());
             }
 
-	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo, anID_Service_Exclude);
+            List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo, anID_Service_Exclude);
 
-	    	LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
-	    	
-	    	if (historyEvents.size() > 0){
-	            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
-	            for (HistoryEvent_Service historyEventService : historyEvents){
-	            	historyEventServicesIDs.add(historyEventService.getId());
-	            }
-	            LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
-	            List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
-	            LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
-	            Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
-	            for (SubjectMessage subjectMessage : subjectMessages){
-	            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
-	            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
-	            	} 
-	            }
-	            
-		    	for (HistoryEvent_Service historyEventService : historyEvents){
-		    		List<String> line = new LinkedList<String>();
-		    		// sID_Order
-		    		line.add(historyEventService.getsID_Order());
-		    		// nID_Server
-		    		line.add(historyEventService.getnID_Server() != null ? historyEventService.getnID_Server().toString() : "");
-		    		// nID_Service
-		    		line.add(historyEventService.getnID_Service() != null ? historyEventService.getnID_Service().toString() : "");
-		    		// sID_Place
-		    		line.add(historyEventService.getsID_UA());
-		    		// nID_Subject
-		    		line.add(historyEventService.getnID_Subject() != null ? historyEventService.getnID_Subject().toString() : "");
-		    		// nRate
-		    		line.add(historyEventService.getnRate() != null ? historyEventService.getnRate().toString() : "");
-		    		String sTextFeedback = "";
-		    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
-		    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
-		    		} else {
-		    			LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
-		    		}
-		    		// sTextFeedback
-		    		line.add(sTextFeedback);
-		    		// sUserTaskName
-		    		line.add(historyEventService.getsUserTaskName());
-		    		// sHead
-		    		line.add(historyEventService.getsHead());
-		    		// sBody
-		    		line.add(historyEventService.getsBody());
-		    		// nTimeMinutes
-		    		line.add(historyEventService.getnTimeMinutes() != null ? historyEventService.getnTimeMinutes().toString() : "");
-		    		
-		    		Integer nID_Server = historyEventService.getnID_Server();
-		            nID_Server = nID_Server == null ? 0 : nID_Server;
-	
-                                nID_Server = generalConfig.getServerId(nID_Server);
-			    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-		            if (!oOptionalServer.isPresent()) {
-		                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
-		            }
-		            Server oServer = oOptionalServer.get();
-		            String sHost = oServer.getsURL();
-		            
-		            String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + historyEventService.getnID_Task() + "&sVariableName=phone";
-		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-		            
-		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
-		            // sPhone
-		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
-                    // nID_ServiceData
-                    line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
-                    //sDateCreate
-                  /*  LOG.info("(Before getsDateCreate)");
-                    if(historyEventService.getsDateCreate() == null || historyEventService.getsDateCreate() == "" )
-                    {
-                        LOG.info("Executing historyservice dates ");
-                         List<Date> listDate = oActionEventService.setOldTaskDates(historyEventService.getnID_Task(), historyEventService);
-                       if(listDate.size() == 1)
-                       {
-                         LOG.info("Exec lines");
-                         line.add(listDate.get(0).toString());
-                         line.add(listDate.get(1).toString());
-                       }
-                       else
-                       {
-                           LOG.info("No data");
-                          line.add("");
-                          line.add("");
-                       }
-                           
+            LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
+
+            if (historyEvents.size() > 0) {
+                List<Long> historyEventServicesIDs = new LinkedList<Long>();
+                for (HistoryEvent_Service historyEventService : historyEvents) {
+                    historyEventServicesIDs.add(historyEventService.getId());
+                }
+                LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
+                List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
+                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
+                Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
+                for (SubjectMessage subjectMessage : subjectMessages) {
+                    if (subjectMessage.getSubjectMessageType().getId() == 2) {
+                        subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
                     }
-                    else
-                    {
-                        LOG.info("datecreate not null or empty");
-                        line.add(historyEventService.getsDateCreate());
-                        line.add(historyEventService.getsDateClosed() != null? historyEventService.getsDateClosed() : "");
-		    
-                    }*/
-                            csvWriter.writeNext(line.toArray(new String[line.size()]));
-		    	}
-	    	}
-	    	csvWriter.close();
-		} catch (Exception e) {
-			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
-		} 
+                }
+
+                for (HistoryEvent_Service historyEventService : historyEvents) {
+                    List<String> line = new LinkedList<>();
+                    // sID_Order
+                    line.add(historyEventService.getsID_Order());
+                    // nID_Server
+                    line.add(historyEventService.getnID_Server() != null ? historyEventService.getnID_Server().toString() : "");
+                    // nID_Service
+                    line.add(historyEventService.getnID_Service() != null ? historyEventService.getnID_Service().toString() : "");
+                    // sID_Place
+                    line.add(historyEventService.getsID_UA());
+                    // nID_Subject
+                    line.add(historyEventService.getnID_Subject() != null ? historyEventService.getnID_Subject().toString() : "");
+                    // nRate
+                    line.add(historyEventService.getnRate() != null ? historyEventService.getnRate().toString() : "");
+                    String sTextFeedback = "";
+                    if (subjectMessagesMap.get(historyEventService.getId()) != null) {
+                        sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
+                    } else {
+                        LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
+                    }
+                    // sTextFeedback
+                    line.add(sTextFeedback);
+                    // sUserTaskName
+                    line.add(historyEventService.getsUserTaskName());
+                    // sHead
+                    line.add(historyEventService.getsHead());
+                    // sBody
+                    line.add(historyEventService.getsBody());
+                    // nTimeMinutes
+                    line.add(historyEventService.getnTimeMinutes() != null ? historyEventService.getnTimeMinutes().toString() : "");
+
+                    Integer nID_Server = historyEventService.getnID_Server();
+                    nID_Server = nID_Server == null ? 0 : nID_Server;
+
+                    nID_Server = generalConfig.getServerId(nID_Server);
+                    Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+                    if (!oOptionalServer.isPresent()) {
+                        throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+                    }
+                    Server oServer = oOptionalServer.get();
+                    String sHost = oServer.getsURL();
+
+                    String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + historyEventService.getnID_Task() + "&sVariableName=phone";
+                    ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+
+                    JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+                    line.add(json.get("phone") != null ? json.get("phone").toString() : "");
+                    line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    line.add(historyEventService.getsDateCreate() != null ? sdf.format(historyEventService.getsDateCreate().toDate()) : "");
+                    line.add(historyEventService.getsDateClose() != null ? sdf.format(historyEventService.getsDateClose().toDate()) : "");
+                    csvWriter.writeNext(line.toArray(new String[line.size()]));
+                }
+            }
+            csvWriter.close();
+        } catch (Exception e) {
+            LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+        }
     }
-    
+
     @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
     @RequestMapping(value = "/getActionProcessCount", method = RequestMethod.GET)
     public @ResponseBody
@@ -706,18 +699,18 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
-    	
-    	Map<String, Integer> resMap = new HashMap<String, Integer>();
-    	
-    	if (res != null){
-    		resMap.put("nCountYear", res.getnCountYear().intValue());
-    	} else {
-    		resMap.put("nCountYear", 0);
-    	}
-    	return JSONValue.toJSONString(resMap);
+        ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+
+        Map<String, Integer> resMap = new HashMap<String, Integer>();
+
+        if (res != null) {
+            resMap.put("nCountYear", res.getnCountYear().intValue());
+        } else {
+            resMap.put("nCountYear", 0);
+        }
+        return JSONValue.toJSONString(resMap);
     }
-    
+
     @ApiOperation(value = "setActionProcessCount", notes = "getActionProcessCount")
     @RequestMapping(value = "/setActionProcessCount", method = RequestMethod.GET)
     public @ResponseBody
@@ -726,39 +719,39 @@ public class ActionEventController {
             @ApiParam(required = true) @RequestParam(value = "nID_Service", required = false) Integer nID_Service,
             @ApiParam(required = false) @RequestParam(value = "nYear ", required = false) Integer nYear,
             HttpServletResponse httpResponse) {
-    	ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
-    	
-    	LOG.info("Found ActionProcessCount {}", res);
-    	if (res == null){
-    		ActionProcessCount newElem = new ActionProcessCount();
-    		newElem.setsID_BP(sID_BP);
-    		newElem.setnCountYear(0);
-    		newElem.setnID_Service(nID_Service);
-    		newElem.setnYear(nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
-    		res = newElem;
-    	} else {
-    		res.setnCountYear(res.getnCountYear() + 1);
-    	}
-    	res = actionProcessCountDao.saveOrUpdate(res);
-    	LOG.info("Saved updated info {}: {}", res, res.getId());
-    	
-    	List<ActionProcessCount> list = actionProcessCountDao.findAll();
-    	LOG.info("Total number of elements: {}", list);
-    	Map<String, Integer> resMap = new HashMap<String, Integer>();
-    	
-    	if (res != null){
-    		resMap.put("nCountYear", res.getnCountYear());
-    	} else {
-    		resMap.put("nCountYear", 0);
-    	}
-    	return JSONValue.toJSONString(resMap);
+        ActionProcessCount res = actionProcessCountDao.getByCriteria(sID_BP, nID_Service, nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+
+        LOG.info("Found ActionProcessCount {}", res);
+        if (res == null) {
+            ActionProcessCount newElem = new ActionProcessCount();
+            newElem.setsID_BP(sID_BP);
+            newElem.setnCountYear(0);
+            newElem.setnID_Service(nID_Service);
+            newElem.setnYear(nYear == null ? Calendar.getInstance().get(Calendar.YEAR) : nYear);
+            res = newElem;
+        } else {
+            res.setnCountYear(res.getnCountYear() + 1);
+        }
+        res = actionProcessCountDao.saveOrUpdate(res);
+        LOG.info("Saved updated info {}: {}", res, res.getId());
+
+        List<ActionProcessCount> list = actionProcessCountDao.findAll();
+        LOG.info("Total number of elements: {}", list);
+        Map<String, Integer> resMap = new HashMap<String, Integer>();
+
+        if (res != null) {
+            resMap.put("nCountYear", res.getnCountYear());
+        } else {
+            resMap.put("nCountYear", 0);
+        }
+        return JSONValue.toJSONString(resMap);
     }
-    
+
     @ApiOperation(value = "cleanActionProcessCount", notes = "cleanActionProcessCount")
     @RequestMapping(value = "/cleanActionProcessCount", method = RequestMethod.GET)
     public void setActionProcessCount(
             @ApiParam(required = true) @RequestParam(value = "sID_BP", required = false) String sID_BP) {
-    	int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
-    	LOG.info("Removed {} entities", res);
+        int res = actionProcessCountDao.deleteBy("sID_BP", sID_BP);
+        LOG.info("Removed {} entities", res);
     }
 }
