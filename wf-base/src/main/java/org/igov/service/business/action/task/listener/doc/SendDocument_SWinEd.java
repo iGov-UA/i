@@ -38,7 +38,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     FormService formService;
 
     @Autowired
-    private IBytesDataStorage oBytesDataStorage;
+    private IBytesDataStorage durableBytesDataStorage;
     
     private Expression sID_File_XML_SWinEd;
     
