@@ -298,6 +298,26 @@ public class ActionEventController {
         }
         return JSONValue.toJSONString(m);
     }
+    
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места, в котором она была подана", notes
+            = "Возвращает:\\n\\n\"\n"
+            + "     + \"\\n```json\\n\"\n"
+            + "     + \"{\\n\"\n"
+            + "     + \"  \\\"countClaim\\\": \\\"число заявок по определенной услуге в рамках места\\\",\\n\"\n"
+            + "     + \"}\\n\"\n"
+            + "     + \"\\n```\\n\"")
+    @ApiResponses(value = {
+        @ApiResponse(code = 500, message = "Record not found")})
+    @RequestMapping(value = "/getCountClaimHistory", method = RequestMethod.GET)
+    public @ResponseBody
+    Long getCountClaimHistory(
+            @ApiParam(value = "Строка-ИД места (по Украинскому классификатору)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @ApiParam(value = "Номер-ИД услуги", required = true) @RequestParam(value = "nID_Service", required = true) String nID_Service,
+            @ApiParam(value = "Тип статуса заявки", required = true) @RequestParam(value = "nID_StatusType", required = true) String nID_StatusType) 
+            throws CommonServiceException {
+
+        return historyEventServiceDao.getClaimCountHistory(sID_UA, Long.valueOf(nID_Service), Long.valueOf(nID_StatusType));
+    }
 
     //TODO: Сделать оограничение по строкам
     /*@RequestMapping(value = "/getHistoryEventsService", method = RequestMethod.GET)
