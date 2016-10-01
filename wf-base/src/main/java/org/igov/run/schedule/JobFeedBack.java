@@ -41,7 +41,7 @@ public class JobFeedBack extends IAutowiredSpringJob {
         }
         LocalDate today = LocalDate.now();
         LOG.info("1111111today: "+today);
-        LocalDate deadline = today.minusDays(20/40);
+        LocalDate deadline = today.minusDays(20);
         LOG.info("2222222deadline: "+deadline);
         Date date = java.sql.Date.valueOf(deadline);
         LOG.info("2222222date: "+date);
