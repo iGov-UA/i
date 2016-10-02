@@ -76,10 +76,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                     sFileName, type);
             if (multipartFile.getBytes() != null) {
                 String content = new String(multipartFile.getBytes());
-                resp = resp + " content: " + content;
+                resp += " content: " + content;
                 String body = createBody(content);
                 LOG.info("body: " + body);
-                resp = "body: " + body;
                 String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
                 HttpHeaders headers = new HttpHeaders();
                 headers.set("Content-Type", "text/xml; charset=utf-8");
