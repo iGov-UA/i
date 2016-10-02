@@ -283,42 +283,54 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           return false;
         }
 
-        taxTemplateFileHandler.postJSON({
-          formProperties: aFormProperties,
-          formData: $scope.data.formData,
-          oServiceData: oServiceData
-        }, function (data, error) {
-          if (data) {
-            $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
+        /**
+         * If oFile_XML_SWinEd property exists - try to handle taxTemplateFileHandler
+         * https://github.com/e-government-ua/i/issues/1374
+         */
+        if($scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]){
+          taxTemplateFileHandler.postJSON({
+            formProperties: aFormProperties,
+            formData: $scope.data.formData,
+            oServiceData: oServiceData
+          }, function (data, error) {
 
-            angular.extend($scope.data.formData, {
-              contentToSign: {
-                contentValue: $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled],
-                contentName: $scope.data.formData.params[data.fileFieldName].value + '.xml'
-              }
-            });
+            if (data) {
+              $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled] = data.soPatternFilled;
 
-            ActivitiService.saveForm(
-                oService,
-                oServiceData,
-                'some business key 111',
-                'process name here',
-                $scope.activitiForm,
-                $scope.data.formData
-            ).then(function (result) {
-              $window.location.href =
-                  $location.protocol() + '://' +
-                  $location.host() + ':' +
-                  $location.port() + '/api/sign-content/sign?formID=' +
-                  result.formID + '&nID_Server=' +
-                  oServiceData.nID_Server + '&sName=' + oService.sName;
-            });
-          }
-        });
+              angular.extend($scope.data.formData, {
+                contentToSign: {
+                  contentValue: $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled],
+                  contentName: $scope.data.formData.params[data.fileFieldName].value + '.xml'
+                }
+              });
 
-        console.log('[**taxTemplateFileHandlerConfig.oFile_XML_SWinEd]',taxTemplateFileHandlerConfig.oFile_XML_SWinEd);
-        console.log('[**$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]',
-            $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]);
+              ActivitiService.saveForm(
+                  oService,
+                  oServiceData,
+                  'some business key 111',
+                  'process name here',
+                  $scope.activitiForm,
+                  $scope.data.formData
+              ).then(function (result) {
+                $window.location.href =
+                    $location.protocol() + '://' +
+                    $location.host() + ':' +
+                    $location.port() + '/api/sign-content/sign?formID=' +
+                    result.formID + '&nID_Server=' +
+                    oServiceData.nID_Server + '&sName=' + oService.sName;
+              });
+            }
+
+            if(error){
+              ErrorsFactory.push({
+                type: 'danger',
+                text: error.text + JSON.stringify(error.value)
+              })
+            }
+          });
+        }
+
+
         if ($scope.sign.checked) {
           $scope.fixForm(form, aFormProperties);
           $scope.signForm();
@@ -489,6 +501,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       }
 
       function submitActivitiForm(aFormProperties) {
+
+        $scope.spinner = true;
+
         ActivitiService
             .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
             .then(function (oReturn) {
@@ -528,7 +543,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                 console.log('[submitForm.ActivitiService]sID_Order=' + sID_Order + ',sError=' + sError);
               }
 
-              return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID: null}));
+              return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID: null}))
+                .then(function(){
+                  $scope.spinner = false;
+                });
             });
       }
 
@@ -671,13 +689,18 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return $sce.trustAsHtml(html);
       };
 
+      /**
+       * Check for $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd] was done
+       * in order to https://github.com/e-government-ua/i/issues/1374
+       */
       if (($scope.data.formData.isAlreadySigned() &&
           $stateParams.signedFileID) ||
           ($stateParams.signedFileID &&
           $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd])) {
         var state = $state.$current;
 
-        //TODO should be refactored signedFileID assignment after tax template file partial signing
+
+        //TODO should be refactored signedFileID assignment after tax template file partial signing (https://github.com/e-government-ua/i/issues/1374)
         $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd] ?
             $scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd].value = $stateParams.signedFileID :
             null;

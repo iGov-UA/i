@@ -36,8 +36,14 @@
           sID_Pattern: patternCode.value,
           oData: json
         }).success(function (data, status, headers, config) {
-          _.merge(data, {fileFieldName: taxTemplateFileHandlerConfig.oFile_XML_SWinEd});
-          callback(data, null);
+
+          if(data.code !== 'SYSTEM_ERR'){
+            _.merge(data, {fileFieldName: taxTemplateFileHandlerConfig.oFile_XML_SWinEd});
+            callback(data, null);
+          }else if(data.code === 'SYSTEM_ERR'){
+            callback(null, {text:'Помилка відповіді веб-сервісу: ', value: data});
+          }
+
         }).error(function (data, status, headers, config) {
           callback(null, error);
         });

@@ -8,6 +8,7 @@ var url = require('url')
 
 /**
  * Load previously saved content from redis, sign it, and call(callback) service for saving signed content back to redis
+ * https://github.com/e-government-ua/i/issues/1374
  * @param req
  * @param res
  */
@@ -106,6 +107,7 @@ module.exports.signContent = function (req, res) {
 
 /**
  * Save signed content to redis, redirect to original url for further form submit
+ * https://github.com/e-government-ua/i/issues/1374
  * @param req
  * @param res
  */
