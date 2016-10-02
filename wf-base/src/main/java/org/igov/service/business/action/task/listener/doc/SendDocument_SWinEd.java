@@ -57,13 +57,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
         try {
-            LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
-            
             //byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
             // Выбираем по процессу прикрепленные файлы
             resp = "delegateTask.getId(): " + delegateTask.getId() + " delegateTask.getProcessInstanceId(): " + delegateTask.getProcessInstanceId();
-            Attachment attachmentRequested = oActionTaskService.getAttachment(null, delegateTask.getId(),
-                    1, delegateTask.getProcessInstanceId());
+            LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " resp: " + resp);
+            Attachment attachmentRequested = oActionTaskService.getAttachment(sID_File_XML_SWinEdValue, delegateTask.getId(),
+                    null, delegateTask.getProcessInstanceId());
             String sFileName = attachmentRequested.getName();
             String description = attachmentRequested.getDescription();
             String type = attachmentRequested.getType();
