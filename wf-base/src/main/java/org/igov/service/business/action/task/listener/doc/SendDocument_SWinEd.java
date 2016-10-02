@@ -1,6 +1,8 @@
 package org.igov.service.business.action.task.listener.doc;
 
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -8,10 +10,13 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,67 +25,84 @@ import org.springframework.stereotype.Component;
 
 @Component("SendDocument_SWinEd")
 public class SendDocument_SWinEd extends AbstractModelTask implements TaskListener {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(SendDocument_SWinEd.class);
-    
+
     @Autowired
     RuntimeService runtimeService;
-    
+
     @Autowired
     TaskService taskService;
-    
+
     @Autowired
     GeneralConfig generalConfig;
-    
+
     @Autowired
     FormService formService;
 
-    @Autowired
-    private IBytesDataStorage durableBytesDataStorage;
-    
+    //@Autowired
+    //private IBytesDataStorage durableBytesDataStorage;
     private Expression sID_File_XML_SWinEd;
-    
+
+    @Autowired
+    private ActionTaskService oActionTaskService;
+
     @Override
     public void notify(DelegateTask delegateTask) {
 
         //достать по ид атача ид в монге и достать контент из монги.
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
+        String resp = "[none]";
         try {
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
-            byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
-            if (oFile_XML_SWinEd != null) {
-                String content = new String(oFile_XML_SWinEd);
+            
+            //byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
+            // Выбираем по процессу прикрепленные файлы
+            resp = "delegateTask.getId(): " + delegateTask.getId() + " delegateTask.getProcessInstanceId(): " + delegateTask.getProcessInstanceId();
+            Attachment attachmentRequested = oActionTaskService.getAttachment(null, delegateTask.getId(),
+                    1, delegateTask.getProcessInstanceId());
+            String sFileName = attachmentRequested.getName();
+            String description = attachmentRequested.getDescription();
+            String type = attachmentRequested.getType();
+            String id = attachmentRequested.getId();
+            resp = resp + " id: " + id;
+            InputStream attachmentStream = taskService
+                    .getAttachmentContent(id);
+            VariableMultipartFile multipartFile = new VariableMultipartFile(
+                    attachmentStream, description,
+                    sFileName, type);
+            if (multipartFile.getBytes() != null) {
+                String content = new String(multipartFile.getBytes());
+                resp = resp + " content: " + content;
                 String body = createBody(content);
                 LOG.info("body: " + body);
+                resp = "body: " + body;
                 String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
                 HttpHeaders headers = new HttpHeaders();
-                //headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
                 headers.set("Content-Type", "text/xml; charset=utf-8");
                 headers.set("SOAPAction", "http://govgate/Send");
-                String resp = new RestRequest().post(URL, body,
+                resp = new RestRequest().post(URL, body,
                         null, StandardCharsets.UTF_8, String.class, headers);
-                
                 LOG.info("Ukrdoc response:" + resp);
-                execution.setVariable("result", "[none]");
+                execution.setVariable("result", resp);
             } else {
                 LOG.info("oFile_XML_SWinEd is null!!!");
             }
-            //поместить тело в хмл и отправить рест запрос
-            //сохранение результата в поле процесса
+            execution.setVariable("result", resp);
         } catch (Exception ex) {
             LOG.error("!!! Error/ Cfn't get attach from DataStorage with sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
         }
     }
-    
+
     private String createBody(String content) {
         String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
                 .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n")
                 .append("<soap:Body>")
                 .append("<Send xmlns=\"http://govgate/\">")
-                .append("<fileName>fileName</fileName>")
+                .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
                 .append("<senderEMail>olga.kuzminova87@gmail.com</senderEMail>")
                 .append("<data>").append(content).append("</data>")
                 .append("</Send>")
@@ -88,5 +110,5 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 .append("</soap:Envelope>").toString();
         return result;
     }
-    
+
 }
