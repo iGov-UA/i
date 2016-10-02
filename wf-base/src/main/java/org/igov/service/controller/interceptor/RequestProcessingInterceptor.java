@@ -589,7 +589,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     mParam.put("sUserTaskName", sUserTaskName);
                     mParam.put("sID_Order", sID_Order);
                     try {
-                        historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
+                        if(!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)){
+                            historyEventService.updateHistoryEvent(sID_Order, mParam);
+                        }
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
                                 ._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
