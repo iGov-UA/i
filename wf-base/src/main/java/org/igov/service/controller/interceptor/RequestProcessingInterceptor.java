@@ -452,7 +452,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
             }
 
-        } catch (Exception e) {
+        } catch (Exception e) { //
             LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
         }
 
