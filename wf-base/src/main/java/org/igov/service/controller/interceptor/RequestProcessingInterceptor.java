@@ -452,7 +452,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
             }
 
-        } catch (Exception e) {
+        } catch (Exception e) { //
             LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
         }
 
@@ -559,7 +559,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     //mParam.put("sDateStart", sDateStart);
                     //mParam.put("sDateClosed", sDateClosed);
                     try {
-                        historyEventService.updateHistoryEvent(sID_Order, mParam);// sID_Process
+                        if(!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)){
+                            historyEventService.updateHistoryEvent(sID_Order, mParam);
+                        }
+                        
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
                                 ._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
