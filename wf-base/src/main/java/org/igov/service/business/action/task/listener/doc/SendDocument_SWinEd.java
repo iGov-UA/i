@@ -11,6 +11,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -42,6 +43,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     //@Autowired
     //private IBytesDataStorage durableBytesDataStorage;
+    
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    
     private Expression sID_File_XML_SWinEd;
 
     @Autowired
@@ -55,6 +60,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
         try {
+            byte[] oFile_XML_SWinEd = oBytesDataInmemoryStorage.getBytes(sID_File_XML_SWinEdValue);
             //byte[] oFile_XML_SWinEd = durableBytesDataStorage.getData(sID_File_XML_SWinEdValue);
             // Выбираем по процессу прикрепленные файлы
             resp = "delegateTask.getId(): " + delegateTask.getId() + " delegateTask.getProcessInstanceId(): " + delegateTask.getProcessInstanceId();
