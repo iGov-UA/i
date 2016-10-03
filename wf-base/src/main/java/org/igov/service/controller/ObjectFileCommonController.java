@@ -291,7 +291,7 @@ public class ObjectFileCommonController {
                     "ProcessInstanceId for taskId '" + taskId + "' not found.",
                     Attachment.class);
         }
-
+        LOG.info("attachmentId: " + attachmentId + " taskId: " + taskId + " nFile: " + nFile + " processInstanceId: " + processInstanceId);
         // Выбираем по процессу прикрепленные файлы
         Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 nFile, processInstanceId);
