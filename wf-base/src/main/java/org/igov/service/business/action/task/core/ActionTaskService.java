@@ -610,7 +610,11 @@ public class ActionTaskService {
         return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
 
-    public Attachment getAttachment(String attachmentId, String nID_Task, Integer nFile, String processInstanceId) {
+    public Attachment getAttachment(String attachmentId, Integer nFile, String processInstanceId) {
+        String st = "Attachment for attachmentId = " + attachmentId  
+                    + " processInstanceId = " + processInstanceId 
+                    + " nFile = " + nFile;
+        LOG.info("Find " + st);
         List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
         Attachment attachmentRequested = null;
         for (int i = 0; i < attachments.size(); i++) {
@@ -623,22 +627,7 @@ public class ActionTaskService {
             attachmentRequested = attachments.get(0);
         }
         if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
-        }
-        return attachmentRequested;
-    }
-
-    public Attachment getAttachment(String attachmentId, String nID_Task, String processInstanceId) {
-        List<Attachment> attachments = oTaskService.getProcessInstanceAttachments(processInstanceId);
-        Attachment attachmentRequested = null;
-        for (int i = 0; i < attachments.size(); i++) {
-            if (attachments.get(i).getId().equalsIgnoreCase(attachmentId)) {
-                attachmentRequested = attachments.get(i);
-                break;
-            }
-        }
-        if (attachmentRequested == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for nID_Task '" + nID_Task + "' not found.");
+            throw new ActivitiObjectNotFoundException(st + " not found!");
         }
         return attachmentRequested;
     }
