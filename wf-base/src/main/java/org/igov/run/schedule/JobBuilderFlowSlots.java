@@ -59,8 +59,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
     
-//    @Autowired
-//    private Flow_ServiceData flow_ServiceData;
+    @Autowired
+    private Flow_ServiceData flow_ServiceData;
 
     //Maxline: TODO исправить потом на получение flowServiceData с признаком auto в названии
     private static final long[] A_TESTS_ID_FLOW_SERVICE_DATA = {1L, 12L};
@@ -77,12 +77,12 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         for (Flow_ServiceData flow : aFlowServiceData) {
             if (flow.getsID_BP().endsWith(SUFFIX_AUTO)) {
                 LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-                checkAndBuildFlowSlots(flow, oDateStart);
+                checkAndBuildFlowSlots_new(flow, oDateStart);
             }
         }
     }
-
-    private void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
+    @Deprecated
+    private void checkAndBuildFlowSlots_old(Flow_ServiceData flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
         Long nID_Flow_ServiceData = flow.getId();
         Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
@@ -98,8 +98,39 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-//            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
-            dateEnd = oDateStart.plusDays(nStartDay + DAYS_IN_MONTH);
+            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
+            dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
+            LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+            
+            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
+                    dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
+            LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+            
+            nStartDay += DAYS_IN_MONTH;
+        }
+        
+        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
+        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
+    }
+    
+     private void checkAndBuildFlowSlots_new(Flow_ServiceData flow, DateTime oDateStart) {
+        //Maxline: TODO добавить исключения
+        Long nID_Flow_ServiceData = flow.getId();
+        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
+        
+        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
+        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
+                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+        
+        int nStartDay = 0;
+        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
+        DateTime dateEnd;
+        
+        while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
+                && nStartDay < DAYS_IN_HALF_YEAR) {
+            dateStart = oDateStart.plusDays(nStartDay);
+            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
+            dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
             LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
