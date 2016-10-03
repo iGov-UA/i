@@ -2,7 +2,6 @@ package org.igov.service.business.action.task.listener.doc;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -12,7 +11,6 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -63,12 +61,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " resp: " + resp);
             Attachment attachmentRequested;
             try{
-                attachmentRequested = oActionTaskService.getAttachment(sID_File_XML_SWinEdValue, delegateTask.getId(),
-                    null, delegateTask.getProcessInstanceId());
+                attachmentRequested = oActionTaskService.getAttachment(sID_File_XML_SWinEdValue, null, delegateTask.getProcessInstanceId());
             } catch(Exception ex){
                 LOG.error("error: ", ex);
-                attachmentRequested = oActionTaskService.getAttachment(null, delegateTask.getId(),
-                    1, delegateTask.getProcessInstanceId());
+                attachmentRequested = oActionTaskService.getAttachment(null, 1, delegateTask.getProcessInstanceId());
             }
             
             String sFileName = attachmentRequested.getName();
