@@ -981,7 +981,7 @@ public class ActionFlowController {
 		}
 		DateTime oDate = DateTime.now();
 		JSONObject result = new JSONObject();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
 
 		JSONArray slots = null;
 		for (int i = 0; i < nDays; i++) {
@@ -1023,6 +1023,12 @@ public class ActionFlowController {
 			@ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
 	) throws Exception {
 		JSONObject result;
+
+		//this date parsing and formatting fixes problem where we need to zero pad day of month or hour
+		//basically it changes "2016-10-6 9:30:0" into "2016-10-06 09:30:00"
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd HH:mm:ss");
+		DateTime dateTime = DateTime.parse(sDateTime, DateTimeFormat.forPattern("y-MM-dd hh:mm:ss"));
+		sDateTime = dateTimeFormatter.print(dateTime);
 
 		result = cherg.setReserve(sID_Service_Private,
 				sDateTime,
