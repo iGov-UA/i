@@ -1,4 +1,4 @@
-angular.module('app').controller('IndexController', function ($scope, UserService) {
+angular.module('app').controller('IndexController', function ($scope, $rootScope, UserService) {
   // See why it's needed for navbar:
   // http://stackoverflow.com/questions/14741988/twitter-bootstrap-navbar-with-angular-js-collapse-not-functioning
   $scope.navBarIsCollapsed = true;
@@ -6,6 +6,9 @@ angular.module('app').controller('IndexController', function ($scope, UserServic
   $scope.logout = function () {
     UserService.logout();
     $scope.navBarStatusVisible = false;
+    $rootScope.$broadcast('logoutEvent', {
+      isLogged: false
+    });
   };
 
   UserService.isLoggedIn().then(function (result) {
