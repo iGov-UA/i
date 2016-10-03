@@ -33,8 +33,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   FileFactory,
   DatepickerFactory,
   autocompletesDataFactory,
-  TableService,
-  ErrorsFactory
+  TableService
+  ,ErrorsFactory
 ) {
 
   'use strict';
@@ -50,6 +50,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.selfOrdersCount = selfOrdersCount;
 
   $scope.data = $scope.data || {};
+
+  $scope.data.checkbox = {};
 
   $scope.data.region = currentState.data.region;
   $scope.data.city = currentState.data.city;
@@ -107,6 +109,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     // 'Як працює послуга; посилання на інструкцію' буде розбито на частини по ';'
     var aNameParts = sFieldName.split(';');
     var sFieldNotes = aNameParts[0].trim();
+    var checkbox = getCheckbox(aNameParts[2]);
+
+    if(checkbox){
+        bindEnumToCheckbox({
+            id: field.id,
+            enumValues: field.enumValues,
+            sID_CheckboxTrue: checkbox.sID_CheckboxTrue});
+    }
 
     field.sFieldLabel = sFieldNotes;
 
@@ -120,6 +130,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     field.sFieldNotes = sFieldNotes;
 
+    if(checkbox && field.type === 'enum'){
+        field.type = 'checkbox';
+    }
     // перетворити input на поле вводу телефону, контрольоване директивою form/directives/tel.js:
     if (_.indexOf(aID_FieldPhoneUA, field.id) !== -1) {
       field.type = 'tel';
@@ -178,6 +191,65 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     formFieldIDs.inForm.push(field.id);
   });
+
+    function getCheckbox(param){
+      if(!param || !typeof param === 'string') return null;
+
+      var input = param.trim(),
+          finalArray,
+          result = {};
+
+      var checkboxExp = input.split(',').filter(function(item){
+          return (item && typeof item === 'string' ? item.trim() : '')
+                  .split('=')[0]
+                  .trim() === 'sID_CheckboxTrue';
+      })[0];
+
+      if(!checkboxExp) return null;
+
+      finalArray = checkboxExp.split('=');
+
+      if(!finalArray || !finalArray[1]) return null;
+
+      var indexes = finalArray[1].trim().match(/\d+/ig),
+          index;
+
+      if(Array.isArray(indexes)){
+        index = isNaN(+indexes[0]) || +indexes[0];
+      }
+
+      result[finalArray[0].trim()] = index !== undefined
+          && index !== null
+          || index === 0 ? index : finalArray[1].trim();
+
+      return result;
+    }
+
+    function bindEnumToCheckbox(param){
+      if(!param || !param.id || !param.enumValues ||
+          param.sID_CheckboxTrue === null ||
+          param.sID_CheckboxTrue === undefined) return;
+
+      var trueValues,
+          falseValues;
+
+      if(isNaN(+param.sID_CheckboxTrue)){
+          trueValues = param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue});
+          falseValues = param.enumValues.filter(function(o){return o.id !== param.sID_CheckboxTrue});
+        $scope.data.checkbox[param.id] = {
+          trueValue: trueValues[0] ? trueValues[0].id : null,
+          falseValue: falseValues[0] ? falseValues[0].id : null
+        };
+      }else{
+        falseValues = param.enumValues.filter(function(o, i){return i !== param.sID_CheckboxTrue});
+        $scope.data.checkbox[param.id] = {
+          trueValue: param.enumValues[param.sID_CheckboxTrue] ?
+              param.enumValues[param.sID_CheckboxTrue].id : null,
+          falseValue: falseValues[0] ? falseValues[0].id : null
+        };
+      }
+    }
+
   iGovMarkers.validateMarkers(formFieldIDs);
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -213,6 +285,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.data.formData.params[prop.id].value = prop.aRow;
       }
     });
+
+    angular.forEach(aFormProperties, function(i){
+      if(i.type === 'select' &&
+          i.hasOwnProperty('autocompleteData') &&
+          $scope.data.formData.params[i.id].value.hasOwnProperty(i.autocompleteData.valueProperty)) {
+        $scope.data.formData.params[i.id].value = $scope.data.formData.params[i.id].value[i.autocompleteData.valueProperty]
+      }
+    });
+
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -595,7 +676,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
-        sID_UA: oServiceData.oPlace.sID_UA
+        sID_UA: oServiceData.oPlaceRoot ? oServiceData.oPlaceRoot.sID_UA : oServiceData.oPlace.sID_UA
       }
     }).then(function (response) {
       var bFilled = $scope.bFilledSelfPrevious();
@@ -603,17 +684,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = {};
       }
       angular.forEach($scope.activitiForm.formProperties, function (oField){
-        //if (field.type === 'file'){
-        //    $scope.data.formData.params[field.id].value="";
         try{
-          console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
           var key = oField.id;
           var property = $scope.data.formData.params[key];
-          console.log("SET:property="+property);
-          //angular.forEach($scope.data.formData.params, function (property, key) {
+
           if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
-            //&& property.value && property.value!==null && property.value !== undefined
-            //var oFormProperty = $scope.activitiForm.formProperties[key];
+
             if(oField && oField!==null
               && oField.type !== "file"
               && oField.type !== "label"
@@ -623,13 +699,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
               && oField.type !== "select"
             ){
               if(!bFilled){
-                //angular.forEach($scope.activitiForm.formProperties, function(field) {
                 $scope.paramsBackup[key] = property.value;
-                //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
               }
               property.value = response.data[key];
             }
-            //console.log("SET:property.value="+property.value);
+
+            if(oField.type === 'select' &&
+                oField.hasOwnProperty('autocompleteData')){
+              property.value = {};
+              property.value[oField.autocompleteData.valueProperty] = response.data[key];
+            }
           }
         }catch(_){
           console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
@@ -765,11 +844,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.removeRow = function (index, form, id) {
     angular.forEach($scope.activitiForm.formProperties, function (item, key, obj) {
       if(item.id === id) {
-       obj[key].aRow.splice(index, 1);
-       if(!form.$invalid) {
-         $scope.tableIsInvalid = false;
-       }
+        obj[key].aRow.splice(index, 1);
+        if(!form.$invalid) {
+          $scope.tableIsInvalid = false;
+        }
       }
     });
+  };
+  $scope.rowLengthCheckLimit = function (table) {
+    return table.aRow.length >= table.nRowsLimit
   };
 });

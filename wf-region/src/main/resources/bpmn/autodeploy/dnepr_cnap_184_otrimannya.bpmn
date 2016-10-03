@@ -60,7 +60,7 @@
         <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/6RU4HV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -201,8 +201,11 @@
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_RishenZP" name="Завантажте копію рішення або оригінал дозволу у форматі PDF з накладеним ЕЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers30" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="Перевірка на ЕЦП" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_32.json')}"></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -329,7 +332,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Опрацьовано звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_Opis}</activiti:expression>
+          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_Opis},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -573,7 +576,7 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]

@@ -1329,7 +1329,7 @@ angular.module('about').controller('aboutController', function ($scope) {
         },
         {
           "sID_Group":"ternopil.ternopil.rada",
-          "sFIO":"Данілевич Софія",
+          "sFIO":"Данилевич Софія",
           "sURL":"https://www.facebook.com/sophia.danylevich",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/13315586_1051012694987834_4701805118846809487_n.jpg?oh=98e4dcfe7e578c77da8a6f6476400d8d&oe=58597FC5",
           "sCity":"Тернопіль"
