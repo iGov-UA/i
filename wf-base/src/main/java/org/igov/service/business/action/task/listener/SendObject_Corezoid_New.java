@@ -32,7 +32,8 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        try {
+        //String soJSON_Value = null, sID_Conveyour_Value = null;
+        //try {
             String soJSON_Value = getStringFromFieldExpression(this.soJSON, oExecution);
             String sID_Conveyour_Value = getStringFromFieldExpression(this.sID_Conveyour, oExecution);
             LOG.info("soJSON_Value: " + soJSON_Value + " sID_Conveyour: " + sID_Conveyour_Value);
@@ -53,10 +54,10 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
             }
             //data.put("nID_Task", Integer.parseInt(delegateTask.getId()));
             LOG.info("sendToCorezoid data:" + data);
-            String result = corezoid.sendToCorezoid(sID_Conveyour.getExpressionText(), data);
+            String result = corezoid.sendToCorezoid(sID_Conveyour_Value, data);
             LOG.info("sendToCorezoid result:" + result);
-        } catch (Exception ex) {
-            LOG.error("SendObject_Corezoid soJSON error: " + soJSON.getExpressionText(), ex);
-        }
+        //} catch (Exception ex) {
+        //    LOG.error("Error SendObject_Corezoid sID_Conveyour_Value: " + sID_Conveyour_Value + " soJSON: " + soJSON_Value, ex);
+        //}
     }
 }
