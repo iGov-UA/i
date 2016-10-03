@@ -49,7 +49,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -66,7 +66,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки">
+    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -96,7 +96,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -171,7 +171,7 @@
     <sequenceFlow id="flow14" name="asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -406,7 +406,7 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="usertask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -643,14 +643,13 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultThirdPerson'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow19" sourceRef="servicetask4" targetRef="parallelgateway5"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask4">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -714,7 +713,7 @@
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -992,7 +991,7 @@
     </userTask>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway4" targetRef="parallelgateway4"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -1078,6 +1077,31 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
+    <userTask id="usertask17" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_boss">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask4" targetRef="usertask17"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask17" targetRef="parallelgateway5"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask17" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow51" sourceRef="boundarytimer1" targetRef="parallelgateway5"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Управління дозвільних документів</text>
     </textAnnotation>
@@ -1185,6 +1209,12 @@
       <bpmndi:BPMNShape bpmnElement="usertask16" id="BPMNShape_usertask16">
         <omgdc:Bounds height="97.0" width="105.0" x="466.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask17" id="BPMNShape_usertask17">
+        <omgdc:Bounds height="69.0" width="105.0" x="220.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="280.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="50.0" width="100.0" x="1033.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1253,10 +1283,6 @@
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="52.0" width="100.0" x="1212.0" y="627.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="175.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="155.0" y="237.0"></omgdi:waypoint>
@@ -1350,6 +1376,20 @@
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="359.0" y="561.0"></omgdi:waypoint>
         <omgdi:waypoint x="265.0" y="561.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="175.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="201.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="325.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="202.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="295.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="1033.0" y="335.0"></omgdi:waypoint>
