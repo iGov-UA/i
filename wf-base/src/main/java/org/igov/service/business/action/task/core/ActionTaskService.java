@@ -115,27 +115,15 @@ public class ActionTaskService {
 	};
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-    //@Autowired
-    //private BankIDConfig oBankIDConfig;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
     @Autowired
     private RuntimeService oRuntimeService;
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
     private TaskService oTaskService;
-    //private HistoryService historyService;
     @Autowired
     private HistoryEventService oHistoryEventService;
-    //private FormService formService;
     @Autowired
     private Mail oMail;
-    //@Autowired
-    //private RuntimeService oRuntimeService;
-    //@Autowired
-    //private TaskService oTaskService;
     @Autowired
     private RepositoryService oRepositoryService;
     @Autowired
@@ -214,11 +202,7 @@ public class ActionTaskService {
         if (saField == null || "[]".equals(saField) || "".equals(saField)) {
             return "";
         }
-        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-        
-        /*osTable.append("<td>").append("Поле").append("</td>");
-        osTable.append("<td>").append("Тип").append("</td>");
-        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
@@ -237,21 +221,7 @@ public class ActionTaskService {
         osTable.append("</tr>");
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
-            /*Object oID=oField.opt("id");
-            Object oType=oField.opt("type");
-            Object oValue=oField.opt("value");
-            osTable.append("<tr>");
-            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
-            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
-            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
-        /*
-        sID: item.id,
-        sName: item.name,
-        sType: item.type,
-        sValue: item.value,
-        sValueNew: "",
-        sNotify: $scope.clarifyFields[item.id].text
-        */
+          
             Object sName=oField.opt("sName");
             if(sName==null){
                 sName = oField.opt("sID");
@@ -276,12 +246,6 @@ public class ActionTaskService {
                 osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
             }
             osTable.append("</tr>");
-            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
-                    .append(" \t ")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append(" \t ")
-                    .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");*/
         }
         osTable.append("</table>");
         return osTable.toString();
@@ -310,11 +274,7 @@ public class ActionTaskService {
                 + " color:#fff;"
                 + " }"
                 + "</style>";
-        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
 
-        /*osTable.append("<td>").append("Поле").append("</td>");
-        osTable.append("<td>").append("Тип").append("</td>");
-        osTable.append("<td>").append("Поточне значення").append("</td>");*/
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
@@ -332,21 +292,7 @@ public class ActionTaskService {
         osTable.append("</tr>");
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
-            /*Object oID=oField.opt("id");
-            Object oType=oField.opt("type");
-            Object oValue=oField.opt("value");
-            osTable.append("<tr>");
-            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
-            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
-            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
-        /*
-        sID: item.id,
-        sName: item.name,
-        sType: item.type,
-        sValue: item.value,
-        sValueNew: "",
-        sNotify: $scope.clarifyFields[item.id].text
-        */
+        
             Object sName=oField.opt("sName");
             if(sName==null){
                 sName = oField.opt("sID");
@@ -371,12 +317,6 @@ public class ActionTaskService {
                 osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
             }
             osTable.append("</tr>");
-            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
-                    .append(" \t ")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append(" \t ")
-                    .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");*/
         }
         osTable.append("</table>");
         return osTable.toString();
@@ -471,17 +411,6 @@ public class ActionTaskService {
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
-    /*public void setInfo_ToActiviti(String snID_Process, String saField, String sBody) {
-        try {
-            LOG.info(String.format("try to set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
-            oRuntimeService.setVariable(snID_Process, "saFieldQuestion", saField);
-            oRuntimeService.setVariable(snID_Process, "sQuestion", sBody);
-            LOG.info(String.format("completed set saField=%s and sBody=%s to snID_Process=%s", saField, sBody, snID_Process));
-        } catch (Exception oException) {
-            LOG.error("error: {}, during set variables to Activiti!", oException.getMessage());
-        }
-    }*/
-
     public void loadFormPropertiesToMap(FormData formData, Map<String, Object> variables, Map<String, String> formValues) {
         List<FormProperty> aFormProperty = formData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
@@ -539,7 +468,7 @@ public class ActionTaskService {
     protected void processExtractFieldsParameter(Set<String> headersExtra, HistoricTaskInstance currTask, String saFields, Map<String, Object> line) {
         HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(currTask.getId()).singleResult();
         LOG.info("Process variables of the task {}:{}", currTask.getId(), details.getProcessVariables());
-        if (details != null && details.getProcessVariables() != null) {
+        if (details.getProcessVariables() != null) {
             LOG.info("(Cleaned saFields={})", saFields);
             String[] expressions = saFields.split(";");
             if (expressions != null) {
@@ -571,41 +500,6 @@ public class ActionTaskService {
         }
     }
 
-    //@RequestMapping("/web")
-    //public class StartWebController {
-    /*private final Logger LOG = LoggerFactory
-    .getLogger(StartWebController.class);
-    @Autowired
-    private RuntimeService oRuntimeService;
-    @Autowired
-    private RepositoryService oRepositoryService;
-    @Autowired
-    private FormService formService;
-    @RequestMapping(value = "/activiti/index", method = RequestMethod.GET)
-    public ModelAndView index() {
-    ModelAndView modelAndView = new ModelAndView("index");
-    List<ProcessDefinition> processDefinitions = oRepositoryService.createProcessDefinitionQuery().latestVersion()
-    .list();
-    modelAndView.addObject("processList", processDefinitions);
-    return modelAndView;
-    }
-    @RequestMapping(value = "/activiti/startForm/{id}", method = RequestMethod.GET)
-    public ModelAndView startForm(@PathVariable("id") String id) {
-    StartFormData sfd = oFormService.getStartFormData(id);
-    List<FormProperty> fpList = sfd.getFormProperties();
-    ModelAndView modelAndView = new ModelAndView("startForm");
-    modelAndView.addObject("fpList", fpList);
-    modelAndView.addObject("id", id);
-    return modelAndView;
-    }
-    @RequestMapping(value = "/activiti/startProcess/{id}", method = RequestMethod.POST)
-    public ModelAndView startProcess(@PathVariable("id") String id, @RequestParam Map<String, String> params) {
-    ProcessInstance pi = oFormService.submitStartFormData(id, params);
-    ModelAndView modelAndView = new ModelAndView("startedProcess");
-    modelAndView.addObject("pi", pi.getProcessInstanceId());
-    modelAndView.addObject("bk", pi.getBusinessKey());
-    return modelAndView;
-    }*/
     public String getOriginalProcessInstanceId(Long nID_Protected) throws CRCInvalidException {
         return Long.toString(ToolLuna.getValidatedOriginalNumber(nID_Protected));
     }
@@ -666,7 +560,7 @@ public class ActionTaskService {
                 currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
             }
             String[] values = currentRow.split(";");
-            LOG.info("values= "+values);
+            LOG.info("values= " + values);
             if (headers.length != values.length) {
                 LOG.info("Size of header :{} Size of values array:{}", headers.length, values.length);
                 StringBuilder sb = new StringBuilder();
@@ -841,7 +735,7 @@ public class ActionTaskService {
             LOG.info("Fields have custom header names");
             StringBuilder sb = new StringBuilder();
             String[] fields = saFields.split(";");
-            LOG.info("fields: "+fields);
+            LOG.info("fields: " + fields);
             for (int i = 0; i < fields.length; i++) {
                 if (fields[i].contains("\\=")) {
                     sb.append(StringUtils.substringBefore(fields[i], "\\="));
@@ -956,27 +850,6 @@ public class ActionTaskService {
         
     }
 
-    /*private String createTable(String soData) throws UnsupportedEncodingException {
-        if (soData == null || "[]".equals(soData) || "".equals(soData)) {
-            return "";
-        }
-        StringBuilder tableStr = new StringBuilder("<table><tr><th>Поле</th><th>Тип </th><th> Поточне значення</th></tr>");
-        JSONObject jsnobject = new JSONObject("{ soData:" + soData + "}");
-        JSONArray jsonArray = jsnobject.getJSONArray("soData");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject record = jsonArray.getJSONObject(i);
-            tableStr.append("<tr><td>")
-                    .append(record.opt("id") != null ? record.get("id") : "?")
-                    .append("</td><td>")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append("</td><td>")
-                    .append(record.opt("value") != null ? record.get("value")
-                            .toString() : "").append("</td></tr>");
-        }
-        tableStr.append("</table>");
-        return tableStr.toString();
-    }*/
-
     private void loadCandidateGroupsFromTasks(ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
         BpmnModel bpmnModel = oRepositoryService.getBpmnModel(processDef.getId());
         for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
@@ -1036,28 +909,7 @@ public class ActionTaskService {
         }
         return res;
     }
-
-    // private Long getProcessId(String sID_Order, Long nID_Protected, Long
-    // nID_Process) {
-    // Long result = null;
-    // if (nID_Process != null) {
-    // result = nID_Process;
-    // } else if (nID_Protected != null) {
-    // result = ToolLuna.getOriginalNumber(nID_Protected);
-    // } else if (sID_Order != null && !sID_Order.isEmpty()) {
-    // Long protectedId;
-    // if (sID_Order.contains("-")) {
-    // int dash_position = sID_Order.indexOf("-");
-    // protectedId = Long.valueOf(sID_Order.substring(dash_position + 1));
-    // } else {
-    // protectedId = Long.valueOf(sID_Order);
-    // }
-    // result = ToolLuna.getOriginalNumber(protectedId);
-    // }
-    // return result;
-    // }
     
-
     public Long getIDProtectedFromIDOrder(String sID_order) {
         StringBuilder ID_Protected = new StringBuilder();
         int hyphenPosition = sID_order.lastIndexOf("-");
@@ -1514,37 +1366,6 @@ public class ActionTaskService {
         }else{
             HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Task.toString()).singleResult();
             LOG.info("(oHistoricProcessInstance={})", oHistoricProcessInstance);
-            //if(oHistoricProcessInstance==null){
-            //    throw new RecordNotFoundException("oHistoricProcessInstance");
-            //}
-
-            //oHistoricProcessInstance.getId()
-            /*
-            for(Map.Entry<String,Object> oHistoricProcess : oHistoricProcessInstance.getProcessVariables().entrySet()){
-                mReturn.put(oHistoricProcess.getKey(), oHistoricProcess.getValue());
-            }
-            */
-
-            /*FormData oFormData = formService.getStartFormData(oHistoricProcessInstance.getProcessDefinitionId());
-            if(oFormData==null){
-                throw new RecordNotFoundException("oFormData");
-            }
-            List<FormProperty> aFormProperty = oFormData.getFormProperties();
-            for (FormProperty oFormProperty : aFormProperty) {
-                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }*/
-            //Task oTask = oActionTaskService.findBasicTask(nID_Task.toString());
-
-
-            /*TaskFormData oTaskFormData = formService.getTaskFormData(nID_Task);
-            if(oTaskFormData==null){
-                throw new RecordNotFoundException("oTaskFormData");
-            }
-            List<FormProperty> aFormProperty = oTaskFormData.getFormProperties();
-            for (FormProperty oFormProperty : aFormProperty) {
-                mReturn.put(oFormProperty.getId(), oFormProperty.getValue());
-            }*/
-
             List<Task> activeTasks = null;
             TaskQuery taskQuery = oTaskService.createTaskQuery();
             taskQuery.taskId(nID_Task.toString());
@@ -1560,27 +1381,6 @@ public class ActionTaskService {
                     LOG.info("2)activeTasks.isEmpty()(oHistoricProcessInstance.getId()={})",oHistoricProcessInstance.getId());
                     taskQuery.processInstanceId(oHistoricProcessInstance.getId());
                     activeTasks = taskQuery.list();//.active()
-                    /*if(activeTasks.isEmpty()){
-                        taskQuery = oTaskService.createTaskQuery();
-                        LOG.info("3)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
-                        taskQuery.processInstanceId(oHistoricProcessInstance.getSuperProcessInstanceId());
-                        activeTasks = taskQuery.list();//.active()
-                        if(activeTasks.isEmpty()){
-                            if(oHistoricProcessInstance.getSuperProcessInstanceId()!= null){
-                                taskQuery = oTaskService.createTaskQuery();
-                                LOG.info("4)activeTasks.isEmpty()(oHistoricProcessInstance.getSuperProcessInstanceId()={})",oHistoricProcessInstance.getSuperProcessInstanceId());
-                                taskQuery.taskId(oHistoricProcessInstance.getSuperProcessInstanceId());
-                                activeTasks = taskQuery.list();//.active()
-
-                            }
-                            if(activeTasks.isEmpty() && oHistoricProcessInstance.getId()!=null){
-                                taskQuery = oTaskService.createTaskQuery();
-                                LOG.info("5)activeTasks.isEmpty()(oHistoricProcessInstance.getId(){})",oHistoricProcessInstance.getId());
-                                taskQuery.taskId(oHistoricProcessInstance.getId());
-                                activeTasks = taskQuery.list();//.active()
-                            }
-                        }
-                    }*/
                 }
             }
             for (Task currTask : activeTasks) {
@@ -1589,56 +1389,11 @@ public class ActionTaskService {
                     LOG.info("Found TaskFormData for task {}.", currTask.getId());
                     for (FormProperty property : data.getFormProperties()) {
                         mReturn.put(property.getId(), property.getValue());
-
-                        /*String sValue = "";
-                        String sType = property.getType().getName();
-                        if ("enum".equalsIgnoreCase(sType)) {
-                            sValue = oActionTaskService.parseEnumProperty(property);
-                        } else {
-                            sValue = property.getValue();
-                        }
-                        LOG.info("taskId=" + currTask.getId() + "propertyName=" + property.getName() + "sValue=" + sValue);
-                        if (sValue != null) {
-                            if (sValue.toLowerCase().contains(searchTeam)) {
-                                res.add(currTask.getId());
-                            }
-                        }*/
                     }
                 } else {
                     LOG.info("Not found TaskFormData for task {}. Skipping from processing.", currTask.getId());
                 }
             }
-
-            /*TaskFormData data = formService.getTaskFormData(nID_Task);
-            Map<String, String> newProperties = new HashMap<>();
-            for (FormProperty oFormProperty : data.getFormProperties()) {
-                if (oFormProperty.isWritable()) {
-                    newProperties.put(oFormProperty.getId(), oFormProperty.getValue());
-                }
-            }*/
-
-
-            //EngineServices oEngineServices = execution.getEngineServices();
-            //engineServices = execution.getEngineServices();
-            //RuntimeService oRuntimeService = engineServices.getRuntimeService();
-            /*TaskFormData oTaskFormData = oEngineServices
-                    .getFormService()
-                    .getTaskFormData(nID_Task);
-
-            LOG.info("Found taskformData={}", oTaskFormData);
-            if (oTaskFormData == null) {
-                return;
-            }*/
-/*
-            Collection<File> asPatterns = getFiles_PatternPrint();
-            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-                String sFieldID = oFormProperty.getId();
-                String sExpression = oFormProperty.getName();
-
-            }
-*/
-
-
         }
         return mReturn;
     }
@@ -1928,27 +1683,6 @@ public class ActionTaskService {
         return m;
     }
     
-    
-        
-        
-    
-    
-    /*public static String parseEnumProperty(FormProperty property) {
-        Object oValues = property.getType().getInformation("values");
-        if (oValues instanceof Map) {
-            Map<String, String> mValue = (Map) oValues;
-            LOG.info("(m={})", mValue);
-            String sName = property.getValue();
-            LOG.info("(sName={})", sName);
-            String sValue = mValue.get(sName);
-            LOG.info("(sValue={})", sValue);
-            return parseEnumValue(sValue);
-        } else {
-            LOG.error("Cannot parse values for property - {}", property);
-            return "";
-        }
-    }*/
-    //public HashMap<String, Object> getFormPropertiesMapByTaskID(Long nID_Task) {
     public List<Map<String,Object>> getFormPropertiesMapByTaskID(Long nID_Task) {
         List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
         List<Map<String,Object>> aReturn = new LinkedList();
@@ -1967,31 +1701,15 @@ public class ActionTaskService {
             mReturn.put("bWritable", oProperty.isWritable());
             mReturn.put("bRequired", oProperty.isRequired());
             if ("enum".equalsIgnoreCase(sType)) {
-                //sValue = oActionTaskService.parseEnumProperty(oProperty);
                 Object oEnums = oProperty.getType().getInformation("values");
                 if (oEnums instanceof Map) {
                     Map<String, String> mEnum = (Map) oEnums;
-//                    LOG.info("(mEnum={})", mEnum);
                     mReturn.put("mEnum", mEnum);
-//                    String sName = oProperty.getValue();
-//                    LOG.info("(sName={})", sName);
-//                    String sValue = mValue.get(sName);
-//                    LOG.info("(sValue={})", sValue);
-//                    return parseEnumValue(sValue);
-//                } else {
-//                    LOG.error("Cannot parse values for property - {}", property);
-//                    return "";
+
                 }
-            /*} else {
-                sValue = oProperty.getValue();*/
+
             }
-//            LOG.info("(nID_Task={}, sType={}, propertyName={}, sValue={})", nID_Task, sType, oProperty.getName(), sValue);
-//            if (sValue != null) {
-                //if (sValue.toLowerCase().contains(searchTeam)) {
-                //    res.add(currTask.getId());
-                //}
-//            }
-//            LOG.info("(nID_Task={}, mReturn={})", nID_Task, mReturn);
+
             aReturn.add(mReturn);
         }        
         return aReturn;
