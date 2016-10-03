@@ -4,12 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
-import org.activiti.engine.delegate.VariableScope;
-import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
@@ -52,7 +48,7 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
         LOG.info("sendToCorezoid data:" + data);
         String result = corezoid.sendToCorezoid(sID_Conveyour_Value,
                 generalConfig.getsUser_Corezoid_Gorsovet_Exchange(), 
-                generalConfig.getSecretKey_Coreziod_Exchange(), data);
+                generalConfig.getsSecretKey_Corezoid_Gorsovet_Exchange(), data);
         LOG.info("sendToCorezoid result:" + result);
     }
 }

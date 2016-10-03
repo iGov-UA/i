@@ -2187,8 +2187,7 @@ public class ActionTaskService {
         List<ProcessDefinition> aBP_Task = new LinkedList<>();
         aBP_Task.add(BP_Task);
 
-        List<ProcessDefinition> result = new LinkedList<>();
-        result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+        List<ProcessDefinition> result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
 
         if (CollectionUtils.isNotEmpty(result)){
             return true;
