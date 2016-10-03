@@ -239,6 +239,7 @@ public class ServiceTagService {
         Map<Long, List<Service>> res = new HashMap<>();
 
         List<ServiceTagLink> links = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
+        Set<Service> allServices = new HashSet<>();
         for (ServiceTagLink link : links) {
             final ServiceTag serviceTag = link.getServiceTag();
             final Service service = link.getService();
@@ -248,6 +249,8 @@ public class ServiceTagService {
                 continue;
             }
 
+            allServices.add(service);
+
             final Long serviceTagId = serviceTag.getId();
             List<Service> services = res.get(serviceTagId);
             if (services == null) {
@@ -256,6 +259,9 @@ public class ServiceTagService {
             }
             services.add(service);
         }
+
+        // its ok since method is executed in read-only transaction
+        allServices.forEach(s -> s.setServiceDataList(s.getServiceDataFiltered(includeTestEntities)));
 
         return res;
     }
