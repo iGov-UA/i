@@ -4,8 +4,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti.engine.delegate.VariableScope;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
@@ -34,16 +38,15 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
     public void execute(DelegateExecution oExecution) throws Exception {
         //String soJSON_Value = null, sID_Conveyour_Value = null;
         //try {
+            String soJSON_ExpressionText = this.soJSON.getExpressionText();
+            String sID_Conveyour_ExpressionText = this.sID_Conveyour.getExpressionText();
+            LOG.info("soJSON_ExpressionText: " + soJSON_ExpressionText + " sID_Conveyour_ExpressionText: " + sID_Conveyour_ExpressionText);
+            
             String soJSON_Value = getStringFromFieldExpression(this.soJSON, oExecution);
             String sID_Conveyour_Value = getStringFromFieldExpression(this.sID_Conveyour, oExecution);
             LOG.info("soJSON_Value: " + soJSON_Value + " sID_Conveyour: " + sID_Conveyour_Value);
-            /*LOG.info("soJSON: " + this.soJSON.getExpressionText()
-                    + " sID_Conveyour: " + this.sID_Conveyour.getExpressionText());
-            LOG.info("soJSON: " + this.soJSON.getExpressionText()
-                    + " sID_Conveyour: " + this.sID_Conveyour.getExpressionText());*/
-            getStringFromFieldExpression(this.soJSON, oExecution);
-            LOG.info("!!!!!!!!!!!!!!!!!SendObject_Corezoid soJSON_Result: " + soJSON.getExpressionText());
-            String sJSON_Result = replaceTags(this.soJSON.getExpressionText(), oExecution);
+  
+            String sJSON_Result = replaceTags(soJSON_Value, oExecution);
             LOG.info("sJSON_Result: " + sJSON_Result);
             JSONObject soJSON_Result = new JSONObject(sJSON_Result);
             Map<String, Object> data = new HashMap();
