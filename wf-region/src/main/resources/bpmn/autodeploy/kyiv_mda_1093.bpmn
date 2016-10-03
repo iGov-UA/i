@@ -62,7 +62,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -125,7 +125,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -200,7 +200,7 @@
     <sequenceFlow id="flow14" name="asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -438,7 +438,7 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="usertask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -684,7 +684,7 @@
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -771,7 +771,7 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow26" sourceRef="escalationTimer1" targetRef="parallelgateway5"></sequenceFlow>
-    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -1049,7 +1049,7 @@
     </userTask>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway4" targetRef="parallelgateway4"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
