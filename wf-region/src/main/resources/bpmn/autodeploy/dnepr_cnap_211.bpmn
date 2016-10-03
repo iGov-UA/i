@@ -40,6 +40,7 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Довідка з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="видачу довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями"></activiti:formProperty>
         <activiti:formProperty id="markerEnum" name="скрытие полей" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/211_6ZEM.json')}"></activiti:formProperty>
@@ -147,7 +148,8 @@ execution.setVariable('sflag_dgk', per10)
         <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -255,6 +257,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -393,6 +396,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html]" type="invisible" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -481,6 +485,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="place" name="Місце знаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CLgoal" name="значення енум" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asRisheniaDGK" name="Рішення ДГК про надання довідки" type="enum" writable="false">
           <activiti:value id="sEnam_ok" name="Видати довідку"></activiti:value>
           <activiti:value id="sEnam_bad" name="Відмовити в видачі довідки"></activiti:value>
