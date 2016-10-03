@@ -60,39 +60,38 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             resp = "delegateTask.getId(): " + delegateTask.getId() + " delegateTask.getProcessInstanceId(): " + delegateTask.getProcessInstanceId();
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " resp: " + resp);
             Attachment attachmentRequested;
-            try{
+            try {
                 attachmentRequested = oActionTaskService.getAttachment(sID_File_XML_SWinEdValue, 1, delegateTask.getProcessInstanceId());
-            } catch(Exception ex){
+                String sFileName = attachmentRequested.getName();
+                String description = attachmentRequested.getDescription();
+                String type = attachmentRequested.getType();
+                String id = attachmentRequested.getId();
+                resp = resp + " id: " + id;
+                InputStream attachmentStream = taskService
+                        .getAttachmentContent(id);
+                VariableMultipartFile multipartFile = new VariableMultipartFile(
+                        attachmentStream, description,
+                        sFileName, type);
+                if (multipartFile.getBytes() != null) {
+                    String content = new String(multipartFile.getBytes());
+                    resp += " content: " + content;
+                    String body = createBody(content);
+                    LOG.info("body: " + body);
+                    String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.set("Content-Type", "text/xml; charset=utf-8");
+                    headers.set("SOAPAction", "http://govgate/Send");
+                    resp = new RestRequest().post(URL, body,
+                            null, StandardCharsets.UTF_8, String.class, headers);
+                    LOG.info("Ukrdoc response:" + resp);
+                } else {
+                    LOG.info("oFile_XML_SWinEd is null!!!");
+                }
+                execution.setVariable("result", resp);
+            } catch (Exception ex) {
                 LOG.error("error: ", ex);
                 LOG.info("!!!getProcessInstanceAttachments: " + taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId()));
                 LOG.info("!!!getTaskAttachments: " + taskService.getTaskAttachments(delegateTask.getId()));
-            }
-            
-            String sFileName = attachmentRequested.getName();
-            String description = attachmentRequested.getDescription();
-            String type = attachmentRequested.getType();
-            String id = attachmentRequested.getId();
-            resp = resp + " id: " + id;
-            InputStream attachmentStream = taskService
-                    .getAttachmentContent(id);
-            VariableMultipartFile multipartFile = new VariableMultipartFile(
-                    attachmentStream, description,
-                    sFileName, type);
-            if (multipartFile.getBytes() != null) {
-                String content = new String(multipartFile.getBytes());
-                resp += " content: " + content;
-                String body = createBody(content);
-                LOG.info("body: " + body);
-                String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Content-Type", "text/xml; charset=utf-8");
-                headers.set("SOAPAction", "http://govgate/Send");
-                resp = new RestRequest().post(URL, body,
-                        null, StandardCharsets.UTF_8, String.class, headers);
-                LOG.info("Ukrdoc response:" + resp);
-                execution.setVariable("result", resp);
-            } else {
-                LOG.info("oFile_XML_SWinEd is null!!!");
             }
             execution.setVariable("result", resp);
         } catch (Exception ex) {
