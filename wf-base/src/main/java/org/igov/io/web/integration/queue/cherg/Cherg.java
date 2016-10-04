@@ -73,7 +73,7 @@ public class Cherg {
             throw new IllegalArgumentException("date or service_id is null");
         }
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         String dateFormatted = dateTimeFormatter.print(date);
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
         LOG.info("service_id={}, date={}", serviceId, dateFormatted);

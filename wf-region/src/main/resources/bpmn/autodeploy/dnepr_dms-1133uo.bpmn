@@ -31,6 +31,7 @@
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" required="true">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
@@ -38,11 +39,11 @@
         <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я та по батькові (за наявності) дітей до 18 років" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Якщо у документі декілька сторінок об'єднайте у pdf-файл або zip архів, розмір не може перевищувати 5Мб"></activiti:formProperty>
         <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nPassInozem" name="Паспортного документа іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової; travel-документи не приймаються" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортного документа іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової; travel-документи біженців не приймаються" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Державна міграційна служба у Дніпропетровській області"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible" default="(056) 745-35-59"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Тип органу" type="invisible" default="м. Дніпро, вул. Короленко, буд.4, каб. 421"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
@@ -165,6 +166,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" writable="false">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
@@ -175,13 +177,14 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_inozem_FOFront.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_inozem_FOBack.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_inozem_UOFront.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dms/zajava_inozem_UOFront.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dms/zajava_inozem_UOBack.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -262,11 +265,10 @@ execution.setVariable('sMaxPay', maxpay)
 										<ul>
 										<li>У будь-якому банку сплатити необхідні платежі і отримати квитанцію про сплату.</li>
 										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами.</li>
-										<li>Підписати необхідні документи.</li>
 										</ul>
 									</p>
 									<p>
-									<b>Реквізити для сплати адмінпослуги:</b><br>
+									<b>Реквізити для сплати:</b><br>
 										<i>${sRecvizitiInozem}</i><br>
 										</p>
 									<p>
@@ -276,8 +278,13 @@ execution.setVariable('sMaxPay', maxpay)
 									<p>
 										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні клопотання:</b><br />
 										<ul>
-										<li>оригінал та копію паспорту того, хто подавав заяву;</li>
-										<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
+										<li>клопотання про оформлення запрошення, що знаходиться у додатках до листа (роздрукуйте на одному аркуші);</li>
+										<li>копію витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців;</li>
+										<li>копію розпорядчого документа (наказу, витягу з протоколу, доручення) про призначення працівників, які відповідають за оформлення документів іноземцям та особам без громадянства, засвідчену в установленому законодавством порядку;</li>
+										<li>паспортний документ (після пред’явлення повертається) та копію його сторінок з особистими даними керівника юридичної особи чи уповноваженої особи;</li>
+										<li>квитанції про сплату держмита та адміністративної послуги з мокрою печаткою банку;</li>
+										<li>копію сторінки паспортного документа іноземця або документа, що посвідчує особу без громадянства, з особистими даними особи, що запрошується, з перекладом українською мовою, засвідченим у встановленому порядку;</li>
+										<li>гарантійний лист, щодо фінансового забезпечення перебування іноземця, що знаходится у додатках до листа (роздрукуйте на фірмовому бланку підприємства);</li>
 										</ul>
 									</p>
 									<p>
@@ -300,7 +307,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -348,7 +355,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nSvidDeath}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nVytjag},${nDocOs},${nPassOs},${nPassInozem}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
