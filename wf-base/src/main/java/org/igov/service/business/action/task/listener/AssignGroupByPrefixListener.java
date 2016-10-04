@@ -20,15 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Component("assignGroupByPrefix")
 public class AssignGroupByPrefixListener implements TaskListener {
-    
+
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupByPrefixListener.class);
-    
     private Expression prefix;
     private Expression resultField_Group;
-    
+
     @Autowired
     private RuntimeService runtimeService;
-    
+
     @Override
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
@@ -37,27 +36,22 @@ public class AssignGroupByPrefixListener implements TaskListener {
         String resultField_Group = getStringFromFieldExpression(this.resultField_Group, execution);
         LOG.info("resultField_Group: " + resultField_Group);
         // getting TaskOwner's user
-        String sTaskOwner = delegateTask.getAssignee();        
+        String sTaskOwner = delegateTask.getAssignee();
         LOG.info("TaskOwner: " + sTaskOwner);
         // List of TaskOwner's group
         List<Group> ownerGroup = execution.getEngineServices().getIdentityService().createGroupQuery()
                 .groupMember(sTaskOwner).list();
-        int nCountOfGroups = 0;
-        for (Group group : ownerGroup) {
-            LOG.info(group.getId() + ": " + prefix);
-            if (group.getId().equals(prefix)) {
-                nCountOfGroups++;                
-            }            
-        }
-        LOG.info("Count of groups like " + prefix + " is " + nCountOfGroups);
+        long nCountOfGroups = ownerGroup.stream()
+                .filter(group -> group.getId().equals(prefix)).count();
+        LOG.info(String.format("Count of groups like %s is %s", prefix, nCountOfGroups));
         if (nCountOfGroups == 1) {
-            LOG.info("Set into " + resultField_Group + " value " + prefix);
+            LOG.info("Set into $s value $s", resultField_Group, prefix);
             runtimeService.setVariable(execution.getProcessInstanceId(), resultField_Group, prefix);
         } else {
-            LOG.warn("Групи " + prefix + " не існує, або їх декілька");
+            LOG.warn("Групи $s не існує, або їх декілька", prefix);
             throw new ActivitiIllegalArgumentException("Вказаної групи не існує, або їх декілька");
         }
-        
+
     }
-    
+
 }
