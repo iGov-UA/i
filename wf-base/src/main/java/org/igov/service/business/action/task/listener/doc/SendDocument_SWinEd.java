@@ -13,6 +13,7 @@ import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -52,6 +53,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private HttpRequester oHttpRequester;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -72,8 +76,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 resp += " content: " + content;
                 String body = createBody(content);
                 LOG.info("body: " + body);
-                resp = new RestRequest().post(URL, "test",
-                        null, StandardCharsets.UTF_8, String.class, headers);
+                //resp = new RestRequest().post(URL, "test",
+                //        null, StandardCharsets.UTF_8, String.class, headers);//
+                oHttpRequester.postInside(URL, null, createBody("test"), "text/xml; charset=utf-8");
                 LOG.info("Ukrdoc response:" + resp);
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
