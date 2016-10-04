@@ -14,7 +14,6 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" type="string" default="false" writable="false" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="7. Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника" activiti:candidateGroups="kyiv_dabi_contr_deputy_boss">
@@ -23,21 +22,13 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_10" name="Відповідальний начальник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group10" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group10" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_insp_bosses" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee_step10" name="Список начальників Інспекційного відділу;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step10" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step10" name="Група виконавців наступного кроку; для інформації" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="assignment" delegateExpression="${assignGroupByPrefix}">
-          <activiti:field name="prefix">
-            <activiti:expression><![CDATA[kyiv_dabi_insp_bosses]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="resultField_Group">
-            <activiti:expression><![CDATA[sID_Group_step10]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -48,22 +39,13 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_9" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group9" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group9" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee_step9" name="Список співробітників дозвільного відділу;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step9" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step9" name="Група виконавців наступного кроку; для інформації" type="string"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="assignment" delegateExpression="${assignGroupByPrefix}">
-          <activiti:field name="prefix">
-            <activiti:expression><![CDATA[]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="resultField_Group">
-            <activiti:expression><![CDATA[sID_Group_step9]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -71,7 +53,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -79,32 +61,16 @@
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee_step11" name="Список співробітників Інспекційного відділу;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step11" name="Група виконавців наступного кроку; для інформації" type="string"></activiti:formProperty>
-      
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step10]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="assignment" delegateExpression="${assignGroupByPrefix}">
-          <activiti:field name="prefix">
-            <activiti:expression><![CDATA[]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="resultField_Group">
-            <activiti:expression><![CDATA[sID_Group_step11]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки">
+    <userTask id="usertask4" name="9. Перевірка наявності об'єкту. Зв'язування з карткою об'єкту, у разі відсутності - створення  нової картки" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -118,23 +84,23 @@
           <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
           <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" default="true" readable="false"></activiti:formProperty>
+        <!--activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" default="true" readable="false"></activiti:formProperty!-->
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step9]]></activiti:expression>
+            <activiti:expression><![CDATA[sLoginAsignee_9]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:taskListener!-->
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -209,7 +175,7 @@
     <sequenceFlow id="flow14" name="asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultThirdPerson'||asResultChecking=='sEnumResultGenerate'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask6" name="14. Друк акту перевірки за шаблоном та зберігання його в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -422,8 +388,8 @@
         <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/kiev/DABI_insp_akt_pro_nedopushennya_do_perevirki.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/kiev/DABI_insp_akt__perevirki.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/DABI_insp_akt_pro_nedopushennya_do_perevirki.html]" type="invisible" default="Акт про недопущення до перевірки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/kiev/DABI_insp_akt__perevirki.html]" type="invisible" default="Акт перевірки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6.json')}"></activiti:formProperty>
@@ -444,7 +410,7 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="usertask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask7" name="14. Друк акту перевірки, припису про усунення виявлених порушень та протоколу. Зберігання документів підписаних ЕЦП у обліковій системі. Формування постанови про накладання штрафів та передача заступнику директора." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -657,13 +623,11 @@
         <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
-
         <activiti:formProperty id="PrintForm_akt_perev" name="File label;File title;pattern/print/kiev/DABI_insp_akt_perevirki.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_pripis_usunennia" name="File label;File title;pattern/print/kiev/DABI_insp_pripis_pro_usunennya_porushennya_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_pripis_zupinennia" name="File label;File title;pattern/print/kiev/DABI_insp_pripis_pro_zupinennya_pidgotovchih_ta_budivelnih_robit_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_protokol_adm" name="File label;File title;pattern/print/kiev/DABI_insp_protokol_admin_1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_protokol" name="File label;File title;pattern/print/kiev/DABI_insp_protokol_mistobud_1.html" type="file"></activiti:formProperty>
-             
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6.json')}"></activiti:formProperty>
@@ -683,14 +647,13 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultThirdPerson'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow19" sourceRef="servicetask4" targetRef="usertask9"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask4">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -735,7 +698,7 @@
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcess}">
+        <!--activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcess}">
           <activiti:field name="paramName">
             <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
           </activiti:field>
@@ -750,34 +713,11 @@
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:taskListener/!-->
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask9" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_permit_boss">
-      <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask9" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow26" sourceRef="escalationTimer1" targetRef="parallelgateway5"></sequenceFlow>
-    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask10" name="15. Автоматичне формування постанови про накладення штрафів та передача заступнику диретора на підпис." activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -1055,7 +995,7 @@
     </userTask>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway4" targetRef="parallelgateway4"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_Insp_${asChoiceIspectionEmployee}">
+    <userTask id="usertask13" name="16. Очікування оскарження" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -1086,10 +1026,9 @@
     <sequenceFlow id="flow35" sourceRef="parallelgateway4" targetRef="usertask12"></sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow36" sourceRef="usertask12" targetRef="parallelgateway6"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="usertask9" targetRef="parallelgateway5"></sequenceFlow>
-    <sequenceFlow id="flow38" sourceRef="parallelgateway2" targetRef="usertask5"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="usertask8"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="usertask8" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="parallelgateway2" targetRef="usertask8"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask8" targetRef="usertask5"></sequenceFlow>
     <parallelGateway id="parallelgateway5" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow41" sourceRef="parallelgateway5" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="parallelgateway5" targetRef="usertask14"></sequenceFlow>
@@ -1100,7 +1039,6 @@
     <sequenceFlow id="flow46" sourceRef="usertask15" targetRef="parallelgateway6"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="usertask14" targetRef="parallelgateway6"></sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="parallelgateway6" targetRef="endevent6"></sequenceFlow>
-    
     <userTask id="usertask14" name="3. Ознайомлення з документом директора ДАБК" activiti:candidateGroups="kyiv_dabi_boss">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -1115,7 +1053,6 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    
     <userTask id="usertask15" name="4. Ознайомлення з документом заступника директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -1128,9 +1065,8 @@
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>       
+      </extensionElements>
     </userTask>
-    
     <userTask id="usertask16" name="6. Ознайомлення начальником управління контролю за будівництвом" activiti:candidateGroups="kyiv_dabi_contr_boss">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -1143,9 +1079,32 @@
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>     
-         
+      </extensionElements>
     </userTask>
+    <userTask id="usertask17" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_boss">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask4" targetRef="usertask17"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask17" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow51" sourceRef="boundarytimer1" targetRef="parallelgateway5"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Управління дозвільних документів</text>
     </textAnnotation>
@@ -1206,16 +1165,10 @@
         <omgdc:Bounds height="40.0" width="40.0" x="499.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
-        <omgdc:Bounds height="82.0" width="131.0" x="1080.0" y="100.0"></omgdc:Bounds>
+        <omgdc:Bounds height="82.0" width="131.0" x="1138.0" y="162.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="1240.0" y="181.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
-        <omgdc:Bounds height="72.0" width="105.0" x="220.0" y="167.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="290.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1068.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
         <omgdc:Bounds height="101.0" width="135.0" x="959.0" y="511.0"></omgdc:Bounds>
@@ -1259,6 +1212,12 @@
       <bpmndi:BPMNShape bpmnElement="usertask16" id="BPMNShape_usertask16">
         <omgdc:Bounds height="97.0" width="105.0" x="466.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask17" id="BPMNShape_usertask17">
+        <omgdc:Bounds height="69.0" width="105.0" x="220.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="280.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="50.0" width="100.0" x="1033.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1289,8 +1248,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="1011.0" y="266.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="265.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1088.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1088.0" y="222.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="1377.0" y="237.0"></omgdi:waypoint>
@@ -1328,19 +1287,9 @@
           <omgdc:Bounds height="52.0" width="100.0" x="1212.0" y="627.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="175.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="203.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="155.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="154.0" y="260.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="305.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="304.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="1149.0" y="561.0"></omgdi:waypoint>
@@ -1386,22 +1335,18 @@
         <omgdi:waypoint x="476.0" y="561.0"></omgdi:waypoint>
         <omgdi:waypoint x="399.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="325.0" y="203.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="202.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="1280.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1108.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1138.0" y="203.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="1011.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1080.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1087.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1088.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="1211.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1269.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="399.0" y="202.0"></omgdi:waypoint>
@@ -1434,6 +1379,16 @@
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="359.0" y="561.0"></omgdi:waypoint>
         <omgdi:waypoint x="265.0" y="561.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="175.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="201.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="295.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="1033.0" y="335.0"></omgdi:waypoint>
