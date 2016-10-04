@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -15,6 +16,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.util.ToolWeb;
 import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +73,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                     HttpHeaders headers = new HttpHeaders();
                     headers.set("Content-Type", "text/xml; charset=utf-8");
                     headers.set("SOAPAction", "http://govgate/Send");
-                    resp = new RestRequest().post(URL, body,
+                    resp = new RestRequest().post(URL, ToolWeb.base64_encode(body),
                             null, StandardCharsets.UTF_8, String.class, headers);
                     LOG.info("Ukrdoc response:" + resp);
                 } else {
@@ -79,7 +81,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 }
             execution.setVariable("result", resp);
         } catch (Exception ex) {
-            LOG.error("!!! Error/ Can't get attach from DataStorage with sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
+            LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
         }
     }
 
