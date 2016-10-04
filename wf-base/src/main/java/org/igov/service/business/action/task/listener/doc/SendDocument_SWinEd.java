@@ -1,7 +1,6 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -17,7 +16,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.util.ToolWeb;
+import static org.igov.util.ToolWeb.base64_encode;
 import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,20 +64,20 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
         String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "text/xml; charset=utf-8");
-        headers.set("SOAPAction", "http://govgate/Send");
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.set("Content-Type", "text/xml; charset=utf-8");
+        //headers.set("SOAPAction", "http://govgate/Send");
         try {
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
             byte[] oFile_XML_SWinEd = oBytesDataInmemoryStorage.getBytes(sID_File_XML_SWinEdValue);
             if (oFile_XML_SWinEd != null) {
                 String content = new String(oFile_XML_SWinEd);
                 resp += " content: " + content;
-                String body = createBody(content);
-                LOG.info("body: " + body);
+                //String body = createBody(content);
+                //LOG.info("body: " + body);
                 //resp = new RestRequest().post(URL, "test",
                 //        null, StandardCharsets.UTF_8, String.class, headers);//
-                resp = oHttpRequester.postInside(URL, null, createBody(content), "text/xml; charset=utf-8");
+                resp = oHttpRequester.postInside(URL, null, base64_encode(createBody(content)), "text/xml; charset=utf-8");
                 LOG.info("!!!response:" + resp);
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
