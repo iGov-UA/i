@@ -42,8 +42,8 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     @Override
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
-//        addFeedBackJob(scheduler);
-//        addBuilderFlowSlotsJob(scheduler);
+        addFeedBackJob(scheduler);
+        addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -51,7 +51,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oJobDetail_Escalation_Group", JobEscalation.class);
 
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
-                "oCronTrigger_EveryNight_Group");
+                "oCronTrigger_EveryNight_EscalationGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
@@ -74,7 +74,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oJobDetail_FeedBack_Group", JobFeedBack.class);
 
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
-                "oCronTrigger_EveryNight_Group");
+                "oCronTrigger_EveryNight_FeedBackGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
@@ -98,7 +98,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
 
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
-                "oCronTrigger_EveryNight_Group");
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
