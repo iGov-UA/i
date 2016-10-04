@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="vpl_GetInfo_Why_Block_1144" name="Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 23.09.2016</documentation>
+  <process id="vpl_GetInfo_Why_Block_1144" name="Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1545</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПО" type="select" default="0" required="true"></activiti:formProperty>
@@ -56,6 +56,7 @@
           <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="Внесіть, будь ласка, відповідь щодо запиту, яку буде надіслано громадянину" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -64,7 +65,6 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_notice_edit_place_live_1128_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -84,7 +84,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
@@ -101,13 +101,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо інформаційного запиту про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -139,12 +139,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо інформаційного запиту про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам відхилено.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
@@ -165,7 +165,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${nFile_Answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -178,12 +178,12 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірено звернення на тему: Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо інформаційного запиту про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно перевірено.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно перевірено.&lt;br /&gt;
 &lt;br /&gt;
 &lt;p&gt;Коментар чиновника:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
@@ -218,7 +218,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${nFile_Answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -269,7 +269,7 @@ execution.setVariable('sAdd_SpisokDocs', per1)
           <activiti:expression>smoktii.igov@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Подано звернення референтом: Інформаційний запит щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
+          <activiti:string><![CDATA[Подано звернення референтом: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>&lt;b&gt;Подано на громадянина: ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
