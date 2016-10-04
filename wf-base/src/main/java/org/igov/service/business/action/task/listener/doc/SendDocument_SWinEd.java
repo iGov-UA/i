@@ -45,10 +45,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     //@Autowired
     //private IBytesDataStorage durableBytesDataStorage;
-    
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    
+
     private Expression sID_File_XML_SWinEd;
 
     @Autowired
@@ -61,27 +60,31 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
+        String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "text/xml; charset=utf-8");
+        headers.set("SOAPAction", "http://govgate/Send");
         try {
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
             byte[] oFile_XML_SWinEd = oBytesDataInmemoryStorage.getBytes(sID_File_XML_SWinEdValue);
-                if (oFile_XML_SWinEd != null) {
-                    String content = new String(oFile_XML_SWinEd);
-                    resp += " content: " + content;
-                    String body = createBody(content);
-                    LOG.info("body: " + body);
-                    String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.set("Content-Type", "text/xml; charset=utf-8");
-                    headers.set("SOAPAction", "http://govgate/Send");
-                    resp = new RestRequest().post(URL, ToolWeb.base64_encode(body),
-                            null, StandardCharsets.UTF_8, String.class, headers);
-                    LOG.info("Ukrdoc response:" + resp);
-                } else {
-                    LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
-                }
+            if (oFile_XML_SWinEd != null) {
+                String content = new String(oFile_XML_SWinEd);
+                resp += " content: " + content;
+                String body = createBody(content);
+                LOG.info("body: " + body);
+
+                resp = new RestRequest().post(URL, ToolWeb.base64_encode(body),
+                        null, StandardCharsets.UTF_8, String.class, headers);
+                LOG.info("Ukrdoc response:" + resp);
+            } else {
+                LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
+            }
             execution.setVariable("result", resp);
         } catch (Exception ex) {
             LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
+            resp = new RestRequest().post(URL, "testtest",
+                    null, StandardCharsets.UTF_8, String.class, headers);
+            execution.setVariable("result", resp);
         }
     }
 
