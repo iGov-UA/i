@@ -40,9 +40,9 @@ public class RestRequest {
         }
         LOG.info("httpHeaders.contentType: " + httpHeaders.getContentType() + " httpHeaders.accept: " + httpHeaders.getAccept());
         HttpEntity httpEntity = new HttpEntity(requestBody, httpHeaders);
-        LOG.debug("Sending POST to rest resource:{}, HttpEntity:{}", url, httpEntity);
+        LOG.info("Sending POST to rest resource:{}, HttpEntity:{}", url, httpEntity);
         xmlResponse = restTemplate.postForObject(url, httpEntity, clazz);
-
+        LOG.info("xmlResponse:{}", xmlResponse);
         return xmlResponse;
 
     }

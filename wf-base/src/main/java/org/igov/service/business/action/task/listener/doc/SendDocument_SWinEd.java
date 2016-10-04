@@ -72,8 +72,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 resp += " content: " + content;
                 String body = createBody(content);
                 LOG.info("body: " + body);
-
-                resp = new RestRequest().post(URL, ToolWeb.base64_encode(body),
+                resp = new RestRequest().post(URL, "test",
                         null, StandardCharsets.UTF_8, String.class, headers);
                 LOG.info("Ukrdoc response:" + resp);
             } else {
@@ -82,8 +81,8 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             execution.setVariable("result", resp);
         } catch (Exception ex) {
             LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
-            resp = new RestRequest().post(URL, "testtest",
-                    null, StandardCharsets.UTF_8, String.class, headers);
+            //resp = new RestRequest().post(URL, "testtest",
+            //        null, StandardCharsets.UTF_8, String.class, headers);
             execution.setVariable("result", resp);
         }
     }
@@ -141,7 +140,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     private String createBody(String content) {
         String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n")
+                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">")
                 .append("<soap:Body>")
                 .append("<Send xmlns=\"http://govgate/\">")
                 .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
