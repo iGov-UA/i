@@ -41,7 +41,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        addEscalationJob(scheduler);
+        addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
         addBuilderFlowSlotsJob(scheduler);
     }
@@ -101,7 +101,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 25 10 1/1 * ?");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
