@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_edit_spravka_1127" name="Переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1523</documentation>
+    <documentation>Смоктій К.В. Последние правки: 04.10.2016, id=1523</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -39,7 +39,7 @@
         <activiti:formProperty id="nFile_SvodoztvoNarodzennya" name="копії свідоцтв про народження дітей;якщо в заяві на отримання грошової допомоги вказані діти; завантажте одним файлом формату PDF, якщо дітей декілька" type="file"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -83,7 +83,7 @@
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_1" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="З інформацією все гаразд, звернення буде розглянуто"></activiti:value>
-          <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
@@ -136,7 +136,7 @@
           <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо переоформлення довідки про взяття на облік внутрішньо переміщеної особи у зв’язку зі зміною інформації про заявника з можливістю одночасного оформлення щомісячної адресної допомоги успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
