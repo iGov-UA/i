@@ -456,16 +456,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
             }
 
-            JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-            String sCode = (String) oResponseJson.get("code");
-            if ("200".equals(sCode)) {
-                LOG.info("Добавлен комментарий эскалации: {}", sComment);
-            } else {
-                String sMessage = (String) oResponseJson.get("message");
-                LOG.error("Ошибка при добавлении коммменатирия эскалации: {}", sMessage);
-            }
-
-        } catch (Exception e) { //
+        } catch (Exception e) {
             LOG.error("Ошибка при добавлении коммменатирия эскалации:", e);
         }
 
@@ -601,28 +592,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         if(!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)){
                             historyEventService.updateHistoryEvent(sID_Order, mParam);
                         }
-                    } catch (Exception oException) {
-                        new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
-                                ._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
-                    }
-
-                    if (bProcessClosed) {
-                        status = HistoryEvent_Service_StatusType.CLOSED;
-                        //sDateClosed = oHistoricTaskInstance.getEndTime().toString();
-                    } else {
-                        status = HistoryEvent_Service_StatusType.OPENED;
-                    }
-                    LOG.info("Saving closed task");
-                    mParam.put("nID_StatusType", status.getnID().toString());
-                    mParam.put("sUserTaskName", sUserTaskName);
-                    mParam.put("sID_Order", sID_Order);
-                    //mParam.put("sDateStart", sDateStart);
-                    //mParam.put("sDateClosed", sDateClosed);
-                    try {
-                        if(!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)){
-                            historyEventService.updateHistoryEvent(sID_Order, mParam);
-                        }
-                        
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
                                 ._Head("Can't save history event for task")._Param("nID_Process", nID_Process).save();
