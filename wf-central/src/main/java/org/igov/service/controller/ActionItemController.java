@@ -508,6 +508,7 @@ public class ActionItemController {
                 dataList.add(preparedData);
             }
             preparedService.setServiceDataList(dataList);
+            preparedService.setServiceDataList(preparedService.getServiceDataFiltered(generalConfig.isSelfTest()));
         }
 
         return preparedService;

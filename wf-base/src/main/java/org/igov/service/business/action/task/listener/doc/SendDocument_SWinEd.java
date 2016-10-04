@@ -24,20 +24,20 @@ import org.springframework.stereotype.Component;
 
 @Component("SendDocument_SWinEd")
 public class SendDocument_SWinEd extends AbstractModelTask implements TaskListener {
-
+    
     private static final long serialVersionUID = 1L;
 
     private final static Logger LOG = LoggerFactory.getLogger(SendDocument_SWinEd.class);
-
+    
     @Autowired
     RuntimeService runtimeService;
-
+    
     @Autowired
     TaskService taskService;
-
+    
     @Autowired
     GeneralConfig generalConfig;
-
+    
     @Autowired
     FormService formService;
 
@@ -118,5 +118,19 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 .append("</soap:Envelope>").toString();
         return result;
     }
-
+    
+    private String createBody(String content) {
+        String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n")
+                .append("<soap:Body>")
+                .append("<Send xmlns=\"http://govgate/\">")
+                .append("<fileName>fileName</fileName>")
+                .append("<senderEMail>olga.kuzminova87@gmail.com</senderEMail>")
+                .append("<data>").append(content).append("</data>")
+                .append("</Send>")
+                .append("</soap:Body>")
+                .append("</soap:Envelope>").toString();
+        return result;
+    }
+    
 }
