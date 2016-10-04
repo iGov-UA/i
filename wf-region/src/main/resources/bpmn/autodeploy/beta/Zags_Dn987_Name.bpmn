@@ -31,6 +31,7 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -74,7 +75,7 @@
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом 3х днів.&lt;/p&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом доби.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -96,14 +97,14 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Опрацювання звернення, перевірка наявності відомостей" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="sDaniPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса (місце реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькові, що були у заявника до зміни імені" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькові, що були у заявника до зміни імені; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_born" name="Дата народження особи, щодо якої запитується інформація; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_born" name="Дата і місце де проводилась зміна імені" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMeta" name="Мета отримання витягу" type="enum" writable="false">
           <activiti:value id="sEnamMeta1" name="Оригінал свідоцтва пошкоджено"></activiti:value>
@@ -144,13 +145,13 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітник ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
+Співробітник відділу ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
 Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
 Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
 Для отримання свідоцтва Вам необхідно сплатити державне мито у розмірі: 51 копійка.&lt;br /&gt;
-Ви можете сплатити його звичайним банківським плетежем за наступними реквізитами:&lt;br /&gt;
+Ви можете сплатити його звичайним банківським платежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
 (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
@@ -274,10 +275,10 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     </sequenceFlow>
     <userTask id="usertask2" name="Надання відповідді" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="sDaniPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса (місце реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPoperedName" name="Прізвище, ім'я, по-батькові, що були у заявника до зміни імені" type="string" writable="false"></activiti:formProperty>
