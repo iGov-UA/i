@@ -360,7 +360,7 @@ public abstract class AbstractModelTask {
                             try {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                            catch (Exception ex) {
+                            } catch (Exception ex) {
                                 LOG.error("sID_Field: " + sID_Field, ex);
                                 throw new ActivitiException(ex.getMessage(), ex);
                             }
