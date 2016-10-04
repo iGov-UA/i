@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig) {
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
 
       'use strict';
 
@@ -648,6 +648,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
             FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
+        if($scope.data.formData.params[property.id] instanceof SignFactory){
+          $scope.sign.checked = b;
+          $scope.isSignNeededRequired = b;
+        }
         return b;
       };
 
