@@ -228,14 +228,14 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
     UserService.isLoggedIn().then(function (result) {
       if (result) {
         UserService.fio().then(function (res) {
-          if (res.subjectID === 20049) {
-            $scope.feedback.isAdmin = true;
-          }
+          $scope.feedback.isAdmin = AdminService.isAdmin();
         });
       }
     });
-    //TODO fix AdminServ isAdmin
-    //$scope.feedback.isAdmin = AdminService.isAdmin();
+
+    $scope.$on('logoutEvent', function (event, data) {
+      $scope.feedback.isAdmin = data.isLogged;
+    });
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
