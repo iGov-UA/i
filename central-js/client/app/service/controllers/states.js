@@ -12,8 +12,12 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
       $scope.spinner = false;
     } else {
       CatalogService.getServiceBusiness(sServiceName).then(function (res) {
-        var scat = res[0].aSubcategory[0].sName;
-        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        if(res.length !==0 && res[0].aSubcategory) {
+          var scat = res[0].aSubcategory[0].sName;
+          TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        } else {
+          TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+        }
         $scope.spinner = false;
       })
     }
