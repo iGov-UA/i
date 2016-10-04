@@ -112,15 +112,4 @@ public class Variable {
         }
     }
     
-    public static String getStringFromFieldExpression(Expression expression,
-            DelegateExecution execution) {
-        if (expression != null) {
-            Object value = expression.getValue(execution);
-            if (value != null) {
-                return value.toString();
-            }
-        }
-        return null;
-    }
-    
 }
