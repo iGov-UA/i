@@ -90,7 +90,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="asRod_Razv_Slub_Ima" name="Ким ви є особі щодо якої запитується інформація" type="enum" required="true">
           <activiti:value id="sEnamR1" name="Заявник особисто на себе"></activiti:value>
-          <activiti:value id="sEnamR2" name="Родич за умови предявлення документів, що підтверджують родинні стосунки"></activiti:value>
+          <activiti:value id="sEnamR2" name="Родич за умови пред'явлення документів, що підтверджують родинні стосунки"></activiti:value>
           <activiti:value id="sEnamRP" name="Представник фізичної особи"></activiti:value>
           <activiti:value id="sEnamXXXXXXXX" name=" "></activiti:value>
         </activiti:formProperty>
@@ -235,7 +235,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
@@ -341,13 +341,13 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітник ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
+Співробітник відділу ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
 Ви можете отримати Витяг. &lt;br /&gt;
 Для отримання Витягу потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
 Дата і час візиту для отримання витягу: ${comment} &lt;br /&gt;&lt;br /&gt;
 Для отримання витягу Вам необхідно сплатити державне мито у розмірі: 73 гривні.&lt;br /&gt;
-Ви можете сплатити його звичайним банківським плетежем за наступними реквізитами:&lt;br /&gt;
+Ви можете сплатити його звичайним банківським платежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
 (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
@@ -667,7 +667,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sSvid_AktN" name="Номер актового запису в реєстрі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment_2" name="ІД транзакції платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_2" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Послуга оплачена, свідоцтво надане"></activiti:value>
+          <activiti:value id="accept" name="Послуга оплачена, витяг надано"></activiti:value>
           <activiti:value id="reject" name="Заявник не з'явився для отримання витягу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBodyP11" name="[pattern/print/AK/Zags/Zags_Vutiag_printP11.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
@@ -738,10 +738,10 @@ ${sNameOrgan}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Нагадуємо Ви подали заяву для ${sPosluga_nameZV}.
 Заява оформлена вірно.&lt;br /&gt;
-Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
+Ви можете отримати витяг. &lt;br /&gt;
+Для отримання витягу потрібно особисто звернутися до відділу ДРАЦС за адресою.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
-ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання свідоцтва Вам необхідно сплатіти державне мито в розмірі 73 гривні.&lt;br /&gt;
+ЗВЕРНІТЬ УВАГУ! Послуга платна! Для отримання витягу Вам необхідно сплатіти державне мито в розмірі 73 гривні.&lt;br /&gt;
 Реквізити для сплати:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
