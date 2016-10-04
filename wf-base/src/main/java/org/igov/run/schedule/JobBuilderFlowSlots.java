@@ -98,9 +98,10 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
+            LOG.info("11111dateStart: "+dateStart);
             Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
             dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
-            LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+            LOG.info("222222 dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
                     dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
