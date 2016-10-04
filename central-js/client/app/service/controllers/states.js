@@ -248,7 +248,7 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
   }
 
   function refreshList() {
-      FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)
+    FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)
       .then(function (response) {
         var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
         ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});

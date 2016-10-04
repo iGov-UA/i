@@ -289,6 +289,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         updateReservedSlot(newValue);
       });
 
+      scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue) {
+        resetData();
+        scope.loadList();
+      });
+
       scope.loadList();
     }
   }
