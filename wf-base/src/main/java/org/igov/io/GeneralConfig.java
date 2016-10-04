@@ -154,7 +154,7 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
-            //LOG.info("(sbTest={})", sbTest_Self);
+            //LOG.info("(sbTest_Self={})", sbTest_Self);
         } catch (Exception oException) {
             LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest_Self);
             LOG.debug("FAIL:", oException);
