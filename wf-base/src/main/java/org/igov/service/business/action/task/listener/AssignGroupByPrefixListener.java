@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener;
 
 import java.util.List;
+import java.util.Optional;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -22,8 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AssignGroupByPrefixListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupByPrefixListener.class);
-    private Expression prefix;
+    //private Expression prefix;
     private Expression resultField_Group;
+    private Expression suffix_chief;
+    private Expression suffix_empolyee;
 
     @Autowired
     private RuntimeService runtimeService;
@@ -31,8 +34,12 @@ public class AssignGroupByPrefixListener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         DelegateExecution execution = delegateTask.getExecution();
-        String prefix = getStringFromFieldExpression(this.prefix, execution);
-        LOG.info("prefix: " + prefix);
+        //String prefix = getStringFromFieldExpression(this.prefix, execution);
+        //LOG.info("prefix: " + prefix);
+        String chief = getStringFromFieldExpression(this.suffix_chief, execution);
+        LOG.info("suffix_chief: " + chief);
+        String employee = getStringFromFieldExpression(this.suffix_empolyee, execution);
+        LOG.info("suffix_empolyee: " + employee);
         String resultField_Group = getStringFromFieldExpression(this.resultField_Group, execution);
         LOG.info("resultField_Group: " + resultField_Group);
         // getting TaskOwner's user
@@ -42,15 +49,30 @@ public class AssignGroupByPrefixListener implements TaskListener {
         List<Group> ownerGroup = execution.getEngineServices().getIdentityService().createGroupQuery()
                 .groupMember(sTaskOwner).list();
         long nCountOfGroups = ownerGroup.stream()
-                .filter(group -> group.getId().equals(prefix)).count();
-        LOG.info(String.format("Count of groups like %s is %s", prefix, nCountOfGroups));
-        if (nCountOfGroups == 1) {
-            LOG.info("Set into $s value $s", resultField_Group, prefix);
-            runtimeService.setVariable(execution.getProcessInstanceId(), resultField_Group, prefix);
-        } else {
-            LOG.warn("Групи $s не існує, або їх декілька", prefix);
-            throw new ActivitiIllegalArgumentException("Вказаної групи не існує, або їх декілька");
+                .filter(group -> group.getId().endsWith(chief)).count();
+        LOG.info(String.format("Count of groups like %s is %s", chief, nCountOfGroups));
+
+        if (nCountOfGroups != 1) {
+            LOG.warn(String.format("Groups $s for users like boss are absent", chief));
+            throw new ActivitiIllegalArgumentException(String.format("Групи $s для співробітника не існує, або їх декілька", chief));
         }
+        
+        Group oEmployeesGroup = ownerGroup.stream()
+                .filter(group -> group.getId().endsWith(chief))
+                .findFirst()
+                .get();
+        String sEmploeesGroup = oEmployeesGroup.getId().replace(chief, employee);
+        LOG.info("sEmploeesGroup: " + sEmploeesGroup );
+        
+        long nCountOfEmployeesGroup = ownerGroup.stream()
+                .filter(group -> group.getId().equals(sEmploeesGroup)).count();
+        
+        if (nCountOfEmployeesGroup != 1) {
+            LOG.warn("Number emloyees groups for user is " + nCountOfEmployeesGroup);
+            throw new ActivitiIllegalArgumentException("Групи підлеглих для для співробітника як керівника не існує, або їх декілька");
+        }
+        
+        execution.setVariable(resultField_Group, sEmploeesGroup);       
 
     }
 
