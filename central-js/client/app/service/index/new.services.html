@@ -47,7 +47,7 @@
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
 	                <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
                 </div>
-                <div class="col-sm-9 text" style="padding-left: 11.25px">
+                <div class="col-sm-9 text">
                   <h3><a ui-sref="index.newsubcategory({'catID': 1, 'scatID': category.oServiceTag_Root.nID })" ng-click="catalogTab = 1">{{category.oServiceTag_Root.sName_UA}}</a></h3>
                   <ul>
                     <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': 1, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})" ng-click="catalogTab = 1">{{subcategory.sName_UA}}</a></li>
