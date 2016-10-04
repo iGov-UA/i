@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_get_spravka_1124" name="Отримання довідки про взяття на облік внутрішньо переміщеної особи з можливістю одночасного оформлення щомісячної адресної допомоги" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 23.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1546</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання послуги" type="select" default="0" required="true"></activiti:formProperty>
@@ -93,7 +93,6 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_prolongation_spravka_print.html]" type="invisible" default="Заява про продовження строка дії довідки про взяття на облік ВПО" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -133,7 +132,7 @@
           <activiti:string><![CDATA[Зареєстровано звернення на тему: Отримання довідки про взяття на облік внутрішньо переміщеної особи з можливістю одночасного оформлення щомісячної адресної допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо отримання довідки про взяття на облік внутрішньо переміщеної особи з можливістю одночасного оформлення щомісячної адресної допомоги успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
