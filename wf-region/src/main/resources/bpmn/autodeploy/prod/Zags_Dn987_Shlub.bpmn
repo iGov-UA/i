@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sbankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія паспорту;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -110,10 +110,10 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Опрацювання звернення, перевірка наявності відомостей" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса (місце реєстрації); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Статус заявника у шлюбі" type="enum" writable="false">
@@ -123,8 +123,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamPredsDr" name="Представник дружини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/shlubUT1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sPIBDruz" name="ПІБ Дружини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIBChol" name="ПІБ Чоловіка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIBDruz" name="ПІБ Дружини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPIBChol" name="ПІБ Чоловіка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPIBOdrugenui" name="Для принтформи" type="invisible"></activiti:formProperty>
@@ -168,13 +168,13 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітник ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
+Співробітник відділу ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
 Ви можете отримати свідоцтво. &lt;br /&gt;
 Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;&lt;br /&gt;
 Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
 Для отримання свідоцтва Вам необхідно сплатити державне мито у розмірі: 51 копійка.&lt;br /&gt;
-Ви можете сплатити його звичайним банківським плетежем за наступними реквізитами:&lt;br /&gt;
+Ви можете сплатити його звичайним банківським платежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
 (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
