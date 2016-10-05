@@ -518,9 +518,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                     //  if (!generalConfig.isSelfTest()) {
-                            //String snID_Proccess_Feedback = bpHandler
-                            //        .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                       if (!generalConfig.isSelfTest()) {
+                            String snID_Proccess_Feedback = bpHandler
+                                    .startFeedbackProcessNew(snID_Process);
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         org.activiti.engine.impl.util.json.JSONObject historyEvent = new org.activiti.engine.impl.util.json.JSONObject(jsonHistoryEvent);
                         	Integer nID_Server = historyEvent.getInt("nID_Server");
@@ -542,7 +542,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                 LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
                                 Long countClaim = (Long) oResponseJson.get("countClaim");
                                 if (countClaim.compareTo(50L)<0) {
-                                	String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+//                                	String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                                     
                                     if(snID_Proccess_Feedback!=null) {
                                     mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
@@ -561,9 +561,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             }
                         	
                         	
-                       /* } else {
+                       } else {
                             LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
-                        }*/
+                        }
                     }
                 } catch (Exception oException) {
                     new Log(oException, LOG)//this.getClass()
