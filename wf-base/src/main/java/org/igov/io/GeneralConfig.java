@@ -90,6 +90,11 @@ public class GeneralConfig {
     private String sUser_Corezoid_Exchange;
     @Value("${general.Exchange.Corezoid.sSecretKey}")
     private String sSecretKey_Corezoid_Exchange;
+    
+    @Value("${general.Exchange.Corezoid.Gorsovet.sID_User}")
+    private String sUser_Corezoid_Gorsovet_Exchange;
+    @Value("${general.Exchange.Corezoid.Gorsovet.sSecretKey}")
+    private String sSecretKey_Corezoid_Gorsovet_Exchange;
 
     // MSG Properties
     @Value("${general.Monitor.MSG.sURL}")
@@ -157,7 +162,7 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
-            //LOG.info("(sbTest={})", sbTest_Self);
+            //LOG.info("(sbTest_Self={})", sbTest_Self);
         } catch (Exception oException) {
             LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest_Self);
             LOG.debug("FAIL:", oException);
@@ -449,5 +454,21 @@ public class GeneralConfig {
 	 public boolean isFeedbackCountExpired(Long feedbackCount) {
 			return feedbackCount > getFeedbackCountLimit();
 	 }
+
+    public String getsUser_Corezoid_Gorsovet_Exchange() {
+        return sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsUser_Corezoid_Gorsovet_Exchange(String sUser_Corezoid_Gorsovet_Exchange) {
+        this.sUser_Corezoid_Gorsovet_Exchange = sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public String getsSecretKey_Corezoid_Gorsovet_Exchange() {
+        return sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
+        this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
     
 }

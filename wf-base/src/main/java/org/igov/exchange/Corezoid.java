@@ -47,4 +47,20 @@ public class Corezoid {
             return resut;
     }
     
+    public String sendToCorezoid(String nID_Corezoid, String user, String secretKey, Map<String, Object> data) throws Exception {
+            LOG.info("conveyerID: " + nID_Corezoid + " user: " + generalConfig.getUser_Coreziod_Exchange() 
+                    + " secretKey: " + generalConfig.getSecretKey_Coreziod_Exchange() + " data: " + data);
+            JSONObject requestData = new JSONObject();
+            requestData.accumulateAll(data);
+            LOG.info("requestData: " + requestData);
+            String ref = "iGov" + System.currentTimeMillis() + new Random(System.currentTimeMillis()).nextInt(1000);
+            RequestOperation operation = RequestOperation.create(nID_Corezoid, ref, requestData);
+            List<RequestOperation> ops = Arrays.asList(operation);
+            CorezoidMessage message = CorezoidMessage.request(secretKey, user, ops);
+            HttpManager http = new HttpManager();
+            String resut = http.send(message);
+            LOG.info("resut: " + resut);
+            return resut;
+    }
+    
 }

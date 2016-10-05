@@ -517,12 +517,11 @@
         };
 
         $scope.nID_FlowSlotTicket_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf(":");
-          var nTo = sValue.indexOf(",");
-          var s = sValue.substring(nAt + 1, nTo);
           var nID_FlowSlotTicket = 0;
           try {
-            nID_FlowSlotTicket = s;
+            var nAt = sValue.indexOf(":");
+            var nTo = sValue.indexOf(",");
+            nID_FlowSlotTicket = sValue.substring(nAt + 1, nTo);;
           } catch (_) {
             nID_FlowSlotTicket = 1;
           }
@@ -530,12 +529,11 @@
         };
 
         $scope.sDate_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf("sDate");
-          var nTo = sValue.indexOf("}");
-          var s = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           var sDate = "Дата назначена!";
           try {
-            sDate = s;
+            var nAt = sValue.indexOf("sDate");
+            var nTo = sValue.indexOf("}");
+            sDate = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           } catch (_) {
             sDate = "Дата назначена!";
           }

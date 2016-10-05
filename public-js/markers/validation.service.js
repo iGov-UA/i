@@ -137,22 +137,27 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           if(newRow) field = formField;
           angular.forEach(field, function (table) {
             angular.forEach(table, function (tableField) {
-              if (tableField && tableField.$name && tableField.$name.indexOf(marker.aField_ID) !== -1) {
-                var keyByMarkerName = self.validatorNameByMarkerName[markerName];
-                var fieldNameIsListedInMarker = tableField;
-                var existingValidator = tableField && tableField.$validators && tableField.$validators[keyByMarkerName];
-                if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
-                  var markerOptions = angular.copy(marker) || {};
-                  if (marker.aField_ID && !tableField.$name.indexOf(marker.aField_ID)) marker.aField_ID.push(tableField.$name)
-                  markerOptions.key = keyByMarkerName;
-                  if (!tableField.$validators) return true;
-                  tableField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, tableField);
-                  if (immediateValidation === true) tableField.$validate();
-                  if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
-                    self.setValidatorByMarker(marker, markerOptions.inheritedValidator, tableField, immediateValidation, true);
+              if (tableField && tableField.$name) {
+                for(var i=0; i<marker.aField_ID.length; i++){
+                  if(tableField.$name.indexOf(marker.aField_ID[i]) !== -1) {
+                    var keyByMarkerName = self.validatorNameByMarkerName[markerName];
+                    var fieldNameIsListedInMarker = tableField;
+                    var existingValidator = tableField && tableField.$validators && tableField.$validators[keyByMarkerName];
+                    if ((fieldNameIsListedInMarker /* || forceValidation */ ) && !existingValidator) {
+                      var markerOptions = angular.copy(marker) || {};
+                      if (marker.aField_ID && !tableField.$name.indexOf(marker.aField_ID[i]) > -1) marker.aField_ID.push(tableField.$name)
+                      markerOptions.key = keyByMarkerName;
+                      if (!tableField.$validators) return true;
+                      tableField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, tableField);
+                      if (immediateValidation === true) tableField.$validate();
+                      if (markerOptions.inheritedValidator && typeof markerOptions.inheritedValidator === 'string') {
+                        self.setValidatorByMarker(marker, markerOptions.inheritedValidator, tableField, immediateValidation, true);
+                      }
+                    } else if (fieldNameIsListedInMarker && existingValidator) {
+                      if (immediateValidation === true) tableField.$validate();
+                    }
                   }
-                } else if (fieldNameIsListedInMarker && existingValidator) {
-                  if (immediateValidation === true) tableField.$validate();
+                  break
                 }
               }
             })

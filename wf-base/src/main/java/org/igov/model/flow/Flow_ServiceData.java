@@ -38,8 +38,8 @@ public class Flow_ServiceData extends NamedEntity {
     @Column
     private String sID_BP;
 
-//    @Column
-//    private Long nCountAutoGenerate;
+    @Column
+    private Long nCountAutoGenerate;
 
     @OneToMany(mappedBy = "oFlow_ServiceData", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -69,13 +69,13 @@ public class Flow_ServiceData extends NamedEntity {
         this.sID_BP = sID_BP;
     }
 
-//    public Long getnCountAutoGenerate() {
-//        return nCountAutoGenerate;
-//    }
-//
-//    public void setnCountAutoGenerate(Long nCountAutoGenerate) {
-//        this.nCountAutoGenerate = nCountAutoGenerate;
-//    }
+    public Long getnCountAutoGenerate() {
+        return nCountAutoGenerate;
+    }
+
+    public void setnCountAutoGenerate(Long nCountAutoGenerate) {
+        this.nCountAutoGenerate = nCountAutoGenerate;
+    }
 
     public List<FlowProperty> getFlowProperties() {
         return flowProperties;

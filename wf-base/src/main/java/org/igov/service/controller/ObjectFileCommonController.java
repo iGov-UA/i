@@ -291,10 +291,9 @@ public class ObjectFileCommonController {
                     "ProcessInstanceId for taskId '" + taskId + "' not found.",
                     Attachment.class);
         }
-
+        LOG.info("attachmentId: " + attachmentId + " taskId: " + taskId + " nFile: " + nFile + " processInstanceId: " + processInstanceId);
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
-                nFile, processInstanceId);
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, nFile, processInstanceId);
         String sFileName = attachmentRequested.getName();
         String description = attachmentRequested.getDescription();
         String type = attachmentRequested.getType();
@@ -451,8 +450,7 @@ public class ObjectFileCommonController {
                     Attachment.class);
         }
 
-        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
-                processInstanceId);
+        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, null, processInstanceId);
 
         InputStream attachmentStream = null;
         if (attachmentRequested != null) {
@@ -733,7 +731,9 @@ public class ObjectFileCommonController {
         String regex, replacement;
         for (Map.Entry<String, String> entry : data.entrySet()) {
             regex = "<" + entry.getKey().trim().toUpperCase() + ">";
-            replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
+            //replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
+            replacement = regex + entry.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
+                    .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
             declarContent = declarContent.replaceAll(regex, replacement);
         }
         //запись контента в xml файл
@@ -749,7 +749,7 @@ public class ObjectFileCommonController {
         result.put("soPatternFilled", declarContent.replaceAll(" ", "").replaceAll(System.getProperty("line.separator"), ""));
         return result;
     }
-    
+
     /*
     @ApiOperation(value = "/putAttachmentToRedis_old", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы\n")
     @RequestMapping(value = {"/putAttachmentToRedis_old"}, method = RequestMethod.POST, headers = {"Accept=application/json"})

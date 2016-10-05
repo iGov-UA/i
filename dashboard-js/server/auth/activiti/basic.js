@@ -40,11 +40,18 @@ exports.logout = function (req, res) {
     if (error) {
       res.send(error);
     } else {
-      var currentUser = JSON.parse(req.cookies.user);
-      cache.del({
-        id: currentUser.id,
-        url: currentUser.url
-      });
+      var currentUser;
+      try{
+        currentUser = JSON.parse(req.cookies.user);
+      } catch (e){
+        currentUser = false;
+      }
+      if(currentUser){
+        cache.del({
+          id: currentUser.id,
+          url: currentUser.url
+        });
+      }
       //localStorage.removeItem('user');
       res.send(result);
     }

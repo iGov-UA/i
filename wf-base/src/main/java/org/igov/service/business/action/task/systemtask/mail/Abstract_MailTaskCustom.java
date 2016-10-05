@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -676,17 +677,6 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			}
 		}
 		return tasksRes;
-	}
-
-	protected String getStringFromFieldExpression(Expression expression,
-			DelegateExecution execution) {
-		if (expression != null) {
-			Object value = expression.getValue(execution);
-			if (value != null) {
-				return value.toString();
-			}
-		}
-		return null;
 	}
 
 	protected Long getLongFromFieldExpression(Expression expression,

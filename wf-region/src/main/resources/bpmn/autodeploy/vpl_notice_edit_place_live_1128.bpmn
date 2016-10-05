@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_notice_edit_place_live_1128" name="Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 23.09.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2016, id=1524</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПЛ" type="select" default="0" required="true"></activiti:formProperty>
@@ -19,6 +19,7 @@
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReasonEdit" name="Причина зміни адреси фактичного проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Other" name="Копія документів, що підтверджують зміни в інформації" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/Fx2vzQ&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; про повідомлення уповноваженого органу про зміну адреси фактичного проживання"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви про зміну адреси фактичного проживання" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
@@ -66,11 +67,10 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/vpl_notice_edit_place_live_1128_print.html]" type="invisible" default="Заява про переоформлення довідки про взяття на облік внутрішньо переміщеної особи" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_Other}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -106,7 +106,7 @@
           <activiti:string><![CDATA[Зареєстровано звернення на тему: Повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
+          <activiti:expression>
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо повідомлення уповноваженого органу (за місцем отримання довідки про взяття на облік внутрішньо переміщеної особи) про зміну адреси фактичного проживання успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;

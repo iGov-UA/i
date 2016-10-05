@@ -38,10 +38,11 @@
   </form>
   <a href="#" title="Очистити" ng-show="sSearch" ng-click="clear()"><span class="glyphicon glyphicon-remove"></span></a>
   <a href="#" ng-click="onExtSearchClick()">
-        <span class="glyphicon glyphicon-chevron-down al-right" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true" style="margin-top: 3px; ">
-          <span class="search-filter" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true" style="font-weight: bold; font-size: 13px; font-family: 'Open Sans'; padding-right: 6px; float: left; line-height: 10px;">фільтр</span>
+        <span class="al-right" title="{{!bShowExtSearch ? 'Розширений пошук' : 'Повернутися до простого пошуку'}}" aria-hidden="true" style="margin-top: 3px">
+          <span class="search-filter" aria-hidden="true" style="font-weight: bold; font-size: 13px; font-family: 'Open Sans'; float: left; line-height: 10px;">фільтр</span>
+          <span ng-show="!bShowExtSearch" class="glyphicon glyphicon-chevron-down"></span>
+          <span ng-show="bShowExtSearch" class="glyphicon glyphicon-chevron-up"></span>
         </span>
-    <span class="glyphicon glyphicon-chevron-up al-right" ng-show="bShowExtSearch" title="Повернутися до простого пошуку" aria-hidden="true" style="margin-right: 12px; margin-top: 3px;"></span>
   </a>
 
   <div class="panel panel-default"

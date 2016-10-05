@@ -339,6 +339,8 @@ public class ActionEventService {
             Long nID_StatusType,
             String sSubjectInfo,
             Long nID_Subject
+          //  String sDateCreate,
+           // String sDateClosed
     ) throws CommonServiceException {
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         LOG.info("Status type is " + nID_StatusType);
@@ -451,6 +453,7 @@ public class ActionEventService {
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
             }
+
         }
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
