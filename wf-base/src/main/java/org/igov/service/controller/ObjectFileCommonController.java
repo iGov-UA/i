@@ -746,7 +746,7 @@ public class ObjectFileCommonController {
         //        .multipartFileToByteArray(multipartFile, multipartFile.getOriginalFilename())
         //        .toByteArray());
         //result.put("sID_Redis", key);
-        result.put("soPatternFilled", declarContent.replaceAll(" ", "").replaceAll(System.getProperty("line.separator"), ""));
+        result.put("soPatternFilled", declarContent.replaceAll(System.getProperty("line.separator"), ""));
         return result;
     }
 
