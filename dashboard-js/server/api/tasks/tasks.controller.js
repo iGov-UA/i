@@ -276,7 +276,13 @@ exports.getAttachmentContentTable = function (req, res) {
     }
   };
   activiti.get(options, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
+    if(error) {
+      res.send(error)
+    } else if (statusCode == 500) {
+      console.log(statusCode, "isn't table attachment")
+    }else {
+      res.status(statusCode).json(result);
+    }
   });
 };
 
