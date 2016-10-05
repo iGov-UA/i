@@ -77,7 +77,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 //LOG.info("body: " + body);
                 //resp = new RestRequest().post(URL, "test",
                 //        null, StandardCharsets.UTF_8, String.class, headers);//
-                resp = oHttpRequester.postInside(URL, null, base64_encode(createBody(content)), "text/xml; charset=utf-8");
+                resp = oHttpRequester.postInside(URL, null, createBody(base64_encode(content)), "text/xml; charset=utf-8");
                 LOG.info("!!!response:" + resp);
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
