@@ -23,7 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.activiti.engine.delegate.Expression;
-import org.igov.util.Variable;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 /**
  *
@@ -42,7 +42,7 @@ public class AssignGroupListener implements TaskListener {
 		// String organValue = getStringFromFieldExpression(organ, execution);
 		String organValue = (String) execution.getVariable("organ");
 		//String prefixValue = (String) execution.getVariable("group_prefix");
-                String prefixValue = Variable.getStringFromFieldExpression(group_prefix, execution);
+                String prefixValue = getStringFromFieldExpression(group_prefix, execution);
 		LOG.info("organValue: " + organValue);
 		LOG.info("prefixValue: " + prefixValue);
 		Group group;

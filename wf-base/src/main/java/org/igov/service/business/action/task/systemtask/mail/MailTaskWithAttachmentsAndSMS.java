@@ -20,6 +20,8 @@ import java.util.List;
 import org.apache.commons.mail.MultiPartEmail;
 //import org.igov.io.sms.ManagerSMS_New;
 
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+
 /**
  * @author BW
  */

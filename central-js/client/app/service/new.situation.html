@@ -6,7 +6,7 @@
 </style>
 
 <div ng-if="!spinner">
-  <div class="container">
+  <div class="container breadcrumbs">
     <div class="row">
       <div class="container" style="margin-top: 20px">
         <a href="/1" ng-if="catalogTab == 1 || !catalogTab">Головна</a>
@@ -24,18 +24,18 @@
 
     <div class="row">
       <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="category.aServiceTag_Child[0].sNote">
-        <div class="col-md-9" style="padding-left: 0">
-          <span class="situation-html default-styles-for-inner-html" compile-template data-ng-bind-html="trustAsHtml(category.aServiceTag_Child[0].sNote)"></span>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-3 similar-situation-container">
           <div class="vertical-divider"></div>
-          <span style="font-size: 24px; font-family: 'Open Sans'; padding-left: 8px">Пов'язані послуги</span>
+          <span>Пов'язані послуги</span>
           <br>
           <ul class="similar-situation">
             <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'">
               <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
             </li>
           </ul>
+        </div>
+        <div class="col-md-9" style="padding-left: 0">
+          <span class="situation-html default-styles-for-inner-html" compile-template data-ng-bind-html="trustAsHtml(category.aServiceTag_Child[0].sNote)"></span>
         </div>
       </div>
       <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="!category.aServiceTag_Child[0].sNote">

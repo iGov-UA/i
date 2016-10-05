@@ -12,9 +12,11 @@ import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import static org.igov.util.ToolWeb.base64_encode;
 import org.igov.util.VariableMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +45,16 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     //@Autowired
     //private IBytesDataStorage durableBytesDataStorage;
-    
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    
+
     private Expression sID_File_XML_SWinEd;
 
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private HttpRequester oHttpRequester;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -59,27 +63,31 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         DelegateExecution execution = delegateTask.getExecution();
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
+        String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.set("Content-Type", "text/xml; charset=utf-8");
+        //headers.set("SOAPAction", "http://govgate/Send");
         try {
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
             byte[] oFile_XML_SWinEd = oBytesDataInmemoryStorage.getBytes(sID_File_XML_SWinEdValue);
-                if (oFile_XML_SWinEd != null) {
-                    String content = new String(oFile_XML_SWinEd);
-                    resp += " content: " + content;
-                    String body = createBody(content);
-                    LOG.info("body: " + body);
-                    String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.set("Content-Type", "text/xml; charset=utf-8");
-                    headers.set("SOAPAction", "http://govgate/Send");
-                    resp = new RestRequest().post(URL, body,
-                            null, StandardCharsets.UTF_8, String.class, headers);
-                    LOG.info("Ukrdoc response:" + resp);
-                } else {
-                    LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
-                }
+            if (oFile_XML_SWinEd != null) {
+                String content = new String(oFile_XML_SWinEd);
+                resp += " content: " + content;
+                //String body = createBody(content);
+                //LOG.info("body: " + body);
+                //resp = new RestRequest().post(URL, "test",
+                //        null, StandardCharsets.UTF_8, String.class, headers);//
+                resp = oHttpRequester.postInside(URL, null, base64_encode(createBody(content)), "text/xml; charset=utf-8");
+                LOG.info("!!!response:" + resp);
+            } else {
+                LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
+            }
             execution.setVariable("result", resp);
         } catch (Exception ex) {
-            LOG.error("!!! Error/ Can't get attach from DataStorage with sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
+            LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
+            //resp = new RestRequest().post(URL, "testtest",
+            //        null, StandardCharsets.UTF_8, String.class, headers);
+            execution.setVariable("result", resp);
         }
     }
 
@@ -136,7 +144,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     private String createBody(String content) {
         String result = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n")
+                .append("<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">")
                 .append("<soap:Body>")
                 .append("<Send xmlns=\"http://govgate/\">")
                 .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
