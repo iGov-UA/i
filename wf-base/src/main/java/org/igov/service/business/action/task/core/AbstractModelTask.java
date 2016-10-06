@@ -360,8 +360,9 @@ public abstract class AbstractModelTask {
                             try {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                            } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
-                                throw new ActivitiException(e1.getMessage(), e1);
+                            } catch (Exception ex) {
+                                LOG.error("sID_Field: " + sID_Field, ex);
+                                throw new ActivitiException(ex.getMessage(), ex);
                             }
                             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
                             if (oAttachment != null) {
