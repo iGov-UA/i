@@ -42,48 +42,14 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
   }
 
   return {
-    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter, table) {
+    processPrintTemplate: function (task, form, printTemplate, reg, fieldGetter) {
       var _printTemplate = printTemplate;
       var templates = [], ids = [], found, idArray = [];
       while (found = reg.exec(_printTemplate)) {
         templates.push(found[1]);
         ids.push(found[2]);
       }
-      // проверка на тип 'table'
-      if(table && templates.length > 0) {
-        var matchesIds = [];
-        angular.forEach(templates, function (template) {
-          var comment = template.match(/<!--[\s\S]*?-->/g);
-          if(Array.isArray(comment)) {
-            for(var i=0; i<comment.length; i++) {
-              comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
-            }
-          }
-          if(comment) matchesIds.push(comment);
-        });
-
-        angular.forEach(matchesIds, function (ids) {
-          var arr = ids.filter(function(item, pos, self) {
-            return self.indexOf(item) == pos;
-          });
-          idArray.push(arr);
-        });
-
-        angular.forEach(idArray, function(id) {
-          angular.forEach(form.taskData.aTable, function(table) {
-            if(table.idName === id[0]) {
-              angular.forEach(templates, function (template) {
-                if(template.indexOf(id) !== -1){
-                  var withAddedRowsTemplate = template.repeat(table.content.length - 1);
-                  _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
-                }
-              })
-            }
-          })
-        });
-        return _printTemplate
-      }
-      if (templates.length > 0 && ids.length > 0 && !table) {
+      if (templates.length > 0 && ids.length > 0) {
         templates.forEach(function (templateID, i) {
           var id = ids[i];
           if (id) {
@@ -101,6 +67,56 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         });
       }
       return _printTemplate;
+    },
+    //наполнение принтформы данными из таблицы. поиск по ид таблицы маркера, при необходмости клонирование, сразу же наполняем.
+    fillPrintTable: function (task, form, printTemplate, reg) {
+      var self = this;
+      var _printTemplate = printTemplate;
+      var templates = [], ids = [], found, idArray = [];
+      while (found = reg.exec(_printTemplate)) {
+        templates.push(found[1]);
+        ids.push(found[2]);
+      }
+      var matchesIds = [];
+      angular.forEach(templates, function (template) {
+        var comment = template.match(/<!--[\s\S]*?-->/g);
+        if(Array.isArray(comment)) {
+          for(var i=0; i<comment.length; i++) {
+            comment[i] = comment[i].match(/([a-z][A-Z])\w+/)[0];
+          }
+        }
+        if(comment) matchesIds.push(comment);
+      });
+
+      angular.forEach(matchesIds, function (ids) {
+        var arr = ids.filter(function(item, pos, self) {
+          return self.indexOf(item) == pos;
+        });
+        idArray.push(arr);
+      });
+
+      angular.forEach(idArray, function(id) {
+        angular.forEach(form.taskData.aTable, function(table) {
+          if(table.idName === id[0]) {
+            angular.forEach(templates, function (template) {
+              var commentedField = template.match(/<!--.*?-->/)[0];
+              var uncommentedField = commentedField.split('--')[1];
+              var result = uncommentedField.slice(1);
+              if(result == id[0]){
+                var withAddedRowsTemplate = template.repeat(table.content.length - 1);
+                angular.forEach(table.content, function (row) {
+                  angular.forEach(row.aField, function (field) {
+                    var fieldId = field.value ? field.value : (field.default ? field.default : field.props.value);
+                    withAddedRowsTemplate = self.populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
+                  })
+                });
+                _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
+              }
+            })
+          }
+        })
+      });
+      return _printTemplate
     },
     populateSystemTag: function (printTemplate, tag, replaceWith, table) {
       var replacement;
@@ -172,7 +188,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       printTemplate = this.processPrintTemplate(task, form, printTemplate, /(\[label=(\w+)])/g, function (item) {
         return item.name;
       });
-      printTemplate = this.processPrintTemplate(task, form, printTemplate, /(?=<!--\[)([\s\S]*?]-->)/g, null, true);
+      printTemplate = this.fillPrintTable(task, form, printTemplate, /(?=<!--\[)([\s\S]*?]-->)/g);
       printTemplate = this.populateSystemTag(printTemplate, "[sUserInfo]", function () {
         var user = Auth.getCurrentUser();
         return user.lastName + ' ' + user.firstName ;
@@ -186,8 +202,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         angular.forEach(table.content, function (row) {
           angular.forEach(row.aField, function (field) {
             printTemplate = that.populateSystemTag(printTemplate, "[" + field.id + "]",
-              field.value ? field.value : (field.default ? field.default : field.props.value),
-              table.content.length > 2)
+              field.value ? field.value : (field.default ? field.default : field.props.value))
           })
         });
       });
