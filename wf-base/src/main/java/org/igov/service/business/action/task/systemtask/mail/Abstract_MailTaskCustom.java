@@ -422,7 +422,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 															.toString());
 											nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
 											LOG.info("{}={}", pattern_subject, nID_Subject);
-											boolean bTest = generalConfig.isSelfTest();
+											boolean bTest = generalConfig.isTest_LiqPay();
 											String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
 													sSum, oID_Currency, sLanguage, sDescription, sID_Order,
 													sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
