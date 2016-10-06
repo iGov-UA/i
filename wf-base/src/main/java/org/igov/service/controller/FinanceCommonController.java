@@ -286,7 +286,7 @@ public class FinanceCommonController {
         if(sDescription==null){
             sDescription="";
         }
-        boolean bTest = generalConfig.isSelfTest();
+        boolean bTest = generalConfig.isTest_LiqPay();
         sID_Order = (sID_Order == null ? "" : sID_Order);
         Language oLanguage = Liqpay.DEFAULT_LANG;
         Currency oID_Currency = Currency.valueOf(sID_Currency == null ? "UAH" : sID_Currency);
