@@ -532,7 +532,6 @@
         <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица" type="invisible" default="__"></activiti:formProperty>
         <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
-        
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
@@ -1822,7 +1821,7 @@
             <activiti:expression><![CDATA[${sCity}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${GetDocument_UkrDoc}">
+        <activiti:taskListener event="create" delegateExpression="#{GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
             <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
