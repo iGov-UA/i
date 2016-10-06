@@ -34,7 +34,7 @@ public class CheckParallelProcessListener implements TaskListener {
         String sErrorMessage = getStringFromFieldExpression(this.sErrorMessage, oExecution);
         LOG.info("sErrorMessage: " + sErrorMessage);
         String sValFromProcess = (String) runtimeService.getVariable(oExecution.getProcessInstanceId(), paramName);
-        LOG.info("sValFromProcess: " + sValFromProcess);
+        LOG.info("sValFromProcess: " + sValFromProcess);        
 
         if (!checkValue.trim().equals(sValFromProcess.trim())) {
             LOG.warn("Previous process isn't complete");
