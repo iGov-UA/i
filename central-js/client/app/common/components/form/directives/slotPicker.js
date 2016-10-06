@@ -76,6 +76,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             }).
             error(function(data, status, headers, config) {
               console.error('Error reserved slot ' + angular.toJson(data));
+              var err = data.message.split(": response=");
+              if(data.message.indexOf('tapi.cherg.net') >= 0 && err[1]){
+                if(data.message.indexOf('Время уже занято') >= 0){
+                  dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
+                } else {
+                  dialogs.error('Помилка', err[1])
+                }
+                scope.selected.slot = null;
+              } else {
+                dialogs.error('Помилка', data.message);
+              }
             });
           }
         } else if (isQueueDataType.iGov) {
