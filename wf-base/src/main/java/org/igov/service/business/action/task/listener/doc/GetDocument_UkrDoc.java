@@ -43,7 +43,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
     @Autowired
     private TaskService taskService;
     
-    
     @Autowired
     private ProminSession_Singleton prominSession_Singleton;
 
@@ -54,7 +53,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
         
-        String sessionId = prominSession_Singleton.getSid();
+        String sessionId = prominSession_Singleton.getSid_Auth_UkrDoc_SED();
 
         String[] documentIDs = sID_Document.split(":");
         if (documentIDs.length > 1) {

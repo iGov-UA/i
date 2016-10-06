@@ -25,14 +25,15 @@ import org.xml.sax.SAXException;
 /**
  * Сессия ПК "Проминь"
  *
- * @author KOV & BVV
+ * @author olga
  */
 @Service
 @Scope("prototype")
 public class ProminSession_Singleton {
 
     private final static Logger LOG = LoggerFactory.getLogger(ProminSession_Singleton.class);
-    private String sid;
+    private String sid_Auth_UkrDoc_SED;
+    private String sid_Auth_Receipt_PB_Bank;
     private long nTimeCreatedMS;
     private final long nTimeLiveLimitMS = 1000 * 60 * 20;
 
@@ -42,22 +43,35 @@ public class ProminSession_Singleton {
     private ProminSession_Singleton() {
     }
 
-    public String getSid() {
+    public String getSid_Auth_UkrDoc_SED() {
+        checkAndUpdateSid();
+        return sid_Auth_UkrDoc_SED;
+    }
+
+    public String getSid_Auth_Receipt_PB_Bank() {
+        checkAndUpdateSid();
+        return sid_Auth_Receipt_PB_Bank;
+    }
+
+    private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
-        if (sid == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
+        if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
             nTimeCreatedMS = System.currentTimeMillis();
-            sid = getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
+            sid_Auth_UkrDoc_SED = getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
                     generalConfig.getPassword_Auth_UkrDoc_SED(),
                     generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+            sid_Auth_Receipt_PB_Bank = getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(),
+                    generalConfig.getPassword_Auth_Receipt_PB_Bank(),
+                    generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
         }
         LOG.info(toString() + " ok!");
-        return sid;
     }
 
     @Override
     public String toString() {
         String sCase = "SID_ESC";
-        return "[" + sCase + "]: sid=" + sid + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
+        return "[" + sCase + "]: sid_Auth_UkrDoc_SED=" + sid_Auth_UkrDoc_SED + ", sid_Auth_Receipt_PB_Bank= " + sid_Auth_Receipt_PB_Bank 
+                + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
     }
 
     private static String getSessionId(String login, String password, String uriSid) {
