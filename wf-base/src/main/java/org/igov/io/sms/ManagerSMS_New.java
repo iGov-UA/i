@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
+import org.igov.service.business.promin.ProminSession_Singleton;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class ManagerSMS_New {
 
     @Autowired
     private GeneralConfig generalConfig;
+    
+    @Autowired
+    private ProminSession_Singleton prominSession_Singleton;
 
     /*
      * Проверяем заданы ли все параметры для отсылки СМС. Если нет то сервис не
@@ -113,9 +117,7 @@ public class ManagerSMS_New {
 
 	String sessionId;
 	try {
-	    sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
-		    generalConfig.getPassword_Auth_UkrDoc_SED(),
-		    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+	    sessionId = prominSession_Singleton.getSid();
 	} catch (Exception e) {
 	    LOG.error("Error get Session ID", e);
 	    return String.format("Error get Session ID. %s", e.getMessage());

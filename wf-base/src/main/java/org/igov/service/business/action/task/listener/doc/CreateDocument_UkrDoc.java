@@ -22,7 +22,6 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.web.RestRequest;
@@ -32,7 +31,7 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 
 import org.igov.service.business.action.task.systemtask.ProcessCountTaskListener;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
-import org.igov.service.controller.interceptor.ActionProcessCountUtils;
+import org.igov.service.business.promin.ProminSession_Singleton;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +83,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     
     @Autowired
     HttpRequester httpRequester;
+    
+    @Autowired
+    private ProminSession_Singleton prominSession_Singleton;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -128,10 +130,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 }
 
                 LOG.info("Found attachments for the process {}: {}", delegateTask.getId(), attach2 != null ? attach2.size() : 0);
-
-                String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
-                        generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
-
+                String sessionId = prominSession_Singleton.getSid();
                 LOG.info("Retrieved session ID:" + sessionId);
 
                 if (attachments.isEmpty()) {

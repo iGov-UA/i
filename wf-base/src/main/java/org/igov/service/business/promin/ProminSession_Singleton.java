@@ -43,16 +43,6 @@ public class ProminSession_Singleton {
     }
 
     public String getSid() {
-        return sid;
-    }
-
-    @Override
-    public String toString() {
-        String sCase = "SID_ESC";
-        return "[" + sCase + "]: sid=" + sid + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
-    }
-
-    public String getSID() {
         LOG.info("getSID ... " + toString());
         if (sid == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
             nTimeCreatedMS = System.currentTimeMillis();
@@ -61,7 +51,13 @@ public class ProminSession_Singleton {
                     generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
         }
         LOG.info(toString() + " ok!");
-        return getSid();
+        return sid;
+    }
+
+    @Override
+    public String toString() {
+        String sCase = "SID_ESC";
+        return "[" + sCase + "]: sid=" + sid + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
     }
 
     private static String getSessionId(String login, String password, String uriSid) {
