@@ -21,9 +21,9 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sVid_plem_res" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPorod_plem_res" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sKilk_plem_res" name="Rs" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="file_11" name="Дані відповідних форм племінного обліку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_22" name="Матеріали державної атестації та переатестації  суб’єктів племінної справи у тваринництві" type="file" required="true"></activiti:formProperty>
@@ -34,6 +34,7 @@
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видачі сертифікатів племінних (генетичних) ресурсів"></activiti:formProperty>
       </extensionElements>
@@ -103,11 +104,15 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заяву прийнято, видати сертифікат племінних ресурсів"></activiti:value>
@@ -219,10 +224,13 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asVudacha" name="Видача відповіді" type="enum" required="true">
           <activiti:value id="sEnamVud_ok" name="Сертифікат надано заявнику"></activiti:value>
