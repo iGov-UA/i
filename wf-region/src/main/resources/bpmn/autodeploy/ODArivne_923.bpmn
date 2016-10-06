@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ODArivne_923" name="Видачі сертифікатів племінних (генетичних) ресурсів" isExecutable="true">
+  <process id="ODArivne_923" name="Видача сертифікатів племінних (генетичних) ресурсів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" required="true">
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -16,10 +16,15 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_NO_file_ipn.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVid_plem_res" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPorod_plem_res" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKilk_plem_res" name="Rs" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="file_11" name="Дані відповідних форм племінного обліку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_22" name="Матеріали державної атестації та переатестації  суб’єктів племінної справи у тваринництві" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_33" name="Матеріали державних книг племінних тварин, каталогів або інших офіційних видань" type="file" required="true"></activiti:formProperty>
@@ -51,7 +56,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист Заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -64,8 +69,7 @@
           <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -104,6 +108,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заяву прийнято, видати сертифікат племінних ресурсів"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
@@ -266,6 +271,13 @@ ${sWorkTime}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVudacha == 'sEnamVud_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+        var sum ='0.53'
+      	
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ODArivne_923">
     <bpmndi:BPMNPlane bpmnElement="ODArivne_923" id="BPMNPlane_ODArivne_923">
@@ -311,13 +323,16 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="503.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="246.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="170.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="275.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="298.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="425.0" y="167.0"></omgdi:waypoint>
@@ -339,14 +354,14 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="522.0" y="323.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="539.0" y="336.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="539.0" y="336.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="502.0" y="303.0"></omgdi:waypoint>
         <omgdi:waypoint x="465.0" y="303.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="351.0" y="337.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="351.0" y="337.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -378,6 +393,10 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="642.0" y="558.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="222.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="298.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
