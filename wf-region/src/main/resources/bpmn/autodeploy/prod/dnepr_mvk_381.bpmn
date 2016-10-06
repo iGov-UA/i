@@ -12,11 +12,9 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканкопія паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asDorRod" name="Скільки повнолітніх людей зареєстровано в квартирі крім Вас?" type="enum" required="true">
-          <activiti:value id="sEnam0" name="0"></activiti:value>
+        <activiti:formProperty id="asDorRod" name="Скільки повнолітніх людей зареєстровано в квартирі;(враховуючи заявника)" type="enum" required="true" default="sEnam1">
           <activiti:value id="sEnam1" name="1"></activiti:value>
           <activiti:value id="sEnam2" name="2"></activiti:value>
           <activiti:value id="sEnam3" name="3"></activiti:value>
@@ -25,18 +23,18 @@
           <activiti:value id="sEnam6" name="6"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerDR" name="marker" type="markers" default="${markerService.loadFromFile('AK/PrivatKvartir/Dor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp1" name="Паспорт родича №1" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD1" name="Згода на обробку персональних данних родича №1" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp2" name="Паспорт родича №2" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD2" name="Згода на обробку персональних данних родича №2" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp3" name="Паспорт родича №3" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD3" name="Згода на обробку персональних данних родича №3" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp4" name="Паспорт родича №4" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD4" name="Згода на обробку персональних данних родича №4" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp5" name="Паспорт родича №5" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD5" name="Згода на обробку персональних данних родича №5" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Pasp6" name="Паспорт родича №6" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_zgodaD6" name="Згода на обробку персональних данних родича №6" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp1" name="Паспорт заявника №1;(якщо файлів кілька, завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD1" name="Згода на обробку персональних данних заявника №1" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp2" name="Паспорт співмешканця №2" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD2" name="Згода на обробку персональних данних співмешканця №2" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp3" name="Паспорт співмешканця №3" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD3" name="Згода на обробку персональних данних співмешканця №3" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp4" name="Паспорт співмешканця №4" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD4" name="Згода на обробку персональних данних співмешканця №4" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp5" name="Паспорт співмешканця №5" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD5" name="Згода на обробку персональних данних співмешканця №5" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Pasp6" name="Паспорт співмешканця №6" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_zgodaD6" name="Згода на обробку персональних данних співмешканця №6" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDitRod" name="Скільки неповнолітніх дітей у віці до 14ти років зареєстровано в квартирі" type="enum" required="true">
           <activiti:value id="sEnam0" name="0"></activiti:value>
           <activiti:value id="sEnam1" name="1"></activiti:value>
@@ -248,7 +246,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},{file_Pasp1},{file_zgodaD1},{file_Pasp2},{file_zgodaD2},{file_Pasp3},{file_zgodaD3},{file_Pasp4},{file_zgodaD4},{file_Pasp5},{file_zgodaD5},{file_Pasp6},{file_zgodaD6},{file_SNar1},{file_zgodaN1},{file_SNar2},{file_zgodaN2},{file_SNar3},{file_zgodaN3},{file_SNar4},{file_zgodaN4},{file_SNar5},{file_zgodaN5},{file_SNar6},{file_zgodaN6},{file_S1418Nar1},{file_zgoda1418N1},{file_S1418Nar2},{file_zgoda1418N2},{file_S1418Nar3},{file_zgoda1418N3},{file_S1418Nar4},{file_zgoda1418N4},{file_bat_zgoda1418NZ},{file_1},{file_2},{file_4},{file_5},{file_6},{file_7},{file_8},{file_9},{file_10},{file_11},{file_12},{file_13},{file_14},{file_15}</activiti:expression>
+            <activiti:expression>${file_Pasp1},{file_zgodaD1},{file_Pasp2},{file_zgodaD2},{file_Pasp3},{file_zgodaD3},{file_Pasp4},{file_zgodaD4},{file_Pasp5},{file_zgodaD5},{file_Pasp6},{file_zgodaD6},{file_SNar1},{file_zgodaN1},{file_SNar2},{file_zgodaN2},{file_SNar3},{file_zgodaN3},{file_SNar4},{file_zgodaN4},{file_SNar5},{file_zgodaN5},{file_SNar6},{file_zgodaN6},{file_S1418Nar1},{file_zgoda1418N1},{file_S1418Nar2},{file_zgoda1418N2},{file_S1418Nar3},{file_zgoda1418N3},{file_S1418Nar4},{file_zgoda1418N4},{file_bat_zgoda1418NZ},{file_1},{file_2},{file_4},{file_5},{file_6},{file_7},{file_8},{file_9},{file_10},{file_11},{file_12},{file_13},{file_14},{file_15}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -416,8 +414,8 @@ ${sAddress}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},{file_Pasp1},{file_zgodaD1},{file_Pasp2},{file_zgodaD2},{file_Pasp3},{file_zgodaD3},{file_Pasp4},{file_zgodaD4},{file_Pasp5},{file_zgodaD5},{file_Pasp6},{file_zgodaD6},{file_SNar1},{file_zgodaN1},{file_SNar2},{file_zgodaN2},{file_SNar3},{file_zgodaN3},{file_SNar4},{file_zgodaN4},{file_SNar5},{file_zgodaN5},{file_SNar6},{file_zgodaN6},{file_S1418Nar1},{file_zgoda1418N1},{file_S1418Nar2},{file_zgoda1418N2},{file_S1418Nar3},{file_zgoda1418N3},{file_S1418Nar4},{file_zgoda1418N4},{file_bat_zgoda1418NZ},{file_1},{file_2},{file_4},{file_5},{file_6},{file_7},{file_8},{file_9},{file_10},{file_11},{file_12},{file_13},{file_14},{file_15}</activiti:expression>
-          </activiti:field>
+            <activiti:expression>${file_Pasp1},{file_zgodaD1},{file_Pasp2},{file_zgodaD2},{file_Pasp3},{file_zgodaD3},{file_Pasp4},{file_zgodaD4},{file_Pasp5},{file_zgodaD5},{file_Pasp6},{file_zgodaD6},{file_SNar1},{file_zgodaN1},{file_SNar2},{file_zgodaN2},{file_SNar3},{file_zgodaN3},{file_SNar4},{file_zgodaN4},{file_SNar5},{file_zgodaN5},{file_SNar6},{file_zgodaN6},{file_S1418Nar1},{file_zgoda1418N1},{file_S1418Nar2},{file_zgoda1418N2},{file_S1418Nar3},{file_zgoda1418N3},{file_S1418Nar4},{file_zgoda1418N4},{file_bat_zgoda1418NZ},{file_1},{file_2},{file_4},{file_5},{file_6},{file_7},{file_8},{file_9},{file_10},{file_11},{file_12},{file_13},{file_14},{file_15}</activiti:expression>
+         </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>

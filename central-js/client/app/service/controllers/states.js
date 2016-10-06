@@ -12,8 +12,12 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
       $scope.spinner = false;
     } else {
       CatalogService.getServiceBusiness(sServiceName).then(function (res) {
-        var scat = res[0].aSubcategory[0].sName;
-        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        if(res.length !==0 && res[0].aSubcategory) {
+          var scat = res[0].aSubcategory[0].sName;
+          TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        } else {
+          TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+        }
         $scope.spinner = false;
       })
     }
@@ -228,14 +232,14 @@ angular.module('app').controller('ServiceFeedbackController', function (SimpleEr
     UserService.isLoggedIn().then(function (result) {
       if (result) {
         UserService.fio().then(function (res) {
-          if (res.subjectID === 20049) {
-            $scope.feedback.isAdmin = true;
-          }
+          $scope.feedback.isAdmin = AdminService.isAdmin();
         });
       }
     });
-    //TODO fix AdminServ isAdmin
-    //$scope.feedback.isAdmin = AdminService.isAdmin();
+
+    $scope.$on('logoutEvent', function (event, data) {
+      $scope.feedback.isAdmin = data.isLogged;
+    });
 
     $scope.nID = $stateParams.nID;
     $scope.sID_Token = $stateParams.sID_Token;
