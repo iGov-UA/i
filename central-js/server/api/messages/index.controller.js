@@ -90,8 +90,8 @@ module.exports.findFeedback = function(req, res){
     + options.hostname
     + options.path
     + '/subject/message/getMessageFeedbackExtended?sID_Order='
-    + req.param('sID_Order')
-    + '&sToken='+req.param('sToken');
+    + req.params.sID_Order
+    + '&sToken='+req.params.sToken;
 
   var callback = function(error, response, body) {
     res.send(body);
@@ -193,7 +193,7 @@ module.exports.postServiceMessage = function(req, res){
 };
 
 module.exports.findServiceMessages = function(req, res){
-  var sToken = req.param('sToken');
+  var sToken = req.params.sToken;
   if (!!req.session.subject.nID || oUtil.bExist(sToken)){
     //var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
     var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
@@ -211,7 +211,7 @@ module.exports.findServiceMessages = function(req, res){
       + options.hostname
       + options.path
       + '/subject/message/getServiceMessages?'
-      + 'sID_Order=' + req.param('sID_Order')
+      + 'sID_Order=' + req.params.sID_Order
       //+ '&nID_Subject=' + nID_Subject
       + (oUtil.bExist(nID_Subject)?'&nID_Subject=' + nID_Subject:"")
       + (oUtil.bExist(sToken)?'&sToken=' + sToken:"")

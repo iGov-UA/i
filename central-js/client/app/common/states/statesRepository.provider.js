@@ -81,7 +81,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         //alpha-mvd.test.igov.org.ua
         this.mode = 'alpha_mvd';
         //this.mode = modes.kyiv;
-      }else if (domen.indexOf('mvd') >= 0) {
+      }else if (domen.indexOf('mvd') >= 0 || domen.indexOf('mvs') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'mvd';
         //this.mode = modes.kyiv;

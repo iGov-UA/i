@@ -444,7 +444,15 @@ exports.getPatternFile = function (req, res) {
       'sPathFile': req.query.sPathFile
     }
   };
-  activiti.filedownload(req, res, options);
+
+  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsIs=pattern\//, '');
+  if(options.query.sPathFile.indexOf('sPrintFormFileAsPDF=pattern/') == 0){
+    options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\//, '');
+    activiti.filedownloadPDF(req, res, options);
+  } else {
+    activiti.filedownload(req, res, options);
+  }
+
 };
 
 exports.upload_content_as_attachment = function (req, res) {

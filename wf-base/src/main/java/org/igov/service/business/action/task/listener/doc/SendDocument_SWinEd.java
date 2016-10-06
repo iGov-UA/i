@@ -77,7 +77,8 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 //LOG.info("body: " + body);
                 //resp = new RestRequest().post(URL, "test",
                 //        null, StandardCharsets.UTF_8, String.class, headers);//
-                resp = oHttpRequester.postInside(URL, null, createBody(base64_encode(content)), "text/xml; charset=utf-8");
+                LOG.info("content: " + content);
+                resp = oHttpRequester.postInside(URL, null, createBody(content), "text/xml; charset=utf-8");
                 LOG.info("!!!response:" + resp);
             } else {
                 LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue + " oFile_XML_SWinEd is null!!!");
@@ -118,6 +119,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 if (multipartFile.getBytes() != null) {
                     String content = new String(multipartFile.getBytes());
                     resp += " content: " + content;
+                    LOG.info("content: " + content);
                     String body = createBody(content);
                     LOG.info("body: " + body);
                     String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
@@ -149,7 +151,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 .append("<Send xmlns=\"http://govgate/\">")
                 .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
                 .append("<senderEMail>olga.kuzminova87@gmail.com</senderEMail>")
-                .append("<data>").append(content).append("</data>")
+                .append("<data>").append(base64_encode(content)).append("</data>")
                 .append("</Send>")
                 .append("</soap:Body>")
                 .append("</soap:Envelope>").toString();

@@ -111,6 +111,14 @@ exports.filedownload = function(req, res, options) {
 	}).pipe(res);
 };
 
+exports.filedownloadPDF = function(req, res, options){
+  var r = prepareRequest(req, options);
+  // todo сделать конвертацию HTML в PDF https://github.com/e-government-ua/i/issues/1382
+  req.pipe(r).on('response', function(response) {
+    response.headers['content-type'] = 'application/octet-stream';
+  }).pipe(res);
+};
+
 //downloads the file with the specified content type
 exports.typedfiledownload = function(req, res, options) {
 	var r = prepareRequest(req, options);
