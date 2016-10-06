@@ -40,9 +40,6 @@ public class ProminSession_Singleton {
     @Autowired
     GeneralConfig generalConfig;
 
-    private ProminSession_Singleton() {
-    }
-
     public String getSid_Auth_UkrDoc_SED() {
         checkAndUpdateSid();
         return sid_Auth_UkrDoc_SED;
