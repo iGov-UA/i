@@ -6,18 +6,37 @@
 
     <style type="text/css">
       /* <![CDATA[ */
-      body {
-        font-size: 14pt;
-        font-family: "Times New Roman";
-        padding: 1cm 1.5cm 1cm 2.5cm;
-        width: 21cm;
-        min-height: 100%;
-        height: 100%;
+      .under_field { /* Блок с подписью */
       }
-      
-		div.whoBlock{
-			padding-left: 11cm;
-		}
+
+      .under_field.notb { /*без подчеркивания*/
+        border-bottom: 0px solid black;
+      }
+
+      /*
+      .under_field>spam.bold {
+      padding: 0 10px 0 0;
+      font-weight: normal;
+      background: white;
+      display: inline-block;
+      position: relative;
+      left: 0;
+      font-style: normal;
+      bottom: -1;
+      background-color: white;
+    }*/
+
+      /*если надо подчеркнуть*/
+      .under_field>spam.under { 
+        padding: 0 10px;
+        text-decoration: none; 
+      }
+
+      /*текст снизу*/
+      .under_field>span.textUnd { 
+        color: #606060;
+        font-size: 10pt;
+      }	
 
       table {
         align-self: center;
@@ -26,7 +45,8 @@
 
 
       td.bb {
-        border: 1px solid #000;
+        border: 1px solid black;
+        border-bottom: 1px solid black;
       }
 
       td.notb {
@@ -45,25 +65,28 @@
 
 
       th.t, td.t{
-        border-top: 1px solid #000;
+        border-top: 1px solid #F00;
       }
 
       th.r, td.r{
-        border-right: 1px solid #000;
+        border-right: 1px solid #F00;
       }
 
-      th.bott, td.bott{
-        border-bottom: 1px solid #000;
+      th.b, td.b{
+        border-bottom: 1px solid #F00;
       }
 
       th.l, td.l{
-        border-left: 1px solid #000;
+        border-left: 1px solid #F00;
       }
 
 
+padding-left:12cm;
+
+
       .smallText {
-        color: #606060;
-        font-size: 10pt;
+        font-size: 10pt;  
+        line-height: 1.1;
       }
 
 
@@ -77,10 +100,59 @@
 
       
       
-      /* ширина в процентах */         
+      /* ширина в процентах */            
+      .w1p {width: 1%;}      
+      .w4p {width: 4%;}      
+      .w5p {width: 5%;}   
+      .w10p { width: 10%;}
+      .w20p { width: 20%;}
+      .w30p { width: 30%;}
+      .w33p { width: 33%;} 
+      .w40p { width: 40%;}
+      .w50p { width: 50%;}   
+      .w60p { width: 60%;}   
+      .w70p { width: 70%;}   
+      .w80p { width: 80%;}   
+      .w90p { width: 90%;}    
+      .w95p { width: 95%;}     
       .w100p { width: 100%;}
 
+      /* ширина */
+      .w50 {	width: 50px;}
+      .w100 {	width: 100px;}
+      .w150 {	width: 150px;}
+      .w200 {	width: 200px;}
+      .w250 {	width: 250px;}
+      .w300 {	width: 300px;}
+      .w350 {	width: 350px;}
+      .w450 {	width: 450px;}
+      .w400 {	width: 400px;}
+      .w500 {	width: 500px;}
+
       /* отступ  */
+
+
+      .pl-25 { padding-left: 25px;}
+      .pl-50 { padding-left: 50px;}
+      .pl-75 { padding-left: 75px;}
+      .pl-100 { padding-left: 100px;}
+      .pl-150 { padding-left: 150px;}
+      .pl-200 { padding-left: 200px;}
+      .pl-250 { padding-left: 250px;}
+      .pl-300 { padding-left: 300px;}
+
+      .ml-5{ padding-left: 5cm;}
+      .ml-6{ padding-left: 6cm;}
+      .ml-7{ padding-left: 7cm;}
+      .ml-8{ padding-left: 8cm;}
+      .ml-9{ padding-left: 9cm;}
+      .ml-10{ padding-left: 10cm;}
+      .ml-11{ padding-left: 11cm;}
+      .ml-12{ padding-left: 12cm;}
+      .ml-13{ padding-left: 13cm;}
+      .ml-14{ padding-left: 14cm;}
+
+
 
       /* междустрочные интервалы */
       .line0 { line-height: 0; }
@@ -105,7 +177,7 @@
 
   </head>
   <body>
-      <div class="whoBlock">
+      <div class="whoBlock ml-11">
 
         <table class="w100p">
           <tr>
@@ -114,7 +186,7 @@
             </td>
           </tr>
           <tr>
-            <td class="bott">
+            <td class="notb bott">
               [sNameOrgan]
             </td>
           </tr>
@@ -133,7 +205,7 @@
           </tr>
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="bott">
+            <td class="b">
               <span id="spanFisName">[bankIdlastName] [bankIdlastName] [bankIdlastName]</span>            
               <span id="spanUrName">[sNameUr]</span>
             </td>
@@ -148,7 +220,7 @@
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="bott">
+            <td class="b">
               Поштова адреса:
               <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
               <span id="spanAdressFactual">[sAddressFactual]</span>
@@ -158,14 +230,14 @@
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="bott">
+            <td class="b">
               Електронна адреса: [email]
             </td>
           </tr>
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="bott">
+            <td class="b">
               Контактний телефон: [phone]
             </td>
           </tr>
@@ -174,7 +246,7 @@
       </div>
       <br><br>
 
-      <div class="ta-c">ЗАЯВА</div>
+      <div class="claimBlock">ЗАЯВА</div>
 
       
       
@@ -182,40 +254,23 @@
       <div class="ta-j">Прошу видати довідку про відсутність 
         заборгованості з податків, зборів, платежів відповідно до вимог
       </div>
-      
+        <u>[sNameDoc] № [sNumDoc] від [dDoc] року</u>
 
-      <table class="w100p">
-	      <tr>
-            <td class="bott">
-		      	[sNameDoc] № [sNumDoc] від [dDoc] року
-		    </td>
-	      </tr>
-      </table>
-      
+
       <div class="ta-j">
         для надання до
       </div>
-
-      <table class="w100p">
-	      <tr>
-            <td class="bott">
-		      	[sNameCompany]
-		    </td>
-	      </tr>
-	      <tr>
-            <td class="smalltext">
-		      	(найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
-		    </td>
-	      </tr>
-      </table>      
-      
-
+      <div class="ta-j w100p">
+        <u>[sNameCompany]</u> 
+        <span>(найменування підприємства (установи, організації), 
+          до якого (якої) буде подано довідку)</span>
+      </div>
       <div class="ta-j">Довідку прошу видати в 
           <u><span id="spanTypeEl">електронному</span>/<span id="spanTypePaper">паперовому</span> </u>
           <span>(необхідне позначити)</span> вигляді.
       </div>
       <div class="ta-j">
-        <span id="spanLawCourt">&#10004;</span>        
+        <span class="check_box"><span id="spanLawCourt">&#10004;</span></span>        
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
 
