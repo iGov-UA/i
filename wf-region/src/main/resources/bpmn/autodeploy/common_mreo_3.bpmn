@@ -7,7 +7,7 @@
         <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate" name="Department" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги" type="queueData" required="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
@@ -78,7 +78,7 @@
         <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-		<activiti:field name="aFieldInheritedAttachmentID">
+          <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport},${medical_scan1},${medical_scan2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
@@ -125,7 +125,7 @@
         <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-		<activiti:field name="aFieldInheritedAttachmentID">
+          <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport},${medical_scan1},${medical_scan2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
@@ -266,7 +266,7 @@ ${sMail_Signature}&lt;br&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${sMail_Employee},kyrbatsky@gmail.com,agerman.ua@gmail.com"</activiti:expression>
+          <activiti:expression>"${sMail_Employee},kyrbatsky@gmail.com"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення. Поновлення/заміна водійського посвідчення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
@@ -322,12 +322,12 @@ ${sMail_Signature}&lt;br&gt;
     </sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT2M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <boundaryEvent id="escalationTimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT2M</timeDuration>
+        <timeDuration>P7DT1H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask11" name="Заявка довгий час не обробляється" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -402,6 +402,9 @@ ${sMail_Signature}&lt;br&gt;
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="185.0" x="376.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="540.0" y="292.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="448.0" y="339.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -431,9 +434,6 @@ ${sMail_Signature}&lt;br&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="322.0" y="590.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="540.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
         <omgdc:Bounds height="30.0" width="30.0" x="243.0" y="550.0"></omgdc:Bounds>
