@@ -65,7 +65,6 @@ public class testApiGIS implements TaskListener {
 
      //   runtimeService.setVariable(execution.getProcessInstanceId(), "name_of_Activiti_var", "value_of_Activiti_var");
 
-
         //**************************************************
 
         HttpRequests http = new HttpRequests();
@@ -82,7 +81,6 @@ public class testApiGIS implements TaskListener {
             e.printStackTrace();
         }
 
-        // http://stackoverflow.com/questions/26190851/get-single-field-from-json-using-jackson
         ObjectNode node = null;
         try {
             node = mapper.readValue(tokenResult, ObjectNode.class);
@@ -92,7 +90,7 @@ public class testApiGIS implements TaskListener {
         String token = node.get("token").asText();
         String refreshToken = node.get("refresh_token").asText();
 
-        //System.out.println("Got Token: " + token);
+        System.out.println("Got Token: " + token);
         System.out.println("Refresh Token: " + refreshToken);
 
         // Reuse Auth results
@@ -113,7 +111,6 @@ public class testApiGIS implements TaskListener {
             e.printStackTrace();
         }
 
-
         JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, StreetDto.class);
         List<StreetDto> streets = null;
         try {
@@ -121,10 +118,6 @@ public class testApiGIS implements TaskListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-       // System.out.println(streets.get(0).getId());
-
-        //System.out.println("\nGET street result: " + streetResult);
 ///
         System.out.println("\nTesting 3 - Send Http POST message");
 
@@ -132,12 +125,6 @@ public class testApiGIS implements TaskListener {
 
         String postParams = "msg=" + streetResult; //!!!!!!!!!!!!
 
-        for (StreetDto dto : streets ) {
-            //  postParams += "{" + dto.getId() + ",OK}";
-          //  postParams += dto.toString();
-        }
-
-        //postParams = postParams.substring(0,postParams.length() - 1);
         System.out.println(postParams);
 
         //POST with full info
@@ -149,47 +136,8 @@ public class testApiGIS implements TaskListener {
             e.printStackTrace();
         }
 
-
         System.out.println("\nPOST result is: " + postResult);
 
-
-
-
-
-        /*
-        1) GET:
-(получение временного токена по месячному)
-http://212.26.131.154:86/api/token/refresh?refresh_token=277be326eef77fdf1b58c474a3af62eccdbb1fc788a38ba0779c78c54cea6d0a4a4c372af8500c057c56a813b38960365ab956d1cd43720a5c3ee0656863364f
-Результат:
-{
-  "token": "<<тут был токен>>",
-  "refresh_token": "<<тут пришел refresh токен, временный>>"
-}
-
-POST:
-http://212.26.131.154:86/api/msg.json
-ответ: "OK"
-
-GET:
-http://212.26.131.154:86/api/search.json?s=kor&n=1  (поиск по улице, содержащей 'kor' и номеру '1')
-с указанием в Header полученного временного токена,
-ответ:
-[
-  {
-    "name_en": "Sikorskoho Ihoria Aviakonstruktora",
-    "addrNumber": "1",
-    "id": 8213
-  }
-]
-        LOG.info("Test GIS API ");
-        if (nCountOfGroups == 1) {
-            LOG.info("Set into " + resultField_Group + " value " + prefix);
-            runtimeService.setVariable(execution.getProcessInstanceId(), resultField_Group, prefix);
-        } else {
-            LOG.warn("Групи " + prefix + " не існує, або їх декілька");
-            throw new ActivitiIllegalArgumentException("Вказаної групи не існує, або їх декілька");
-        }
-*/
     }
 
 }
