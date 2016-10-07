@@ -14,7 +14,6 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" default="false" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="7. Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника" activiti:candidateGroups="kyiv_dabi_contr_deputy_boss">
@@ -85,18 +84,20 @@
           <activiti:value id="sEnumDecision_yes" name="Рішення прийнято"></activiti:value>
           <activiti:value id="sEnumDecision_no" name="Рішення не прийнято"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sOpenGate" name="Перевірка закінчення усього циклу тасків" default="true" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_9]]></activiti:expression>
+        <activiti:taskListener event="complete" delegateExpression="${setCheckVar}">
+          <activiti:field name="paramName">
+            <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->
+          <activiti:field name="paramVal">
+            <activiti:expression><![CDATA[true]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
@@ -669,22 +670,22 @@
         <activiti:formProperty id="sOrderSchedule" name="Наказ" type="string"></activiti:formProperty>
         <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sControlOrganizationName" name="Найменування органу державного архітектурно-будівельного контролю (місцезнаходження, телефон, електронна адреса)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string"  required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string"  required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileDirection" name="Направлення" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asNumberOfPersons" name="Кількість осіб, які здійснюють перевірку" type="enum" required="true">
           <activiti:value id="sEnumPersons_1" name="1"></activiti:value>
           <activiti:value id="sEnumPersons_2" name="2"></activiti:value>
           <activiti:value id="sEnumPersons_3" name="3"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string"  required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Місцезнаходження об’єкту, на якому необхідно здійснити перевірку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sOrderUnscheduled" name="На підставі наказу або розпорядження (Найменування органу державного архітектурно-будівельного контролю, дата та номер наказу)" type="string"  required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBaseControl" name="Підстава" type="string"  required="true"></activiti:formProperty>
-        <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року"  required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOrderUnscheduled" name="На підставі наказу або розпорядження (Найменування органу державного архітектурно-будівельного контролю, дата та номер наказу)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBaseControl" name="Підстава" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -704,11 +705,6 @@
             <activiti:expression><![CDATA[Неможливо опрацювати задачу. Будь ласка, зачекайте інформацію про об'єкт від співробітника відділу дозвільних документів.]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
-          <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener/!-->
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
@@ -890,7 +886,7 @@
         <activiti:formProperty id="sOffenses_9" name="Правопорушення 9" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffenses_10" name="Правопорушення 10" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPersonAdministrativeResponsibility" name="ПІБ особи, яка притягається до адміністративної відповідальності" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateOfBirthResponsibility" name="Дата народження" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sDateOfBirthResponsibility" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfBirthResponsibility" name="Місце народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfLiveResponsibility" name="Місце проживання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfWorkResponsibility" name="Місце роботи (навчання)" type="string"></activiti:formProperty>
@@ -1026,7 +1022,6 @@
     <sequenceFlow id="flow41" sourceRef="parallelgateway5" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="parallelgateway5" targetRef="usertask14"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="parallelgateway5" targetRef="usertask15"></sequenceFlow>
-
     <parallelGateway id="parallelgateway6" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow45" sourceRef="usertask16" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="usertask15" targetRef="parallelgateway6"></sequenceFlow>
@@ -1087,6 +1082,14 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${setCheckVar}">
+          <activiti:field name="paramName">
+            <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="paramVal">
+            <activiti:expression><![CDATA[false]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1222,16 +1225,18 @@
         <omgdi:waypoint x="70.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="519.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="567.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="466.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="519.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="266.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="266.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="772.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="840.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="771.0" y="266.0"></omgdi:waypoint>
@@ -1239,7 +1244,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="1011.0" y="266.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1088.0" y="222.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1188.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1188.0" y="222.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="1377.0" y="237.0"></omgdi:waypoint>
@@ -1326,20 +1332,21 @@
         <omgdi:waypoint x="399.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="1108.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1138.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1208.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="1011.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1087.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="990.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="1269.0" y="203.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1325.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1121.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1188.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1188.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="399.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="499.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="379.0" y="222.0"></omgdi:waypoint>
@@ -1349,13 +1356,9 @@
         <omgdi:waypoint x="379.0" y="222.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="379.0" y="222.0"></omgdi:waypoint>
-        <omgdi:waypoint x="518.0" y="340.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="518.0" y="437.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="541.0"></omgdi:waypoint>
+        <omgdi:waypoint x="601.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="380.0" y="437.0"></omgdi:waypoint>
@@ -1385,7 +1388,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association2" id="BPMNEdge_association2">
         <omgdi:waypoint x="1089.0" y="80.0"></omgdi:waypoint>
-        <omgdi:waypoint x="925.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="885.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
