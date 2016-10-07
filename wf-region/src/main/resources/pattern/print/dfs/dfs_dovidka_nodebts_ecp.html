@@ -6,37 +6,14 @@
 
     <style type="text/css">
       /* <![CDATA[ */
-      .under_field { /* Блок с подписью */
+      body {
+        font-size: 14pt;
+        font-family: "Times New Roman";
+        padding: 1cm 1.5cm 1cm 2.5cm;
+        width: 21cm;
+        min-height: 100%;
+        height: 100%;
       }
-
-      .under_field.notb { /*без подчеркивания*/
-        border-bottom: 0px solid black;
-      }
-
-      /*
-      .under_field>spam.bold {
-      padding: 0 10px 0 0;
-      font-weight: normal;
-      background: white;
-      display: inline-block;
-      position: relative;
-      left: 0;
-      font-style: normal;
-      bottom: -1;
-      background-color: white;
-    }*/
-
-      /*если надо подчеркнуть*/
-      .under_field>spam.under { 
-        padding: 0 10px;
-        text-decoration: none; 
-      }
-
-      /*текст снизу*/
-      .under_field>span.textUnd { 
-        color: #606060;
-        font-size: 10pt;
-      }	
 
       table {
         align-self: center;
@@ -45,8 +22,7 @@
 
 
       td.bb {
-        border: 1px solid black;
-        border-bottom: 1px solid black;
+        border: 1px solid #000;
       }
 
       td.notb {
@@ -65,28 +41,25 @@
 
 
       th.t, td.t{
-        border-top: 1px solid #F00;
+        border-top: 1px solid #000;
       }
 
       th.r, td.r{
-        border-right: 1px solid #F00;
+        border-right: 1px solid #000;
       }
 
-      th.b, td.b{
-        border-bottom: 1px solid #F00;
+      th.bott, td.bott{
+        border-bottom: 1px solid #000;
       }
 
       th.l, td.l{
-        border-left: 1px solid #F00;
+        border-left: 1px solid #000;
       }
 
 
-padding-left:12cm;
-
-
       .smallText {
-        font-size: 10pt;  
-        line-height: 1.1;
+        color: #606060;
+        font-size: 10pt;
       }
 
 
@@ -186,7 +159,7 @@ padding-left:12cm;
             </td>
           </tr>
           <tr>
-            <td class="notb bott">
+            <td class="bott">
               [sNameOrgan]
             </td>
           </tr>
@@ -205,7 +178,7 @@ padding-left:12cm;
           </tr>
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="b">
+            <td class="bott">
               <span id="spanFisName">[bankIdlastName] [bankIdlastName] [bankIdlastName]</span>            
               <span id="spanUrName">[sNameUr]</span>
             </td>
@@ -220,7 +193,7 @@ padding-left:12cm;
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="b">
+            <td class="bott">
               Поштова адреса:
               <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
               <span id="spanAdressFactual">[sAddressFactual]</span>
@@ -230,14 +203,14 @@ padding-left:12cm;
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="b">
+            <td class="bott">
               Електронна адреса: [email]
             </td>
           </tr>
 
           <tr><td>&#160;<br></td></tr>
           <tr>
-            <td class="b">
+            <td class="bott">
               Контактний телефон: [phone]
             </td>
           </tr>
@@ -254,17 +227,34 @@ padding-left:12cm;
       <div class="ta-j">Прошу видати довідку про відсутність 
         заборгованості з податків, зборів, платежів відповідно до вимог
       </div>
-        <u>[sNameDoc] № [sNumDoc] від [dDoc] року</u>
+      
 
-
+      <table class="w100p">
+	      <tr>
+            <td class="bott">
+		      	[sNameDoc] № [sNumDoc] від [dDoc] року
+		    </td>
+	      </tr>
+      </table>
+      
       <div class="ta-j">
         для надання до
       </div>
-      <div class="ta-j w100p">
-        <u>[sNameCompany]</u> 
-        <span>(найменування підприємства (установи, організації), 
-          до якого (якої) буде подано довідку)</span>
-      </div>
+
+      <table class="w100p">
+	      <tr>
+            <td class="bott">
+		      	[sNameCompany]
+		    </td>
+	      </tr>
+	      <tr>
+            <td class="smalltext">
+		      	(найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
+		    </td>
+	      </tr>
+      </table>      
+      
+
       <div class="ta-j">Довідку прошу видати в 
           <u><span id="spanTypeEl">електронному</span>/<span id="spanTypePaper">паперовому</span> </u>
           <span>(необхідне позначити)</span> вигляді.
