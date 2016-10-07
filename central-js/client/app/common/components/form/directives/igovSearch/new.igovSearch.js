@@ -20,6 +20,8 @@ angular.module('app')
           $scope.localityList = new LocalityListFactory();
           $scope.operators = [];
           $scope.check = false;
+          $scope.mainSearchView = false;
+          $scope.catalogCounts = {};
 
           // set defaults
           var defaultSettings = {
@@ -70,6 +72,14 @@ angular.module('app')
             }
             messageBusService.publish('catalog:update', ctlg);
           }
+          // получаем к-во услуг готовых/скоро/в работе
+          function getCounts () {
+            CatalogService.getModeSpecificServices(null, "", false, 'business').then(function (res) {
+              $scope.catalogCounts = CatalogService.getCatalogCounts(res)
+            })
+          }
+          getCounts ();
+
           $scope.search = function() {
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
@@ -114,12 +124,36 @@ angular.module('app')
             if($scope.sSearch.length >= 3) {
               // после реализации тегов в бизнесе - удалить.
               $rootScope.busSpinner = true;
-              $scope.search();
+              $scope.overallSearch();
+              $rootScope.mainSearchView = true;
               $rootScope.valid = true;
             } else if($rootScope.valid) {
+              $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
+              $rootScope.mainSearchView = false;
               $scope.search();
+              $rootScope.resultsAreLoading = false;
             }
+          };
+
+          // глобальный поиск по Гражд. и Бизн.
+          $scope.overallSearch = function () {
+            $rootScope.resultsAreLoading = true;
+            if (sID_Order_RegExp.test($scope.sSearch)) return null;
+            $rootScope.minSearchLength = $scope.sSearch.length < 3;
+            var bShowEmptyFolders = AdminService.isAdmin();
+            $scope.spinner = true;
+            messageBusService.publish('catalog:updatePending');
+            $scope.catalog = [];
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, 'business').then(function (result) {
+              fullCatalog = result;
+              if ($scope.bShowExtSearch || $scope.getOrgan) {
+                $scope.filterByExtSearch();
+              } else {
+                updateCatalog(angular.copy(fullCatalog));
+              }
+              $rootScope.resultsAreLoading = false;
+            });
           };
           $scope.searchOrder = function () {
             if(sID_Order_Full_RegExp.test($scope.sSearch)) {
@@ -136,7 +170,7 @@ angular.module('app')
             $scope.check = true;
             // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
             // убрать когда теги в бизнесе будут готовы.
-            if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
+            if($state.is("index.oldbusiness") || $state.is("index.subcategory") || $rootScope.mainSearchView) {
               var filterCriteria = {};
               var selectedStatus;
               if($scope.selectedStatus == 0) {
@@ -199,12 +233,12 @@ angular.module('app')
           $scope.onExtSearchClick = function() {
             $scope.bShowExtSearch = !$scope.bShowExtSearch;
             if ($scope.bShowExtSearch) {
-              $scope.search();
+              $scope.searching();
             }
           };
           $scope.clear = function() {
             restoreSettings(defaultSettings);
-            $scope.search();
+            $scope.searching();
           };
           $scope.loadRegionList = function(search) {
             return $scope.regionList.load(null, search);

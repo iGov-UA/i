@@ -149,11 +149,14 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $scope.runComments = function () {
     angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
-  var situation = $scope.category.aServiceTag_Child[0].sName_UA;
-  var tag = $scope.category.oServiceTag_Root.sName_UA;
-  var title = situation + ' / ' + tag;
-  TitleChangeService.setTitle(title);
+  try {
+    var situation = $scope.category.aServiceTag_Child[0].sName_UA;
+    var tag = $scope.category.oServiceTag_Root.sName_UA;
+    var title = situation + ' / ' + tag;
+    TitleChangeService.setTitle(title);
+  } catch (e){
 
+  }
   // якорь для содержания "жизненной ситуации"
   $scope.gotoAnchor = function (x) {
     var newHash = 'anchor' + x;
