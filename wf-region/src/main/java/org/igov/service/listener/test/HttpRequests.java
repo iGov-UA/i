@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//  https://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
-
 public class HttpRequests {
 
     private final String USER_AGENT = "Mozilla/5.0";

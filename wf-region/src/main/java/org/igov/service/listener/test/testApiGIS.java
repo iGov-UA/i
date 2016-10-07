@@ -90,7 +90,7 @@ public class testApiGIS implements TaskListener {
         String token = node.get("token").asText();
         String refreshToken = node.get("refresh_token").asText();
 
-        //System.out.println("Got Token: " + token);
+        System.out.println("Got Token: " + token);
         System.out.println("Refresh Token: " + refreshToken);
 
         // Reuse Auth results
