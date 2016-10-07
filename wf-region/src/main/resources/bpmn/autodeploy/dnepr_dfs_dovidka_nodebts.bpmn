@@ -33,8 +33,36 @@
 
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
 
+        <activiti:formProperty id="info_1" name="Відповідно до вимог якого нормативно-правового акта необхідно надати довідку" type="label" default="__________________________________"></activiti:formProperty>
+        <activiti:formProperty id="sNameDoc" name="Назва документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumDoc" name="Номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDoc" name="Дата прийняття документу" type="date" required="true" default="25/11/2015"></activiti:formProperty>
+
+		<activiti:formProperty id="asLawCourt" name="Чи знаходитись ви в процесі адміністративного (судового) оскарження суми грошового зобов’язання" default="no" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+
+
+<!--  Вариант результата начало ->
+		<activiti:formProperty id="asTypeRef" name="Довідку прошу видати в" default="paper" type="enum" required="true">
+          <activiti:value id="paper" name="паперовому вигляді"></activiti:value>
+          <activiti:value id="el" name="електронному вигляді"></activiti:value>
+        </activiti:formProperty>
+<!-  Вариант результата конец  -->  
+
+<!--  Бланк для скачивания начало ->
         <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B-f8gnAShc39MXpxS3NzeFdHT1U/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
+<!-  Бланк для скачивания конец  -->
+
+
+<!--  Вставка автоподписания ЭЦП начало -->
+	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
+<!--  Вставка автоподписания ЭЦП конец  -->
+
+
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerkNodebts" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -139,6 +167,12 @@
         
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
 
+
+
+
+
+
+
         <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
@@ -146,6 +180,10 @@
         <activiti:formProperty id="comment_1" name="Укажіть причину відмови" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_user.json')}"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_dovidka_nodebts.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
