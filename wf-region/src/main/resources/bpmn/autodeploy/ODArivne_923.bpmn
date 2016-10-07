@@ -41,6 +41,20 @@
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+        var ln = execution.getVariable('bankIdlastName')
+      	var fn = execution.getVariable('bankIdfirstName')
+      	var mn = execution.getVariable('bankIdmiddleName')
+      	var un = execution.getVariable('sSubzvern')
+      	      	
+      	var ur = 'юридична особа з назвою ' + un + ', яку представляє ' + ln + ' ' + fn + ' ' + mn
+      	var fiz = 'фізична особа ' + ln + ' ' + fn + ' ' + mn
+      	
+      	if(execution.getVariable('asOsoba') == 'sEnamUr'){execution.setVariable('sPovne_Imja', ur)}
+        if(execution.getVariable('asOsoba') == 'sEnamFiz'){execution.setVariable('sPovne_Imja', fiz)}
+      </script>
+    </scriptTask>
     <serviceTask id="servicetask2" name="Лист в ОДА" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -279,12 +293,6 @@ ${sWorkTime}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVudacha == 'sEnamVud_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-        var sum ='0.53'
-      	
-      </script>
-    </scriptTask>
     <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ODArivne_923">
