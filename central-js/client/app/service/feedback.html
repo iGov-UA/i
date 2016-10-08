@@ -1,15 +1,22 @@
-<div class="row feedback feedback-clearfix">
+<div class="row feedback feedback-clearfix" ng-form name="feedbackForm" >
 
   <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
     <div class="row container" ng-if="sID_Token">
       <div class="col-md-6 col-sm-6 feedback-padding0">
 
-        <div class="feedback-assessment">
-          <div class="feedback-assessment-header feedback-font14">Ваша оцінка</div>
-          <div star-rating showonly="feedback.exist" class="feedback-assessment-body fa-custom-edit" ng-model="feedback.rating" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
+        <div class="feedback-assessment form-group" ng-class="{'has-error': !feedback.rating && submitted}">
+          <div class="feedback-assessment-header feedback-font14 control-label">Ваша оцінка</div>
+          <div star-rating
+               showonly="!!feedback.exist"
+               class="feedback-assessment-body fa-custom-edit has-error"
+               name="assessment"
+               ng-model="feedback.rating" max="5"
+               on-rating-select="feedback.rateFunction(rating)"
+               ></div>
+          <p class="help-block feedback-font14"
+             ng-show="!feedback.rating && submitted">Оцініть, будь ласка</p>
         </div>
-
         <div>
           <span class="feedback-font14">Ваш вiдгук</span>
         </div>
