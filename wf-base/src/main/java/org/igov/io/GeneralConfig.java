@@ -126,6 +126,8 @@ public class GeneralConfig {
 
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
+    @Value("${general.LiqPay.bTest}")
+    private String sbTest_LiqPay;
 
     @Value("${general.queue.cherg.sURL}")
     private String queueManagementSystemAddress;
@@ -303,6 +305,18 @@ public class GeneralConfig {
     public String getURL_CheckOut_LiqPay() {
         return sURL_CheckOut_LiqPay;
     }
+    public boolean isTest_LiqPay() {
+        boolean b = true;
+        try {
+            b = (sbTest_LiqPay == null ? b : Boolean.valueOf(sbTest_LiqPay));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest_LiqPay={})", oException.getMessage(), sbTest_LiqPay);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
+    }
+    
 
     
     public Integer getServerId(Integer nID_Server) {

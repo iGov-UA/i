@@ -276,7 +276,13 @@ exports.getAttachmentContentTable = function (req, res) {
     }
   };
   activiti.get(options, function (error, statusCode, result) {
-    error ? res.send(error) : res.status(statusCode).json(result);
+    if(error) {
+      res.send(error)
+    } else if (statusCode == 500) {
+      console.log(statusCode, "isn't table attachment")
+    }else {
+      res.status(statusCode).json(result);
+    }
   });
 };
 
@@ -438,7 +444,15 @@ exports.getPatternFile = function (req, res) {
       'sPathFile': req.query.sPathFile
     }
   };
-  activiti.filedownload(req, res, options);
+
+  options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsIs=pattern\//, '');
+  if(options.query.sPathFile.indexOf('sPrintFormFileAsPDF=pattern/') == 0){
+    options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\//, '');
+    activiti.filedownloadPDF(req, res, options);
+  } else {
+    activiti.filedownload(req, res, options);
+  }
+
 };
 
 exports.upload_content_as_attachment = function (req, res) {

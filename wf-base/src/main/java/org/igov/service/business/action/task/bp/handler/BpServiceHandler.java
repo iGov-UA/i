@@ -102,6 +102,15 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
+            variables.put("clfio", processVariables.get("clfio"));
+            variables.put("region", processVariables.get("region"));
+            variables.put("info", processVariables.get("info"));
+            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            variables.put("sBody", processVariables.get("sBody"));
+            variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
+            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
+            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -116,6 +125,7 @@ public class BpServiceHandler {
                 LOG.debug("FAIL:", oException);
 
             }
+
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         String feedbackProcessId = null;
@@ -158,6 +168,15 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
+            variables.put("clfio", processVariables.get("clfio"));
+            variables.put("region", processVariables.get("region"));
+            variables.put("info", processVariables.get("info"));
+            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            variables.put("sBody", processVariables.get("sBody"));
+            variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
+            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
+            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
@@ -181,6 +200,7 @@ public class BpServiceHandler {
                 LOG.debug("FAIL:", oException);
 
             }
+
 
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);

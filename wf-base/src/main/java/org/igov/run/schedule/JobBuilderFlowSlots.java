@@ -14,6 +14,7 @@ import org.igov.model.flow.Flow_ServiceData;
 import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.FlowSlotVO;
+import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 
 /**
@@ -59,9 +60,6 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
     
-    @Autowired
-    private Flow_ServiceData flow_ServiceData;
-
     //Maxline: TODO исправить потом на получение flowServiceData с признаком auto в названии
     private static final long[] A_TESTS_ID_FLOW_SERVICE_DATA = {1L, 12L};
 
@@ -69,13 +67,14 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
-
+               
+        
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
 
         List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
         for (Flow_ServiceData flow : aFlowServiceData) {
-            if (flow.getsID_BP().endsWith(SUFFIX_AUTO)) {
+            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
                 LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
                 checkAndBuildFlowSlots_new(flow, oDateStart);
             }
@@ -99,8 +98,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
             LOG.info("11111dateStart: "+dateStart);
-            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
-            dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
+            dateEnd = oDateStart.plusDays((int) (nStartDay + DAYS_IN_HALF_YEAR));
             LOG.info("222222 dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
@@ -130,8 +128,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-            Long COUNT_DAYS = flow_ServiceData.getnCountAutoGenerate();
-            dateEnd = oDateStart.plusDays((int) (nStartDay + COUNT_DAYS));
+            Long COUNT_DAYS = flow.getnCountAutoGenerate();
+            dateEnd = oDateStart.plusDays((int) (COUNT_DAYS + nStartDay));
             LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,

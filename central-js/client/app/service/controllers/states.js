@@ -19,8 +19,12 @@ angular.module('app')
       $scope.spinner = false;
     } else {
       CatalogService.getServiceBusiness(sServiceName).then(function (res) {
-        var scat = res[0].aSubcategory[0].sName;
-        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        if(res.length !==0 && res[0].aSubcategory) {
+          var scat = res[0].aSubcategory[0].sName;
+          TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        } else {
+          TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+        }
         $scope.spinner = false;
       })
     }
@@ -152,11 +156,14 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $scope.runComments = function () {
     angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
-  var situation = $scope.category.aServiceTag_Child[0].sName_UA;
-  var tag = $scope.category.oServiceTag_Root.sName_UA;
-  var title = situation + ' / ' + tag;
-  TitleChangeService.setTitle(title);
+  try {
+    var situation = $scope.category.aServiceTag_Child[0].sName_UA;
+    var tag = $scope.category.oServiceTag_Root.sName_UA;
+    var title = situation + ' / ' + tag;
+    TitleChangeService.setTitle(title);
+  } catch (e){
 
+  }
   // якорь для содержания "жизненной ситуации"
   $scope.gotoAnchor = function (x) {
     var newHash = 'anchor' + x;
