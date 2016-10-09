@@ -75,7 +75,6 @@
         $scope.feedback.messageList = _.sortBy(response.data, function (o) {
           return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
         });
-        console.log('$..................$scope.feedback.messageList:', $scope.feedback.messageList);
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
           return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
@@ -145,13 +144,13 @@
         'sEmployeeFIO': sEmployeeFIO
       };
 
-      FeedbackService.postFeedbackForService(feedbackParams).finally(function () {
+      FeedbackService.postFeedbackForService(feedbackParams)
+      .finally(function () {
         refresh();
-      });
-
-      $state.go('index.service.feedback', {
-        nID: null,
-        sID_Token: null
+        $state.go('index.service.feedback', {
+          nID: null,
+          sID_Token: null
+        });
       });
     }
 
@@ -183,11 +182,9 @@
 
     function pushError(sErrorText) {
       $scope.messageError = true;
+
+      //TODO Maybe it worth to use ErrorsFactory.push({type: "danger",text:  sErrorText}) here
       ErrorsFactory.logWarn({sBody: sErrorText});
-      /*ErrorsFactory.push({
-       type: "danger",
-       text:  sErrorText
-       });*/
     }
 
     function relativeTime(dateStr) {
