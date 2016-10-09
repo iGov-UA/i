@@ -568,7 +568,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                         //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                         sAuthorFIO = bankIdfirstName + " " + bankIdmiddleName;
-                        LOG.info("(sAuthorFIO={})", as[2]);
+                        LOG.info("(sAuthorFIO={})", sAuthorFIO);
                         
 			Long nID_Service = 0L;
 			try {
