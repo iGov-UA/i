@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -43,6 +44,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;

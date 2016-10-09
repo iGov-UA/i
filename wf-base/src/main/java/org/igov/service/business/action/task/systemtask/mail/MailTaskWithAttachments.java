@@ -14,6 +14,7 @@ import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 /**
  * @author BW
