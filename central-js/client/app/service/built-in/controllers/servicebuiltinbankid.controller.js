@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory) {
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig) {
 
       'use strict';
 
@@ -789,10 +789,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           });
           $scope.paramsBackup = null;
         }
-      };
-
-      $scope.insertSeparator = function(sPropertyId){
-        return FieldAttributesService.insertSeparators(sPropertyId);
       };
 
       // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
