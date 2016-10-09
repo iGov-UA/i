@@ -120,24 +120,30 @@ angular.module('app')
             });
           };
           $scope.searching = function () {
-            var isMainPage = $state.is('index') || $state.is('index.catalog') || $state.is("index.oldbusiness");
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length >= 3 && isMainPage) {
+            if($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
               // после реализации тегов в бизнесе - удалить.
               $rootScope.busSpinner = true;
               $scope.overallSearch();
               $rootScope.mainSearchView = true;
               $rootScope.valid = true;
-            } else if($scope.sSearch.length >= 3 && !isMainPage) {
+            } else if($scope.sSearch.length >= 3 && ($state.is("index") || $state.is("index.catalog"))) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainSearchView = true;
               $rootScope.busSpinner = true;
               $scope.search();
               $rootScope.valid = true;
+              $rootScope.resultsAreLoading = false;
             }else if($rootScope.valid) {
               $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
               $rootScope.mainSearchView = false;
               $scope.search();
               $rootScope.resultsAreLoading = false;
+            } else {
+              $rootScope.busSpinner = true;
+              $scope.search();
+              $rootScope.valid = true;
             }
           };
 
