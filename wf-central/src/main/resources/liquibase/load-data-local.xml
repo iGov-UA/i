@@ -14,7 +14,7 @@
         Если данные перезаливаются с помощью loadUpdateData, то надо иметь в виду, что оно не поддерживает
         удаление данных. Т.е. если вы удалите строки из csv, то они не удалятся после исполнения loadUpdateData.
         Именно по этому loadUpdateData постепенно заменяется связкой: очистить таблицу, и вызвать loadData.
-        
+
         Чтобы в процессе обновления данных не падали констрейнты, выполняется команда
         SET CONSTRAINTS ALL DEFERRED;
         Она означает, что все констрейнты надо проверять толкько при коммите транзакции, а коммит транзакции наступает
@@ -22,8 +22,10 @@
         в самом конце перед коммитом целостность должна быть восстановлена.
     -->
     <changeSet id="Update data" author="brunneng" runOnChange="true">
+
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
+
             DELETE FROM "Region";
             DELETE FROM "City";
             DELETE FROM "Category";
@@ -39,10 +41,11 @@
             DELETE FROM "SubjectOrganJoinTax";
             DELETE FROM "SubjectOrganJoin";
             DELETE FROM "ObjectCustoms";
-            DELETE FROM "Subject" where "nID" < 20000;
             DELETE FROM "SubjectAccount" where "nID" < 20000;
             DELETE FROM "SubjectContact" where "nID" < 20000;
+            DELETE FROM "Subject" where "nID" < 20000;
         ]]></sql>
+
 
         <loadData encoding="UTF-8" file="data/Subject.csv" tableName="Subject" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -419,7 +422,7 @@
             <column name="sID" type = "STRING" />
             <column name="sNote" type = "STRING" />
         </loadUpdateData>
-        
+
          <loadUpdateData tableName="ObjectPlace_UA" primaryKey="nID" encoding="UTF-8" file="data/ObjectPlace_UA.csv" separator=";" >
             <column name="nID" type = "NUMERIC" />
             <column name="sID" type = "STRING" />
