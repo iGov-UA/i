@@ -26,7 +26,7 @@
         <span ng-switch-default="processing">В обробці</span>
       </dt>
       <dd data-ng-repeat-end class="u39">
-        {{ event.oHistoryEvent_Service.sHead}}
+        <a href="{{getSearchHref('sID_Order', event.oHistoryEvent_Service.sID_Order)}}">{{ event.oHistoryEvent_Service.sHead}}</a>
         <div class="u41 hide-table">
           {{event.oHistoryEvent_Service.nID_StatusType == 13 ? '' : event.oHistoryEvent_Service.sName_UA_StatusType}}
           {{event.oHistoryEvent_Service.nID_StatusType !== 13 && event.oHistoryEvent_Service.sUserTaskName.length ? '-':''}}
