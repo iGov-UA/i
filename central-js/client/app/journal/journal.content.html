@@ -26,14 +26,12 @@
         <span ng-switch-default="processing">В обробці</span>
       </dt>
       <dd data-ng-repeat-end class="u39">
-        <a href="{{getSearchHref('sID_Order', event.oHistoryEvent_Service.sID_Order)}}">{{ event.oHistoryEvent_Service.sHead}}</a>
+        <a ng-if="!event.bGrouped" href="{{getSearchHref('sID_Order', event.oHistoryEvent_Service.sID_Order)}}">{{ event.oHistoryEvent_Service.sHead}}</a>
+        <span ng-if="event.bGrouped">{{ event.oHistoryEvent_Service.sHead}}</span>
         <div class="u41 hide-table">
           {{event.oHistoryEvent_Service.nID_StatusType == 13 ? '' : event.oHistoryEvent_Service.sName_UA_StatusType}}
           {{event.oHistoryEvent_Service.nID_StatusType !== 13 && event.oHistoryEvent_Service.sUserTaskName.length ? '-':''}}
           {{event.oHistoryEvent_Service.sUserTaskName}}
-        </div>
-        <div class="more" ng-if="!event.bGrouped">
-          <a href="{{getSearchHref('sID_Order', event.oHistoryEvent_Service.sID_Order)}}">Детальніше</a>
         </div>
       </dd>
     </dl>

@@ -192,14 +192,13 @@
         return;
       }
 
-      var result = ''
-        , date = $.trim(dateStr)
-        , parsedDate = new Date(date)
-        , minutes = parsedDate.getMinutes()
-        , time = parsedDate.getHours() + ':' + (minutes < 10 ? '0' + minutes : minutes)
-        , today = moment().startOf('day')
-        , releaseDate = moment(date)
-        , diffDays = today.diff(releaseDate, 'days', true);
+      var result = '',
+        date = $.trim(dateStr),
+        parsedDate = new Date(date),
+        time = parsedDate.getHours() + ':' + parsedDate.getMinutes(),
+        today = moment().startOf('day'),
+        releaseDate = moment(date),
+        diffDays = today.diff(releaseDate, 'days', true);
 
       if (diffDays < 0) {
         result = 'сьогодні ' + time;
