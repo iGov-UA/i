@@ -15,9 +15,9 @@
                   <a ui-sref="index.service.instruction({id: service.nID})">Як працює</a>
                 </li>
                 <li ui-sref-active="active"
-                    ng-hide="service.aFeedbacks.length == 0"
+                    ng-if="feedback.visible"
                     role="presentation">
-                  <a ui-sref="index.service.feedback({id: service.nID})">Відгуки</a>
+                    <a ui-sref="index.service.feedback({id: service.nID})">Відгуки</a>
                 </li>
                 <li ui-sref-active="active"
                     ng-if="service.sLaw.trim() || (false && bAdmin)"

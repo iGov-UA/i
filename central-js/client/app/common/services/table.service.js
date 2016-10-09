@@ -59,6 +59,9 @@ angular.module('app')
                   }
                 }
               }
+              if (item.nWidth && item.nWidth.indexOf('%') === -1) {
+                if(item.nWidth.indexOf('px') === -1) item.nWidth = item.nWidth + 'px';
+              }
             })
           })
         }

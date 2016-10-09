@@ -13,7 +13,8 @@ angular.module('app').controller('PlaceController',
             ServiceService,
             isLoggedIn,
             regions,
-            service) {
+            service,
+            feedback) {
 
     var self = this;
     var oService = ServiceService.oService;
@@ -25,6 +26,9 @@ angular.module('app').controller('PlaceController',
     $scope.$location = $location;
     $scope.bAdmin = AdminService.isAdmin();
     $scope.state = $state.get($state.current.name);
+
+    //TODO should be removed after refactoring for single controller for app/service/index.html
+    $scope.feedback = feedback;
 
     function getBuiltInBankIDStateParams() {
       return {
