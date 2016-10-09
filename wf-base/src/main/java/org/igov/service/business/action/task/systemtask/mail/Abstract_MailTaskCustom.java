@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -492,82 +493,86 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			DelegateExecution execution, Long nID_Order) throws Exception {
 
 		StringBuffer outputTextBuffer = new StringBuffer();
-		Matcher matcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
-		while (matcher.find()) {
-			String tag_sURL_FEEDBACK_MESSAGE = matcher.group();
-			String prefix = "";
-			Matcher matcherPrefix = TAG_PATTERN_PREFIX
-					.matcher(tag_sURL_FEEDBACK_MESSAGE);
+		Matcher oMatcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
+		while (oMatcher.find()) {
+			//String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
 			List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
 			Map<String, FormProperty> mProperty = new HashMap<>();
 			loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
-			FormProperty formProperty = null;
-			if (matcherPrefix.find()) {
-				prefix = matcherPrefix.group();
-				LOG.info("Found double bracket tag group: {}",
-						matcherPrefix.group());
-				String form_ID = StringUtils.replace(prefix, "{[", "");
-				form_ID = StringUtils.replace(form_ID, "]}", "");
-				LOG.info("(form_ID={})", form_ID);
-				formProperty = mProperty.get(form_ID);
-			}
-			String URL_FEEDBACK_MESSAGE = generalConfig.getSelfHostCentral()
-					+ "/wf/service/subject/message/setFeedbackExternal";
 
-			String sURI = ToolWeb.deleteContextFromURL(URL_FEEDBACK_MESSAGE);
-			String sMail = "";
-			String bankIdlastName = "";
-			String bankIdfirstName = "";
-			String bankIdmiddleName = "";
-			String sAuthorFIO = "";
-			String sAuthorFIO_Original = "";
-			if (formProperty != null) {
-				String id = formProperty.getId();
-				if ("email".equals(id)) {
-					sMail = formProperty.getValue();
-				}
-				if ("bankIdlastName".equals(id)) {
-					bankIdlastName = formProperty.getValue();
-				}
-				if ("bankIdfirstName".equals(id)) {
-					bankIdfirstName = formProperty.getValue();
-				}
-				if ("bankIdmiddleName".equals(id)) {
-					bankIdmiddleName = formProperty.getValue();
-				}
-				if ("clFIO".equals(id)) {
-					sAuthorFIO_Original = formProperty.getValue();
-                                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
-                                        
-				}
-			}
+                        String sAuthorMail = "";
+                        String sAuthorLastName = "";
+                        String sAuthorFirstName = "";
+                        String sAuthorMiddleName = "";
+                        String sAuthorFIO = "";
+                        String sAuthorFIO_Original = "";
+                        
+      			for (Entry<String,FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
+                            FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
+                        
+                            /*FormProperty oFormProperty = null;                                
+                            String sPrefix = "";
+                            Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
+                            if (oMatcherPrefix.find()) {
+                                    sPrefix = oMatcherPrefix.group();
+                                    LOG.info("Found double bracket tag group: {}",
+                                                    oMatcherPrefix.group());
+                                    String form_ID = StringUtils.replace(sPrefix, "{[", "");
+                                    form_ID = StringUtils.replace(form_ID, "]}", "");
+                                    LOG.info("(form_ID={})", form_ID);
+                                    oFormProperty = mProperty.get(form_ID);
+                            }*/
+
+                            if (oFormProperty != null) {
+                                    String id = oFormProperty.getId();
+                                    LOG.info("(id={})", id);
+                                    if ("email".equals(id)) {
+                                            sAuthorMail = oFormProperty.getValue();
+                                    }
+                                    if ("bankIdlastName".equals(id)) {
+                                            sAuthorLastName = oFormProperty.getValue();
+                                    }
+                                    if ("bankIdfirstName".equals(id)) {
+                                            sAuthorFirstName = oFormProperty.getValue();
+                                    }
+                                    if ("bankIdmiddleName".equals(id)) {
+                                            sAuthorMiddleName = oFormProperty.getValue();
+                                    }
+                                    if ("clFIO".equals(id)) {
+                                            sAuthorFIO_Original = oFormProperty.getValue();
+                                            LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
+
+                                    }
+                            }
+                        }
+                        
                         
                         if(sAuthorFIO_Original!=null&&!"".equals(sAuthorFIO_Original.trim())){
                             String[] as = sAuthorFIO_Original.split("\\ ");
                             LOG.info("(as={})", as);
-                            if(as.length>0 && (bankIdlastName==null || "".equals(bankIdlastName.trim()))){
-                                bankIdlastName = as[0];
+                            if(as.length>0 && (sAuthorLastName==null || "".equals(sAuthorLastName.trim()))){
+                                sAuthorLastName = as[0];
                                 LOG.info("(as[0]={})", as[0]);
                             }
-                            if(as.length>1 && (bankIdfirstName==null || "".equals(bankIdfirstName.trim()))){
-                                bankIdfirstName = as[1];
+                            if(as.length>1 && (sAuthorFirstName==null || "".equals(sAuthorFirstName.trim()))){
+                                sAuthorFirstName = as[1];
                                 LOG.info("(as[1]={})", as[1]);
                             }
-                            if(as.length>2 && (bankIdmiddleName==null || "".equals(bankIdmiddleName.trim()))){
-                                bankIdmiddleName = as[2];
+                            if(as.length>2 && (sAuthorMiddleName==null || "".equals(sAuthorMiddleName.trim()))){
+                                sAuthorMiddleName = as[2];
                                 LOG.info("(as[2]={})", as[2]);
                             }
                                 //sAuthorFIO_Original = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                             //sAuthorFIO_Original=sAuthorFIO_Original.substring(0,1)+".";
                         }
-                        if(bankIdfirstName!=null&&!"".equals(bankIdfirstName.trim())){
+                        if(sAuthorFirstName!=null&&!"".equals(sAuthorFirstName.trim())){
                             //bankIdfirstName=bankIdfirstName.substring(0,1)+".";
                         }
-                        if(bankIdmiddleName!=null&&!"".equals(bankIdmiddleName.trim())){
+                        if(sAuthorMiddleName!=null&&!"".equals(sAuthorMiddleName.trim())){
                             //bankIdmiddleName=bankIdmiddleName.substring(0,1)+".";
                         }
                         //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
-                        sAuthorFIO = bankIdfirstName + " " + bankIdmiddleName;
+                        sAuthorFIO = sAuthorFirstName + " " + sAuthorMiddleName;
                         LOG.info("(sAuthorFIO={})", sAuthorFIO);
                         
 			Long nID_Service = 0L;
@@ -581,12 +586,15 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 				LOG.debug("FAIL:", oException);
 			}
 
+			String sURL_FEEDBACK_MESSAGE = generalConfig.getSelfHostCentral()
+					+ "/wf/service/subject/message/setFeedbackExternal";
+			String sURI = ToolWeb.deleteContextFromURL(sURL_FEEDBACK_MESSAGE);                        
 			String sQueryParamPattern = "?"
 					+ "&sID_Source=" + "self"
 					+ "&sAuthorFIO=" + sAuthorFIO
-					+ "&sMail=" + sMail
+					+ "&sMail=" + sAuthorMail
 					+ "&sBody=" + ""
-					+ "&nID_Rate="+ prefix.replaceAll("_", "")
+					+ "&nID_Rate="+ sPrefix.replaceAll("_", "")
 					+ "&nID_Service="+nID_Service
 					+ "&bSelf="+ true;
 
@@ -594,7 +602,6 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			if (nID_Subject != null) {
 				sQueryParam = sQueryParam + "&nID_Subject=" + nID_Subject;
 			}
-                        
 			String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
 			if (sID_Order != null) {
 				sQueryParam = sQueryParam + "&sID_Order=" + sID_Order;
@@ -608,65 +615,61 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			String sAccessKey = accessCover.getAccessKeyCentral(sURI
 					+ sQueryParam, AccessContract.RequestAndLoginUnlimited);
 //					+ sQueryParam, AccessContract.RequestAndLogin);
-			String replacemet = URL_FEEDBACK_MESSAGE + sQueryParam + "&"
+			String sReplacemet = sURL_FEEDBACK_MESSAGE + sQueryParam + "&"
 					+ AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-			LOG.info("(replacemet URL={}) ", replacemet);
-			matcher.appendReplacement(outputTextBuffer, replacemet);
+			LOG.info("(replacemet URL={}) ", sReplacemet);
+			oMatcher.appendReplacement(outputTextBuffer, sReplacemet);
 		}
-		return matcher.appendTail(outputTextBuffer).toString();
+		return oMatcher.appendTail(outputTextBuffer).toString();
 	}
 
-	private void loadPropertiesFromTasks(DelegateExecution execution,
-			List<String> previousUserTaskId, Map<String, FormProperty> aProperty) {
-		LOG.info("(execution.getId()={})", execution.getId());
+	private void loadPropertiesFromTasks(DelegateExecution oDelegateExecution,
+			List<String> asID_UserTaskPrevious, Map<String, FormProperty> aFormPropertyReturn) {
+		LOG.info("(execution.getId()={})", oDelegateExecution.getId());
 		LOG.info("(execution.getProcessDefinitionId()={})",
-				execution.getProcessDefinitionId());
+				oDelegateExecution.getProcessDefinitionId());
 		LOG.info("(execution.getProcessInstanceId()={})",
-				execution.getProcessInstanceId());
-		String[] as = execution.getProcessDefinitionId().split("\\:");
+				oDelegateExecution.getProcessInstanceId());
+		String[] as = oDelegateExecution.getProcessDefinitionId().split("\\:");
 		String s = as[2];
 		LOG.info("(s={})", s);
 
-		for (String taskId : previousUserTaskId) {
+		for (String sID_UserTaskPrevious : asID_UserTaskPrevious) {
 			try {
-				FormData oTaskFormData = null;
-				if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
-					oTaskFormData = execution.getEngineServices()
-							.getFormService().getTaskFormData(taskId);
+				FormData oFormData = null;
+				if (asID_UserTaskPrevious != null && !asID_UserTaskPrevious.isEmpty()) {
+					oFormData = oDelegateExecution.getEngineServices()
+							.getFormService().getTaskFormData(sID_UserTaskPrevious);
 				}
 
-				if (oTaskFormData != null
-						&& oTaskFormData.getFormProperties() != null) {
-					for (FormProperty property : oTaskFormData
-							.getFormProperties()) {
-						aProperty.put(property.getId(), property);
-						LOG.info(String
-								.format("Matching property id=%s:name=%s:%s:%s with fieldNames",
-										property.getId(), property.getName(),
-										property.getType().getName(),
-										property.getValue()));
+				if (oFormData != null && oFormData.getFormProperties() != null) {
+					for (FormProperty oFormProperty : oFormData.getFormProperties()) {
+						aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
+						LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+										oFormProperty.getId(), oFormProperty.getName(),
+										oFormProperty.getType().getName(),
+										oFormProperty.getValue());
 					}
 				}
 			} catch (Exception e) {
 				LOG.error(
 						"Error: {}, occured while looking for a form for task:{}",
-						e.getMessage(), taskId);
+						e.getMessage(), sID_UserTaskPrevious);
 				LOG.debug("FAIL:", e);
 			}
 		}
 		try {
-			FormData oTaskFormData = execution.getEngineServices()
+			FormData oTaskFormData = oDelegateExecution.getEngineServices()
 					.getFormService()
-					.getStartFormData(execution.getProcessDefinitionId());
+					.getStartFormData(oDelegateExecution.getProcessDefinitionId());
 			if (oTaskFormData != null
 					&& oTaskFormData.getFormProperties() != null) {
-				for (FormProperty property : oTaskFormData.getFormProperties()) {
-					aProperty.put(property.getId(), property);
-					LOG.info(String
-							.format("Matching property id=%s:name=%s:%s:%s with fieldNames",
-									property.getId(), property.getName(),
-									property.getType().getName(),
-									property.getValue()));
+				for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+					aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
+                                            LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                                                                        oFormProperty.getId(), oFormProperty.getName(),
+                                                                        oFormProperty.getType().getName(),
+                                                                        oFormProperty.getValue());
 				}
 			}
 		} catch (Exception e) {
