@@ -537,19 +537,25 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 				}
 				if ("clFIO".equals(id)) {
 					sAuthorFIO_Original = formProperty.getValue();
+                                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
+                                        
 				}
 			}
                         
                         if(sAuthorFIO_Original!=null&&!"".equals(sAuthorFIO_Original.trim())){
                             String[] as = sAuthorFIO_Original.split("\\ ");
+                            LOG.info("(as={})", as);
                             if(as.length>0 && (bankIdlastName==null || "".equals(bankIdlastName.trim()))){
                                 bankIdlastName = as[0];
+                                LOG.info("(as[0]={})", as[0]);
                             }
                             if(as.length>1 && (bankIdfirstName==null || "".equals(bankIdfirstName.trim()))){
                                 bankIdfirstName = as[1];
+                                LOG.info("(as[1]={})", as[1]);
                             }
                             if(as.length>2 && (bankIdmiddleName==null || "".equals(bankIdmiddleName.trim()))){
                                 bankIdmiddleName = as[2];
+                                LOG.info("(as[2]={})", as[2]);
                             }
                                 //sAuthorFIO_Original = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                             //sAuthorFIO_Original=sAuthorFIO_Original.substring(0,1)+".";
@@ -562,6 +568,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                         //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                         sAuthorFIO = bankIdfirstName + " " + bankIdmiddleName;
+                        LOG.info("(sAuthorFIO={})", sAuthorFIO);
                         
 			Long nID_Service = 0L;
 			try {
