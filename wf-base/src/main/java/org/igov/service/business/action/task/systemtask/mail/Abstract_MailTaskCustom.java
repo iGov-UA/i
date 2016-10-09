@@ -520,6 +520,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			String bankIdfirstName = "";
 			String bankIdmiddleName = "";
 			String sAuthorFIO = "";
+			String sAuthorFIO_Original = "";
 			if (formProperty != null) {
 				String id = formProperty.getId();
 				if ("email".equals(id)) {
@@ -534,9 +535,34 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 				if ("bankIdmiddleName".equals(id)) {
 					bankIdmiddleName = formProperty.getValue();
 				}
-				sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " "
-						+ bankIdmiddleName;
+				if ("clFIO".equals(id)) {
+					sAuthorFIO_Original = formProperty.getValue();
+				}
 			}
+                        
+                        if(sAuthorFIO_Original!=null&&!"".equals(sAuthorFIO_Original.trim())){
+                            String[] as = sAuthorFIO_Original.split("\\ ");
+                            if(as.length>0 && (bankIdlastName==null || "".equals(bankIdlastName.trim()))){
+                                bankIdlastName = as[0];
+                            }
+                            if(as.length>1 && (bankIdfirstName==null || "".equals(bankIdfirstName.trim()))){
+                                bankIdfirstName = as[1];
+                            }
+                            if(as.length>2 && (bankIdmiddleName==null || "".equals(bankIdmiddleName.trim()))){
+                                bankIdmiddleName = as[2];
+                            }
+                                //sAuthorFIO_Original = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
+                            //sAuthorFIO_Original=sAuthorFIO_Original.substring(0,1)+".";
+                        }
+                        if(bankIdfirstName!=null&&!"".equals(bankIdfirstName.trim())){
+                            //bankIdfirstName=bankIdfirstName.substring(0,1)+".";
+                        }
+                        if(bankIdmiddleName!=null&&!"".equals(bankIdmiddleName.trim())){
+                            //bankIdmiddleName=bankIdmiddleName.substring(0,1)+".";
+                        }
+                        //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
+                        sAuthorFIO = bankIdfirstName + " " + bankIdmiddleName;
+                        
 			Long nID_Service = 0L;
 			try {
 				String jsonHistoryEvent = historyEventService.getHistoryEvent(generalConfig.getOrderId_ByOrder(nID_Order));
