@@ -117,6 +117,7 @@ angular.module('app')
               if(result.length === 0) {
                 $rootScope.wasSearched = true;
               }
+              $rootScope.resultsAreLoading = false;
             });
           };
           $scope.searching = function () {
@@ -133,13 +134,11 @@ angular.module('app')
               $rootScope.busSpinner = true;
               $scope.search();
               $rootScope.valid = true;
-              $rootScope.resultsAreLoading = false;
             }else if($rootScope.valid) {
               $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
               $rootScope.mainSearchView = false;
               $scope.search();
-              $rootScope.resultsAreLoading = false;
             } else {
               $rootScope.busSpinner = true;
               $scope.search();
