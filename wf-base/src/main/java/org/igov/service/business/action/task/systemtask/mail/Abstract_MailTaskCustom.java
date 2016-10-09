@@ -40,6 +40,7 @@ import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
 import org.igov.io.sms.ManagerSMS_New;
+import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
@@ -53,6 +54,7 @@ import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -142,6 +144,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 	GeneralConfig generalConfig;
 	@Autowired
 	private ApplicationContext context;
+        @Autowired
+        private HttpRequester httpRequester;
 	// @Autowired
 	// AccessDataService accessDataDao;
 	@Autowired
@@ -489,6 +493,33 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		return matcher.appendTail(outputTextBuffer).toString();
 	}
 
+        
+        //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
+        private String getPlaceByProcess(String sID_Process) {
+            Map<String, String> mParam = new HashMap<String, String>();
+            mParam.put("nID_Process", sID_Process);
+            //LOG.info("2sID_Process: " + sID_Process);
+            mParam.put("nID_Server", generalConfig.getSelfServerId().toString());
+            //LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
+            //LOG.info("ssURL: " + sURL);
+            LOG.info("(sURL={},mParam={})", sURL, mParam);
+            String soResponse = null;
+            String sName = null;
+            try {
+                soResponse = httpRequester.getInside(sURL, mParam);
+                LOG.info("soResponse={}", soResponse);
+                Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
+                LOG.info("mReturn={}" + mReturn);
+                sName = (String) mReturn.get("sName");
+                LOG.info("sName={}", sName);
+            } catch (Exception ex) {
+                LOG.error("", ex);
+            }
+            //LOG.info("(soResponse={})", soResponse);
+            return sName;//soResponse
+        }
+
 	private String replaceTags_sURL_FEEDBACK_MESSAGE(String textWithoutTags,
 			DelegateExecution execution, Long nID_Order) throws Exception {
 
@@ -507,24 +538,24 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         String sAuthorFIO = "";
                         String sAuthorFIO_Original = "";
 
-                            //FormProperty oFormProperty = null;                                
-                            String sPrefix = "";
-                            Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
-                            if (oMatcherPrefix.find()) {
-                                    sPrefix = oMatcherPrefix.group();
-                                    LOG.info("Found double bracket tag group: {}", sPrefix);
-                                    /*String form_ID = StringUtils.replace(sPrefix, "{[", "");
-                                    form_ID = StringUtils.replace(form_ID, "]}", "");
-                                    LOG.info("(form_ID={})", form_ID);
-                                    oFormProperty = mProperty.get(form_ID);*/
-                            }
+                        //FormProperty oFormProperty = null;                                
+                        String sPrefix = "";
+                        Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
+                        if (oMatcherPrefix.find()) {
+                                sPrefix = oMatcherPrefix.group();
+                                LOG.info("Found double bracket tag group: {}", sPrefix);
+                                /*String form_ID = StringUtils.replace(sPrefix, "{[", "");
+                                form_ID = StringUtils.replace(form_ID, "]}", "");
+                                LOG.info("(form_ID={})", form_ID);
+                                oFormProperty = mProperty.get(form_ID);*/
+                        }
                         
       			for (Entry<String,FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
                             FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
                         
                             if (oFormProperty != null) {
                                     String id = oFormProperty.getId();
-                                    LOG.info("(id={})", id);
+                                    //LOG.info("(id={})", id);
                                     if ("email".equals(id)) {
                                             sAuthorMail = oFormProperty.getValue();
                                     }
@@ -548,18 +579,18 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         
                         if(sAuthorFIO_Original!=null&&!"".equals(sAuthorFIO_Original.trim())){
                             String[] as = sAuthorFIO_Original.split("\\ ");
-                            LOG.info("(as={})", as);
+                            //LOG.info("(as={})", as);
                             if(as.length>0 && (sAuthorLastName==null || "".equals(sAuthorLastName.trim()))){
                                 sAuthorLastName = as[0];
-                                LOG.info("(as[0]={})", as[0]);
+                                //LOG.info("(as[0]={})", as[0]);
                             }
                             if(as.length>1 && (sAuthorFirstName==null || "".equals(sAuthorFirstName.trim()))){
                                 sAuthorFirstName = as[1];
-                                LOG.info("(as[1]={})", as[1]);
+                                //LOG.info("(as[1]={})", as[1]);
                             }
                             if(as.length>2 && (sAuthorMiddleName==null || "".equals(sAuthorMiddleName.trim()))){
                                 sAuthorMiddleName = as[2];
-                                LOG.info("(as[2]={})", as[2]);
+                                //LOG.info("(as[2]={})", as[2]);
                             }
                                 //sAuthorFIO_Original = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                             //sAuthorFIO_Original=sAuthorFIO_Original.substring(0,1)+".";
@@ -572,14 +603,19 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                         //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                         sAuthorFIO = sAuthorFirstName + " " + sAuthorMiddleName;
-                        LOG.info("(sAuthorFIO={})", sAuthorFIO);
+                        //LOG.info("(sAuthorFIO={})", sAuthorFIO);
                         
+                        String sPlace = "";
+                        String sID_Place_UA = "";
 			Long nID_Service = 0L;
 			try {
 				String jsonHistoryEvent = historyEventService.getHistoryEvent(generalConfig.getOrderId_ByOrder(nID_Order));
 				LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
 				JSONObject historyEvent = new JSONObject(jsonHistoryEvent);
 				nID_Service = historyEvent.getLong("nID_Service");
+                                sID_Place_UA = historyEvent.getString("sID_UA");
+                                String snID_Process = execution.getProcessInstanceId();
+                                sPlace = getPlaceByProcess(snID_Process);
 			} catch (Exception oException) {
 				LOG.error("ex!: {}", oException.getMessage());
 				LOG.debug("FAIL:", oException);
@@ -591,6 +627,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			String sQueryParamPattern = "?"
 					+ "&sID_Source=" + "self"
 					+ "&sAuthorFIO=" + sAuthorFIO
+					+ "&sPlace=" + sPlace
+					+ "&sID_Place_UA=" + sID_Place_UA
 					+ "&sMail=" + sAuthorMail
 					+ "&sBody=" + ""
 					+ "&nID_Rate="+ sPrefix.replaceAll("_", "")
