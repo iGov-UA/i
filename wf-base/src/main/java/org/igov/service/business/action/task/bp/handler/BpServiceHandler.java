@@ -355,7 +355,7 @@ public class BpServiceHandler {
 //        LOG.info("(soResponse={})", soResponse);
 //        return soResponse;
 //    }
-    
+
     //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
     private String getPlaceByProcess(String sID_Process) {
         Map<String, String> mParam = new HashMap<String, String>();

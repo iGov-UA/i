@@ -14,6 +14,7 @@ import org.igov.io.mail.Mail;
 import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.List;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
