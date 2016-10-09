@@ -495,7 +495,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		StringBuffer outputTextBuffer = new StringBuffer();
 		Matcher oMatcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
 		while (oMatcher.find()) {
-			//String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
+			String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
 			List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
 			Map<String, FormProperty> mProperty = new HashMap<>();
 			loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
@@ -506,23 +506,22 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         String sAuthorMiddleName = "";
                         String sAuthorFIO = "";
                         String sAuthorFIO_Original = "";
-                        
-      			for (Entry<String,FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
-                            FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
-                        
-                            /*FormProperty oFormProperty = null;                                
+
+                            //FormProperty oFormProperty = null;                                
                             String sPrefix = "";
                             Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
                             if (oMatcherPrefix.find()) {
                                     sPrefix = oMatcherPrefix.group();
-                                    LOG.info("Found double bracket tag group: {}",
-                                                    oMatcherPrefix.group());
-                                    String form_ID = StringUtils.replace(sPrefix, "{[", "");
+                                    LOG.info("Found double bracket tag group: {}", sPrefix);
+                                    /*String form_ID = StringUtils.replace(sPrefix, "{[", "");
                                     form_ID = StringUtils.replace(form_ID, "]}", "");
                                     LOG.info("(form_ID={})", form_ID);
-                                    oFormProperty = mProperty.get(form_ID);
-                            }*/
-
+                                    oFormProperty = mProperty.get(form_ID);*/
+                            }
+                        
+      			for (Entry<String,FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
+                            FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
+                        
                             if (oFormProperty != null) {
                                     String id = oFormProperty.getId();
                                     LOG.info("(id={})", id);
