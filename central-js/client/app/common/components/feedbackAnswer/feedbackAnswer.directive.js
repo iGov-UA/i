@@ -20,7 +20,7 @@
   }
 
   /* @ngInject */
-  function FeedbackAnswerCtrl(ServiceService, FeedbackService, UserService, $filter) {
+  function FeedbackAnswerCtrl(UserService, $filter) {
     var vm = this;
     var userName;
 

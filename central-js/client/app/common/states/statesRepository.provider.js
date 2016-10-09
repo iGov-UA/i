@@ -157,7 +157,6 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           controller: 'ServiceController'
         },
         footer: {
-          //templateUrl: 'app/footer/footer.html'
           templateUrl: getFooter(this.mode),
           controller: 'FooterController'
         }

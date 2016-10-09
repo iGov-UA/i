@@ -1,81 +1,70 @@
 angular.module('app').service('FeedbackService', function ($http, $q) {
 
-    this.getFeedback = function (id, token){
-      var deferred = $q.defer();
-      $http.get('./api/messages/feedback?sID_Order='+id+'&sToken='+token+'').success(function (data, status) {
-        if (data.code === 'SYSTEM_ERR' || data.code==='BUSINESS_ERR'){
-          deferred.reject(data);
-        } else {
-          deferred.resolve(data);
-        }
-      });
+  this.getFeedback = function (id, token) {
+    var deferred = $q.defer();
+    $http.get('./api/messages/feedback?sID_Order=' + id + '&sToken=' + token + '').success(function (data, status) {
+      if (data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR') {
+        deferred.reject(data);
+      } else {
+        deferred.resolve(data);
+      }
+    });
 
-      return deferred.promise;
+    return deferred.promise;
+  };
+
+  this.postFeedback = function (id, token, body) {
+    var data = {
+      "sID_Order": id,
+      "sToken": token,
+      "sBody": body
     };
 
-    this.postFeedback =function(id,token, body){
-      var data = {
-        "sID_Order": id,
-        "sToken": token,
-        "sBody": body
-      };
+    $http.post('./api/messages/feedback', data).then(function (response) {
+    });
+  };
 
-      $http.post('./api/messages/feedback', data).then(function(response) {});
-    };
+  this.getFeedbackForService = function (serviceId, id, token) {
+    var deferred = $q.defer();
+    $http.get('./api/service/' + serviceId + '/feedback?sID_Order=' + id + '&sID_Token=' + token + '').then(function (data) {
+      if (data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR') {
+        deferred.reject(data);
+      } else {
+        deferred.resolve(data);
+      }
+    });
 
-    this.getFeedbackForService = function (serviceId, id, token) {
-      var deferred = $q.defer();
-      $http.get('./api/service/' + serviceId + '/feedback?sID_Order='+id+'&sID_Token='+token+'').then(function(data){
-        if(data.code === 'SYSTEM_ERR' || data.code==='BUSINESS_ERR'){
-          deferred.reject(data);
-        }else{
-          deferred.resolve(data);
-        }
-      });
+    return deferred.promise;
+  };
 
-      return deferred.promise;
-    };
+  this.getFeedbackListForService = function (serviceId) {
+    var deferred = $q.defer();
+    $http.get('./api/service/' + serviceId + '/feedback').then(function (data) {
+      if (data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR') {
+        deferred.reject(data);
+      } else {
+        deferred.resolve(data);
+      }
+    });
 
-    this.getFeedbackListForService = function (serviceId) {
-      var deferred = $q.defer();
-      $http.get('./api/service/' + serviceId + '/feedback').then(function(data){
-        if(data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR'){
-          deferred.reject(data);
-        }else{
-          deferred.resolve(data);
-        }
-      });
+    return deferred.promise;
+  };
 
-      return deferred.promise;
-    };
+  this.postFeedbackForService = function (feedbackParams) {
+    var deferred = $q.defer();
 
-    this.postFeedbackForService =function(feedbackParams){
-      var deferred = $q.defer();
-      var data = {
-        'sID_Token': feedbackParams.sID_Token,
-        'sBody': feedbackParams.sBody,
-        'nID': feedbackParams.nID,
-        'sID_Source': feedbackParams.sID_Source,
-        'sAuthorFIO': feedbackParams.sAuthorFIO,
-        'sMail': feedbackParams.sMail,
-        'sHead': feedbackParams.sHead,
-        'nID_Rate': feedbackParams.nID_Rate,
-        'nID_Service': feedbackParams.nID_Service,
-        'sAnswer': feedbackParams.sAnswer
-      };
+    $http.post('./api/service/' + feedbackParams.nID_Service + '/feedback', feedbackParams).then(function (response) {
+      if (response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR') {
+        deferred.reject(response);
+      } else {
+        deferred.resolve(response);
+      }
+    });
 
-      $http.post('./api/service/'+feedbackParams.nID_Service+'/feedback', data).then(function(response) {
-        if(response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR'){
-          deferred.reject(response);
-        }else{
-          deferred.resolve(response);
-        }
-      });
+    return deferred.promise;
+  };
 
-      return deferred.promise;
-    };
-
-  this.postFeedbackAnswerForService =function(feedbackParams){
+  this.postFeedbackAnswerForService = function (feedbackParams) {
     var deferred = $q.defer();
     var data = {
       'sID_Token': feedbackParams.sID_Token,
@@ -85,10 +74,10 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
       'sAuthorFIO': feedbackParams.sAuthorFIO
     };
 
-    $http.post('./api/service/'+feedbackParams.nID_Service+'/feedbackAnswer', data).then(function(response) {
-      if(response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR'){
+    $http.post('./api/service/' + feedbackParams.nID_Service + '/feedbackAnswer', data).then(function (response) {
+      if (response.code === 'SYSTEM_ERR' || response.code === 'BUSINESS_ERR') {
         deferred.reject(response);
-      }else{
+      } else {
         deferred.resolve(response);
       }
     });
