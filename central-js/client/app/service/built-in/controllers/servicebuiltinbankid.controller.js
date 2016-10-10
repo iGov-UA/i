@@ -657,12 +657,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.$watch('data.formData.params', watchToSetDefaultValues, true);
       function watchToSetDefaultValues() {
-        var calcFields = FieldMotionService.getCalcFieldsIds();
+        //var calcFields = FieldMotionService.getCalcFieldsIds();
+        var calcFields = FieldMotionService.getTargetFieldsIds('Values');
         var pars = $scope.data.formData.params;
         calcFields.forEach(function (key) {
           if (_.has(pars, key)) {
             var data = FieldMotionService.calcFieldValue(key, pars, $scope.activitiForm.formProperties);
             if (data.value && data.differentTriggered) pars[key].value = data.value;
+          }
+        });
+
+        var requiredCalcFields = FieldMotionService.getTargetFieldsIds('Required');
+        requiredCalcFields.forEach(function (key) {
+          if (_.has(pars, key)) {
+            var dataRequired = FieldMotionService.isFieldRequired(key, pars);
+            if (pars[key].required != dataRequired) {
+              pars[key].required = dataRequired;
+              if (pars[key] instanceof SignFactory){
+                $scope.sign.checked = dataRequired;
+                $scope.isSignNeededRequired = dataRequired;
+              }
+            }
           }
         });
       }
