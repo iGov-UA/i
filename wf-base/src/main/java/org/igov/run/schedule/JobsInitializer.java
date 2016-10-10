@@ -77,7 +77,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_FeedBackGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   //maxline: todo поменять обратно на 2 часа ночи с 4-х
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 4 1/1 * ?");   // maxline: todo поменять обратно на 2 часа ночи с 4-х
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
@@ -101,19 +101,20 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?"); //
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        if (true || !generalConfig.isSelfTest()) {
+        //TODO:раскомментировать после тестирования
+        //if (true || !generalConfig.isSelfTest()) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
-        } else {
+        /*} else {
             LOG.info("scheduleJob... SKIPED(test)!");
-        }
+        }*/
     }
     
     private void addPaymentProcessorJob(Scheduler scheduler) throws SchedulerException {
