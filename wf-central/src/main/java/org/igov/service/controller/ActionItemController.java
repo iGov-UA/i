@@ -976,7 +976,7 @@ public class ActionItemController {
             @ApiParam(value
                     = "строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
                     + "в имени которых встречается значение этого параметра, без учета регистра.", required = false)
-            @RequestParam(value = "sFind", required = false) final String sFind, @ApiParam(value
+            @RequestParam(value = "sFind", required = false) String sFind, @ApiParam(value
                     = "массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, 
@@ -985,7 +985,12 @@ public class ActionItemController {
             @RequestParam(value = "nID_Category", required = true) Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
             @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
-        final boolean includeServices = StringUtils.isNotBlank(sFind);
+        boolean includeServices = StringUtils.isNotBlank(sFind);
+        if(!includeServices && CollectionUtils.isNotEmpty(asID_Place_UA)){
+            includeServices=true;
+            sFind="";
+        }
+        
         if (includeServices) {
             nID_Category = null;
         }
@@ -994,7 +999,7 @@ public class ActionItemController {
                 bShowEmptyFolders, includeServices, null, null);
         
         // (asID_Place_UA!=null&&asID_Place_UA.size()>0&&asID_Place_UA.get(0).trim().length()>0)
-        if (includeServices || CollectionUtils.isNotEmpty(asID_Place_UA)) {
+        if (includeServices) {
             res.forEach(n -> n.setaService(n.getaService().stream().map(
                         s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
         }
