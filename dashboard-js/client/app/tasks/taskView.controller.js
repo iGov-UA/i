@@ -180,10 +180,13 @@
         }
         $scope.taskForm.taskData = taskData;
 
-        var sID;
-        // Search obj where id = sLoginAsignee, with this obj, get with sName value sSourceFieldID_sID_Group param;
+        var sID; //sID_GroupNext
+        var indexLoginAsigned; //Need for set sLogin with first getUsers
+
+        // Search obj where id = sLoginAsignee, with sName this object get value sSourceFieldID_sID_Group
         for (var i = 0; i < taskData.aField.length; i++) {
           if (taskData.aField[i].sID.includes("sLoginAsignee")) {
+            indexLoginAsigned = i;
             var asResult = getRegexContains(taskData.aField[i].sName, ';', "sSourceFieldID_sID_Group");
             asResult = getRegexContains(asResult, ',', "sSourceFieldID_sID_Group");
             sID = asResult.split('=')[1];
@@ -198,6 +201,7 @@
           }
         }
 
+        //getUsers by sValue where id == sID.
         if (sID !== null) {
           for (var i = 0; i < taskData.aField.length; i++) {
             if (taskData.aField[i].sID == sID) {
@@ -205,6 +209,9 @@
               if (typeof(sValue) === "string" && sValue.length > 0) {
                 user.getUsers(sValue).then(function (users) {
                   $scope.selectPerformingRsp = users;
+                  if (users.length > 0 && taskData.aField[indexLoginAsigned].sValue === null) {
+                    taskData.aField[indexLoginAsigned].sValue = $scope.selectedUser = users[0].sLogin;
+                  }
                 });
                 break;
               }
@@ -661,11 +668,11 @@
           }
         };
 
-        $scope.choiceUser = function(selectedUser) {
+        //Asignee user.
+        $scope.choiceUser = function(login) {
           for (var i = 0; i < taskData.aField.length; i++) {
             if (taskData.aField[i].sID.includes("sLoginAsignee")) {
-              taskData.aField[i].sValue = selectedUser.sLogin;
-              console.log(taskData.aField[i].sValue);
+              taskData.aField[i].sValue = login;
               break;
             }
           }
