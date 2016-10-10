@@ -7,19 +7,11 @@
       <select
         ng-if="!isFormPropertyDisabled(item)"
         style="width:100%;"
-        ng-readonly="isFormPropertyDisabled(item)"
-        ng-required="isRequired(item)"
         ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"
-        onchangeonchange="choiceUser()">
-        <option ng-repeat="o in selectPerformingRsp">{{o.sFirstName + ' ' + o.sLastName}}</option>
+        data-ng-model="selectedUser"
+        data-ng-options="o.FirstName + ' ' + o.sLastName for o in selectPerformingRsp"
+        ng-change="choiceUser(selectedUser)">
       </select>
-      <!--<input ng-if="!isFormPropertyDisabled(item)"-->
-             <!--name="{{item.id}}"-->
-             <!--style="width:100%;"-->
-             <!--ng-readonly="isFormPropertyDisabled(item)"-->
-             <!--ng-required="isRequired(item)"-->
-             <!--ng-model="item.value"-->
-             <!--ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"/>-->
       <div ng-if="isFormPropertyDisabled(item)">
       <span class="task-form-written-right-sight"
             style="white-space: pre-line"
