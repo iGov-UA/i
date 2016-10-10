@@ -4,10 +4,10 @@
   angular
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
-      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
+      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks', 'user',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
-      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
+      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
         var defaultErrorHandler = function (response, msgMapping) {
@@ -179,6 +179,39 @@
           $scope.model.printTemplate = $scope.printTemplateList[0];
         }
         $scope.taskForm.taskData = taskData;
+
+        var sID;
+        // Search obj where id = sLoginAsignee, with this obj, get with sName value sSourceFieldID_sID_Group param;
+        for (var i = 0; i < taskData.aField.length; i++) {
+          if (taskData.aField[i].sID.includes("sLoginAsignee")) {
+            var asResult = getRegexContains(taskData.aField[i].sName, ';', "sSourceFieldID_sID_Group");
+            asResult = getRegexContains(asResult, ',', "sSourceFieldID_sID_Group");
+            sID = asResult.split('=')[1];
+            break;
+          }
+        }
+
+        function getRegexContains(objForSplit, splitBy, regex) {
+          var arr = objForSplit.split(splitBy);
+          for (var i = 0; i < arr.length; i++) {
+            if (arr[i].includes(regex)) return arr[i];
+          }
+        }
+
+        if (sID !== null) {
+          for (var i = 0; i < taskData.aField.length; i++) {
+            if (taskData.aField[i].sID == sID) {
+              var sValue = taskData.aField[i].sValue;
+              if (typeof(sValue) === "string" && sValue.length > 0) {
+                taskData.aField[i].sValue = $scope.selectPerformingRsp = null;
+                user.getUsers(sValue).then(function (users) {
+                  $scope.selectPerformingRsp = users;
+                });
+                break;
+              }
+            }
+          }
+        }
 
         if (!oTask.endTime) {
           $scope.taskForm.forEach(function (field) {

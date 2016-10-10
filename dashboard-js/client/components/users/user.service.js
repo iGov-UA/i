@@ -5,6 +5,20 @@
 
 angular.module('dashboardJsApp')
   .factory('user', function services($http, $q){
+
+    function getUserByValue(param) {
+      var url = "https://alpha.test.region.igov.org.ua/wf/service/action/identity/getUsers?sID_Group=" + param;
+      $http.get(url).then(
+        function successRsp(response){
+          return response.data;
+        },
+        function errorRsp(response){
+          alert("Error connection. Url: " + url);
+        }
+      )
+    };
+
+
     var getUsers = function(url, sID_Group, callback){
       var cb = callback || angular.noop;
       var deferred = $q.defer();
