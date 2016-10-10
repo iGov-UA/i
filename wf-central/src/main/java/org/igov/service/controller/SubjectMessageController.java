@@ -524,7 +524,7 @@ public class SubjectMessageController {
             LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
             */
 
-            LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
+            LOG.info("Successfully saved message with the ID {}", messageID);
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);

@@ -355,28 +355,31 @@ public class BpServiceHandler {
 //        LOG.info("(soResponse={})", soResponse);
 //        return soResponse;
 //    }
+
+    //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
     private String getPlaceByProcess(String sID_Process) {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("nID_Process", sID_Process);
-        LOG.info("2sID_Process: " + sID_Process);
-        param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+        Map<String, String> mParam = new HashMap<String, String>();
+        mParam.put("nID_Process", sID_Process);
+        //LOG.info("2sID_Process: " + sID_Process);
+        mParam.put("nID_Server", generalConfig.getSelfServerId().toString());
+        //LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, param);
+        //LOG.info("ssURL: " + sURL);
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
         String soResponse = null;
+        String sName = null;
         try {
-            soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("soResponse: " + soResponse + " param: " + param);
-            Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("res: " + res);
-            soResponse = (String) res.get("sName");
-            LOG.info("soResponse = (String): " + soResponse);
+            soResponse = httpRequester.getInside(sURL, mParam);
+            LOG.info("soResponse={}", soResponse);
+            Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
+            LOG.info("mReturn={}" + mReturn);
+            sName = (String) mReturn.get("sName");
+            LOG.info("sName={}", sName);
         } catch (Exception ex) {
-            LOG.error("[getPlaceByProcess]: ", ex);
+            LOG.error("", ex);
         }
-        LOG.info("(soResponse={})", soResponse);
-        return soResponse;
+        //LOG.info("(soResponse={})", soResponse);
+        return sName;//soResponse
     }
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {

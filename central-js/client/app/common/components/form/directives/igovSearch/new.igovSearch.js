@@ -117,22 +117,32 @@ angular.module('app')
               if(result.length === 0) {
                 $rootScope.wasSearched = true;
               }
+              $rootScope.resultsAreLoading = false;
             });
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length >= 3) {
+            if($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
               // после реализации тегов в бизнесе - удалить.
               $rootScope.busSpinner = true;
               $scope.overallSearch();
               $rootScope.mainSearchView = true;
               $rootScope.valid = true;
-            } else if($rootScope.valid) {
+            } else if($scope.sSearch.length >= 3 && ($state.is("index") || $state.is("index.catalog"))) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainSearchView = true;
+              $rootScope.busSpinner = true;
+              $scope.search();
+              $rootScope.valid = true;
+            }else if($rootScope.valid) {
               $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
               $rootScope.mainSearchView = false;
               $scope.search();
-              $rootScope.resultsAreLoading = false;
+            } else {
+              $rootScope.busSpinner = true;
+              $scope.search();
+              $rootScope.valid = true;
             }
           };
 

@@ -22,11 +22,16 @@
         </div>
 
         <div>
-          <div class="feedback-form-group">
+          <div class="feedback-form-group form-group" ng-class="{'has-error': feedbackForm.textMessage.$invalid && feedbackForm.textMessage.$dirty}">
               <textarea rows="5" ng-model="feedback.messageBody"
+                        name="textMessage"
                         ng-disabled="feedback.exist"
                         class="form-control pull-right feedback-textarea feedback-margin-bottom"
-                        placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
+                        placeholder="Прокоментуйте Вашу оцінку, будь ласка"
+                        required></textarea>
+            <p class="help-block feedback-font14" ng-show="feedbackForm.textMessage.$invalid && feedbackForm.textMessage.$dirty">
+              <span ng-show="feedbackForm.textMessage.$error.required">Залиште Ваш відгук, будь ласка</span>
+            </p>
           </div>
           <div class="">
             <input type="button"
@@ -74,6 +79,9 @@
                   <p>
                     <star-rating ng-model="item.nID_Rate" showonly="true"></star-rating>
                     <small class="feedback-info-list-author">{{::item.sAuthorFIO}}</small>
+                    <small class="feedback-info-list-author">{{::item.sPlace}}</small>
+                    <small class="feedback-info-list-author">{{::item.sSubjectOperatorName}}</small>
+                    <small class="feedback-info-list-author">{{::item.sEmployeeFIO}}</small>
                   </p>
                   <p>{{::item.sBody}}</p>
                   <button class="btn btn-link"
