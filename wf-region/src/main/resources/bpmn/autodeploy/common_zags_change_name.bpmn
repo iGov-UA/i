@@ -1602,7 +1602,23 @@ execution.setVariable('sCountPayment', src)</script>
     </boundaryEvent>
     <sequenceFlow id="flow157" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow158" sourceRef="servicetask15" targetRef="timerintermediatecatchevent2"></sequenceFlow>
-    <sequenceFlow id="flow159" sourceRef="servicetask1" targetRef="usertask6"></sequenceFlow>
+    <scriptTask id="scripttask4" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var sum =" "
+var des = " "
+if(execution.getVariable('saChangeName') == 'no'){
+des = "державне мито за державну реєстрацію зміни імені фізичної особи"
+sum = "5.2"
+}
+if(execution.getVariable('saChangeName') == 'yes'){
+des = "державне мито за повторну державну реєстрацію зміни імені фізичної особи"
+sum = "51.92"
+}
+execution.setVariable('sSum', sum)
+execution.setVariable('sDescription', des)</script>
+    </scriptTask>
+    <sequenceFlow id="flow160" sourceRef="servicetask1" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow161" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1701,6 +1717,9 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="580.0" y="56.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="162.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
@@ -1866,9 +1885,13 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="559.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow159" id="BPMNEdge_flow159">
-        <omgdi:waypoint x="195.0" y="72.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="72.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow160" id="BPMNEdge_flow160">
+        <omgdi:waypoint x="137.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="214.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow161" id="BPMNEdge_flow161">
+        <omgdi:waypoint x="214.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
