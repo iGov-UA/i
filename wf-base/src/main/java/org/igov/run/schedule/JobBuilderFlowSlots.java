@@ -1,5 +1,6 @@
 package org.igov.run.schedule;
 
+import static java.lang.Math.toIntExact;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -53,7 +54,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public static final int DAYS_IN_HALF_YEAR = 180;
     private static final String SUFFIX_AUTO = "auto";
 
-    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
+//    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
     @Autowired
     private FlowService oFlowService;
 
@@ -65,7 +67,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
+        LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
                
         
@@ -128,8 +130,11 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-            Long COUNT_DAYS = flow.getnCountAutoGenerate();
-            dateEnd = oDateStart.plusDays((int) (COUNT_DAYS + nStartDay));
+            Long nCountAutoGenerate = flow.getnCountAutoGenerate();
+            LOG.info("nCountAutoGenerate: " + nCountAutoGenerate);
+            int CountAutoGenerate = toIntExact(nCountAutoGenerate);
+            LOG.info("CountAutoGenerate: " + CountAutoGenerate);
+            dateEnd = oDateStart.plusDays(CountAutoGenerate);
             LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,

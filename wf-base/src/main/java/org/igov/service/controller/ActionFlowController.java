@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import static java.lang.Math.toIntExact;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
@@ -34,6 +35,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.model.flow.FlowServiceDataDao;
+import org.igov.model.flow.Flow_ServiceData;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
+import org.igov.service.business.flow.slot.Day;
 
 /**
  * User: goodg_000
@@ -46,11 +53,16 @@ import java.util.Map;
 public class ActionFlowController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionFlowController.class);
-	@Autowired
+    private static final String SUFFIX_AUTO = "auto";
+    
+    @Autowired
     private FlowService oFlowService;
 
-	@Autowired
-	Cherg cherg;
+    @Autowired
+    Cherg cherg;
+    
+    @Autowired
+    private FlowServiceDataDao flowServiceDataDao;
 
 
     /**
@@ -1068,4 +1080,123 @@ public class ActionFlowController {
 
 		return result.toString();
 	}
+        
+        /**
+     * Генерация слотов на заданный интервал для заданного потока.
+     * 
+     * @param nID_Flow_ServiceData номер-ИД потока (обязательный если нет sID_BP)
+     * @param sID_BP строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)
+     * @param nID_SubjectOrganDepartment ИД номер-ИН департамента
+     * @param sDateStart строка дата "начиная с такого-то момента времени", в формате "2015-06-28 12:12:56.001" (опциональный)
+     * @param sDateStop строка дата "заканчивая к такому-то моменту времени", в формате "2015-07-28 12:12:56.001" (опциональный)
+     * @param nCountAutoGenerate кол-во дней (опциональный)
+     */
+        @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
+                + " http://test.igov.org.ua/wf/service/action/flow/buildFlowSlotsTest\n"
+	        + "- nID_Flow_ServiceData=1\n"
+	        + "- sDateStart=2015-06-01 00:00:00.000\n"
+	        + "- sDateStop=2015-06-07 00:00:00.000\n"
+	        + "Ответ: HTTP STATUS 200.\n"
+	        + "Ниже приведена часть json ответа:\n"
+	        + "\n```json\n"
+	        + "[\n"
+	        + "    {\n"
+	        + "        \"nID\": 1000,\n"
+	        + "        \"sTime\": \"08:00\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "    {\n"
+	        + "        \"nID\": 1001,\n"
+	        + "        \"sTime\": \"08:15\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "    {\n"
+	        + "        \"nID\": 1002,\n"
+	        + "        \"sTime\": \"08:30\",\n"
+	        + "        \"nMinutes\": 15,\n"
+	        + "        \"bFree\": true\n"
+	        + "    },\n"
+	        + "...\n"
+	        + "]\n"
+	        + "\n```\n" )
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "json перечисление всех сгенерированных слотов\n"
+            + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
+    @RequestMapping(value = "/buildFlowSlotsTest", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity buildFlowSlotsTest(
+	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
+	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
+	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
+	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
+	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop,
+	    @ApiParam(value = "кол-во дней", required = false) @RequestParam(value = "nCountAutoGenerate", required = true) Long nCountAutoGenerate){
+
+		DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        LOG.info(" oDateStart = {}", oDateStart);
+
+        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
+        for (Flow_ServiceData flow : aFlowServiceData) {
+            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
+                LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
+                checkAndBuildFlowSlots_new(flow, oDateStart);
+            }
+        }
+        List<FlowSlotVO> res = oFlowService.buildFlowSlotsTest(nID_Flow_ServiceData, oDateStart, oDateStart);
+        return (ResponseEntity) res;
+    }
+    private void checkAndBuildFlowSlots_new(Flow_ServiceData flow, DateTime oDateStart) {
+        //Maxline: TODO добавить исключения
+        Long nID_Flow_ServiceData = flow.getId();
+        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
+        
+        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
+        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
+                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+        
+        int nStartDay = 0;
+        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
+        DateTime dateEnd;
+        
+        while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
+                && nStartDay < DAYS_IN_HALF_YEAR) {
+            dateStart = oDateStart.plusDays(nStartDay);
+            Long nCountAutoGenerate = flow.getnCountAutoGenerate();
+            int CountAutoGenerate = toIntExact(nCountAutoGenerate);
+            dateEnd = oDateStart.plusDays(CountAutoGenerate);
+            LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+            
+            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
+                    dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
+            LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+            
+            nStartDay += DAYS_IN_MONTH;
+        }
+        
+        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
+        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
+    }
+
+    private boolean isEnoughFreeDays(Long nID_ServiceData, Long nID_SubjectOrganDepartment, DateTime oDateStart) {
+        boolean bAll = false; //Получаем только свободные дни
+        int nFreeWorkDaysFact;
+        Long nID_Service = null; 
+        String sID_BP = null; 
+
+        DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
+        LOG.info(" oDateEnd = {}", oDateEnd);
+
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED, 1); //WORK_DAYS_NEEDED
+        LOG.info(" Days = {}", res);
+
+        nFreeWorkDaysFact = res.getaDay().size();
+        LOG.info(" nFreeWorkDaysFact = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
+        for (Day day : res.getaDay()) {
+            LOG.info(" Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
+        }
+        return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
+    }
 }

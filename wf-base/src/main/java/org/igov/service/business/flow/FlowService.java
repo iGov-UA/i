@@ -800,4 +800,36 @@ public class FlowService implements ApplicationContextAware {
         }
         return result;
     }
+      public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
+
+        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+
+        List<FlowSlotVO> res = new ArrayList<>();
+
+        for (FlowProperty flowProperty : flow.getFlowProperties()) {
+            if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
+                Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
+                if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
+
+                    BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
+                            flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    handler.setStartDate(startDate);
+                    handler.setEndDate(stopDate);
+                    handler.setFlow(flow);
+
+                    LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
+                            startDate, stopDate, flowProperty.getsData());
+
+                    if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
+                        List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
+                        for (FlowSlot slot : generatedSlots) {
+                            res.add(new FlowSlotVO(slot));
+                        }
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
 }
