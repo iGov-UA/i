@@ -1,31 +1,43 @@
-<div class="row feedback feedback-clearfix">
+<div class="row feedback feedback-clearfix" ng-form name="feedbackForm" >
 
   <div class="container feedback-container" ng-hide="feedback.feedbackError">
 
     <div class="row container" ng-if="sID_Token">
       <div class="col-md-6 col-sm-6 feedback-padding0">
 
-        <div class="feedback-assessment">
-          <div class="feedback-assessment-header feedback-font14">Ваша оцінка</div>
-          <div star-rating showonly="feedback.exist" class="feedback-assessment-body fa-custom-edit" ng-model="feedback.rating" max="5" on-rating-select="feedback.rateFunction(rating)"></div>
+        <div class="feedback-assessment form-group" ng-class="{'has-error': !feedback.rating && submitted}">
+          <div class="feedback-assessment-header feedback-font14 control-label">Ваша оцінка</div>
+          <div star-rating
+               showonly="!!feedback.exist"
+               class="feedback-assessment-body fa-custom-edit has-error"
+               name="assessment"
+               ng-model="feedback.rating" max="5"
+               on-rating-select="feedback.rateFunction(rating)"
+               ></div>
+          <p class="help-block feedback-font14"
+             ng-show="!feedback.rating && submitted">Оцініть, будь ласка</p>
         </div>
-
         <div>
           <span class="feedback-font14">Ваш вiдгук</span>
         </div>
 
         <div>
-          <div class="feedback-form-group">
+          <div class="feedback-form-group form-group" ng-class="{'has-error': feedbackForm.textMessage.$invalid && feedbackForm.textMessage.$dirty}">
               <textarea rows="5" ng-model="feedback.messageBody"
+                        name="textMessage"
                         ng-disabled="feedback.exist"
                         class="form-control pull-right feedback-textarea feedback-margin-bottom"
-                        placeholder="Прокоментуйте Вашу оцінку, будь ласка"></textarea>
+                        placeholder="Прокоментуйте Вашу оцінку, будь ласка"
+                        required></textarea>
+            <p class="help-block feedback-font14" ng-show="feedbackForm.textMessage.$invalid && feedbackForm.textMessage.$dirty">
+              <span ng-show="feedbackForm.textMessage.$error.required">Залиште Ваш відгук, будь ласка</span>
+            </p>
           </div>
           <div class="">
             <input type="button"
                    class="feedback-btn btn pull-right"
                    ng-if="!feedback.exist"
-                   value="Надіслати"
+                   value="Опублікувати"
                    ng-click="feedback.postFeedback()"/>
           </div>
         </div>
@@ -41,9 +53,11 @@
 
         <p class="feedback-info-body">{{::feedback.sSubjectOperatorName}}</p>
 
-        <p class="feedback-info-header">Співробітник, який Вас обслуговував</p>
+        <div ng-if="feedback.currentFeedback.sEmployeeFIO">
+          <p class="feedback-info-header">Співробітник, який Вас обслуговував</p>
 
-        <p class="feedback-info-body">{{::feedback.currentFeedback.sEmployeeFIO}}</p>
+          <p class="feedback-info-body">{{::feedback.currentFeedback.sEmployeeFIO}}</p>
+        </div>
 
         <p class="feedback-info-header">Ваш підпис</p>
 
@@ -54,9 +68,10 @@
     <div class="row">
       <div class="container col-md-12">
         <div>
-          <div class="feedback-list-container">
-            <div class="feedback-list-header">
+          <div class="feedback-list-container" ng-class="{'no-feedback': !sID_Token}">
+            <div class="feedback-list-header" ng-class="{'no-feedback-header': !sID_Token}">
               <h2 class="feedback-callout feedback-callout-info">Відгуки громадян</h2>
+              <span style="padding-left: 16px; color: #89909d; font-size: 13px;">Відгук про послугу може написати той, хто скористався послугою</span>
             </div>
             <div class="feedback-list-content">
               <div ng-repeat="item in feedback.messageList">
@@ -64,6 +79,9 @@
                   <p>
                     <star-rating ng-model="item.nID_Rate" showonly="true"></star-rating>
                     <small class="feedback-info-list-author">{{::item.sAuthorFIO}}</small>
+                    <small class="feedback-info-list-author">{{::item.sPlace}}</small>
+                    <small class="feedback-info-list-author">{{::item.sSubjectOperatorName}}</small>
+                    <small class="feedback-info-list-author">{{::item.sEmployeeFIO}}</small>
                   </p>
                   <p>{{::item.sBody}}</p>
                   <button class="btn btn-link"

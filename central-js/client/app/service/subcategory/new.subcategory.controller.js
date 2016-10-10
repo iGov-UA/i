@@ -52,17 +52,14 @@ angular.module('app')
             $scope.spinner = true;
           }
         });
-        // $scope.$on('$stateChangeSuccess', function(event, toState) {
-        //   if (toState.resolve) {
-        //     $scope.spinner = false;
-        //   }
-        // });
         $scope.$on('$stateChangeError', function(event, toState) {
           if (toState.resolve) {
             $scope.spinner = false;
           }
         });
-        var tag = $scope.subcategory.oServiceTag_Root.sName_UA;
-        TitleChangeService.setTitle(tag);
+        try {
+          var tag = $scope.subcategory.oServiceTag_Root.sName_UA;
+          TitleChangeService.setTitle(tag);
+        }catch (e) {}
         $anchorScroll();
       }]);

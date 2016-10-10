@@ -90,6 +90,11 @@ public class GeneralConfig {
     private String sUser_Corezoid_Exchange;
     @Value("${general.Exchange.Corezoid.sSecretKey}")
     private String sSecretKey_Corezoid_Exchange;
+    
+    @Value("${general.Exchange.Corezoid.Gorsovet.sID_User}")
+    private String sUser_Corezoid_Gorsovet_Exchange;
+    @Value("${general.Exchange.Corezoid.Gorsovet.sSecretKey}")
+    private String sSecretKey_Corezoid_Gorsovet_Exchange;
 
     // MSG Properties
     @Value("${general.Monitor.MSG.sURL}")
@@ -149,6 +154,9 @@ public class GeneralConfig {
     private String sSuffixDateMask_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.nDaysOffset}")
     private String snDaysOffset_Pay_Yuzhny_FTP;
+    
+    @Value("${general.feedbackCountLimit}")
+    private String feedbackCountLimit;
    
     
     
@@ -452,5 +460,29 @@ public class GeneralConfig {
 	public Integer getDaysOffset_FTP_Yuzhny_Pay() {
 		return Integer.valueOf(snDaysOffset_Pay_Yuzhny_FTP);
 	}
+	
+	public Long getFeedbackCountLimit() {
+		return Long.valueOf(feedbackCountLimit);
+	}
+	
+	 public boolean isFeedbackCountExpired(Long feedbackCount) {
+			return feedbackCount > getFeedbackCountLimit();
+	 }
+
+    public String getsUser_Corezoid_Gorsovet_Exchange() {
+        return sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsUser_Corezoid_Gorsovet_Exchange(String sUser_Corezoid_Gorsovet_Exchange) {
+        this.sUser_Corezoid_Gorsovet_Exchange = sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public String getsSecretKey_Corezoid_Gorsovet_Exchange() {
+        return sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
+        this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
     
 }

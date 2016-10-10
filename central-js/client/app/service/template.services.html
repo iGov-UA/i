@@ -6,7 +6,7 @@
           <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
           <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
         </div>
-        <div class="col-sm-9 text" style="padding-right: 11.25px">
+        <div class="col-sm-9 text">
           <h3><a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a></h3>
           <ul>
             <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})">{{subcategory.sName_UA}}</a></li>
@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<div class="row" ng-show="spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode">
+<div class="row" ng-show="!resultsAreLoading && (spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode)">
   <div class="text-center">
     <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
   </div>

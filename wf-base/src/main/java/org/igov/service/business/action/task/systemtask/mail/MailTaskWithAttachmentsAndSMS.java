@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.mail.MultiPartEmail;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 //import org.igov.io.sms.ManagerSMS_New;
 
 /**

@@ -3,9 +3,9 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 $breadcrumb-separator: ">";
 $breadcrumb-bg: none;
 /*$grid-float-breakpoint: 992px;*/
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 @import "journal/journal";
-@import 'font-awesome/scss/font-awesome';
+@import '../bower_components/font-awesome/scss/font-awesome';
 
 /**
  * App-wide Styles
@@ -360,7 +360,43 @@ ul.dropdown-menu {
   padding-bottom: 25px;
   padding-top: 25px;
   padding-left: 35px;
-  padding-right: 35px
+  padding-right: 35px;
+  position: relative;
+  bottom: 14px;
+  width: 98%;
+  border: none;
+  left: 6px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  span {
+    nobr {
+      @media (min-width: 300px) and (max-width: 600px) {
+        float: left;
+        font-size: x-small;
+      }
+    }
+  }
+  @media (min-width: 300px) and (max-width: 600px) {
+    width: 95%;
+  }
+  @media (min-width: 400px) and (max-width: 600px) {
+    left: 10px;
+  }
+}
+
+.search-results {
+  li {
+    background: white;
+    padding: 10px 10px 15px 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-top: 21px;
+    span {
+      font-weight: bold;
+      padding: 5px 25px 0 25px;
+      height: 50px;
+    }
+  }
 }
 
 .input-header {
@@ -510,8 +546,14 @@ ul.dropdown-menu {
 }
 
 .collapsing {
-  -webkit-transition: width 2s, height 4s; /* Safari */
-  transition: width 2s, height 4s;
+  -webkit-transition: width 1s, height 0.8s; /* Safari */
+  transition: width 1s, height 0.8s;
+}
+
+.breadcrumbs {
+  @media (max-width: 800px) {
+    margin-left: 15px;
+  }
 }
 
 .highlight {
@@ -521,6 +563,16 @@ ul.dropdown-menu {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+.similar-situation-container {
+  float: right;
+  .similar-situation-container-header {
+    font-size: 24px;
+    font-family: 'Open Sans';
+    padding-left: 8px;
+  }
+}
+
 .marked-string {
   background: yellow;
 }
@@ -703,7 +755,7 @@ ul.dropdown-menu {
 
 .error-popup {
   position: absolute;
-  top: -45px;
+  bottom: 50px;
   background: #FFFFCC;
   border: 1px solid #a94442;
   border-radius: 3px;
@@ -746,7 +798,7 @@ ul.dropdown-menu {
 }
 
 .subcategory-tmpl {
-  width: 78%;
+  width: 84%;
   margin-bottom: 30px;
   padding-left: 5px;
   padding-right: 5px;
@@ -797,6 +849,9 @@ ul.dropdown-menu {
 
 .navi-citizens-business li {
   margin-right: 9px;
+  @media (min-width: 300px) and (max-width: 850px) {
+    margin-right: 2px;
+  }
   a {
     font-weight: bold;
     font-family: "Open Sans";
@@ -818,6 +873,11 @@ ul.dropdown-menu {
       position: relative;
       top: 1px;
     }
+    @media (max-width: 850px) {
+      height: 36px;
+      font-size: 12px;
+      padding: 2px 9px !important;
+    }
   }
 }
 
@@ -828,9 +888,20 @@ ul.dropdown-menu {
   padding-bottom: 40px;
 }
 
-.text a h3{
-    font-size: 19px;
-    margin-bottom: 10px;
+.text {
+  padding-right: 11.25px;
+  @media (max-width: 850px) {
+    padding-right: 14av.25px;
+  }
+  h3 {
+    a{
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 850px) {
+      margin-top: 15px;
+    }
+  }
 }
 
 .text ul {
@@ -2385,6 +2456,10 @@ table.QuestionFields td {
   margin-top: 40px;
   border-top: 1px solid #ccc;
 }
+.no-feedback {
+  margin: 0;
+  border: none;
+}
 .feedback-list-header h2{
   font-size: 24px;
   height: 30px;
@@ -2394,6 +2469,11 @@ table.QuestionFields td {
   height: 90px;
   padding-top: 27px;
   padding-bottom: 30px;
+}
+.no-feedback-header {
+  height: inherit;
+  padding-top: 0;
+  padding-bottom: 25px;
 }
 .feedback-list-content{
 }
