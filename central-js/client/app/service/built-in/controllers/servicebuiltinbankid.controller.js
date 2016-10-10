@@ -638,8 +638,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
 
       $scope.isFieldVisible = function (property) {
-        return property.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(property.id) ?
-                FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
+        var bVisible = property.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(property.id) ?
+            FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
+        if($scope.data.formData.params[property.id] instanceof SignFactory){
+          $scope.isSignNeeded = bVisible;
+        }
+        return bVisible;
       };
 
       $scope.isFieldRequired = function (property) {
