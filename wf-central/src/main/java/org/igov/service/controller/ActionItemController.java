@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 
 import org.igov.model.action.item.ServiceTag;
 import org.igov.model.action.item.ServiceTagLink;
@@ -978,7 +979,8 @@ public class ActionItemController {
             @RequestParam(value = "sFind", required = false) final String sFind, @ApiParam(value
                     = "массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
                     + "Если указан другой ID, фильтр не применяется.", required = false)
-            @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
+            @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, 
+            @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
             @RequestParam(value = "nID_Category", required = true) Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
             @RequestParam(value = "bNew", required = false) Boolean bNew
@@ -990,7 +992,9 @@ public class ActionItemController {
 
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, includeServices, null, null);
-        if (includeServices) {
+        
+        // (asID_Place_UA!=null&&asID_Place_UA.size()>0&&asID_Place_UA.get(0).trim().length()>0)
+        if (includeServices || CollectionUtils.isNotEmpty(asID_Place_UA)) {
             res.forEach(n -> n.setaService(n.getaService().stream().map(
                         s -> prepareServiceToView(s, false)).collect(Collectors.toList())));
         }
