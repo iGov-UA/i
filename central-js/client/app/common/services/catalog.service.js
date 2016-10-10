@@ -83,6 +83,25 @@ angular.module('app')
     }
   };
 
+  this.getCatalogCounts = function(catalog) {
+    var catalogCounts = {'0': 0, '1': 0, '2': 0};
+    if (catalog === undefined) {
+      catalog = servicesCache;
+    }
+
+    angular.forEach(catalog, function(category) {
+      angular.forEach(category.aSubcategory, function(subItem) {
+        angular.forEach(subItem.aService, function(aServiceItem) {
+          if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+            catalogCounts[aServiceItem.nStatus] = 0;
+          }
+          ++catalogCounts[aServiceItem.nStatus];
+        });
+      });
+    });
+    return catalogCounts;
+  };
+
   this.getServiceTags = function (sFind) {
     var data = {
       sFind: sFind,
@@ -155,7 +174,26 @@ angular.module('app')
           operators.push(category);
         }
       });
-    }else {
+    }else if(!catalog.aService && !catalog.aServiceTag_Child) {
+      angular.forEach(catalog, function (category) {
+        if(category.aSubcategory) {
+          angular.forEach(category.aSubcategory, function (subcategory) {
+            angular.forEach(subcategory.aService, function (service) {
+              var found = false;
+              for (var i = 0; i < operators.length; ++i) {
+                if (operators[i].sSubjectOperatorName === service.sSubjectOperatorName) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found && service.sSubjectOperatorName != "") {
+                operators.push(service);
+              }
+            })
+          })
+        }
+      })
+    } else {
       angular.forEach(catalog[0], function(category) {
         var found = false;
         for (var i = 0; i < operators.length; ++i) {
@@ -303,21 +341,4 @@ angular.module('app')
 //   });
 // };
 
-// this.getCatalogCounts = function(catalog) {
-//   var catalogCounts = {'0': 0, '1': 0, '2': 0};
-//   if (catalog === undefined) {
-//     catalog = servicesCache;
-//   }
-//
-//   angular.forEach(catalog, function(category) {
-//     angular.forEach(category.aSubcategory, function(subItem) {
-//       angular.forEach(subItem.aService, function(aServiceItem) {
-//         if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
-//           catalogCounts[aServiceItem.nStatus] = 0;
-//         }
-//         ++catalogCounts[aServiceItem.nStatus];
-//       });
-//     });
-//   });
-//   return catalogCounts;
-// };
+

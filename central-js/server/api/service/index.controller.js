@@ -2,7 +2,6 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
-//var environmentConfig = require('../../config');
 
 var config = environmentConfig.activiti;
 var request = require('request');
@@ -93,7 +92,9 @@ module.exports.postServiceFeedback = function (req, res) {
       'sBody': data.sBody,
       'nID_Rate': data.nID_Rate,
       'nID_Service': req.params.nID,
-      'sAnswer': data.sAnswer || ''
+      'sAnswer': data.sAnswer || '',
+      'sPlace': data.sPlace,
+      'sEmployeeFIO': data.sEmployeeFIO
     }
   }, callback);
 };

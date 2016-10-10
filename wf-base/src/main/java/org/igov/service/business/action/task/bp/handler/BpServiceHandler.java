@@ -102,6 +102,15 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
+            variables.put("clfio", processVariables.get("clfio"));
+            variables.put("region", processVariables.get("region"));
+            variables.put("info", processVariables.get("info"));
+            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            variables.put("sBody", processVariables.get("sBody"));
+            variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
+            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
+            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
@@ -116,6 +125,7 @@ public class BpServiceHandler {
                 LOG.debug("FAIL:", oException);
 
             }
+
         }
         LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
         String feedbackProcessId = null;
@@ -158,6 +168,15 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
+            variables.put("clfio", processVariables.get("clfio"));
+            variables.put("region", processVariables.get("region"));
+            variables.put("info", processVariables.get("info"));
+            variables.put("nasPunkt", processVariables.get("nasPunkt"));
+            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            variables.put("sBody", processVariables.get("sBody"));
+            variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
+            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
+            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
             Set<String> organ = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
@@ -181,6 +200,7 @@ public class BpServiceHandler {
                 LOG.debug("FAIL:", oException);
 
             }
+
 
             try {
                 String feedbackProcess = bpService.startProcessInstanceByKey(nID_Server, PROCESS_FEEDBACK, variables);
@@ -335,28 +355,31 @@ public class BpServiceHandler {
 //        LOG.info("(soResponse={})", soResponse);
 //        return soResponse;
 //    }
+
+    //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
     private String getPlaceByProcess(String sID_Process) {
-        Map<String, String> param = new HashMap<String, String>();
-        param.put("nID_Process", sID_Process);
-        LOG.info("2sID_Process: " + sID_Process);
-        param.put("nID_Server", generalConfig.getSelfServerId().toString());
-        LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
+        Map<String, String> mParam = new HashMap<String, String>();
+        mParam.put("nID_Process", sID_Process);
+        //LOG.info("2sID_Process: " + sID_Process);
+        mParam.put("nID_Server", generalConfig.getSelfServerId().toString());
+        //LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
         String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        LOG.info("ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, param);
+        //LOG.info("ssURL: " + sURL);
+        LOG.info("(sURL={},mParam={})", sURL, mParam);
         String soResponse = null;
+        String sName = null;
         try {
-            soResponse = httpRequester.getInside(sURL, param);
-            LOG.info("soResponse: " + soResponse + " param: " + param);
-            Map res = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("res: " + res);
-            soResponse = (String) res.get("sName");
-            LOG.info("soResponse = (String): " + soResponse);
+            soResponse = httpRequester.getInside(sURL, mParam);
+            LOG.info("soResponse={}", soResponse);
+            Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
+            LOG.info("mReturn={}" + mReturn);
+            sName = (String) mReturn.get("sName");
+            LOG.info("sName={}", sName);
         } catch (Exception ex) {
-            LOG.error("[getPlaceByProcess]: ", ex);
+            LOG.error("", ex);
         }
-        LOG.info("(soResponse={})", soResponse);
-        return soResponse;
+        //LOG.info("(soResponse={})", soResponse);
+        return sName;//soResponse
     }
 
     private Set<String> getCurrentCadidateGroup(final String sProcessName) {

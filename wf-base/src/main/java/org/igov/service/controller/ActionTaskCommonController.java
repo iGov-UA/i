@@ -729,28 +729,54 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return new Process(pi.getProcessInstanceId());
     }
 
-//    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-//    @ResponseBody
-//    public List<String> getProcessTasks(@RequestParam String processInstanceId)
-//            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-//        return getTasksByOrder(ToolLuna.getProtectedNumber(Long.valueOf(processInstanceId)));
-//    }
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
-    //public void setVariableToProcessInstance(
     @ResponseBody
     public String setVariableToProcessInstance(
-            //public void setVariableToProcessInstance(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "key", required = true) String sKey,
             @RequestParam(value = "value", required = true) String sValue
-    //@RequestParam String processInstanceId,
-    //@RequestParam String key,
-    //@RequestParam String value
     ) {
         try {
             runtimeService.setVariable(snID_Process, sKey, sValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
+        return "";
+    }
+
+    /**
+     * Method takes current value of process variable and if its value doesn't contain sInsertValue method appends it.
+     * Also if it contains sRemoveValue it will be removed.
+     * Can be used only with Strings
+     * @param snID_Process - id of Activiti Process
+     * @param sKey - name of Variable on Activiti Process
+     * @param sInsertValue - value with should be added.
+     * @param sRemoveValue - value with should be deleted.
+     * @return
+     */
+    @RequestMapping(value = "/mergeVariable", method = RequestMethod.GET)
+    @ResponseBody
+    public String mergeVariableValueOnProcessInstance(
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "key", required = true) String sKey,
+            @RequestParam(value = "removeValue", required = false) String sRemoveValue,
+            @RequestParam(value = "insertValue", required = false) String sInsertValue
+    ) {
+        try {
+            Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
+            String currentValue = currentValueObject == null ? "" : currentValueObject.toString();
+            if(sInsertValue != null && !currentValue.contains(sInsertValue)){
+                runtimeService.setVariable(snID_Process, sKey, currentValue.trim() + " " + sInsertValue);
+            }
+            if(sRemoveValue!= null && currentValue.contains(sRemoveValue)){
+                Object refreshedValueObject = runtimeService.getVariable(snID_Process, sKey);
+                String refreshedValue = refreshedValueObject == null ? "" : currentValueObject.toString();
+                refreshedValue = refreshedValue.replace(sRemoveValue, "");
+                runtimeService.setVariable(snID_Process, sKey, refreshedValue.trim());
+            }
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
+                    oException.getMessage(), snID_Process, sKey, sInsertValue, sRemoveValue);
         }
         return "";
     }
@@ -1449,6 +1475,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         String sToken = Tool.getGeneratedToken();
         try {
+            String processId = String.valueOf(nID_Process);
+            String variableName = "saTaskStatus";
+            String waitsAnswerTag = " WaitAnswer";
+            Object taskStatus = runtimeService.getVariable(processId, variableName);
+            String tags = taskStatus == null ? "" : String.valueOf(taskStatus);
+            if (!tags.contains(waitsAnswerTag)) {
+                runtimeService.setVariable(processId, variableName, tags.trim() + waitsAnswerTag);
+            }
+
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
