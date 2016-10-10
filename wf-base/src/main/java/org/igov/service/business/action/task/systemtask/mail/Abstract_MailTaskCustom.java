@@ -555,23 +555,23 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                             FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
                         
                             if (oFormProperty != null) {
-                                    String id = oFormProperty.getId();
+                                    String sID = oFormProperty.getId();
                                     //LOG.info("(id={})", id);
-                                    if ("email".equals(id)) {
+                                    if ("email".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorMail = oFormProperty.getValue();
                                     }
-                                    if ("bankIdlastName".equals(id)) {
+                                    if ("bankIdlastName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorLastName = oFormProperty.getValue();
                                     }
-                                    if ("bankIdfirstName".equals(id)) {
+                                    if ("bankIdfirstName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorFirstName = oFormProperty.getValue();
                                     }
-                                    if ("bankIdmiddleName".equals(id)) {
+                                    if ("bankIdmiddleName".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorMiddleName = oFormProperty.getValue();
                                     }
-                                    if ("clFIO".equals(id)) {
+                                    if ("clFIO".equals(sID)&&oFormProperty.getValue()!=null&&!"null".equalsIgnoreCase(oFormProperty.getValue())) {
                                             sAuthorFIO_Original = oFormProperty.getValue();
-                                            LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
+                                            //LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
 
                                     }
                             }
