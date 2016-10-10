@@ -33,23 +33,27 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        String soJSON_Value = this.soJSON.getExpressionText();
-        String sID_Conveyour_Value = this.sID_Conveyour.getExpressionText();
-        LOG.info("soJSON_Value: " + soJSON_Value + " sID_Conveyour_Value: " + sID_Conveyour_Value);
-        String sJSON_Result = replaceTags(soJSON_Value, oExecution);
-        LOG.info("sJSON_Result: " + sJSON_Result);
-        JSONObject soJSON_Result = new JSONObject(sJSON_Result);
-        Map<String, Object> data = new HashMap();
-        Iterator it = soJSON_Result.keys();
-        while (it.hasNext()) {
-            String key = (String) it.next();
-            data.put(key, soJSON_Result.get(key));
+        try {
+            String soJSON_Value = this.soJSON.getExpressionText();
+            String sID_Conveyour_Value = this.sID_Conveyour.getExpressionText();
+            LOG.info("soJSON_Value: " + soJSON_Value + " sID_Conveyour_Value: " + sID_Conveyour_Value);
+            String sJSON_Result = replaceTags(soJSON_Value, oExecution);
+            LOG.info("sJSON_Result: " + sJSON_Result);
+            JSONObject soJSON_Result = new JSONObject(sJSON_Result);
+            Map<String, Object> data = new HashMap();
+            Iterator it = soJSON_Result.keys();
+            while (it.hasNext()) {
+                String key = (String) it.next();
+                data.put(key, soJSON_Result.get(key));
+            }
+            //data.put("nID_Task", Integer.parseInt(delegateTask.getId()));
+            LOG.info("sendToCorezoid data:" + data);
+            String result = corezoid.sendToCorezoid(sID_Conveyour_Value,
+                    generalConfig.getsUser_Corezoid_Gorsovet_Exchange(),
+                    generalConfig.getsSecretKey_Corezoid_Gorsovet_Exchange(), data);
+            LOG.info("sendToCorezoid result:" + result);
+        } catch (Exception ex) {
+            LOG.error("Error SendObject_Corezoid_New: ", ex);
         }
-        //data.put("nID_Task", Integer.parseInt(delegateTask.getId()));
-        LOG.info("sendToCorezoid data:" + data);
-        String result = corezoid.sendToCorezoid(sID_Conveyour_Value,
-                generalConfig.getsUser_Corezoid_Gorsovet_Exchange(), 
-                generalConfig.getsSecretKey_Corezoid_Gorsovet_Exchange(), data);
-        LOG.info("sendToCorezoid result:" + result);
     }
 }

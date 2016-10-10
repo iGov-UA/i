@@ -980,10 +980,14 @@ public class ActionItemController {
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
-            @RequestParam(value = "nID_Category", required = true) final Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
+            @RequestParam(value = "nID_Category", required = true) Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
             @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
         final boolean includeServices = StringUtils.isNotBlank(sFind);
+        if (includeServices) {
+            nID_Category = null;
+        }
+
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, includeServices, null, null);
         if (includeServices) {
