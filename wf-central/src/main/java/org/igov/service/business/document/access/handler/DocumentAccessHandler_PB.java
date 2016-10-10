@@ -12,24 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Node;
-import org.igov.model.subject.SubjectDao;
 import org.igov.util.VariableMultipartFile;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.io.web.SSLCertificateValidation;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.mail.internet.ContentDisposition;
 import javax.mail.internet.ParseException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,6 +35,7 @@ import org.igov.model.document.access.DocumentAccessDao;
 import org.igov.model.subject.SubjectDao;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.igov.service.business.promin.ProminSession_Singleton;
 
 /**
  * Created by Dmytro Tsapko on 8/22/2015.
@@ -64,6 +56,9 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
 
     @Autowired
     private DocumentTypeDao documentTypeDao;
+    
+    @Autowired
+    private ProminSession_Singleton prominSession_Singleton;
 
     @Override
     public DocumentAccess getAccess() {
@@ -98,8 +93,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         //}
 
         try {
-            sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(), generalConfig.getPassword_Auth_Receipt_PB_Bank(), 
-            		generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
+            sessionId = prominSession_Singleton.getSid_Auth_Receipt_PB_Bank();
             String authHeader = "sid:" + sessionId;
             byte[] authHeaderBytes = Base64.encode(authHeader.getBytes(StandardCharsets.UTF_8));
             String authHeaderEncoded = new String(authHeaderBytes);

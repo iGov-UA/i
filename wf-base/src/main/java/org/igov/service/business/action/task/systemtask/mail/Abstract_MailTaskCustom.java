@@ -44,6 +44,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;
@@ -538,7 +539,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         String sAuthorFIO = "";
                         String sAuthorFIO_Original = "";
 
-                        //FormProperty oFormProperty = null;                                
+                        //FormProperty oFormProperty = null;
                         String sPrefix = "";
                         Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
                         if (oMatcherPrefix.find()) {
@@ -549,7 +550,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                                 LOG.info("(form_ID={})", form_ID);
                                 oFormProperty = mProperty.get(form_ID);*/
                         }
-                        
+
       			for (Entry<String,FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
                             FormProperty oFormProperty = oFormPropertyEntry.getValue();                                
                         
@@ -603,6 +604,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                         }
                         //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
                         sAuthorFIO = sAuthorFirstName + " " + sAuthorMiddleName;
+
                         //LOG.info("(sAuthorFIO={})", sAuthorFIO);
                         
                         String sPlace = "";
