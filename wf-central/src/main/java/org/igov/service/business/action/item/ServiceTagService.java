@@ -139,7 +139,10 @@ public class ServiceTagService {
     private boolean isSuitable(Service service,
                                Long nID_Category, String sFind, List<String> asID_Place_UA) {
         boolean res = true;
-        res = nID_Category.equals(service.getSubcategory().getCategory().getId());
+        if (nID_Category != null) {
+            res = nID_Category.equals(service.getSubcategory().getCategory().getId());
+        }
+
         if (res && StringUtils.isNotBlank(sFind)) {
             res = containsWithoutCase(service.getName(), sFind.toLowerCase());
         }
