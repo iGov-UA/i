@@ -203,7 +203,6 @@
             if (taskData.aField[i].sID == sID) {
               var sValue = taskData.aField[i].sValue;
               if (typeof(sValue) === "string" && sValue.length > 0) {
-                taskData.aField[i].sValue = $scope.selectPerformingRsp = null;
                 user.getUsers(sValue).then(function (users) {
                   $scope.selectPerformingRsp = users;
                 });
@@ -659,6 +658,16 @@
             var unformatted = date.split(' ')[0];
             var splittedDate = unformatted.split('-');
             return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
+          }
+        };
+
+        $scope.choiceUser = function(selectedUser) {
+          for (var i = 0; i < taskData.aField.length; i++) {
+            if (taskData.aField[i].sID.includes("sLoginAsignee")) {
+              taskData.aField[i].sValue = selectedUser.sLogin;
+              console.log(taskData.aField[i].sValue);
+              break;
+            }
           }
         };
 
