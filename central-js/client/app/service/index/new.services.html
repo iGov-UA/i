@@ -66,20 +66,10 @@
               </div>
             </div>
 
-            <div style="margin-top: 20px">
-              <div class="col-sm-12 catalog-with-search-result" ng-if="!minSearchLength">
-                <ul>
-                  <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
-                    <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
           </div>
         </div>
 
-        <div class="row" ng-show="spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode">
+        <div class="row" ng-show="!resultsAreLoading && (spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode)">
           <div class="text-center">
             <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
           </div>
@@ -89,15 +79,25 @@
       <div class="row" ng-if="mainSearchView && !resultsAreLoading">
         <div class="container igov-container" style="margin-top: 20px">
           <div class="col-sm-12 catalog-with-search-result">
-            <div ng-repeat="category in catalog">
+            <div ng-repeat="category in catalog" ng-if="!catalog.aService">
+              <div ng-if="catalog.length === 0">
+                <h4>На жаль, за даним запитом результатів не знайдено.</h4>
+              </div>
               <ul ng-repeat="subcategory in category.aSubcategory">
                 <li ng-repeat="service in subcategory.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
                   <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
                 </li>
               </ul>
             </div>
-            <div ng-if="catalog.length === 0">
-              <h4>На жаль, за даним запитом результатів не знайдено.</h4>
+            <div ng-if="catalog.aService">
+              <div ng-if="catalog.aService.length === 0">
+                <h4>На жаль, за даним запитом результатів не знайдено.</h4>
+              </div>
+              <ul>
+                <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+                  <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
