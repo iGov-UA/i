@@ -9,7 +9,7 @@
         style="width:100%;"
         ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"
         data-ng-model="selectedUser"
-        data-ng-options="o.FirstName + ' ' + o.sLastName for o in selectPerformingRsp"
+        data-ng-options="o.sLogin as o.FirstName + ' ' + o.sLastName for o in selectPerformingRsp"
         ng-change="choiceUser(selectedUser)">
       </select>
       <div ng-if="isFormPropertyDisabled(item)">
