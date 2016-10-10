@@ -186,7 +186,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -233,7 +233,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
@@ -352,6 +352,17 @@ ${sBankDetails2}&lt;br /&gt;&lt;br /&gt;
 або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
 (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay_2]&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;Якщо ви оплатили послугу самостійно, вам треба завантажити скановану копію квитанції&lt;/b&gt;&lt;br&gt;
+&lt;br&gt;
+Для цього Вам потрібно зайти у розділ &lt;a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank"&gt;Мій журнал&lt;/a&gt; та відправити цей файл співробітнику відділу ДРАЦС:
+&lt;ul&gt;
+&lt;li&gt;праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;&lt;/li&gt;
+&lt;li&gt;в полі залиште коментар, який побачить співробітник відділу ДРАЦС;&lt;/li&gt;
+&lt;li&gt;нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;&lt;/li&gt;
+&lt;li&gt;натисніть кнопку “Відправити”.&lt;/li&gt;
+&lt;/ul&gt;&lt;br /&gt;
+
+
 Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
 - документ, що посвідчує особу&lt;br /&gt;
 - квитанція про сплату державного мита (не потрібно, якщо Ви скористалися для оплати кнопкою вище)&lt;br /&gt;&lt;br /&gt;
@@ -624,7 +635,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptVid'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Надання відповіді" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надання відповіді" activiti:candidateGroups="Obl_zaks_test">
       <extensionElements>  
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">

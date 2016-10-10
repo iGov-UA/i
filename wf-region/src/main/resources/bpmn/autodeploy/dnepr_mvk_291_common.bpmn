@@ -558,8 +558,11 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
-<p> Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.<br>
+<p>Ваше звернення зареєстровано Дніпропетровською міською радою від ${sDateAppeal} № ${sID_Order_GovPublic}.<br><br>
+Суть Вашого звернення:<br>
+<i>${sReason}</i><br><br>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br>
 Телефони для довідок:<br>
 +380 56 732 12 12<br>
 ‎+390 95 732 12 12<br>
@@ -4710,6 +4713,78 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     <serviceTask id="servicetask10" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
     <sequenceFlow id="flow87" sourceRef="servicetask10" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow88" sourceRef="scripttask5" targetRef="scripttask1"></sequenceFlow>
+    <serviceTask id="servicetask11" name="Відповідь на email" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
+<br>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask12" name="Відповідь на email" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
+<br>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4841,6 +4916,12 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="33.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="1208.0" y="750.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="55.0" width="105.0" x="1007.0" y="1020.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="160.0"></omgdi:waypoint>
@@ -4988,12 +5069,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="1633.0" y="717.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1500.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1349.0" y="838.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1166.0" y="838.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1468.0" y="838.0"></omgdi:waypoint>
         <omgdi:waypoint x="1112.0" y="839.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1335.0" y="823.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1414.0" y="805.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -5012,13 +5091,13 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1633.0" y="717.0"></omgdi:waypoint>
         <omgdi:waypoint x="1630.0" y="900.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1582.0" y="793.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1585.0" y="837.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1633.0" y="717.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1467.0" y="986.0"></omgdi:waypoint>
-        <omgdi:waypoint x="691.0" y="986.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1489.0" y="964.0"></omgdi:waypoint>
+        <omgdi:waypoint x="838.0" y="964.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="885.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1391.0" y="963.0"></omgdc:Bounds>

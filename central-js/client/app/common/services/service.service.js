@@ -47,14 +47,8 @@ angular.module('app').service('ServiceService', function ($http, $q, FeedbackSer
       }]
     }).then(function (response) {
       self.oService = response.data;
-      return FeedbackService.getFeedbackListForService(data.nID).then(function (feedback) {
-        if (feedback.status == 200) {
-          self.oService.aFeedbacks = feedback.data;
-        } else {
-          self.oService.aFeedbacks = [];
-        }
-        return self.oService;
-      });
+
+      return self.oService;
     });
   };
 
