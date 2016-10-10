@@ -53,7 +53,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask16"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_insp_boss">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -103,7 +103,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_insp_empl">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -163,13 +163,14 @@
           <activiti:value id="sEnumSecondResultGenerate" name="Сформувати результат перевірки"></activiti:value>
           <activiti:value id="sEnumSecondResultClose" name="Закриття перевірки"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2_req" name="requiredFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3_req" name="requiredFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3_required.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${PrintForm_direct},${nOrderSchedule}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -178,11 +179,11 @@
     <sequenceFlow id="flow12" sourceRef="usertask5" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow13" name="Закриття перевірки" sourceRef="exclusivegateway2" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultClose'||asSecondResultChecking=='sEnumSecondResultClose}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultChecking=='sEnumResultClose'||asSecondResultChecking=='sEnumSecondResultClose'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway" default="flow52"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="usertask6"></sequenceFlow>
-    <userTask id="usertask6" name="14. Формування, друк документів та зберігання їх в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask6" name="14. Формування, друк документів та зберігання їх в обліковій системі з ЕЦП" activiti:candidateGroups="kyiv_dabi_insp_empl">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -197,11 +198,11 @@
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHowDecisionRemark" name="Прийняте рішення" type="enum">
+        <activiti:formProperty id="asHowDecisionRemark" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="sEnumDecisionRemarkYes" name="Є зауваження"></activiti:value>
           <activiti:value id="sEnumDecisionRemarkNo" name="Немає зауважень"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum">
+        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum" required="true">
           <activiti:value id="sEnumTypeActNoVisit" name="Акт про недопуск на об’єкт"></activiti:value>
           <activiti:value id="sEnumTypeActVisit" name="Акт проведення перевірки"></activiti:value>
         </activiti:formProperty>
@@ -211,9 +212,7 @@
         <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosition_4" name="Посада, ПІБ четвертої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosition_5" name="Посада, ПІБ п'ятої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPresenceOf" name="У присутності кого (посада, прізвище, ім’я, по батькові (уповноваженої ним особи) юридичної особи, фізичної особи/фізичної особи - підприємця, що перевіряється)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReasonInspection" name="Підстава проведення перевірки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubjectCityPlanning" name="Суб’єкт містобудування" type="string"></activiti:formProperty>
@@ -361,6 +360,11 @@
         <activiti:formProperty id="sOffenses_8" name="Правопорушення 8" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffenses_9" name="Правопорушення 9" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffenses_10" name="Правопорушення 10" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+
         <activiti:formProperty id="sPersonAdministrativeResponsibility" name="ПІБ особи, яка притягається до адміністративної відповідальності" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateOfBirthResponsibility" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfBirthResponsibility" name="Місце народження" type="string"></activiti:formProperty>
@@ -370,6 +374,7 @@
         <activiti:formProperty id="sIdentityResponsibility" name="Документ, що посвідчує особу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTaxNumberResponsibility" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOtherInformationResponsibility" name="Інші відомості" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sContractorName" name="Будівельна організація" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSupervisionPib" name="Технічний нагляд" type="string"></activiti:formProperty>
         <activiti:formProperty id="sProjectName" name="Проектна організація" type="string"></activiti:formProperty>
@@ -379,10 +384,6 @@
         <activiti:formProperty id="sDateCase" name="Дата та час розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceCase" name="Місце розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressPlaceCase" name="Адреса місця розгляду справи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum">
-          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
@@ -395,14 +396,25 @@
         <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kiev/DABI_insp_akt_pro_nedopushennya_do_perevirki.html]" type="invisible" default="Акт про недопущення до перевірки" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/kiev/DABI_insp_akt__perevirki.html]" type="invisible" default="Акт перевірки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_RefusingAct" name="[pattern/print/kiev/DABI_insp_akt_pro_nedopushennya_do_perevirki_1.html]" type="invisible" default="Акт про недопущення до перевірки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_CheckingAct" name="[pattern/print/kiev/DABI_insp_akt_perevirki.html]" type="invisible" default="Акт перевірки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Stop" name="[pattern/print/kiev/DABI_insp_pripis_pro_zupinennya_pidgotovchih_ta_budivelnih_robit_1.html]" type="invisible" default="Припис про зупинення підготовчих та будівельних робіт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Eliminate" name="[pattern/print/kiev/DABI_insp_pripis_pro_usunennya_porushennya_1.html]" type="invisible" default="Припис про усунення порушення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Admin" name="[pattern/print/kiev/DABI_insp_protokol_admin_1.html]" type="invisible" default="Протокол про адміністративне правопорушення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Urban" name="[pattern/print/kiev/DABI_insp_protokol_mistobud_1.html]" type="invisible" default="Протокол про порушення у сфері містобудівної діяльності" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4_req" name="requiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5_req" name="requiredFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6_req" name="requiredFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="hideShowFields7" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="hideShowFields8" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8_req" name="requiredFields8" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_8_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="hideShowFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers9_req" name="requiredFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="hideShowFields10" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_10.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -423,7 +435,7 @@
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_doc">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_insp_empl">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -443,7 +455,6 @@
                                expression="Департамент з питань державного архітектурно-будівельного контролю міста Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації)"></activiti:formProperty>
         <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileDirection" name="Направлення" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asNumberOfPersons" name="Кількість осіб, які здійснюють перевірку" type="enum" required="true">
           <activiti:value id="sEnumPersons_1" name="1"></activiti:value>
           <activiti:value id="sEnumPersons_2" name="2"></activiti:value>
@@ -458,6 +469,8 @@
         <activiti:formProperty id="sBaseControl" name="Підстава" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sValidityControl" name="Строк дії направлення" type="string" default="з __ до __ 20 __ року" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_direct" name="[pattern/print/kiev/DABI_insp_napravlennya.html]" type="invisible" default="Направлення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_direct" name="Направлення;Направлення;pattern/print/kiev/DABI_insp_napravlennya.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -656,6 +669,11 @@
         <activiti:formProperty id="sOffenses_8" name="Правопорушення 8" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffenses_9" name="Правопорушення 9" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffenses_10" name="Правопорушення 10" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPersonAdministrativeResponsibility" name="ПІБ особи, яка притягається до адміністративної відповідальності" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateOfBirthResponsibility" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfBirthResponsibility" name="Місце народження" type="string"></activiti:formProperty>
@@ -674,11 +692,6 @@
         <activiti:formProperty id="sDateCase" name="Дата та час розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceCase" name="Місце розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressPlaceCase" name="Адреса місця розгляду справи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asRefEntity" name="Яка особа притягується до відповідальності за порушення у сфері містобудівної діяльності" type="enum">
-          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sInnCompany" name="Код за ЄДРПОУ" type="string"></activiti:formProperty>
@@ -687,7 +700,7 @@
         <activiti:formProperty id="sDocumentCase" name="Документи, які складені за результатами перевірки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffensesResolution" name="Порушення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPersonsControl" name="Особи, які брали участь у розгляді справи" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFine" name="Штраф у розмірі (цифрами та словами)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
