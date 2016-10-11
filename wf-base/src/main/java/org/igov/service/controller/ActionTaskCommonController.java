@@ -1576,12 +1576,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                  */
                 for (int i = 0; i < aField.length(); i++) {
                     JSONObject oField = aField.getJSONObject(i);
-                    String sID = (String) oField.get("sID");
+                    String sID = oField.has("sID") ? (String) oField.get("sID") : null;
                     if (sID == null) {
-                        sID = (String) oField.get("id");
+                        sID = oField.has("id") ? (String) oField.get("id") : null;
                     }
-                    String sValueOld = (String) oField.get("sValue");
-                    String sValueNew = (String) oField.get("sValueNew");
+                    String sValueOld = oField.has("sValue") ? (String) oField.get("sValue") : null;
+                    String sValueNew = oField.has("sValueNew") ? (String) oField.get("sValueNew") : null;
                     mField.put(sID, sValueNew);
                     LOG.info("Set variable sID={} with sValueNew={} (sValueOld={})", sID, sValueNew, sValueOld);
                 }
