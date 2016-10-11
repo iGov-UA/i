@@ -1477,11 +1477,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             String processId = String.valueOf(nID_Process);
             String variableName = "saTaskStatus";
-            String waitsAnswerTag = " WaitAnswer";
+            String waitsAnswerTag = "WaitAnswer";
             Object taskStatus = runtimeService.getVariable(processId, variableName);
             String tags = taskStatus == null ? "" : String.valueOf(taskStatus);
+            LOG.info("set_tags: {}, processId={}, waitsAnswerTag={}", tags, processId, waitsAnswerTag);
             if (!tags.contains(waitsAnswerTag)) {
-                runtimeService.setVariable(processId, variableName, tags.trim() + waitsAnswerTag);
+                runtimeService.setVariable(processId, variableName, tags.trim() + " " + waitsAnswerTag);
             }
 
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
