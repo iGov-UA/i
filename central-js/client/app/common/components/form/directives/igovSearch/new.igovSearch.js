@@ -80,6 +80,10 @@ angular.module('app')
           }
           getCounts ();
 
+          function isFilterActive() {
+            $rootScope.mainSearchView = !!(($state.is('index') || $state.is('index.catalog')) && $scope.data.region);
+          }
+
           $scope.search = function() {
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
@@ -180,7 +184,7 @@ angular.module('app')
             $scope.check = true;
             // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
             // убрать когда теги в бизнесе будут готовы.
-            if($state.is("index.oldbusiness") || $state.is("index.subcategory") || $rootScope.mainSearchView) {
+            if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               var filterCriteria = {};
               var selectedStatus;
               if($scope.selectedStatus == 0) {
@@ -263,6 +267,7 @@ angular.module('app')
             $scope.localityList.load(null, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
             });
+            isFilterActive()
           };
 
           $scope.loadLocalityList = function(search) {
@@ -274,6 +279,7 @@ angular.module('app')
             $scope.data.city = $item;
             $scope.localityList.select($item, $model, $label);
             $scope.search();
+            isFilterActive()
           };
           $scope.search();
 
@@ -315,7 +321,10 @@ angular.module('app')
             }
           });
           $scope.$watch('data.region', function() {
-            if(!$scope.data.region) {$scope.searching();}
+            if(!$scope.data.region) {
+              isFilterActive();
+              $scope.searching();
+            }
           });
           $scope.$on('$stateChangeSuccess', function(event, toState) {
             if (toState.resolve) {
