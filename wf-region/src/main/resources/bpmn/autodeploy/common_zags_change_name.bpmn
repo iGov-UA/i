@@ -417,6 +417,7 @@
             <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -954,7 +955,7 @@
 Якщо ім'я змінюєте впереше - 5.2UAH (в т.ч комісія 10 копійок)/<br />
 Якщо вже раніше змінювали ім'я, державне мито складає - 51.92UAH (в т.ч. комісія 92 копійки)/<br />
 Для сплати державного мита скористуйтесь, будь ласка, кнопкою:<br />
-[paymentButton_LiqPay_2]<br />
+[paymentButton_LiqPay]<br />
 У разі необхідності - підтвердіть перехід на зовнішню сторінку.<br />
 Вас буде перенаправлено на сформований платіж у liqPay.<br />
 Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
