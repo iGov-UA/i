@@ -72,6 +72,10 @@
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
+		
+		<activiti:formProperty id="markers2" name="Мареры2" type="markers" default="{&quot;motion&quot;: {&quot;SplitTextHalf_1&quot;: {&quot;sID_Field&quot;: &quot;bankIdPassport&quot;,&quot;sSpliter&quot;: &quot;&quot;,&quot;sID_Element_sValue1&quot;: &quot;div1&quot;,&quot;sID_Element_sValue2&quot;: &quot;div2&quot;}}}"></activiti:formProperty>    
+        <activiti:formProperty id="div1" name="Назва документа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="div2" name="Номер документа" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -168,7 +172,8 @@
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
 
 
-
+        <activiti:formProperty id="div1" name="Назва документа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="div2" name="Номер документа; ;writable=false" type="string"></activiti:formProperty>
 
 
 

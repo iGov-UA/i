@@ -49,7 +49,6 @@
 
       td {
         border: 1px solid white;
-        text-align: justify;
       }
 
       th {
@@ -74,29 +73,23 @@
 
       .smallText {
         font-size: 10pt;
-        line-height: 1.1;
       }
 
       /* выравнивание текста */
-      .ta-l {
-        text-align: left;
-      }
+      .ta-l {text-align: left;}
+      .ta-j {text-align: justify;}
+      .ta-r {text-align: right;}
+      .ta-c {text-align: center;}
 
-      .ta-j {
-        text-align: justify;
-      }
-
-      .ta-r {
-        text-align: right;
-      }
-
-      .ta-c {
-        text-align: center;
-      }
-
-      .i {
-        font-style: italic;
-      }
+      .i {font-style: italic;}
+      
+      td.checkblock{
+		  width: 60px; 
+		  height: 25px;
+		  text-align: center;
+		  vertical-align: middle;  
+		  border: 1px solid #000;  
+	  }
 
       /* ширина в процентах */            
       .w1p {width: 1%;}      
@@ -192,9 +185,11 @@
           <td class="pg-25">від [bankIdinn]</td>
         </tr>
         <tr>
-          <td class="ta-c smalltext line1">
-          	(код за ЄДРПОУ або реєстраційний <br>
-          	номер облікової картки платника податків*)
+          <td class="ta-c smalltext line1">          	
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+	          	(код за ЄДРПОУ або реєстраційний <br>
+	          	номер облікової картки платника податків*)
+          	</font>
           </td>
         </tr>
         <tr>
@@ -206,9 +201,11 @@
           </td>
         </tr>
         <tr>
-          <td size="2" class="ta-c">          
-          	(найменування платника податків/прізвище,<br>
-            ім’я, по батькові фізичної особи) 
+          <td class="ta-c">
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+          		(найменування платника податків/прізвище,<br>
+          		ім’я, по батькові фізичної особи)
+          	</font>
           </td>
         </tr>
 
@@ -244,6 +241,11 @@
     <div><br><br></div>
     <div class="ta-c"><b>ЗАЯВА</b></div>
     <div><br></div>
+    
+	<script>	
+		def str1 = "456789";
+		document.writeln(str1);
+	</script>
 
     <table class="w100p">
       <tr>
@@ -255,6 +257,12 @@
         <td class="b">[sNameDoc] № [sNumDoc] від [dDoc] року</td>
       </tr>
     </table>
+    
+    
+    
+	<script>
+		document.writeln('[sNameDoc]');
+	</script>
 
     <div class="ta-j">для надання до</div> 
     
@@ -264,7 +272,7 @@
       </tr>
       <tr>
         <td class="ta-c">
-        	<font size="2" color="#606060" face="Arial">
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
         		(найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
         	</font>
         </td>
@@ -282,18 +290,22 @@
       </tr>
       <tr>
         <td></td>
-        <td class="ta-c"><font size="2">(необхідне позначити)</font></td>
+        <td class="ta-c">
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+        		(необхідне позначити)
+        	</font>
+        </td>
         <td></td>
       </tr>
     </table>
 
 
-    <table>
+    <table class="w100p">
       <tr>
-      	<td>
+      	<td valign="top">
 			<table>
 				<tr>
-					<td width="" class="t l b r">V</td>
+					<td class="checkblock r b t l">V</td>
 				</tr>
 			</table>
 		</td>
@@ -301,30 +313,23 @@
         <td class="ta-j">
             Додатково повідомляю, що станом на день звернення триває процес
 		    адміністративного (судового) оскарження суми грошового зобов’язання (у
-		    разі необхідності зробити відповідну позначку „✔”).
+		    разі необхідності зробити відповідну позначку „V”).
     	</td>
       </tr>
     </table>
 
     <div><br><br></div>    
     <table class="w100p">
-        <colgroup>
-            <col width="15%">
-            <col width="5%">
-            <col width="25%">
-            <col width="10%">
-            <col width="25%">
-        </colgroup>
       <tr>
-        <td>
+        <td width="15%">
           Платник податків
         </td>
-        <td>&#160;</td>
-        <td class="ta-c b">
+        <td width="5%">&#160;</td>
+        <td width="15%" class="ta-c b">
           Підписано ЕЦП
         </td>
-        <td>&#160;</td>
-        <td class="b">
+        <td width="5%">&#160;</td>
+        <td width="15%" class="b">
           &#160;
         </td>
       </tr>      
@@ -334,30 +339,28 @@
         </td>
         <td></td>
         <td class="ta-c">
-        	<font size="3" color="#606060">
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
         		(підпис)
         	</font>
         </td>
         <td></td>
         <td class="ta-c">
-        	<font class="smalltext">
+          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
           		(ініціали та прізвище)
         	</font>
         </td>
       </tr>      
     </table>
     
-    <div><br><br><br><br><br><br></div>  
-    <table class="w100p">
-      <tr>
-        <td class="smalltext">
-	      ____________________________________________<br> 
-	      * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні
-	      переконання відмовляються від прийняття реєстраційного номера
-	      облікової картки платника податків та повідомили про це відповідний
-	      орган доходів і зборів і мають відмітку у паспорті). 
-    	</td>
-      </tr>      
-    </table>
+    <div><br><br><br><br><br></div>  
+    <div class="ta-j">
+      ____________________________________________<br>
+      <font style="font-size:10pt; font-family:Times New Roman" color="#000">
+      	* Або серія та номер паспорта (для фізичних осіб, які через свої релігійні 
+      	переконання відмовляються від прийняття реєстраційного номера 
+      	облікової картки платника податків та повідомили про це відповідний 
+      	орган доходів і зборів і мають відмітку у паспорті).
+      </font>
+    </div>
   </body>
 </html>
