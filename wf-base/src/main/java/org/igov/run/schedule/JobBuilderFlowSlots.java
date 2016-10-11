@@ -54,7 +54,6 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public static final int DAYS_IN_HALF_YEAR = 180;
     private static final String SUFFIX_AUTO = "auto";
 
-//    private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
     private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);  
     @Autowired
     private FlowService oFlowService;
@@ -99,9 +98,9 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-            LOG.info("11111dateStart: "+dateStart);
+            LOG.info("dateStart: "+dateStart);
             dateEnd = oDateStart.plusDays((int) (nStartDay + DAYS_IN_HALF_YEAR));
-            LOG.info("222222 dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+            LOG.info("dateStart = {}, dateEnd = {}", dateStart, dateEnd);
             
             List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
                     dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
@@ -130,7 +129,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
                 && nStartDay < DAYS_IN_HALF_YEAR) {
             dateStart = oDateStart.plusDays(nStartDay);
-            Long nCountAutoGenerate = flow.getnCountAutoGenerate();
+            Long nCountAutoGenerate = flow.getnCountAutoGenerate(); // nCountAutoGenerate данным параметром задаваем количество дней на которое генерируем
             LOG.info("nCountAutoGenerate: " + nCountAutoGenerate);
             int CountAutoGenerate = toIntExact(nCountAutoGenerate);
             LOG.info("CountAutoGenerate: " + CountAutoGenerate);
