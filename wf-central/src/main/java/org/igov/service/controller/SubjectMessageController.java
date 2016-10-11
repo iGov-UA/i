@@ -3,8 +3,10 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiException;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -82,6 +84,9 @@ public class SubjectMessageController {
     
     @Autowired
     HttpRequester httpRequester;
+
+    @Autowired
+    private TaskService taskService;
 
     @ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -525,6 +530,34 @@ public class SubjectMessageController {
             */
 
             LOG.info("Successfully saved message with the ID {}", messageID);
+
+            String sHost = null;
+            int nID_Server = oHistoryEvent_Service.getnID_Server();
+            Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
+            if (!oOptionalServer.isPresent()) {
+                throw new RecordNotFoundException();
+            } else {
+                sHost = oOptionalServer.get().getsURL();
+            }
+
+            String mergeUrl = sHost + "/service/action/task/mergeVariable";
+            Long nID_Task = oHistoryEvent_Service.getnID_Task();
+//            Task task = taskService.createTaskQuery().taskId(String.valueOf(nID_Task)).singleResult();
+//            String processId = task.getProcessInstanceId();
+
+            Map<String, String> mergeParams = new HashMap<String, String>();
+            mergeParams.put("processInstanceId", String.valueOf(nID_Task));
+            mergeParams.put("key", "saTaskStatus");
+
+            LOG.info("mergeParams={}, mergeUrl=", mergeParams, mergeUrl);
+
+            if (nID_SubjectMessageType == 8L) { //citizen's comment or question
+                mergeParams.put("insertValue", "GotUpdate");
+            }
+            if (nID_SubjectMessageType == 9L) { //officer's comment or question
+                mergeParams.put("removeValue", "GotUpdate");
+            }
+            httpRequester.getInside(mergeUrl, mergeParams);
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);

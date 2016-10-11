@@ -109,13 +109,13 @@ public class ActionTaskCentralController {
             String sReturnRegion = httpRequester.getInside(sURL, mParam);
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
-            String mergeUrl = sURL + "/service/action/task/mergeVariable";
+            String mergeUrl = sHost + "/service/action/task/mergeVariable";
             Map<String, String> mergeParams = new HashMap<String, String>();
             mergeParams.put("processInstanceId", processId);
             mergeParams.put("key", "saTaskStatus");
             mergeParams.put("insertValue", "GotAnswer");
             mergeParams.put("removeValue", "WaitAnswer");
-            LOG.info("mergeParams={}", mergeParams);
+            LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
 
         } catch (Exception e) {
