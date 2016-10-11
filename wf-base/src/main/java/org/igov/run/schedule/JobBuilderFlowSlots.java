@@ -55,7 +55,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     private static final String SUFFIX_AUTO = "auto";
 
 //    private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
-    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class); 
     @Autowired
     private FlowService oFlowService;
 
