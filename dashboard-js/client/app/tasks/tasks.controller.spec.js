@@ -2,7 +2,16 @@
 describe('Controller: TasksCtrl', function() {
   var scope, tasks, processes, taskDeferred, processesDeferred;
 
-  beforeEach(module('dashboardJsApp'));
+  beforeEach(module('dashboardJsApp', function($provide) {
+    $provide.service('tasksStateModel', function() {
+      return {};
+    });
+
+    $provide.service('stateModel', function() {
+      return {};
+    });
+  }));
+
   beforeEach(inject(function($controller, $rootScope, $q) {
     scope = $rootScope.$new();
     mockTasksService($q);
