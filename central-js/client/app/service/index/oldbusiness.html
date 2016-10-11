@@ -22,7 +22,8 @@
           <h3 style="font-size: 24px">
             <a title="Перейти до перегляду послуг цієї категорії"
                class="control-element"
-               ui-sref="index.subcategory({'catID': 2, 'scatID': subcategory.nID })">
+               ui-sref="index.subcategory({'catID': 2, 'scatID': subcategory.nID })"
+               style="font-size: 19px" >
               {{subcategory.sName}}
             </a>
           </h3>
@@ -65,7 +66,7 @@
   </div>
 </div>
 
-<div class="row" ng-if="spinner || busSpinner">
+<div class="row" ng-if="!resultsAreLoading && (spinner || busSpinner)">
   <div class="text-center">
     <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
   </div>
