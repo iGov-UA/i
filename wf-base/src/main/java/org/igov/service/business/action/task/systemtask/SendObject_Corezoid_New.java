@@ -39,7 +39,7 @@ public class SendObject_Corezoid_New extends Abstract_MailTaskCustom implements 
         String soData_Value_Result = replaceTags(soData_Value, oExecution);
         LOG.info("soData_Value_Result: " + soData_Value_Result);
         Map<String, Object> data = new HashMap();
-        String[] aDataSplit = soData_Value_Result.split("||");
+        String[] aDataSplit = soData_Value_Result.split(";;");
         String key, value;
         for (String dataSplit : aDataSplit) {
             String[] keyValue = dataSplit.split("::");
