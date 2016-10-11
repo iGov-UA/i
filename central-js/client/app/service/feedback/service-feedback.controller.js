@@ -206,9 +206,9 @@
       } else if (diffDays < 1) {
         result = ' вчора ' + time;
       } else if (Math.floor(diffDays) <= 4) {
-        result = Math.floor(diffDays) + ' дні назад ' + time;
+        result = diffDays.toFixed(0) + ' дні назад ' + time;
       } else {
-        result = Math.floor(diffDays) + ' днів назад ' + time;
+        result = diffDays.toFixed(0) + ' днів назад ' + time;
       }
 
       return result;

@@ -51,7 +51,7 @@ angular.module('app')
 
           function getIDPlaces() {
             var result;
-            if ($scope.bShowExtSearch && $scope.data.region !== null) {
+            if ($scope.bShowExtSearch && $scope.data.region !== null && $scope.data.region !== "") {
               var places = [$scope.data.city === null ? $scope.data.region : ''].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city);
 
               result = places.map(function(e) { return e.sID_UA; });
@@ -254,6 +254,7 @@ angular.module('app')
             return $scope.regionList.load(null, search);
           };
           $scope.onSelectRegionList = function($item) {
+            $rootScope.resultsAreLoading = true;
             $scope.data.region = $item;
             $scope.regionList.select($item);
             $scope.data.city = null;
@@ -269,6 +270,7 @@ angular.module('app')
           };
 
           $scope.onSelectLocalityList = function($item, $model, $label) {
+            $rootScope.resultsAreLoading = true;
             $scope.data.city = $item;
             $scope.localityList.select($item, $model, $label);
             $scope.search();
@@ -311,6 +313,9 @@ angular.module('app')
                 $(".igov-container a").highlight($scope.sSearch, "marked-string");
               }, 100)
             }
+          });
+          $scope.$watch('data.region', function() {
+            if(!$scope.data.region) {$scope.searching();}
           });
           $scope.$on('$stateChangeSuccess', function(event, toState) {
             if (toState.resolve) {
