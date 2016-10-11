@@ -101,7 +101,7 @@ angular.module('app')
             } else if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               $scope.category = 'business';
             }
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog).then(function (result) {
               if(!$state.is('index')
                   && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
@@ -263,6 +263,9 @@ angular.module('app')
             $scope.regionList.select($item);
             $scope.data.city = null;
             $scope.localityList.reset();
+            if($state.is('index') || $state.is('index.catalog')){
+              $rootScope.mainFilterCatalog = true;
+            }
             $scope.search();
             $scope.localityList.load(null, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
@@ -322,6 +325,8 @@ angular.module('app')
           });
           $scope.$watch('data.region', function() {
             if(!$scope.data.region) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainFilterCatalog = false;
               isFilterActive();
               $scope.searching();
             }
