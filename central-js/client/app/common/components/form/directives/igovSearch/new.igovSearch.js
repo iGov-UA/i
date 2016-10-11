@@ -252,6 +252,7 @@ angular.module('app')
           };
           $scope.clear = function() {
             restoreSettings(defaultSettings);
+            if($rootScope.mainFilterCatalog) $rootScope.mainFilterCatalog = false;
             $scope.searching();
           };
           $scope.loadRegionList = function(search) {
