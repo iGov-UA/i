@@ -503,7 +503,7 @@
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${chekForCompleteParallelProcess}">
+        <activiti:executionListener event="end" delegateExpression="${chekForCompleteParallelProcess}">
           <activiti:field name="paramName">
             <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
           </activiti:field>
@@ -513,7 +513,7 @@
           <activiti:field name="sErrorMessage">
             <activiti:expression><![CDATA[Неможливо опрацювати задачу. Будь ласка, зачекайте інформацію про об'єкт від співробітника відділу дозвільних документів.]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:executionListener>
         
         <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
@@ -534,26 +534,26 @@
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum">
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum" writable="false">
           <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHowDecisionRemark" name="Прийняте рішення" type="enum">
+        <activiti:formProperty id="asHowDecisionRemark" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="sEnumDecisionRemarkYes" name="Є зауваження"></activiti:value>
           <activiti:value id="sEnumDecisionRemarkNo" name="Немає зауважень"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum">
+        <activiti:formProperty id="asTypeAct" name="Вид акту" type="enum" required="true">
           <activiti:value id="sEnumTypeActNoVisit" name="Акт про недопуск на об’єкт"></activiti:value>
           <activiti:value id="sEnumTypeActVisit" name="Акт проведення перевірки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateDraftingAct" name="Дата складання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceDraftingAct" name="Місце складання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTextAudit" name="За результатами перевірки встановлено" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextAudit" name="За результатами перевірки встановлено" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPosition_1" name="Посада, ПІБ першої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_2" name="Посада, ПІБ другої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition_3" name="Посада, ПІБ третьої особи, яка здійснює перевірку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPersonsInvolvedAudit" name="Особи, які залучені до перевірки (посади, прізвища та ініціали)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPresenceOf" name="У присутності кого (посада, прізвище, ім’я, по батькові (уповноваженої ним особи) юридичної особи, фізичної особи/фізичної особи - підприємця, що перевіряється)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReasonInspection" name="Підстава проведення перевірки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubjectCityPlanning" name="Суб’єкт містобудування" type="string"></activiti:formProperty>
@@ -705,7 +705,7 @@
           <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="sPersonAdministrativeResponsibility" name="ПІБ особи, яка притягається до адміністративної відповідальності" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateOfBirthResponsibility" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceOfBirthResponsibility" name="Місце народження" type="string"></activiti:formProperty>
@@ -715,6 +715,7 @@
         <activiti:formProperty id="sIdentityResponsibility" name="Документ, що посвідчує особу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTaxNumberResponsibility" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOtherInformationResponsibility" name="Інші відомості" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sContractorName" name="Будівельна організація" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSupervisionPib" name="Технічний нагляд" type="string"></activiti:formProperty>
         <activiti:formProperty id="sProjectName" name="Проектна організація" type="string"></activiti:formProperty>
@@ -724,6 +725,7 @@
         <activiti:formProperty id="sDateCase" name="Дата та час розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceCase" name="Місце розгляду справи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressPlaceCase" name="Адреса місця розгляду справи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibIndividual" name="ПІБ фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sInnCompany" name="Код за ЄДРПОУ" type="string"></activiti:formProperty>
@@ -732,9 +734,22 @@
         <activiti:formProperty id="sDocumentCase" name="Документи, які складені за результатами перевірки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOffensesResolution" name="Порушення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPersonsControl" name="Особи, які брали участь у розгляді справи" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFine" name="Штраф у розмірі (цифрами та словами)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFine" name="Штраф у розмірі" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDetails" name="Реквізити для оплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecidedControl" name="Установив" type="textArea"></activiti:formProperty>
+    
+        
+        <activiti:formProperty id="markers4_req" name="requiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_4_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers5_req" name="requiredFields5" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_5_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6_req" name="requiredFields6" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_6_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="hideShowFields7" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="hideShowFields8" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8_req" name="requiredFields8" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_8_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="hideShowFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers9_req" name="requiredFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="hideShowFields10" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_10.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
