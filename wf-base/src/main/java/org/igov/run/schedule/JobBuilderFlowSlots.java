@@ -54,8 +54,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public static final int DAYS_IN_HALF_YEAR = 180;
     private static final String SUFFIX_AUTO = "auto";
 
-    private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
-//    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
+//    private final static Logger LOG = LoggerFactory.getLogger(JobFeedBack.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
     @Autowired
     private FlowService oFlowService;
 
