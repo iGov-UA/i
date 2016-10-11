@@ -304,22 +304,11 @@
      */
     $scope.checkStatus = function(task, status) {
       var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
-      return saTaskStatusVarData ? checkStatus(saTaskStatusVarData, status) : false;
-    };
-
-    /**
-     * Return literal multi-status representation
-     * @param {object} task Task data
-     */
-    $scope.getStatusAbbr = function(task) {
-      return
-        (checkStatus(task, 'WaitAnswer') ? 'B' : '') +
-        (checkStatus(task, 'GotAnswer') ? 'O' : '') +
-        (checkStatus(task, 'GotUpdate ') ? 'K' : '');
+      return checkStatus(saTaskStatusVarData, status);
     };
 
     $scope.getTaskTitle = function (task) {
-      return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
+      return '№' + getTaskStatusAbbr(task) + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
         + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
     };
 
@@ -425,6 +414,18 @@
    * @status {string} Status to check
    */
   function checkStatus(variableData, status) {
-    return variableData.value ? variableData.value.indexOf(status) >= 0 ? false;
+    return (variableData && variableData.value) ? variableData.value.indexOf(status) >= 0 : false;
   }
+
+  /**
+   * Return task literal multi-status representation
+   * @param {object} task Task data
+   */
+  function getTaskStatusAbbr(task) {
+    var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
+
+    return (checkStatus(saTaskStatusVarData, 'WaitAnswer') ? 'B' : '') +
+      (checkStatus(saTaskStatusVarData, 'GotAnswer') ? 'O' : '') +
+      (checkStatus(saTaskStatusVarData, 'GotUpdate ') ? 'K' : '');
+  };
 })();
