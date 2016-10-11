@@ -16,6 +16,9 @@
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -29,14 +32,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Початок періоду візитів" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDay" name="Кількість днів візиту; мінімум 5 максимум 90" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" required="true">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я, по батькові (за наявності) та дата народження дітей до 18 років" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я, по батькові (за наявності) та дата народження дітей до 18 років" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Якщо у документі декілька сторінок об'єднайте у pdf-файл або zip архів, розмір не може перевищувати 5Мб"></activiti:formProperty>
         <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям" type="file" required="true"></activiti:formProperty>
@@ -49,9 +52,9 @@
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="string" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="string" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="string" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
@@ -152,7 +155,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompFio" name="Дані керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
+        <activiti:formProperty id="sUserFio" name="Дані відповідальної особи" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку планується запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
@@ -180,7 +184,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Вартість послуги цифрами" type="string" default="171 грн. 38 коп."></activiti:formProperty>
         <activiti:formProperty id="sSumText" name="Вартість послуги текстом" type="string" default="сто сімдесят одна гривня тридцять вісім копійок"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для сплати" type="string" default="Отримувач: ГУ ДМС України в Дніпропетровській області, р/р 37114078079427, ЄДРПОУ 37806243, МФО 820172 в Державна казначейська служба України м.Київ"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для сплати" type="textArea" default="Отримувач: ГУ ДМС України в Дніпропетровській області, р/р 37114078079427, ЄДРПОУ 37806243, МФО 820172 в Державна казначейська служба України м.Київ"></activiti:formProperty>
         <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible"></activiti:formProperty>
@@ -250,7 +254,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${sWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag!='true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -333,7 +337,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompFio" name="Дані керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
+        <activiti:formProperty id="sUserFio" name="Дані відповідальної особи" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку планується запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
