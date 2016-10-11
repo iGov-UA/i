@@ -87,7 +87,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         //TODO:раскомментировать после тестирования
        // if (!generalConfig.isSelfTest() && !"https://prod-double-region.tech.igov.org.ua".equalsIgnoreCase(generalConfig.getSelfHost())) {
             LOG.info("scheduleJob...");
-            scheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep);  
         /*} else {
             LOG.info("scheduleJob... SKIPED(test)!");
         }*/
@@ -101,7 +101,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 35 17 1/1 * ?"); //0 0 2 1/1 * ?
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 55 17 1/1 * ?"); //0 0 2 1/1 * ?
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
