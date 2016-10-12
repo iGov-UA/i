@@ -308,7 +308,7 @@
     };
 
     $scope.getTaskTitle = function (task) {
-      return '№' + getTaskStatusAbbr(task) + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
+      return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
         + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
     };
 
@@ -416,16 +416,4 @@
   function hasTaskStatus(variableData, status) {
     return (variableData && variableData.value) ? variableData.value.indexOf(status) >= 0 : false;
   }
-
-  /**
-   * Return task literal multi-status representation
-   * @param {object} task Task data
-   */
-  function getTaskStatusAbbr(task) {
-    var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
-
-    return (hasTaskStatus(saTaskStatusVarData, 'WaitAnswer') ? 'B' : '') +
-      (hasTaskStatus(saTaskStatusVarData, 'GotAnswer') ? 'O' : '') +
-      (hasTaskStatus(saTaskStatusVarData, 'GotUpdate ') ? 'K' : '');
-  };
 })();
