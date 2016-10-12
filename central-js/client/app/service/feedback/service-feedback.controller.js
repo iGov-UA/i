@@ -77,9 +77,10 @@
         });
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          var filters = o.sAuthorFIO.trim().split(' ');
+          var filters = o.sAuthorFIO.trim().match(/null/gi);
 
-          return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false) && (filters[0] ? filters[0].trim() === 'null' : true);
+          return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+            && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
         });
       });
 
