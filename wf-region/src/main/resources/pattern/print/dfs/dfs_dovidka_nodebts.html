@@ -7,7 +7,7 @@
     <style type="text/css">
 
       section.PrintFormClaim {        
-      	font-size: 14pt;
+        font-size: 14pt;
         font-family: "Times New Roman";
         width: 17cm;
       }
@@ -71,7 +71,7 @@
       section.PrintFormClaim th {
         border: 1px solid black;
       }
-      
+
       .under_multifield{ /* Мой кейс, многострочный текст*/
         border-bottom: 1px solid black;
         text-align: justify;
@@ -230,9 +230,19 @@
       /* ширина в процентах */            
       .w1p {width: 1%;}      
       .w4p {width: 4%;}      
-      .w60p {width: 60%;}
+      .w5p {width: 5%;}      
+      .w8p {width: 8%;}   
+      .w10p { width: 10%;}
+      .w20p { width: 20%;}
       .w30p { width: 30%;}
-      .w33p { width: 33%;}      
+      .w33p { width: 33%;} 
+      .w40p { width: 40%;}
+      .w50p { width: 50%;}   
+      .w60p { width: 60%;}   
+      .w70p { width: 70%;}   
+      .w80p { width: 80%;}   
+      .w90p { width: 90%;}    
+      .w95p { width: 95%;}     
       .w100p { width: 100%;}
 
       /* ширина */
@@ -300,36 +310,36 @@
 
 
       .test{ border: 1px solid red;}
-      
-		/* свойства для печати*/
-		@media print {
-		    @page {
-		        margin: 1cm 1.5cm 1cm 2.5cm;
-		    }
-		
-			* {
-				-webkit-print-color-adjust: exact;
-				print-color-adjust: exact;
-			}
-			
-			a[href^="http://"]:after, a[href^="ftp://"]:after {
-			  content: " (" attr(href) ")";
-			  color: blue;
-			}
-			
-			section {page-break-after: avoid;}
-			h1 {page-break-after: avoid;}
-			p {page-break-inside: avoid; orphans:3; widows:2;}
-			ul, img {page-break-inside: avoid;}
-		}      
+
+      /* свойства для печати*/
+      @media print {
+        @page {
+          margin: 1cm 1.5cm 1cm 2.5cm;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        a[href^="http://"]:after, a[href^="ftp://"]:after {
+          content: " (" attr(href) ")";
+          color: blue;
+        }
+
+        section {page-break-after: avoid;}
+        h1 {page-break-after: avoid;}
+        p {page-break-inside: avoid; orphans:3; widows:2;}
+        ul, img {page-break-inside: avoid;}
+      }      
     </style>
-    
+
 
   </head>
   <body>
     <section class="PrintFormClaim">
-		
-      <div class="whoBlock ml-11">
+
+      <div class="whoBlock ml-8">
         До органу доходів і зборів
 
         <div class="under_multifield w100p ta-l">
@@ -423,27 +433,34 @@
         <span class="check_box"><span id="spanLawCourt">&#10004;</span><span id="spanLawCourtNo">&#160;</span></span>        
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
-
       <br/>
-      <div>
-        <div class="under_field notb w20p">
-          Платник податків
+      <div class="test layout w100p">
+        <div class="w30p">
+          <div class="test under_field notb w100p">
+            Платник податків
+          </div>
         </div>
-        <div class="notunder_field w10p"></div>
-        <div class="under_field w20p">
-          <u>          
-            &#160;
-          </u>
-          <span>(підпис)</span>
+        <div class="w8p"></div>
+
+        <div class="w20p">
+          <div class="test under_field w100p">
+            <u>          
+              &#160;
+            </u>
+            <span>(підпис)</span>
+          </div>
         </div>
-        <div class="notunder_field w10p"></div>
-        <div class="under_field w30p">
-          <u>
-          	<span id="spanFIO">&#160;</span>
-          </u>
-          <span>(ініціали та прізвище)</span>
+        <div class="w8p"></div>
+        <div class="w30p">
+          <div class="test under_field w100p">
+            <u>
+              <span id="spanFIO">&#160;</span>
+            </u>
+            <span>(ініціали та прізвище)</span>
+          </div>
         </div>
-      </div><br/><br/><br/>
+      </div>
+      <br/><br/><br/>
       <div class="smalltext">
         ____________________________________________<br>
         * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні переконання
@@ -451,39 +468,36 @@
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
     </section>
-    
-    
-    <script>
-    	//**** Скрипт для заполнения ИНН/ЕДГРПОУ ****
-	    var inn; 
-	    
-	    if("[subekt]"=="по собі, як фізичній особі"){
-	    	inn = String("[bankIdinn]");
-	    } else if("[subekt]"=="по підприємству, як його представник"){
-	    	inn = String("[edrpou]");
-	    } 
-	
-	    var cells = document.getElementById("trINN").children;
-	
-	    for(var i=0; i<cells.length; ++i){
-	      cells[i].innerHTML =inn[i];
-	      cells[i].className = 'ta-c';
-	    }
-	    
-	    
-	    //**** Скрипт подчеркивание **** 
-	    document.getElementById("spanTypePaper").className = "u";
-	    
-	    
-	    //**** Скрипт Фамилия инициалы ****	    
-	    var spanFIO = document.getElementById("spanFIO");
-	    var clFIO = String("[clFIO]").split(' ');
-	    if(clFIO.length == 3){
-	    	kk.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
-	    }
-    </script>
 
-    
-    
+
+    <script>
+      //**** Скрипт для заполнения ИНН/ЕДГРПОУ ****
+      var inn; 
+
+      if("[subekt]"=="по собі, як фізичній особі"){
+        inn = String("[bankIdinn]");
+      } else if("[subekt]"=="по підприємству, як його представник"){
+        inn = String("[edrpou]");
+      } 
+
+      var cells = document.getElementById("trINN").children;
+
+      for(var i=0; i<cells.length; ++i){
+        cells[i].innerHTML =inn[i];
+        cells[i].className = 'ta-c';
+      }
+
+
+      //**** Скрипт подчеркивание **** 
+      document.getElementById("spanTypePaper").className = "u";
+
+
+      //**** Скрипт Фамилия инициалы ****	    
+      var spanFIO = document.getElementById("spanFIO");
+      var clFIO = String("[clFIO]").split(' ');
+      if(clFIO.length == 3){
+        spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
+      }
+    </script>
   </body>
 </html>
