@@ -32,7 +32,7 @@
         </activiti:formProperty>
         
         <activiti:formProperty id="sKeyParticipant" name="Ключові потенційні учасники реалізації проекту; (хто, на Вашу думку, має брати участь в реалізації даного проекту" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Comments" name="Коментарі" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Comments" name="Коментарі" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="file" name="Ви можете завантажити свій проект; якщо документ має декілька сторінок, об'єднайте у pdf-файл або zip архів" type="file" ></activiti:formProperty>
         
@@ -107,7 +107,7 @@ ${sNameOrgan}<br>
     
      <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     
-    <userTask id="usertask1" name="Прийтяння рішення по проекту">
+    <userTask id="usertask1" name="Прийтяння рішення по проекту" activiti:candidateGroups="loda_invest">
        <extensionElements>  
         <activiti:formProperty id="date_today" name="Дата подання заяви" writable="false"></activiti:formProperty>   
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -185,6 +185,7 @@ ${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -223,6 +224,7 @@ ${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
