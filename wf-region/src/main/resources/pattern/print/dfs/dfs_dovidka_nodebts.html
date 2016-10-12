@@ -218,6 +218,9 @@
       section.PrintFormClaim .ta-l { text-align: left;}
       section.PrintFormClaim .ta-j { 
         text-align: justify;
+      }
+      section.PrintFormClaim .ta-j-w { 
+        text-align: justify;
         -webkit-hyphens: auto;
         -moz-hyphens: auto;
         -ms-hyphens: auto;
@@ -337,7 +340,7 @@
 
   </head>
   <body>
-    <section class="PrintFormClaim">
+    <section lang="uk" class="PrintFormClaim">
 
       <div class="whoBlock ml-8">
         До органу доходів і зборів
@@ -434,16 +437,16 @@
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
       <br/>
-      <div class="test layout w100p">
+      <div class="layout w100p">
         <div class="w30p">
-          <div class="test under_field notb w100p">
+          <div class="under_field notb w100p">
             Платник податків
           </div>
         </div>
         <div class="w8p"></div>
 
         <div class="w20p">
-          <div class="test under_field w100p">
+          <div class="under_field w100p">
             <u>          
               &#160;
             </u>
@@ -452,7 +455,7 @@
         </div>
         <div class="w8p"></div>
         <div class="w30p">
-          <div class="test under_field w100p">
+          <div class="under_field w100p">
             <u>
               <span id="spanFIO">&#160;</span>
             </u>
@@ -482,7 +485,7 @@
 
       var cells = document.getElementById("trINN").children;
 
-      for(var i=0; i<cells.length; ++i){
+      for(var i=0; i<cells.length && i<inn.length; ++i){
         cells[i].innerHTML =inn[i];
         cells[i].className = 'ta-c';
       }
