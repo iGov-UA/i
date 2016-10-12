@@ -13,6 +13,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask1" name="Старт" activiti:candidateGroups="kyiv_dabi_permit_boss">
       <extensionElements>
+        <activiti:formProperty id="start" name="Стартовий таск" type="string" default="start"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${setCheckVar}">
           <activiti:field name="paramName">
             <activiti:expression>sOpenGate</activiti:expression>
@@ -32,7 +33,7 @@
           <activiti:field name="paramName">
             <activiti:expression>sOpenGate</activiti:expression>
           </activiti:field>
-          <activiti:field name="checkVal">
+          <activiti:field name="checkValue">
             <activiti:expression>true</activiti:expression>
           </activiti:field>
           <activiti:field name="sErrorMessage">
