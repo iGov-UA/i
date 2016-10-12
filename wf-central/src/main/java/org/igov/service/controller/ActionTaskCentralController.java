@@ -88,7 +88,6 @@ public class ActionTaskCentralController {
                    // null, //sDateCreate
                   // null //sDateClosed
             );
-            LOG.info("Look after save, arguments are sBody: {} saField: {}", sBody, saField);
             String sHost = null;
             int dash_position = sID_Order.indexOf("-");
             int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
