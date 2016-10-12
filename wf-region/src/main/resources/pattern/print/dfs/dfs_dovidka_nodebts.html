@@ -376,7 +376,7 @@
         <br/>
         <div class="under_multifield w100p ta-l">
           <u>
-            <span id="spanFisName">[bankIdlastName] [bankIdlastName] [bankIdlastName]</span>            
+            <span id="spanFisName">[clFIO]</span>            
             <span id="spanUrName">[sNameUr]</span>
           </u> 
         </div>
@@ -408,7 +408,7 @@
         заборгованості з податків, зборів, платежів відповідно до вимог
       </div>
       <div class="under_multifield w100p ta-j">
-        <u>[sNameDoc] № [sNumDoc] від [dDoc] року</u>
+        <u>[sNameDoc]</u>
       </div>  
 
 
@@ -432,7 +432,7 @@
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
 
-      <br/><br/>
+      <br/>
       <div>
         <div class="under_field notb w20p">
           Платник податків
@@ -451,7 +451,7 @@
           </u>
           <span>(ініціали та прізвище)</span>
         </div>
-      </div><br/>
+      </div><br/><br/><br/>
       <div class="smalltext">
         ____________________________________________<br>
         * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні переконання
@@ -459,6 +459,17 @@
         та повідомили про це відповідний орган доходів і зборів і мають відмітку у паспорті).
       </div>
     </div>
+    
+    
+    <script>
+	    var inn = String("[bankIdinn]");
+	
+	    var cells = document.getElementById("trINN").children;
+	
+	    for(var i=0;  i<cells.length; ++i){
+	      cells[i].innerHTML =inn[i];
+	    }
+    </script>
 
     
     
