@@ -90,7 +90,6 @@ execution.setVariable('sTicketCode', tickCode)
 										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
 										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li>
 										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
-										${sDocZagran}
 									</ul>
 								</p>
 								<p>	
@@ -111,7 +110,7 @@ execution.setVariable('sTicketCode', tickCode)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>

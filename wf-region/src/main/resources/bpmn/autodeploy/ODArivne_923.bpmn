@@ -25,10 +25,6 @@
         <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="file_11" name="Дані відповідних форм племінного обліку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_22" name="Матеріали державної атестації та переатестації  суб’єктів племінної справи у тваринництві" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_33" name="Матеріали державних книг племінних тварин, каталогів або інших офіційних видань" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_44" name="Огляд племінних (генетичних) ресурсів (за потреби)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_agro" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
@@ -136,7 +132,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file_11},${file_22},${file_33},${file_44}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
