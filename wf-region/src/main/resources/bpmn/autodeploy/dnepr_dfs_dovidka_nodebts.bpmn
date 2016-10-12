@@ -68,10 +68,7 @@
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
-		
-		<activiti:formProperty id="markers2" name="Мареры2" type="markers" default="{&quot;motion&quot;: {&quot;SplitTextHalf_1&quot;: {&quot;sID_Field&quot;: &quot;bankIdPassport&quot;,&quot;sSpliter&quot;: &quot;&quot;,&quot;sID_Element_sValue1&quot;: &quot;div1&quot;,&quot;sID_Element_sValue2&quot;: &quot;div2&quot;}}}"></activiti:formProperty>    
-        <activiti:formProperty id="div1" name="Назва документа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="div2" name="Номер документа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_print.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -170,6 +167,10 @@
         <activiti:formProperty id="sNameDoc" name="Нормативно-правовий акт, відповідно до вимог якого необхідно надати довідку; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Найменування підприємства (установи, організації), до якого (якої) буде подано довідку; ;writable=false" type="textArea"></activiti:formProperty>
 
+		<activiti:formProperty id="asLawCourt" name="Чи знаходитись ви в процесі адміністративного (судового) оскарження суми грошового зобов’язання" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
 
         <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
@@ -178,7 +179,7 @@
         <activiti:formProperty id="comment_1" name="Укажіть причину відмови" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_user.json')}"></activiti:formProperty>
-
+        <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_print.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_dovidka_nodebts.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
 
