@@ -5,13 +5,10 @@
     <title>Надання довідки про доходи фізичних осіб</title>
 
     <style type="text/css">
-      body {
-        font-size: 14pt;
-        font-family: "Times New Roman";
+      .body {
         padding: 1cm 1.5cm 1cm 2.5cm;
         width: 21cm;
-        min-height: 100%;
-        height: 100%;
+        border: 1px solid #f00;
       }
 
       table {
@@ -22,16 +19,8 @@
         border: 1px solid black;
       }
 
-      td.notb {
-        border: 1px solid white;
-      }
-
-      td {
-        border: 1px solid white;
-      }
-
-      th {
-        border: 1px solid white;
+      td.notb, td, th {
+        border: 0px solid white;
       }
 
       th.t, td.t {
@@ -64,7 +53,6 @@
 		  height: 25px;
 		  text-align: center;
 		  vertical-align: middle;  
-		  border: 1px solid #000;  
 	  }
 
       /* ширина в процентах */            
@@ -97,11 +85,7 @@
       .w500 {	width: 500px;}
 
       /* отступ  */
-
       .pl-paragraph { text-indent: 1cm;}
-      .pl-paragraph>div,
-      .pl-paragraph>span  
-      { text-indent: initial;} 
 
 
       .pl-25 { padding-left: 25px;}
@@ -143,208 +127,198 @@
       
       
       
-      .under_field { /* Блок с подписью */
-
-      }
-
-      .under_field.notb { /*без подчеркивания*/
-        border-bottom: 0px solid black;
-      }
-
-      /*если надо подчеркнуть*/
-      .under_field>spam.under {
-        padding: 0 10px;
-        text-decoration: none;
-      }
-
-      /*текст снизу*/
-      .under_field>span.textUnd {
-        color: #606060;
-        font-size: 10pt;
-      }
-      
     </style>
   </head>
-  <body size="3">
-    <div class="whoBlock ml-11">
-
-      <table class="w100p">
-        <tr>
-          <td>До органу доходів і зборів</td>
-        </tr>
-        <tr>
-          <td class="b">[sNameOrgan]</td>
-        </tr>
-        <tr>
-          <td>&#160;<br> <br></td>
-        </tr>
-        <tr>
-          <td class="pg-25">від [bankIdinn]</td>
-        </tr>
-        <tr>
-          <td class="ta-c smalltext line1">          	
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-	          	(код за ЄДРПОУ або реєстраційний <br>
-	          	номер облікової картки платника податків*)
-          	</font>
-          </td>
-        </tr>
-        <tr>
-          <td>&#160;<br></td>
-        </tr>
-        <tr>
-          <td class="b"><span id="spanFisName">[bankIdlastName]
-            [bankIdlastName] [bankIdlastName]</span> <span id="spanUrName">[sNameUr]</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="ta-c">
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-          		(найменування платника податків/прізвище,<br>
-          		ім’я, по батькові фізичної особи)
-          	</font>
-          </td>
-        </tr>
-
-
-        <tr>
-          <td>&#160;<br></td>
-        </tr>
-        <tr>
-          <td class="b">Поштова адреса: 
-          	<span id="spanAdressRegistr">[bankIdAddressFactual]</span>
-            <span id="spanAdressFactual">[sAddressFactual]</span> 
-            <span id="spanAdressFactualUr">[sAddressFactualUr]</span>
-          </td>
-        </tr>
-
-        <tr>
-          <td>&#160;<br></td>
-        </tr>
-        <tr>
-          <td class="b">Електронна адреса: [email]</td>
-        </tr>
-
-        <tr>
-          <td>&#160;<br></td>
-        </tr>
-        <tr>
-          <td class="b">Контактний телефон: [phone]</td>
-        </tr>
-
-      </table>
-    </div>
-
-    <div><br><br></div>
-    <div class="ta-c"><b>ЗАЯВА</b></div>
-    <div><br></div>
-    <table class="w100p">
-      <tr>
-     	<td class="ta-j pl-paragraph">
-     		Прошу видати довідку про відсутність заборгованості з податків, зборів, платежів відповідно до вимог
-     	</td>      	
-      </tr>
-      <tr>
-        <td class="b">[sNameDoc] № [sNumDoc] від [dDoc] року</td>
-      </tr>
-    </table>
-    <div class="ta-j">для надання до</div> 
-    
-    <table class="w100p">
-      <tr>
-        <td class="b ta-c">[sNameCompany]</td>
-      </tr>
-      <tr>
-        <td class="ta-c">
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-        		(найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
-        	</font>
-        </td>
-      </tr>
-    </table>
-
-
-    <div><br></div>  
+  <body>
     <table>
       <tr>
-        <td>Довідку прошу видати в</td>
-        <td class="b">електронному/<u>паперовому</u>
-        </td>
-        <td>вигляді.</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="ta-c">
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-        		(необхідне позначити)
-        	</font>
-        </td>
-        <td></td>
-      </tr>
-    </table>
+        <td class="body">
+          <div class="whoBlock ml-11">
+            <table class="w100p">
+              <tr>
+                <td>До органу доходів і зборів</td>
+              </tr>
+              <tr>
+                <td class="b">[sNameOrgan]</td>
+              </tr>
+              <tr>
+                <td>&#160;<br> <br></td>
+              </tr>
+              <tr>
+                <td class="pg-25">від [bankIdinn]</td>
+              </tr>
+              <tr>
+                <td class="ta-c smalltext line1">
+                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                    (код за ЄДРПОУ або реєстраційний <br>
+                    номер облікової картки платника податків*)
+                  </font>
+                </td>
+              </tr>
+              <tr>
+                <td>&#160;<br></td>
+              </tr>
+              <tr>
+                <td class="b">
+                  <span id="spanFisName">
+                    [bankIdlastName]
+                    [bankIdlastName] [bankIdlastName]
+                  </span> <span id="spanUrName">[sNameUr]</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="ta-c">
+                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                    (найменування платника податків/прізвище,<br>
+                    ім’я, по батькові фізичної особи)
+                  </font>
+                </td>
+              </tr>
 
 
-    <table class="w100p">
-      <tr>
-      	<td valign="top">
-			<table>
-				<tr>
-					<td class="checkblock r b t l">V</td>
-				</tr>
-			</table>
-		</td>
-        <td width="10px"></td>
-        <td class="ta-j">
-            Додатково повідомляю, що станом на день звернення триває процес
-		    адміністративного (судового) оскарження суми грошового зобов’язання (у
-		    разі необхідності зробити відповідну позначку „V”).
-    	</td>
+              <tr>
+                <td>&#160;<br></td>
+              </tr>
+              <tr>
+                <td class="b">
+                  Поштова адреса:
+                  <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
+                  <span id="spanAdressFactual">[sAddressFactual]</span>
+                  <span id="spanAdressFactualUr">[sAddressFactualUr]</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td>&#160;<br></td>
+              </tr>
+              <tr>
+                <td class="b">Електронна адреса: [email]</td>
+              </tr>
+
+              <tr>
+                <td>&#160;<br></td>
+              </tr>
+              <tr>
+                <td class="b">Контактний телефон: [phone]</td>
+              </tr>
+
+            </table>
+          </div>
+
+          <br><br>
+          <div class="ta-c"><b>ЗАЯВА</b></div>
+          <div><br></div>
+          <table class="w100p">
+            <tr>
+              <td class="ta-j pl-paragraph">
+                Прошу видати довідку про відсутність заборгованості з податків, зборів, платежів відповідно до вимог
+              </td>
+            </tr>
+            <tr>
+              <td class="b">[sNameDoc] № [sNumDoc] від [dDoc] року</td>
+            </tr>
+          </table>
+          <div class="ta-j">для надання до</div>
+
+          <table class="w100p">
+            <tr>
+              <td class="b ta-c">[sNameCompany]</td>
+            </tr>
+            <tr>
+              <td class="ta-c">
+                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                  (найменування підприємства (установи, організації), до якого (якої) буде подано довідку)
+                </font>
+              </td>
+            </tr>
+          </table>
+
+
+          <div><br></div>
+          <table>
+            <tr>
+              <td>Довідку прошу видати в</td>
+              <td class="b">
+                електронному/<u>паперовому</u>
+              </td>
+              <td>вигляді.</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="ta-c">
+                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                  (необхідне позначити)
+                </font>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+
+
+          <table class="w100p">
+            <tr>
+              <td valign="top">
+                <table>
+                  <tr>
+                    <td class="checkblock r b t l">V</td>
+                  </tr>
+                </table>
+              </td>
+              <td width="10px"></td>
+              <td class="ta-j">
+                Додатково повідомляю, що станом на день звернення триває процес
+                адміністративного (судового) оскарження суми грошового зобов’язання (у
+                разі необхідності зробити відповідну позначку „V”).
+              </td>
+            </tr>
+          </table>
+
+          <div><br><br></div>
+          <table class="w100p">
+            <tr>
+              <td width="15%">
+                Платник податків
+              </td>
+              <td width="5%">&#160;</td>
+              <td width="15%" class="ta-c b">
+                Підписано ЕЦП
+              </td>
+              <td width="5%">&#160;</td>
+              <td width="15%" class="b">
+                &#160;
+              </td>
+            </tr>
+            <tr>
+              <td>
+                &#160;
+              </td>
+              <td></td>
+              <td class="ta-c">
+                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                  (підпис)
+                </font>
+              </td>
+              <td></td>
+              <td class="ta-c">
+                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                  (ініціали та прізвище)
+                </font>
+              </td>
+            </tr>
+          </table>
+
+          <div><br><br><br><br><br></div>
+          <div class="ta-j">
+            ____________________________________________<br>
+            <font style="font-size:10pt; font-family:Times New Roman" color="#000">
+              * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні
+              переконання відмовляються від прийняття реєстраційного номера
+              облікової картки платника податків та повідомили про це відповідний
+              орган доходів і зборів і мають відмітку у паспорті).
+            </font>
+          </div>
+        </td>
       </tr>
     </table>
-
-    <div><br><br></div>    
-    <table class="w100p">
-      <tr>
-        <td width="15%">
-          Платник податків
-        </td>
-        <td width="5%">&#160;</td>
-        <td width="15%" class="ta-c b">
-          Підписано ЕЦП
-        </td>
-        <td width="5%">&#160;</td>
-        <td width="15%" class="b">
-          &#160;
-        </td>
-      </tr>      
-      <tr>
-        <td>
-          &#160;
-        </td>
-        <td></td>
-        <td class="ta-c">
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-        		(підпис)
-        	</font>
-        </td>
-        <td></td>
-        <td class="ta-c">
-          	<font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-          		(ініціали та прізвище)
-        	</font>
-        </td>
-      </tr>      
-    </table>
-    
-    <div><br><br><br><br><br></div>  
-    <div class="ta-j">
-      ____________________________________________<br>
-      <font style="font-size:10pt; font-family:Times New Roman" color="#000">
-      	* Або серія та номер паспорта (для фізичних осіб, які через свої релігійні 
-      	переконання відмовляються від прийняття реєстраційного номера 
-      	облікової картки платника податків та повідомили про це відповідний 
-      	орган доходів і зборів і мають відмітку у паспорті).
-      </font>
-    </div>
   </body>
 </html>
