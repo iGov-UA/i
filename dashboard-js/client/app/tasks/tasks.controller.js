@@ -302,9 +302,9 @@
      * @param {string} status Status to check
      * @returns {boolean} True if task is in status otherwise false
      */
-    $scope.checkStatus = function(task, status) {
+    $scope.hasTaskStatus = function(task, status) {
       var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
-      return checkStatus(saTaskStatusVarData, status);
+      return hasTaskStatus(saTaskStatusVarData, status);
     };
 
     $scope.getTaskTitle = function (task) {
@@ -413,7 +413,7 @@
    * @param {object} variableData
    * @status {string} Status to check
    */
-  function checkStatus(variableData, status) {
+  function hasTaskStatus(variableData, status) {
     return (variableData && variableData.value) ? variableData.value.indexOf(status) >= 0 : false;
   }
 
@@ -424,8 +424,8 @@
   function getTaskStatusAbbr(task) {
     var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
 
-    return (checkStatus(saTaskStatusVarData, 'WaitAnswer') ? 'B' : '') +
-      (checkStatus(saTaskStatusVarData, 'GotAnswer') ? 'O' : '') +
-      (checkStatus(saTaskStatusVarData, 'GotUpdate ') ? 'K' : '');
+    return (hasTaskStatus(saTaskStatusVarData, 'WaitAnswer') ? 'B' : '') +
+      (hasTaskStatus(saTaskStatusVarData, 'GotAnswer') ? 'O' : '') +
+      (hasTaskStatus(saTaskStatusVarData, 'GotUpdate ') ? 'K' : '');
   };
 })();

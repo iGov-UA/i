@@ -41,6 +41,17 @@ describe('Controller: TasksCtrl', function() {
     thenCountsParsed();
   });
 
+  it('check task status', function() {
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: ' status1'}]}, 'status1')).toBeTruthy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1 '}]}, 'status1')).toBeTruthy();
+    expect(scope.hasTaskStatus({variables: [{name: 'otherVar', value: ''}, {name: 'saTaskStatus', value: 'status1 status2'}]}, 'status1')).toBeTruthy();
+
+    expect(scope.hasTaskStatus({variables: [{name: 'someVar', value: 'status3'}]}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: []}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1'}]}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1 status2 status4'}]}, 'status3')).toBeFalsy();
+  });
+
   function thenLoadCounts () {
     expect(tasks.list.calls.count()).toBe(3);
     expect(tasks.list.calls.argsFor(0)[0]).toBe('selfAssigned');
