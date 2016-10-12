@@ -77,7 +77,9 @@
         });
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
+          var filters = o.sAuthorFIO.trim().split(' ');
+
+          return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false) && (filters[0] ? filters[0].trim() === 'null' : true);
         });
       });
 
@@ -192,13 +194,14 @@
         return;
       }
 
-      var result = '',
-        date = $.trim(dateStr),
-        parsedDate = new Date(date),
-        time = parsedDate.getHours() + ':' + parsedDate.getMinutes(),
-        today = moment().startOf('day'),
-        releaseDate = moment(date),
-        diffDays = today.diff(releaseDate, 'days', true);
+      var result = ''
+        , date = $.trim(dateStr)
+        , parsedDate = new Date(date)
+        , minutes = parsedDate.getMinutes()
+        , time = parsedDate.getHours() + ':' + (minutes < 10 ? '0' + minutes : minutes)
+        , today = moment().startOf('day')
+        , releaseDate = moment(date)
+        , diffDays = today.diff(releaseDate, 'days', true);
 
       if (diffDays < 0) {
         result = 'сьогодні ' + time;
