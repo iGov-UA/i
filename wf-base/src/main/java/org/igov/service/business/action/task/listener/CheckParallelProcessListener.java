@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -27,26 +28,21 @@ public class CheckParallelProcessListener implements ExecutionListener {
     //@Autowired
     //private RuntimeService runtimeService;
     @Override
-    public void notify(DelegateExecution oExecution) throws CommonServiceException {
+    public void notify(DelegateExecution oExecution) throws TaskAlreadyUnboundException {
         //DelegateExecution oExecution = delegateTask.getExecution();
-        try {
-            String paramName = getStringFromFieldExpression(this.paramName, oExecution);
-            LOG.info("paramName: " + paramName);
-            String checkValue = getStringFromFieldExpression(this.checkValue, oExecution);
-            LOG.info("checkValue: " + checkValue);
-            String sErrorMessage = getStringFromFieldExpression(this.sErrorMessage, oExecution);
-            LOG.info("sErrorMessage: " + sErrorMessage);
-            //String sValFromProcess = (String) runtimeService.getVariable(oExecution.getProcessInstanceId(), paramName);
-            String sValFromProcess = (String) oExecution.getVariable(paramName);
-            LOG.info("sValFromProcess: " + sValFromProcess);
 
-            if (!checkValue.trim().equals(sValFromProcess.trim())) {                
-                throw new Exception(sErrorMessage);
-            }
-        } catch (Exception oException) {
-            LOG.warn("Previous process isn't complete");
-            throw new CommonServiceException("",oException);
+        String paramName = getStringFromFieldExpression(this.paramName, oExecution);
+        LOG.info("paramName: " + paramName);
+        String checkValue = getStringFromFieldExpression(this.checkValue, oExecution);
+        LOG.info("checkValue: " + checkValue);
+        String sErrorMessage = getStringFromFieldExpression(this.sErrorMessage, oExecution);
+        LOG.info("sErrorMessage: " + sErrorMessage);
+        //String sValFromProcess = (String) runtimeService.getVariable(oExecution.getProcessInstanceId(), paramName);
+        String sValFromProcess = (String) oExecution.getVariable(paramName);
+        LOG.info("sValFromProcess: " + sValFromProcess);
+
+        if (!checkValue.trim().equals(sValFromProcess.trim())) {
+            throw new TaskAlreadyUnboundException(sErrorMessage);
         }
     }
-
 }
