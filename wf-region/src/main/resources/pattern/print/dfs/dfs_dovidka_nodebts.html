@@ -486,11 +486,12 @@
 
       var cells = document.getElementById("trINN").children;
 
-      for(var i=0; i<cells.length && i<inn.length; ++i){
-        cells[i].innerHTML =inn[i];
-        cells[i].className = "ta-c w20";
+      for(var i=0; i<cells.length; ++i){
+    	  if(i<inn.length){
+    		  cells[i].innerHTML =inn[i];	  
+    	  }
+    	  cells[i].className = "ta-c w20";
       }
-
 
       //**** Скрипт подчеркивание **** 
       document.getElementById("spanTypePaper").className = "u";
