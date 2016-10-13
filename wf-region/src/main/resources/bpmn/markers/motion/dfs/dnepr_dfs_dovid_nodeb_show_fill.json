@@ -22,16 +22,16 @@
 			"sCondition" : "false"
 		}, 
 		"ValuesFieldsOnCondition_1" : {
-			"aField_ID" : ["sAddressFactual", "sAddressFactualUr", "sInn", "edrpou", "clFIO", "sNameUr"], 
-			"asID_Field_sValue" : ["[bankIdAddressFactual]", " ", "[bankIdinn]", " ", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", " "], 
+			"aField_ID" : ["bFlagAdres", "sAddressFactualUr", "sInn", "clFIO", "sNameUr"], 
+			"asID_Field_sValue" : ["true", " ", "[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", " "], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
 			"sCondition" : "[sClient] == 'fiz'"
 		}, 
 		"ValuesFieldsOnCondition_2" : {
-			"aField_ID" : ["sAddressFactual", "sAddressFactualUr", "sInn", "edrpou", "clFIO", "sNameUr"], 
-			"asID_Field_sValue" : [" ", " ", " ", " ", " ", " "], 
+			"aField_ID" : ["sAddressFactual", "sAddressFactualUr", "sInn", "clFIO", "sNameUr"], 
+			"asID_Field_sValue" : [" ", " ", "[edrpou]", " ", " "], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
@@ -52,6 +52,14 @@
 				"sClient" : "asLawCourt"
 			}, 
 			"sCondition" : "[sClient] == 'no'"
+		}, 
+		"ValuesFieldsOnCondition_5" : {
+			"aField_ID" : ["sAddressFactual", "bFlagAdres"], 
+			"asID_Field_sValue" : ["[bankIdAddressFactual]", "false"], 
+			"asID_Field" : {
+				"sClient" : "bFlagAdres"
+			}, 
+			"sCondition" : "[sClient] == 'true'"
 		}
 	}
 }
