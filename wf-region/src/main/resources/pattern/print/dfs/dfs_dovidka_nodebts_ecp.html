@@ -7,6 +7,8 @@
     <style type="text/css">
       table {
         border-collapse: collapse;
+        border-spacing: 0;
+        padding: 0;
       }
 
       td.bb {
@@ -14,7 +16,7 @@
       }
 
       td.notb, td, th {
-        border: 3px solid #0f0;
+        border: 1px solid #ff0;
       }
 
       th.t, td.t {
@@ -42,9 +44,7 @@
 
       .i {font-style: italic;}
       
-      td.checkblock{
-		  width: 10mm; 
-		  height: 10mm;
+      .checkblock{
 		  text-align: center;
 		  vertical-align: middle;  
 	  }
@@ -67,6 +67,8 @@
       .w100p { width: 100%;}
 
       /* ширина */
+		.w10 {	width: 10px;}
+		.w30 {	width: 30px;}
       .w50 {	width: 50px;}
       .w100 {	width: 100px;}
       .w150 {	width: 150px;}
@@ -77,6 +79,7 @@
       .w450 {	width: 450px;}
       .w400 {	width: 400px;}
       .w500 {	width: 500px;}
+      
 
       /* отступ  */
       .pl-paragraph { text-indent: 1cm;}
@@ -89,6 +92,12 @@
       .pl-200 { padding-left: 200px;}
       .pl-250 { padding-left: 250px;}
       .pl-300 { padding-left: 300px;}
+
+		.pr-5 { padding-right: 5px;}
+		.pr-10 { padding-right: 10px;}
+		.pr-25 { padding-right: 25px;}
+		.pr-50 { padding-right: 50px;}
+		.pr-100 { padding-right: 100px;}
 
       .ml-1{ padding-left: 1cm;}
       .ml-2{ padding-left: 2cm;}
@@ -117,23 +126,37 @@
   <body>
     <table class="w100p">
       <tr>
-        <td class="t l b r ml-1">
+        <td class="ml-1">
           <div class="ml-7">
             <table class="w100p">
               <tr>
                 <td>До органу доходів і зборів</td>
               </tr>
               <tr>
-                <td class="b">[sNameOrgan]</td>
+                <td><u>[sNameOrgan]</u></td>
+              </tr>
+              <tr>
+                <td class="ta-c">
+                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                    (найменування органу доходів і зборів)
+                  </font>
+                </td>
               </tr>
               <tr>
                 <td>&#160;<br> <br></td>
               </tr>
               <tr>
-                <td class="pg-25">від <div class="pg-25"></div> [bankIdinn]</td>
+                <td class="pg-25">
+                	<table>
+                		<tr>
+                			<td>від</td>
+                			<td>[sInn]</td>
+                		</tr>
+                	</table>
+                </td>
               </tr>
               <tr>
-                <td class="ta-c smalltext line1">
+                <td class="ta-c">
                   <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
                     (код за ЄДРПОУ або реєстраційний <br>
                     номер облікової картки платника податків*)
@@ -145,10 +168,7 @@
               </tr>
               <tr>
                 <td class="b">
-                  <span id="spanFisName">
-                    [bankIdlastName]
-                    [bankIdlastName] [bankIdlastName]
-                  </span> <span id="spanUrName">[sNameUr]</span>
+                    [sAvtor]
                 </td>
               </tr>
               <tr>
@@ -166,10 +186,7 @@
               </tr>
               <tr>
                 <td class="b">
-                  Поштова адреса:
-                  <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
-                  <span id="spanAdressFactual">[sAddressFactual]</span>
-                  <span id="spanAdressFactualUr">[sAddressFactualUr]</span>
+                  Поштова адреса: [sAddressFactual][sAddressFactualUr]
                 </td>
               </tr>
 
@@ -200,7 +217,14 @@
               </td>
             </tr>
             <tr>
-              <td class="b">[sNameDoc]</td>
+              <td class="b ta-c">[sNameDoc]</td>
+            </tr>
+            <tr>
+              <td class="ta-c">
+                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
+                  (назва, номер та дата прийняття нормативно-правового акта)
+                </font>
+              </td>
             </tr>
           </table>
           <div class="ta-j">для надання до</div>
@@ -222,7 +246,9 @@
           <div><br></div>
           <table>
             <tr>
-              <td>Довідку прошу видати в</td>
+              <td class="w250">
+              	Довідку прошу видати в
+              </td>
               <td class="b ta-c">
                 електронному/<u>паперовому</u>
               </td>
@@ -239,24 +265,25 @@
             </tr>
           </table>
 
-
           <table class="w100p">
             <tr>
-              <td width="15mm" valign="top">
-                <table>
-                  <tr>
-                    <td class="checkblock r b t l">V</td>
-                  </tr>
-                </table>
+              <td height="30" class="checkblock w30 r b t l">
+              	[sV]
+              </td>              
+              <td class="w10" rowspan="2">
               </td>
-              <td class="ta-j">
+              <td class="ta-j" rowspan="2">
                 Додатково повідомляю, що станом на день звернення триває процес
                 адміністративного (судового) оскарження суми грошового зобов’язання (у
                 разі необхідності зробити відповідну позначку „V”).
               </td>
             </tr>
+            <tr>
+              <td>
+              </td>
+            </tr>
           </table>
-
+          
           <div><br><br></div>
           <table class="w100p">
             <tr>
