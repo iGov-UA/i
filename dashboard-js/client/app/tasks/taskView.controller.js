@@ -264,7 +264,6 @@
           var sClientFIO = null;
           var sClientName = null;
           var sClientSurname = null;
-          var bCheckGeneralComment = false;
 
           angular.forEach($scope.taskForm, function (item) {
             if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
@@ -274,8 +273,7 @@
                 sType: item.type,
                 sValue: item.value,
                 sValueNew: item.value,
-                sNotify: $scope.clarifyFields[item.id].text,
-                sGeneralComment: $scope.clarifyModel.sBody
+                sNotify: $scope.clarifyFields[item.id].text
               });
 
             if (item.id === 'email') {
@@ -291,15 +289,6 @@
             }
           });
 
-          if(aFields.length === 0){
-            bCheckGeneralComment = true;
-          }
-          if(bCheckGeneralComment && $scope.clarifyModel.sBody !== ''){
-            aFields.push({
-              sType: 'string',
-              sGeneralComment: $scope.clarifyModel.sBody
-            });
-          }
           if ($scope.clarifyModel.sBody.trim().length === 0 && aFields.length === 0) {
             Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
             return;
