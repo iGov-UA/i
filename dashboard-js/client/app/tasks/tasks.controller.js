@@ -296,6 +296,17 @@
       return result;
     };
 
+    /**
+     * Check if task in status
+     * @param {object} task Task data
+     * @param {string} status Status to check
+     * @returns {boolean} True if task is in status otherwise false
+     */
+    $scope.hasTaskStatus = function(task, status) {
+      var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
+      return hasTaskStatus(saTaskStatusVarData, status);
+    };
+
     $scope.getTaskTitle = function (task) {
       return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
         + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
@@ -377,5 +388,32 @@
     };
 
     $scope.applyTaskFilter();
+  }
+
+  /**
+   * Returns task variable data
+   * @param {array} variables Task variables
+   * @param {string} varName variable name
+   */
+  function getTaskVariable(variables, varName) {
+    if (angular.isDefined(variables)) {
+      for (var i = 0; i < variables.length; i++) {
+        var v = variables[i];
+
+        if (v.name == varName)
+          return v;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Check task is in status
+   * @param {object} variableData
+   * @status {string} Status to check
+   */
+  function hasTaskStatus(variableData, status) {
+    return (variableData && variableData.value) ? variableData.value.indexOf(status) >= 0 : false;
   }
 })();
