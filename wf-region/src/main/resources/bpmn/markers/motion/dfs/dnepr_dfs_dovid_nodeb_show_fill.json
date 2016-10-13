@@ -8,11 +8,18 @@
 			"sCondition" : "[sClient] == 'ur'"
 		}, 
 		"ShowFieldsOnCondition_2" : {
-			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "sAddressFactual", "sInn"], 
+			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdAddressFactual", "bankIdinn"], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
 			"sCondition" : "[sClient] == 'fiz'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field" : {
+				"sClient" : "sID_Public_SubjectOrganJoin"
+			}, 
+			"sCondition" : "[sClient] != '0'"
 		}, 
 		"ShowFieldsOnCondition_inv01" : {
 			"aField_ID" : ["sNameOrgan", "sMailClerkNodebts", "sPhoneOrgan", "sWorkTime", "sAddress", "nCodeTaxOrgan", "nEGRPOU", "markersStart"], 
@@ -22,8 +29,8 @@
 			"sCondition" : "false"
 		}, 
 		"ValuesFieldsOnCondition_1" : {
-			"aField_ID" : ["sInn", "sAvtor", "sAddressFactualUr", "bFlagAdres"], 
-			"asID_Field_sValue" : ["[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", " ", "true"], 
+			"aField_ID" : ["sInn", "sAvtor", "sAddressFactualUr"], 
+			"asID_Field_sValue" : ["[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", " "], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
@@ -57,18 +64,9 @@
 			"aField_ID" : ["sAddressFactual"], 
 			"asID_Field_sValue" : ["[bankIdAddressFactual]"], 
 			"asID_Field" : {
-				"sClient" : "bFlagAdres"
+				"sClient" : "sID_Public_SubjectOrganJoin"
 			}, 
-			"sCondition" : "[sClient] == 'true'"
-		}, 
-		"ValuesFieldsOnCondition_6" : {
-			"aField_ID" : ["bFlagAdres"], 
-			"asID_Field_sValue" : ["false"], 
-			"asID_Field" : {
-				"sClient" : "sAddressFactual", 
-				"sClient_2" : "bankIdAddressFactual"
-			}, 
-			"sCondition" : "[sClient] == [sClient_2]"
+			"sCondition" : "[sClient] == '0'"
 		}
 	}
 }
