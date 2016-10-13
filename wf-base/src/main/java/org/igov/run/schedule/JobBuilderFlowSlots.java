@@ -73,7 +73,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
 
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
+        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll(); 
         LOG.info("aFlowServiceData: " + aFlowServiceData.listIterator());
         LOG.info("aFlowServiceData: " + aFlowServiceData.size());
         LOG.info("<-------------------------------start for---------------------------------------->");
