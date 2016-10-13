@@ -74,21 +74,22 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         LOG.info(" oDateStart = {}", oDateStart);
 
         List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        LOG.info("aFlowServiceData: " + aFlowServiceData);
+        LOG.info("aFlowServiceData: " + aFlowServiceData.listIterator());
         LOG.info("aFlowServiceData: " + aFlowServiceData.size());
         LOG.info("<-------------------------------start for---------------------------------------->");
         for (Flow_ServiceData flow : aFlowServiceData) {
-            LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
             LOG.info("<-------------------------------before if---------------------------------------->");
+            LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
             if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
                 LOG.info("<-------------------------------after if---------------------------------------->");
-                LOG.info("SUFFIX_AUTO: "+flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-                checkAndBuildFlowSlots(flow, oDateStart);
+                LOG.info("SUFFIX_AUTO: "+flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
+                
+//                checkAndBuildFlowSlots(flow, oDateStart);
             }
+            LOG.info("<-------------------------------end for---------------------------------------->");
         }
-        LOG.info("<-------------------------------end for---------------------------------------->");
-    }
+   }
     @Deprecated
     private void checkAndBuildFlowSlots_old(Flow_ServiceData flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
