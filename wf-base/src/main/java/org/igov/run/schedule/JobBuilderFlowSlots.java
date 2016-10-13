@@ -74,9 +74,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         LOG.info(" oDateStart = {}", oDateStart);
 
         List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll(); 
-        LOG.info("aFlowServiceData: " + aFlowServiceData.listIterator());
         LOG.info("aFlowServiceData: " + aFlowServiceData.size());
-        LOG.info("<-------------------------------start for---------------------------------------->");
         for (Flow_ServiceData flow : aFlowServiceData) {
             LOG.info("<-------------------------------before if---------------------------------------->");
             LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
@@ -85,9 +83,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
                 LOG.info("SUFFIX_AUTO: "+flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
                 
-//                checkAndBuildFlowSlots(flow, oDateStart);
+                checkAndBuildFlowSlots(flow, oDateStart);
             }
-            LOG.info("<-------------------------------end for---------------------------------------->");
         }
    }
     @Deprecated
