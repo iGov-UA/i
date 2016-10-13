@@ -37,13 +37,6 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
 
-
-
-		<activiti:formProperty id="sV" name="Галочка чи находитись ви в процесі адміністративного (судового) оскарження" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
-
-
 <!--  Вариант результата начало ->
 		<activiti:formProperty id="asTypeRef" name="Довідку прошу видати в" default="paper" type="enum" required="true">
           <activiti:value id="paper" name="паперовому вигляді"></activiti:value>
@@ -56,16 +49,18 @@
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
 <!-  Бланк для скачивания конец  -->
 
-
 <!--  Вставка автоподписания ЭЦП начало -->
 	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
 <!--  Вставка автоподписания ЭЦП конец  -->
 
 
+		<activiti:formProperty id="sV" name="Галочка чи находитись ви в процесі адміністративного (судового) оскарження" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkNodebts1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
@@ -86,7 +81,7 @@
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerkNodebts1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -156,11 +151,6 @@
         <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>        
-        <activiti:formProperty id="bankIdAddressFactual" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>    
                 
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -192,7 +182,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${zapit}</activiti:expression>
+            <activiti:expression>${form_signed},${zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
