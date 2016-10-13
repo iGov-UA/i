@@ -112,8 +112,8 @@ public class ActionTaskCentralController {
             Map<String, String> mergeParams = new HashMap<String, String>();
             mergeParams.put("processInstanceId", processId);
             mergeParams.put("key", "saTaskStatus");
-            mergeParams.put("insertValue", "GotAnswer");
-            mergeParams.put("removeValue", "WaitAnswer");
+            mergeParams.put("insertValues", "GotAnswer");
+            mergeParams.put("removeValues", "WaitAnswer");
             LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
 

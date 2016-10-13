@@ -750,8 +750,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Can be used only with Strings
      * @param snID_Process - id of Activiti Process
      * @param sKey - name of Variable on Activiti Process
-     * @param sInsertValue - value with should be added.
-     * @param sRemoveValue - value with should be deleted.
+     * @param sInsertValues - values which should be added.
+     * @param sRemoveValues - values which should be deleted.
      * @return
      */
     @RequestMapping(value = "/mergeVariable", method = RequestMethod.GET)
@@ -759,24 +759,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String mergeVariableValueOnProcessInstance(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "key", required = true) String sKey,
-            @RequestParam(value = "removeValue", required = false) String sRemoveValue,
-            @RequestParam(value = "insertValue", required = false) String sInsertValue
+            @RequestParam(value = "removeValues", required = false) String[] sRemoveValues,
+            @RequestParam(value = "insertValues", required = false) String[] sInsertValues
     ) {
         try {
             Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
             String currentValue = currentValueObject == null ? "" : currentValueObject.toString();
-            LOG.info("removeValue={} insertValue={}", sRemoveValue, sInsertValue);
-            if(sInsertValue != null && !currentValue.contains(sInsertValue)){
-                currentValue = (currentValue.trim() + " " + sInsertValue).trim();
+            LOG.info("removeValues={} insertValues={}", sRemoveValues, sInsertValues);
+            if (sInsertValues != null) {
+                for (String sInsertValue : sInsertValues) {
+                    if(!currentValue.contains(sInsertValue)){
+                        currentValue = (currentValue.trim() + " " + sInsertValue).trim();
+                    }
+                }
             }
-            if(sRemoveValue!= null && currentValue.contains(sRemoveValue)){
-                currentValue = currentValue.replace(sRemoveValue, "");
+            if (sRemoveValues != null ) {
+                for (String sRemoveValue : sRemoveValues) {
+                    if(currentValue.contains(sRemoveValue)){
+                        currentValue = currentValue.replace(sRemoveValue, "");
+                    }
+                }
             }
             runtimeService.setVariable(snID_Process, sKey, currentValue.trim());
             LOG.info("currentValue={}", currentValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
-                    oException.getMessage(), snID_Process, sKey, sInsertValue, sRemoveValue);
+                    oException.getMessage(), snID_Process, sKey, sInsertValues, sRemoveValues);
         }
         return "";
     }
@@ -1479,13 +1487,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String processId = String.valueOf(nID_Process);
             String variableName = "saTaskStatus";
             String waitsAnswerTag = "WaitAnswer";
+            String gotAnswerTag = "GotAnswer";
             Object taskStatus = runtimeService.getVariable(processId, variableName);
             String tags = taskStatus == null ? "" : String.valueOf(taskStatus);
             LOG.info("set_tags: {}, processId={}, waitsAnswerTag={}", tags, processId, waitsAnswerTag);
             if (!tags.contains(waitsAnswerTag)) {
                 tags = (tags.trim() + " " + waitsAnswerTag).trim();
-                runtimeService.setVariable(processId, variableName, tags);
             }
+            if (tags.contains(gotAnswerTag)) {
+                tags = tags.replace(gotAnswerTag, "").trim();
+            }
+            runtimeService.setVariable(processId, variableName, tags);
 
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(

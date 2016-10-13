@@ -7,6 +7,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
+import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -545,17 +546,18 @@ public class SubjectMessageController {
 //            Task task = taskService.createTaskQuery().taskId(String.valueOf(nID_Task)).singleResult();
 //            String processId = task.getProcessInstanceId();
 
-            Map<String, String> mergeParams = new HashMap<String, String>();
+            Map<String, String> mergeParams = new MultiKeyMap();
             mergeParams.put("processInstanceId", String.valueOf(nID_Task));
             mergeParams.put("key", "saTaskStatus");
 
             LOG.info("mergeParams={}, mergeUrl=", mergeParams, mergeUrl);
 
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
-                mergeParams.put("insertValue", "GotUpdate");
+                mergeParams.put("insertValues", "GotUpdate");
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
-                mergeParams.put("removeValue", "GotUpdate");
+                mergeParams.put("removeValues", "GotUpdate");
+                mergeParams.put("removeValues", "GotAnswer");
             }
             httpRequester.getInside(mergeUrl, mergeParams);
 
