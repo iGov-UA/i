@@ -3,7 +3,7 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -20,7 +20,7 @@ angular.module('app')
         && !subcat && category !== 'business') {
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
       // пока не реализованы теги нового бизнеса, вернул в проверку старый.
-      if(sFind) {
+      if(sFind || filter) {
         var data = {
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
