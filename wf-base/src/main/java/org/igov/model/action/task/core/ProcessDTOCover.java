@@ -11,12 +11,14 @@ public class ProcessDTOCover {
     private String sBP;
     private Long nID;
     private String sDateCreate;
+    private String sDateClose;
 
-    public ProcessDTOCover(String sName, String sBP, Long nID, String sDateCreate) {
+    public ProcessDTOCover(String sName, String sBP, Long nID, String sDateCreate, String sDateClose) {
         this.sName = sName;
         this.sBP = sBP;
         this.nID = nID;
         this.sDateCreate = sDateCreate;
+        this.sDateClose = sDateClose;
     }
 
     public String getsName() {
@@ -34,4 +36,9 @@ public class ProcessDTOCover {
     public String getsDateCreate() {
         return sDateCreate;
     }
+    
+    public String getsDateClose() {
+        return sDateClose;
+    }
+    
 }

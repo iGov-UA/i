@@ -73,12 +73,21 @@ angular.module('app')
             messageBusService.publish('catalog:update', ctlg);
           }
           // получаем к-во услуг готовых/скоро/в работе
-          function getCounts () {
-            CatalogService.getModeSpecificServices(null, "", false, 'business').then(function (res) {
-              $scope.catalogCounts = CatalogService.getCatalogCounts(res)
-            })
+          function getCounts (category) {
+            var countCategory = category && category.aService ? category : 'business';
+            if(countCategory === 'business') {
+              CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
+                $scope.catalogCounts = CatalogService.getCatalogCounts(res)
+              })
+            } else {
+              $scope.catalogCounts = CatalogService.getCatalogCounts(countCategory)
+            }
           }
           getCounts ();
+
+          function isFilterActive() {
+            $rootScope.mainSearchView = !!(($state.is('index') || $state.is('index.catalog')) && $scope.data.region);
+          }
 
           $scope.search = function() {
             if (sID_Order_RegExp.test($scope.sSearch)) {
@@ -97,7 +106,7 @@ angular.module('app')
             } else if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               $scope.category = 'business';
             }
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog).then(function (result) {
               if(!$state.is('index')
                   && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
@@ -118,6 +127,8 @@ angular.module('app')
                 $rootScope.wasSearched = true;
               }
               $rootScope.resultsAreLoading = false;
+              getCounts(fullCatalog);
+              console.log($scope)
             });
           };
           $scope.searching = function () {
@@ -180,7 +191,7 @@ angular.module('app')
             $scope.check = true;
             // сейчас джава выдает другие номера статусов, поэтому меняю для работоспособности. убрать когда теги в бизнесе будут готовы.
             // убрать когда теги в бизнесе будут готовы.
-            if($state.is("index.oldbusiness") || $state.is("index.subcategory") || $rootScope.mainSearchView) {
+            if($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               var filterCriteria = {};
               var selectedStatus;
               if($scope.selectedStatus == 0) {
@@ -248,6 +259,7 @@ angular.module('app')
           };
           $scope.clear = function() {
             restoreSettings(defaultSettings);
+            if($rootScope.mainFilterCatalog) $rootScope.mainFilterCatalog = false;
             $scope.searching();
           };
           $scope.loadRegionList = function(search) {
@@ -259,10 +271,14 @@ angular.module('app')
             $scope.regionList.select($item);
             $scope.data.city = null;
             $scope.localityList.reset();
+            if($state.is('index') || $state.is('index.catalog')){
+              $rootScope.mainFilterCatalog = true;
+            }
             $scope.search();
             $scope.localityList.load(null, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
             });
+            isFilterActive()
           };
 
           $scope.loadLocalityList = function(search) {
@@ -274,6 +290,7 @@ angular.module('app')
             $scope.data.city = $item;
             $scope.localityList.select($item, $model, $label);
             $scope.search();
+            isFilterActive()
           };
           $scope.search();
 
@@ -315,7 +332,12 @@ angular.module('app')
             }
           });
           $scope.$watch('data.region', function() {
-            if(!$scope.data.region) {$scope.searching();}
+            if(!$scope.data.region) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainFilterCatalog = false;
+              isFilterActive();
+              $scope.searching();
+            }
           });
           $scope.$on('$stateChangeSuccess', function(event, toState) {
             if (toState.resolve) {
