@@ -94,7 +94,19 @@
                 <h4>На жаль, за даним запитом результатів не знайдено.</h4>
               </div>
               <ul>
-                <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+                <li ng-repeat="service in catalog.aService | orderBy: ['-nStatus', 'nOrder', 'sName']" style="list-style:none;">
+                  <i class="icon-e-service-on"
+                     ng-if="service.nStatus === 2"
+                     title="Ця послуга доступна в електронній формі для одного, кількох або всіх регіонів">
+                  </i>
+                  <i class="icon-e-service-test"
+                     ng-if="service.nStatus === 1"
+                     title="Ця послуга буде доступна онлайн дуже скоро. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+                  </i>
+                  <i class="icon-e-service-off"
+                     ng-if="service.nStatus === 0"
+                     title="Ця послуга поки не доступна онлайн. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+                  </i>
                   <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
                 </li>
               </ul>
