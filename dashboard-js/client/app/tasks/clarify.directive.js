@@ -4,7 +4,7 @@ angular.module('dashboardJsApp').directive('clarifyDirective', function () {
     templateUrl : 'app/tasks/clarify.html',
     link : function ($scope) {
       $scope.isChecked = false;
-      $scope.clarifyIsChecked = function (id) {
+      $scope.clarifyIsChecked = function () {
         $scope.isChecked = false;
         angular.forEach($scope.clarifyFields, function (field) {
           if(field.clarify === true) {
