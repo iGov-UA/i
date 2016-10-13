@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.joda.time.format.DateTimeFormatter;
 
 @Controller
@@ -64,6 +65,8 @@ public class ActionEventController {
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
+    @Autowired
+    private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
     @Autowired
     private DocumentDao documentDao;
     @Autowired
@@ -618,12 +621,13 @@ public class ActionEventController {
             LOG.info("Found {} history events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
 
             if (aHistoryEvent_Service.size() > 0) {
-                List<Long> historyEventServicesIDs = new LinkedList<>();
+                List<Long> anID_HistoryEvent_Service = new LinkedList<>();
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-                    historyEventServicesIDs.add(oHistoryEvent_Service.getId());
+                    anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
-                LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
-                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
+                LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
+                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                //List<SubjectMessage> aSubjectMessage = subjectMessageFeedbackDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
                 Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
                 for (SubjectMessage oSubjectMessage : aSubjectMessage) {
