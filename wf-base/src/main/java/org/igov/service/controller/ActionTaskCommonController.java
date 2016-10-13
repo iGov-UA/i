@@ -1482,6 +1482,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException, CRCInvalidException {
 
+        if(saField==null || "".equals(saField.trim()) || "[]".equals(saField.trim())){
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't make task question with no fields! (saField=[])",
+                    HttpStatus.FORBIDDEN);
+        }
         String sToken = Tool.getGeneratedToken();
         try {
             String processId = String.valueOf(nID_Process);
