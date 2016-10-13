@@ -128,6 +128,7 @@
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
+        $scope.bHasEmail = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -313,6 +314,14 @@
             })('Зауваження відправлено успішно');
           });
         };
+
+        (function isTaskHasEmail() {
+          for(var i=0; i<$scope.taskData.aField.length; i++){
+            if($scope.taskData.aField[i].sID === "email"){
+              $scope.bHasEmail = true;
+            }
+          }
+        })();
 
         $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
 
