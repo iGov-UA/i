@@ -48,6 +48,7 @@ describe('Controller: TasksCtrl', function() {
 
     expect(scope.hasTaskStatus({variables: [{name: 'someVar', value: 'status3'}]}, 'status3')).toBeFalsy();
     expect(scope.hasTaskStatus({variables: []}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: ''}]}, 'status3')).toBeFalsy();
     expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1'}]}, 'status3')).toBeFalsy();
     expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1 status2 status4'}]}, 'status3')).toBeFalsy();
   });
