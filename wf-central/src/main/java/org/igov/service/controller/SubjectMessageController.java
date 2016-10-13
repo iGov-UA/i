@@ -546,7 +546,8 @@ public class SubjectMessageController {
 //            Task task = taskService.createTaskQuery().taskId(String.valueOf(nID_Task)).singleResult();
 //            String processId = task.getProcessInstanceId();
 
-            Map<String, String> mergeParams = new MultiKeyMap();
+            Map<String, String> mergeParams = new HashMap<>();
+            Map<String, List<String>> multipleParam = new HashMap<>();
             mergeParams.put("processInstanceId", String.valueOf(nID_Task));
             mergeParams.put("key", "saTaskStatus");
 
@@ -556,10 +557,9 @@ public class SubjectMessageController {
                 mergeParams.put("insertValues", "GotUpdate");
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
-                mergeParams.put("removeValues", "GotUpdate");
-                mergeParams.put("removeValues", "GotAnswer");
+                multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
             }
-            httpRequester.getInside(mergeUrl, mergeParams);
+            httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);

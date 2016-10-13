@@ -18,7 +18,9 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -250,6 +252,32 @@ public class HttpRequester {
             }
         }
         return osReturn.toString();
+    }
+
+    /**
+     * Method works only with GET http method
+     * @param sURL
+     * @param mParam
+     * @param multipleParam
+     * @return
+     * @throws Exception
+     */
+    public String getInside(String sURL, Map<String, String> mParam, Map<String, List<String>> multipleParam) throws Exception {
+        sURL = getFullURL(sURL, mParam);
+        StringBuilder multipleKeyValues = new StringBuilder();
+        for (Map.Entry<String, List<String>> entry :multipleParam.entrySet()) {
+            String key = entry.getKey();
+            for (String value : entry.getValue()){
+                multipleKeyValues.append("&");
+                multipleKeyValues.append(key);
+                multipleKeyValues.append("=");
+                multipleKeyValues.append(URLEncoder.encode(value, "UTF-8"));
+            }
+        }
+        String mKVs = multipleKeyValues.toString();
+        LOG.info("sURL={}", sURL);
+        LOG.info("multipleKeyValues={}", mKVs);
+        return getInside(sURL + mKVs, Collections.emptyMap());
     }
 
     /**
