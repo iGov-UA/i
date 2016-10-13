@@ -128,7 +128,6 @@ angular.module('app')
               }
               $rootScope.resultsAreLoading = false;
               getCounts(fullCatalog);
-              console.log($scope)
             });
           };
           $scope.searching = function () {
