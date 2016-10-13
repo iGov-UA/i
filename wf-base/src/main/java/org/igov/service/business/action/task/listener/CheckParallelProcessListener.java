@@ -42,7 +42,7 @@ public class CheckParallelProcessListener implements ExecutionListener {
         LOG.info("sValFromProcess: " + sValFromProcess);
 
         if (!checkValue.trim().equals(sValFromProcess.trim())) {
-            throw new TaskAlreadyUnboundException(sErrorMessage);
+            throw new TaskAlreadyUnboundException("errMsg=" + sErrorMessage);
         }
     }
 
