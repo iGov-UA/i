@@ -471,8 +471,11 @@ public class ActionItemController {
         preparedService.setLaw(oService.getLaw());
         preparedService.setOpenedLimit(oService.getOpenedLimit());
         preparedService.setOrder(oService.getOrder());
-        preparedService.setSub(oService.getSub());
-        preparedService.setStatus(oService.getStatusID());
+
+        List<ServiceData> serviceDataFiltered = oService.getServiceDataFiltered(generalConfig.isSelfTest());
+        preparedService.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);
+        preparedService.setStatus(Service.calcStatusID(oService.getServiceDataList(), preparedService.getSub()));
+
         preparedService.setSubjectOperatorName(oService.getSubjectOperatorName());
 
         if (withServiceData) {

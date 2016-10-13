@@ -103,10 +103,11 @@ execution.setVariable('sTicketCode', tickCode)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
         <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>

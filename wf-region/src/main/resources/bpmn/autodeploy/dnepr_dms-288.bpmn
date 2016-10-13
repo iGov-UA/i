@@ -14,10 +14,6 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="attr1_no" required="true">
-          <activiti:value id="attr1_no" name="ні"></activiti:value>
-          <activiti:value id="attr2_yes" name="так"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
@@ -106,13 +102,13 @@ execution.setVariable('sNotification_day', timer)</script>
 									Дата та час візиту: ${date_of_visit}.
 								</p>
 								<p>
-									Реквізити для сплати адмінсбору доступні за <b><a href="${sAdminBio}" target="_blank">посиланням</a></b><br>
+									Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 15-20 хвилин до обраного часу та сплатити за послугу.<br>
 									<b>Зверніть увагу:</b> 
 									<ul>
 										<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
 										<li><b>У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт.</b></li>
 									</ul>
-									</p>
+								</p>
 									<p>
 										<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:</b><br>
 										<ul>
@@ -171,12 +167,11 @@ execution.setVariable('sNotification_day', timer)</script>
 										Дата та час візиту: ${date_of_visit}
 									</p>
 									<p>
-										Реквізити для сплати адмінсбору доступні за <b><a href="${sAdminBio}" target="_blank">посиланням</a></b><br>
+										Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 15-20 хвилин до обраного часу та сплатити за послугу.<br>
 										<b>Зверніть увагу:</b> 
 										<ul>
-											<li>Для дітей до 16 років при оформленні закордонного паспорту держмито НЕ сплачується;</li>
 											<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
-											<li>У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт.</li>
+											<li><b>У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт.</b></li>
 										</ul>
 									</p>
 									<p>
@@ -236,10 +231,6 @@ execution.setVariable('sNotification_day', timer)</script>
         <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="biometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
-          <activiti:value id="attr1_no" name="ні"></activiti:value>
-          <activiti:value id="attr2_yes" name="так"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
