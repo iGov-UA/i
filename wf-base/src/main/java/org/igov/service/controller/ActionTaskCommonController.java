@@ -765,15 +765,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
             String currentValue = currentValueObject == null ? "" : currentValueObject.toString();
+            LOG.info("removeValue={} insertValue={}", sRemoveValue, sInsertValue);
             if(sInsertValue != null && !currentValue.contains(sInsertValue)){
-                runtimeService.setVariable(snID_Process, sKey, currentValue.trim() + " " + sInsertValue);
+                currentValue = (currentValue.trim() + " " + sInsertValue).trim();
             }
             if(sRemoveValue!= null && currentValue.contains(sRemoveValue)){
-                Object refreshedValueObject = runtimeService.getVariable(snID_Process, sKey);
-                String refreshedValue = refreshedValueObject == null ? "" : currentValueObject.toString();
-                refreshedValue = refreshedValue.replace(sRemoveValue, "");
-                runtimeService.setVariable(snID_Process, sKey, refreshedValue.trim());
+                currentValue = currentValue.replace(sRemoveValue, "");
             }
+            runtimeService.setVariable(snID_Process, sKey, currentValue.trim());
+            LOG.info("currentValue={}", currentValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
                     oException.getMessage(), snID_Process, sKey, sInsertValue, sRemoveValue);
@@ -1483,7 +1483,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String tags = taskStatus == null ? "" : String.valueOf(taskStatus);
             LOG.info("set_tags: {}, processId={}, waitsAnswerTag={}", tags, processId, waitsAnswerTag);
             if (!tags.contains(waitsAnswerTag)) {
-                runtimeService.setVariable(processId, variableName, tags.trim() + " " + waitsAnswerTag);
+                tags = (tags.trim() + " " + waitsAnswerTag).trim();
+                runtimeService.setVariable(processId, variableName, tags);
             }
 
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);

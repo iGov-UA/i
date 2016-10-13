@@ -123,11 +123,15 @@ public class Service extends org.igov.model.core.NamedEntity {
     //2 - prod
     @JsonGetter("nID_Status")
     public int getStatusID() {
+        return calcStatusID(serviceDataList, getSub());
+    }
+
+    public static int calcStatusID(List<ServiceData> serviceDataList, int sub) {
         if (serviceDataList == null) {
             return 0;
         }
 
-        if (getSub() == 0) {
+        if (sub == 0) {
             for (ServiceData oServiceData : serviceDataList) {
                 if (oServiceData.isTest() && !oServiceData.isHidden()) {
                     return 1;
