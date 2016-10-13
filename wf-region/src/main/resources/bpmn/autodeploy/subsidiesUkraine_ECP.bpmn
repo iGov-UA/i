@@ -96,7 +96,7 @@
           <activiti:value id="1" name="окремий будинок"></activiti:value>
           <activiti:value id="2" name="багатоквартирний будинок"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="floors" name="Кількість поверхів" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="floors" name="Кількість поверхів; тільки цифри" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="total_place" name="Загальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="warming_place" name="Опалювальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_from" name="Період, за який Ви заповнюєте декларацію, з; за замовчуванням обраний попередній рік, але якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="invisible" default="01/01/2015" required="true"></activiti:formProperty>
@@ -591,11 +591,12 @@ ${sNameOrgan}<br/>
         <activiti:formProperty id="overload_type" name="Вид придбаного майна, товарів або оплачених послуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_cost" name="Вартість, гривень" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="overload_date" name="Дата придбання; наприклад, 18.01.2016" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Коментарі УПСЗН на першому етапі обробки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
           <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
           <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Стан" type="enum" required="true">
           <activiti:value id="attr3" name="відмовлено у субсидії"></activiti:value>
           <activiti:value id="attr4" name="субсидія погоджена"></activiti:value>
@@ -675,15 +676,14 @@ ${sNameOrgan}<br/>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
- <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Ваше звернення  №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.</p>
-<p>Розмір субсидії вказаний у файлі, який прикріплено до цього листа.</p>
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>На жаль, Ваше звернення №[sID_Order] щодо отримання  субсидії на оплату житлово-комунальних послуг було відхилено.</p>
+<p>Причина вказана у файлі, який прикріплено до цього листа.</p>
 <p>Коментар працівника УПСЗН (за наявності): ${comment1}</p>
 (Ви можете зберегти файли, що долучено до цього листа, на комп'ютер, та роздрукувати заповнені Вами Заяву і Декларацію на папері за потреби)<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br/>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
