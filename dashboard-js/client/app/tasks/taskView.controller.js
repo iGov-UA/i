@@ -269,12 +269,12 @@
           angular.forEach($scope.taskForm, function (item) {
             if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
               aFields.push({
-                sID: item.id,
-                sName: $scope.sFieldLabel(item.name),
-                sType: item.type,
-                sValue: item.value,
-                sValueNew: item.value,
-                sNotify: $scope.clarifyFields[item.id].text
+                sID: item.id !== null ? item.id : "",
+                sName: $scope.sFieldLabel(item.name) !== null ? $scope.sFieldLabel(item.name) : "",
+                sType: item.type !== null ? item.type : "",
+                sValue: item.value !== null ? item.value : "",
+                sValueNew: item.value !== null ? item.value : "",
+                sNotify: $scope.clarifyFields[item.id].text !== null ? $scope.clarifyFields[item.id].text : ""
               });
 
             if (item.id === 'email') {
