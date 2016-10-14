@@ -74,6 +74,7 @@ import org.igov.model.flow.FlowSlotTicketDao;
 //import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.form.QueueDataFormType;
+import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -195,89 +196,106 @@ public class ActionTaskService {
         }
     }
 
-    /*public static String createTable_TaskPropertiesBefore(String soData) {
-        return createTable_TaskProperties(soData, false);
-    }*/
-    public static String createTable_TaskProperties(String saField, Boolean bNew) {
-        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
-            return "";
+    public static List<Map<String,String>> amFieldMessageQuestion(String saField, Boolean bNew) throws CommonServiceException {
+        if(saField==null || "".equals(saField.trim()) || "[]".equals(saField.trim())){
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't make task question with no fields! (saField="+saField+")",
+                    HttpStatus.FORBIDDEN);
         }
-
+        List<Map<String,String>> amReturn = new LinkedList();
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
-        StringBuilder osTable = new StringBuilder();
-        
-        osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
-        osTable.append("<table class=\"QuestionFields\">");
-        osTable.append("<tr>");
-        osTable.append("<td>").append("Поле").append("</td>");
-        if(bNew){
-            osTable.append("<td>").append("Старе значення").append("</td>");
-            osTable.append("<td>").append("Нове значення").append("</td>");
-        }else{
-            osTable.append("<td>").append("Значення").append("</td>");
+        if(aField.length()==0){
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't make task question with no fields! (saField="+saField+")",
+                    HttpStatus.FORBIDDEN);
         }
-        osTable.append("<td>").append("Коментар").append("</td>");
-        osTable.append("</tr>");
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
-          
-            Object sName=oField.opt("sName");
-            if(sName==null){
-                sName = oField.opt("sID");
+            Map<String,String> m = new HashMap();
+             
+            Object osID;
+            if((osID=oField.opt("sID"))==null){
+                if((osID=oField.opt("id"))==null){
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sID and id of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
             }
-            if(sName==null){
-                sName = oField.opt("id");
+            m.put("sID", osID.toString());
+            
+            Object osName;
+            if((osName=oField.opt("sName"))==null){
+                osName = osID.toString();
             }
-            Object oValue=oField.opt("sValue");
-            if(oValue==null){
-                oValue = oField.opt("value");
+            m.put("sName", osName.toString());
+            
+            Object osValue;
+            if((osValue=oField.opt("sValue"))==null){
+                if((osValue=oField.opt("value"))==null){
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sValue and value of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
             }
-            osTable.append("<tr>");
-            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            m.put("sValue", osValue.toString());
+            
             if(bNew){
-                Object oValueNew=oField.opt("sValueNew");
-                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
-                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
-                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+                Object osValueNew;
+                if((osValueNew=oField.opt("sValueNew"))==null){
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sValueNew of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+                m.put("sValueNew", osValueNew.toString());
             }else{
-                Object oNotify=oField.opt("sNotify");
-                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
-                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+                Object osNotify;
+                if((osNotify=oField.opt("sNotify"))==null){
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sNotify of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+                m.put("sNotify", osNotify.toString());
             }
-            osTable.append("</tr>");
-        }
-        osTable.append("</table>");
-        return osTable.toString();
+            amReturn.add(m);
+        }        
+        return amReturn;
     }
-
-    public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) {
-        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
+    
+    //public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) throws CommonServiceException {
+    /*public static String createTable_TaskProperties_Notification(List<Map<String,String>> amReturn, Boolean bNew) {
+        if(amReturn.isEmpty()){
             return "";
         }
-        String sTableStyle;
-        sTableStyle = "<style>table"
-                + " { border-collapse: collapse;"
-                + " width: 100%;"
-                + " max-width: 800px;}"
-                + " table td {"
-                + " border: 1px solid #ddd;"
-                + " text-align:left;"
-                + " padding: 4px;"
-                + " height:40px;}"
-                + " table th {"
-                + " background: #65ABD0;"
-                + " vertical-align: middle;"
-                + " padding: 10px;"
-                + " width:200px;"
-                + " text-align:left;"
-                + " color:#fff;"
-                + " }"
-                + "</style>";
-
-        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
-        JSONArray aField = oFields.getJSONArray("soData");
+        //if (saField == null || "[]".equals(saField) || "".equals(saField)) {
         StringBuilder osTable = new StringBuilder();
+        String sTableStyle;
+            sTableStyle = "<style>table"
+                    + " { border-collapse: collapse;"
+                    + " width: 100%;"
+                    + " max-width: 800px;}"
+                    + " table td {"
+                    + " border: 1px solid #ddd;"
+                    + " text-align:left;"
+                    + " padding: 4px;"
+                    + " height:40px;}"
+                    + " table th {"
+                    + " background: #65ABD0;"
+                    + " vertical-align: middle;"
+                    + " padding: 10px;"
+                    + " width:200px;"
+                    + " text-align:left;"
+                    + " color:#fff;"
+                    + " }"
+                    + "</style>";
+        //JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        //JSONArray aField = oFields.getJSONArray("soData");
         osTable.append(sTableStyle);
         osTable.append("<table>");
         osTable.append("<tr>");
@@ -290,9 +308,101 @@ public class ActionTaskService {
         }
         osTable.append("<th>").append("Коментар").append("</th>");
         osTable.append("</tr>");
-        for (int i = 0; i < aField.length(); i++) {
-            JSONObject oField = aField.getJSONObject(i);
+        //for (int i = 0; i < aField.length(); i++) {
+        for (Map<String,String> m : amReturn) {
+            osTable.append("<tr>");
+            //JSONObject oField = aField.getJSONObject(i);
+            //Object sName=oField.opt("sName");
+            //if(sName==null){
+            //    sName = oField.opt("sID");
+            //}
+            //if(sName==null){
+            //    sName = oField.opt("id");
+            //}
+            //Object oValue=oField.opt("sValue");
+            //if(oValue==null){
+            //    oValue = oField.opt("value");
+            //}
+            //osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            //if(bNew){
+            //    Object oValueNew=oField.opt("sValueNew");
+            //    osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+            //    osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+            //    osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            //}else{
+            //    Object oNotify=oField.opt("sNotify");
+            //    osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+            //    osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            //}
+            osTable.append("<td>").append(m.get("sName")).append("</td>");
+            osTable.append("<td>").append(m.get("sValue")).append("</td>");
+            if(bNew){
+                osTable.append("<td>").append(m.get("sValueNew")).append("</td>");
+                osTable.append("<td>").append(m.get("sValueNew").equals(m.get("sValue"))?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                osTable.append("<td>").append(m.get("sNotify")).append("</td>");
+            }
+            osTable.append("</tr>");
+        }
+        osTable.append("</table>");
+        return osTable.toString();
+    }*/
+
+    /*public static String createTable_TaskPropertiesBefore(String soData) {
+        return createTable_TaskProperties(soData, false);
+    }*/
+    //public static String createTable_TaskProperties(String saField, Boolean bNew) {
+    public static String createTable_TaskProperties(List<Map<String,String>> amReturn, Boolean bNew, Boolean bNotification) {
+        if(amReturn.isEmpty()){
+            return "";
+        }
+        /*if (saField == null || "[]".equals(saField) || "".equals(saField)) {
+            return "";
+        }*/
+        //JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        //JSONArray aField = oFields.getJSONArray("soData");
         
+        StringBuilder osTable = new StringBuilder();
+        osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
+        osTable.append("<table class=\"QuestionFields\">");
+        if(bNotification){
+            osTable.append("<style>table"
+                    + " { border-collapse: collapse;"
+                    + " width: 100%;"
+                    + " max-width: 800px;}"
+                    + " table td {"
+                    + " border: 1px solid #ddd;"
+                    + " text-align:left;"
+                    + " padding: 4px;"
+                    + " height:40px;}"
+                    + " table th {"
+                    + " background: #65ABD0;"
+                    + " vertical-align: middle;"
+                    + " padding: 10px;"
+                    + " width:200px;"
+                    + " text-align:left;"
+                    + " color:#fff;"
+                    + " }"
+                    + "</style>");
+            osTable.append("<table>");
+        }else{
+            osTable.append("<style>table.QuestionFields td { border-style: solid;}</style>");
+            osTable.append("<table class=\"QuestionFields\">");
+        }
+        osTable.append("<tr>");
+        osTable.append("<td>").append("Поле").append("</td>");
+        if(bNew){
+            osTable.append("<td>").append("Старе значення").append("</td>");
+            osTable.append("<td>").append("Нове значення").append("</td>");
+        }else{
+            osTable.append("<td>").append("Значення").append("</td>");
+        }
+        osTable.append("<td>").append("Коментар").append("</td>");
+        osTable.append("</tr>");
+        //for (int i = 0; i < aField.length(); i++) {
+        for (Map<String,String> m : amReturn) {
+            osTable.append("<tr>");
+            /*JSONObject oField = aField.getJSONObject(i);
             Object sName=oField.opt("sName");
             if(sName==null){
                 sName = oField.opt("sID");
@@ -304,7 +414,6 @@ public class ActionTaskService {
             if(oValue==null){
                 oValue = oField.opt("value");
             }
-            osTable.append("<tr>");
             osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
             if(bNew){
                 Object oValueNew=oField.opt("sValueNew");
@@ -315,13 +424,21 @@ public class ActionTaskService {
                 Object oNotify=oField.opt("sNotify");
                 osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
                 osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }*/
+            osTable.append("<td>").append(m.get("sName")).append("</td>");
+            osTable.append("<td>").append(m.get("sValue")).append("</td>");
+            if(bNew){
+                osTable.append("<td>").append(m.get("sValueNew")).append("</td>");
+                osTable.append("<td>").append(m.get("sValueNew").equals(m.get("sValue"))?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                osTable.append("<td>").append(m.get("sNotify")).append("</td>");
             }
             osTable.append("</tr>");
         }
         osTable.append("</table>");
         return osTable.toString();
-    }
-
+    }    
+    
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = oTaskService.createTaskQuery();
         if (bAssigned != null) {
