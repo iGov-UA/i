@@ -1,0 +1,79 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_0":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["sNameOrgan","sAddress", "sPhoneOrgan","sWorkTime", "sShapka_mode_worktime_529","date_today","sAddDoc"],
+			"asID_Field":			{"sClient":"email"},
+			"sCondition":			"[sClient] == 'Not_Correct'"
+		},
+		"ShowFieldsOnCondition_1":
+		{
+			"sNote":				["For Hide Perhotravensk"],
+			"aField_ID":			["nFileOwnership"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":			"[sClient] != 'persotravT'"
+		},
+		"RequiredFieldsOnCondition_1": 
+		{
+			"sNote":		["Required For Zolotonosha"],
+			"aField_ID":	["nFileOwnership"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] != 'persotravT' && [sClient] == 'cherk_zolotonoshaT'"
+		},
+		"ShowFieldsOnCondition_2":
+		{
+			"sNote":		["Show дозвіл санслужби для закладів громадського харчування"],
+			"aField_ID":	["nFileDozvilSanEpedimSluzbi"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementZakladHromadskogoHarchuvannya' && [sClient] != 'persotravT'"
+		},
+		"RequiredFieldsOnCondition_2": 
+		{
+			"aField_ID":	["nFileDozvilSanEpedimSluzbi"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementZakladHromadskogoHarchuvannya' && [sClient] != 'persotravT'"
+		},
+		"ShowFieldsOnCondition_3":
+		{
+			"sNote":		["Show LicenceTurizm"],
+			"aField_ID":	["nFileLicenceTurizm"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementPoslugiTurizm' && [sClient] == 'khar_izyumT'"
+		},
+		"RequiredFieldsOnCondition_3": 
+		{
+			"aField_ID":	["nFileLicenceTurizm"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementPoslugiTurizm' && [sClient] == 'khar_izyumT'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"sNote":		["Show Apteka"],
+			"aField_ID":	["nFileAptekaPassport"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementApteka' && [sClient] == 'khar_izyumT'"
+		},
+		"RequiredFieldsOnCondition_4": 
+		{
+			"aField_ID":	["nFileAptekaPassport"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sPerson] == 'sElementApteka' && [sClient] == 'khar_izyumT'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Show Licence"],
+			"aField_ID":	["nFileLicence"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"(([sPerson]=='sElementNeprodovolchiTovari' || [sPerson]=='sElementProdovolchiTovari' || [sPerson]=='sElementZmishaniTovari' || [sPerson]=='sElementPoslugi') && [sClient] == 'khar_izyumT')"
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"sNote":		["Show Sertifikat"],
+			"aField_ID":	["nFileSertifikat"],
+			"asID_Field":	{"sPerson":"asEnumSpesialObject","sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"(([sPerson]=='sElementPoslugiTurizm' || [sPerson]=='sElementPoslugi') && [sClient] == 'khar_izyumT')"
+		}
+	}
+}

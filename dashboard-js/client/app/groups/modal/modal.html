@@ -1,0 +1,42 @@
+<div class="modal-header" ng-init="initGroupModalDialog()">
+  <h3 class="modal-title">Група</h3>
+</div>
+<div class="modal-body group-modal-body">
+  <form name="formName" class="form-horizontal">
+    <div class="col-md-12 col-xs-12">
+
+      <div class="form-group"  ng-class="{ 'has-error': formName.inputID.$error.taken && data.editMode !== data.editModes.EDIT }">
+        <!--<div class="form-group">-->
+        <label for="inputID" class="col-md-2 col-xs-2 control-label">Ід:</label>
+        <div class="col-md-10 col-xs-10">
+          <input class="form-control"
+                 id="inputID"
+                 name="inputID"
+                 ng-model="data.group.id"
+                 ui-validate=" {taken : 'idHasNotBeenUsed($value)' } "
+                 ng-disabled="data.editMode === data.editModes.EDIT"
+                 required
+          >
+          <p class="help-block"  ng-show='formName.inputID.$error.taken && data.editMode !== data.editModes.EDIT'>Даний Ід вже використовується.</p>
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label for="inputName" class="col-md-2 col-xs-2 control-label">Назва:</label>
+          <div class="col-md-10 col-xs-10">
+            <input class="form-control" id="inputName" ng-model="data.group.name">
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-xs-12">
+      <dropdown-user data="data"></dropdown-user>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary"
+          ng-disabled="formName.inputID.$error.taken && data.editMode === data.editModes.CREATE"
+          ng-click="save()">Зберегти</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Відмінити</button>
+</div>

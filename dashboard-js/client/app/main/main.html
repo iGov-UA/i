@@ -1,0 +1,63 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1 class="hero-unit-heading">iGov.org.ua</h1>
+    <h3>портал обробки звернень громадян</h3>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row login-form-row" ng-controller="LoginCtrl">
+    <div class="col-xs-4 col-xs-offset-4">
+      <form class="form" name="form" ng-submit="login(form)" novalidate ng-show="!loggedIn">
+
+        <div class="form-group">
+          <label>Логін</label>
+
+          <input type="text" name="login" class="form-control" ng-model="user.login" required ng-disabled="authProcess">
+        </div>
+
+        <div class="form-group">
+          <label>Пароль</label>
+
+          <input type="password" name="password" class="form-control" ng-model="user.password" required ng-disabled="authProcess">
+        </div>
+
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.login.$error.required && form.password.$error.required && submitted">
+             Введіть логін та пароль
+          </p>
+
+          <p class="help-block">{{ errors.other }}</p>
+        </div>
+
+        <div>
+          <button class="btn btn-inverse btn-lg btn-login" type="submit" ng-disabled="authProcess">
+            Увійти
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center" ng-show="loggedIn">
+        <img class="text-center"
+             src="assets/images/loading.gif"
+             alt="Loading"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div style="display: none;" class="col-lg-12">
+      <h1 class="page-header">Доступні сервіси:</h1>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="weblink in weblinks">
+        <li><a href="{{weblink.link}}" tooltip="{{weblink.info}}">{{weblink.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div style="position: absolute; bottom: 3px; right: 30px">
+    Служба підтримки:<br>
+    start@igov.org.ua<br>
+    +380 68 211-5510<br>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd0olQtOjM1GchgtmRN-K82BZN-mTqyju0feG2qNoYsEJ42mQ/viewform" target="_blank">Зв`язатися з командою iGov</a>
+</div>

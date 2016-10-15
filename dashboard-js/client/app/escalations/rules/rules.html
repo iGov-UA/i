@@ -1,0 +1,115 @@
+<div ng-init="fillData()">
+  <div ng-hide="processesLoaded() && areRulesPresent">
+    <h4>Завантаження списку правил...</h4>
+    <span ng-show="processesLoaded()"> Виконуэться обробка списку правил...</span>
+  </div>
+  <br/>
+
+  <tabset justified="true">
+    <tab ng-show="processesLoaded() && areRulesPresent">
+      <tab-heading>
+        <i class="glyphicon glyphicon-bell"></i> Активні правила ескалацій
+      </tab-heading>
+      <div class="panel panel-default center-block" ng-show="processesLoaded() && areRulesPresent"
+           style="padding: 15px">
+        <div class="panel-body center-block">
+          <button class="btn btn-primary pull-left" ng-click="add()">Додати правило</button>
+          <input type="search" ng-model="search.sTitle" placeholder="Фільтр" class="form-control pull-right"
+                 style="max-width: 75%"
+                 title="Введіть фрагмент ідентифікатора або назви необхідного бізнес-процесу">
+        </div>
+      </div>
+      <accordion close-others="true">
+        <accordion-group ng-repeat="oGroup in aSuccessGroups | orderBy:'sTitle' | filter:search:strict">
+          <accordion-heading>
+            {{oGroup.sTitle}}
+            <span class="badge pull-right">{{oGroup.aContent.length}}</span>
+          </accordion-heading>
+          <table st-table="oGroup.aContent" class="table table-striped">
+            <thead>
+            <tr>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID">Ід.</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="sID_UserTask">Стадія бізнес-процесу</th>
+              <th class="text-center">Умова</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID_EscalationRuleFunction.sName">Наслідок</th>
+              <th class="text-center">Додаткові параметри</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tr ng-repeat="rule in oGroup.aContent | orderBy:'nID'">
+              <td class="text-center">{{rule.nID}}</td>
+              <td class="text-center">{{rule.sID_UserTask}}</td>
+              <td>{{getConditionDefinition(rule)}}</td>
+              <td>{{translate(rule.nID_EscalationRuleFunction.sName)}}</td>
+              <td>{{getParametersDefinition(rule)}}</td>
+              <td class="col-md-4 rulebuttons">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default" ng-click="edit(rule)">
+                    Редагувати
+                  </button>
+                  <button type="button" class="btn btn-warning" ng-click="copy(rule)" tooltip="Копіювати"
+                          tooltip-trigger="mouseenter" tooltip-placement="top"
+                          tooltip-append-to-body="true">
+                    <i class="fa fa-copy"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" ng-click="delete(rule)" tooltip="Видалити"
+                          tooltip-trigger="mouseenter" tooltip-placement="top"
+                          tooltip-append-to-body="true">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </accordion-group>
+      </accordion>
+    </tab>
+    <tab ng-hide="aMissingGroups.length == 0">
+      <tab-heading>
+        <i class="glyphicon glyphicon-warning-sign"></i> Правила з некоректним посиланням на бізнес-процес
+      </tab-heading>
+      <accordion close-others="true">
+        <accordion-group heading="{{oMissingBP.sTitle}}" ng-repeat="oMissingBP in aMissingGroups | orderBy:'sTitle'">
+          <table st-table="oGroup.aContent" class="table table-striped">
+            <thead>
+            <tr>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID">Ід.</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="sID_UserTask">Стадія бізнес-процесу</th>
+              <th class="text-center">Умова</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID_EscalationRuleFunction.sName">Наслідок</th>
+              <th class="text-center">Додаткові параметри</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tr ng-repeat="rule in oGroup.aContent | orderBy:'nID'">
+              <td class="text-center">{{rule.nID}}</td>
+              <td class="text-center">{{rule.sID_UserTask}}</td>
+              <td>{{getConditionDefinition(rule)}}</td>
+              <td>{{translate(rule.nID_EscalationRuleFunction.sName)}}</td>
+              <td>{{getParametersDefinition(rule)}}</td>
+              <td class="col-md-4 rulebuttons">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default" ng-click="edit(rule)">
+                    Редагувати
+                  </button>
+                  <button type="button" class="btn btn-warning" ng-click="copy(rule)" tooltip="Копіювати"
+                          tooltip-trigger="mouseenter" tooltip-placement="top"
+                          tooltip-append-to-body="true">
+                    <i class="fa fa-copy"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" ng-click="delete(rule)" tooltip="Видалити"
+                          tooltip-trigger="mouseenter" tooltip-placement="top"
+                          tooltip-append-to-body="true">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </accordion-group>
+      </accordion>
+    </tab>
+  </tabset>
+</div>

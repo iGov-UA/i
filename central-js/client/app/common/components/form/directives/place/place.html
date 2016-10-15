@@ -1,0 +1,73 @@
+<div class="list-group-item place-control" ng-class="{'disabled': placeControlIsDisabled()}">
+  <div class="row no-margin-bottom" ng-show="!placeControlIsVisible()">
+    <div class="col-md-12 form-inline">
+      <span class="step">Крок 1. Ви обрали</span>
+      <div class="inline-wrapper">
+        <span>Всю країну.</span>
+      </div>
+    </div>
+  </div>
+  <div class="row no-margin-bottom" ng-show="placeControlIsVisible()">
+    <div class="col-md-12 form-inline {{getPlaceControlClass()}}">
+      <div class="form-group">
+        <span ng-if="!placeControlIsComplete()" class="step form-control-static">Крок 1. Оберіть свій регіон</span>
+        <span ng-if="placeControlIsComplete()" class="step form-control-static">Крок 1. Ви обрали</span>
+      </div>
+      <div class="form-group">
+        <label for="region">Область:</label>
+        <div class="input-group">
+          <input
+              class="form-control"
+              autocomplete="off"
+              name="region"
+              type="text"
+              id="region"
+              ng-disabled="placeControlIsDisabled()"
+              ng-model="regionList.typeahead.model"
+              typeahead="region as region.sName for region in loadRegionList($viewValue)"
+              typeahead-on-select="onSelectRegionList($item)"
+              typeahead-template-url="app/service/place/templates/typeahead-match-region.html"
+              typeahead-empty
+          />
+          <span class="input-group-btn">
+            <button class="btn btn-default"
+                    type="button"
+                    onclick="document.getElementById('region').click();"
+                    ng-disabled="placeControlIsDisabled()">
+              <span class="caret"></span>
+            </button>
+         </span>
+        </div>
+      </div> <!-- end: <div class="inline-wrapper"> -->
+      <div class="form-group" ng-if="showCityDropdown()">
+        <label for="city">Місто: </label>
+        <div class="input-group">
+          <input
+              class="form-control"
+              autocomplete="off"
+              name="city"
+              type="text"
+              id="city"
+              ng-disabled="placeControlIsDisabled()"
+              ng-model="localityList.typeahead.model"
+              typeahead="city as city.sName for city in loadLocalityList($viewValue)"
+              typeahead-on-select="onSelectLocalityList($item)"
+              typeahead-template-url="app/service/place/templates/typeahead-match-city.html"
+              typeahead-empty
+          />
+          <span class="input-group-btn">
+            <button class="btn btn-default"
+                    type="button"
+                    onclick="document.getElementById('city').click();"
+                    ng-disabled="placeControlIsDisabled()">
+              <span class="caret"></span>
+            </button>
+          </span>
+        </div>
+      </div> <!-- end: <div class="inline-wrapper"> -->
+      <button class="btn btn-warning" ng-if="placeControlIsComplete()" href="#" ng-click="resetPlace()">
+        Змінити
+      </button>
+    </div>
+  </div>
+</div>

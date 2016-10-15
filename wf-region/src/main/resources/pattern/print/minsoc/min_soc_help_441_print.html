@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html>
+  <head lang="ua">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Соц захист</title>
+
+    <style type="text/css">
+
+      body div.PrintFormClaim {
+        font-size: 14pt;
+        font-family: "Times New Roman";
+        padding: 1cm 1.5cm 1cm 2.5cm;
+        width: 21cm;
+        min-height: 100%;
+        height: 100%;
+      }
+
+      div.PrintFormClaim div {  
+        margin-top: 6pt;
+      }
+
+      div.PrintFormClaim u{
+        padding: 0 10px;
+      }
+
+      /* Подчеркивание с отступами не подходит для  */
+      div.PrintFormClaim em{
+        padding: 0 15px;
+        font-style: normal;
+        border-bottom: 1px  solid  black;  
+      } /* Отменяем подчеркивание у ссылки */
+
+
+      .whomBlock {
+        text-align: juice;
+      }
+
+      .whoBlock {
+        text-align: juice;
+      }
+
+      .claimBlock {
+        text-align: center;
+        margin-top: 6pt;
+        letter-spacing: 4px;
+        font-size: 14pt;
+        font-weight: 600;
+      }
+
+      .smallText {
+        font-size: 12px;  
+        line-height: 1.1;
+      }
+
+      div.PrintFormClaim table {
+        align-self: center;
+      }
+
+      div.PrintFormClaim td.bb {
+        border: 0px solid black;
+        border-bottom: 1px solid black;
+      }
+
+      div.PrintFormClaim td.notb {
+        border: 0px solid black;
+      }
+
+      div.PrintFormClaim td {
+        border: 1px solid black;
+        text-align:justify;
+      }
+
+      div.PrintFormClaim table {
+        align-self: center;
+        border-collapse: collapse; /* Отображать двойные линии как одинарные */
+      }
+
+      div.PrintFormClaim th {
+        border: 1px solid black;
+      }
+
+
+      .under_multifield{ /* Мой кейс, многострочный текст*/
+        border-bottom: 1px solid black;
+        text-align: justify;
+        clear: both;  
+      }
+      .under_multifield>b{
+        float: left;
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        position: relative;
+        bottom: -3px;  
+        background-color: white;
+      }
+      .under_multifield>u{  
+        padding: 0 10px;
+        text-decoration: none; 
+        border-bottom: 1px  solid  black;
+        position: relative;
+        bottom: -1px;  
+        line-height: 125%;
+
+      }
+
+      .under_field { /* Блок с подписью */
+        margin: 0 0 15px 0;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: inline-block;
+        clear: both;
+      }
+
+      .under_field>b { /*если не надо подчеркивать*/
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+        font-style: normal;
+        bottom: -1;
+        background-color: white;
+      }
+
+      /*если надо подчеркнуть*/
+      .under_field>u { 
+        padding: 0 10px;
+        text-decoration: none; 
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;  
+      }
+
+      /*текст снизу*/
+      .under_field>span { 
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -16px;
+        font-size: 11px;
+      }
+
+
+      /* линия отреза */
+      .lineCut{
+        border-bottom: 2px dashed  #000;
+      }
+      .lineCut>span{
+        bottom: 10px; 
+        background: white;
+        float: left; 
+        position: relative; 
+      }
+
+      /*чек-боксы*/
+      .check_box {
+        width: 22px; 
+        height: 22px; 
+        border: 1px solid #000; 
+        margin: 0 10px 0 5px;
+        display: inline-block;
+        text-align: center;
+      }
+      .text_box {height: 25px; 
+        border: 1px solid #000;  
+        margin-left: 5px;
+        display: inline-block; 
+        line-height: 23px; 
+      }
+
+
+      /* номер дела, ярлык */
+      .numBusines {
+        border: 1px solid #000000;
+        margin-top: 25px;
+        float: right;
+      }
+
+      .numBusines>div{
+        height: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
+        border-bottom: 1px solid black; 
+        position: relative; 
+        display: block;  
+      }
+
+      .numBusines>div>i {
+        height: 21px;   
+        left: 0;
+        padding-right: 5px; 
+        background: white; 
+        display: inline-block; 
+        position: relative;
+        font-style: normal;
+      }
+
+      .numBusines>div>span {
+        position: absolute; 
+        left: 0; 
+        right: 0; 
+        text-align: center; 
+        color: #606060; 
+        bottom: -16px; 
+        font-size: 11px;
+      }
+
+      .m-b-5 {margin-bottom: 5px;}
+      .m-b-30 {margin-bottom: 30px;}
+
+      .clear {clear: both;}
+
+
+
+      /* организация колонок */
+      .layout {
+        overflow: hidden;
+      }
+
+      .layout DIV {
+        float: left;
+      }
+
+      /* выравнивание текста */
+      div.PrintFormClaim .ta-l { text-align: left;}
+      div.PrintFormClaim .ta-j { text-align: justify;}
+      div.PrintFormClaim .ta-r { text-align: right;}
+      div.PrintFormClaim .ta-c { text-align: center;}
+
+      /* ширина в процентах */            
+      .w1p {width: 1%;}      
+      .w4p {width: 4%;}   
+      .w10p { width: 10%;}
+      .w20p { width: 20%;}
+      .w30p { width: 30%;}
+      .w33p { width: 33%;} 
+      .w40p { width: 40%;}
+      .w50p { width: 50%;}   
+      .w60p { width: 60%;}   
+      .w70p { width: 70%;}   
+      .w80p { width: 80%;}   
+      .w90p { width: 90%;}     
+      .w100p { width: 100%;}
+
+      /* ширина */
+      .w50 {	width: 50px;}
+      .w100 {	width: 100px;}
+      .w150 {	width: 150px;}
+      .w200 {	width: 200px;}
+      .w250 {	width: 250px;}
+      .w300 {	width: 300px;}
+      .w350 {	width: 350px;}
+      .w450 {	width: 450px;}
+      .w400 {	width: 400px;}
+      .w500 {	width: 500px;}
+
+      /* отступ  */
+
+      .pl-paragraph { padding-left: 1cm;}
+      .pl-25 { padding-left: 25px;}
+      .pl-50 { padding-left: 50px;}
+      .pl-75 { padding-left: 75px;}
+      .pl-100 { padding-left: 100px;}
+      .pl-150 { padding-left: 150px;}
+      .pl-200 { padding-left: 200px;}
+      .pl-250 { padding-left: 250px;}
+      .pl-300 { padding-left: 300px;}
+
+      .ml-5{ margin-left: 5cm;}
+      .ml-6{ margin-left: 6cm;}
+      .ml-7{ margin-left: 7cm;}
+      .ml-8{ margin-left: 8cm;}
+      .ml-9{ margin-left: 9cm;}
+      .ml-10{ margin-left: 10cm;}
+      .ml-11{ margin-left: 11cm;}
+      .ml-12{ margin-left: 12cm;}
+      .ml-13{ margin-left: 13cm;}
+      .ml-14{ margin-left: 14cm;}
+
+
+
+      /* междустрочные интервалы */
+      .line0 { line-height: 0; }
+      .line05 { line-height: 0.5;}
+      .line1 { line-height: 1;}
+      .line15 { line-height: 1.5;}
+      .line2 { line-height: 2;}
+      .line25 { line-height: 2.5;}
+      .line3 { line-height: 3;}
+
+      /*отступы по горизонтали*/
+      .pg-25 { padding: 0 25px;}
+      .pg-50 { padding: 0 50px;}
+      .pg-75 { padding: 0 75px;}
+      .pg-100 { padding: 0 100px;}
+
+
+
+      /* Форматирование текста*/
+      .i{font-style: italic;}
+      .b{font-weight: 600;}
+      .u{text-decoration: underline;}
+      .ub{border-bottom: 1px solid #000;}
+
+
+      .test{ border: 1px solid red;}
+    </style>
+
+    <script type="text/javascript">
+	
+    //  ****************    переменные   ****************
+    //*
+    var asNumberApplication = "[asNumberApplication]";
+    var transfer_type = "[transfer_type]";
+    var asAdress = "[asAdress]";
+    var bankIdPassport = "[bankIdPassport]";
+    var nPage = "[nPage]";
+    var nDocument = "[nDocument]"
+    
+    // */
+    /*
+    var asNumberApplication = "первинне";
+    var transfer_type = "через національного оператора поштового зв'язку";
+    var asAdress = "Так";
+    var bankIdPassport = "АО295227 БАБУШКИНСКИМ РО В Г ДНЕПРОПЕТРОВСКЕ ГУ ГМС УКРАИНЫ В ДНЕПРОПЕТРОВСКОЙ ОБЛ 17.08.2015";
+    //  */
+    
+    //*
+      function ParsePassport() {
+        //   ****************    парсим паспортные данные   **************** 
+        
+        var str0 = bankIdPassport;
+        
+        
+        // константные переменные для регулярных выражений
+        var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
+        var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
+        var regNumberStr = "([Нн]омер|НОМЕР)?";
+
+        var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
+        var regNumberVal = "[0-9]{6}";
+        var regFrom = "((від|от).\\D{0,4})?";
+        var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
+
+        var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
+
+        var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
+
+
+        var strSerial = "";
+        var strNumber = "";
+        var strDate = "";
+        var strIssuedBy = "";
+
+        //находим серию и номер
+        var matSerNum = str0.match(patSerNum)[0];
+
+        //вырезаем серию и номер
+        str0 = str0.replace(matSerNum,"");
+
+        //удаляем лишние слова
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")),"");
+
+        //выбираем Серию и Номер
+        strSerial = matSerNum.match(new RegExp(regSeriaVal));
+        strNumber = matSerNum.match(new RegExp(regNumberVal));
+
+        var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
+
+        //выбираем дату
+        strDate = matDate.match(new RegExp(regYearVal))[0];
+        //вырезаем дату
+        str0 = str0.replace(matDate,"");
+
+        //Остаток, кто выдал
+        strIssuedBy = str0.toString().trim();
+
+        //вставить в текст
+        document.getElementById('spanPassportSeria').innerHTML = strSerial;
+        document.getElementById('spanPassportNumber').innerHTML = strNumber;
+        document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
+        document.getElementById('spanPassportDate').innerHTML = strDate; 
+
+
+        // в случае не правильного парсинга
+        if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
+          document.getElementById('spanDetailPassport').style.display = 'inline';
+          document.getElementById('spanTotalPassport').style.display = 'none';
+        }
+      } // */
+
+//*
+      function ChangeParagrath() {
+        //подчеркиваем
+        if("[cc_1_1]" == "true"){
+          var sp = document.getElementById('spanCategory1_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_2]" == "true"){
+          var sp = document.getElementById('spanCategory1_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_3]" == "true"){
+          var sp = document.getElementById('spanCategory1_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_4]" == "true"){
+          var sp = document.getElementById('spanCategory1_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_5]" == "true"){
+          var sp = document.getElementById('spanCategory1_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_6]" == "true"){
+          var sp = document.getElementById('spanCategory1_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_2]" == "true"){
+          var sp = document.getElementById('spanCategory2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_3_1]" == "true"){
+          var sp = document.getElementById('spanCategory3_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_2]" == "true"){
+          var sp = document.getElementById('spanCategory3_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_3]" == "true"){
+          var sp = document.getElementById('spanCategory3_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_4]" == "true"){
+          var sp = document.getElementById('spanCategory3_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_5]" == "true"){
+          var sp = document.getElementById('spanCategory3_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_6]" == "true"){
+          var sp = document.getElementById('spanCategory3_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_7]" == "true"){
+          var sp = document.getElementById('spanCategory3_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_8]" == "true"){
+          var sp = document.getElementById('spanCategory3_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_9]" == "true"){
+          var sp = document.getElementById('spanCategory3_9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_1]" == "true"){
+          var sp = document.getElementById('spanCategory4_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_2]" == "true"){
+          var sp = document.getElementById('spanCategory4_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_3]" == "true"){
+          var sp = document.getElementById('spanCategory4_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_4]" == "true"){
+          var sp = document.getElementById('spanCategory4_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_5]" == "true"){
+          var sp = document.getElementById('spanCategory4_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_6]" == "true"){
+          var sp = document.getElementById('spanCategory4_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_7]" == "true"){
+          var sp = document.getElementById('spanCategory4_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_8]" == "true"){
+          var sp = document.getElementById('spanCategory4_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_9]" == "true"){
+          var sp = document.getElementById('spanCategory4_9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_1]" == "true"){
+          var sp = document.getElementById('spanCategory5_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_2]" == "true"){
+          var sp = document.getElementById('spanCategory5_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_3]" == "true"){
+          var sp = document.getElementById('spanCategory5_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_4]" == "true"){
+          var sp = document.getElementById('spanCategory5_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_5]" == "true"){
+          var sp = document.getElementById('spanCategory5_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_6]" == "true"){
+          var sp = document.getElementById('spanCategory5_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_7]" == "true"){
+          var sp = document.getElementById('spanCategory5_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_8]" == "true"){
+          var sp = document.getElementById('spanCategory5_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_6]" == "true"){
+          var sp = document.getElementById('spanCategory6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_7]" == "true"){
+          var sp = document.getElementById('spanCategory7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_8]" == "true"){
+          var sp = document.getElementById('spanCategory8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_9]" == "true"){
+          var sp = document.getElementById('spanCategory9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_10]" == "true"){
+          var sp = document.getElementById('spanCategory10');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_11]" == "true"){
+          var sp = document.getElementById('spanCategory11');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_12]" == "true"){
+          var sp = document.getElementById('spanCategory12');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_13]" == "true"){
+          var sp = document.getElementById('spanCategory13');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_14]" == "true"){
+          var sp = document.getElementById('spanCategory14');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_15]" == "true"){
+          var sp = document.getElementById('spanCategory15');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_16]" == "true"){
+          var sp = document.getElementById('spanCategory16');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_17]" == "true"){
+          var sp = document.getElementById('spanCategory17');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+      }      // */
+      
+      function isNumeric(n) {
+    	  return !isNaN(parseFloat(n)) && isFinite(n);
+    	}
+      
+      function NumberDocument(){
+    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
+    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
+      }
+      
+      function ShowElements(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
+          if(sCondition){
+            document.getElementById(arguments[i]).style.visibility = 'visible';
+          } else{
+            document.getElementById(arguments[i]).style.visibility = 'hidden';
+          }
+        }
+      }     
+      
+      function ShowElementsOnTrue(sCondition) {
+        for(var i=1; i < arguments.length; i++) {    
+          if(sCondition){            
+            document.getElementById(arguments[i]).style.display = 'inline';            
+          } else {
+            document.getElementById(arguments[i]).style.display = 'none';
+          }
+        }        
+      }          
+      
+    </script>
+  </head>
+  <body>
+    <div class="PrintFormClaim">    
+      <!-- Приложение 1  ********  Для   -->
+
+      <div class="whomBlock ml-12">
+        <b>ЗАТВЕРДЖЕНО</b>  <br/>
+        Наказ Міністерства соціальної політики
+        України від 21 квітня 2015 № 441
+      </div>
+      <div class="whoBlock">
+        <div>Заповнюється: заявником /уповноваженим представником/</div>
+        <div>До органу праці та соціального захисту населення [sNameOrgan]
+          <div class="under_multifield">
+            <b>від</b><u>[clFio]</u>
+          </div>
+        </div>
+        <div class="under_multifield">
+          <b>зареєстрований за адресою:</b><u>[bankIdAddressFactual]</u>
+        </div>
+        <div class="under_multifield">
+          <b>проживаю за адресою:</b>
+          <u>
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>           
+            <span id="spanAdressFactual">[sAddressFactual]</span>
+          </u>
+        </div>
+        <div class="ta-J">
+          контактний телефон <em>[phone]</em>, паспорт:
+          <span id="spanDetailPassport" style="display:none">
+            <em id="spanPassportSeria"></em> серія № <em id="spanPassportNumber"></em>,
+            виданий <em id="spanPassportIssuedBy"></em><em id="spanPassportDate"></em> 
+          </span>
+          <em id="spanTotalPassport">[bankIdPassport]</em>
+
+          реєстраційний номер облікової картки платника податків 
+          або серія та номер паспорта з відміткою про відмову 
+          від прийняття такого номера <em>[bankIdinn]</em>
+          дата народження <em>[bankIdbirthDay]р.</em>
+        </div>        
+        <div class="ta-J">
+          звернення:
+          первинне<span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
+          вторинне<span class="check_box"><span id="spanSecond" style="visibility:hidden">&#10004;</span></span>
+          номер основної особової справи <span class="text_box w150">&#160;</span>
+        </div>
+      </div>
+      
+
+      <div>
+        <div class="numBusines w200">
+          <div class="m-b-5"><i style="font-size: 22px;">№</i></div>
+          <div class="m-b-30"><span>(дата реєстрації заяви)</span></div>
+        </div>        
+        <div class="clear"></div>        
+      </div>
+      <div class="claimBlock">ЗАЯВА</div>
+      <div class="ta-c b">
+        про призначення усіх видів соціальної допомоги, компенсацій та пільг <br>
+        Прошу призначити (перерахувати) (потрібне підкреслити)
+      </div>
+      <div class="ta-j">
+        <table  id="tableSoc">
+          <col style="width: 95%">
+          <col style="width: 5%;">
+          <tr>
+            <td class="b" colspan="2">1. Державну допомогу сім'ям з дітьми, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу у зв'язку з вагітністю та пологами</td>
+            <td class="ta-c" id="spanCategory1_1">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу при народженні дитини</td>
+            <td class="ta-c" id="spanCategory1_2">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу при усиновленні дитини</td>
+            <td class="ta-c" id="spanCategory1_3">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на дітей, над якими встановлено опіку чи піклування</td>
+            <td class="ta-c" id="spanCategory1_4">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на дітей одиноким матерям</td>
+            <td class="ta-c" id="spanCategory1_5">&#160;</td>
+          </tr>          
+          <tr>
+            <td class="b">2. Державну соціальну допомогу малозабезпеченим сім'ям</td>
+            <td class="ta-c" id="spanCategory2">&#160;</td>
+          </tr>          
+          <tr>
+            <td class="b" colspan="2">3. Державну соціальну допомогу інвалідам 
+              з дитинства та дітям-інвалідам, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства І групи</td>
+            <td class="ta-c" id="spanCategory3_1">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства II групи</td>
+            <td class="ta-c" id="spanCategory3_2">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства III групи</td>
+            <td class="ta-c" id="spanCategory3_3">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на дітей-інвалідів віком до 18 років</td>
+            <td class="ta-c" id="spanCategory3_4">&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи А І групи</td>
+            <td class="ta-c" id="spanCategory3_5">&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи Б І групи</td>
+            <td class="ta-c" id="spanCategory3_6">&#160;</td>
+          </tr>
+          <tr>
+            <td>одиноким інвалідам з дитинства II і III груп, 
+              які за висновком ЛКК закладу охорони здоров'я потребують постійного стороннього догляду</td>
+            <td class="ta-c" id="spanCategory3_7">&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за дитиною-інвалідом віком до 6 років</td>
+            <td class="ta-c" id="spanCategory3_8">&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за дитиною-інвалідом віком від 6 до 18 років</td>
+            <td class="ta-c" id="spanCategory3_9">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b" colspan="2">4. Державну соціальну допомогу особам, 
+              які не мають права на пенсію, та інвалідам, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам І групи</td>
+            <td class="ta-c" id="spanCategory4_1">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу жінкам, яким присвоєно звання України "Мати-героїня"</td>
+            <td class="ta-c" id="spanCategory4_2">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам II групи</td>
+            <td class="ta-c" id="spanCategory4_3">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам III групи</td>
+            <td class="ta-c" id="spanCategory4_4">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу священнослужителям, церковнослужителям</td>
+            <td class="ta-c" id="spanCategory4_5">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу особам, які досягли віку, що дає право на призначення допомоги</td>
+            <td class="ta-c" id="spanCategory4_6">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд одиноким малозабезпеченим особам, 
+              які за висновком ЛКК закладу охорони здоров'я потребують постійного 
+              стороннього догляду (крім інвалідів І групи)</td>
+            <td class="ta-c" id="spanCategory4_7">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи А І групи</td>
+            <td class="ta-c" id="spanCategory4_8">&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи Б І групи</td>
+            <td class="ta-c" id="spanCategory4_9">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b" colspan="2">5. Компенсаційні виплати та допомоги громадянам, 
+              які постраждали внаслідок Чорнобильської катастрофи</td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію учасникам ліквідації наслідків аварії на Чорнобильській АЕС, 
+              які стали інвалідами внаслідок Чорнобильської катастрофи</td>
+            <td class="ta-c" id="spanCategory5_1">&#160;</td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію дітям, які стали інвалідами внаслідок Чорнобильської катастрофи</td>
+            <td class="ta-c" id="spanCategory5_2">&#160;</td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію сім'ям, які втратили годувальника із числа осіб, 
+              віднесених до учасників ліквідації наслідків аварії на Чорнобильській АЕС 
+              та смерть яких пов'язана з Чорнобильською катастрофою</td>
+            <td class="ta-c" id="spanCategory5_3">&#160;</td>
+          </tr>
+          <tr>
+            <td>щорічну допомогу на оздоровлення</td>
+            <td class="ta-c" id="spanCategory5_4">&#160;</td>
+          </tr>
+          <tr>
+            <td>компенсацію вартості самостійного санаторно-курортного лікування</td>
+            <td class="ta-c" id="spanCategory5_5">&#160;</td>
+          </tr>
+          <tr>
+            <td>компенсацію проїзду один раз на рік до будь-якого пункту України і назад автомобільним, або повітряним, 
+              або залізничним, або водним транспортом особам, віднесеним до кат.1 та 2</td>
+            <td class="ta-c" id="spanCategory5_6">&#160;</td>
+          </tr>
+          <tr>
+            <td>компенсацію 50 (25) процентів вартості продуктів харчування за медичними (фізіологічними) нормами, 
+              встановленими Міністерством охорони здоров’я України, громадянам, які віднесені до категорій 1 та 2</td>
+            <td class="ta-c" id="spanCategory5_7">&#160;</td>
+          </tr>
+          <tr>
+            <td>грошову компенсацію на дітей, які не харчуються в навчальних закладах, 
+              розташованих на територіях радіоактивного забруднення, 
+              та дітей, які с інвалідами внаслідок Чорнобильської катастрофи 
+              і не харчуються в навчальних закладах, 
+              а також за всі дні, коли вони не відвідували ці заклади</td>
+            <td class="ta-c" id="spanCategory5_8">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">6. Тимчасову державну допомогу дітям</td>
+            <td class="ta-c" id="spanCategory6">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">7. Соціальну допомогу на дітей-сиріт та дітей, 
+              позбавлених батьківського піклування, грошове забезпечення 
+              батькам-вихователям і прийомним батькам</td>
+            <td class="ta-c" id="spanCategory7">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">8 Допомогу на догляд (щомісячну грошову допомогу малозабезпеченій особі, 
+              яка проживає разом з інвалідом І чи II групи внаслідок психічного розладу, 
+              який за висновком лікарської комісії медичного закладу потребує постійного 
+              стороннього догляду, на догляд за ним)</td>
+            <td class="ta-c" id="spanCategory8">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">9 Компенсацію як фізичній особі, яка надає соціальні послуги</td>
+            <td class="ta-c" id="spanCategory9">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">10 Компенсаційну виплату особі, 
+              яка здійснює догляд за інвалідом І групи або особою, яка досягла 80 р.</td>
+            <td class="ta-c" id="spanCategory10">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">11. Грошову компенсацію замість санаторно-курортної путівки</td>
+            <td class="ta-c" id="spanCategory11">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">12. Компенсацію вартості самостійного санаторно-курортного лікування</td>
+            <td class="ta-c" id="spanCategory12">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">13 Пільгу на придбання твердого палива</td>
+            <td class="ta-c" id="spanCategory13">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">14. Пільгу на придбання скрапленого газу</td>
+            <td class="ta-c" id="spanCategory14">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">15. Одноразову винагороду жінці, якій присвоєно почесне звання України "Мати-героїня"</td>
+            <td class="ta-c" id="spanCategory15">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">16. Одноразову матеріальну допомогу особі, яка постраждала від торгівлі людьми</td>
+            <td class="ta-c" id="spanCategory16">&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">17. Допомогу на поховання</td>
+            <td class="ta-c" id="spanCategory17">&#160;</td>
+          </tr>
+        </table>
+      </div>
+
+
+      <div class="ta-j">
+        <b>До заяви відповідно до законодавства додано <em><span id="spanDocument"></span></em> 
+          документів на <em><span id="spanPage"></span></em> аркушах:</b> 
+      </div>
+      <div class="ta-j">
+        Прошу в разі призначення допомоги кошти готівкою перераховувати 
+      </div>
+      <div class="ta-j">
+        <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
+        через національного оператора поштового зв'язку №
+        <div class="under_field w200 ta-c"><u>
+        	<span id="spanTransferPostVal">[post_office]</span>
+        </u></div>;
+      </div>
+      <div class="ta-j">
+        <span class="check_box"><span id="spanTransferBank">&#10004;</span></span>
+        на рахунок у банку №
+        <span id="spanTransferBankNotVal">
+          <span class="pg-75 ub">&#160;</span> 
+          МФО<span class="pg-50 ub">&#160;</span> 
+          код<span class="pg-50 ub">&#160;</span> 
+          банк<span class="pg-75 ub">&#160;</span>
+        </span>
+        <span id="spanTransferBankVal">   
+          <em>[bank_account]</em>	
+          МФО <em>[mfo]</em> 
+          код <em>[edrpou]</em> 
+          банк <em>[bank_name]</em>
+        </span>
+      </div>
+      <div class="ta-j">
+        <span class="check_box"><span id="spanTransferHouse">&#10004;</span></span>
+        на особовий рахунок будинку-інтернату, установи (закладу), 
+        де інвалід з дитинства або дитина-інвалід
+        перебуває на повному державному утриманні №
+        <span id="spanTransferHouseNotVal">  
+          <span class="pg-75 ub">&#160;</span> 
+          МФО<span class="pg-50 ub">&#160;</span> 
+          код<span class="pg-50 ub">&#160;</span> 
+          банк<span class="pg-75 ub">&#160;</span>
+        </span>
+        <span id="spanTransferHouseVal">   
+          <em>[bank_account]</em>	
+          МФО <em>[mfo]</em> 
+          код <em>[edrpou]</em> 
+          банк <em>[bank_name]</em>
+        </span>
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Підтверджую відсутність змін у складі сім’ї 
+        та характеристиці житла (при повторному зверненні).
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Я усвідомлюю, що наведені мною відомості про доходи та майно, 
+        що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги,
+        компенсацій та пільг, будуть перевірені згідно з чинним законодавством України.
+
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Мене повідомлено, що в разі зміни обставин, 
+        які можуть вплинути на отримання мною соціальної допомоги, 
+        компенсації та пільг, 
+        я зобов'язуюсь повідомити органи праці та соціального захисту населення 
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Про відмову в призначенні 
+        або припинення витати призначеної соціальної допомоги та/або повернення надміру нарахованих коштів 
+        у разі подання неповних чи недостовірних відомостей про доходи та майновий стан сім'ї мене попереджено.
+      </div>
+      <br>
+
+      
+      
+      
+      <div class="layout b">
+        <div class="w50">&#160;</div>
+        <div class="w30p">
+          <div class="under_field w150">
+            <span>(підпис)</span>
+          </div>
+        </div>
+        <div class="w100">
+          &#160;
+        </div>
+        <div class="w30p">
+          <div class="under_field w150">
+            <span>(дата)</span>
+          </div></div>
+      </div>
+      <br>
+      <div style="page-break-after:always"></div>
+      <div class="ta-j b">
+        Додаткова інформація, яка повідомляється одинокою матір'ю (підкреслити необхідне)
+      </div>
+      <table>          
+        <col style="width: 55%">
+        <col style="width: 15%">
+        <col style="width: 15%">
+        <col style="width: 15%">
+        <tr>
+          <td>
+            У шлюбі
+          </td>      
+          <td>
+            Перебувала
+          </td>     
+          <td>
+            Не перебувала
+          </td>     
+          <td>
+            Перебуваю
+          </td>
+        </tr>
+        <tr>
+          <td>
+            З особою, від якої маю дитину
+          </td>
+          <td>Проживаю</td>
+          <td>Не проживаю</td>
+          <td>&#160;</td>
+        </tr>
+        <tr>
+          <td>
+            Пенсію в разі втрати годувальника або соціальну пенсію (заповнюють лише вдови, вдівці)
+          </td>
+          <td>Отримую</td>
+          <td>Не отримую</td>
+          <td>&#160;</td>
+        </tr>
+      </table>   
+      <br/>
+      <div class="ta-j b">       
+        Інформація, яка повідомляється одержувачем державної соціальної допомоги інвалідам 
+        з дитинства та дітям-інвалідам щодо призначення пенсії в разі втрати годувальника:
+      </div>
+
+      <table>          
+        <col style="width: 80%">
+        <col style="width: 20%">
+        <tr>
+          <th>
+            Управління Пенсійного фонду, 
+            у якому перебуває на обліку одержувач допомоги
+          </th>      
+          <th>
+            Номер пенсійної справи
+          </th>
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <td>&#160;</td>
+        </tr>
+      </table>
+
+
+      <br/>
+      <div class="ta-j b">Інформація, 
+        яка повідомляється одержувачами компенсаційних виплат та допомог по догляду 
+        щодо отримання пенсій (допомог) особою, за якою здійснюється догляд:
+      </div>
+
+      <table>          
+        <col style="width: 80%">
+        <col style="width: 20%">
+        <tr>
+          <th>
+            П.І.Б., адреса, орган, у якому перебуває на обліку одержувач пенсії
+            (допомоги) (особа, за якою здійснюється догляд)
+          </th>      
+          <th>
+            Номер пенсійної справи
+          </th>
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <td>&#160;</td>
+        </tr>
+      </table>
+
+      <br/>
+      <div class="ta-j i">   
+        <span class="pl-25"></span>У випадку, якщо прийняття 
+        рішення щодо моєї заяви потребує окремого рішення 
+        місцевих органів виконавчої влади/місцевого самоврядування 
+        або утвореної ними комісії, прошу розглянути/не розглядати 
+        мою заяву відповідними місцевими органами виконавчої влади/місцевого 
+        самоврядування або утвореною ними комісією (потрібне підкреслити):
+      </div>
+      <div class="layout ta-j">         
+        <div class="w350 pl-25">
+          <div class="under_field w350">
+            <span>(підпис заявника/ уповноваженого представника сім'ї)</span>
+          </div>
+        </div>       
+        <div class=" w150"></div>       
+        <div class=" w150">
+          <div class="under_field w100p">
+            <span>(дата)
+            </span>
+          </div> &#160;
+        </div>
+      </div>
+
+      <br/>
+      <div style="border: 1px solid #000; padding: 5px">
+        <div class="ta-j">   
+          Заповнюється відповідальною особою управління праці 
+          та соціального захисту населення
+        </div>
+        <div class="ta-j">   
+          Відомості з паспорта та поданих документів звірені.
+          Заяву та документи на <em></em> аркушах прийнято
+          "___" _____________ 20___р. та зареєстровано під №
+          <span class="ub pg-100"> &#160;</span> 
+        </div>
+        <div class="under_multifield ta-j">
+          Для розгляду заяви необхідно додати до "___" _____________ 20___р. 
+          такі документи:
+          <div class="ub w100p">&#160;</div>
+          <div class="ub w100p">&#160;</div>
+          <div class="w100p">&#160;</div>
+        </div>
+        <div class="layout w100p">         
+          <div class=" w30p">
+            <div class="under_field w100p">
+              <b>Відповідальна особа</b>
+              <span>(прізвище та підпис відповідальної особи)</span>
+            </div>
+          </div>       
+          <div class=" w4p"></div>       
+          <div class=" w60p">
+            <div class="under_field w100p">
+              <b>Ознайомився</b>
+              <span>(підпис заявника / 
+                уповноваженого представника / 
+                власника, співвласника (наймача) житла)
+              </span>
+            </div> &#160;
+          </div>
+        </div>
+      </div>
+      <br/>
+      <br/>
+      <div class="lineCut"><span>&#9986;</span></div>
+
+
+      <br/><br/>      
+      <div style="border: 1px solid #000; padding: 5px">
+        <div class="ta-j">   
+          Заповнюється відповідальною особою управління праці 
+          та соціального захисту населення
+        </div>
+        <div class="ta-j">   
+          Відомості з паспорта та поданих документів звірені.
+          Заяву та документи на <em></em> аркушах прийнято
+          "___" _____________ 20___р. та зареєстровано під №
+          <span class="ub pg-100"> &#160;</span> 
+        </div>
+        <div class="under_multifield ta-j">
+          Для розгляду заяви необхідно додати до "___" _____________ 20___р. 
+          такі документи:
+          <div class="ub w100p">&#160;</div>
+          <div class="ub w100p">&#160;</div>
+          <div class="w100p">&#160;</div>
+        </div>
+        <div class="layout w100p">         
+          <div class=" w40p">
+            <div class="under_field w100p">
+              <b>Відповідальна особа</b>
+              <span>(прізвище та підпис відповідальної особи)</span>
+            </div>
+          </div>            
+          <div class=" w60p">
+            <div class="under_field w100p">
+              <b>Ознайомився</b>
+              <span>(підпис заявника / 
+                уповноваженого представника / 
+                власника, співвласника (наймача) житла)
+              </span>
+            </div> &#160;
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>    
+    	ChangeParagrath();
+    	NumberDocument();
+    	
+        ShowElements(asNumberApplication == "первинне", "spanFirst");
+        ShowElements(asNumberApplication == "повторне звернення", "spanSecond");
+        
+        ShowElementsOnTrue(asAdress == "Так", "spanAdressRegistr");      
+        ShowElementsOnTrue(asAdress == "Ні", "spanAdressFactual");
+    	
+        switch(transfer_type) {
+        case "через національного оператора поштового зв'язку":          
+          ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal"); 
+          break;
+        case "на рахунок у банку":    
+          ShowElementsOnTrue(true, "spanTransferBank", "spanTransferBankVal", "spanTransferHouseNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferHouse", "spanTransferPost", "spanTransferPostVal", "spanTransferHouseVal", "spanTransferBankNotVal"); 
+          break;
+        case "на рахунок установи (закладу), де інвалід з дитинства(дитина-інвалід) перебуває на повному державному утриманні":    
+          ShowElementsOnTrue(true, "spanTransferHouse", "spanTransferHouseVal", "spanTransferBankNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouseNotVal"); 
+          break;
+        default:
+          ShowElementsOnTrue(true, "spanTransferBankNotVal", "spanTransferHouseNotVal"); 
+          ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
+          break;
+        }
+      //*/
+        ParsePassport();
+    </script>
+  </body>
+</html>

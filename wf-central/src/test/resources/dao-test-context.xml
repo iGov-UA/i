@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="classpath:/context-db.xml" />
+    <import resource="classpath:/context-dao.xml" />
+    <import resource="classpath:/context-dao_local.xml" />
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=1000"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <bean id="gridTemplate" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.springframework.data.mongodb.gridfs.GridFsTemplate" />
+    </bean>
+
+    <bean id="generalConfig" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.GeneralConfig" />
+    </bean>
+
+    <bean id="msgService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.service.business.msg.MsgService" />
+    </bean>
+
+	<bean id="methodCallRunner" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.util.MethodsCallRunnerUtil" />
+    </bean>
+    
+    <bean id="mail" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.mail.Mail" />
+    </bean>
+
+    <bean id="prominSession_Singleton" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.service.business.promin.ProminSession_Singleton" />
+    </bean>
+
+    <bean id="bytesDataStorage" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.db.kv.statical.IBytesDataStorage" />
+    </bean>
+
+    <bean id="httpRequester" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.web.HttpRequester" />
+    </bean>
+    
+    <bean id="oUniSender" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.mail.unisender.UniSender" />
+    </bean>
+ 
+    
+    <bean id="httpEntityInsedeCover" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.web.HttpEntityInsedeCover" />
+    </bean>            
+
+    <bean id="ManagerSMS_New" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.sms.ManagerSMS_New" />
+    </bean>
+    
+    <context:property-placeholder location="classpath:AS.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:test.properties" ignore-unresolvable="true"/>
+</beans>

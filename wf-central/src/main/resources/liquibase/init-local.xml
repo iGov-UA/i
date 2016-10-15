@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Init tables" author="brunneng" runOnChange="false">
+
+        <sql splitStatements="true" dbms="postgresql">
+            DROP SEQUENCE IF EXISTS "Subject_id_seq";
+            DROP SEQUENCE IF EXISTS "SubjectHuman_id_seq";
+            DROP SEQUENCE IF EXISTS "SubjectOrgan_id_seq";
+            DROP SEQUENCE IF EXISTS "Document_id_seq";
+            DROP SEQUENCE IF EXISTS "DocumentType_id_seq";
+            DROP SEQUENCE IF EXISTS "DocumentContentType_id_seq";
+            DROP SEQUENCE IF EXISTS "DocumentAccess_id_seq";
+            DROP SEQUENCE IF EXISTS "HistoryEvent_id_seq";
+            DROP TABLE IF EXISTS "Region" CASCADE;
+            DROP TABLE IF EXISTS "City" CASCADE;
+            DROP TABLE IF EXISTS "Category" CASCADE;
+            DROP TABLE IF EXISTS "Subcategory" CASCADE;
+            DROP TABLE IF EXISTS "ServiceType" CASCADE;
+            DROP TABLE IF EXISTS "Service" CASCADE;
+            DROP TABLE IF EXISTS "ServiceData" CASCADE;
+            DROP TABLE IF EXISTS "Subject" CASCADE;
+            DROP TABLE IF EXISTS "SubjectHuman" CASCADE;
+            DROP TABLE IF EXISTS "SubjectOrgan" CASCADE;
+            DROP TABLE IF EXISTS "SubjectOrganType" CASCADE;
+            DROP TABLE IF EXISTS "SubjectOrganDepartment" CASCADE;
+            DROP TABLE IF EXISTS "SubjectMessage" CASCADE;
+            DROP TABLE IF EXISTS "DocumentType" CASCADE;
+            DROP TABLE IF EXISTS "DocumentContentType" CASCADE;
+            DROP TABLE IF EXISTS "Document" CASCADE;
+            DROP TABLE IF EXISTS "DocumentOperator_SubjectOrgan" CASCADE;
+            DROP TABLE IF EXISTS "ServiceOperator_SubjectOrgan" CASCADE;
+            DROP TABLE IF EXISTS "HistoryEvent" CASCADE;
+            DROP TABLE IF EXISTS "DocumentAccess" CASCADE;
+        </sql>
+
+        <sql splitStatements="true" dbms="h2">
+            DROP SEQUENCE IF EXISTS Subject_id_seq;
+            DROP SEQUENCE IF EXISTS SubjectHuman_id_seq;
+            DROP SEQUENCE IF EXISTS SubjectOrgan_id_seq;
+            DROP SEQUENCE IF EXISTS Document_id_seq;
+            DROP SEQUENCE IF EXISTS DocumentType_id_seq;
+            DROP SEQUENCE IF EXISTS DocumentContentType_id_seq;
+            DROP SEQUENCE IF EXISTS DocumentAccess_id_seq;
+            DROP SEQUENCE IF EXISTS HistoryEvent_id_seq;
+            DROP TABLE IF EXISTS Region CASCADE;
+            DROP TABLE IF EXISTS City CASCADE;
+            DROP TABLE IF EXISTS Category CASCADE;
+            DROP TABLE IF EXISTS Subcategory CASCADE;
+            DROP TABLE IF EXISTS ServiceType CASCADE;
+            DROP TABLE IF EXISTS Service CASCADE;
+            DROP TABLE IF EXISTS ServiceData CASCADE;
+            DROP TABLE IF EXISTS Subject CASCADE;
+            DROP TABLE IF EXISTS SubjectHuman CASCADE;
+            DROP TABLE IF EXISTS SubjectOrgan CASCADE;
+            DROP TABLE IF EXISTS SubjectOrganType CASCADE;
+            DROP TABLE IF EXISTS SubjectOrganDepartment CASCADE;
+            DROP TABLE IF EXISTS SubjectMessage CASCADE;
+            DROP TABLE IF EXISTS DocumentType CASCADE;
+            DROP TABLE IF EXISTS DocumentContentType CASCADE;
+            DROP TABLE IF EXISTS Document CASCADE;
+            DROP TABLE IF EXISTS DocumentOperator_SubjectOrgan CASCADE;
+            DROP TABLE IF EXISTS ServiceOperator_SubjectOrgan CASCADE;
+            DROP TABLE IF EXISTS HistoryEvent CASCADE;
+            DROP TABLE IF EXISTS DocumentAccess CASCADE;
+        </sql>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Subject">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sLabel" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sLabelShort" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="SubjectHuman">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Subject_SubjectHuman"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sSB" type="varchar(15)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sINN" type="varchar(15)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sPassportSeria" type="varchar(2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sPassportNumber" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sFamily" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sName" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sSurname" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="SubjectOrgan">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Subject_SubjectOrgan"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sOKPO" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sFormPrivacy" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sName" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sNameFull" type="varchar(40)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="SubjectOrganType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="SubjectOrganDepartment">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sGroup_Activiti" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectOrgan" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectOrganDepartment_SubjectOrgan"
+                             referencedTableName="SubjectOrgan" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Region">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="City">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Region" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Region_City"
+                             referencedTableName="Region" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Category">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Subcategory">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Category" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Subcategory_Category"
+                             referencedTableName="Category" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="ServiceType">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Service">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subcategory" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Service_Subcategory"
+                             referencedTableName="Subcategory" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sInfo" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sFAQ" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sLaw" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sSubjectOperatorName" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		
+		<!-- ####################################################################################################### -->
+
+        <createTable tableName="HistoryEvent">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_HistoryEventType" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sEventName_Custom" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sMessage" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDate" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="ServiceData">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Service" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ServiceData_Service"
+                             referencedTableName="Service" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_City" type="int">
+                <constraints foreignKeyName="FK_ServiceData_City"
+                             referencedTableName="City" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_Region" type="int">
+                <constraints foreignKeyName="FK_ServiceData_Region"
+                             referencedTableName="Region" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_ServiceType" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ServiceData_ServiceType"
+                             referencedTableName="ServiceType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oData" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sURL" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bHidden" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject_Operator" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_ServiceData_SubjectOrgan"
+                             referencedTableName="SubjectOrgan" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="bTest" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="asAuth" type="varchar(20)">
+                <constraints nullable = "false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="SubjectMessage">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sHead" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sBody" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDate" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sMail" type="varchar(100)"/>
+            <column name="sContacts" type="varchar(200)"/>
+            <column name="sData" type="varchar"/>
+        </createTable>
+             
+         <!-- ####################################################################################################### -->
+        <createTable tableName="DocumentType">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="DocumentContentType">
+            <column name="nID" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="Document">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_DocumentType" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Document_DocumentType"
+                             referencedTableName="DocumentType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sID_Content" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_ContentType" type="int">
+                <constraints foreignKeyName="FK_Document_DocumentContentType"
+                             referencedTableName="DocumentContentType" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sFile" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDate_Upload" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sID_Subject_Upload" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sSubjectName_Upload" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sContentType" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_Document_Subject"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_Subject_Upload" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Document_Subject_Upload"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        
+        <!-- ####################################################################################################### -->
+        <createTable tableName="DocumentAccess">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Document" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDateCreate" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nMS" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sFIO" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sTarget" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sTelephone" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sMail" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sSecret" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sAnswer" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDateAnswerExpire" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sCode" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sCodeType" type="varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="DocumentOperator_SubjectOrgan">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectOrgan" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sHandlerClass" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- ####################################################################################################### -->
+        <createTable tableName="ServiceOperator_SubjectOrgan">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectOrgan" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        
+    </changeSet>
+
+    <changeSet id="Add auto increment for H2" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="Region" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="City" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Category" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Subcategory" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ServiceType" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Service" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ServiceData" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Subject" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="SubjectHuman" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="SubjectOrgan" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="SubjectMessage" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="DocumentType" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="DocumentContentType" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="Document" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="DocumentOperator_SubjectOrgan" startWith="1000" columnName="nID" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ServiceOperator_SubjectOrgan" startWith="1000" columnName="nID" columnDataType="bigint"/>
+        <addAutoIncrement tableName="HistoryEvent" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="DocumentAccess" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
+
+</databaseChangeLog>

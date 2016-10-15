@@ -1,0 +1,21 @@
+<div class="tasks-form-history" ng-show="taskData.aMessage.length > 0">
+  <h4>Історія диалогу:</h4>
+
+  <div ng-repeat="oMessage in taskData.aMessage">
+    <div>
+      <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+    </div>
+
+    <div ng-if="oMessage.osData.length > 1" ng-bind-html="oMessage.sBody"></div>
+
+    <div ng-if="oMessage.osData.length <= 1">
+      <span ng-if="!oMessage.osData[0].sValueNew">{{oMessage.osData[0].sGeneralComment}}</span>
+      <span ng-if="oMessage.osData[0].sValueNew">{{oMessage.osData[0].sValueNew}}</span>
+    </div>
+    <span ng-if="!oMessage.osData">{{oMessage.sBody}}</span>
+
+    <div ng-repeat="oFile in oMessage.osData.aFile">
+      Прикріплено файл: <a href="{{getMessageFileUrl(oMessage, oFile)}}" target="_blank">{{oFile.sFileName}}</a>
+    </div>
+  </div>
+</div>

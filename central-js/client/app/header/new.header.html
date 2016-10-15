@@ -1,0 +1,126 @@
+<style>
+  .i-nav {
+    background-color: #449dcd;
+    border-radius: 0;
+    border: none;
+    margin-bottom: 40px;
+    min-height:90px;
+    box-shadow: none;
+  }
+  .i-nav .navbar-brand {
+    color: #ffffff;
+    font-size: 4em;
+    font-weight: bold;
+    margin-top: 18px;
+    font-family: Open Sans;
+    display: inline-block;
+  }
+  .i-nav .divider {
+    width: 1px;
+    margin-top: 20px;
+    height: 49px;
+    background-color: white;
+    display: inline-block;
+  }
+  .header-logo-info {
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .header-logo-info p {
+    font-family: Open Sans;
+    font-size: 14px;
+    color: white;
+  }
+  .navbar-toggle {
+    margin-top: 28px !important;
+  }
+  .navbar-toggle,
+  .navbar-toggle:hover,
+  .navbar-toggle:focus,
+  .navbar-toggle:active {
+    border-color: #449dcd !important;
+    background-color: #449dcd !important;
+  }
+
+  .navbar-toggle .icon-bar,
+  .navbar-toggle:hover .icon-bar,
+  .navbar-toggle:focus .icon-bar,
+  .navbar-toggle:active .icon-bar {
+    background-color: #ffffff
+  }
+
+  .menu-item li {
+    list-style: circle !important;
+  }
+  .menu-item {
+    border-bottom: 5px solid #449dcd;
+  }
+  .menu-item a {
+    font-family: "Open Sans";
+  }
+  .menu-item:hover {
+    background-color: #449dcd !important;
+  }
+  .menu-item.selected {
+    background-color: #449dcd !important;
+    text-decoration: underline;
+    color: #cfe4f0;
+  }
+  .about {
+    margin-bottom: 0;
+  }
+</style>
+
+<nav class="navbar-top-fixed igov-login-bar" ng-show="navBarStatusVisible">
+  <div class="container">
+    <a ng-click="logout()" class="glyphicon glyphicon-log-out pull-right" aria-hidden="true">
+      <span class="exit" style="font-size: 15px">Вийти</span>
+    </a>
+    <span style="margin-top: 1px; font-size: 15px;" class="pull-right">{{userName}}</span>
+  </div>
+</nav>
+
+<nav class="navbar navbar-default navbar-static-top i-nav" ng-class="{'about': state.is('index.about')}">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" aria-expanded="false" ng-click="navBarIsCollapsed = !navBarIsCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="/1">iGov</a>
+        <div class="divider"></div>
+      <span class="header-logo-info">
+        <p>Портал</p>
+        <p>державних</p>
+        <p>послуг</p>
+      </span>
+    </div>
+
+    <div class="collapse navbar-collapse" collapse="navBarIsCollapsed">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="menu-item" ng-class="{selected: state.is('index')
+                                          || state.is('index.catalog')
+                                          || state.is('index.situation')
+                                          || state.is('index.newsubcategory')
+                                          || state.is('index.oldbusiness')
+                                          || state.is('index.subcategory')}">
+          <a ui-sref="index">
+            Послуги
+          </a>
+        </li>
+        <li class="menu-item" ui-sref-active="selected">
+          <a ui-sref="index.journal">
+            Мій журнал
+          </a>
+        </li>
+        <li class="menu-item" ui-sref-active="selected">
+          <a ui-sref="index.about">
+            Про проект
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+        <!-- Используем временную таблицу Flow_ServiceData_Tmp, чтобы удалить строки из Flow_ServiceData которых нет в Flow_ServiceData.csv -->
+    <changeSet id="Drop out-of-date Flow_ServiceData" author="brunneng" dbms="postgresql" runOnChange="true">
+        <createTable tableName="Flow_ServiceData_Tmp">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(300)"/>
+            <column name="nID_ServiceData" type="bigint"/>
+            <column name="nID_SubjectOrganDepartment" type="bigint"/>
+            <column name="sID_BP" type="varchar(200)"/>
+            <column name="nCountAutoGenerate" type="NUMERIC"/>
+        </createTable>
+
+        <loadData encoding="UTF-8" file="data/Flow_ServiceData.csv" tableName="Flow_ServiceData_Tmp" separator=";">
+            <column name="nID" type="NUMERIC"/>
+        </loadData>
+
+        <sql splitStatements="true" dbms="postgresql">
+            delete from "Flow_ServiceData" where "nID" not in (select "nID" from "Flow_ServiceData_Tmp");
+        </sql>
+
+        <dropTable tableName="Flow_ServiceData_Tmp"/>
+    </changeSet>
+
+    <changeSet id="Update data" author="brunneng" runOnChange="true">
+
+        <sql splitStatements="true" dbms="postgresql">
+            SET CONSTRAINTS ALL DEFERRED;
+        </sql>
+
+        <delete tableName="SubjectOrganDepartment"/>
+        <loadData encoding="UTF-8" file="data/SubjectOrganDepartment.csv"
+                        tableName="SubjectOrganDepartment" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sGroup_Activiti" type="STRING"/>
+            <column name="nID_SubjectOrgan" type="NUMERIC"/>
+        </loadData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Flow_ServiceData.csv" tableName="Flow_ServiceData" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_ServiceData" type="NUMERIC"/>
+            <column name="nID_SubjectOrganDepartment" type="NUMERIC"/> <!-- no foreign key constraint here -->
+            <column name="sID_BP" type="STRING"/>
+            <column name="nCountAutoGenerate" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <delete tableName="FlowProperty"/>
+        <delete tableName="FlowPropertyClass"/>
+        <delete tableName="FlowLink"/>
+
+        <loadData encoding="UTF-8" file="data/FlowLink.csv" tableName="FlowLink" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_SubjectOrganDepartment"  type="NUMERIC"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="data/FlowPropertyClass.csv" tableName="FlowPropertyClass" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sPath" type="STRING"/>
+            <column name="sBeanName" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="data/FlowProperty.csv" tableName="FlowProperty" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_FlowPropertyClass" type="NUMERIC"/>
+            <column name="sData" type="STRING"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="bExclude" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="sName" type="STRING" defaultValue=""/>
+            <column name="sRegionTime" type="STRING" defaultValue=""/>
+            <column name="saRegionWeekDay" type="STRING" defaultValue=""/>
+            <column name="sDateTimeAt" type="STRING" defaultValue=""/>
+            <column name="sDateTimeTo" type="STRING" defaultValue=""/>
+            <column name="nLen" type="NUMERIC"/>
+            <column name="sLenType" type="STRING" defaultValue=""/>
+        </loadData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlot.csv" tableName="FlowSlot" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sDate" type="DATETIME"/>
+            <column name="sData" type="STRING"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlotTicket.csv" tableName="FlowSlotTicket" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_FlowSlot" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_Task_Activiti" type="NUMERIC"/>
+            <column name="sDateStart" type="DATETIME"/>
+            <column name="sDateFinish" type="DATETIME"/>
+            <column name="sDateEdit" type="DATETIME"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID_FlowSlotTicket,nID_FlowSlot" encoding="UTF-8" file="data/FlowSlotTicket_FlowSlot.csv" tableName="FlowSlotTicket_FlowSlot" separator=";">
+            <column name="nID_FlowSlotTicket" type="NUMERIC"/>
+            <column name="nID_FlowSlot" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <delete tableName="EscalationRule"/>
+        <delete tableName="EscalationRuleFunction"/>
+        <loadData encoding="UTF-8" file="data/EscalationRuleFunction.csv" tableName="EscalationRuleFunction" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sBeanHandler" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="data/EscalationRule.csv" tableName="EscalationRule" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID_BP" type="STRING"/>
+            <column name="sID_UserTask" type="STRING"/>
+            <column name="sCondition" type="STRING"/>
+            <column name="soData" type="STRING"/>
+            <column name="sPatternFile" type="STRING"/>
+            <column name="nID_EscalationRuleFunction" type="NUMERIC"/>
+        </loadData>
+
+        <loadUpdateData tableName="EscalationStatus" primaryKey="nID" file="data/EscalationStatus.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="EscalationHistory" primaryKey="nID" file="data/EscalationHistory.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sDate" type="DATETIME"/>
+            <column name="nID_Process" type="NUMERIC"/>
+            <column name="nID_Process_Root" type="NUMERIC"/>
+            <column name="nID_UserTask" type="NUMERIC"/>
+            <column name="nID_EscalationStatus" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="ActionTaskLinkType" primaryKey="nID" file="data/ActionTaskLinkType.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData tableName="ActionProcessCount" primaryKey="nID" file="data/ActionProcessCount.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID_BP" type="STRING"/>
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nCountYear" type="NUMERIC"/>
+            <column name="nYear" type="NUMERIC"/>
+        </loadUpdateData>
+
+
+        <delete tableName="AccessServiceLoginRole"/>
+        <delete tableName="AccessServiceRoleRightInclude"/>
+        <delete tableName="AccessServiceRoleRight"/>
+        <delete tableName="AccessServiceRole"/>
+        <delete tableName="AccessServiceRight"/>
+        <loadData tableName="AccessServiceRight" file="data/AccessServiceRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sService" type="STRING"/>
+            <column name="saMethod" type="STRING"/>
+            <column name="sHandlerBean" type="STRING"/>
+            <column name="bDeny" type="BOOLEAN"/>
+            <column name="nOrder" type="NUMERIC"/>
+        </loadData>
+
+        <loadData tableName="AccessServiceRole" file="data/AccessServiceRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadData>
+
+        <loadData tableName="AccessServiceRoleRight" file="data/AccessServiceRoleRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRight" type="NUMERIC"/>
+        </loadData>
+
+        <loadData tableName="AccessServiceRoleRightInclude" file="data/AccessServiceRoleRightInclude.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole_Include" type="NUMERIC"/>
+        </loadData>
+
+        <loadData tableName="AccessServiceLoginRole" file="data/AccessServiceLoginRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sLogin" type="STRING"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+        </loadData>
+
+    </changeSet>    
+
+
+</databaseChangeLog>

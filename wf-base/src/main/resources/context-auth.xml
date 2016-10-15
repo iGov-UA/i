@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <beans>
+        <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
+            <property name="identityService" ref="identityService"/>
+        </bean>
+
+        <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
+        <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
+        <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
+        <bean id="accessServiceLoginRoleFilter" class="org.igov.service.controller.security.AccessServiceLoginRoleFilter"/>
+    </beans>
+
+    <beans profile="prod">
+        <bean id="authProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location" value="file:${catalina.home}/conf/AS.properties"/>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        </bean>
+
+        <security:http pattern="/service/subject/message/getCallbackSMS_PB" security="none" />
+        <security:http create-session="stateless" realm="Activiti REST API">
+            <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
+            <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
+            <security:http-basic/>
+        </security:http>
+
+        <security:authentication-manager>
+            <security:authentication-provider ref="accessKeyAuthProvider"/>
+            <security:authentication-provider ref="activitiRestAuthProvider"/>
+        </security:authentication-manager>
+    </beans>
+
+
+    <beans profile="test">
+        <bean id="authProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location" value="file:${catalina.home}/conf/AS.properties"/>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        </bean>
+
+        <security:http pattern="/service/subject/message/getCallbackSMS_PB" security="none" />
+        <security:http create-session="stateless" realm="Activiti REST API">
+            <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
+            <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
+            <security:http-basic/>
+        </security:http>
+
+        <security:authentication-manager>
+            <security:authentication-provider ref="accessKeyAuthProvider"/>
+            <security:authentication-provider ref="activitiRestAuthProvider"/>
+        </security:authentication-manager>
+    </beans>
+
+
+    <beans profile="local,default">
+        <bean id="authProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location" value="classpath:AS.properties"/>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        </bean>
+
+        <security:http pattern="/service/subject/message/getCallbackSMS_PB" security="none" />
+        <security:http create-session="stateless" realm="Activiti REST API">
+            <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
+            <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
+            <security:http-basic/>
+        </security:http>
+
+        <security:authentication-manager>
+            <security:authentication-provider ref="accessKeyAuthProvider"/>
+            <security:authentication-provider ref="activitiRestAuthProvider"/>
+        </security:authentication-manager>
+    </beans>
+
+</beans>

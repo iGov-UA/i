@@ -1,0 +1,75 @@
+<style>
+  .hc__right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+</style>
+
+<div ng-if="!spinner">
+  <div class="container breadcrumbs">
+    <div class="row">
+      <div class="container" style="margin-top: 20px">
+        <a href="/1" ng-if="catalogTab == 1 || !catalogTab">Головна</a>
+        <a href="/2" ng-if="catalogTab == 2">Головна</a>
+        >
+        <a ui-sref="index.newsubcategory({'catID': catalogTab, 'scatID': category.oServiceTag_Root.nID })">{{category.oServiceTag_Root.sName_UA}}</a>
+        >
+        <span>{{category.aServiceTag_Child[0].sName_UA}}</span>
+        <hr class="common-hr">
+      </div>
+    </div>
+  </div>
+
+  <div class="container subcategory-tmpl">
+
+    <div class="row">
+      <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="category.aServiceTag_Child[0].sNote">
+        <div class="col-md-3 similar-situation-container">
+          <div class="vertical-divider"></div>
+          <span class="similar-situation-container-header">Пов'язані послуги</span>
+          <br>
+          <ul class="similar-situation">
+            <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'">
+              <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-9" style="padding-left: 0">
+          <span class="situation-html default-styles-for-inner-html" compile-template data-ng-bind-html="trustAsHtml(category.aServiceTag_Child[0].sNote)"></span>
+        </div>
+      </div>
+      <div class="container igov-container" style="padding-right: 0; padding-left: 0" ng-if="!category.aServiceTag_Child[0].sNote">
+        <div style="margin-top: 20px">
+          <div class="vertical-divider"></div>
+          <span style="font-size: 24px; font-family: 'Open Sans'; padding-left: 10px">Пов'язані послуги</span>
+          <div class="col-sm-12 catalog-with-search-result">
+            <ul style="padding-left: 3px">
+              <li ng-repeat="relatedServices in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+                <a ui-sref="index.service.general({'id': relatedServices.nID })">{{relatedServices.sName}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-right: 0; padding-left: 0" ng-if="category.aServiceTag_Child[0].sNote">
+      <div class="col-md-9">
+        <div class="hypercomments-container" ng-init="runComments()">
+          <div id="hypercomments_widget"></div>
+          <a href="http://hypercomments.com"
+             class="hc-link"
+             title="comments widget"></a><!--comments powered by HyperComments-->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row" ng-show="spinner">
+  <div class="text-center">
+    <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+  </div>
+</div>
+

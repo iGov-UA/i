@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+      <div class="col-md-12 text-right">
+          <div class="ord-inner-addon">
+              <span class="glyphicon glyphicon-search al-left"
+                    aria-hidden="true"></span>
+              <form ng-submit="searchOrder()">
+                <input type="text"
+                       class="form-control"
+                       ng-model="sSearch"
+                       placeholder="Введіть номер або текст для пошуку">
+               </form>
+          </div>
+      </div>
+  </div><br />
+  <div class="row">
+    <dl ng-init="limit = 7">
+      <dt data-ng-repeat-start="event in journal | orderBy: '-sDate' | filter: {$: sSearch} | limitTo: limit as results"
+          ng-switch="getOrderStatusString(event.oHistoryEvent_Service.nID_StatusType)"
+          ng-class="getOrderStatusString(event.oHistoryEvent_Service.nID_StatusType)"
+          class="date_shape">
+        <time datetime="{{event.sDate}}">{{ event.sDate | date: 'dd.MM.yyyy'}}</time>
+        <span ng-switch-when="remark">Є зауваження</span>
+        <span ng-switch-when="comment">Є повідомлення</span>
+        <span ng-switch-when="closed">Закрита</span>
+        <span ng-switch-default="processing">В обробці</span>
+      </dt>
+      <dd data-ng-repeat-end class="u39">
+        <a ng-if="!event.bGrouped" href="{{getSearchHref('sID_Order', event.oHistoryEvent_Service.sID_Order)}}">{{ event.oHistoryEvent_Service.sHead}}</a>
+        <span ng-if="event.bGrouped">{{ event.oHistoryEvent_Service.sHead}}</span>
+        <div class="u41 hide-table">
+          {{event.oHistoryEvent_Service.nID_StatusType == 13 ? '' : event.oHistoryEvent_Service.sName_UA_StatusType}}
+          {{event.oHistoryEvent_Service.nID_StatusType !== 13 && event.oHistoryEvent_Service.sUserTaskName.length ? '-':''}}
+          {{event.oHistoryEvent_Service.sUserTaskName}}
+        </div>
+      </dd>
+    </dl>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <a href="#"
+             ng-hide="results.length === items.length || results.length === 0"
+             ng-click="limit = limit +10">Показати ще</a>
+      </div>
+  </div>
+</div>

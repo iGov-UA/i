@@ -1,0 +1,41 @@
+<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="todo">
+        <h1>{{iGovTitle}}</h1>
+        <div class="profileBlock">
+          <div class="text-left">
+            <h4>Користувач</h4>
+          </div>
+          <div class="form-group  my-group">
+            <div class="userName">
+              <p>ПІБ : <span>{{user.firstName + ' ' + user.lastName}}</span></p>
+              <p>Логін : <span>{{user.id}}</span> </p>
+            </div>
+            <label class="myLabel">Контактний телефон : </label>
+            <input  class="form-control" placeholder="+380 " disabled="true" ng-model="contacts.phone"/> <br><br>
+            <label class="myLabel">Контактний e-mail : </label>
+            <input type="email" class="form-control" data-ng-model="contacts.email" disabled="true"/>
+          </div>
+        </div>
+        <div class="password-block">
+          <div class="text-left">
+            <h4>Зміна пароля</h4>
+          </div>
+          <div class="form-group  my-group">
+            <label class="myLabel">Введіть існуючий пароль : </label>
+            <input type="password"  class="form-control" data-ng-model="oldPassword"/> <br><br>
+            <label class="myLabel">Введіть новий пароль : </label>
+            <input type="password"  class="form-control" data-ng-model="newPassword"/> <br><br>
+            <label class="myLabel">Введіть новий пароль : </label>
+            <input type="password" class="form-control" data-ng-model="newPassword2"/> <br><br>
+            <button class="btn btn-success" ng-disabled="!oldPassword || !newPassword || !newPassword2" data-ng-click="changePassword()">Зберегти</button>
+            <button class="btn btn-default" data-ng-click="cancel()">Скасувати</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

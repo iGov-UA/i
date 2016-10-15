@@ -1,0 +1,432 @@
+sDateNow=`date "+%Y.%m.%d-%H.%M.%S"`
+sPath=/sybase/jenkins/data/jobs/i_alpha/workspace
+sVersion="alpha"
+
+s=""
+echo "СБОРКА - фронтов Node"
+echo "BUILD&SYNC (1/2) - FrontEnd on Node"
+sFrontCommonNeed=""
+sFrontCentralModified=""
+sFrontRegionModified=""
+sFrontCentralName="central-js"
+sFrontRegionName="dashboard-js"
+if [ "$bAllFrontUnconditionaly" == "true" ]; then
+	sFrontCommonNeed="All"
+    bIncludeFront="true"
+fi
+if [ "$bIncludeFront" == "true" ]; then
+    s=$sFrontCentralName
+    sFrontCentralPathFileNeedSync=$sPath/$s.need-sync
+    sFrontCentralPathFileNeedDeploy=$sPath/$s.need-deploy
+    sReturn=`$sPath/../checkModified.sh $sPath/$s`
+    echo "-----------------------------------------------"
+	if [ "$sFrontCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+		echo "---СБОРКА (1/3)"
+		echo "---BUILD (1/3)"
+		sFrontCentralModified=";"$s
+        cd $sPath/$s
+        npm install
+        cd client
+        bower install
+        npm install
+        npm install grunt-contrib-imagemin
+        grunt debug
+        echo $s.$sDateNow > $sFrontCentralPathFileNeedSync
+        sReturn=`$sPath/../checkModified.sh $sPath/$s`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    {
+	    sSubPath=`cat $sFrontCentralPathFileNeedSync`
+  	} || {
+ 		echo $s" alredy synced, skiped!"
+	}    
+    echo "-----------------------------------------------"
+	if [ "$sSubPath" != "" ]; then
+		echo "СИНХРОНИЗАЦИЯ (2/3)"
+		echo "---SYNCHRONIZE (2/3)"
+    	#echo "FlagFile:$sFrontCentralPathFileNeedSync has $sSubPath ('sPath/s'=$sPath/$s)"
+        rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $sPath/$s/ sybase@test.igov.org.ua:/sybase/.upload/$sSubPath/
+        echo $sSubPath > $sFrontCentralPathFileNeedDeploy
+        #rm $sFrontCentralPathFileNeedSync
+        echo "" > $sFrontCentralPathFileNeedSync
+	else
+ 		echo $s" alredy synced, skiped!"
+	fi
+    echo "==============================================="
+
+    s=$sFrontRegionName
+    sFrontRegionPathFileNeedSync=$sPath/$s.need-sync
+    sFrontRegionPathFileNeedDeploy=$sPath/$s.need-deploy
+    sReturn=`$sPath/../checkModified.sh $sPath/$s`
+    echo "-----------------------------------------------"
+	if [ "$sFrontCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+		echo "---СБОРКА (1/3)"
+		echo "---BUILD (1/3)"
+		sFrontRegionModified=";"$s
+        cd $sPath/$s
+        npm install
+        npm list grunt
+        npm list grunt-google-cdn
+        bower install
+        npm install grunt-contrib-imagemin
+        grunt build
+        cd dist
+        npm install
+        echo $s.$sDateNow > $sFrontRegionPathFileNeedSync
+        sReturn=`$sPath/../checkModified.sh $sPath/$s`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    {
+    	sSubPath=`cat $sFrontRegionPathFileNeedSync`
+  	} || {
+ 		echo $s" alredy synced, skiped!"
+	}    
+    echo "-----------------------------------------------"
+	if [ "$sSubPath" != "" ]; then
+		echo "СИНХРОНИЗАЦИЯ (2/3)"
+		echo "---SYNCHRONIZE (2/3)"
+    	#echo "FlagFile:$sFrontRegionPathFileNeedSync has $sSubPath ('sPath/s'=$sPath/$s)"
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ../dist/ sybase@test.region.igov.org.ua:/sybase/.upload/$sSubPath/
+        echo $sSubPath > $sFrontRegionPathFileNeedDeploy
+        #rm $sFrontRegionPathFileNeedSync
+        echo "" > $sFrontRegionPathFileNeedSync
+	else
+ 		echo $s" alredy synced, skiped!"
+	fi
+    echo "==============================================="
+fi
+
+
+
+echo "СБОРКА и ВЫСТАВЛЕНИЕ - фронта портала PHP"
+echo "BUILD&SYNC&DEPLOY (1/1) - FrontEnd Region on PHP (Portal)"
+sFrontRegionPHPModified=""
+sFrontRegionPHPName="portal-php"
+if [ "$bIncludeFront_PHP" ==  "true" ]; then
+    s=$sFrontRegionPHPName
+    sReturn=`$sPath/../checkModified.sh $sPath/$s`
+	if [ "$sFrontCommonNeed`echo $sReturn | grep absant!`" == "" ]; then
+		sFrontRegionPHPModified=";"$s
+        cd $sPath/$s
+        chmod 0777 application/runtime
+        chmod 0777 public_html/assets
+        /sybase/composer/composer.phar global require "fxp/composer-asset-plugin"
+        cd application
+        /sybase/composer/composer.phar update
+        cd $sPath/
+        rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $s/ sybase@test.region.igov.org.ua:/sybase/$s/
+        sReturn=`$sPath/../checkModified.sh $sPath/$s`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    echo "==============================================="
+fi
+
+
+
+
+echo "СБОРКА - бэков Tomcat"
+echo "BUILD - BackEnd on Tomcat"
+sBackCommonNeed=""
+sBackCommonModified=""
+sBackCentralModified=""
+sBackRegionModified=""
+sBackCentralName="wf-central"
+sBackRegionName="wf-region"
+if [ "$bAllBackUnconditionaly" == "true" ]; then
+	sBackCommonNeed="All"
+    bIncludeBack="true"
+fi
+if [ "$bIncludeBack" == "true" ]; then
+
+    s="storage-static"
+    sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	if [ "$sBackCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+        echo "Modified: "$date.$s > $sPath/$s/src/rebuilding
+        sBackCommonModified=$sBackCommonModified";"$s
+        cd $sPath/$s
+        mvn -P $sVersion clean install
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    echo "==============================================="
+
+    s="storage-temp"
+    sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	if [ "$sBackCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+        echo "Modified: "$date.$s > $sPath/$s/src/rebuilding
+        sBackCommonModified=$sBackCommonModified";"$s
+        cd $sPath/$s
+        mvn -P $sVersion clean install
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    echo "==============================================="
+
+    s="wf-base"
+    sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	if [ "$sBackCommonNeed$sBackCommonModified" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+        echo "Modified: "$date.$s > $sPath/$s/src/rebuilding
+        sBackCommonModified=$sBackCommonModified";"$s
+        cd $sPath/$s
+        mvn -P $sVersion clean install
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+    echo "==============================================="
+
+    s=$sBackCentralName
+     sBackCentralPathFileNeedSync=$sPath/$s.need-sync
+     sBackCentralPathFileNeedDeploy=$sPath/$s.need-deploy
+    sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	if [ "$sBackCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+        echo "Modified: "$date.$s > $sPath/$s/src/rebuilding
+        sBackCentralModified=";"$s
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+	if [ "$sBackCommonModified$sBackCentralModified" != "" ]; then
+    	echo "Modified: "$sBackCommonModified$sBackCentralModified
+		 echo "---СБОРКА (1/3)"
+		 echo "---BUILD (1/3)"
+        cd $sPath/$s
+        mvn -P $sVersion clean install
+        #echo $s.$sDateNow > $sBackCentralPathFileNeedSync
+        echo $s > $sBackCentralPathFileNeedSync
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	fi
+    {
+	    sSubPath=`cat $sBackCentralPathFileNeedSync`
+  	} || {
+ 		echo $s" alredy synced, skiped!"
+	}    
+    echo "-----------------------------------------------"
+	if [ "$sSubPath" != "" ]; then
+		echo "СИНХРОНИЗАЦИЯ (2/3)"
+		echo "---SYNCHRONIZE (2/3)"
+    	#echo "FlagFile:$sBackCentralPathFileNeedSync has $sSubPath ('sPath/s'=$sPath/$s)"
+        rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $sPath/$s/target/$s.war sybase@test.igov.org.ua:/sybase/.upload/
+        echo $sSubPath > $sBackCentralPathFileNeedDeploy
+        #rm $sBackCentralPathFileNeedSync
+        echo "" > $sBackCentralPathFileNeedSync
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	else
+ 		echo $s" alredy synced, skiped!"
+	fi
+    echo "==============================================="
+    echo "==============================================="
+
+
+    s=$sBackRegionName
+     sBackRegionPathFileNeedSync=$sPath/$s.need-sync
+     sBackRegionPathFileNeedDeploy=$sPath/$s.need-deploy
+    sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	if [ "$sBackCommonNeed" != "" ] || [ "`echo $sReturn | grep absant!`" == "" ]; then
+        echo "Modified: "$date.$s > $sPath/$s/src/rebuilding
+        sBackRegionModified=";"$s
+	else
+ 		echo $s" not modified, skiped!"
+	fi
+	if [ "$sBackCommonModified$sBackRegionModified" != "" ]; then
+    	echo "Modified: "$sBackCommonModified$sBackRegionModified
+		 echo "---СБОРКА (1/3)"
+		 echo "---BUILD (1/3)"
+        cd $sPath/$s
+        mvn -P $sVersion clean install
+        #echo $s.$sDateNow > $sBackRegionPathFileNeedSync
+        echo $s > $sBackRegionPathFileNeedSync
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	fi
+    {
+	    sSubPath=`cat $sBackRegionPathFileNeedSync`
+  	} || {
+ 		echo $s" alredy synced, skiped!"
+	}    
+    echo "-----------------------------------------------"
+	if [ "$sSubPath" != "" ]; then
+		echo "СИНХРОНИЗАЦИЯ (2/3)"
+		echo "---SYNCHRONIZE (2/3)"
+    	#echo "FlagFile:$sBackRegionPathFileNeedSync has $sSubPath ('sPath/s'=$sPath/$s)"
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $sPath/$s/target/$s.war sybase@test.region.igov.org.ua:/sybase/.upload/
+        echo $sSubPath > $sBackRegionPathFileNeedDeploy
+        #rm $sBackRegionPathFileNeedSync
+        echo "" > $sBackRegionPathFileNeedSync
+    	sReturn=`$sPath/../checkModified.sh $sPath/$s/src`
+	else
+ 		echo $s" alredy synced, skiped!"
+	fi
+    echo "==============================================="
+    echo "==============================================="
+    
+fi
+
+
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "Проверяем - что было подготовлено но не продеплоено"
+{
+	sBackCentralSubPath=`cat $sBackCentralPathFileNeedDeploy`
+} || {
+	echo $sBackCentralName" alredy deployed, skiped!"
+}    
+#sBackCentralSubPath=$SubPath
+
+{
+	sFrontCentralSubPath=`cat $sFrontCentralPathFileNeedDeploy`
+} || {
+	echo $sFrontCentralName" alredy deployed, skiped!"
+}    
+#sFrontCentralSubPath=$SubPath
+
+{
+	sBackRegionSubPath=`cat $sBackRegionPathFileNeedDeploy`
+} || {
+	echo $sBackRegionName" alredy deployed, skiped!"
+}
+#sBackRegionSubPath=$SubPath
+
+{
+    sFrontRegionSubPath=`cat $sFrontRegionPathFileNeedDeploy`
+} || {
+	echo $sFrontRegionName" alredy synced, skiped!"
+}    
+#sFrontRegionSubPath=$SubPath
+
+
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "Подключаемся к ЦЕНТРАЛЬНОМУ серверу"
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.igov.org.ua << EOF
+
+
+echo "ВЫСТАВЛЕНИЕ централа - бека на Tomcat"
+echo "DEPLOY (2a/2) Central - BackEnd on Tomcat"
+echo ":sBackCentralName="$sBackCentralName
+echo ":sBackCentralSubPath="$sBackCentralSubPath
+echo "-----------------------------------------------"
+if [ "$sBackCentralSubPath" != "" ]; then
+    echo "ДЕПЛОЙ (3/3)"
+    echo "---DEPLOY (3/3)"
+    #echo "FlagFile:$sBackCentralPathFileNeedDeploy has $sSubPath ('sPath/s'=$sPath/$s)"
+    if [ "$sBackCentralName" != "" ]; then
+        cd /sybase/tomcat_$sBackCentralName/bin
+        ./shutdown.sh
+        sleep 5
+         rm -r /sybase/tomcat_$sBackCentralName/webapps/**
+        mv -f /sybase/.upload/$sBackCentralSubPath.war /sybase/tomcat_$sBackCentralName/webapps/$sBackCentralName.war
+        cp -rf /sybase/.configs/$sBackCentralName/* /sybase/tomcat_$sBackCentralName/conf/
+        ./startup.sh
+        sleep 10
+        #rm $sBackCentralPathFileNeedDeploy
+        echo "" > $sBackCentralPathFileNeedDeploy
+    else
+	    echo "ERROR!!!"
+    fi
+else
+    echo $sBackCentralName" alredy deployed, skiped!"
+fi
+
+echo "ВЫСТАВЛЕНИЕ централа - фронта на Node"
+echo "DEPLOY (2b/2) Central - FrontEnd on Node"
+echo ":sFrontCentralName="$sFrontCentralName
+echo ":sFrontCentralSubPath="$sFrontCentralSubPath
+echo "-----------------------------------------------"
+if [ "$sFrontCentralSubPath" != "" ]; then
+    echo "ДЕПЛОЙ (3/3)"
+    echo "---DEPLOY (3/3)"
+    #echo "FlagFile:$sFrontCentralPathFileNeedDeploy has $sSubPath ('sPath/s'=$sPath/$s)"
+    if [ "$sFrontCentralName" != "" ]; then
+        pm2 stop $sFrontCentralName
+        pm2 delete $sFrontCentralName
+         rm -rf /sybase/$sFrontCentralName
+        mv -f /sybase/.upload/$sFrontCentralSubPath /sybase/$sFrontCentralName
+        cp -f -R /sybase/.configs/$sFrontCentralName/* /sybase/$sFrontCentralName/
+        cd /sybase/$sFrontCentralName
+        pm2 start process.json --name $sFrontCentralName
+        pm2 info $sFrontCentralName
+        #rm $sFrontCentralPathFileNeedDeploy
+        echo "" > $sFrontCentralPathFileNeedDeploy
+    else
+	    echo "ERROR!!!"
+    fi
+else
+    echo $sFrontCentralName" alredy deployed, skiped!"
+fi
+
+echo "Отключаемся от центрального сервера"
+EOF
+
+
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "Подключаемся к РЕГИОНАЛНОМУ серверу"
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.region.igov.org.ua << EOF
+
+echo "ВЫСТАВЛЕНИЕ региона - бека на Tomcat"
+echo "DEPLOY (2c/2) Region - BackEnd on Tomcat"
+echo ":sBackRegionName="$sBackRegionName
+echo ":sBackRegionSubPath="$sBackRegionSubPath
+echo "-----------------------------------------------"
+if [ "$sBackRegionSubPath" != "" ]; then
+    echo "ДЕПЛОЙ (3/3)"
+    echo "---DEPLOY (3/3)"
+    #echo "FlagFile:$sBackRegionPathFileNeedDeploy has $sSubPath ('sPath/s'=$sPath/$s)"
+    if [ "$sBackRegionName" != "" ]; then
+        cd /sybase/tomcat_$sBackRegionName/bin
+        ./shutdown.sh
+        sleep 5
+         rm -rf /sybase/tomcat_$sBackRegionName/webapps/**
+        mv /sybase/.upload/$sBackRegionSubPath.war /sybase/tomcat_$sBackRegionName/webapps/$sBackRegionName.war
+        cp -rf /sybase/.configs/$sBackRegionName/* /sybase/tomcat_$sBackRegionName/conf/
+        ./startup.sh
+        sleep 10
+        #rm $sBackRegionPathFileNeedDeploy
+        echo "" > $sBackRegionPathFileNeedDeploy
+    else
+	    echo "ERROR!!!"
+    fi
+else
+    echo $sBackRegionName" alredy deployed, skiped!"
+fi
+
+echo "ВЫСТАВЛЕНИЕ региона - фронта дашборда на Node"
+echo "DEPLOY (2d/2) Region - FrontEnd on Node (dashboard)"
+echo ":sFrontRegionName="$sFrontRegionName
+echo ":sFrontRegionSubPath="$sFrontRegionSubPath
+echo "-----------------------------------------------"
+if [ "$sFrontRegionSubPath" != "" ]; then
+    echo "ДЕПЛОЙ (3/3)"
+    echo "---DEPLOY (3/3)"
+    #echo "FlagFile:$sFrontRegionPathFileNeedDeploy has $sSubPath ('sPath/s'=$sPath/$s)"
+    if [ "$sFrontRegionName" != "" ]; then
+        pm2 stop $sFrontRegionName
+        pm2 delete $sFrontRegionName
+         rm -rf /sybase/$sFrontRegionName
+        mv /sybase/.upload/$sFrontRegionSubPath /sybase/$sFrontRegionName
+        cp -f /sybase/.configs/$sFrontRegionName/process.json /sybase/$sFrontRegionName/process.json
+        cd /sybase/$sFrontRegionName
+        pm2 start process.json --name $sFrontRegionName
+        pm2 info $sFrontRegionName
+        #rm $sFrontRegionPathFileNeedDeploy
+        echo "" > $sFrontRegionPathFileNeedDeploy
+    else
+	    echo "ERROR!!!"
+    fi
+else
+    echo $sFrontRegionName" alredy deployed, skiped!"
+fi
+
+echo "Конфигурирование региона - фронта портала PHP"
+echo "Config (1b/1) Region - FrontEnd on PHP (Portal)"
+if [ "$bIncludeFront_PHP" ==  "true" ]; then
+#if [ "$sFrontRegionPHPModified" != "" ]; then
+	cp -rf /sybase/.configs/$sFrontRegionPHPName/* /sybase/$sFrontRegionPHPName/application/config/
+fi
+
+
+EOF

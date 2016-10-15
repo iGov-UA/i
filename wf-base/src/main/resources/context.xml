@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+    <beans profile="prod">
+
+        <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:engine.properties</value>
+                    <value>file:${catalina.home}/conf/AS.properties</value>
+                    <value>file:${catalina.home}/conf/DB.SQL.properties</value>
+                    <!--value>file:${catalina.home}/conf/email.properties</value-->
+                    <!--value>file:${catalina.home}/conf/bankID.properties</value-->
+                    <!--value>file:${catalina.home}/conf/merch.properties</value-->
+                </list>
+            </property>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+
+            <property name="properties">
+                <map>
+                    <entry key="processEngineConfiguration.databaseSchemaUpdate" value="true"/>
+                </map>
+            </property>
+        </bean>
+
+    </beans>
+
+
+    <beans profile="test">
+
+        <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:engine.properties</value>
+                    <value>file:${catalina.home}/conf/AS.properties</value>
+                    <value>file:${catalina.home}/conf/DB.SQL.properties</value>
+                    <!--value>file:${catalina.home}/conf/email.properties</value-->
+                    <!--value>file:${catalina.home}/conf/bankID.properties</value-->
+                    <!--value>file:${catalina.home}/conf/merch.properties</value-->
+                </list>
+            </property>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+
+            <property name="properties">
+                <map>
+                    <entry key="processEngineConfiguration.databaseSchemaUpdate" value="true"/>
+                </map>
+            </property>
+        </bean>
+
+    </beans>
+
+
+    <!-- profile="test" - тестовый запуск, все настройки боевые, указанные в
+    db.properties. Установить в catalina.bat переменную -Dspring.profiles.active=test" -->
+    <beans profile="local,default">
+
+        <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:engine.properties</value>
+                    <value>classpath:AS.properties</value>
+                    <value>classpath:DB.SQL.properties</value>
+                    <!--value>classpath:email.properties</value-->
+                    <!--value>classpath:bankID.properties</value-->
+                    <!--value>classpath:merch.properties</value-->
+                    <value>classpath:springfox.properties</value>
+                </list>
+            </property>
+            <property name="ignoreUnresolvablePlaceholders" value="true"/>
+
+            <property name="properties">
+                <map>
+                    <entry key="processEngineConfiguration.databaseSchemaUpdate" value="true"/>
+                </map>
+            </property>
+        </bean>
+
+    </beans>
+
+    <beans>
+
+        <!-- ==============================   IMPORT ADDITIONAL  ============================= -->
+
+    	<import resource="classpath:context-cache.xml"/>
+
+        <!-- ==============================   IMPORT STANDART  ============================= -->
+
+
+        <import resource="classpath:context-auth.xml" />
+        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-statical-context.xml" />
+        <import resource="classpath:context-activiti.xml" />
+        <import resource="classpath:context-activiti_ui.xml" />
+        <import resource="classpath:context-rest.xml" />
+        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-temp-context.xml" />
+        <import resource="classpath:context-services.xml"/>
+        <import resource="classpath:context-db.xml"/>
+        <import resource="classpath:context-dao.xml"/>
+        <import resource="classpath:context-dao_local.xml"/>
+        <import resource="classpath:context_local.xml"/>
+        <import resource="classpath:context-scheduler.xml"/>
+        
+    </beans>
+
+</beans>

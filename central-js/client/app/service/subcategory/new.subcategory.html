@@ -1,0 +1,57 @@
+<div class="container breadcrumbs" style="margin-top: 20px" ng-if="!spinner">
+  <div class="row">
+    <div class="container">
+      <a href="/1" ng-if="catalogTab == 1">Головна</a>
+      <a href="/2" ng-if="catalogTab == 2">Головна</a>
+      >
+      <span>{{subcategory.oServiceTag_Root.sName_UA}}</span>
+      <hr class="common-hr" style="width: 101%">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="container igov-container subcategory-tmpl">
+
+    <div ng-if="!spinner">
+
+      <div class="row" ng-if="subcategory">
+        <div class="container">
+          <div class="vertical-divider"></div>
+          <span ng-if="stateCheck == 1" style="font-size: 24px; font-family: 'Open Sans'; margin-left: 8px">Оберіть Вашу життєву ситуацію...</span>
+          <span ng-if="stateCheck == 2" style="font-size: 24px; font-family: 'Open Sans'">Оберіть Ваш розділ</span>
+          <br>
+          <ul class="situation-list">
+            <li ng-repeat="situation in subcategory.aServiceTag_Child">
+              <a ui-sref="index.situation({'catID': catalogTab, 'scatID': subcategory.oServiceTag_Root.nID, 'sitID': situation.nID})">{{situation.sName_UA}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 30px" ng-if="subcategory">
+        <div class="container">
+          <span style="font-size: 24px; font-family: 'Open Sans'; display: inline-block;">... або знайдіть послугу, яка Вас цікавить</span>
+          <hr class="common-hr" style="width: 57%; display:inline-block; margin-bottom: 6px">
+        </div>
+      </div>
+
+      <div class="container" style="padding-right: 50px">
+        <div class="row igov-columns-3 services-in-situations">
+          <div class="col-md-12" ng-repeat="service in subcategory.aService | orderBy: 'nOrder'">
+            <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+            <hr class="common-hr">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-show="!resultsAreLoading && spinner">
+      <div class="text-center">
+        <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

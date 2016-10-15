@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>верифікація заявника</title>
+<style>
+html, body {margin: 0; padding: 0; height: 100%; font: 400 16px/16px 'Times New Roman';}
+
+.print_wrap {width: 705px; padding: 80px 80px 85px 80px; min-height: 100%; height: 100%; margin: 0 auto;}
+.ta-r {text-align: right !important;}
+.ta-l {text-align: left !important;}
+.ta-c {text-align: center !important;}
+.ti-15 {text-indent: 25px;}
+.fw {width: 100%;}
+
+.w350 {width: 350px;}
+.w225 {width: 225px;}
+.w145 {width: 145px;}
+.w185 {width: 185px;}
+.w101 {width: 101px;}
+.w130 {width: 130px;}
+.w135 {width: 135px;}
+.w265 {width: 265px;}
+.w500 {width: 500px;}
+
+.b-t-0 {border-top: 0 !important;}
+.b-l-0 {border-left: 0 !important;}
+.b-r-0 {border-right: 0 !important;}
+.b-b-0 {border-bottom: 0 !important;}
+
+.hint-l-220 > span {margin-left: 220px !important;}
+.h10 {height: 12px;}
+.gtp {top: -21px;}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .wb-fix {width: 135px;}
+}
+.line_col {}
+.under_field {height: 15px; margin: 0 0 25px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
+.under_field > i {font-style: normal;}
+.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -15px; font-size: 12px;}
+
+.under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
+.under_field_line.right_side {float: right;}
+.under_field_line > i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
+.under_field_line > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
+
+.date_subm .signature {width: 200px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
+.date_subm .signature > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .inv {width: 200px; height: 20px; float: left; border-bottom: 1px solid black; position: relative;} 
+.date_subm .inv > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .invs {width: 350px; height: 20px; float: left; left: 55px; border-bottom: 1px solid black; position: relative;} 
+.date_subm .invs > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+
+p {font-size: 11px;}
+.outline {border: 2px solid RoyalBlue; padding: 0 10px;}
+
+.clear {clear: both;}
+
+</style>
+</head>
+<body>
+<section class="print_wrap">
+<br />
+<div class="ta-c"><b>Супровідний лист щодо отриманих документів</b><br /><br /></div>
+<div class="ta-l">
+Найменування суду - <b>Вищий господарський суд України</b><br /><br />
+Номер судової справи - <b>[sNumberCase]</b><br /><br />
+Учасник судового процесу, від якого надійшов документ - <b>[sNameUr][sNameFiz]</b><br /><br />
+Процесуальний статус учасника судового процесу, від імені якого подається документ - <b>[sStatus]</b><br /><br />
+Інформація про особу, яка внесла дані - <b>[fio], [sPositionAplicant], [phone]</b><br /><br />
+Дата та час подання звернення - <b>[sDateCreateProcess] [sTimeCreateProcess]</b><br /><br />
+Дата та час друку - <b>[sCurrentDateTime]</b><br /><br />
+Реєстраційний номер заяви - <b>[sNumberAplication]</b><br /><br />
+Перелік зареєстрованих документів:
+[sListDocumentsLetter]<br />
+  <div class="under_field_line ta-l"><span></span></div>
+
+		<div class="outline ta-c"><b>Особа, що подала документ, пройшла верифікацію на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+		Документи отримані судом, скріплено ЕЦП.<br />
+		Перевірка відповідності зразку ЕЦП здійснено успішно.<br />
+		заява № [sID_Order], від [sDateCreateProcess]</b>
+		</div>
+	</section>
+</body>
+</html>
+  		

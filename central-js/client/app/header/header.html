@@ -1,0 +1,55 @@
+<nav class="navbar-top-fixed" ng-show="navBarStatusVisible">
+  <div class="container">
+    <a ng-click="logout()" style="top: -1px; margin-bottom: 1px; margin-left: 10px;height:27px;vertical-align: middle;" class="glyphicon glyphicon-log-out pull-right" aria-hidden="true">
+        <span style="font-size: 15px">Вийти</span>
+    </a>
+    <span style="margin-top: 1px; font-size: 15px;" class="pull-right">{{userName}}</span>
+  </div>
+</nav>
+<nav class="navbar navbar-default navbar-static-top i-nav">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" aria-expanded="false" ng-click="navBarIsCollapsed = !navBarIsCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" style="font-family: sans-serif;">iGov.org.ua</a>
+            <div style="display:none; left:42px; top:-70px; position:relative;">
+              <img class="navbar-brand icon-logo-new-year">
+            </div>
+            <br>
+            <p class="sitename">портал державних послуг</p>
+        </div>
+        <div class="collapse navbar-collapse navbar-kyiv" collapse="navBarIsCollapsed">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="menu-item" ng-class="{selected: state.is('index')}">
+                    <a ui-sref="index">
+                        Послуги
+                    </a>
+                </li>
+                <!--li class="menu-item" ui-sref-active="selected">
+                    <a ui-sref="index.documents" ui-sref-opts="{reload: true}">
+                        Документи
+                    </a>
+                </li-->
+                <li class="menu-item" ui-sref-active="selected" style="display: none">
+                    <a ui-sref="index.order.search">
+                        Статуси
+                    </a>
+                </li>
+                <li class="menu-item" ui-sref-active="selected">
+                    <a ui-sref="index.journal">
+                        Мій журнал
+                    </a>
+                </li>
+                <li class="menu-item" ui-sref-active="selected">
+                    <a ui-sref="index.about">
+                        Про портал
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

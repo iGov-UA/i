@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_SED_SwinEd_1" name="Листенер, позволяющий отсылать поля БП в государственную СЭД SWinEd_Doc" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="street" name="Назва вулиці прописки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="building" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="apartment" name="Номер квартири" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Place" name="Код КОАТУУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodKvStart" name="Квартал початку періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodYearStart" name="Рік початку періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodKvEnd" name="Квартал закінчення періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodYearEnd" name="Рік закінчення періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="User Task с листенером" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="sClFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Place" name="Код КОАТУУ" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
+          <activiti:field name="sSenderEDRPOU">
+            <activiti:string><![CDATA[1234567890]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="nSenderDept">
+            <activiti:expression><![CDATA[1]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sEDRPOU">
+            <activiti:expression><![CDATA[1234567890]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="nDept">
+            <activiti:expression><![CDATA[1]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDocId">
+            <activiti:expression><![CDATA[1111111111]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDocumentData">
+            <activiti:expression><![CDATA[1234567890]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sOriginalDocId">
+            <activiti:expression><![CDATA[2222222222]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="nTask">
+            <activiti:expression><![CDATA[2222222222]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdfirstName">
+            <activiti:expression><![CDATA[${bankIdfirstName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdlastName">
+            <activiti:expression><![CDATA[${bankIdlastName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdmiddleName">
+            <activiti:expression><![CDATA[${bankIdmiddleName}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdinn">
+            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdPassport">
+            <activiti:expression><![CDATA[${bankIdPassport}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="email">
+            <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="street">
+            <activiti:expression><![CDATA[${street}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="building">
+            <activiti:expression><![CDATA[${building}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="apartment">
+            <activiti:expression><![CDATA[${apartment}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdsID_Country">
+            <activiti:expression><![CDATA[${bankIdsID_Country}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodKvStart">
+            <activiti:expression><![CDATA[${periodKvStart}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodYearStart">
+            <activiti:expression><![CDATA[${periodYearStart}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodKvEnd">
+            <activiti:expression><![CDATA[${periodKvEnd}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodYearEnd">
+            <activiti:expression><![CDATA[${periodYearEnd}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_Place">
+            <activiti:expression><![CDATA[${sID_Place}]]></activiti:expression>
+          </activiti:field>
+       </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_SED_SwinEd_1">
+    <bpmndi:BPMNPlane bpmnElement="_test_SED_SwinEd_1" id="BPMNPlane__test_SED_SwinEd_1">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="151.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="250.0" y="128.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="151.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="195.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="168.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="355.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="168.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,1709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="infrastr_624" name="Видача/обмін посвідчення особи моряка" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;b&gt;Форма заявки заповнюється українською.&lt;/b&gt; Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я англійською" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Якщо прізвище або ім'я англійською відрізняється від запису у кваліфікаційних документах, вкажіть причину у цьому полі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth1" name="Дата народження;Формат ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asBirthInUkr" name="Ви народились в Україні" type="enum" required="true">
+          <activiti:value id="sYes" name="Так"></activiti:value>
+          <activiti:value id="sNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPlace_of_birth" name="Місце народження" type="enum" default="sNull" required="true">
+          <activiti:value id="sNull" name=" "></activiti:value>
+          <activiti:value id="sARK" name="Автономна Республіка Крим"></activiti:value>
+          <activiti:value id="sSimf" name="Cімферополь"></activiti:value>
+          <activiti:value id="sSevas" name="Cевастополь"></activiti:value>
+          <activiti:value id="sVinic" name="Вінницька обл"></activiti:value>
+          <activiti:value id="sVinicT" name="Вінниця"></activiti:value>
+          <activiti:value id="sVolin" name="Волинська обл"></activiti:value>
+          <activiti:value id="sLutsk" name="Луцьк"></activiti:value>
+          <activiti:value id="sDnipro" name="Дніпропетровська обл"></activiti:value>
+          <activiti:value id="sDniproT" name="Дніпропетровськ"></activiti:value>
+          <activiti:value id="sDon" name="Донецька обл"></activiti:value>
+          <activiti:value id="sDonT" name="Донецьк"></activiti:value>
+          <activiti:value id="sZhit" name="Житомирська обл"></activiti:value>
+          <activiti:value id="sZhitT" name="Житомир"></activiti:value>
+          <activiti:value id="sZakarp" name="Закарпатська обл"></activiti:value>
+          <activiti:value id="sUzhgor" name="Ужгород"></activiti:value>
+          <activiti:value id="sZapor" name="Запорізька обл"></activiti:value>
+          <activiti:value id="sZaporT" name="Запоріжжя"></activiti:value>
+          <activiti:value id="sIvFrank" name="Івано-Франківська обл"></activiti:value>
+          <activiti:value id="sIvFrankT" name="Івано-Франківськ"></activiti:value>
+          <activiti:value id="sKiev" name="Київська обл"></activiti:value>
+          <activiti:value id="sKievT" name="Київ"></activiti:value>
+          <activiti:value id="sKirov" name="Кіровоградська обл"></activiti:value>
+          <activiti:value id="sKirovT" name="Кіровоград"></activiti:value>
+          <activiti:value id="sLug" name="Луганська обл"></activiti:value>
+          <activiti:value id="sLugT" name="Луганськ"></activiti:value>
+          <activiti:value id="sLviv" name="Львівська обл"></activiti:value>
+          <activiti:value id="sLvivT" name="Львів"></activiti:value>
+          <activiti:value id="sMikol" name="Миколаївська обл"></activiti:value>
+          <activiti:value id="sMikolT" name="Миколаїв"></activiti:value>
+          <activiti:value id="sOdessa" name="Одеська обл"></activiti:value>
+          <activiti:value id="sOdessaT" name="Одеса"></activiti:value>
+          <activiti:value id="sPolt" name="Полтавська обл"></activiti:value>
+          <activiti:value id="sPoltT" name="Полтава"></activiti:value>
+          <activiti:value id="sRovn" name="Рівненська обл"></activiti:value>
+          <activiti:value id="sRovnT" name="Рівне"></activiti:value>
+          <activiti:value id="sSumi" name="Сумська обл"></activiti:value>
+          <activiti:value id="sSumiT" name="Суми"></activiti:value>
+          <activiti:value id="sTern" name="Тернопільська обл"></activiti:value>
+          <activiti:value id="sTernT" name="Тернопіль"></activiti:value>
+          <activiti:value id="sKhark" name="Харківська обл"></activiti:value>
+          <activiti:value id="sKharkT" name="Харків"></activiti:value>
+          <activiti:value id="sKhers" name="Херсонська обл"></activiti:value>
+          <activiti:value id="sKhersT" name="Херсон"></activiti:value>
+          <activiti:value id="sKhmel" name="Хмельницька обл"></activiti:value>
+          <activiti:value id="sKhmelT" name="Хмельницький"></activiti:value>
+          <activiti:value id="sCherk" name="Черкаська обл"></activiti:value>
+          <activiti:value id="sCherkT" name="Черкаси"></activiti:value>
+          <activiti:value id="sChernov" name="Чернівецька обл"></activiti:value>
+          <activiti:value id="sChernovT" name="Чернівці"></activiti:value>
+          <activiti:value id="sChern" name="Чернігівська обл"></activiti:value>
+          <activiti:value id="sChernT" name="Чернігів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAreabirthNotUkr" name="Країна народження українською" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirthEng" name="Країна народження англійською" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNationalityUkr" name="Громадянство українською" type="string" default="Україна" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNationalityEn" name="Громадянство  англійською" type="string" default="Ukraine" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+          <activiti:value id="sMan" name="Чоловіча"></activiti:value>
+          <activiti:value id="sWoman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" required="true">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи маєте Ви посвідчення особи моряка?" type="enum" required="true">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати документ" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="slabelSum" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asHavePay" name="Чи має громадянин квитанцію про сплату за посвідчення особи?" type="enum" required="true">
+          <activiti:value id="sYesPay" name="Так, має"></activiti:value>
+          <activiti:value id="sNoPay" name="У громадянина відсутня квитанція, потрібно надати реквізити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" required="true">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія трудового договору (контракту) про працевлаштування на судні;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та вклеїти фотокартку до &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYYzZmclRXdUF4UjA&quot;&gt;анкети для видачі/обміну посвідчення особи моряка&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте достовірність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRozklad" name="Розклад роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEyeColor" name="Колір очей" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPortRekv" name="Реквізити порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_print" name="Дата видачі до друку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var nat=execution.getVariable('sNationalityUkr')+" / "+execution.getVariable('sNationalityEn')
+execution.setVariable('sNationality', nat)
+var place=execution.getVariable('asPlace_of_birth')
+var place1='АРК / UKRAINE' 
+if (place=='sNull'){
+    place1=execution.getVariable('sAreabirthNotUkr')+" / "+execution.getVariable('sAreabirthEng')}
+else {
+if (place=='sSimf'){
+place1='CІМФЕРОПОЛЬ / SIMFEROPOL'}
+if (place=='sSevas'){
+place1='CЕВАСТОПОЛЬ / SEVASTOPOL'}
+if (place=='sVinic'){
+place1='ВІННИЦЬКА ОБЛ / UKRAINE'}
+if (place=='sVinicT'){
+place1='ВІННИЦЯ / VINNYTSIA'}
+if (place=='sVolin'){
+place1='ВОЛИНСЬКА ОБЛ / UKRAINE'}
+if (place=='sLutsk'){
+place1='ЛУЦЬК / LUTSK'}
+if (place=='sDnipro'){
+place1='ДНІПРОПЕТРОВСЬКА ОБЛ / UKRAINE'}
+if (place=='sDniproT'){
+place1='ДНІПРОПЕТРОВСЬК / DNIPROPETROVSK'}
+if (place=='sDon'){
+place1='ДОНЕЦЬКА ОБЛ / UKRAINE'}
+if (place=='sDonT'){
+place1='ДОНЕЦЬК / DONETSK'}
+if (place=='sZhit'){
+place1='ЖИТОМИРСЬКА ОБЛ / UKRAINE'}
+if (place=='sZhitT'){
+place1='ЖИТОМИР / ZHYTOMYR'}
+if (place=='sZakarp'){
+place1='ЗАКАРПАТСЬКА ОБЛ / UKRAINE'}
+if (place=='sUzhgor'){
+place1='УЖГОРОД / UZHHOROD'}
+if (place=='sZapor'){
+place1='ЗАПОРІЗЬКА ОБЛ / UKRAINE'}
+if (place=='sZaporT'){
+place1='ЗАПОРІЖЖЯ / ZAPORIZHZHIA'}
+if (place=='sIvFrank'){
+place1='ІВАНО-ФРАНКІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sIvFrankT'){
+place1='ІВАНО-ФРАНКІВСЬК / IVANO-FRANKIVSK'}
+if (place=='sKiev'){
+place1='КИЇВСЬКА ОБЛ / UKRAINE'}
+if (place=='sKievT'){
+place1='КИЇВ / KYIV'}
+if (place=='sKirov'){
+place1='КІРОВОГРАДСЬКА ОБЛ / UKRAINE'}
+if (place=='sKirovT'){
+place1='КІРОВОГРАД / KIROVOHRAD'}
+if (place=='sLug'){
+place1='ЛУГАНСЬКА ОБЛ / UKRAINE'}
+if (place=='sLugT'){
+place1='ЛУГАНСЬК / LUHANSK'}
+if (place=='sLviv'){
+place1='ЛЬВІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sLvivT'){
+place1='ЛЬВІВ / LVIV'}
+if (place=='sMikol'){
+place1='МИКОЛАЇВСЬКА ОБЛ / UKRAINE'}
+if (place=='sMikolT'){
+place1='МИКОЛАЇВ / MYKOLAIV'}
+if (place=='sOdessa'){
+place1='ОДЕСЬКА ОБЛ / UKRAINE'}
+if (place=='sOdessaT'){
+place1='ОДЕСА / ODESA'}
+if (place=='sPolt'){
+place1='ПОЛТАВСЬКА ОБЛ / UKRAINE'}
+if (place=='sPoltT'){
+place1='ПОЛТАВА / POLTAVA'}
+if (place=='sRovn'){
+place1='РІВНЕНСЬКА ОБЛ / UKRAINE'}
+if (place=='sRovnT'){
+place1='РІВНЕ / RIVNE'}
+if (place=='sSumi'){
+place1='СУМСЬКА ОБЛ / UKRAINE'}
+if (place=='sSumiT'){
+place1='СУМИ / SUMY'}
+if (place=='sTern'){
+place1='ТЕРНОПІЛЬСЬКА ОБЛ / UKRAINE'}
+if (place=='sTernT'){
+place1='ТЕРНОПІЛЬ / TERNOPIL'}
+if (place=='sKhark'){
+place1='ХАРКІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sKharkT'){
+place1='ХАРКІВ / KHARKIV'}
+if (place=='sKhers'){
+place1='ХЕРСОНСЬКА ОБЛ / UKRAINE'}
+if (place=='sKhersT'){
+place1='ХЕРСОН / KHERSON'}
+if (place=='sKhmel'){
+place1='ХМЕЛЬНИЦЬКА ОБЛ / UKRAINE'}
+if (place=='sKhmelT'){
+place1='ХМЕЛЬНИЦЬКИЙ / KHMELNYTSKYI'}
+if (place=='sCherk'){
+place1='ЧЕРКАСЬКА ОБЛ / UKRAINE'}
+if (place=='sCherkT'){
+place1='ЧЕРКАСИ / CHERKASY'}
+if (place=='sChernov'){
+place1='ЧЕРНІВЕЦЬКА ОБЛ / UKRAINE'}
+if (place=='sChernovT'){
+place1='ЧЕРНІВЦІ / CHERNIVTSI'}
+if (place=='sChern'){
+place1='ЧЕРНІГІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sChernT'){
+place1='ЧЕРНІГІВ / CHERNIHIV'}
+}
+execution.setVariable('sPlace_of_birth', place1)
+var sVarCNAP=execution.getVariable('sID_Public_SubjectOrganJoin')
+          if (sVarCNAP=='port_Izmail')
+          	{
+          		execution.setVariable('sID_Merchant','i65205142682')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728402')          			
+				execution.setVariable('sVarWhoPayGet','Ізмаїльська філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26006030033419')          			
+				execution.setVariable('sVarSumPay','892.57')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+          	if (sVarCNAP=='port_Mariupol')
+          	{
+          		execution.setVariable('sID_Merchant','i56655221683')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728439')          			
+				execution.setVariable('sVarWhoPayGet','Маріупольска філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26003030033423')          			
+				execution.setVariable('sVarSumPay','889.44')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+          	if (sVarCNAP=='port_Mikolayv')
+          	{
+          		execution.setVariable('sID_Merchant','i10985207370')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728444')          			
+				execution.setVariable('sVarWhoPayGet','Миколаївска філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26002030033424')          			
+				execution.setVariable('sVarSumPay','1022,03')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+          	if (sVarCNAP=='port_Odesa')
+          	{
+          		execution.setVariable('sID_Merchant','i17123697285')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728457')          			
+				execution.setVariable('sVarWhoPayGet','Одеська філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26000020033425')          			
+				execution.setVariable('sVarSumPay','610.06')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+          	if (sVarCNAP=='port_Kherson')
+          	{
+          		execution.setVariable('sID_Merchant','i40344798739')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728533')          			
+				execution.setVariable('sVarWhoPayGet','Херсонска філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26008020033416')          			
+				execution.setVariable('sVarSumPay','1023.09')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+          	if (sVarCNAP=='port_Chernomorsk')
+          	{
+          		execution.setVariable('sID_Merchant','i38910160382')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')          			
+				execution.setVariable('sVarBankOplata','АБ "ПІВДЕННИЙ"')          			
+				execution.setVariable('sVarBankMFO','328209')          			
+				execution.setVariable('sVarWhoPayGetCode','38728418')          			
+				execution.setVariable('sVarWhoPayGet','Іллічівська філія ДП "АМПУ"')          			
+				execution.setVariable('sVarPayGetSchet','26005030033421')          			
+				execution.setVariable('sVarSumPay','844.09')       
+				execution.setVariable('sDescription','сплата за видачу/обмін посвідчення особи моряка за заявкою ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}')   			
+          	}
+	</script>
+    </scriptTask>
+    <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="exclusivegateway7"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow67" sourceRef="exclusivegateway7" targetRef="scripttask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay=='sYesPay'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask11" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var delta='10';
+var unixdate= Math.round((new Date()).getTime());
+var unixdate=unixdate+86400*1000*delta;
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sDate_of_print', timer)
+var Pay="надано квитанцію про сплату"
+execution.setVariable('sID_Payment', Pay)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow69" sourceRef="scripttask11" targetRef="timerintermediatecatchevent2"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sDate_of_print}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow70" sourceRef="timerintermediatecatchevent2" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="exclusivegateway7" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asHavePay!='sYesPay'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${sNameOrgan}<br>[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										Ваш запит був успішно зареєстрований у нашій системі за №[sID_Order].<br>
+										Ви отримаєте відповідь протягом п'яти робочіх днів. 
+								    </p>
+									<p>
+										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1_yellow"></sequenceFlow>
+    <userTask id="usertask1_yellow" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянину надсилається лист із реквізитами для сплати"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Причина невідповідності прізвища або ім'я англійською запису у кваліфікаційних документах" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth1" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
+          <activiti:value id="sMan" name="Чоловіча"></activiti:value>
+          <activiti:value id="sWoman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asWorkerDecision" name="Рішення посадової особи" type="enum" required="true">
+          <activiti:value id="sAccept" name="Документи в порядку, надіслати рахунок для сплати"></activiti:value>
+          <activiti:value id="sDecline" name="Відмовити у прийнятті особової справи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDeclineReason" name="Підстава для відмови у прийнятті особової справи" type="enum">
+          <activiti:value id="sNoDoc" name="Заявником не надано усіх документів та інформації, необхідних для оформлення і видачі посвідчення"></activiti:value>
+          <activiti:value id="sAlready" name="Заявник вже отримав посвідчення, яке є дійсним на день звернення"></activiti:value>
+          <activiti:value id="sBaseError" name="Дані, отримані з бази даних, не підтверджують інформацію, надану заявником"></activiti:value>
+          <activiti:value id="sFakeDoc" name="Один або декілька документів не пройшли процедуру перевірки легітимності в Єдиному державному реєстрі документів моряків"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Додатковий коментар до рішення" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/data_seaman.html]" type="invisible" default="Дані громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/data_seaman.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1_yellow" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" name="${asWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sDecline'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у прийнятті особової справи по заявці №[sID_Order].<br>
+                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Причина відмови: enum{[asDeclineReason]}<br>
+											<b><i>${sDecisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+									[pattern/mail/_common_signature_start.html]
+                                    Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow37" sourceRef="servicetask5" targetRef="endevent5"></sequenceFlow>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow10" name="${asWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment==''}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заявку №[sID_Order].<br>
+										Для видачі/обміну посвідчення особи моряка необхідно:<br>
+										<ul>
+										<li>Перевірити достовірність Ваших даних внесених в заявку на замовлення послуги, у формі, що додається.</li>
+										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
+										<li>Після отримання листа-запрошення від ${sNameOrgan} відвідати його з оригіналами документів та отримати посвідчення.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
+										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
+									</p>
+									<p>
+										Реквізити для сплати:<br>
+										${sPortRekv}<br>
+										${slabelSum}<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
+										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
+										[paymentButton_LiqPay]
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow35" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway1" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'&&sDecisionComment!=''}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask10" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заявку №[sID_Order].<br>
+										Для видачі/обміну посвідчення особи моряка необхідно:<br>
+										<ul>
+										<li>Перевірити достовірність Ваших даних внесених в заявку на замовлення послуги, у формі, що додається.</li>
+										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
+										<li>Після отримання листа-запрошення від ${sNameOrgan} відвідати його з оригіналами документів та отримати посвідчення.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Проведення оплати послуги, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b><br>
+										Ви можете перевірити їх у файлі, що додається.<br>
+										При виявленні розбіжностей в даних, Вам потрібно подати нову заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>.<br>
+										За відсутності сплати через 10 днів дана заявка буде видалена автоматично, а Ви отримаєте повідомлення на цю електронну адресу.
+									</p>
+									<p>
+										<b style="color:red">УВАГА!!!</b> Відлік часу для надання послуги починається з моменту зарахування коштів на рахунок ДП "АМПУ".
+									</p>
+									<p>
+										Реквізити для сплати:<br>
+										${sPortRekv}<br>
+										${slabelSum}<br>
+										<b>Призначення платежу:</b> ;sID_Order=[sID_Order];сплата за видачу/обмін посвідчення особи моряка<br>
+										або Ви можете сплатити онлайн (до вартості послуги буде додана комісія 1,8%)<br>
+										[paymentButton_LiqPay]
+									</p>
+									<p>Коментар держслужбовця:<br>
+										<b><i>${sDecisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask10" targetRef="scripttask5"></sequenceFlow>
+    <scriptTask id="scripttask5" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var delta='10';
+var unixdate= Math.round((new Date()).getTime());
+var unixdate=unixdate+86400*1000*delta;
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sDate_of_print', timer)</script>
+    </scriptTask>
+    <sequenceFlow id="flow44" sourceRef="scripttask5" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sDate_of_print}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway3" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment==''}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask9" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Ви своєчасно не сплатили за оформлення посвідчення особи моряка за заявкою №[sID_Order], тому Вам відмовлено у наданні послуги.<br>
+                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+                                    Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України".</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow40" sourceRef="servicetask9" targetRef="endevent5"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="exclusivegateway3" targetRef="usertask2_green">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment!=''}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask2_green" name="Підготовка до друку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="SUMMA" name="Cумма платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення (вводити без пробілу)" type="string" default="AB" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow43" sourceRef="usertask2_green" targetRef="scripttask3"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1=""
+var per2=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var lname=src.substr(i,1)
+if((lname != "null") || (lname != "")){
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&amp;#60"}
+else {
+per1 = per1+lname}}
+else{
+break}}
+var src=execution.getVariable('firstName')
+for (var i = 0; i&lt;50; i++){
+var fname=src.substr(i,1)
+if((fname != "null") || (fname != "")){
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&amp;#60"}
+else {
+per2 = per2+fname}}
+else{
+break}}
+var moz1=per1+"&amp;#60"+"&amp;#60"+per2
+execution.setVariable('sMoz1', moz1)
+var numb=execution.getVariable('sNumber')
+var ser=numb.substr(0,2)
+var num=numb.substr(2,6)
+var a1=Number(numb.substr(2,1))
+var a2=Number(numb.substr(3,1))
+var a3=Number(numb.substr(4,1))
+var a4=Number(numb.substr(5,1))
+var a5=Number(numb.substr(6,1))
+var a6=Number(numb.substr(7,1))
+var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
+var src=execution.getVariable('sDate_of_birth1')
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,4)
+var month1='СІЧ / JAN'
+if (month=='02'){
+    month1='ЛЮТ / FEB'}
+if (month=='03'){
+    month1='БЕР / MAR'}
+if (month=='04'){
+    month1='КВІ / APR'}
+if (month=='05'){
+    month1='ТРА / MAY'}
+if (month=='06'){
+    month1='ЧЕР / JUN'}
+if (month=='07'){
+    month1='ЛИП / JUL'}
+if (month=='08'){
+    month1='СЕР / AUG'}
+if (month=='09'){
+    month1='ВЕР / SEP'}
+if (month=='10'){
+    month1='ЖОВ / OCT'}
+if (month=='11'){
+    month1='ЛИС / NOV'}
+if (month=='12'){
+    month1='ГРУ / DEC'}
+var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
+execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
+var unixdate= Math.round((new Date()).getTime());
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
+var month3='СІЧ / JAN'
+if (m=='02'){
+    month3='ЛЮТ / FEB'}
+if (m=='03'){
+    month3='БЕР / MAR'}
+if (m=='04'){
+    month3='КВІ / APR'}
+if (m=='05'){
+    month3='ТРА / MAY'}
+if (m=='06'){
+    month3='ЧЕР / JUN'}
+if (m=='07'){
+    month3='ЛИП / JUL'}
+if (m=='08'){
+    month3='СЕР / AUG'}
+if (m=='09'){
+    month3='ВЕР / SEP'}
+if (m=='10'){
+    month3='ЖОВ / OCT'}
+if (m=='11'){
+    month3='ЛИС / NOV'}
+if (m=='12'){
+    month3='ГРУ / DEC'}
+var issue=d+' '+month3+' '+new_year
+var year3= new_year-(-5)
+var expiry=d+' '+month3+' '+year3
+execution.setVariable('sDate_of_issue', issue) 
+execution.setVariable('sDate_of_expiry', expiry)
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
+execution.setVariable('sMoz2', moz2)
+       </script>
+    </scriptTask>
+    <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
+    <userTask id="usertask2_red" name="Друк посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результат друку" type="enum" required="true">
+          <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
+          <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow21" name="${asResult=='sNejav'}" sourceRef="exclusivegateway2" targetRef="usertask4_green">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sReestr'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Сплата за посвідчення особи моряка була зарахована. Ваш документ буде готовий за 2 робочих дні.<br>
+										Для отримання посвідчення особи моряка за заявкою №[sID_Order] необхідно:<br>
+										<ul>
+										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
+										<li>Підписати необхідні документи та отримати посвідчення особи моряка.</li>
+										</ul>
+									</p>
+									<p>
+									  <b>Необхідні документи, які треба пред'явити в ${sNameOrgan} при отриманні посвідчення особи моряка:</b><br>
+									   <ul>
+										<li>заява-анкета, яку Ви заповнювали і сканували при поданні заявки;</li>
+										<li>паспорт громадянина України та його копія (усі заповнені сторінки);</li>
+										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
+										<li>одну фотокартку 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
+										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
+										<li>документ, на підставі якого буде видано посвідчення особи моряка (який Ви сканували при поданні заявки);</li>
+										<ul>
+											<li>оригінал та копія трудового договору (контракту) про працевлаштування на судні;</li>
+											<li>оригінал та копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;</li>
+											<li>оригінал довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;</li>
+										<ul>
+									   </ul>
+									</p>
+									<p>${sRozklad}</p>
+									<p>
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow25" sourceRef="servicetask8" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Очікування візиту громадянина" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTranslit" name="Причина невідповідності прізвища або ім'я англійською запису у кваліфікаційних документах" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPassportBase" name="Документ, який є підставою для отримання посвідчення особи моряка" type="enum" writable="false">
+          <activiti:value id="sStud" name="довідка з навчального закладу (для студентів)"></activiti:value>
+          <activiti:value id="sContract" name="трудовий договор (контракт)"></activiti:value>
+          <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultVizit" name="Результат візиту" type="enum" required="true">
+          <activiti:value id="sTake" name="Громадянин отримав документ"></activiti:value>
+          <activiti:value id="sNoTake" name="Громадянину відмовлено у видачі документу"></activiti:value>
+          <activiti:value id="sMistake" name="Заявка взята в роботу помилково"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow62" sourceRef="usertask3" targetRef="exclusivegateway6"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow63" sourceRef="exclusivegateway6" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sMistake'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow71" sourceRef="exclusivegateway6" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sNoTake'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="exclusivegateway6" targetRef="servicetask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResultVizit=='sTake'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask11" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".<br>
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+                              		Дякуємо.
+									</p>
+                                    [pattern/mail/_common_signature_start.html]
+									Міністерство інфраструктури України,<br>
+									ДП "Адміністрація морських портів України"<br>
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent4"></sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <userTask id="usertask4_green" name="Заміна бланку посвідчення" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку нового посвідчення" type="string" default="AB" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow50" sourceRef="usertask4_green" targetRef="scripttask7"></sequenceFlow>
+    <scriptTask id="scripttask7" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1=""
+var per2=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var lname=src.substr(i,1)
+if((lname != "null") || (lname != "")){
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&amp;#60"}
+else {
+per1 = per1+lname}}
+else{
+break}}
+var src=execution.getVariable('firstName')
+for (var i = 0; i&lt;50; i++){
+var fname=src.substr(i,1)
+if((fname != "null") || (fname != "")){
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&amp;#60"}
+else {
+per2 = per2+fname}}
+else{
+break}}
+var moz1=per1+"&amp;#60"+"&amp;#60"+per2
+execution.setVariable('sMoz1', moz1)
+var numb=execution.getVariable('sNumber1')
+var ser=numb.substr(0,2)
+var num=numb.substr(2,6)
+var a1=Number(numb.substr(2,1))
+var a2=Number(numb.substr(3,1))
+var a3=Number(numb.substr(4,1))
+var a4=Number(numb.substr(5,1))
+var a5=Number(numb.substr(6,1))
+var a6=Number(numb.substr(7,1))
+var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
+var src=execution.getVariable('sDate_of_birth1')
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,4)
+var month1='СІЧ / JAN'
+if (month=='02'){
+    month1='ЛЮТ / FEB'}
+if (month=='03'){
+    month1='БЕР / MAR'}
+if (month=='04'){
+    month1='КВІ / APR'}
+if (month=='05'){
+    month1='ТРА / MAY'}
+if (month=='06'){
+    month1='ЧЕР / JUN'}
+if (month=='07'){
+    month1='ЛИП / JUL'}
+if (month=='08'){
+    month1='СЕР / AUG'}
+if (month=='09'){
+    month1='ВЕР / SEP'}
+if (month=='10'){
+    month1='ЖОВ / OCT'}
+if (month=='11'){
+    month1='ЛИС / NOV'}
+if (month=='12'){
+    month1='ГРУ / DEC'}
+var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
+execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
+var unixdate= Math.round((new Date()).getTime());
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
+var month3='СІЧ / JAN'
+if (m=='02'){
+    month3='ЛЮТ / FEB'}
+if (m=='03'){
+    month3='БЕР / MAR'}
+if (m=='04'){
+    month3='КВІ / APR'}
+if (m=='05'){
+    month3='ТРА / MAY'}
+if (m=='06'){
+    month3='ЧЕР / JUN'}
+if (m=='07'){
+    month3='ЛИП / JUL'}
+if (m=='08'){
+    month3='СЕР / AUG'}
+if (m=='09'){
+    month3='ВЕР / SEP'}
+if (m=='10'){
+    month3='ЖОВ / OCT'}
+if (m=='11'){
+    month3='ЛИС / NOV'}
+if (m=='12'){
+    month3='ГРУ / DEC'}
+var issue=d+' '+month3+' '+new_year
+var year3= new_year-(-5)
+var expiry=d+' '+month3+' '+year3
+execution.setVariable('sDate_of_issue', issue) 
+execution.setVariable('sDate_of_expiry', expiry)
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
+execution.setVariable('sMoz2', moz2)
+       </script>
+    </scriptTask>
+    <sequenceFlow id="flow52" sourceRef="scripttask7" targetRef="usertask5_red"></sequenceFlow>
+    <userTask id="usertask5_red" name="Друк посвідчення після заміни бланку" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNumber1" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результат друку" type="enum" required="true">
+          <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
+          <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp1.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow53" sourceRef="usertask5_red" targetRef="exclusivegateway4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow54" sourceRef="exclusivegateway4" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sReestr'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow55" sourceRef="exclusivegateway4" targetRef="usertask6_green">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask6_green" name="Заміна бланку посвідчення2" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку нового посвідчення" type="string" default="AB" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow56" sourceRef="usertask6_green" targetRef="scripttask9"></sequenceFlow>
+    <scriptTask id="scripttask9" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1=""
+var per2=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var lname=src.substr(i,1)
+if((lname != "null") || (lname != "")){
+if((lname == "-") || (lname == "`") || (lname == " ") || (lname == "'") || (lname == "’")){
+per1 = per1+"&amp;#60"}
+else {
+per1 = per1+lname}}
+else{
+break}}
+var src=execution.getVariable('firstName')
+for (var i = 0; i&lt;50; i++){
+var fname=src.substr(i,1)
+if((fname != "null") || (fname != "")){
+if((fname == "-") || (fname == "`") || (fname == " ") || (fname == "'") || (fname == "’")){
+per2 = per2+"&amp;#60"}
+else {
+per2 = per2+fname}}
+else{
+break}}
+var moz1=per1+"&amp;#60"+"&amp;#60"+per2
+execution.setVariable('sMoz1', moz1)
+var numb=execution.getVariable('sNumber2')
+var ser=numb.substr(0,2)
+var num=numb.substr(2,6)
+var a1=Number(numb.substr(2,1))
+var a2=Number(numb.substr(3,1))
+var a3=Number(numb.substr(4,1))
+var a4=Number(numb.substr(5,1))
+var a5=Number(numb.substr(6,1))
+var a6=Number(numb.substr(7,1))
+var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
+var src=execution.getVariable('sDate_of_birth1')
+var day=src.substr(0,2)
+var month=src.substr(3,2)
+var year=src.substr(6,4)
+var month1='СІЧ / JAN'
+if (month=='02'){
+    month1='ЛЮТ / FEB'}
+if (month=='03'){
+    month1='БЕР / MAR'}
+if (month=='04'){
+    month1='КВІ / APR'}
+if (month=='05'){
+    month1='ТРА / MAY'}
+if (month=='06'){
+    month1='ЧЕР / JUN'}
+if (month=='07'){
+    month1='ЛИП / JUL'}
+if (month=='08'){
+    month1='СЕР / AUG'}
+if (month=='09'){
+    month1='ВЕР / SEP'}
+if (month=='10'){
+    month1='ЖОВ / OCT'}
+if (month=='11'){
+    month1='ЛИС / NOV'}
+if (month=='12'){
+    month1='ГРУ / DEC'}
+var birth=day+' '+month1+' '+year
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month.substr(0,1))
+var b4=Number(month.substr(1,1))
+var b5=Number(day.substr(0,1))
+var b6=Number(day.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
+execution.setVariable('sDate_of_birth', birth)
+var sex=execution.getVariable('asSex')
+var sex1='Ч / M'
+if (sex=='sWoman'){
+    sex1='Ж / W'}
+execution.setVariable('sSex', sex1)
+var unixdate= Math.round((new Date()).getTime());
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+var new_year = new_src.getFullYear();
+var month3='СІЧ / JAN'
+if (m=='02'){
+    month3='ЛЮТ / FEB'}
+if (m=='03'){
+    month3='БЕР / MAR'}
+if (m=='04'){
+    month3='КВІ / APR'}
+if (m=='05'){
+    month3='ТРА / MAY'}
+if (m=='06'){
+    month3='ЧЕР / JUN'}
+if (m=='07'){
+    month3='ЛИП / JUL'}
+if (m=='08'){
+    month3='СЕР / AUG'}
+if (m=='09'){
+    month3='ВЕР / SEP'}
+if (m=='10'){
+    month3='ЖОВ / OCT'}
+if (m=='11'){
+    month3='ЛИС / NOV'}
+if (m=='12'){
+    month3='ГРУ / DEC'}
+var issue=d+' '+month3+' '+new_year
+var year3= new_year-(-5)
+var expiry=d+' '+month3+' '+year3
+execution.setVariable('sDate_of_issue', issue) 
+execution.setVariable('sDate_of_expiry', expiry)
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var year4=String(year3).substr(2,2)
+var c1=Number(year4.substr(2,1))
+var c2=Number(year4.substr(3,1))
+var c3=Number(m.substr(0,1))
+var c4=Number(m.substr(1,1))
+var c5=Number(d.substr(0,1))
+var c6=Number(d.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month+day+k2+sex+year4+m+d+k3
+execution.setVariable('sMoz2', moz2)
+       </script>
+    </scriptTask>
+    <sequenceFlow id="flow58" sourceRef="scripttask9" targetRef="usertask7_red"></sequenceFlow>
+    <userTask id="usertask7_red" name="Друк посвідчення після заміни бланку2" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNumber2" name="Серія та номер бланку посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
+          <activiti:value id="sGreen" name="Зелений / Green"></activiti:value>
+          <activiti:value id="sBlue" name="Блакитний / Blue"></activiti:value>
+          <activiti:value id="sGray" name="Сірий / Gray"></activiti:value>
+          <activiti:value id="sBrown" name="Карій / Brown"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результат друку" type="enum" required="true">
+          <activiti:value id="sReestr" name="Дані по документу внесено коректно"></activiti:value>
+          <activiti:value id="sNejav" name="Треба змінити номер бланку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp2.html]" type="invisible" default="Зразок посвідчення особи моряка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow59" sourceRef="usertask7_red" targetRef="exclusivegateway5"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow60" sourceRef="exclusivegateway5" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sReestr'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="exclusivegateway5" targetRef="usertask6_green">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_624">
+    <bpmndi:BPMNPlane bpmnElement="infrastr_624" id="BPMNPlane_infrastr_624">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="8.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="81.0" width="115.0" x="56.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="50.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="74.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="134.0" y="41.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="238.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="446.0" y="286.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="481.0" y="368.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="81.0" width="105.0" x="307.0" y="106.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="81.0" width="105.0" x="438.0" y="106.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1_yellow" id="BPMNShape_usertask1_yellow">
+        <omgdc:Bounds height="81.0" width="119.0" x="567.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="710.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="105.0" x="819.0" y="111.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="1117.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="58.0" width="131.0" x="665.0" y="229.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="233.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="939.0" y="233.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="974.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="971.0" y="447.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="1082.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
+        <omgdc:Bounds height="55.0" width="105.0" x="678.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="678.0" y="510.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+        <omgdc:Bounds height="55.0" width="131.0" x="665.0" y="591.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="608.0" y="598.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="438.0" y="590.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="304.0" y="590.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="191.0" y="597.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="61.0" y="590.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4_green" id="BPMNShape_usertask4_green">
+        <omgdc:Bounds height="55.0" width="105.0" x="576.0" y="660.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="729.0" y="660.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5_red" id="BPMNShape_usertask5_red">
+        <omgdc:Bounds height="55.0" width="105.0" x="729.0" y="740.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="747.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6_green" id="BPMNShape_usertask6_green">
+        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="800.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="880.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7_red" id="BPMNShape_usertask7_red">
+        <omgdc:Bounds height="55.0" width="105.0" x="438.0" y="880.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="470.0" y="807.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="43.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="56.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="113.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="113.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="134.0" y="68.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="239.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="258.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="258.0" y="126.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="258.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="258.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="446.0" y="313.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
+        <omgdi:waypoint x="498.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="498.0" y="368.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="498.0" y="403.0"></omgdi:waypoint>
+        <omgdi:waypoint x="498.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="467.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="278.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="412.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="543.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="686.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="750.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="819.0" y="146.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="731.0" y="79.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="924.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1117.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="730.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="229.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="625.0" y="186.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="730.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="730.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="233.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="915.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="939.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="991.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="991.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="447.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="1011.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1082.0" y="467.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="1134.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1134.0" y="164.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="971.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="783.0" y="467.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="730.0" y="495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="510.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="730.0" y="565.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="591.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="665.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="648.0" y="618.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="628.0" y="638.0"></omgdi:waypoint>
+        <omgdi:waypoint x="628.0" y="660.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="83.0" x="550.0" y="565.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="608.0" y="618.0"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="438.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="409.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="304.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="231.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="211.0" y="597.0"></omgdi:waypoint>
+        <omgdi:waypoint x="211.0" y="539.0"></omgdi:waypoint>
+        <omgdi:waypoint x="356.0" y="539.0"></omgdi:waypoint>
+        <omgdi:waypoint x="356.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="191.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="166.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="61.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="36.0" y="617.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="681.0" y="687.0"></omgdi:waypoint>
+        <omgdi:waypoint x="729.0" y="687.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="781.0" y="715.0"></omgdi:waypoint>
+        <omgdi:waypoint x="781.0" y="740.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="729.0" y="767.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="767.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="600.0" y="767.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="767.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="645.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="620.0" y="787.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="800.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="620.0" y="855.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="880.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="568.0" y="907.0"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="907.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="490.0" y="880.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="847.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="490.0" y="807.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="645.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="510.0" y="827.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="827.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="211.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="635.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

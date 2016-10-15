@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="prmtu_1134" name="Звернення моряків за домогою до ПРМТУ" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSeaman" name="Чи є Ви моряком?" type="enum" required="true">
+          <activiti:value id="sSeamanYes" name="так"></activiti:value>
+          <activiti:value id="sSeamanNo" name="ні, я довірена особа моряка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLable1" name="Зверніть увагу" type="label" default="Дані моряка"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон; у міжнародному форматі" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWorkType" name="Місцезнаходження моряка на даний момент" type="enum" required="true">
+          <activiti:value id="sSea" name="на борту судна"></activiti:value>
+          <activiti:value id="sUkraine" name="в Україні"></activiti:value>
+          <activiti:value id="sOtherCountry" name="в іншій країні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Назва країни місцезнаходження моряка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asHavePRMTU" name="Чи є моряк членом Профспілки робітників морського транспорту України?" type="enum" required="true">
+          <activiti:value id="sHavePRMTUYes" name="так"></activiti:value>
+          <activiti:value id="sHavePRMTUNo" name="ні"></activiti:value>
+          <activiti:value id="sHavePRMTUFind" name="потрібно перевірити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTiketNumber" name="Номер членського квитка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLable2" name="Зверніть увагу" type="label" default="Звернення від членів ПРМТУ опрацьовуються у першу чергу"></activiti:formProperty>
+        <activiti:formProperty id="asNeedPRMTU" name="Чи бажаєте стати членом Профспілки робітників морського транспорту України?" type="enum" required="true">
+          <activiti:value id="sNeedPRMTUYes" name="так"></activiti:value>
+          <activiti:value id="sNeedPRMTUNo" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Остання кампанія, від якої уходили в рейс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asProblem" name="Категорія питання" type="enum" required="true">
+          <activiti:value id="sNoSalary" name="несплата або затримка зарплатні"></activiti:value>
+          <activiti:value id="sNoPayments" name="несплата компенсацій або інших виплат"></activiti:value>
+          <activiti:value id="sContravention" name="порушення умов контракту з боку роботодавця"></activiti:value>
+          <activiti:value id="sBreakContract" name="несанкціоноване списання"></activiti:value>
+          <activiti:value id="sWorkContravention" name="порушення умов праці на борту"></activiti:value>
+          <activiti:value id="sCriminal" name="кримінальний випадок"></activiti:value>
+          <activiti:value id="sQuestion" name="питання по діяльності профспілки"></activiti:value>
+          <activiti:value id="sOther" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Назва судна та/або номер ІМО" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWhereNow" name="Поточне місцезнаходження судна або найближчій порт заходу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="Опис проблеми чи порушення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTermCount" name="Термін заборгованості" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;за наявності" type="string" default="не було" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSeamanBill" name="Розрахунковий рахунок для здійснення виплат" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEmbassy" name="Чи потрібно повідомити дипломатичне представництво про Ваш випадок?" type="enum" required="true">
+          <activiti:value id="sEmbassyYes" name="так"></activiti:value>
+          <activiti:value id="sEmbassyNo" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asQuestionPRMTU" name="Тип питання до профспілки" type="enum" required="true">
+          <activiti:value id="sHowTo" name="як стати членом профспілки?"></activiti:value>
+          <activiti:value id="sAdvantages" name="які переваги мають члени профспілки?"></activiti:value>
+          <activiti:value id="sContribution" name="які внески сплачують члени профспілки?"></activiti:value>
+          <activiti:value id="sOtherPRMTU" name="інше питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuestionPRMTU" name="Напишіть своє запитання" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія або фото індивідуального контракту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocPassp" name="Копія посвідчення особи моряка; обов'язково першу сторінку та сторінку з припискою до судна" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/prmtu_1.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask5">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow46" sourceRef="boundaryerror1" targetRef="endevent7"></sequenceFlow>
+    <endEvent id="endevent7" name="End"></endEvent>
+    <sequenceFlow id="flow45" sourceRef="servicetask5" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Нова заявка про Звернення моряків за домогою до ПРМТУ]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення моряків за домогою до ПРМТУ]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+								<p>
+            						Ваша заявка про Звернення моряків за домогою до профспілки успішно зареєстрована №[sID_Order].<br>
+									Спеціалісти повинні дати відповідь найближчим часом.
+                                </p>
+                                <p>
+									При вниникненні питань Ви можете звернутися: телефон для довідок
+								</p>
+								[pattern/mail/_common_signature_start.html]
+								Профспілка робітників морського <br> транспорту України,<br>
+								[pattern/mail/_common_signature_end.html]
+								[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="prmtu_1">
+      <extensionElements>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSeaman" name="Чи є Ви моряком?" type="enum" writable="false">
+          <activiti:value id="sSeamanYes" name="так"></activiti:value>
+          <activiti:value id="sSeamanNo" name="ні, я довірена особа моряка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище моряка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я моряка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові моряка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний  телефон моряка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWorkType" name="Місцезнаходження моряка на даний момент" type="enum" writable="false">
+          <activiti:value id="sSea" name="на борту судна"></activiti:value>
+          <activiti:value id="sUkraine" name="в Україні"></activiti:value>
+          <activiti:value id="sOtherCountry" name="в іншій країні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Назва країни місцезнаходження моряка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePRMTU" name="Чи є моряк членом Профспілки робітників морського транспорту України?" type="enum" writable="false">
+          <activiti:value id="sHavePRMTUYes" name="так"></activiti:value>
+          <activiti:value id="sHavePRMTUNo" name="ні"></activiti:value>
+          <activiti:value id="sHavePRMTUFind" name="потрібно перевірити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTiketNumber" name="Номер членського квитка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNeedPRMTU" name="Чи бажаєте стати членом Профспілки робітників морського транспорту України?" type="enum" writable="false">
+          <activiti:value id="sNeedPRMTUYes" name="так"></activiti:value>
+          <activiti:value id="sNeedPRMTUNo" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Остання кампанія, від якої уходили в рейс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asProblem" name="Категорія питання" type="enum" writable="false">
+          <activiti:value id="sNoSalary" name="несплата або затримка зарплатні"></activiti:value>
+          <activiti:value id="sNoPayments" name="несплата компенсацій або інших виплат"></activiti:value>
+          <activiti:value id="sContravention" name="порушення умов контракту з боку роботодавця"></activiti:value>
+          <activiti:value id="sBreakContract" name="несанкціоноване списання"></activiti:value>
+          <activiti:value id="sWorkContravention" name="порушення умов праці на борту"></activiti:value>
+          <activiti:value id="sCriminal" name="кримінальний випадок"></activiti:value>
+          <activiti:value id="sQuestion" name="питання по діяльності профспілки"></activiti:value>
+          <activiti:value id="sOther" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Назва судна та/або номер ІМО" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWhereNow" name="Поточне місцезнаходження судна або найближчій порт заходу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="Опис проблеми чи порушення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTermCount" name="Термін заборгованості" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;за наявності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSeamanBill" name="Розрахунковий рахунок для здійснення виплат" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEmbassy" name="Чи потрібно повідомити дипломатичне представництво про Ваш випадок?" type="enum" writable="false">
+          <activiti:value id="sEmbassyYes" name="так"></activiti:value>
+          <activiti:value id="sEmbassyNo" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asQuestionPRMTU" name="Тип питання до профспілки" type="enum" writable="false">
+          <activiti:value id="sHowTo" name="як стати членом профспілки?"></activiti:value>
+          <activiti:value id="sAdvantages" name="які переваги мають члени профспілки?"></activiti:value>
+          <activiti:value id="sContribution" name="які внески сплачують члени профспілки?"></activiti:value>
+          <activiti:value id="sOtherPRMTU" name="інше питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuestionPRMTU" name="Напишіть своє запитання" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Відправити листа для перевірки членства у профспілці"></activiti:value>
+          <activiti:value id="reject" name="Відправити листа громадянину із відповіддю"></activiti:value>
+          <activiti:value id="sEmbassy" name="Відправити листа громадянину із відповіддю та повідомити дипломатичне представництво"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть відповідь на питання громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sEmbassyMail" name="Вкажіть електронну адресу дипломатичного представництва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCheckMail" name="Вкажіть електронну адресу для перевірки членства" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/prmtu_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/prmtu_1.html]" type="invisible" default="Дані моряка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/prmtu_1.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nDocPassp},${nDocContract}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" name="decide == 'accept'" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Відправка відповіді на запит користувачу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sCheckMail}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення моряків за домогою до ПРМТУ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановні колеги.</h3>
+			<p>Просимо перевірити членство у профспілці моряка за даними, у файлі, що додається.<br>
+			При вниникненні питань Ви можете звернутися: телефон для довідок
+			</p>
+			[pattern/mail/_common_signature_start.html]
+			Профспілка робітників морського <br> транспорту України,<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" name="${decide == 'reject'}" sourceRef="exclusivegateway3" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask3" name="Відповідь на запитання" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення моряків за домогою до ПРМТУ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			Ваше звернення за заявкою №[sID_Order] опрацьовано.<br>
+			Відповідь працівника профспілки:<br>
+			<b><i>${comment}</i></b>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			<p>
+			При вниникненні питань Ви можете звернутися: телефон для довідок
+			</p>
+			[pattern/mail/_common_signature_start.html]
+			Профспілка робітників морського <br> транспорту України.</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent5"></sequenceFlow>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway3" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'sEmbassy'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Відправка листа до посольства" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення від Профспілки робітників морського транспорту України про допопогу морякам]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановні колеги.</h3>
+			<p>Просимо допомогти у вирішенні питання за даними, у файлі, що додається.<br>
+			При вниникненні питань Ви можете звернутися: телефон для довідок
+			</p>
+			[pattern/mail/_common_signature_start.html]
+			Профспілка робітників морського <br> транспорту України,<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow50" sourceRef="servicetask6" targetRef="servicetask3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_prmtu_1134">
+    <bpmndi:BPMNPlane bpmnElement="prmtu_1134" id="BPMNPlane_prmtu_1134">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="171.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="71.0" width="105.0" x="301.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="111.0" x="431.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="571.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="75.0" width="111.0" x="536.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="71.0" width="111.0" x="649.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="840.0" y="58.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="652.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="51.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="276.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="406.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="431.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="542.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="591.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="210.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="87.0" x="500.0" y="191.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="536.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="486.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="486.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="591.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="649.0" y="75.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="95.0" x="544.0" y="46.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="760.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="611.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="652.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="704.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="704.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

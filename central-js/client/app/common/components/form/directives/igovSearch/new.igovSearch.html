@@ -1,0 +1,154 @@
+<style>
+  .input-lg {
+    border-radius: 50px;
+    border: 3px solid #9bc7df;
+    outline-color: red !important;
+    height: 50px;
+  }
+  .input-lg:focus {
+    border: 3px solid #9bc7df ;
+  }
+  .glyphicon-search {
+    color: #4b5053 !important;
+    font-weight: bold;
+  }
+  .big-inner-addon {
+    width: 95%;
+  }
+  .big-inner-addon .al-right {
+    font-size: 75%;
+    right: 30px;
+  }
+  .big-inner-addon .al-right, .big-inner-addon .al-right .search-filter {
+    color: #428bcb;
+  }
+</style>
+
+<div class="big-inner-addon">
+    <span class="glyphicon glyphicon-search al-left"
+          aria-hidden="true"></span>
+  <form ng-submit="searchOrder()">
+    <input ng-model="sSearch"
+           ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
+           ng-change="searching()"
+           type="text"
+           class="form-control input-lg"
+           placeholder="Пошук">
+  </form>
+  <a href="#" title="Очистити" ng-show="sSearch" ng-click="clear()"><span class="glyphicon glyphicon-remove"></span></a>
+  <a href="#" ng-click="onExtSearchClick()">
+        <span class="al-right" title="{{!bShowExtSearch ? 'Розширений пошук' : 'Повернутися до простого пошуку'}}" aria-hidden="true" style="margin-top: 3px">
+          <span class="search-filter" aria-hidden="true" style="font-weight: bold; font-size: 13px; font-family: 'Open Sans'; float: left; line-height: 10px; padding-right: 2px;">фільтр послуг</span>
+          <span ng-show="!bShowExtSearch" class="glyphicon glyphicon-chevron-down"></span>
+          <span ng-show="bShowExtSearch" class="glyphicon glyphicon-chevron-up"></span>
+        </span>
+  </a>
+
+  <div class="panel panel-default"
+       ng-show="bShowExtSearch && isSearch">
+    <!-- Place Selection -->
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+        <div class="form-group"> <!-- ng-if="selectedStatus == 2"-->
+          <div style="display:inline-block" ng-if="isCentral">
+            <!-- Region Dropdown -->
+            <div style="position:relative" dropdown is-open="regionList.dropdown.isOpen">
+              <div class="input-group">
+                <input style="padding-left: 15px;"
+                       autocomplete="off" class="form-control" name="region" type="text"
+                       placeholder="Регіон"
+                       ng-model="data.region"
+                       typeahead="region as region.sName for region in loadRegionList($viewValue)"
+                       typeahead-on-select="onSelectRegionList($item)"
+                       typeahead-template-url="app/service/place/templates/typeahead-match-region.html">
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" dropdown-toggle>
+                            <span class="caret"></span>
+                          </button>
+                      </span>
+              </div>
+              <ul class="dropdown-menu"
+                  role="menu" style="width: 100%">
+                <li ng-repeat="region in regionList.dropdown.list | orderBy:'sName'">
+                  <a ng-click="onSelectRegionList(region)"
+                     ng-class="{'color-green': (region.color == 'green')}">{{region.sName}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="data.region.nID"> <!--  && selectedStatus == 2-->
+          <div style="display:inline-block">
+            <!-- City Dropdown -->
+            <div style="position:relative" dropdown is-open="localityList.dropdown.isOpen">
+              <div class="input-group">
+                <input style="padding-left: 15px;"
+                       autocomplete="off"  class="form-control" name="city" type="text"
+                       placeholder="Місто"
+                       ng-model="localityList.typeahead.model"
+                       typeahead="city as city.sName for city in loadLocalityList($viewValue)"
+                       typeahead-on-select="onSelectLocalityList($item)"
+                       typeahead-template-url="app/service/place/templates/typeahead-match-city.html"/>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" dropdown-toggle>
+                          <span class="caret"></span>
+                        </button>
+                      </span>
+              </div>
+              <ul class="dropdown-menu"role="menu" style="width: 100%"
+                  ng-show="localityList.dropdown.list.length > 0">
+                <li ng-repeat="city in localityList.dropdown.list | orderBy:'sName'">
+                  <a ng-click="onSelectLocalityList(city, null, null)"
+                     ng-class="{'color-green': (city.color == 'green')}">{{city.sName}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group" style="display:none">
+          <select class="form-control"
+                  id="oplist"
+                  ng-model="operator"
+                  ng-change="filterByExtSearch()">
+            <option value="-1">Оберiть установу</option>
+            <option ng-repeat="operator in operators | orderBy:'sSubjectOperatorName'">{{operator.sSubjectOperatorName}}</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="display:none">
+          <select ng-model="selectedStatus"
+                  class="form-control"
+                  ng-change="filterByExtSearch()">
+            <option value="-1">Всі послуги</option>
+            <option value="1">Доступні онлайн</option>
+            <option value="0">Послуги, що запустяться незабаром</option>
+          </select>
+        </div>
+
+        <div class="index-services-count">
+          <span ng-show="catalogCounts[2] > 0"><span class="index-services-count-item">
+            <nobr>
+              <span class="icon-e-service-on"></span>{{catalogCounts[2]}} &mdash; послуги доступно онлайн
+            </nobr>
+          </span>
+          </span>
+          <span ng-show="catalogCounts[1] > 0"><span class="index-services-count-item">
+            <nobr>
+              <span class="icon-e-service-test"></span>{{catalogCounts[1]}} &mdash; дуже скоро
+            </nobr>
+          </span>
+          </span>
+          <span ng-show="catalogCounts[0] > 0"><span class="index-services-count-item">
+            <nobr>
+              <span class="icon-e-service-off"></span>{{catalogCounts[0]}} &mdash; в роботі
+            </nobr>
+          </span>
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

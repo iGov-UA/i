@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dnepr_dms-280" name="Вклеювання фотокарток при досягненні особою віку 25 або 45 років" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKab280" name="Номер кабінету" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com', 'dozvildndz@ukr.net', 'edv.rda@gmail.com', 'admin_kom@ukr.net', 'teplikcnap@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com']
+      var no = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21']
+      var region = ['Амур-Нижньодніпровський', 'Шевченківський (Бабушкінський)', 'Соборний (Жовтневий)', 'Індустріальний', 'Центральний (Кіровський)', 'Чечелівський (Красногвардійський)', 'Новокодацький (Ленінський)', 'Самарський', 'Баглійський', 'Дніпровський', 'Заводський', 'Вільногірськ', 'Дніпродзержинськ', 'Тернопільський район', 'Комінтернівський район', 'Теплицький район', 'Житомир', 'Кременчук', 'Харків', 'Вишгородський район', 'Червоноград']
+      var Regservice = ['Амур-Нижньодніпровський РВ у м.Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Бабушкінський РВ у місті Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Жовтневий РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Індустріальний РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Кіровський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Красногвардійський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Ленінський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Самарський РВ у м. Дніпропетровську ГУ ДМСУ в Дніпропетровській області', 'Баглійський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Дніпровський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Заводський РВ у м. Дніпродзержинську ГУ ДМСУ в Дніпропетровській області', 'Вільногірський МС ГУ ДМС України в Дніпропетровській області', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Вишгородський РВ ДМС України в Київській області', 'Червоноградський МС ДМС України у Львівській області'] 
+	  var So = ['and', 'bab', 'zhovt', 'indust', 'kirov', 'krasn', 'lenin', 'samar', 'bagl', 'dnipro', 'zavod', 'viln', 'dndzT', 'ternR', 'od_komint', 'vin_teplic', 'zhitomT', 'pol_krem', 'kharkT', 'kiev_vish', 'lviv_chervonogradT']
+for (var i = 0; i&lt;697; i++){
+var per = So[i]
+if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
+var per1 = post[i]
+var per2 = no[i]
+var per3 = region[i]
+var per4 = Regservice[i]
+break}}
+execution.setVariable('sMailClerk', per1)
+execution.setVariable('viddil', per2)
+execution.setVariable('sArea', per3)
+execution.setVariable('Registrationservice', per4)
+	  </script>
+    </scriptTask>
+    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                    	Ваш запит був успішно зареєстрований у нашій системі [sID_Order].&lt;br&gt;
+                                        Для того щоб закінчити процедуру вклеювання фотокарток при досягненні особою віку 25 або 45 років необхідно:&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab280}.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+										День та час - ${date_of_visit}
+									&lt;/p&gt;
+									&lt;p&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для вклеювання фотокарток при досягненні особою віку 25 або 45 років:&lt;/b&gt;&lt;br&gt;
+										&lt;ul&gt;
+										&lt;li&gt;паспорт громадянина України, до якого будуть вклеюватись фотокартки;&lt;/li&gt;
+										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;	
+										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+										&lt;ul&gt;
+										&lt;li&gt;Якщо з моменту досягнення Вами 25- чи 45-річного віку до подання заяви минув місяць, то Вас буде притягнено до адміністративної відповідальності за ст. 197 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на його оплату.&lt;/li&gt;
+										&lt;/ul&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
+										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
+										${sPhoneOrgan}
+									&lt;/p&gt;
+                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+                                    [pattern/mail/_common_signature_start.html]
+									${sNameOrgan},&lt;br&gt;
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
+    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-205_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані паспорта громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Орган, що здійснює вклеювання фотокартки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
+          <activiti:value id="reestr" name="Громадянин подав фотокартки"></activiti:value>
+          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/foto_mail(dnepr).html]" type="invisible" default="Повідомлення про вклеювання" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow17" name="${result=='reestr'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow21" name="${result=='nejav'}" sourceRef="exclusivegateway2" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Вклеювання фотокарток при досягненні особою віку 25 або 45 років]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                              		Ви отримали послугу "Вклеювання фотокарток при досягненні особою віку 25 або 45 років".
+                              		&lt;/p&gt;
+                              		&lt;p&gt;
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
+                              		Дякуємо.
+									&lt;/p&gt;
+                                    [pattern/mail/_common_signature_start.html]
+									${sNameOrgan},&lt;br /&gt;
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-280">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-280" id="BPMNPlane_dnepr_dms-280">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="81.0" width="115.0" x="96.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="81.0" width="105.0" x="250.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="58.0" width="131.0" x="390.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+        <omgdc:Bounds height="55.0" width="131.0" x="546.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="697.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="818.0" y="188.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="784.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="211.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="355.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="148.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="521.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="546.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="677.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="697.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="737.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="784.0" y="147.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="86.0" x="710.0" y="105.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="717.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="717.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="818.0" y="205.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="83.0" x="730.0" y="187.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="836.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="188.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,190 @@
+<div class="modal-header" ng-init="initEscalationModalDialog()">
+  <h3 class="modal-title">{{sModalTitle}}</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+
+    <div class="col-md-5 col-xs-5">
+      <strong class="text-center">Оберіть необхідний бізнес-процес</strong>
+      <div class="table-container">
+        <table st-table="tableDataProcesses" class="table table-bordered">
+          <thead>
+          <tr>
+            <td colspan="2" class="text-center">
+              <div st-pagination="" st-items-by-page="tableRowsByPage" st-displayed-pages="7"></div>
+            </td>
+          </tr>
+          <tr style="cursor:pointer;">
+            <th st-sort="sID" class="col-md-1 col-xs-1 text-center"
+                title="Сортувати за ідентифікатором">Ід.
+            </th>
+            <th st-sort="sName" class="col-md-2 col-xs-2 text-center"
+                title="Сортувати за назвою бізнес-процесу">Назва
+            </th>
+          </tr>
+          <tr>
+            <th colspan="2">
+              <input st-search placeholder="Пошук" class="input-sm form-control"
+                     type="search" title="Введіть фрагмент ідентифікатора або назви необхідного бізнес-процесу"/>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr st-select-row="oCurrentProcess"
+              ng-repeat="oCurrentProcess in tableDataProcesses"
+              title="{{oCurrentProcess.sNameWirhID}}"
+              ng-click="selectThisProcess(this.oCurrentProcess)" style="cursor:pointer;">
+            <td class="col-md-1 col-xs-1" style="word-break: break-all">{{oCurrentProcess.sID}}</td>
+            <td class="col-md-2 col-xs-2">{{oCurrentProcess.sTrimedName}}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="2">
+              <span>Всього завантажено бізнес-процесів: {{processes.length}}</span>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-7 col-xs-7">
+
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Бізнес-процес:</label>
+        <div class="col-md-8 col-xs-8">
+          <!--
+          <select name="bpID" ng-model="rule.sID_BP"
+                  ng-options="processDefinition.sID as processDefinition.sName for processDefinition in processes"
+                  ng-required="true" class="form-control">
+            <option style="display:none" value="">Бізнес-процес некоректний, оберіть інший.</option>
+          </select>
+          -->
+          <strong>{{thisRule.bp.sName}}</strong><br/>
+          <small>({{thisRule.sID_BP}})</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Задачі бізнес-процеса:</label>
+
+        <div class="col-md-8 col-xs-8">
+          <input class="form-control" id="inputName1" ng-model="thisRule.sID_UserTask">
+        </div>
+      </div>
+      <div class="form-group">
+        <table style="margin: auto">
+          <thead>
+          <tr>
+            <th colspan="4">Умова ініціалізації правила:</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="text-left">
+            <td colspan="4">
+              <input type="checkbox"
+                     ng-model="oRuleStart.bNow"
+                     ng-click="setRuleStarterNow()"
+                     style="cursor:pointer;">
+              Невідкладне спрацювання
+            </td>
+          </tr>
+          <tr class="text-left">
+            <td colspan="4">
+              <input type="checkbox"
+                     ng-model="oRuleStart.bLater"
+                     ng-click="setRuleStarterLater()"
+                     style="cursor:pointer;">
+              Спрацювання з відсрочкою від дня початку бізнес-процесу
+            </td>
+          </tr>
+          <tr ng-show="oRuleStart.bLater">
+            <td style="text-align: right; margin: 5px">якщо минуло днів </td>
+            <td>
+              <select ng-model="thisRule.sCondition"
+                      ng-options="oConditionItem.sFormula as oConditionItem.sFullName for oConditionItem in aConditions"
+                      class="form-control" style="margin: 5px; cursor:pointer;">
+              </select>
+            </td>
+            <td>
+              <input type="number"
+                     ng-model="thisRule.oData.nDaysLimit"
+                     ng-change="changeDaysLimit()"
+                     ng-required="true"
+                     class="form-control"
+                     style="max-width: 75px; text-align: center; margin: 5px">
+            </td>
+            <td style="margin: 5px"> днів</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Формула умови:</label>
+
+        <div class="col-md-8 col-xs-8">
+          <input class="form-control" id="inputName2" ng-model="thisRule.sCondition"
+                 placeholder="nElapsedDays==nDaysLimit">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Параметри:</label>
+
+        <div class="col-md-8 col-xs-8">
+          <input class="form-control" id="inputName3" ng-model="thisRule.soData"
+                 placeholder="nDaysLimit:3,asRecipientMail:[test@email.com]">
+        </div>
+      </div>
+      -->
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Файл шаблону:</label>
+
+        <div class="col-md-8 col-xs-8">
+          <input type="checkbox"
+                 ng-model="fileEscalationTemplate.isDefault"
+                 ng-change="isDefaultEscalationTemplateChanged()"
+                 style="cursor:pointer;"> використовувати шаблон за замовчуванням<br/>
+          <div ng-hide="fileEscalationTemplate.isDefault">
+            <label>Введіть адресу розташування html-файлу шаблону:</label>
+            <input class="form-control" id="inputName4" ng-model="thisRule.sPatternFile">
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 col-xs-4 control-label">Здійснити у разі виконання умови:</label>
+
+        <div class="col-md-8 col-xs-8">
+          <select class="form-control" ng-model="thisRule.nID_EscalationRuleFunction.nID"
+                  ng-options="oFuncItem.nID as oFuncItem.sName for oFuncItem in ruleFunctions"></select>
+        </div>
+
+        <!--<div class="col-md-4 col-xs-4">
+          <input class="form-control" id="inputName5" ng-model="thisRule.nID_EscalationRuleFunction.nID"
+                 placeholder="Надіслати e-mail (EscalationHandler_SendMailAlert)">
+        </div>
+        <div class="col-md-4 col-xs-4">
+          <div>{{thisRule.nID_EscalationRuleFunction.sName}}</div>
+        </div>-->
+      </div>
+      <div class="form-group text-center" ng-if="thisRule.nID_EscalationRuleFunction.nID == 1">
+        <label>
+          <span ng-if="thisRule.oData.aEmails.length < 2">Адреса електронної скриньки:</span>
+          <span ng-if="thisRule.oData.aEmails.length > 1">Адреси електронних скриньок:</span>
+        </label>
+        [ <a href="" ng-click="addContact()">додати</a> ]
+        <div ng-repeat="contact in thisRule.oData.aEmails">
+          <input type="email" ng-model="contact.email" required>
+          [ <a href="" ng-click="removeContact(contact)">Х</a> ]
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" ng-click="save()">ОК</button>
+      <button class="btn btn-warning" type="button" ng-click="cancel()">Відмінити</button>
+    </div>
+  </form>
+
+</div>

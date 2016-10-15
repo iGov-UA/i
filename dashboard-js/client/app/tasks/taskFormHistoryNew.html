@@ -1,0 +1,100 @@
+<style>
+
+  .u21 {
+    width:36px !important;
+    height:36px;
+    line-height:36px;
+    color:#FFFFFF;
+    background: #65ABD0;
+    border-radius: 18px;
+    padding: 0 4px !important;
+    margin-top: 10px;
+    float:left;
+    font-weight:400;
+    font-style:normal;
+    font-size:13px;
+    text-align:center;
+  }
+  .my {
+    float: right;
+    background-color: #FFCC00;
+    color: #990000;
+    margin-right: -100px;
+  }
+  .my + .u31 {
+    margin-left: 100px;
+    margin-right: -50px;
+    background-color: #FEF9E6;
+  }
+
+  .u31 {
+    font-size:16px;
+    background-color: #EFF6F9;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 50px;
+    margin-bottom: 10px;
+  }
+  .u31:after {
+    clear: both;
+    content: " ";
+    display: table;
+  }
+  .u31 p {
+    font-size:16px;
+    margin: 10px 5px 0 5px;
+    font-weight:400;
+    font-style:normal;
+    color:#333333;
+    text-align:left;
+    line-height:normal;
+  }
+  .u31 p, .u31 label{
+    font-size:16px;
+    word-wrap: break-word;
+  }
+  .u33 {
+    font-weight:700;
+    font-size:11px;
+    color:#000000;
+  }
+  .u53 {
+    font-size:11px;
+  }
+  .u33, .u53 {
+    margin: 0 5px;
+  }
+  .date_shape time {
+    font-size: 13px;
+    display: block;
+  }
+
+</style>
+
+<dl class="col-md-10" ng-repeat="item in taskData.aMessage">
+  <dt class="u21" ng-class="{'my': item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1}">
+    {{item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1 ? 'Гром.' : 'iGov'}}
+  </dt>
+
+  <dd class="u31">
+    <time class="u33" datetime="{{item.sDate}}">{{item.sDate | fixDate}}</time>
+    <span class="u53"></span>
+    <p>{{item.sHead}}</p>
+
+    <p ng-bind-html="item.sMessage || item.sBody" class="hide-table"></p>
+    <div ng-repeat="oFile in item.osData.aFile" style="margin-top: 10px; margin-left: 5px">
+      <b>Прикріплено файл: </b><a href="{{getMessageFileUrl(item, oFile)}}" target="_blank"> {{oFile.sFileName}}</a>
+    </div>
+    <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
+      <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
+        <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+          <div>{{oField.sName}} <span ng-hide="!oField.sName">:</span></div>
+          <div style="color: #CC0000">{{oField.sNotify}}</div>
+        </label>
+        <div class="col-md-6">
+          <strong ng-bind="oField.sValueNew"></strong>
+        </div>
+      </div>
+    </div>
+  </dd>
+</dl>

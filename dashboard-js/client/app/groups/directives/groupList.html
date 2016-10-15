@@ -1,0 +1,40 @@
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-1 control-label" for="searchCtrl">Пошук</label>
+    <div class="col-sm-5">
+      <input id="searchCtrl" class="form-control" type="text" ng-model="search">
+    </div>
+    <div class="col-sm-4"></div>
+    <button class="btn btn-primary pull-right col-sm-2" ng-click="add()">Додати групу</button>
+  </div>
+</div>
+<table ng-init="init()"  class="table">
+  <thead>
+  <tr>
+    <th>№</th>
+    <th>Назва</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="group in get() | filter: search">
+    <td>{{group.id}}</td>
+    <td>{{group.name}}</td>
+    <td class="col-md-4 rulebuttons">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="edit(group)">
+          Редагувати
+        </button>
+        <button type="button" class="btn btn-danger" ng-click="delete(group)"
+                tooltip="Видалити" tooltip-trigger="mouseenter" tooltip-placement="top"  tooltip-append-to-body="true">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div class="text-center" ng-show="model.inProgress">
+  <img class="text-center"
+       src="assets/images/loading.gif"
+       alt="Loading"/>
+</div>

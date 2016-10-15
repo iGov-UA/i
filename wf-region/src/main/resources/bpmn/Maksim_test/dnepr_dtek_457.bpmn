@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dnepr_dtek_457" name="Звернення громадян до ТОВ Дніпрообленерго" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTopic" name="Оберіть тему звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop1" name="Загальні питання електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop2" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop3" name="Відсутність електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop4" name="Неякісне електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop5" name="Ремонт електричного обладнення"></activiti:value>
+          <activiti:value id="sEnumTop6" name="Інші питання елекстропостачання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumZhovt" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumKirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumKrasn" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumLenin" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. ТОВ Дніпрообленерго.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення громадянина до ПАТ Дніпрогаз.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення до ТОВ Дніпрообленерго" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до ТОВ Дніпрообленерго.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення до ТОВ Дніпрообленерго було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+Телефон для довідок: &lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+ПАТ Дніпрогаз,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask4" name="Обробка звернення та відповідь громадянину" activiti:candidateGroups="dnepr_dtek_head">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" writable="false">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumZhovt" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumKirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumKrasn" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumLenin" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTopic" name="Тема звернення" type="enum" writable="false">
+          <activiti:value id="sEnumTop1" name="Загальні питання електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop2" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop3" name="Відсутність електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop4" name="Неякісне електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop5" name="Ремонт електричного обладнення"></activiti:value>
+          <activiti:value id="sEnumTop6" name="Інші питання елекстропостачання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
+          <activiti:value id="sEnumAnsw" name="Відповісти громадянину на звернення"></activiti:value>
+          <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow6" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Відмова в реєстрації звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до ТОВ Дніпрообленерго.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення до ТОВ Дніпрообленерго - відхилине.&lt;/p&gt;
+&lt;p&gt;Причина в наступному:&lt;/p&gt;
+&lt;p&gt;${sDecisionComment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+Телефон для довідок: &lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+ПАТ Дніпрогаз,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до ТОВ Дніпрообленерго.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;
+Ваш запит до ТОВ Дніпрообленерго оброблений.&lt;br /&gt;
+Відповідь знаходиться у додатку до цього листа.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+ПАТ Дніпрогаз,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileAnswer}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow19" name="asStatus == 'sEnumExit'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus == 'sEnumExit'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow20" name="asStatus == 'sEnumAnsw'" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus == 'sEnumAnsw'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dtek_457">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dtek_457" id="BPMNPlane_dnepr_dtek_457">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="91.0" width="131.0" x="170.0" y="112.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="240.0" y="172.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="91.0" width="121.0" x="330.0" y="112.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="91.0" width="105.0" x="490.0" y="112.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="237.0" y="267.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="87.0" width="105.0" x="650.0" y="114.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="264.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="91.0" width="105.0" x="490.0" y="239.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="89.0" width="105.0" x="650.0" y="390.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="575.0" y="417.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="301.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="451.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="255.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="254.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="595.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="702.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="264.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="490.0" y="284.0"></omgdi:waypoint>
+        <omgdi:waypoint x="272.0" y="284.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="650.0" y="434.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="434.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="682.0" y="284.0"></omgdi:waypoint>
+        <omgdi:waypoint x="595.0" y="284.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="607.0" y="239.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="702.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="390.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="663.0" y="328.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,68 @@
+{
+  "name": "central-js",
+  "script": "./server/app.js",
+  "args": "",
+  "error_file": "/sybase/logs/central_front/central-js_err.log",
+  "out_file": "/sybase/logs/central_front/central-js_out.log",
+  "merge_logs" : true,
+  "log_date_format" : "YYYY-MM-DD_HH:mm:ss.SSS",
+  "env": {
+    "sServerRegion": "https://test.region.igov.org.ua",
+    "bCompile_Application": "FALSE",
+    "sProfile_Application": "test-alpha",
+    "sDomain": "http://localhost:9000",
+    "bDebug_Application": "TRUE",
+    "bTest": "TRUE",
+
+    "BackProxy_Central": {
+      "sURL_BackProxy_Central": "http://test.igov.org.ua:9000",
+      "sKeyPath_BackProxy_Central": "/sybase/cert/server.key",
+      "sCertPath_BackProxy_Central": "/sybase/cert/server.crt"
+    },
+
+    "BackProxySession_Central":{
+      "sSecret_BackProxySession_Central": "put yor session secret here",
+      "sKey1_BackProxySession_Central": "solt1 for session",
+      "sKey2_BackProxySession_Central": "solt2 for session",
+      "bSecure_BackProxySession_Central": "FALSE",
+      "nLiveMS_BackProxySession_Central": 14400000
+    },
+
+    "Back_Central":{
+      "sURL_Back_Central": "https://test.igov.org.ua:8080/wf/service",
+      "sLogin_Back_Central": "system",
+      "sPassword_Back_Central": "system"
+    },
+
+    "Auth_BankID":{
+      "sURL_Access_Auth_BankID": "https://bankid.privatbank.ua",
+      "sURL_Resource_Auth_BankID": "https://bankid.privatbank.ua",
+      "sClientID_Auth_BankID": "testIgov",
+      "sClientSecret_Auth_BankID": "testIgovSecret",
+      "sPrivateKeyPath_Auth_BankID": "./iGov_sgn.pem",
+      "sPrivateKeyPassphrase_Auth_BankID": "1234567899",
+      "bCrypt_Auth_BankID": "FALSE"
+    },
+
+    "Auth_BankID_NBU" : {
+      "sURL_Access_Auth_BankID": "https://id.bank.gov.ua",
+      "sURL_Resource_Auth_BankID": "https://id.bank.gov.ua",
+      "sClientID_Auth_BankID": "8d6ecc4b-531f-4444-83f5-d1119414ddcd",
+      "sClientSecret_Auth_BankID": "a86a67731ac04b2ea897faa336d5ff40",
+      "sPrivateKeyPath_Auth_BankID": "./iGov_sgn.pem",
+      "sPrivateKeyPassphrase_Auth_BankID": "1234567899",
+      "bCrypt_Auth_BankID": "FALSE"
+    },
+
+    "NODE_TLS_REJECT_UNAUTHORIZED":"0",
+
+    "Auth_CardKyanyn":{
+      "sURL_Auth_CardKyanyn": "https://test.kyivcard.com.ua",
+      "sVersion_Auth_CardKyanyn": "1.0",
+      "sClientID_Auth_CardKyanyn": "put here client id",
+      "sClientSecret_Auth_CardKyanyn": "put here client secret",
+      "sPrivateKeyPath_Auth_CardKyanyn": "/sybase/cert/server.key",
+      "sPrivateKeyPassphrase_Auth_CardKyanyn": "put here passphrase for private key"
+    }
+  }
+}

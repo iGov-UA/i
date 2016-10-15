@@ -1,0 +1,157 @@
+<div class="container" ng-if="bOrder">
+  <ol class="breadcrumb">
+    <li><a href="#" ui-sref="index.journal.content">Мій журнал</a></li>
+    <li class="active">Звернення № {{sID_Order}}</li>
+  </ol>
+
+  <div class="date_shape"
+       ng-switch="getOrderStatusString(oOrder.nID_StatusType)"
+       ng-class="getOrderStatusString(oOrder.nID_StatusType)">
+    <time datetime="{{sDate}}">{{ oOrder.sDate | date: 'dd.MM.yyyy'}}</time>
+    <span ng-switch-when="remark">Є зауваження</span>
+    <span ng-switch-when="comment">Є повідомлення</span>
+    <span ng-switch-when="closed">Закрита</span>
+    <span ng-switch-default="processing">В обробці</span>
+  </div>
+
+  <h1 class="u39" ng-if="bOrder">{{oOrder.sHead}}
+    <div class="u41">
+      {{oOrder.nID_StatusType == 13 ? '' : oOrder.sName_UA_StatusType}}
+      {{oOrder.nID_StatusType !== 13 && oOrder.sUserTaskName.length ? '-':''}}
+      {{oOrder.sUserTaskName}}
+    </div>
+  </h1>
+
+  <h2 ng-if="sServerReturnOnAnswer" ng-bind="sServerReturnOnAnswer"></h2>
+
+  <div class="row">
+    <div class="col-md-11 col-md-offset-1">
+      <div ng-show="bOrderOwner">
+        <div class="col-md-10" ng-show="!bOrderQuestion && getOrderStatusString(oOrder.nID_StatusType) !== 'closed'">
+          <div class="row">
+            <div class="col-md-11">
+              <label class="sr-only" for="searchEventControl">Ваш коментар або запитання до співробітника держ.органу</label>
+              <textarea
+                class="form-control"
+                rows="1"
+                style="height: 34px"
+                placeholder="Ваш коментар або запитання до співробітника держ.органу"
+                ng-model="$parent.sOrderCommentNew"></textarea>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary" ng-click="postComment()">Відправити</button>
+            </div>
+            <button-file-upload on-file-upload-success="onFileUploadSuccess($file)"
+                                o-service-data="oOrder">Додати файл</button-file-upload>
+          </div>
+        </div>
+
+        <dl class="col-md-10">
+          <dt ng-repeat-start="oOrderMessage in aOrderMessages | filter: {nID_HistoryEventType: '!9'} | orderBy: '-sDate'" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1}">
+            {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
+          </dt>
+          <dd ng-repeat-end class="u31">
+            <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
+            <span class="u53"></span>
+            <p>{{oOrderMessage.sHead}}</p>
+            &nbsp;
+            <a ng-if="oOrderMessage.oSubjectMessageType && oOrderMessage.oSubjectMessageType.nID === 10" ng-click="openLetter(oOrderMessage.nID)"><span class="glyphicon glyphicon-envelope"></span> Переглянути лист, який Вам було відправлено</a>
+            <p ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
+            <div ng-repeat="oFile in oOrderMessage.osData.aFile">
+              Прикріплено файл: "{{::oFile.sFileName}}"
+            </div>
+            <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
+              <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
+                <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+                  <div>{{oField.sName}} <span ng-hide="!oField.sName">:</span></div>
+                  <div style="color: #CC0000">{{oField.sNotify}}</div>
+                </label>
+                <div class="col-md-6">
+                  <strong ng-bind="oField.sValueNew"></strong>
+                </div>
+              </div>
+            </div>
+            <form name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
+
+              <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
+                   ng-switch on="oField.sType">
+                    <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+                      <span ng-if="oField.sName">{{oField.sName}} :</span>
+                      <!--<span ng-if="!oField.sName">{{oField.sGeneralComment}}</span>-->
+                      <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
+                    </label>
+                    <div class="col-md-6">
+
+                        <input ng-switch-when="string"
+                             type="text"
+                             name="{{oField.sID}}"
+                             ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                             ng-model="oField.sValueNew"
+                             ng-required="true"
+                             class="form-control">
+
+                        <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
+                            <input
+                                   type="text"
+                                   name="{{oField.sID}}"
+                                   datepicker-popup="{{oField.oFactory.format}}"
+                                   is-open="oField.oFactory.opened"
+                                   datepicker-options="oField.oFactory.options"
+                                   ng-model="oField.oFactory.value"
+                                   ng-required="true"
+                                   close-text="Close"
+                                   ng-readonly="true"
+                                   class="form-control"
+                                   value="oField.oFactory.value">
+
+                            <span class="input-group-btn">
+                              <button type="button"
+                                      class="btn btn-default"
+                                      ng-click="oField.oFactory.open($event)">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                              </button>
+                            </span>
+                        </p>
+
+                        <textarea ng-switch-when="textArea"
+                              name="{{oField.sID}}"
+                              ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                              ng-model="oField.sValueNew"
+                              ng-required="true"
+                              class="form-control">
+                        </textarea>
+
+                    </div>
+              </div>
+
+              <div class="row" style="margin-bottom: 0; margin-top: 20px">
+                <div class="col-md-offset-10 col-md-1">
+                  <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
+                </div>
+              </div>
+            </form>
+          </dd>
+        </dl>
+      </div>
+      <div ng-show="bAuth && !bOrderOwner"><br /><hr class="sexy" /><br />
+        <p>Ви не є автором цього звернення.</p>
+        <p>Для перегляду детальної інформації, автору звернення потрібно увійти  в систему.</p>
+      </div>
+      <div ng-hide="bAuth"><br /><hr class="sexy" /><br />
+        <div class="row">
+          <div service-auth-block
+            redirect-uri="{{getRedirectUrl()}}"
+            auth-methods="{{getAuthMethods()}}">Для перегляду детальної інформації, увійдіть в систему
+          </div>
+          <div class="text-center"
+               ng-show="authProcess">
+            <img class="text-center section-preloader"
+                 src="assets/images/loading.gif"
+                 alt="Loading"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" ng-if="!bOrder" ng-include="'app/404/404.html'"></div>

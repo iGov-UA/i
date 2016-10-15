@@ -1,0 +1,50 @@
+{
+  "name": "dashboard-js",
+  "script": "./server/app.js",
+  "args": "",
+   "error_file": "/sybase/logs/region_front/dashboard-js_err.log",
+   "out_file": "/sybase/logs/region_front/dashboard-js_out.log",
+  "log_date_format" : "YYYY-MM-DD_HH:mm:ss.SSS",
+
+  "env":{
+    "sProfile_Application": "development",
+    "bDebug_Application": "TRUE",
+    "bTest": "TRUE",
+
+    "NODE_TLS_REJECT_UNAUTHORIZED":"0",
+
+    "BackProxySession_Region":{
+      "sSecret_BackProxySession_Region": "put yor session secret here",
+      "sKey1_BackProxySession_Region": "slot1 for session",
+      "sKey2_BackProxySession_Region": "slot2 for session",
+      "bSecure_BackProxySession_Region": "FALSE",
+      "nLiveMS_BackProxySession_Region": 14400000
+    },
+
+    "Back_Region":{
+      "sURL_Back_Region": "https://alpha.test.region.igov.org.ua:443/wf/service",
+      "sLogin_Back_Region": "system",
+      "sPassword_Back_Region": "system",
+      "nID_Server_Back_Region": 5
+    },
+
+    "Back_Central":{
+      "sURL_Back_Central": "https://alpha.test.igov.org.ua:443/wf/service",
+      "sLogin_Back_Central": "system",
+      "sPassword_Back_Central": "system"
+    },
+    
+    "BackProxy_Region": {
+      "sURL_BackProxy_Region": "http://localhost:9001",
+      "sKeyPath_BackProxy_Region": "/sybase/cert/server.key",
+      "sCertPath_BackProxy_Region": "/sybase/cert/server.cert"
+    },
+
+    "BackSession_Region":{
+      "nIdleMS_BackSession_Region": 3000,
+      "nTimeoutMS_BackSession_Region": 3000,
+      "nIntervalMS_BackSession_Region": 1000
+    }
+
+  }
+}

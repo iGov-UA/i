@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dnepr_inn" name="Дніпропетровськ - Отримання ІПН при зміні прізвища" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Виберіть район, в якому ви обслуговуєтесь" type="enum" required="true">
+          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Кіровський (вул. Горького, 22)|0465"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Ваша адреса реєстрації; поштовий індекс, країна, область, район, населений пункт, вулиця, номер будинку, корпус, квартира - перерахуйте через кому, будь ласка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nationality" name="Громадянство; вкажіть назву країни, громадянином якої Ви є" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; заповнювати не треба - він завантажується автоматично" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_scan" name="Завантажте копію Вашого нового паспорта; Копія першої сторінки. Якщо Ви вже передавали його в Ваш банк, то він завантажиться автоматично" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Документ, на основі якого відбулася зміна прізвища; наприклад, свідоцтво про шлюб" type="file"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <userTask id="usertask1" name="обработка этап 1" activiti:candidateGroups="dnepr_dfs_inn_${area}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Виберіть район, в якому ви обслуговуєтесь" type="enum" writable="false">
+          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Бабушкінський (вул. Героїв Сталінграду, 25)|0462"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Ваша адреса реєстрації; поштовий індекс, країна, область, район, населений пункт, вулиця, номер будинку, корпус, квартира - перерахуйте через кому, будь ласка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nationality" name="Громадянство; вкажіть назву країни, громадянином якої Ви є" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; заповнювати не треба - він завантажується автоматично" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_scan" name="Завантажте копію Вашого нового паспорта; Копія першої сторінки. Якщо Ви вже передавали його в Ваш банк, то він завантажиться автоматично" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Документ, на основі якого відбулася зміна прізвища; наприклад, свідоцтво про шлюб" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Коментар до заявки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decision_step1" name="Рішення етап 1" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
+          <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs_form_5dr.html]" type="invisible" default="Форма 5др" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <userTask id="usertask2_red" name="обработка этап 2" activiti:candidateGroups="dnepr_dfs_inn_${area}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Виберіть район, в якому ви обслуговуєтесь" type="enum" writable="false">
+          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Бабушкінський (вул. Героїв Сталінграду, 25)|0462"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Ваша адреса реєстрації; поштовий індекс, країна, область, район, населений пункт, вулиця, номер будинку, корпус, квартира - перерахуйте через кому, будь ласка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nationality" name="Громадянство; вкажіть назву країни, громадянином якої Ви є" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; заповнювати не треба - він завантажується автоматично" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_scan" name="Завантажте копію Вашого нового паспорта; Копія першої сторінки. Якщо Ви вже передавали його в Ваш банк, то він завантажиться автоматично" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Документ, на основі якого відбулася зміна прізвища; наприклад, свідоцтво про шлюб" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Коментар до заяви на етапі 1" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decision_step1" name="Рішення на етапі 1" type="enum" writable="false">
+          <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
+          <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment2" name="Коментар до заяви на етапі 2" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs_form_5dr.html]" type="invisible" default="Форма 5др" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${passport_scan},${bankId_scan_passport},${document}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow14" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
+    <serviceTask id="servicetask2" name="положительное решение" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="subject">
+          <activiti:string>Звернення на тему "Заміна ІПН у зв'язку зі зміною прізвища"</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо отримання ІПН у зв'язку зі зміною прізвища опрацьоване. Дякуємо, що скористалися нашим сервісом.&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow16" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='attr1_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask5" targetRef="usertask2_red"></sequenceFlow>
+    <serviceTask id="servicetask5" name="имейл с просьбой прити" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="subject">
+          <activiti:string>Звернення на тему "Заміна ІПН у зв'язку зі зміною прізвища"</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо отримання ІПН у зв'язку зі зміною прізвища прийняте в роботу&lt;/p&gt;
+&lt;p&gt;${comment1}&lt;/p&gt;
+&lt;p&gt;Просимо Вас звернутися до Бабушкінського відділення фіскальної служби через 5 днів з оригіналами наступних документів:&lt;br/&gt;
+- паспорт горомадянина України;&lt;br/&gt;
+- документ, що підтверджує зміну прізвища (наприклад, свідоцтво про шлюб);&lt;br/&gt;
+- заповненою заявою на видачу ІПН (Ви її можете завантажити  &lt;a href="https://drive.google.com/a/privatbank.ua/file/d/0B-f8gnAShc39RlpFbGtvcXptYTA/view" target="_blank"&gt;тут&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Графік роботи відділення .... &lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow23" sourceRef="usertask2_red" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='attr2_bad'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="отказ в обработке" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="subject">
+          <activiti:string>Звернення на тему "Заміна ІПН у зв'язку зі зміною прізвища"</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;
+&lt;p&gt;На жаль, Ваше звернення щодо отримання ІПН у зв'язку зі зміною прізвища відхилено у зв'язку з:&lt;/p&gt;
+&lt;p&gt;${comment1}&lt;/p&gt;
+
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow25" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_inn">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_inn" id="BPMNPlane_dnepr_inn">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="54.0" y="44.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="54.0" y="172.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="190.0" y="179.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="620.0" y="108.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="182.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="172.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="37.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="37.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="99.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="106.0" y="99.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="172.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="555.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="159.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="210.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="312.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="365.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="230.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="365.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

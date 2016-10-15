@@ -1,0 +1,36 @@
+<div class="row">
+  <form class="form-horizontal" name="serviceAuthByEmailForm" novalidate>
+    <div class="form-group">
+      <label for="inputEmail" class="col-sm-2 control-label">Электронна адреса:</label>
+
+      <div class="col-sm-10">
+        <input type="email" class="form-control" id="inputEmail" placeholder="email" required
+               ng-model="authByEmail.email" ng-disabled="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputCode" class="col-sm-2 control-label">Код верифікації</label>
+
+      <div class="col-sm-10">
+        <input type="password" class="form-control" id="inputCode" placeholder="Password"
+               ng-model="authByEmail.code">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" ng-disabled="isDisabled(serviceAuthByEmailForm)"
+                ng-click="authorizeByEmailAndCode(authByEmail)">
+          Підтвердити
+        </button>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary"
+                ng-click="editEmail(authByEmail)">
+          Змінити єлектронну адресу
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

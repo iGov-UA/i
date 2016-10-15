@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="subjectOrganJoinDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.subject.organ.SubjectOrganJoin)}"/>
+    </bean>
+
+    <bean id="subjectMessageTypeDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.subject.message.SubjectMessageType)}"/>
+    </bean>
+
+    <bean id="serviceDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.action.item.Service)}"/>
+    </bean>
+
+    <bean id="serviceDataDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.action.item.ServiceData)}"/>
+    </bean>
+
+    <bean id="categoryDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.action.item.Category)}"/>
+    </bean>
+
+    <bean id="regionDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.object.place.Region)}"/>
+    </bean>
+
+    <bean id="subcategoryDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.action.item.Subcategory)}"/>
+    </bean>
+
+    <bean id="documentOperatorDao" class="org.igov.model.core.GenericEntityDao">
+        <constructor-arg value="#{T(org.igov.model.document.DocumentOperator_SubjectOrgan)}"/>
+    </bean>
+
+    <bean id="placeTypeDao" class="org.igov.model.object.place.PlaceTypeDao"/>
+    <bean id="placeDao"     class="org.igov.model.object.place.PlaceDaoImpl"/>
+    <bean id="placeQueryResolver"     class="org.igov.model.object.place.PlaceQueryResolver"/>
+    <bean id="sqlStorage"   class="org.igov.util.db.queryloader.QueryLoader"/>
+
+</beans>

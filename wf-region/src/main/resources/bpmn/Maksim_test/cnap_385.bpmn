@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="cnap_385" name="Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості)" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceObject" name="Суб'єкт звернення" type="enum" required="true">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи (юридичної особи) заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sSquare" name="Площа, га" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameFarm" name="Назва КСП (колгоспу)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="На теріторії якої сільської (селищної) ради розташована земельна ділянка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;(формат 1210100000:ХХ:ХХХ:ХХХХ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name="Зверніть увагу" type="label" default="&lt;strong&gt;Скан копії документів повині бути завірені належним чином&lt;/strong&gt;"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Установчи документи та свідоцтво про державну реєстрацію юридичної особи або виписки/витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб – підприємців" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Правовстановлюючі документи на нерухоме майно або дозвільних документів на проектування чи будівництво" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Договір оренди землі, з актом приймання-передачі, актом та планом встановлення меж земельної ділянки та іншими додатками до нього" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Рішення міської ради про передачу (надання) земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_337_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[ms@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а) колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Повідомлення про успішну реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]<br />
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи (юридичної особи) заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel3" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameFarm" name="Назва КСП (колгоспу)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="На теріторії якої сільської (селищної) ради розташована земельна ділянка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistrastion" name="Вкажіть дату реєстрації звернення (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
+          <activiti:value id="sEnumDocOk" name="Документи прийняти на реєстрацію"></activiti:value>
+          <activiti:value id="sEnumDocBad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;,&quot;landNumb_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_337_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Відповідь з відмовою про реєстрацію" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів - відхилине.</p>
+<p>Причина в наступному:</p>
+<p>${sDecisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]<br />
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Повідомлення про успішну реєстрацію" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо видачи дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки - відправлено на розгляд сесії.<br />
+Відповідь Ви отримаєте протягом місяця.</p> 
+<p>Номер Вашого замовлення: ${sNumberCnap}</p>.
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]<br /> 
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <userTask id="usertask2" name="Обробка ЦНАП після прийняття рішення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва установи (юридичної особи) заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel3" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameFarm" name="Назва КСП (колгоспу)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="На теріторії якої сільської (селищної) ради розташована земельна ділянка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Відповідь після рішення сесії" type="enum" required="true">
+          <activiti:value id="sEnumDocOk" name="Рішення прийнято. Дозвіл готов"></activiti:value>
+          <activiti:value id="sEnumDocBad" name="Відповідь надано"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте дозвіл або рішення сесії" type="file" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Дозвіл на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості) готовий.</p>
+<p>Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],<br />
+<br />
+Графік роботи ЦНАП-у:<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4],<br />
+<br />
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Негативна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Видача дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки в натурі (на місцевості).]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо видачи дозволу на розроблення технічної документації із землеустрою щодо встановлення меж земельної ділянки - відхилине.</p>
+<p>Відповідь знаходиться у прикріпленому файлі.</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]<br />
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_385">
+    <bpmndi:BPMNPlane bpmnElement="cnap_385" id="BPMNPlane_cnap_385">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="110.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="185.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="81.0" width="105.0" x="240.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="78.0" width="105.0" x="370.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="79.0" width="105.0" x="500.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="532.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="78.0" width="105.0" x="310.0" y="232.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="182.0" y="253.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="105.0" x="500.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="71.0" width="105.0" x="500.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="445.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="71.0" width="105.0" x="240.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="66.0" width="105.0" x="240.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="378.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="515.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="75.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="215.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="345.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="168.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="475.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="168.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="552.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="532.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="271.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="200.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="199.0" y="253.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="310.0" y="271.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="552.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="552.0" y="411.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="430.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="500.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="465.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="440.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="395.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="440.0" y="485.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="533.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="240.0" y="395.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="395.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="240.0" y="533.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="532.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

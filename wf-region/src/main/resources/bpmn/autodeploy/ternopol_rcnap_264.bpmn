@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="ternopol_rcnap_264" name="Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saPurpose" name="Мета звернення" type="enum" required="true">
+          <activiti:value id="sFormBasic" name="отримання посвідченнь багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sFormChildren" name="отримання посвідчення дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sDuplicateLoss" name="отримання дублікату посвідчення у разі його втрати"></activiti:value>
+          <activiti:value id="sDuplicateChange" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по батькові, встановлення розбіжностей у записах"></activiti:value>
+          <activiti:value id="sExtensionStudent" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
+          <activiti:value id="sAddFoto14Years" name="вклеювання фотографії у посвідчення дитини з багатодітної сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
+          <activiti:value id="sNewChild" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPibFather" name="ПІБ батька" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibMother" name="ПІБ матері" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saMarriage" name="Чи перебувають батьки у шлюбі?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Копія свідоцтва про шлюб" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTogether" name="Чи зареєстровані батько і мати в одному районі?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocDovidka" name="Довідка про те, що за місцем реєстрації батька або матері посвідчення не видавалися" type="file"></activiti:formProperty>
+        <activiti:formProperty id="info_0" name=" " type="label" default="Для деяких районів Ви можете замовити цю довідку через &lt;a href=&quot;https://test.igov.org.ua/service/687/general&quot; target=&quot;_blank&quot;&gt;iGov.org.ua&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info_1" name=" " type="label" default="Зверніть увагу вписувати необхідно тільки тих дітей, яким необхідне посвідчення"></activiti:formProperty>
+        <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей" type="enum" required="true">
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+          <activiti:value id="eleven" name="11"></activiti:value>
+          <activiti:value id="twelve" name="12"></activiti:value>
+          <activiti:value id="thirteen" name="13"></activiti:value>
+          <activiti:value id="fourteen" name="14"></activiti:value>
+          <activiti:value id="fifteen" name="15 і більше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild1" name="Дата народження першої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild2" name="Дата народження другої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild3" name="Дата народження третьої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild4" name="Дата народження четвертої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild5" name="Дата народження п'ятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild6" name="Дата народження шостої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild7" name="Дата народження сьомої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild8" name="Дата народження восьмої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild9" name="Дата народження дев'ятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild10" name="Дата народження десятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild11" name="ПІБ одинадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild11" name="Дата народження одинадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild12" name="ПІБ дванадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild12" name="Дата народження дванадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild13" name="ПІБ тринадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild13" name="Дата народження тринадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild14" name="ПІБ чотирнадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild14" name="Дата народження чотирнадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPibChild15" name="ПІБ пя'тнадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateChild15" name="Дата народження пя'тнадцятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDocPassportFather" name="Копія паспорту батька (1, 2, 10, 11-13 стор.)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassportMother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStudent" name="Чи є у родині особи, віком від 18 до 25 років, які навчаються за денною формою навчання?" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocStudent" name="Довідка з навчального закладу про те, що особа навчається за денною формою навчання із зазначенням терміну закінчення навчання (вказати число, місяць, рік поступлення у навчальний заклад та число, місяць, рік закінчення навчання); завантажте єдиним архівом якщо таких осіб декілька" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassportChildren" name="Копії свідоцтв про народження усіх дітей; завантажте єдиним архівом усі свідоцтва" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNewspaper" name="Газета з розміщеним оголошенням у ЗМІ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocFamily" name="Довідка про склад сім’ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka264" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="маркер Видача посвідчення багатодітної сім'ї та дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassportChildren&quot;, &quot;sDocPassportFather&quot;,&quot;sDocPassportMother&quot;,&quot;sDocFamily&quot;,&quot;saMarriage&quot;,&quot;saTogether&quot;,&quot;sStudent&quot;,&quot;sPibFather&quot;,&quot;sPibMother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sFormBasic'|| [sClient] == 'sDuplicateChange'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="маркер Видача дублікату посвідчення у разі його втрати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassportChildren&quot;, &quot;sDocPassportFather&quot;,&quot;sDocPassportMother&quot;,&quot;sDocFamily&quot;,&quot;sDocNewspaper&quot;,&quot;saMarriage&quot;,&quot;saTogether&quot;,&quot;sStudent&quot;,&quot;sPibFather&quot;,&quot;sPibMother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sDuplicateLoss' &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassportChildren&quot; ,&quot;sDocFamily&quot;,&quot;sStudent&quot;,&quot;sPibFather&quot;,&quot;sPibMother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sExtensionStudent'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="маркер Вклеювання фотографії у посвідчення дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sPibFather&quot;,&quot;sPibMother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sAddFoto14Years'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="маркер Продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassportChildren&quot;, &quot;sDocPassportFather&quot;,&quot;sDocPassportMother&quot;,&quot;sDocFamily&quot;,&quot;saTogether&quot;,&quot;sStudent&quot;,&quot;sPibFather&quot;,&quot;sPibMother&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sNewChild'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Видача посвідчення дитини з багатодітної сім'ї" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassportChildren&quot;,&quot;sDocFamily&quot;,&quot;info_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saPurpose&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sFormChildren'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="маркер в різних районах" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocDovidka&quot;, &quot;info_0&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saTogether&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="маркер є студенти" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sDocStudent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sStudent&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="маркер чи перебувають у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saMarriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="якщо три дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="якщо чотири дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="якщо пять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="якщо шість дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="якщо сім дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="якщо вісім дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="якщо дев'ять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="якщо десять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="якщо одиннадцять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;,&quot;sPibChild11&quot;,&quot;sDateChild11&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'eleven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="якщо дванадцять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;,&quot;sPibChild11&quot;,&quot;sDateChild11&quot;,&quot;sPibChild12&quot;,&quot;sDateChild12&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'twelve'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="якщо тринадцять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;,&quot;sPibChild11&quot;,&quot;sDateChild11&quot;,&quot;sPibChild12&quot;,&quot;sDateChild12&quot;,&quot;sPibChild13&quot;,&quot;sDateChild13&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'thirteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="якщо чотирнадцять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;,&quot;sPibChild11&quot;,&quot;sDateChild11&quot;,&quot;sPibChild12&quot;,&quot;sDateChild12&quot;,&quot;sPibChild13&quot;,&quot;sDateChild13&quot;,&quot;sPibChild14&quot;,&quot;sDateChild14&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fourteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="якщо пя'тнадцять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateChild10&quot;,&quot;sPibChild11&quot;,&quot;sDateChild11&quot;,&quot;sPibChild12&quot;,&quot;sDateChild12&quot;,&quot;sPibChild13&quot;,&quot;sDateChild13&quot;,&quot;sPibChild14&quot;,&quot;sDateChild14&quot;,&quot;sPibChild15&quot;,&quot;sDateChild15&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fifteen'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="обробка вхідних данних (подовження)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibFather" name="ПІБ батька; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibMother" name="ПІБ матері; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saMarriage" name="Чи перебувають батьки у шлюбі?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saTogether" name="Чи зареєстровані батько і мати в одному районі?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей; ;writable=false" type="enum">
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+          <activiti:value id="eleven" name="11"></activiti:value>
+          <activiti:value id="twelve" name="12"></activiti:value>
+          <activiti:value id="thirteen" name="13"></activiti:value>
+          <activiti:value id="fourteen" name="14"></activiti:value>
+          <activiti:value id="fifteen" name="15 і більше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild1" name="Дата народження першої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild2" name="Дата народження другої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild3" name="Дата народження третьої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild4" name="Дата народження четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild5" name="Дата народження п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild6" name="Дата народження шостої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild7" name="Дата народження сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild8" name="Дата народження восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild9" name="Дата народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild10" name="Дата народження десятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild11" name="ПІБ одинадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild11" name="Дата народження одинадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild12" name="ПІБ дванадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild12" name="Дата народження дванадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild13" name="ПІБ тринадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild13" name="Дата народження тринадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild14" name="ПІБ чотирнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild14" name="Дата народження чотирнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild15" name="ПІБ пя'тнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild15" name="Дата народження пя'тнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStudent" name="Чи є у родині особи, віком від 18 до 25 років, які навчаються за денною формою навчання?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saPurpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="sFormBasic" name="отримання посвідченнь багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sFormChildren" name="отримання посвідчення дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sDuplicateLoss" name="отримання дублікату посвідчення у разі його втрати"></activiti:value>
+          <activiti:value id="sDuplicateChange" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по батькові, встановлення розбіжностей у записах"></activiti:value>
+          <activiti:value id="sExtensionStudent" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
+          <activiti:value id="sAddFoto14Years" name="вклеювання фотографії у посвідчення дитини з багатодітної сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
+          <activiti:value id="sNewChild" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Заповнені дані вірні - запросити громадянина для надання оригіналів на подовження"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateVisit" name="Вкажіть дату і час - коли прийти громадянину" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka264" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers23" name="принтформа якщо 3 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_23&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers24" name="принтформа якщо 4 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_24&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="принтформа якщо 5 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_25&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers26" name="принтформа якщо 6 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_26&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers27" name="принтформа якщо 7 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_27&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers28" name="принтформа якщо 8 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_28&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers29" name="принтформа якщо 9 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_29&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nine'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers30" name="принтформа якщо 10 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_30&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ten'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="принтформа якщо 11 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_31&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='eleven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="принтформа якщо 12 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_32&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='twelve'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers33" name="принтформа якщо 13 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_33&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='thirteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers34" name="принтформа якщо 14 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_34&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;line14&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fourteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers35" name="принтформа якщо 15 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_35&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;line14&quot;,&quot;line15&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fifteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_3_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_cnap_264_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopol_cnap_264_2_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)-до 6 дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/ternopol_cnap_264_3_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)-більше 6 дітей" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${sDocMarriage},${sDocDovidka},${sDocPassportFather},${sDocPassportMother},${sDocStudent},${sDocPassportChildren},${sDocNewspaper},${sDocFamily}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="відправлення результату послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibFather" name="ПІБ батька; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibMother" name="ПІБ матері; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saMarriage" name="Чи перебувають батьки у шлюбі?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saTogether" name="Чи зареєстровані батько і мати в одному районі?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей; ;writable=false" type="enum">
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+          <activiti:value id="eleven" name="11"></activiti:value>
+          <activiti:value id="twelve" name="12"></activiti:value>
+          <activiti:value id="thirteen" name="13"></activiti:value>
+          <activiti:value id="fourteen" name="14"></activiti:value>
+          <activiti:value id="fifteen" name="15 і більше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild1" name="Дата народження першої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild2" name="Дата народження другої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild3" name="Дата народження третьої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild4" name="Дата народження четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild5" name="Дата народження п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild6" name="Дата народження шостої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild7" name="Дата народження сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild8" name="Дата народження восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild9" name="Дата народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild10" name="Дата народження десятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild11" name="ПІБ одинадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild11" name="Дата народження одинадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild12" name="ПІБ дванадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild12" name="Дата народження дванадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild13" name="ПІБ тринадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild13" name="Дата народження тринадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild14" name="ПІБ чотирнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild14" name="Дата народження чотирнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibChild15" name="ПІБ пя'тнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChild15" name="Дата народження пя'тнадцятої дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStudent" name="Чи є у родині особи, віком від 18 до 25 років, які навчаються за денною формою навчання?; ;writable=false" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saPurpose" name="Мета звернення; ;writable=false" type="enum">
+          <activiti:value id="sFormBasic" name="отримання посвідченнь багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sFormChildren" name="отримання посвідчення дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="sDuplicateLoss" name="отримання дублікату посвідчення у разі його втрати"></activiti:value>
+          <activiti:value id="sDuplicateChange" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по батькові, встановлення розбіжностей у записах"></activiti:value>
+          <activiti:value id="sExtensionStudent" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
+          <activiti:value id="sAddFoto14Years" name="вклеювання фотографії у посвідчення дитини з багатодітної сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
+          <activiti:value id="sNewChild" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="позитивне рішення - запросити громадянина для отримання оригіналів документів"></activiti:value>
+          <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документами, додаткові відомості щодо візиту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka264" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers23" name="принтформа якщо 3 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_23&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers24" name="принтформа якщо 4 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_24&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="принтформа якщо 5 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_25&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers26" name="принтформа якщо 6 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_26&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers27" name="принтформа якщо 7 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_27&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers28" name="принтформа якщо 8 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_28&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers29" name="принтформа якщо 9 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_29&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nine'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers30" name="принтформа якщо 10 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_30&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ten'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="принтформа якщо 11 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_31&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='eleven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="принтформа якщо 12 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_32&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='twelve'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers33" name="принтформа якщо 13 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_33&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='thirteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers34" name="принтформа якщо 14 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_34&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;line14&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fourteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers35" name="принтформа якщо 15 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_35&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line_mather&quot;,&quot;line_father&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;line9&quot;,&quot;line10&quot;,&quot;line11&quot;,&quot;line12&quot;,&quot;line13&quot;,&quot;line14&quot;,&quot;line15&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fifteen'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/ternopil/ternopol_cnap_264_3_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_cnap_264_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopol_cnap_264_2_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)-до 6 дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/ternopol_cnap_264_3_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)-більше 6 дітей" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask5" name="Повідомлення співробітника держ.органу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове  звернення. Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+Шановний колего!<br /><br />
+У Вас в черзі на обробку зареєстровано нове звернення.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a><br />
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
+Ваше звернення щодо enum{[saPurpose]} зареєстровано.<br />
+Ви отримаєте додаткове повідомлення за результатами розгляду вхідних данних.<br />
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask7" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
+На жаль, Ваше звернення щодо enum{[saPurpose]}, відхилено через недостатню або неправильну інформацію.<br />
+${comment_1}<br />
+${sPhoneOrgan}<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask8" name="Повідомлення громадянина про успішне подання зверенння (подовження)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br /><br />
+Вам призначено дату і час для надання оригіналів посвідчень на подовження: ${sDateVisit}<br />
+При собі треба мати:<br />
+1. Документ, що посвідчує особу.<br />
+2. Оригінали посвідчень.<br />
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
+На жаль, Ваше звернення щодо enum{[saPurpose]}, відхилено через недостатню або неправильну інформацію.<br />
+${comment_2}<br />
+${sPhoneOrgan}<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Видача посвідчення батьків багатодітної сім'ї та посвідчення дитини з багатодітної сім'ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення щодо enum{[saPurpose]} схвалено.<br />
+Вам призначено дату і час візиту для отримання відповідних документів - ${sDateVisit2}.<br />
+${sAddress}<br />
+При собі треба мати:<br />
+1. Документ, що посвідчує особу.<br />
+2. Для уповоноваженої особи - довіренність.<br />
+3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.<br />
+4. Фотокартки (батьків та дітей) розміром 30 х 40 міліметрів.<br />
+5. Довідка про склад сім’ї (форма 3).<br />
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+
+var per3 = 'sTypeCustodypf'
+var per5 = " "
+var per6 = " "
+var per7 = " "
+var per8 = " "
+var per9 = " "
+var per10 = " "
+var per11 = " "
+var per12 = " "
+var per13 = " "
+var per14 = " "
+var per15 = " "
+var per16 = " "
+var per17 = " "
+var per18 = " "
+var per19 = " "
+var res = 'res'
+if (execution.getVariable('saPurpose') == 'sFormBasic'){
+per3 = "Прошу видати посвідчення батьків та дітей  багатодітної сім`ї."
+}
+if (execution.getVariable('saPurpose') == 'sFormChildren'){
+per3 = "Прошу видати посвідчення дитини з багатодітної сім'ї."
+}
+if (execution.getVariable('saPurpose') == 'sDuplicateLoss'){
+per3 = "Прошу видати дублікат посвідчення багатодітної сім'ї у зв'язку з його втратою."
+}
+if (execution.getVariable('saPurpose') == 'sDuplicateChange'){
+per3 = "Прошу видати дублікат посвідчення багатодітної сім'ї у зв'язку з його пошкодженням, зміною прізвища, імені, по батькові, встановлення розбіжностей у записах."
+}
+if (execution.getVariable('saPurpose') == 'sExtensionStudent'){
+per3 = "Прошу подовжити строк дії посвідчень багатодітної сім'ї, у зв'язку з навчанням дитини за денною формою після 18-річного віку."
+}
+if (execution.getVariable('saPurpose') == 'sAddFoto14Years'){
+per3 = "Прошу вклеїти фотографію у посвідчення дитини з багатодітної сім'ї у зв'язку з досягненням нею 14-річного віку."
+}
+if (execution.getVariable('saPurpose') == 'sNewChild'){
+per3 = "Прошу подовжити строк дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини."
+}
+if(execution.getVariable('sDocMarriage') != null){
+per12 = '&lt;li&gt;Копія свідоцтва про шлюб.&lt;/li&gt;'
+}
+if(execution.getVariable('sDocDovidka') != null){
+per13 = '&lt;li&gt;Довідка про те, що за місцем реєстрації батька або матері посвідчення не видавалися.&lt;/li&gt;'
+}
+if(execution.getVariable('sDocPassportFather') != null){
+per14 = "&lt;li&gt;Копія паспорту батька.&lt;/li&gt;"
+}
+if(execution.getVariable('sDocPassportMother') != null){
+per15 = "&lt;li&gt;Копія паспорту матері.&lt;/li&gt;"
+}
+if(execution.getVariable('sDocStudent') != null){
+per16 = "&lt;li&gt;Довідка з навчального закладу про те, що особа навчається за денною формою навчання.&lt;/li&gt;"
+}
+if(execution.getVariable('sDocPassportChildren') != null){
+per17 = "&lt;li&gt;Копії свідоцтв про народження усіх дітей.&lt;/li&gt;"
+}
+if(execution.getVariable('sDocNewspaper') != null){
+per18 = "&lt;li&gt;Газета з розміщеним оголошенням у ЗМІ.&lt;/li&gt;"
+}
+if(execution.getVariable('sDocFamily') != null){
+per19 = "&lt;li&gt;Довідка про склад сім’ї.&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per12+per13+per14+per15+per16+per17+per18+per19+'&lt;/ol&gt;'
+execution.setVariable('sListDocumentsPrint', res)
+execution.setVariable('sTypeCustodypf', per3)
+	  </script>
+    </scriptTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow79" sourceRef="usertask2" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow80" sourceRef="exclusivegateway6" targetRef="servicetask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow82" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow83" sourceRef="exclusivegateway6" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow84" sourceRef="servicetask12" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow85" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow86" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_264">
+    <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_264" id="BPMNPlane_ternopol_rcnap_264">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="121.0" x="215.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="68.0" width="111.0" x="220.0" y="549.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="123.0" x="57.0" y="151.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="71.0" width="117.0" x="217.0" y="151.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="66.0" width="111.0" x="90.0" y="396.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="68.0" width="113.0" x="219.0" y="461.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="66.0" width="111.0" x="370.0" y="649.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="68.0" width="113.0" x="62.0" y="645.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="71.0" width="117.0" x="60.0" y="62.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="115.0" x="218.0" y="62.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="304.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="255.0" y="406.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="95.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="762.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="255.0" y="662.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="412.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="218.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="177.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="118.0" y="133.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="151.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="275.0" y="353.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="406.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="275.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="461.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="255.0" y="426.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="429.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="275.0" y="529.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="549.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="180.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="186.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="334.0" y="113.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="275.0" y="617.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="662.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="295.0" y="682.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="682.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
+        <omgdi:waypoint x="425.0" y="715.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="762.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
+        <omgdi:waypoint x="255.0" y="682.0"></omgdi:waypoint>
+        <omgdi:waypoint x="175.0" y="679.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
+        <omgdi:waypoint x="118.0" y="713.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="762.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
+        <omgdi:waypoint x="90.0" y="429.0"></omgdi:waypoint>
+        <omgdi:waypoint x="55.0" y="429.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
+        <omgdi:waypoint x="275.0" y="222.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="282.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

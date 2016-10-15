@@ -1,0 +1,149 @@
+<div class="modal-header" ng-init="initUserModalDialog()">
+  <h3 class="modal-title">Користувач</h3>
+</div>
+<div class="modal-body group-modal-body">
+  <form class="form-horizontal" name="editUserForm">
+    <div class="col-xs-12">
+      <div class="form-group"
+           ng-class="{ 'has-error': editUserForm.inputLogin.$error.isNotTaken && data.editMode !== data.editModes.EDIT }">
+        <label for="inputLogin" class="col-sm-4 control-label">Логін:</label>
+        <div class="col-sm-8">
+          <input class="form-control"
+                 id="inputLogin"
+                 name="inputLogin"
+                 ng-model="data.user.sLogin"
+                 ui-validate=" {isNotTaken : 'loginHasNotBeenUsed($value)' } "
+                 ng-disabled="data.editMode === data.editModes.EDIT"
+                 required
+          >
+          <p class="help-block" ng-show='editUserForm.inputLogin.$error.isNotTaken'>
+            Даний логін вже використовується.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Ім'я:</label>
+        <div class="col-sm-8">
+          <input class="form-control" id="inputName" ng-model="data.user.sName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="inputDescription">Побатькові:</label>
+        <div class="col-sm-8">
+          <input class="form-control" id="inputDescription" ng-model="data.user.sDescription">
+        </div>
+      </div>
+      <div class="form-group" ng-if="isNewUser()">
+        <label class="col-sm-4 control-label" for="inputPassword">Пароль:</label>
+        <div class="col-sm-8">
+          <input class="form-control" id="inputPassword" ng-model="data.user.sPassword">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="inputEmail">Email:</label>
+        <div class="col-sm-8">
+          <input class="form-control" id="inputEmail" ng-model="data.user.sEmail">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="Picture">Фото:</label>
+        <div class="col-sm-8">
+          <p class="form-control-static" id="Picture">{{data.user.Picture}}</p>
+        </div>
+      </div>
+
+      <!--Changing password start-->
+      <div ng-if="!isNewUser()">
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="data.user.changePassword"> Змінити пароль
+              </label>
+            </div>
+          </div>
+        </div>
+        <div ng-if="data.user.changePassword">
+          <div class="form-group"
+               ng-class="{'has-error':editUserForm.oldPassword.$invalid && editUserForm.oldPassword.$dirty}">
+            <label for="oldPassword" class="col-sm-4 control-label">Існуючий пароль :</label>
+
+            <div class="col-sm-8">
+              <input class="form-control required" type="password" id="oldPassword" name="oldPassword"
+                     autocomplete="off"
+                     placeholder="Password" ng-maxlength="100" maxlength="100" required ng-model="data.user.oldPassword"
+              />
+              <p class="error-block" ng-show="editUserForm.oldPassword.$error.required">Необхідно ввести існуючий пароль.</p>
+            </div>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-error': editUserForm.password.$invalid && editUserForm.password.$dirty}">
+            <label for="password" class="col-sm-4 control-label">Новий пароль :</label>
+
+            <div class="col-sm-8">
+              <input class="form-control required" type="password" id="password" name="password" autocomplete="off"
+                     user="vm.user" placeholder="Password" ng-maxlength="100" maxlength="100"
+                     validate-inequality="data.user.oldPassword"
+                     ng-model="data.user.password" valid-password ng-model-options="{ updateOn: 'blur' }">
+
+              <div class="error-block" ng-show="editUserForm.password.$invalid">
+                <span ng-show="editUserForm.password.$error.required">Необхідно ввести існуючий пароль.</span>
+                <span ng-show="editUserForm.password.$error.unequal">Пароль не повинен повторюватися.</span>
+                <div class="text-muted" ng-if="editUserForm.password.$error.validPassword"
+                     ng-include="'modules/app/password-policies.html'"></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-error':editUserForm.passwordConfirmation.$invalid && editUserForm.passwordConfirmation.$dirty}">
+            <label for="passwordConfirmation" class="col-sm-4 control-label">Підтвердіть новий пароль:</label>
+
+            <div class="col-sm-8">
+              <input class="form-control required" type="password" id="passwordConfirmation" name="passwordConfirmation"
+                     autocomplete="off" placeholder="Password" ng-maxlength="100" ng-model="passwordConfirmation"
+                     validate-equality="data.user.password"/>
+
+              <p class="error-block" ng-show="editUserForm.passwordConfirmation.$invalid">
+            <span
+              ng-show="editUserForm.passwordConfirmation.$error.required">Необхідно ввести новий пароль ще раз.</span>
+                <span ng-show="editUserForm.passwordConfirmation.$error.equal">Паролі не співпадають.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Changing password end-->
+
+      <!--<div class="form-group">-->
+      <!--<label class="col-md-2 col-xs-2 control-label" for="FirstName">Ім'я:</label>-->
+      <!--<div class="col-md-10 col-xs-10">-->
+      <!--<p class="form-control-static" id="FirstName">{{data.user.FirstName}}</p>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+      <!--<label class="col-md-2 col-xs-2 control-label" for="LastName">Побатькові:</label>-->
+      <!--<div class="col-md-10 col-xs-10">-->
+      <!--<p class="form-control-static" id="LastName">{{data.user.LastName}}</p>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+      <!--<label class="col-md-2 col-xs-2 control-label" for="Email">Email:</label>-->
+      <!--<div class="col-md-10 col-xs-10">-->
+      <!--<p class="form-control-static" id="Email">{{data.user.Email}}</p>-->
+      <!--</div>-->
+      <!--</div>-->
+
+    </div>
+
+    <div class="col-xs-12">
+      <dropdown-group data="data"></dropdown-group>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary"
+          ng-disabled="(editUserForm.inputLogin.$error.isNotTaken && data.editMode === data.editModes.CREATE) || editUserForm.$invalid"
+          ng-click="save()">Зберегти
+  </button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Відмінити</button>
+</div>

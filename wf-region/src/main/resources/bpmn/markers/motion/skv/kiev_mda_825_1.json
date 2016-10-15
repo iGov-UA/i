@@ -1,0 +1,42 @@
+{
+	"motion":
+	{
+ 		"ShowFieldsOnCondition_0":
+		{
+			"sNote":		["For Hide Invisible"],
+			"aField_ID":	["date_today","Date","Activity","CadastralNumber","sNameOrgan","sPhoneOrgan","sAddress","sWorkTime",
+							"sDecisionComment_7_1","sDecisionComment_7_2","sDecisionComment_UT5_Previous_Step",
+							"sDecisionComment_UT6_Previous_Step","sDecisionComment_UT7_Previous_Step","sDecisionComment_UT9_Previous_Step",
+							"sDecisionComment_UT10_Previous_Step","sDecisionComment_UT11_Previous_Step","sDecisionComment_UT13_Previous_Step",
+							"sDecisionComment_UT14_Previous_Step"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'Not_Correct'"
+		},
+ 		"ShowFieldsOnCondition_1":
+		{
+			"sNote":		["For Show юридична особа"],
+			"aField_ID":	["EntityName","Entity","Entity","HeadEntityName","LocationEntity"],
+			"asID_Field":	{"sClient":"entrepreneur"},
+			"sCondition":	"[sClient] == 'ur'"
+		},
+		"RequiredFieldsOnCondition_1": 
+		{
+			"aField_ID":	["EntityName","Entity","Entity","HeadEntityName","LocationEntity"],
+			"asID_Field":	{"sClient":"entrepreneur"},
+			"sCondition":	"[sClient] == 'ur'"
+		},
+ 		"ShowFieldsOnCondition_2":
+		{
+			"sNote":		["For Show фізична особа"],
+			"aField_ID":	["AddressRegistration"],
+			"asID_Field":	{"sClient":"entrepreneur"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"RequiredFieldsOnCondition_2": 
+		{
+			"aField_ID":	["AddressRegistration"],
+			"asID_Field":	{"sClient":"entrepreneur"},
+			"sCondition":	"[sClient] == 'fiz'"
+		}
+   	}
+}

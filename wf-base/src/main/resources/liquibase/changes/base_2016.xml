@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="issue-1138-addTableActionTaskLink" author="nickveremeichyk">
+        <createTable tableName="ActionTaskLink">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject_Holder" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="issue-1138-addTableActionTaskLinkType" author="nickveremeichyk">
+        <createTable tableName="ActionTaskLinkType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="Init action execute tables" author="alex.maryushin" runOnChange="true">
+		<sql splitStatements="true" dbms="postgresql">
+			DROP TABLE IF EXISTS "ActionExecute" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteOld" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteStatus" CASCADE;
+		</sql>
+		<sql splitStatements="true" dbms="h2">
+			DROP TABLE IF EXISTS "ActionExecute" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteOld" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteStatus" CASCADE;
+		</sql>
+		
+		<!-- ####################################################################################################### -->        
+        <createTable tableName="ActionExecuteStatus">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>        
+		<!-- ####################################################################################################### -->
+        <createTable tableName="ActionExecute">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ActionExecuteStatus" type="int">
+               <constraints nullable="false"
+                            foreignKeyName="FK_ActionExecute_ActionExecuteStatus"
+                            referencedTableName="ActionExecuteStatus" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oDateMake" type="timestamp">
+                <constraints nullable="false"/>            
+            </column>
+            <column name="oDateEdit" type="timestamp">
+                <constraints nullable="true"/>            
+            </column>            
+			<column name="nTry" type="int">
+                <constraints nullable="true"/>
+            </column>            
+            <column name="sObject" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+			<column name="sMethod" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="soRequest" type="bytea">
+                <constraints nullable="true"/>
+            </column>
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
+            </column>                                    
+        </createTable>
+		<!-- ####################################################################################################### -->
+        <createTable tableName="ActionExecuteOld">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ActionExecuteStatus" type="int">
+               <constraints nullable="false"
+                            foreignKeyName="FK_ActionExecuteOld_ActionExecuteStatus"
+                            referencedTableName="ActionExecuteStatus" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oDateMake" type="timestamp">
+                <constraints nullable="false"/>            
+            </column>
+            <column name="oDateEdit" type="timestamp">
+                <constraints nullable="true"/>            
+            </column>            
+			<column name="nTry" type="int">
+                <constraints nullable="true"/>
+            </column>            
+            <column name="sObject" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+			<column name="sMethod" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="soRequest" type="bytea">
+                <constraints nullable="true"/>
+            </column>
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
+            </column>                                    
+        </createTable>						        				        				
+	
+        <addAutoIncrement tableName="ActionExecute" columnName="nID" startWith="1" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ActionExecuteOld" columnName="nID" startWith="1" columnDataType="bigint"/>	   
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecuteStatus.csv" tableName="ActionExecuteStatus" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+                    
+	</changeSet>
+
+    <changeSet id="issue-1173-createTables" author="brunneng">
+        <createTable tableName="AccessServiceRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sService" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="saMethod" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sHandlerBean" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bDeny" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRoleRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint" >
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>/>
+            </column>
+            <column name="nID_AccessServiceRight" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRight"
+                             referencedTableName="AccessServiceRight" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRight_key"
+                             tableName="AccessServiceRoleRight"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRight"/>
+
+        <createTable tableName="AccessServiceRoleRightInclude">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AccessServiceRole_Include" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole_Include"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRightInclude_key"
+                             tableName="AccessServiceRoleRightInclude"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRole_Include"/>
+
+        <createTable tableName="AccessServiceLoginRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASLR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceLoginRole_key"
+                             tableName="AccessServiceLoginRole"
+                             columnNames="sLogin, nID_AccessServiceRole"/>
+
+        <dropTable cascadeConstraints="true" tableName="AccessServiceLoginRight"/>
+
+    </changeSet>
+
+    <changeSet id="issue-1173-autoIncrement" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="AccessServiceRight" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceLoginRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRoleRight" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRoleRightInclude" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="issue-1243-1" author="brunneng">
+        <createTable tableName="FlowSlotTicket_FlowSlot">
+            <column name="nID_FlowSlotTicket" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_FlowSlotTicket"
+                             referencedTableName="FlowSlotTicket" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_FlowSlot" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_FlowSlot"
+                             referencedTableName="FlowSlot" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="FlowSlotTicket_FlowSlot_U"
+                             columnNames="nID_FlowSlotTicket, nID_FlowSlot"
+                             tableName="FlowSlotTicket_FlowSlot"/>
+
+        <sql splitStatements="true" dbms="postgresql">
+            insert into "FlowSlotTicket_FlowSlot" ("nID_FlowSlotTicket", "nID_FlowSlot") select "nID", "nID_FlowSlot" from "FlowSlotTicket" where "nID_FlowSlot" is not null;
+        </sql>
+
+        <dropColumn tableName="FlowSlotTicket" columnName="nID_FlowSlot"/>
+    </changeSet>
+    
+    <changeSet id="issue-1314-addTableActionProcessCount" author="askosyr">
+        <createTable tableName="ActionProcessCount">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID_BP" type="varchar(30)">
+            </column>
+            <column name="nID_Service" type="bigint">
+            </column>
+            <column name="nCountYear" type="bigint">
+            </column>
+            <column name="nYear" type="bigint">
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="issue-1385-AutogenerationFlowSlots" author="HavrylinSerhii">
+        <addColumn tableName="Flow_ServiceData">
+            <column name="nCountAutoGenerate" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
