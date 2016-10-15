@@ -109,14 +109,9 @@ and open the template in the editor.
   </li>
 </ul>
 <p><strong>Вход и авторизация</strong>, где нужно ввести логин и пароль госслужащего:</p>
-<p><img src="docs/img/dashboard_login-1.jpg" width="1162" height="579"></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p><img src="docs/img/dashboard_login-1.jpg" width="765" height="457"></p>
 <p><strong>Закладка &quot;Необроблені&quot;</strong>, со списком задач <strong>для отработки</strong> и выбранная одна заявка с права, с полями:</p>
 <p><a href="Перетащите к файлу, чтобы создать ссылку."><img src="docs/img/dashboard_tab-1-unassigned.jpg" width="1161" height="588"></a></p>
-<p>&nbsp;</p>
 <p>С возможностью поиска как по номеру заявки так и по наличию текста в полях заявки:</p>
 <p><img src="docs/img/dashboard_tab-1-unassigned-find.jpg" width="1186" height="330"></p>
 <p>При том, кроме поиска можно использовать множественные фильтры списка заявок:</p>
@@ -124,6 +119,8 @@ and open the template in the editor.
 <p>При выборе заявки ее можно взять в работу, после чего она попадет в следующую закладку.</p>
 <p><strong>Закладка &quot;В роботі&quot;</strong>, со списком задач <strong>в работе</strong> и выбранная одна заявка с права, с полями:</p>
 <p><img src="docs/img/dashboard_tab-2-assigned.jpg" width="1162" height="593"></p>
+<p>Там цветным уголком в вверхнем-правом углу отображается состояние заявки<br>
+  <em> (красный - получен ответ на посланное госслужащим замечание по заявке, желтый - пришел комментарий/вопрос от гражданина по заявке, серыый - послано госслужащим замечание по заявке)</em></p>
 <p>При выборе заявки ее можно отработать, распечатать(в разных шаблонах), внести и отправить замечания гражданину а так-же загрузить прикрепленные файлы-атачи или проверить на них ЭЦП.<br>
 </p>
 <p>Вывод на <strong>печать</strong> одной из принтформ заявки:</p>
@@ -136,7 +133,7 @@ and open the template in the editor.
 <p><img src="docs/img/dashboard_tab-2-assigned_attach.jpg" width="372" height="203"></p>
 <p>или <strong>проверить ЭЦП</strong> на нем:</p>
 <p><img src="docs/img/dashboard_tab-2-assigned_attach_ecp.jpg" width="600" height="364"></p>
-<p><strong>Закладка &quot;Расписание&quot;</strong>, со списком задач по которым были зарезервированы имкеты Электронной Очереди:</p>
+<p><strong>Закладка &quot;Расписание&quot;</strong>, со списком задач по которым были зарезервированы тикеты Электронной Очереди:</p>
 <p><img src="docs/img/dashboard_tab-3-shedule.jpg" width="1147" height="305"></p>
 <p><strong>Закладка &quot;Всі&quot; (предназначена для руководителей)</strong>, со списком <strong>не отработанных</strong> задач (в т.ч. заявок взятых в работу ) и выбранная одна заявка с права, с полями <strong>только для чтения</strong>:</p>
 <p><img src="docs/img/dashboard_tab-4-all.jpg" width="1161" height="462"></p>
@@ -187,8 +184,9 @@ and open the template in the editor.
   <li>*.region.igov.org.ua/wf и *.test.region.igov.org.ua/wf - региональная<br>
   </li>
 </ul>
+<p>Страница авторизации через логин и пароль (системный или активити(тот-же что и в дашборде госслужащего)):</p>
 <p><img src="docs/img/region_back_1-login.jpg" width="982" height="449"></p>
-<p>&nbsp;</p>
+<p>а это основной интерфейс:</p>
 <p><img src="docs/img/region_back_2-main.jpg" width="1162" height="571"></p>
 <p>&nbsp;</p>
 <h1><strong>Технические системы платформы:</strong></h1>
@@ -238,6 +236,7 @@ and open the template in the editor.
 <p>&nbsp;</p>
 <p>И <strong>с подробными отчетами по каждому из тестов</strong> (с шагами и скринами, на которых происходит ошибка):</p>
 <p><img src="docs/img/visor_5-test-selenium-2-text-report.jpg" width="1179" height="595"></p>
+<p>Так-же, интегрированы юнит-тесты для фронта и бэка, запускаемые при каждой сборке.</p>
 <p>&nbsp;</p>
 <p><strong>Sonar Qube - тесты безопасности проекта и качества кода, указывающее на конкретные участки кода, требующие замены</strong>:</p>
 <p><strong>В общем виде:</strong></p>
@@ -254,11 +253,10 @@ and open the template in the editor.
 </ul>
 <p><strong>Jenkins - система непрерысной интеграции (каскадный авто-деплой приложений при комитах в GIT-репозиторий, запуск авто-тестов, и производных зависимых запусков)</strong>:</p>
 <ul>
-  <li>ci-jenkins.tech.igov.org.ua</li>
-  <li>ci-jenkins-backup.tech.igov.org.ua</li>
+  <li>ci-jenkins.tech.igov.org.ua - основная система</li>
+  <li>ci-jenkins-backup.tech.igov.org.ua - дублирующая система</li>
 </ul>
 <p><img src="docs/img/ci_1-jenkins-new.jpg" width="1184" height="599"></p>
-<p>Существует такая основная и дублирующая системы.</p>
 <p>&nbsp;</p>
 <h2><strong>Системы хранилищ:</strong></h2>
 <ul>
@@ -266,7 +264,8 @@ and open the template in the editor.
 </ul>
 <p><strong>Nexus - репозиторий, хранящий библиотеки и компоненты</strong>:</p>
 <ul>
-  <li>storage-nexus.tech.igov.org.ua</li>
+  <li>storage-nexus.tech.igov.org.ua - основная система</li>
+  <li>storage-nexus-backup.tech.igov.org.ua - дублирующая система</li>
 </ul>
 <p><strong></strong><img src="docs/img/tech_storage_1-nexus.jpg" width="1178" height="320"></p>
 <p>&nbsp;</p>
