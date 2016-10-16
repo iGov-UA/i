@@ -33,8 +33,8 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="ОСББ - надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="Надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -98,7 +98,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
       <extensionElements>
-        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sText4" name="Iніціативна група" type="label" default="Дані по членам ініціативної группи"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення (член ініціативної групи №1)" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
