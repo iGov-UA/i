@@ -1,4 +1,8 @@
-select distinct concat(hes.nID_Service, hes.sID_UA) AS nID,
+select distinct CASE
+                WHEN concat(hes.nID_Service, hes.sID_UA) = ''
+                  THEN 0
+                ELSE CAST(concat(hes.nID_Service, hes.sID_UA) AS bigint)
+                END AS nID,
                 hes.nID_Service AS nID_Service,
                 s."sName" AS ServiceName,
                 hes.sID_UA AS SID_UA,
