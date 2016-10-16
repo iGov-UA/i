@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="OSBB_inishiativ" name="ОСББ - надання ініціативний групі інформації про площі будинку" isExecutable="true">
+  <process id="OSBB_zvit_kaznach" name="ОСББ - звіт за використання казначейських коштів (форма №2, форма №7)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний вам КЖЕП" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocInitiativ" name="Протокол ініціативної групи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Дані заявника------------------------------------------------------------" type="label" default="Перший член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний орган" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="NameOSBB" name="Назва ОСББ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="AdressOSBB" name="Адреса ОСББ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Паспорт заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText2" name="---------------------------------------------------------------------------------" type="label" default="Другий член ініціативної групи"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_2" name="ПІБ другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport_2" name="Паспорта другого члена ініціативної групи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText3" name="---------------------------------------------------------------------------------" type="label" default="Третій член ініціативної групи"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_3" name="ПІБ третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport_3" name="Паспорта третього члена ініціативної групи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asDocOtr" name="Як ви хочете отримати відповідь?" type="enum" required="true">
-          <activiti:value id="sEnamPapir" name="Отримати паперові документи нарочно"></activiti:value>
-          <activiti:value id="sEnamElectro" name="Лист на електронну пошту"></activiti:value>
-        </activiti:formProperty>
+        
+        <activiti:formProperty id="sDocForm2" name="Форма №2, Звіт про надходження та використання коштів загального фонду" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocForm7" name="Форма №7, Звіт про заборговаість за бюджетними коштами" type="file" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="Надання ініціативний групі інформації про площі будинку"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Звіт за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="звіт за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -98,40 +87,13 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
       <extensionElements>
-        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sText4" name="Iніціативна група" type="label" default="Дані по членам ініціативної группи"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення (член ініціативної групи №1)" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_2" name="Член ініціативної групи №2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_3" name="Член ініціативної групи №3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocOtr" name="Як ви хочете отримати відповідь?" type="enum" writable="false">
-          <activiti:value id="sEnamPapir" name="Отримати паперові документи нарочно"></activiti:value>
-          <activiti:value id="sEnamElectro" name="Лист на електронну пошту"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="acceptPapir" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
-          <activiti:value id="acceptElectro" name="Заява оформлена вірно, надіслати електронну відповідь"></activiti:value>
+          <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
           <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Увага!" type="label" default="Обов'язково заповніть вказані нижче поля"></activiti:formProperty>
-        <activiti:formProperty id="sPlosha" name="Загальна площа окремих квартир і окремих нежитлових приміщень будинку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPropisano" name="Кількість зареєстрованих в будинку осіб" type="string"></activiti:formProperty>
-        <activiti:formProperty id="taVlasn_Nejit" name="Інформація про власників нежитлових приміщень" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="taTexDoc" name="Інформація про технічну документацію, перелічити наявні документи" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asPrimOREnda" name="Чи є допоміжні приміщення, що здаються в оренду?" type="enum" writable="false">
-          <activiti:value id="sEnamTak" name="Наявні приміщення що здаються в оренду"></activiti:value>
-          <activiti:value id="sEnamNi" name="Відсутні приміщення що здатьбся в оренду"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPloshaOrendi" name="Загальна площа приміщень, які здаються в оренду" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSubsidi" name="Загальний розмір пільг та субсидій" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBorg" name="Cума заборгованості мешканців за останній рік" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDocVidpovid" name="Відповідь в електронному форматі" type="file"></activiti:formProperty>
-        <activiti:formProperty id="Komment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker" name="initiativ" type="markers" default="${markerService.loadFromFile('AK/OSBB/Initiativ_Dash.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Initiativ.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
