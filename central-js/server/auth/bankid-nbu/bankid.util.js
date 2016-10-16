@@ -105,6 +105,33 @@ module.exports.decryptCallback = function (callback) {
   }
 };
 
+var noEncryptionFields = ['number', 'type', 'signature'];
+
+function isEncrypted(value, key) {
+  if (noEncryptionFields.indexOf(key) === -1) {
+    return true;
+  } else {
+    if (key === 'number') {
+      if (Number.isNaN(Number.parseInt(value))) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+function iterateObj(obj, call) {
+  Object.keys(obj).forEach(function (key) {
+    if (typeof obj[key] === 'object') {
+      return iterateObj(obj[key], call);
+    }
+    obj[key] = call(obj[key], key);
+  });
+}
+
+module.exports.iterateObj = function (obj, call) {
+  return iterateObj(obj, call);
+};
 
 function decryptValue(value, privateKey) {
   try {
@@ -114,21 +141,19 @@ function decryptValue(value, privateKey) {
   }
 }
 
-
-module.exports.encryptData = function (customerDataObject, publicKey) {
-  var stringData = JSON.stringify(customerDataObject);
-  console.log(stringData);
-  return crypto.publicEncrypt(publicKey, new Buffer(stringData, 'utf-8')).toString('base64')
+module.exports.encryptData = function (customerData, publicKey) {
+  iterateObj(customerData, function (value, key) {
+    return isEncrypted(value, key)
+      ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
+      : value;
+  });
+  return customerData;
 };
 
-module.exports.decryptData = function (customerDataString, privateKey) {
-  var decryptedString = decryptValue(customerDataString, privateKey ? privateKey : privateKeyFromConfigs);
-  return JSON.parse(decryptedString);
-};
-
-module.exports.decryptFieldInn = function (customerCrypto) {
-  var decryptedData = this.decryptData(customerCrypto);
-  return decryptedData.inn;
+module.exports.decryptData = function (customerData, privateKey) {
+  iterateObj(customerData, function (value, key) {
+    return decrypt(value, key, privateKey ? privateKey : privateKeyFromConfigs)
+  });
 };
 
 module.exports.initPrivateKey = initPrivateKey;
