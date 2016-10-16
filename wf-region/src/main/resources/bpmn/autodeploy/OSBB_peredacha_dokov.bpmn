@@ -91,7 +91,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
           <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="сomment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -120,7 +120,7 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. <br />
-Причина відмови: ${сomment} <br /><br />
+Причина відмови: ${comment} <br /><br />
 Якщо Вам необхідно отримати витяг, ви можете подати ще одну заявку на порталі igov.org.ua <br />
 ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
