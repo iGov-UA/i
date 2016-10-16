@@ -8,7 +8,7 @@ var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
-var config = require(__dirname + '/../../..' + '/process-custom.json').env;
+var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
 /*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
