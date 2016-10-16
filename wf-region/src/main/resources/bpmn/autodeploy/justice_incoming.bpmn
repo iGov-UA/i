@@ -55,7 +55,7 @@
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" required="true">
+        <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
@@ -73,7 +73,7 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var number=execution.getVariable('sID_Order_GovPublic')
-var fullNumber="вх-"+"-"+number+"/"
+var fullNumber="вх-"+number+"/"
 execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
