@@ -33,6 +33,7 @@
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;bankIdfirstName&quot;,&quot;bankIdlastName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdPassport&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sAddress&quot;,&quot;sMailClerk&quot;,&quot;sShapka&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="результат візиту" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -136,8 +137,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
 На жаль, Ваше звернення щодо державної реєстрації смерті відхилено (або Ви самостійно скасували заявку).<br />
-${sPhoneOrgan}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
+Телефон для довідок: ${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}<br />	   
 [pattern/mail/_common_signature_end.html]]]></activiti:expression>
