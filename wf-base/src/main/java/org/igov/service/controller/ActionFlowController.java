@@ -1132,7 +1132,7 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop,
-	    @ApiParam(value = "кол-во дней", required = false) @RequestParam(value = "nCountAutoGenerate", required = true) Long nCountAutoGenerate){
+	    @ApiParam(value = "кол-во дней", required = false) @RequestParam(value = "nCountAutoGenerate", required = false) Long nCountAutoGenerate){
             oFlowService.buildFlowSlots();
     }
     
