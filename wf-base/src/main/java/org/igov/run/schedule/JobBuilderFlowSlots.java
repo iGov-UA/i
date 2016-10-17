@@ -64,7 +64,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
                 new Date(), context.getTrigger().getName());
         oFlowService.buildFlowSlots();
         
-    }
+    } 
    
 //    public void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
 //        //Maxline: TODO добавить исключения
