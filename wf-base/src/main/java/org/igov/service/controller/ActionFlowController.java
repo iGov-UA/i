@@ -1126,77 +1126,14 @@ public class ActionFlowController {
     @RequestMapping(value = "/buildFlowSlotsTest", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity buildFlowSlotsTest(
+     void buildFlowSlotsTest(
 	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
 	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
 	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
 	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop,
 	    @ApiParam(value = "кол-во дней", required = false) @RequestParam(value = "nCountAutoGenerate", required = true) Long nCountAutoGenerate){
-
-		DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
-        LOG.info(" oDateStart = {}", oDateStart);
-
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        for (Flow_ServiceData flow : aFlowServiceData) {
-            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
-                LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-                checkAndBuildFlowSlots_new(flow, oDateStart);
-            }
-        }
-        List<FlowSlotVO> res = oFlowService.buildFlowSlotsTest(nID_Flow_ServiceData, oDateStart, oDateStart);
-        return (ResponseEntity) res;
+            oFlowService.buildFlowSlots();
     }
-    private void checkAndBuildFlowSlots_new(Flow_ServiceData flow, DateTime oDateStart) {
-        //Maxline: TODO добавить исключения
-        Long nID_Flow_ServiceData = flow.getId();
-        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
-        
-        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
-        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
-                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-        
-        int nStartDay = 0;
-        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
-        DateTime dateEnd;
-        
-        while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
-                && nStartDay < DAYS_IN_HALF_YEAR) {
-            dateStart = oDateStart.plusDays(nStartDay);
-            Long nCountAutoGenerate = flow.getnCountAutoGenerate();
-            int CountAutoGenerate = toIntExact(nCountAutoGenerate);
-            dateEnd = oDateStart.plusDays(CountAutoGenerate);
-            LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
-            
-            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
-                    dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
-            LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
-            
-            nStartDay += DAYS_IN_MONTH;
-        }
-        
-        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
-        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
-    }
-
-    private boolean isEnoughFreeDays(Long nID_ServiceData, Long nID_SubjectOrganDepartment, DateTime oDateStart) {
-        boolean bAll = false; //Получаем только свободные дни
-        int nFreeWorkDaysFact;
-        Long nID_Service = null; 
-        String sID_BP = null; 
-
-        DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
-        LOG.info(" oDateEnd = {}", oDateEnd);
-
-        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED, 1); //WORK_DAYS_NEEDED
-        LOG.info(" Days = {}", res);
-
-        nFreeWorkDaysFact = res.getaDay().size();
-        LOG.info(" nFreeWorkDaysFact = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
-        for (Day day : res.getaDay()) {
-            LOG.info(" Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
-        }
-        return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
-    }
-}
+    
+ }

@@ -62,22 +62,11 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
-
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
-        LOG.info(" oDateStart = {}", oDateStart);
-
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        for (Flow_ServiceData flow : aFlowServiceData) {
-            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
-                LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-                LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
-
-                checkAndBuildFlowSlots(flow, oDateStart);
-            }
-        }
+        oFlowService.buildFlowSlots();
+        
     }
-
-    private void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
+   
+    public void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
         Long nID_Flow_ServiceData = flow.getId();
         Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
