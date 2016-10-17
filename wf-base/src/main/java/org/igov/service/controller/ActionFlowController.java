@@ -1092,7 +1092,7 @@ public class ActionFlowController {
      * @param nCountAutoGenerate кол-во дней (опциональный)
      */
         @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
-                + " http://test.igov.org.ua/wf/service/action/flow/buildFlowSlotsTest\n"
+                + " https://test.region.igov.org.ua/wf/service/action/flow/buildFlowSlotsTest\n"
 	        + "- nID_Flow_ServiceData=1\n"
 	        + "- sDateStart=2015-06-01 00:00:00.000\n"
 	        + "- sDateStop=2015-06-07 00:00:00.000\n"
