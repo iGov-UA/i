@@ -23,7 +23,7 @@
           </span>
         <div class="col-sm-1" style="padding-right: 0;">
             <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
-              <input type="checkbox" ng-change="clarifyIsChecked()" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+              <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
             </div>
         </div>
           <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
@@ -121,9 +121,7 @@
           </div>
           <div class="row" style="margin-right: 0">
             <div class="col-sm-offset-3 col-sm-6" style="margin-top: 10px; margin-bottom: 20px">
-              <span title="{{ischecked ? 'Відправити зауваження' : 'Для відправки зауваження необхідно вибрати як мінімум одне поле'}}">
-                <a style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-disabled="!isChecked" ng-click="clarifySend()">Відправити зауваження</a>
-              </span>
+              <a style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</a>
               <a style="margin: 0" class="btn btn-link attach-btn" ng-click="clarifyToggle()">Скасувати</a>
             </div>
           </div>
