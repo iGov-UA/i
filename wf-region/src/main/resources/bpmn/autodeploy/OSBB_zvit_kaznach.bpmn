@@ -4,18 +4,18 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний орган" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="NameOSBB" name="Назва ОСББ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="AdressOSBB" name="Адреса ОСББ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOSBB" name="Назва ОСББ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpouOSBB" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressBud" name="Адреса ОСББ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        
+        <activiti:formProperty id="form_signed_all" name="Всі файли буде підписано ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocForm2" name="Форма №2, Звіт про надходження та використання коштів загального фонду" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocForm7" name="Форма №7, Звіт про заборговаість за бюджетними коштами" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
@@ -23,7 +23,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Звіт за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="звіт за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="звіту за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -87,19 +87,23 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
       <extensionElements>
+        <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEdrpouOSBB" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressBud" name="Адреса ОСББ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ Заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        
+        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
-          <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
+          <activiti:value id="accept" name="Документи вірні, звіт прийнято"></activiti:value>
+          <activiti:value id="reject" name="Звіт надано не вірно"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker" name="initiativ" type="markers" default="${markerService.loadFromFile('AK/OSBB/Initiativ_Dash.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Initiativ.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDocInitiativ},${sDocPassport},${sDocPassport_2},${sDocPassport_3}</activiti:expression>
+            <activiti:expression>${sDocForm2},${sDocForm7}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -107,7 +111,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Онлайн документ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Звіт прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -122,15 +126,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Заява оформлена вірно.&lt;br /&gt;
-Відповідь у вкладенні до цього листа.&lt;br /&gt;&lt;br /&gt;
-Додатково. За результатами опрацювання Вашої заяви повідомляємо:&lt;br /&gt;
-Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}&lt;br /&gt;
-Кількість зареєстрованих в будинку осіб: ${sPropisano}&lt;br /&gt;
-Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}&lt;br /&gt;
-Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}&lt;br /&gt;
-Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}&lt;br /&gt;
-Загальний розмір пільг та субсидій: ${sSubsidi}&lt;br /&gt;
-Cума заборгованості мешканців за останній рік ${sBorg}&lt;br /&gt;
+Звіт прийнято.&lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -153,55 +149,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptElectro'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask5" name="Видача на руки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Заява оформлена вірно.&lt;br /&gt;
-Ви можете отримати документ за вказаною нижче адресою.&lt;br /&gt;&lt;br /&gt;
-Додатково. За результатами опрацювання Вашої заяви повідомляємо:&lt;br /&gt;
-Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}&lt;br /&gt;
-Кількість зареєстрованих в будинку осіб: ${sPropisano}&lt;br /&gt;
-Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}&lt;br /&gt;
-Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}&lt;br /&gt;
-Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}&lt;br /&gt;
-Загальний розмір пільг та субсидій: ${sSubsidi}&lt;br /&gt;
-Cума заборгованості мешканців за останній рік ${sBorg}&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow8" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptPapir'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -218,7 +166,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
-Причина відмови: ${Komment} &lt;br /&gt;&lt;br /&gt;
+Причина відмови: ${comment} &lt;br /&gt;&lt;br /&gt;
 Якщо Вам необхідно отримати витяг, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -241,12 +189,11 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_OSBB_inishiativ">
-    <bpmndi:BPMNPlane bpmnElement="OSBB_inishiativ" id="BPMNPlane_OSBB_inishiativ">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_OSBB_zvit_kaznach">
+    <bpmndi:BPMNPlane bpmnElement="OSBB_zvit_kaznach" id="BPMNPlane_OSBB_zvit_kaznach">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="275.0" y="-50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -273,9 +220,6 @@ ${sNameOrgan}.&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="420.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="420.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="420.0"></omgdc:Bounds>
@@ -311,26 +255,15 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="292.0" y="370.0"></omgdi:waypoint>
         <omgdi:waypoint x="162.0" y="420.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="224.0" y="345.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="292.0" y="370.0"></omgdi:waypoint>
-        <omgdi:waypoint x="292.0" y="420.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="272.0" y="380.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="197.0" y="355.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="292.0" y="370.0"></omgdi:waypoint>
         <omgdi:waypoint x="422.0" y="420.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="353.0" y="355.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="317.0" y="369.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="292.0" y="475.0"></omgdi:waypoint>
-        <omgdi:waypoint x="292.0" y="520.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="422.0" y="475.0"></omgdi:waypoint>
