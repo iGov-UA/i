@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope', 'lunaService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope, lunaService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -308,11 +308,20 @@
 
           oData.saField = JSON.stringify(aFields);
           oData.soParams = JSON.stringify(soParams);
-          tasks.setTaskQuestions(oData).then(function () {
-            $scope.clarify = false;
-            Modal.inform.success(function () {
-            })('Зауваження відправлено успішно');
-          });
+          if(oData.saField === "[]") {
+            oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
+            tasks.postServiceMessages(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Коментар відправлено успішно');
+            });
+          } else {
+            tasks.setTaskQuestions(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Зауваження відправлено успішно');
+            });
+          }
         };
 
         (function isTaskHasEmail() {

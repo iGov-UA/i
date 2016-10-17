@@ -585,6 +585,7 @@ public class ActionEventController {
     public void getServiceHistoryReport(
             @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
+            @ApiParam(value = "строка, указывающая на тип даты, по которой идет выгрузка данных", required = false) @RequestParam(value = "sID_FilterDateType", required = false, defaultValue = "Edit") String sID_FilterDateType,
             @ApiParam(value = "загрузка данных из заявок", required = false) @RequestParam(value = "bIncludeTaskInfo", required = false, defaultValue = "false") Boolean bIncludeTaskInfo,
             @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
             HttpServletResponse oHttpServletResponse) {
@@ -592,6 +593,7 @@ public class ActionEventController {
         DateTimeFormatter oDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime oDateAt = oDateFormat.parseDateTime(sDateAt);
         DateTime oDateTo = oDateFormat.parseDateTime(sDateTo);
+        List<HistoryEvent_Service> aHistoryEvent_Service = new ArrayList<>();
 
         String[] headersMainField = {"sID_Order", "nID_Server",
             "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead",
@@ -615,10 +617,22 @@ public class ActionEventController {
                 List<String> asID_Service_Exclude = Arrays.asList(sanID_Service_Exclude);
                 anID_Service_Exclude = asID_Service_Exclude.stream().map(s -> NumberUtils.parseNumber(s, Long.class)).collect(Collectors.toList());
             }
+            
+            //List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getHistoryEventPeriod(oDateAt, oDateTo, anID_Service_Exclude);
+            //LOG.info("Found {} history events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
 
-            List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getHistoryEventPeriod(oDateAt, oDateTo, anID_Service_Exclude);
-
-            LOG.info("Found {} history events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
+            if (sID_FilterDateType.equals("Edit")) {
+                aHistoryEvent_Service = historyEventServiceDao.getHistoryEventPeriod(oDateAt, oDateTo, anID_Service_Exclude);
+                LOG.info("Found {} history events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
+            } else if (sID_FilterDateType.equals("Create")) {
+                aHistoryEvent_Service = historyEventServiceDao.getHistoryEventPeriodByCreate(oDateAt, oDateTo, anID_Service_Exclude);
+                LOG.info("Found {} history events by Create events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
+            } else if (sID_FilterDateType.equals("Close")) {
+                aHistoryEvent_Service = historyEventServiceDao.getHistoryEventPeriodByClose(oDateAt, oDateTo, anID_Service_Exclude);
+                LOG.info("Found {} history events by Close events for the period from {} to {}", aHistoryEvent_Service.size(), sDateAt, sDateTo);
+            } else {
+                throw new IllegalArgumentException("Check the sID_FilterDateType parameter, must be Edit, Create or Close");
+            }
 
             if (aHistoryEvent_Service.size() > 0) {
                 List<Long> anID_HistoryEvent_Service = new LinkedList<>();

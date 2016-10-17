@@ -62,7 +62,7 @@ function getAuth(urlWithQueryParams, agentCallback, done, authMode) {
       }
 
       var loginAgent = superagent.agent();
-      loginAgent.saveCookies(res);
+      loginAgent._saveCookies(res);
       if (agentCallback) {
         agentCallback(loginAgent);
       }
@@ -93,15 +93,15 @@ module.exports.loginWithBankIDNBU = function (done, agentCallback, code) {
     .expect(302)
     .then(function (res) {
       var loginAgent = superagent.agent();
-      loginAgent.saveCookies(res);
+      loginAgent._saveCookies(res);
 
       var tokenRequest = testRequest.get('/auth/bankid-nbu/callback?code=' + code + '&?link=' + testAuthResultURL);
-      loginAgent.attachCookies(tokenRequest);
+      loginAgent._attachCookies(tokenRequest);
 
       tokenRequest
         .expect(302)
         .then(function (res) {
-          loginAgent.saveCookies(res);
+          loginAgent._saveCookies(res);
           if (agentCallback) {
             agentCallback(loginAgent);
           }
@@ -128,7 +128,7 @@ module.exports.loginWithEmail = function (callback) {
   function prepareGet(url, agent) {
     var r = testRequest.get(url);
     if (agent) {
-      agent.attachCookies(r);
+      agent._attachCookies(r);
     }
     return r;
   }
@@ -136,7 +136,7 @@ module.exports.loginWithEmail = function (callback) {
   function preparePost(url, agent) {
     var r = testRequest.post(url);
     if (agent) {
-      agent.attachCookies(r);
+      agent._attachCookies(r);
     }
     return r;
   }
@@ -145,7 +145,7 @@ module.exports.loginWithEmail = function (callback) {
     request
       .expect(302)
       .then(function (res) {
-        loginAgent.saveCookies(res);
+        loginAgent._saveCookies(res);
         asyncCallback(null, loginAgent);
       })
       .catch(function (err) {
@@ -159,7 +159,7 @@ module.exports.loginWithEmail = function (callback) {
       .expect(200)
       .then(function (res) {
         var loginAgent = superagent.agent();
-        loginAgent.saveCookies(res);
+        loginAgent._saveCookies(res);
         asyncCallback(null, loginAgent);
       })
       .catch(function (err) {
