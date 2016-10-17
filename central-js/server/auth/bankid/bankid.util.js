@@ -166,6 +166,7 @@ module.exports.encryptData = function (customerData, publicKey) {
       ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
       : value;
   });
+  return customerData;
 };
 
 module.exports.decryptData = function (customerData, privateKey) {

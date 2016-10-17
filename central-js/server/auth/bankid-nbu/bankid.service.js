@@ -31,14 +31,14 @@ module.exports.convertToCanonical = function (customer) {
   return customer;
 };
 
-module.exports.getUserKeyFromSession = function (session){
+module.exports.getUserKeyFromSession = function (session) {
   return session.access.accessToken;
 };
 
 function responseContractValidation(callback, nextCallback) {
   return function (error, response, body) {
     if (response.statusCode === 200 && (body.customer || body.customerCrypto)) {
-      nextCallback(error, response, body);
+      nextCallback(error, response, changeToCustomer(body));
     } else if (response.statusCode === 200 && body.error) {
       // HTTP/1.1 406 Not Acceptable , якщо у запиті не задано ідентифікатор ПАП ,
       // HTTP/1.1 501 Not Implemented , якщо у банку відсутній сертифікат ПАП.
@@ -49,31 +49,36 @@ function responseContractValidation(callback, nextCallback) {
   }
 }
 
+function changeToCustomer(body) {
+  if (body.customerCrypto) {
+    body.customer = body.customerCrypto;
+    delete body.customerCrypto;
+  }
+  return body;
+}
+
 module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidNBUUtil.getInfoURL(config);
 
   function adminCheckCallback(error, response, body) {
     console.log("--------------- enter admin callback !!!!");
-    if (body) {
-      console.log("--------------- client data response body !!!!" + JSON.stringify(body));
-    }
     var innToCheck;
 
-    if (body.customerCrypto && disableDecryption) {
-      innToCheck = bankidNBUUtil.decryptFieldInn(body.customerCrypto);
-    } else if (body.customerCrypto && !disableDecryption) {
-      console.log("--------------- client data should be decrypted on this step !!!! " + body.customerCrypto);
-      callback({message: "client data should be decrypted on this step"}, response, null);
-      return;
-    } else if (body.customer) {
+    if (disableDecryption) {
+      console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
+      innToCheck = bankidNBUUtil.decryptField(body.customer.inn);
+      console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
+    } else {
       innToCheck = body.customer.inn;
       console.log("--------------- nodecrption of inn !!!!");
     }
 
     console.log("---------------  innToCheck in result !!!!" + innToCheck);
+
+    console.log("---------------  body.customer in result !!!!" + body.customer);
     console.log("---------------  Admin.isAdminInn(innToCheck) in result!!!! " + Admin.isAdminInn(innToCheck));
 
-    if ((body.customer || body.customerCrypto) && Admin.isAdminInn(innToCheck)) {
+    if (body.customer && Admin.isAdminInn(innToCheck)) {
       console.log("---------------  user with inn " + innToCheck + " is admin");
       body.admin = {
         inn: innToCheck,
