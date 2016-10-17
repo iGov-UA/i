@@ -172,8 +172,12 @@ angular.module('dashboardJsApp')
             data: submitTaskFormData
           };
 
-          simpleHttpPromise(req).then(function(result) {
+          simpleHttpPromise(req).then(
+            function(result) {
             deferred.resolve(result);
+          },
+            function(result) {
+              deferred.resolve(result);
           });
         });
 

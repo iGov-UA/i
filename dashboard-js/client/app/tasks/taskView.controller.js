@@ -476,20 +476,31 @@
             rollbackReadonlyEnumFields();
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
               .then(function (result) {
-                var sMessage = "Форму відправлено.";
-                angular.forEach($scope.taskForm, function (oField) {
-                  if (oField.id === "sNotifyEvent_AfterSubmit") {
-                    sMessage = oField.value;
-                  }
-                });
-                $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+                if(result.status == 500){
+                  var message = result.data.message;
+                  var errMsg = (message.includes("errMsg")) ? message.split(":")[1].split("=")[1] : message;
 
+                  $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                Modal.inform.success(function (result) {
-                  $scope.lightweightRefreshAfterSubmit();
-                })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
+                  Modal.inform.error(function (result) {
+                    $scope.lightweightRefreshAfterSubmit();
+                  })(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
+                } else {
+                  var sMessage = "Форму відправлено.";
+                  angular.forEach($scope.taskForm, function (oField) {
+                    if (oField.id === "sNotifyEvent_AfterSubmit") {
+                      sMessage = oField.value;
+                    }
+                  });
 
-                $scope.$emit('task-submitted', $scope.selectedTask);
+                  $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+
+                  Modal.inform.success(function (result) {
+                    $scope.lightweightRefreshAfterSubmit();
+                  })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
+
+                  $scope.$emit('task-submitted', $scope.selectedTask);
+                }
               })
               .catch(defaultErrorHandler);
           }

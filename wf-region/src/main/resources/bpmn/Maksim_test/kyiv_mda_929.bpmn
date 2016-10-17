@@ -4,8 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Інформація про об’єкт:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" required="true">
           <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
@@ -17,175 +18,13 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCompany" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChiefPib" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChiefPassport" name="Серія та номер паспорта, ким і коли виданий керівника замовника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChiefAddress" name="Місце проживанння керівника замовника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChiefInn" name="ІПН керівника замовника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChiefPhone" name="Номер телефону керівника замовника" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Інформація про відповідальну особу - інженера з технічного нагляду&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPib" name="ПІБ технічного наглядача" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPosition" name="Посада технічного наглядача" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSupervisionCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Інформація про генерального підрядника (підрядника - у разі, коли будівельні роботи виконуються без залучення субпідрядників)&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asContractorEntity" name="Оберіть суб'єкт підрядника" type="enum" required="true">
-          <activiti:value id="sEnumContractorCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumContractorIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sContractorPib" name="ПІБ фізособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorPassport" name="Серія та номер паспорта підрядника, де і коли виданий" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorInn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorAddress" name="Місце проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorOrganizationName" name="Найменування юрособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorOrganizationAddress" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorOrganizationInn" name="Податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorOrganizationPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContractorName" name="Підрядник" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_5" name=" " type="label" default="&lt;b&gt;Інформація про страхову організацію (за наявності)&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceName" name="Найменування страхової організації" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceInn" name="Код платника податків згідно з ЄДРПУО" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sInsuranceContract" name="Реквізити договору страхування" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_6" name=" " type="label" default="&lt;b&gt;Інформація про осіб, відповідальних за виконання робіт&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sResponsiblePib" name="ПІБ відповідального" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sResponsiblePosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sResponsiblePhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sResponsibleNumberID" name="Нзва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sResponsibleType" name="Види виконаних під керівництвом відповідальної особи робіт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_7" name=" " type="label" default="&lt;b&gt;Інформація про генерального проектувальника:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asProjectEntity" name="Оберіть суб'єкт, який розробляв проект" type="enum" required="true">
-          <activiti:value id="sEnumProjectCompany" name="юридична особа"></activiti:value>
-          <activiti:value id="sEnumProjectIndividual" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sProjectPib" name="ПІБ фізособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectPassport" name="Серія та номер паспорта підрядника, де і коли виданий" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectInn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectAddress" name="Місце проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationName" name="Найменування юрособи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationAddress" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationInn" name="Податковий номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectOrganizationPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_8" name=" " type="label" default="&lt;b&gt;Інформація про відповідальних осіб генерального проектувальника: головного архітектора (інженера) проекту, особи, що здійснює авторський нагляд (за наявності)&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPib" name="ПІБ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPosition" name="Найменування посади" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectPhone" name="Номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectNumberID" name="Назва, номер та дата документу, що підтверджеє повноваження особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArchitectCertificate" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_9" name=" " type="label" default="&lt;b&gt;Інформація про проектну документацію:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocName" name="Назва документа про затвердження проектної документації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocDate" name="Дата документа про затвердження проектної документації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocNumber" name="Номер документа про затвердження проектної документації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocExpert" name="Результати експертизи проектної документації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocExpertName" name="Найменування експертної організації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocExpertInn" name="Код платника податків згідно з ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocExpertPib" name="ПІБ головного експерта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProjectDocExpertCertificate" name="Серія і номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_10" name=" " type="label" default="&lt;b&gt;Інформація про дозвільні документи (декларація про початок виконання будівельних робіт або інші документи у разі їх наявності)&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sProjectPermitName" name="Назва документа, ким виданий" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sProjectPermitDate" name="Дата подання або реєстрації документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sProjectPermitNumber" name="Номер документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_11" name=" " type="label" default="&lt;b&gt;Інформація про об’єкт:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectDateStartConstruction" name="Дата початку будівництва" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectDateEndConstruction" name="Дата закінчення будівництва" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectTimeConstruction" name="Строк введення об’єкта (черги, пускового комплексу) в експлуатацію" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_12" name=" " type="label" default="&lt;b&gt;Інформація про документ, що посвідчує право власності чи користування земельною ділянкою:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectOwnerNumber" name="Дата, серія, номер документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectOwnerSuperfic" name="Дата, номер договору суперфіцію" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_13" name=" " type="label" default="&lt;b&gt;Техніко-економічні показники об’єкта (з урахуванням результатів технічної інвентаризації):&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsBearing" name="несучі конструкції" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsFence" name="огороджувальні конструкції" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsFacade" name="фасади" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsEquipment" name="Перелік інженерного обладнання об’єкта;(вибір з холодне та гаряче водопостачання, водовідведення, ліфт, сміттєпровід, опалення: централізоване, пічне)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsHeating" name="вид індивідуальних опалювальних установок" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectIndicatorsSquare" name="Загальна площа будівлі;(кв. метрів)" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asObjectHouse" name="Об'єкт відноситься до житлового будинкку" type="enum" required="true">
-          <activiti:value id="sEnumHouseYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumHouseNo" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLabel_14" name=" " type="label" default="&lt;b&gt;Характеристика житлових будинків (з урахуванням результатів технічної інвентаризації) (за наявності):&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseFloor" name="Кількість поверхів" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseWall" name="Матеріали стін" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseSection" name="Кількість секцій (за наявності)" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseApartments" name="Кількість квартир у житловому будинку та їх площа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asObjectHouseAptType" name="Тип квартири" type="enum" required="true">
-          <activiti:value id="sEnumHouseAptcType_1" name="Однокімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_2" name="Двокімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_3" name="Трикімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_4" name="Чотирикімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_5" name="П’ятикімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_6" name="Шестикімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_7" name="Семикімнатна"></activiti:value>
-          <activiti:value id="sEnumHouseAptcType_8" name="Восьмикімнатна і більше"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_1" name=" " type="label" default="&lt;b&gt;------ Однокімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_1" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_1" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_1" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_2" name=" " type="label" default="&lt;b&gt;------ Двокімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_2" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_2" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_2" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_3" name=" " type="label" default="&lt;b&gt;------ Трикімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_3" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_3" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_3" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_4" name=" " type="label" default="&lt;b&gt;------ Чотирикімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_4" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_4" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_4" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_5" name=" " type="label" default="&lt;b&gt;------ П’ятикімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_5" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_5" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_5" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_6" name=" " type="label" default="&lt;b&gt;------ Шестикімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_6" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_6" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_6" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_7" name=" " type="label" default="&lt;b&gt;------ Семикімнатна ------&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_7" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_7" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_7" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_8" name=" " type="label" default="&lt;b&gt;---- Восьмикімнатна і більше ----&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeQuantity_8" name="Кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeTotalArea_8" name="Загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTypeLiveArea_8" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptQuantity" name="Усього кількість квартир" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptTotalArea" name="Усього загальна площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseAptLiveArea" name="Усього житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseIntegratedTotalArea" name="Загальна площа вбудовано-прибудованих приміщень житлового будинку, кв. метрів" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseGarage" name="Місця для постійного та тимчасового зберігання автотранспортних засобів, їх характеристика" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseGarageTotalArea" name="Загальна площа місць для постійного та тимчасового зберігання автотранспортних засобів" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseGarageQuantity" name="Кількість машиномісць" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseNonLiveArea" name="Загальна площа нежитлових приміщень об’єкта, кв. метрів" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseNonLiveName" name="Назва нежитлового приміщення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseNonLiveFunction" name="Функціональне призначення нежитлового приміщення (для житлових будинків)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectHouseNonLiveTotalArea" name="Загальна площа, технічні характеристики" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_15" name=" " type="label" default="&lt;b&gt;Оздоблення фасадів та благоустрою території:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectTerritoryWork" name="Перелік робіт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectTerritoryTime" name="Строки виконання до конкретного виду робіт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectTerritoryCompany" name="Організація-виконавець виду робіт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectTerritoryCompanyPib" name="ПІБ керівника організації-виконавця виду робіт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_16" name=" " type="label" default="&lt;b&gt;Кошторисна вартість:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectEstimatedCost" name="Кошторисна вартість будівництва за затвердженою проектною документацією (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectEstimatedConstruction" name="Витрати на будівельні роботи за кошторисом (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectEstimatedEquipment" name="Витрати на машини, обладнання та інвентар за кошторисом (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_17" name=" " type="label" default="&lt;b&gt;Вартість основних фондів:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectFixedAssetsCost" name="Вартість основних фондів, які приймаються в експлуатацію (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectFixedAssetsConstruction" name="Витрати на будівельні роботи (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectFixedAssetsEquipment" name="Витрати на машини, обладнання та інвентар (тис. гривень)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_18" name=" " type="label" default="&lt;b&gt;Кошти пайової участі у розвитку інженерно-транспортної та соціальної інфраструктури населеного пункту відповідно до договору:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectShareDate" name="Дата укладання договору" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectShareOrgan" name="Найменування органу місцевого самоврядування" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectSharePayment" name="Документи, що підтверджують сплату пайової участі" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sObjectShareExemption" name="Підстава для звільнення від сплати пайової участі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Декларація про початок виконання будівельних робіт;Вкладення відсканованого поданого паперового документу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
@@ -198,17 +37,190 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Temporary UserTask for UploadFiles"></userTask>
+    <userTask id="usertask1" name="Temporary UserTask for UploadFiles">
+      <extensionElements>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" required="true">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків;не зазначається фізичними особами, які через свої релігійні переконання відмовляються від прийняття реєстраційного номера облікової картки платника податків та повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
-    <userTask id="usertask2" name="3. Ознайомлення з документом директора ДАБК"></userTask>
-    <userTask id="usertask3" name="5. Ознайомлення з документом та визначення відповідального (керівник управління дозвільних процедур)"></userTask>
+    <userTask id="usertask2" name="3. Ознайомлення з документом директора ДАБК">
+      <extensionElements>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" writable="false">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="---- Інформація про замовника ----"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask3" name="5. Ознайомлення з документом та визначення відповідального (керівник управління дозвільних процедур)" activiti:candidateGroups="kyiv_dabi_permit_boss">
+     <extensionElements>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" writable="false">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="---- Інформація про замовника ----"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step7" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step7" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow5" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask4" name="4. Ознайомлення з документом заступника директора ДАБК"></userTask>
+    <userTask id="usertask4" name="4. Ознайомлення з документом заступника директора ДАБК">
+      <extensionElements>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" writable="false">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="---- Інформація про замовника ----"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask6" name="7. Перевірка повноти данних і прийняття рішення прореєстрацію або повернення на доопрацювання"></userTask>
+    <userTask id="usertask6" name="7. Перевірка повноти данних і прийняття рішення прореєстрацію або повернення на доопрацювання">
+     <extensionElements>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
+        <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefEntity" name="Оберіть суб'єкт звернення (Замовник)" type="enum" writable="false">
+          <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
+          <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="---- Інформація про замовника ----"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressLive" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressCompany" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        
+        
+        
+        
+        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    
+    
+    
+    </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask6" targetRef="exclusivegateway1"></sequenceFlow>
     <userTask id="usertask7" name="9. Друк інформаційного листа (ІЛ). Зберігання ІЛ підписаного  ЕЦП або скан копії документа у картці об'єкту облікової системи."></userTask>
