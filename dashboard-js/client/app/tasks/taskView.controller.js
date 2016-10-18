@@ -17,6 +17,47 @@
             $scope.taskForm.isInProcess = false;
           }
         };
+        function getRegexContains(str, splitBy, regex) {
+          var as = str.split(splitBy);
+          for (var i = 0; i < as.length; i++) {
+            if (as[i].includes(regex)) return as[i];
+          }
+        }
+
+        function getGroup(id)  {
+          for (var i = 0; i < taskForm.length; i++) {
+            if (taskForm[i].id.includes(id)) return taskForm[i].value;
+          }
+        }
+
+        function convertUsersToEnum(aoUser) {
+          var aoNewUser = new Array(aoUser.length);
+          for (var i = 0; i < aoUser.length; i++) {
+            var item = aoUser[i];
+            var newItem = {};
+            newItem.id = item.sLogin;
+            newItem.name = item.sFirstName.trim() + ' ' + item.sLastName.trim();
+            aoNewUser[i] = newItem;
+          }
+          return aoNewUser;
+        }
+
+        for(var i = 0; i < taskForm.length;i++) {
+          var item = taskForm[i];
+          if (item.id.includes("sLoginAsignee")) {
+            var asResult = getRegexContains(item.name, ';', "sSourceFieldID_sID_Group");
+            asResult = getRegexContains(asResult, ',', "sSourceFieldID_sID_Group");
+            var sID = asResult.split('=')[1];
+            var group = getGroup(sID);
+            if (group !== null) {
+              item.type = "enum";
+              user.getUsers(group).then(function (users) {
+                item.enumValues = convertUsersToEnum(users); }
+              );
+            }
+            break;
+          }
+        };
 
         activate();
 
@@ -179,45 +220,6 @@
           $scope.model.printTemplate = $scope.printTemplateList[0];
         }
         $scope.taskForm.taskData = taskData;
-
-        var sID; //sID_GroupNext
-        var indexLoginAsigned; //Need for set sLogin with first getUsers
-
-        // Search obj where id = sLoginAsignee, with sName this object get value sSourceFieldID_sID_Group
-        for (var i = 0; i < taskData.aField.length; i++) {
-          if (taskData.aField[i].sID.includes("sLoginAsignee")) {
-            indexLoginAsigned = i;
-            var asResult = getRegexContains(taskData.aField[i].sName, ';', "sSourceFieldID_sID_Group");
-            asResult = getRegexContains(asResult, ',', "sSourceFieldID_sID_Group");
-            sID = asResult.split('=')[1];
-            break;
-          }
-        }
-
-        function getRegexContains(objForSplit, splitBy, regex) {
-          var arr = objForSplit.split(splitBy);
-          for (var i = 0; i < arr.length; i++) {
-            if (arr[i].includes(regex)) return arr[i];
-          }
-        }
-
-        //getUsers by sValue where id == sID.
-        if (sID !== null) {
-          for (var i = 0; i < taskData.aField.length; i++) {
-            if (taskData.aField[i].sID == sID) {
-              var sValue = taskData.aField[i].sValue;
-              if (typeof(sValue) === "string" && sValue.length > 0) {
-                user.getUsers(sValue).then(function (users) {
-                  $scope.selectPerformingRsp = users;
-                  if (users.length > 0 && taskData.aField[indexLoginAsigned].sValue === null) {
-                    taskData.aField[indexLoginAsigned].sValue = $scope.selectedUser = users[0].sLogin;
-                  }
-                });
-                break;
-              }
-            }
-          }
-        }
 
         if (!oTask.endTime) {
           $scope.taskForm.forEach(function (field) {
