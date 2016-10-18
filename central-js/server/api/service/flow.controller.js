@@ -69,7 +69,7 @@ module.exports.getSlotsDMS = function (req, res) {
     activiti.sendPostRequest(req, res, '/service/action/flow/DMS/getSlots', {
       nID_Service_Private: nID_Service_Private,
 //      nDays: 7
-      nDays: 40
+      nDays: 20
     }, null, sHost);
   });
 };
