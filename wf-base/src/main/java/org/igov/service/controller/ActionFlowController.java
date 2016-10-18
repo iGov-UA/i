@@ -1092,7 +1092,7 @@ public class ActionFlowController {
      * @param nCountAutoGenerate кол-во дней (опциональный)
      */
         @ApiOperation(value = "Генерация слотов на заданный интервал для заданного потока", notes = "##### Пример:\n"
-                + " https://test.region.igov.org.ua/wf/service/action/flow/buildFlowSlotsTest\n"
+                + " alpha.test.region.igov.org.ua/wf/service/action/flow/buildFlowSlot\n"
 	        + "- nID_Flow_ServiceData=1\n"
 	        + "- sDateStart=2015-06-01 00:00:00.000\n"
 	        + "- sDateStop=2015-06-07 00:00:00.000\n"
@@ -1123,13 +1123,11 @@ public class ActionFlowController {
 	        + "\n```\n" )
     @ApiResponses(value = {@ApiResponse(code = 200, message = "json перечисление всех сгенерированных слотов\n"
             + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
-    @RequestMapping(value = "/buildFlowSlotsTest", method = RequestMethod.GET)
+    @RequestMapping(value = "/buildFlowSlot", method = RequestMethod.GET)
     public
     @ResponseBody
-     void buildFlowSlotsTest(){
-            LOG.info("начало работы контроллера");
+     void buildFlowSlot(){
             oFlowService.buildFlowSlots();
-            LOG.info("конец работы контроллера");
-    }
+            }
     
  }
