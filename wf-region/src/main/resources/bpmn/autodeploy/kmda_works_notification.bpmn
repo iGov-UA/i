@@ -59,6 +59,10 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask_step3"></sequenceFlow>
     <userTask id="usertask_step3" name="3. Реєстрація вхідного документу " activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
+        <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" readable="false">
+          <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
+        </activiti:formProperty>          
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Ідентифікаційні дані:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
