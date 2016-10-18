@@ -413,6 +413,8 @@
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSumPr" name="сумма платежа чек" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sComPr" name="сумма платежа ком чек" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -1610,15 +1612,23 @@ execution.setVariable('sCountPayment', src)</script>
       <script>
 var sum =" "
 var des = " "
+var sumPr = " "
+var comPr = " "
 if(execution.getVariable('saChangeName') == 'no'){
 des = "державне мито за державну реєстрацію зміни імені фізичної особи"
 sum = "5.2"
+sumPr = "5.10"
+comPr = "0.10"
 }
 if(execution.getVariable('saChangeName') == 'yes'){
 des = "державне мито за повторну державну реєстрацію зміни імені фізичної особи"
 sum = "51.92"
+sumPr = "51.00"
+comPr = "0.92"
 }
 execution.setVariable('sSum', sum)
+execution.setVariable('sSumPr', sumPr)
+execution.setVariable('sComPr', comPr)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow160" sourceRef="servicetask1" targetRef="scripttask4"></sequenceFlow>
