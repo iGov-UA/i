@@ -1127,7 +1127,9 @@ public class ActionFlowController {
     public
     @ResponseBody
      void buildFlowSlotsTest(){
+            LOG.info("начало работы контроллера");
             oFlowService.buildFlowSlots();
+            LOG.info("конец работы контроллера");
     }
     
  }
