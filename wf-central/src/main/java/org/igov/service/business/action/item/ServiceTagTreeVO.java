@@ -1,7 +1,6 @@
 package org.igov.service.business.action.item;
 
 import org.igov.model.action.item.Service;
-import org.igov.model.action.item.ServiceTag;
 
 import java.util.ArrayList;
 import java.util.List;
