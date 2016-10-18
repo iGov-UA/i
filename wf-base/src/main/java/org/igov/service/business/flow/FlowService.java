@@ -51,6 +51,9 @@ public class FlowService implements ApplicationContextAware {
     
     private static final long DEFAULT_FLOW_PROPERTY_CLASS = 1l;
     private static final String SUFFIX_AUTO = "auto";
+    public static final int DAYS_IN_MONTH = 30;
+    public static final int WORK_DAYS_NEEDED = 20;
+    public static final int DAYS_IN_HALF_YEAR = 180;
     @Autowired
     private FlowSlotDao flowSlotDao;
     
