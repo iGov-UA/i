@@ -87,7 +87,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановна ${firstName_UA1} ${middleName_UA1}!</strong><br><br>
 Ваше звернення передано у ${sNameOrgan}.<br>
-Приходьте ${visitDate1} за адресою ${sAddress}<br>
+Приходьте ${date_of_visit} за адресою ${sAddress}<br>
 При собі треба мати:<br>
 
 <br>
@@ -111,7 +111,7 @@
       <extensionElements>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час відвідування відділу ДРАЦС" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -125,7 +125,7 @@
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextMother" name=" " type="label" default="Відомості про матір"></activiti:formProperty>
+        <activiti:formProperty id="sTextMother_1" name=" " type="label" default="Відомості про матір:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я матері; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові матері; ;writable=false" type="string"></activiti:formProperty>
@@ -137,7 +137,7 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportMother" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу матері; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextFather" name=" " type="label" default="Відомості про батька"></activiti:formProperty>
+        <activiti:formProperty id="sTextFather_2" name=" " type="label" default="Відомості про батька:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище батька; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я батька; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові батька; ;writable=false" type="string"></activiti:formProperty>
@@ -150,7 +150,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextChild" name=" " type="label" default="Відомості про дитину"></activiti:formProperty>
+        <activiti:formProperty id="sTextChild_1" name=" " type="label" default="Відомості про дитину:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові дитини; ;writable=false" type="string"></activiti:formProperty>
@@ -163,6 +163,7 @@
           <activiti:value id="accept" name="Послуга надана"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
