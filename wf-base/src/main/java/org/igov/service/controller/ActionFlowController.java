@@ -1123,7 +1123,7 @@ public class ActionFlowController {
 	        + "\n```\n" )
     @ApiResponses(value = {@ApiResponse(code = 200, message = "json перечисление всех сгенерированных слотов\n"
             + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
-    @RequestMapping(value = "/buildFlowSlotsTest", method = RequestMethod.GET)
+    @RequestMapping(value = "/buildFlowSlot", method = RequestMethod.GET)
     public
     @ResponseBody
      void buildFlowSlot(){
