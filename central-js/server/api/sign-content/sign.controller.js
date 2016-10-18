@@ -70,7 +70,8 @@ module.exports.signContent = function (req, res) {
           result.signResult = signResult;
           callbackAsync(null, result);
         }
-      });
+      },
+      req.session.subject.sID);
 
     function originalURL(req, options) {
       options = options || {};

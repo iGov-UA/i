@@ -35,6 +35,10 @@ public interface HistoryEvent_ServiceDao extends EntityDao<Long, HistoryEvent_Se
     Long getClaimCountHistory(String sID_UA, Long nID_Service,Long nID_StatusType);
 
     List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt, DateTime dateTo, List<Long> anID_Service_Exclude);
+    
+    List<HistoryEvent_Service> getHistoryEventPeriodByCreate(DateTime dateAt, DateTime dateTo, List<Long> anID_Service_Exclude);
+    
+    List<HistoryEvent_Service> getHistoryEventPeriodByClose(DateTime dateAt, DateTime dateTo, List<Long> anID_Service_Exclude);
 
     /**
      * method analyses HistoryEvent_Service records filters them and perform grouping an aggregations
