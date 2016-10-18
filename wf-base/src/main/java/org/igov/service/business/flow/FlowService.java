@@ -841,8 +841,7 @@ public class FlowService implements ApplicationContextAware {
         LOG.info(" oDateStart = {}", oDateStart);
         List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
         for (Flow_ServiceData flow : aFlowServiceData) {
-                LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
+                if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
                 LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
                 
