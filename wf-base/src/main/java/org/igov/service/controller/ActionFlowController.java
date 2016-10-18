@@ -1126,13 +1126,7 @@ public class ActionFlowController {
     @RequestMapping(value = "/buildFlowSlotsTest", method = RequestMethod.GET)
     public
     @ResponseBody
-     void buildFlowSlotsTest(
-	    @ApiParam(value = "номер-ИД потока (обязательный если нет sID_BP)", required = false) @RequestParam(value = "nID_Flow_ServiceData", required = false) Long nID_Flow_ServiceData,
-	    @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = true) String sID_BP,
-	    @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
-	    @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = true) String sDateStart,
-	    @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = true) String sDateStop,
-	    @ApiParam(value = "кол-во дней", required = false) @RequestParam(value = "nCountAutoGenerate", required = true) Long nCountAutoGenerate){
+     void buildFlowSlotsTest(){
             oFlowService.buildFlowSlots();
     }
     
