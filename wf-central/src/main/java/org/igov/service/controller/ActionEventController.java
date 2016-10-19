@@ -735,7 +735,7 @@ public class ActionEventController {
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         //sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                         //sDateCreate = (Date)(((JSONObject) new JSONParser().parse(oJSONObject.get("oProcess").toString())).get("sDateCreate"));
-                        asCell.add(sDateCreate.toString());
+                        asCell.add("");
                     }
                     else
                     {
