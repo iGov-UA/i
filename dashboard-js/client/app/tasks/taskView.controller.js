@@ -28,6 +28,7 @@
           for (var i = 0; i < taskForm.length; i++) {
             if (taskForm[i].id.includes(id)) return taskForm[i].value;
           }
+          return null;
         }
 
         function convertUsersToEnum(aoUser) {
