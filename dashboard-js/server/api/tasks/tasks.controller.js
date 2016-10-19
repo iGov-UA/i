@@ -7,6 +7,10 @@ var userService = require('../user/user.service');
 var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
+var environment = require('../../config/environment');
+var config = require(__dirname + '/../../..' + '/process.json').env;
+var request = require('request');
+
 /*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new nodeLocalStorage('./scratch');
@@ -467,6 +471,32 @@ exports.setTaskQuestions = function (req, res) {
     res.send(result);
   });
 };
+
+// отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
+exports.postServiceMessage = function(req, res){
+  var oData = req.body;
+  var oDateNew = {
+    'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
+    'sBody': oData.sBody,
+    'nID_SubjectMessageType' : 9,
+    'sMail': oData.sMail,
+    'soParams': oData.soParams
+  };
+  var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+  return request.post({
+    'url': sURL,
+    'auth': {
+      'username': config.Back_Central.sLogin_Back_Central,
+      'password': config.Back_Central.sPassword_Back_Central
+    },
+    'qs': oDateNew
+  }, callback);
+};
+
 
 exports.checkAttachmentSign = function (req, res) {
   var nID_Task = req.params.taskId;

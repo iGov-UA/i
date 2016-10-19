@@ -28,6 +28,6 @@ router.post('/:taskId/upload_content_as_attachment', controller.upload_content_a
 router.post('/setTaskQuestions', controller.setTaskQuestions);
 router.get('/:taskId/attachments/:attachmentId/checkAttachmentSign', controller.checkAttachmentSign);
 router.get('/:taskId/getMessageFile/:messageId/:fileName', controller.getMessageFile);
-
+router.post('/postServiceMessages', controller.postServiceMessage);
 
 module.exports = router;

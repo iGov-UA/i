@@ -6,6 +6,17 @@
     width: 150px;
     height: 34px;
   }
+  .open-full-info {
+    position:fixed;
+    top: 130px;
+    right: 10px;
+  }
+  .open-full-info a {
+    font-size: 24px;
+  }
+  .open-full-info a:hover {
+    text-decoration: none;
+  }
 </style>
 
 <div class="tasks-form-view">
@@ -21,6 +32,10 @@
   <div class="task-number-date" style="margin-bottom: 30px">
     <h3 class="display-inline-block">{{nID_Process + lunaService.getLunaValue(nID_Process)}}</h3>
     <span class="float-right">від {{creationDateFormatted(taskData.oProcess.sDateCreate)}}</span>
+  </div>
+
+  <div class="open-full-info">
+    <a class="btn btn-link glyphicon glyphicon-modal-window" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>
   </div>
 
   <div class="btn-group task-form-tabs" ng-if="!inUnassigned()">
@@ -149,7 +164,7 @@
       </div>
 
       <!--атачи-->
-      <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0 && !inUnassigned()">
+      <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0">
         <div class="addition-hr">
           <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
         </div>
