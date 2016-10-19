@@ -3,16 +3,17 @@
   <process id="common_zags_birth" name="Попередній запис на прийом щодо державної реєстрації народження дитини" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Зверніть увагу: Державна реєстрація народження дитини проводиться за місцем народження дитини або за місцем проживання її батьків чи одного з них. Державна реєстрація народження дитини проводиться не пізніше одного місяця від дня народження дитини.&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть зручну дату та час відвідування відділу ДРАЦС" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nDocMarriage" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини одне прізвище?" type="enum">
+        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини спільне прізвище?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -21,7 +22,7 @@
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextMother" name=" " type="label" default="Відомості про &lt;b&gt;матір&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextMother" name=" " type="label" default="&lt;b&gt;Відомості про матір&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я матері" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові матері" type="string"></activiti:formProperty>
@@ -33,7 +34,7 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportMother" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу матері" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextFather" name=" " type="label" default="Відомості про &lt;b&gt;батька&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextFather" name=" " type="label" default="&lt;b&gt;Відомості про батька&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові батька" type="string"></activiti:formProperty>
@@ -46,7 +47,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextChild" name=" " type="label" default="Відомості про &lt;b&gt;дитину&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextChild" name=" " type="label" default="&lt;b&gt;Відомості про дитину&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові дитини" type="string"></activiti:formProperty>
@@ -66,6 +67,7 @@
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_2.json')}"></activiti:formProperty>
       </extensionElements>
@@ -87,10 +89,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановна ${firstName_UA1} ${middleName_UA1}!</strong><br><br>
 Ваше звернення передано у ${sNameOrgan}.<br>
-Приходьте ${date_of_visit} за адресою ${sAddress}<br>
-При собі треба мати:<br>
-
-<br>
+Приходьте ${sNotification_day} за адресою ${sAddress}.<br><br>
+При собі треба мати оригінали всіх прикріплених до заяви документів.<br><br>
 <p>[cancelTask]</p>
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -106,7 +106,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час відвідування відділу ДРАЦС" type="queueData"></activiti:formProperty>
@@ -116,7 +116,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини одне прізвище?; ;writable=false" type="enum">
+        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини спільне прізвище?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -258,6 +258,17 @@ ${sMail_Signature}<br><br>
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task ParsDate" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('date_of_visit')
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var time=day+'.'+month+'.'+year+' к '+hour+':'+minutes
+execution.setVariable('sNotification_day', time)</script>
+    </scriptTask>
+    <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_birth">
     <bpmndi:BPMNPlane bpmnElement="common_zags_birth" id="BPMNPlane_common_zags_birth">
@@ -271,7 +282,7 @@ ${sMail_Signature}<br><br>
         <omgdc:Bounds height="30.0" width="30.0" x="380.0" y="175.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="65.0" width="161.0" x="450.0" y="135.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="161.0" x="652.0" y="135.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="65.0" width="161.0" x="450.0" y="240.0"></omgdc:Bounds>
@@ -294,6 +305,9 @@ ${sMail_Signature}<br><br>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="377.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="65.0" width="161.0" x="450.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="215.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="250.0" y="167.0"></omgdi:waypoint>
@@ -303,8 +317,9 @@ ${sMail_Signature}<br><br>
         <omgdi:waypoint x="450.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="530.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="530.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="611.0" y="272.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="530.0" y="305.0"></omgdi:waypoint>
@@ -334,6 +349,10 @@ ${sMail_Signature}<br><br>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="395.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="394.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="611.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="652.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
