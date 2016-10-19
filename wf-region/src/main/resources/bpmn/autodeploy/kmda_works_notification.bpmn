@@ -51,8 +51,8 @@
         <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_notif" name="[pattern/print/kiev/DABI_insp_napravlennya.html]" type="invisible" default="Направлення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_notif" name="Додаток 1;Повідомлення;pattern/print/kiev/DABI_insp_napravlennya.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_notif" name="Повідомлення" type="invisible" default="pattern/print/kiev/DABI_insp_napravlennya.html"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_req" name="Required_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_req.json')}"></activiti:formProperty> 
       </extensionElements>
@@ -113,7 +113,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${PrintForm_notif}]]></activiti:expression>
+            <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>          
       </extensionElements>
