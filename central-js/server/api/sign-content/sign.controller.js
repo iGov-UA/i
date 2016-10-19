@@ -56,6 +56,15 @@ module.exports.signContent = function (req, res) {
    * @param callbackAsync
    */
   function signContentAsync(result, callbackAsync) {
+
+    var mail = result.loadedContent.formData.params.email;
+
+    var fiscalData = {
+      "customerType":"physical",
+      "customerInn":req.session.subject.sID,
+      "email":mail
+    };
+    var stringfyFiscalDataToJSON = JSON.stringify(fiscalData);
     userService.signFiles(
       req.session.access.accessToken,
       url.resolve(
@@ -71,7 +80,7 @@ module.exports.signContent = function (req, res) {
           callbackAsync(null, result);
         }
       },
-      req.session.subject.sID);
+      stringfyFiscalDataToJSON);
 
     function originalURL(req, options) {
       options = options || {};
