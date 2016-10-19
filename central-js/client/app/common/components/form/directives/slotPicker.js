@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory) {
+angular.module('app').directive('slotPicker', function($http, $filter, dialogs, ErrorsFactory) {
 
   return {
     restrict: 'EA',
@@ -82,15 +82,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               scope.isConnectionServer = false;
               console.error('Error reserved slot ' + angular.toJson(data));
               var err = data.message.split(": response=");
-              if(data.message.indexOf('tapi.cherg.net') >= 0 && err[1]){
+              if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
                 if(data.message.indexOf('Время уже занято') >= 0){
                   dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
                 } else {
-                  dialogs.error('Помилка', err[1])
+                  dialogs.error('Помилка резервування слота на сервері ДМС', 'Відповідь сервера: ' + err[1])
                 }
                 scope.selected.slot = null;
               } else {
-                dialogs.error('Помилка', data.message);
+                dialogs.error('Помилка при резервуванні слота', 'Відповідь сервера: ' + data.message);
               }
             });
           }
@@ -246,7 +246,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         for (var sDate in data) if (data.hasOwnProperty(sDate)) {
           aDay.push({
             aSlot: [],
-            sDate: sDate
+            sDate: $filter('date')(new Date(sDate), 'yyyy-MM-dd')
           });
           angular.forEach(data[sDate], function (slot) {
             aDay[aDay.length - 1].aSlot.push({
