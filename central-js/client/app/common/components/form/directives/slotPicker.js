@@ -84,13 +84,24 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
               var err = data.message.split(": response=");
               if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
                 if(data.message.indexOf('Время уже занято') >= 0){
-                  dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
+                  ErrorsFactory.push({
+                    type: 'warning',
+                    text: 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка'
+                  });
                 } else {
-                  dialogs.error('Помилка резервування слота на сервері ДМС', 'Відповідь сервера: ' + err[1])
+                  ErrorsFactory.push({
+                    sType: 'danger',
+                    sBody: 'Помилка резервування слота на сервері ДМС.',
+                    sNote: 'Відповідь сервера: ' + err[1]
+                  });
                 }
                 scope.selected.slot = null;
               } else {
-                dialogs.error('Помилка при резервуванні слота', 'Відповідь сервера: ' + data.message);
+                ErrorsFactory.push({
+                  sType: 'danger',
+                  sBody: 'Помилка при резервуванні слота.',
+                  sNote: 'Відповідь сервера: ' + data.message
+                });
               }
             });
           }
@@ -114,7 +125,11 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
               scope.isConnectionServer = false;
               scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
               scope.selected.slot = null;
-              dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
+              //dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
+              ErrorsFactory.push({
+                type: 'danger',
+                text: 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка'
+              });
             });
           }
         }
@@ -200,17 +215,7 @@ angular.module('app').directive('slotPicker', function($http, $filter, dialogs, 
 
         scope.slotsLoading = true;
         scope.isConnectionServer = true;
-/*
-        return $http.get(sURL, {params:data}).then(function(response) {
-          scope.isConnectionServer = false;
-          if (isQueueDataType.DMS){
-            scope.slotsData = convertSlotsDataDMS(response.data);
-          } else if (isQueueDataType.iGov) {
-            scope.slotsData = response.data;
-          }
-          scope.slotsLoading = false;
-        });
-        */
+
         return $http.get(sURL, {params:data}).
         success(function (response) {
           scope.isConnectionServer = false;
