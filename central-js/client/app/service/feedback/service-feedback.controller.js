@@ -77,7 +77,10 @@
         });
 
         $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
+          var filters = o.sAuthorFIO.trim().match(/null/gi);
+
+          return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+            && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
         });
       });
 
@@ -192,22 +195,23 @@
         return;
       }
 
-      var result = '',
-        date = $.trim(dateStr),
-        parsedDate = new Date(date),
-        time = parsedDate.getHours() + ':' + parsedDate.getMinutes(),
-        today = moment().startOf('day'),
-        releaseDate = moment(date),
-        diffDays = today.diff(releaseDate, 'days', true);
+      var result = ''
+        , date = $.trim(dateStr)
+        , parsedDate = new Date(date)
+        , minutes = parsedDate.getMinutes()
+        , time = parsedDate.getHours() + ':' + (minutes < 10 ? '0' + minutes : minutes)
+        , today = moment().startOf('day')
+        , releaseDate = moment(date)
+        , diffDays = today.diff(releaseDate, 'days', true);
 
       if (diffDays < 0) {
         result = 'сьогодні ' + time;
       } else if (diffDays < 1) {
         result = ' вчора ' + time;
       } else if (Math.floor(diffDays) <= 4) {
-        result = Math.floor(diffDays) + ' дні назад ' + time;
+        result = diffDays.toFixed(0) + ' дні назад ' + time;
       } else {
-        result = Math.floor(diffDays) + ' днів назад ' + time;
+        result = diffDays.toFixed(0) + ' днів назад ' + time;
       }
 
       return result;

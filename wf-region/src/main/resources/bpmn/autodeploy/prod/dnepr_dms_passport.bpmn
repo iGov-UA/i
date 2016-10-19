@@ -16,21 +16,12 @@
           <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWarning2" name="Зверніть увагу" type="label" default="Для отримання другого закордонного паспорту перший повинен бути діючим, та потреба у другому має бути обргунтована у заяві (наявність діючих віз, документи про регулярні відрядження за кордон тощо)"></activiti:formProperty>
-        <activiti:formProperty id="asBiometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="sBiomNo" required="true">
-          <activiti:value id="sBiomNo" name="ні"></activiti:value>
-          <activiti:value id="sBiomYes" name="так"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWarning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
-        <activiti:formProperty id="sWarning123" name=" " type="label" default="У зв'язку з набуттям чинності ЗУ 1474-VIII, черга на жовтень буде відкрита лише після погодження режиму роботи ДМС"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMito" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAdminNotBio" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdminBio" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTwoZagran" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
@@ -97,50 +88,45 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;
-Чекаємо Вас за адресою: ${sAddress}&lt;br&gt;
-для оформлення закордонного паспорта
-&lt;/p&gt;
-&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>
+Чекаємо Вас за адресою: ${sAddress}<br>
+для оформлення закордонного паспорта<br>
 Дата та час візиту: ${date_of_visit}.
-&lt;/p&gt;
-&lt;p&gt;
-									&lt;b&gt;Реквізити для сплати держмита доступні за &lt;a href="${sMito}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги з оформлення біометричного паспорту доступні за &lt;a href="${sAdminBio}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги з оформлення небіометричного паспорту доступні за &lt;a href="${sAdminNotBio}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Зверніть увагу:&lt;/b&gt; В квитанції дані платника  повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.&lt;br&gt;
-									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за &lt;a href="${sTwoZagran}" target="_blank"&gt;&lt;b&gt;реквізитами&lt;/b&gt;&lt;/a&gt;, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формармах нижче в листі.
-								&lt;/p&gt;
-								&lt;p&gt;
-								&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:&lt;/b&gt;&lt;br&gt;
-									&lt;ul&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);&lt;/li&gt;
-										&lt;li&gt;оригінал та копію індивідуального податкового номеру (ІПН);&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на Вас;&lt;/li&gt;
+</p>
+<p>
+									Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 15-20 хвилин до обраного часу та сплатити за послугу.
+									<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.<br>
+									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти окремо, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
+								</p>
+								<p>
+								<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b><br>
+									<ul>
+										<li>оригінал та копію паспорта громадянина України;</li>
+										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
+										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li>
+										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 										${sDocZagran}
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;	
-								&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-									&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
-										&lt;li&gt;Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати і захопити з собою ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.&lt;/li&gt;
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								
+									</ul>
+								</p>
+									<b>Зверніть увагу:</b> 
+									<ul>
+										<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
+										<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати і захопити з собою ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.</li>
+									</ul>
+								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
+								<p>[cancelTask]</p>       								
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br&gt;
+${sNameOrgan},<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -149,89 +135,11 @@ ${sNameOrgan},&lt;br&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="exclusivegateway2"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomNo'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі [sID_Order].&lt;br&gt;
-								Ви замовили паспорт без електронного носія.
-								&lt;/p&gt;
-								&lt;p&gt;
-								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
-								&lt;ul&gt;
-								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
-								&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;
-									&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
-									День та час - ${date_of_visit}
-								&lt;/p&gt;
-								&lt;p&gt;
-									&lt;b&gt;Реквізити для сплати держмита доступні за &lt;a href="${sMito}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги з оформлення небіометричного паспорту доступні за &lt;a href="${sAdminNotBio}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Зверніть увагу:&lt;/b&gt; В квитанції дані платника  повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.&lt;br&gt;
-									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за &lt;a href="${sTwoZagran}" target="_blank"&gt;&lt;b&gt;реквізитами&lt;/b&gt;&lt;/a&gt;, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формармах нижче в листі.
-								&lt;/p&gt;
-								&lt;p&gt;
-								&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:&lt;/b&gt;&lt;br&gt;
-									&lt;ul&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);&lt;/li&gt;
-										&lt;li&gt;оригінал та копію індивідуального податкового номеру (ІПН);&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на Вас;&lt;/li&gt;
-										${sDocZagran}
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;	
-								&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-									&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
-										&lt;li&gt;Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати і захопити з собою ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.&lt;/li&gt;
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
-								&lt;p&gt;[cancelTask]&lt;/p&gt;                
-								[pattern/mail/_common_signature_start.html]
-								${sNameOrgan},&lt;br&gt;
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomYes'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -240,62 +148,57 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі [sID_Order].&lt;br&gt;
-								Ви замовили паспорт з електронним носієм (біометричний).
-								&lt;/p&gt;
-								&lt;p&gt;
-								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
-								&lt;ul&gt;
-								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
-								&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
-										День та час - ${date_of_visit}
-									&lt;/p&gt;
-								&lt;p&gt;
-								&lt;p&gt;
-									&lt;b&gt;Реквізити для сплати держмита доступні за &lt;a href="${sMito}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги з оформлення біометричного паспорту доступні за &lt;a href="${sAdminBio}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;&lt;br&gt;
-									&lt;b&gt;Зверніть увагу:&lt;/b&gt; В квитанції дані платника  повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС просимо наголосити це в банку, в іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.&lt;br&gt;
-									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти за &lt;a href="${sTwoZagran}" target="_blank"&gt;&lt;b&gt;реквізитами&lt;/b&gt;&lt;/a&gt;, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формармах нижче в листі.
-								&lt;/p&gt;
-								&lt;p&gt;
-								&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:&lt;/b&gt;&lt;br&gt;
-									&lt;ul&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-										&lt;li&gt;оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);&lt;/li&gt;
-										&lt;li&gt;оригінал та копію індивідуального податкового номеру (ІПН);&lt;/li&gt;
-										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на Вас;&lt;/li&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+							    <p>
+							    Ваш запит був успішно зареєстрований у нашій системі [sID_Order].<br>
+								Для того щоб закінчити процедуру необхідно:<br>
+								<ul>
+								<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.</li>
+								<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
+								</ul>
+								</p>
+								<p>
+									<b>Деталі зустрічі:</b><br>
+									Дата та час візиту: ${date_of_visit}
+								</p>
+								<p>
+									Для отримання реквізитів для сплати Вам потрібно з'явитись у підрозділ ДМС за 15-20 хвилин до обраного часу та сплатити за послугу.
+									<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.<br>
+									Також, якщо Ви бажаєте залишити попередній, ще діючий паспорт необхідно сплатити кошти окремо, також просимо роздруковувати, заповнювати і приносити заяву на залишення попереднього закордонного паспорта, яка знаходиться в додаткових формах нижче в листі.
+								</p>
+								<p>
+								<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b><br>
+									<ul>
+										<li>оригінал та копію паспорта громадянина України;</li>
+										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
+										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li>
+										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 										${sDocZagran}
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;	
-								&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-									&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
-										&lt;li&gt;Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати і захопити з собою ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.&lt;/li&gt;
-									&lt;/ul&gt;
-								&lt;/p&gt;
-								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
-								&lt;p&gt;[cancelTask]&lt;/p&gt;                
+									</ul>
+								</p>
+								<p>	
+								<b>Зверніть увагу:</b> 
+									<ul>
+										<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
+										<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.</li>
+									</ul>
+								</p>
+								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
+								<p>[cancelTask]</p>                
 								[pattern/mail/_common_signature_start.html]
-								${sNameOrgan},&lt;br&gt;
+								${sNameOrgan},<br>
  								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]</activiti:expression>
+								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -313,10 +216,6 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:value id="sPaspChange" name="вже є, буде замінювати"></activiti:value>
           <activiti:value id="sPaspNo" name="буде отримувати в перший раз"></activiti:value>
           <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asBiometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
-          <activiti:value id="sBiomNo" name="ні"></activiti:value>
-          <activiti:value id="sBiomYes" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
@@ -340,7 +239,7 @@ ${sNameOrgan},&lt;br&gt;
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -349,20 +248,20 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
                               		Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон".
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
+                              		</p>
+                              		<p>
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -383,13 +282,13 @@ ${sNameOrgan},&lt;br&gt;
         <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="183.0" y="85.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway3" id="BPMNShape_parallelgateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="92.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="339.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="323.0" y="199.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="342.0" y="199.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="403.0" y="196.0"></omgdc:Bounds>
@@ -398,31 +297,25 @@ ${sNameOrgan},&lt;br&gt;
         <omgdc:Bounds height="55.0" width="111.0" x="506.0" y="189.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="796.0" y="253.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="403.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="22.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="676.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="85.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="403.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="629.0" y="85.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="543.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="830.0" y="92.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="730.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="910.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="770.0" y="92.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="906.0" y="188.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="790.0" y="188.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="48.0" y="112.0"></omgdi:waypoint>
@@ -434,18 +327,18 @@ ${sNameOrgan},&lt;br&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="168.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="183.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="288.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="339.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="340.0" y="132.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="199.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="358.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="403.0" y="216.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
@@ -457,61 +350,47 @@ ${sNameOrgan},&lt;br&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="617.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="790.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="790.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="132.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="423.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="422.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="796.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="422.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="676.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="432.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="360.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="403.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="423.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="423.0" y="49.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="49.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="605.0" y="49.0"></omgdi:waypoint>
-        <omgdi:waypoint x="681.0" y="49.0"></omgdi:waypoint>
-        <omgdi:waypoint x="681.0" y="85.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="443.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="112.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="605.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="629.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="543.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="734.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="648.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="673.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="810.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="830.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="713.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="850.0" y="132.0"></omgdi:waypoint>
-        <omgdi:waypoint x="850.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="906.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="215.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="870.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1027.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1027.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="1011.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1027.0" y="215.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1027.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="895.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

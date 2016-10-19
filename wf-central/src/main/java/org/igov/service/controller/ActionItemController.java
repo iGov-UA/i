@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 
 import org.igov.model.action.item.ServiceTag;
 import org.igov.model.action.item.ServiceTagLink;
@@ -470,8 +471,11 @@ public class ActionItemController {
         preparedService.setLaw(oService.getLaw());
         preparedService.setOpenedLimit(oService.getOpenedLimit());
         preparedService.setOrder(oService.getOrder());
-        preparedService.setSub(oService.getSub());
-        preparedService.setStatus(oService.getStatusID());
+
+        List<ServiceData> serviceDataFiltered = oService.getServiceDataFiltered(generalConfig.isSelfTest());
+        preparedService.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);
+        preparedService.setStatus(Service.calcStatusID(oService.getServiceDataList(), preparedService.getSub()));
+
         preparedService.setSubjectOperatorName(oService.getSubjectOperatorName());
 
         if (withServiceData) {
@@ -975,21 +979,29 @@ public class ActionItemController {
             @ApiParam(value
                     = "строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
                     + "в имени которых встречается значение этого параметра, без учета регистра.", required = false)
-            @RequestParam(value = "sFind", required = false) final String sFind, @ApiParam(value
+            @RequestParam(value = "sFind", required = false) String sFind, @ApiParam(value
                     = "массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
                     + "Если указан другой ID, фильтр не применяется.", required = false)
-            @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
+            @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA, 
+            @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
             @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
             @RequestParam(value = "nID_Category", required = true) Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
             @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
-        final boolean includeServices = StringUtils.isNotBlank(sFind);
+        boolean includeServices = StringUtils.isNotBlank(sFind);
+        if(!includeServices && CollectionUtils.isNotEmpty(asID_Place_UA)){
+            includeServices=true;
+            sFind="";
+        }
+        
         if (includeServices) {
             nID_Category = null;
         }
 
         List<ServiceTagTreeNodeVO> res = serviceTagService.getCatalogTreeTag(nID_Category, sFind, asID_Place_UA,
                 bShowEmptyFolders, includeServices, null, null);
+        
+        // (asID_Place_UA!=null&&asID_Place_UA.size()>0&&asID_Place_UA.get(0).trim().length()>0)
         if (includeServices) {
             res.forEach(n -> n.setaService(n.getaService().stream().map(
                         s -> prepareServiceToView(s, false)).collect(Collectors.toList())));

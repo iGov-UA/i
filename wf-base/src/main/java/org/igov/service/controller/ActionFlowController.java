@@ -974,10 +974,10 @@ public class ActionFlowController {
 	@ResponseBody
 	String getSlots(
 			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
-			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
+			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "30") @RequestParam(value = "nDays", required = false, defaultValue = "30") int nDays
 	) throws Exception {
-		if (nDays > 7) {
-			nDays = 7;
+		if (nDays > 60) {
+			nDays = 60;
 		}
 		DateTime oDate = DateTime.now();
 		JSONObject result = new JSONObject();
