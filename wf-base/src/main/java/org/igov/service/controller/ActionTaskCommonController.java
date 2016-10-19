@@ -1403,6 +1403,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param saField -- строка-массива полей (например:
      * "[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]"
      * ) // * @param nID_Process - ид заявки
+     * @param soParams
      * @param sMail -- строка электронного адреса гражданина // * @param
      * nID_Server - ид сервера
      * @param sHead -- строка заголовка письма //опциональный (если не задан, то
@@ -1439,7 +1440,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskQuestions(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
+            @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "soParams") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
