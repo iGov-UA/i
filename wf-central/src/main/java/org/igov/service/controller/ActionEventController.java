@@ -733,9 +733,8 @@ public class ActionEventController {
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                         
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
-                        sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
-                        
-                        sDateCreate = (Date) oJSONObject.get("sDateCreate");
+                        //sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
+                        sDateCreate = (Date)(((JSONObject) new JSONParser().parse(oJSONObject.get("oProcess").toString())).get("sDateCreate"));
                         asCell.add(sDateCreate.toString());
                     }
                     else
