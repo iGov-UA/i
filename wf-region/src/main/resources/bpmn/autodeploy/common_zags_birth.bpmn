@@ -3,16 +3,17 @@
   <process id="common_zags_birth" name="Попередній запис на прийом щодо державної реєстрації народження дитини" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Зверніть увагу: Державна реєстрація народження дитини проводиться за місцем народження дитини або за місцем проживання її батьків чи одного з них. Державна реєстрація народження дитини проводиться не пізніше одного місяця від дня народження дитини.&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть зручну дату та час відвідування відділу ДРАЦС" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nDocMarriage" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини одне прізвище?" type="enum">
+        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини спільне прізвище?" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -21,7 +22,7 @@
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextMother" name=" " type="label" default="Відомості про &lt;b&gt;матір&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextMother" name=" " type="label" default="&lt;b&gt;Відомості про матір&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я матері" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові матері" type="string"></activiti:formProperty>
@@ -33,7 +34,7 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportMother" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу матері" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextFather" name=" " type="label" default="Відомості про &lt;b&gt;батька&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextFather" name=" " type="label" default="&lt;b&gt;Відомості про батька&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові батька" type="string"></activiti:formProperty>
@@ -46,7 +47,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextChild" name=" " type="label" default="Відомості про &lt;b&gt;дитину&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sTextChild" name=" " type="label" default="&lt;b&gt;Відомості про дитину&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові дитини" type="string"></activiti:formProperty>
@@ -68,6 +69,7 @@
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_2.json')}"></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -116,7 +118,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини одне прізвище?; ;writable=false" type="enum">
+        <activiti:formProperty id="saSurname" name="Чи мають батьки дитини спільне прізвище?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
