@@ -268,16 +268,15 @@ module.exports.syncWithSubject = function (accessToken, done) {
   });
 };
 
-module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback, inn) {
+module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback, fdata) {
   var bankIDURLs = bankidUtil.getBaseURLs();
   var params = {};
-  if(inn) {
+  if(fdata) {
     params = {
       headers: {
         Authorization: bankidUtil.getAuth(accessToken),
         acceptKeyUrl: acceptKeyUrl,
-        customerInn: inn,
-        customerType: 'physical'
+        fiscalData: fdata
       }
     };
   } else {

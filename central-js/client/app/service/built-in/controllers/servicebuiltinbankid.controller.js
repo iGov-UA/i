@@ -300,7 +300,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               angular.extend($scope.data.formData, {
                 contentToSign: {
                   contentValue: $scope.data.formData.params[taxTemplateFileHandlerConfig.soPatternFilled],
-                  contentName: $scope.data.formData.params[data.fileFieldName].value + '.xml'
+                  contentName: data.sFileName
                 }
               });
 
