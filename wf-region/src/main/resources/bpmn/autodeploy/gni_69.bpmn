@@ -47,6 +47,16 @@
         <activiti:formProperty id="sMailClerkGni69" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
 
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
+
+
+
+
+
+<!--  Вставка автоподписания ЭЦП начало -->
+	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
+<!--  Вставка автоподписания ЭЦП конец  -->
+
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
