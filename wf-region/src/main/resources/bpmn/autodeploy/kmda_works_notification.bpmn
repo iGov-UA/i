@@ -51,19 +51,20 @@
         <activiti:formProperty id="sGenLegalAddress" name="Місцезнаходження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" required="true"></activiti:formProperty>
-              
+        <activiti:formProperty id="sBody_notif" name="[pattern/print/kiev/DABI_insp_napravlennya.html]" type="invisible" default="Направлення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_notif" name="Додаток 1;Повідомлення;pattern/print/kiev/DABI_insp_napravlennya.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_req" name="Required_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_req" name="Required_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_req.json')}"></activiti:formProperty> 
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask_step3"></sequenceFlow>
     <userTask id="usertask_step3" name="3. Реєстрація вхідного документу " activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Ідентифікаційні дані:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
         </activiti:formProperty>          
-        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Ідентифікаційні дані:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -109,6 +110,12 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${PrintForm_notif}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>          
       </extensionElements>
     </userTask>
     <userTask id="usertask_step6" name="6. Ознайомлення керівником Управління дозвільних процедур та визначення відповідального" activiti:candidateGroups="kyiv_dabi_permit_boss">
@@ -163,18 +170,14 @@
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoicePermissionDepartment" name="Відповідальний співробітник" type="enum" required="true">
-          <activiti:value id="sEnumPermit_1" name="Empoyee_1"></activiti:value>
-          <activiti:value id="sEnumPermit_2" name="Empoyee_2"></activiti:value>
-          <activiti:value id="sEnumPermit_3" name="Empoyee_3"></activiti:value>
-          <activiti:value id="sEnumPermit_4" name="Empoyee_4"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step8" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step8" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
         <activiti:formProperty id="sBossPermitComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_hide_6" name="Show-hide-6" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_6hide.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask_step8" name="8. Перевірка повноти даних та приняття рішення" activiti:candidateGroups="kyiv_dabi_permit_empl">
+    <userTask id="usertask_step8" name="8. Перевірка повноти даних та приняття рішення">
       <extensionElements>        
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Ідентифікаційні дані:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
@@ -238,6 +241,11 @@
           <activiti:value id="sEnumSignDirector" name="Директор"></activiti:value>
           <activiti:value id="sEnumSignDeputy" name="Заступник директора"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_hide_6" name="Show-hide-DocComments" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_6hide.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_hide_8" name="Show-hide-8" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_8hide.json')}"></activiti:formProperty>
@@ -445,8 +453,14 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${PrintForm_notif}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+
       </extensionElements>
     </userTask>
     <userTask id="usertask_step5" name="5. Ознайомлення заступником директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
@@ -500,7 +514,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
