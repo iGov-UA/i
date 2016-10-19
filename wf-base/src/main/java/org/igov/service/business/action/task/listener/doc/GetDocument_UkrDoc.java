@@ -15,7 +15,6 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

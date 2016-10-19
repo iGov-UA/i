@@ -1,8 +1,6 @@
 package org.igov.model.action.item;
 
-import org.igov.model.access.AccessServiceRole;
 import org.igov.model.core.AbstractEntity;
-import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
