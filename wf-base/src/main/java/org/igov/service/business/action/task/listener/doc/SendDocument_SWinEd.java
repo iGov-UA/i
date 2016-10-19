@@ -142,8 +142,8 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 .append("<Send xmlns=\"http://govgate/\">")
                 .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
                 .append("<senderEMail>olga.kuzminova87@gmail.com</senderEMail>")
-                //.append("<data>").append(base64_encode(content)).append("</data>")
-                .append("<data>").append(content).append("</data>")
+                .append("<data>").append(base64_encode(content)).append("</data>")
+                //.append("<data>").append(content).append("</data>")
                 .append("</Send>")
                 .append("</soap:Body>")
                 .append("</soap:Envelope>").toString();
