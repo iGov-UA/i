@@ -1,19 +1,29 @@
 <div class="slot-picker">
   <div ng-show="slotsLoading || slotsData.aDay.length > 0">
-    <div class="slot-day">
-        <select class="form-control"
-                ng-model="selected.date"
-                ng-options="slotDate.sDate for slotDate in slotsData.aDay"
-                ng-disabled="slotsLoading"></select>
-    </div>
-    <div class="slot-time">
-        <select class="form-control"
-                ng-disabled="!selected.date || slotsLoading || unreadyRequestDMS()"
-                ng-model="selected.slot"
-                ng-options="slot.sTime for slot in selected.date.aSlot"></select>
-    </div>
+    <table>
+      <tr>
+        <td style="width: 20px">
+          <span class="small-loading" ng-show="isConnectionServer" title="Очікується відповідь від сервера..." style="margin-left: 2px; margin-right: 2px"></span>
+        </td>
+        <td>
+          <div class="slot-day">
+            <select class="form-control"
+                    ng-model="selected.date"
+                    ng-options="slotDate.sDate for slotDate in slotsData.aDay"
+                    ng-disabled="slotsLoading"></select>
+          </div>
+        </td>
+        <td>
+          <div class="slot-time">
+            <select class="form-control"
+                    ng-disabled="!selected.date || slotsLoading || unreadyRequestDMS()"
+                    ng-model="selected.slot"
+                    ng-options="slot.sTime for slot in selected.date.aSlot"></select>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
-
   <div ng-show="!slotsLoading && slotsData.aDay.length == 0">
     На жаль, по обраній послузі більше не залишилось місць в електронній черзі.
     Спробуйте пізніше, коли з'являться нові доступні місця у черзі, або інше територіальне відділення.

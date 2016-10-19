@@ -16,6 +16,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         slot: null
       };
 
+      scope.isConnectionServer = false;
+
       scope.$watch('selected.date', function() {
         scope.selected.slot = null;
       });
@@ -65,8 +67,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sSubjectPassport: getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value),
               sSubjectPhone: scope.formData.params.phone.value || ''
             };
+            scope.isConnectionServer = true;
             $http.post('/api/service/flow/DMS/setSlotHold', data).
             success(function(data, status, headers, config) {
+              scope.isConnectionServer = false;
               scope.ngModel = JSON.stringify({
                 reserved_to: data.reserved_to,
                 reserve_id: data.reserve_id,
@@ -75,6 +79,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
             error(function(data, status, headers, config) {
+              scope.isConnectionServer = false;
               console.error('Error reserved slot ' + angular.toJson(data));
               var err = data.message.split(": response=");
               if(data.message.indexOf('tapi.cherg.net') >= 0 && err[1]){
@@ -97,13 +102,16 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               if (nSlots > 1)
                 setFlowUrl += '&nSlots=' + nSlots;
             }
+            scope.isConnectionServer = true;
             $http.post(setFlowUrl).then(function (response) {
+              scope.isConnectionServer = false;
               scope.ngModel = JSON.stringify({
                 sID_Type: "iGov",
                 nID_FlowSlotTicket: response.data.nID_Ticket,
                 sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
               });
             }, function () {
+              scope.isConnectionServer = false;
               scope.selected.date.aSlot.splice(scope.selected.date.aSlot.indexOf(scope.selected.slot), 1);
               scope.selected.slot = null;
               dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
@@ -191,8 +199,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         }
 
         scope.slotsLoading = true;
-
+        scope.isConnectionServer = true;
+/*
         return $http.get(sURL, {params:data}).then(function(response) {
+          scope.isConnectionServer = false;
           if (isQueueDataType.DMS){
             scope.slotsData = convertSlotsDataDMS(response.data);
           } else if (isQueueDataType.iGov) {
@@ -200,6 +210,34 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
           scope.slotsLoading = false;
         });
+        */
+        return $http.get(sURL, {params:data}).
+        success(function (response) {
+          scope.isConnectionServer = false;
+          if (isQueueDataType.DMS){
+            scope.slotsData = convertSlotsDataDMS(response);
+          } else if (isQueueDataType.iGov) {
+            scope.slotsData = response;
+          }
+          scope.slotsLoading = false;
+        }).
+        error(function (err) {
+          scope.isConnectionServer = false;
+          scope.slotsLoading = false;
+          if (isQueueDataType.DMS){
+            ErrorsFactory.push({
+              sType: 'warning',
+              sBody: 'Виникла помилка при отриманні данних від сервера ДМС. Будь ласка, повторіть спробу пізніше.',
+              sNote: 'Детальніше: ' + JSON.toString(err)
+            });
+          } else if (isQueueDataType.iGov) {
+            ErrorsFactory.push({
+              sType: 'warning',
+              sBody: 'Виникла помилка при отриманні данних від сервера ДМС. Будь ласка, повторіть спробу пізніше.',
+              sNote: 'Детальніше: ' + JSON.toString(err)
+            });
+          }
+        }.bind(this));
       };
 
       function convertSlotsDataDMS(data) {
