@@ -8,47 +8,76 @@
         <activiti:formProperty id="tooltiptext" name="какой текст показать в дашборде после нажатия на кнопку обработки?" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка заявки" activiti:candidateGroups="kyiv_dabi_permit_boss">
+    <userTask id="usertask1" name="Перевірка кількості полів" activiti:candidateGroups="kyiv_dabi_permit_boss">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bFavorite" name="Фаворит;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite" type="enum">
-          <activiti:value id="Favorite" name="Так, фаворит"></activiti:value>
-          <activiti:value id="NotFavorite" name="Ні, нефаворит"></activiti:value>
+        <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHowInspection" name="Вид перевірки" type="enum" writable="false">
+          <activiti:value id="sEnumSchedule" name="планова"></activiti:value>
+          <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bFavorite1" name="Фаворит1;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite1" type="enum">
-          <activiti:value id="Favorite1" name="Так, фаворит1"></activiti:value>
-          <activiti:value id="NotFavorite1" name="Ні, нефаворит1"></activiti:value>
+        <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultChecking" name="Результат перевірки" type="enum">
+          <activiti:value id="sEnumResultThirdPerson" name="Залучити треті особи для проведення перевірки"></activiti:value>
+          <activiti:value id="sEnumResultGenerate" name="Сформувати результат перевірки"></activiti:value>
+          <activiti:value id="sEnumResultClose" name="Закриття перевірки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bFavorite11" name="Фаворит11;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite11" type="enum">
-          <activiti:value id="Favorite11" name="Так, фаворит"></activiti:value>
-          <activiti:value id="NotFavorite11" name="Ні, нефаворит"></activiti:value>
+        <activiti:formProperty id="asNumberOfThirdPerson" name="Кількість третіх осіб" type="enum">
+          <activiti:value id="sEnumThirdPerson_0" name="-"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_1" name="1"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_2" name="2"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_3" name="3"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_4" name="4"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_5" name="5"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_6" name="6"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_7" name="7"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_8" name="8"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_9" name="9"></activiti:value>
+          <activiti:value id="sEnumThirdPerson_10" name="10"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bFavorite2" name="Фаворит2;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite2" type="enum" required="true">
-          <activiti:value id="Favorite2" name="Так, фаворит2"></activiti:value>
-          <activiti:value id="NotFavorite2" name="Ні, нефаворит2"></activiti:value>
+        <activiti:formProperty id="nLetter_1" name="Лист (1-ша особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_1" name="Відповідь (1-ша особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_2" name="Лист (2-га особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_2" name="Відповідь (2-га особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_3" name="Лист (3-тя особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_3" name="Відповідь (3-тя особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_4" name="Лист (4-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_4" name="Відповідь (4-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_5" name="Лист (5-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_5" name="Відповідь (5-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_6" name="Лист (6-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_6" name="Відповідь (6-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_7" name="Лист (7-ма особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_7" name="Відповідь (7-ма особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_8" name="Лист (8-ма особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_8" name="Відповідь (8-ма особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_9" name="Лист (9-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_9" name="Відповідь (9-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_10" name="Лист (10-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_10" name="Відповідь (10-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNoteEmployeeInspection" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nLetterClose" name="Лист-закриття перевірки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="asSecondResultChecking" name="Результат перевірки" type="enum">
+          <activiti:value id="sEnumSecondResultThirdPerson" name="Залучити треті особи для проведення перевірки"></activiti:value>
+          <activiti:value id="sEnumSecondResultGenerate" name="Сформувати результат перевірки"></activiti:value>
+          <activiti:value id="sEnumSecondResultClose" name="Закриття перевірки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bFavorite22" name="Фаворит22;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite22" type="enum" required="true">
-          <activiti:value id="Favorite22" name="Так, фаворит22"></activiti:value>
-          <activiti:value id="NotFavorite22" name="Ні, нефаворит22"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFavorite3" name="Фаворит3;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite3" type="enum" default="NotFavorite3" required="true">
-          <activiti:value id="Favorite3" name="Так, фаворит2"></activiti:value>
-          <activiti:value id="NotFavorite3" name="Ні, нефаворит2"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFavorite4" name="Фаворит4;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=NotFavorite4" type="enum" default="Favorite4" required="true">
-          <activiti:value id="Favorite4" name="Так, фаворит2"></activiti:value>
-          <activiti:value id="NotFavorite4" name="Ні, нефаворит2"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFavorite5" name="Фаворит5;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite5" type="enum" default="NotFavorite5" required="true">
-          <activiti:value id="Favorite5" name="Так, фаворит5"></activiti:value>
-          <activiti:value id="NotFavorite5" name="Ні, нефаворит5"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="bFavorite6" name="Фаворит6;Виберіть фаворит-чи це або ні;sID_CheckboxTrue=Favorite6" type="enum" default="Favorite6" required="true">
-          <activiti:value id="Favorite6" name="Так, фаворит6"></activiti:value>
-          <activiti:value id="NotFavorite6" name="Ні, нефаворит6"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="сопроводительный текст" type="string" default="${tooltiptext}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2_req" name="requiredFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2_required.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3_req" name="requiredFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3_required.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${PrintForm_direct},${nOrderSchedule}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
