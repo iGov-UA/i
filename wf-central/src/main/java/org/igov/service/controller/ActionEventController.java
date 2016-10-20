@@ -716,11 +716,11 @@ public class ActionEventController {
                     ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                     
                     JSONObject osJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
-                    String testDate = osJSONObject.get("sDateTimeCreate") != null ? osJSONObject.get("sDateTimeCreate").toString() : "";
+                    //String testDate = osJSONObject.get("sDateTimeCreate") != null ? osJSONObject.get("sDateTimeCreate").toString() : "";
                     
                     
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : testDate);
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : " ");
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
                             ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : " ");
                     
