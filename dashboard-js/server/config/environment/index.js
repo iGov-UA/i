@@ -179,6 +179,7 @@ var all = {
     rest: config.getProperty('sURLBackRegionParts.suffix') || process.env.ACTIVITI_REST,
     username: config.getProperty('Back_Region.sLogin_Back_Region') || process.env.ACTIVITI_USER,
     password: config.getProperty('Back_Region.sPassword_Back_Region') || process.env.ACTIVITI_PASSWORD,
+    nID_Server: config.getProperty('Back_Region.nID_Server_Back_Region'),
     session: {
       //sessionIdle: process.env.ACTIVITI_SESSION_IDLE || 60 * 80, //sec show warning
       sessionIdle: config.getProperty('BackSession_Region.nIdleMS_BackSession_Region') || 60 * 80, //sec show warning
@@ -186,15 +187,16 @@ var all = {
       timeOut: config.getProperty('BackSession_Region.nTimeoutMS_BackSession_Region') || 60 * 20, //sec close session after warning
       //interval: process.env.ACTIVITI_SESSION_INTERVAL || 60 * 10 //sec update session
       interval: config.getProperty('BackSession_Region.nIntervalMS_BackSession_Region') || 60 * 10 //sec update session
-    },
-    activiti_central: {
-      prot: config.getProperty('sURLBackCentralParts.protocol') || process.env.ACTIVITI_PROT,
-      host: config.getProperty('sURLBackCentralParts.host') || process.env.ACTIVITI_HOST,
-      port: config.getProperty('sURLBackCentralParts.port') || process.env.ACTIVITI_PORT,
-      rest: config.getProperty('sURLBackCentralParts.suffix') || process.env.ACTIVITI_REST,
-      username: config.getProperty('Back_Central.sLogin_Back_Central') || process.env.ACTIVITI_USER,
-      password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD
     }
+  },
+
+  activiti_central: {
+    prot: config.getProperty('sURLBackCentralParts.protocol') || process.env.ACTIVITI_PROT,
+    host: config.getProperty('sURLBackCentralParts.host') || process.env.ACTIVITI_HOST,
+    port: config.getProperty('sURLBackCentralParts.port') || process.env.ACTIVITI_PORT,
+    rest: config.getProperty('sURLBackCentralParts.suffix') || process.env.ACTIVITI_REST,
+    username: config.getProperty('Back_Central.sLogin_Back_Central') || process.env.ACTIVITI_USER,
+    password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD
   },
 
   ssl: {

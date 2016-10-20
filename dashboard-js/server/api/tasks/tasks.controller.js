@@ -478,11 +478,11 @@ exports.postServiceMessage = function(req, res){
   var oDateNew = {
     'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : 9,
+    'nID_SubjectMessageType' : environment.activiti.nID_Server,
     'sMail': oData.sMail,
     'soParams': oData.soParams
   };
-  var central = environment.activiti.activiti_central;
+  var central = environment.activiti_central;
   var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
   var callback = function(error, response, body) {
     res.send(body);
