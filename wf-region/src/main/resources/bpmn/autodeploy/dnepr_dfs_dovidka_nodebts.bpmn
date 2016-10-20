@@ -3,7 +3,7 @@
   <process id="dnepr_dfs_dovidka_nodebts" name="ДФС - Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів" isExecutable="true">
     <documentation>
     	Рефакторинг 27.04.16 Ставицкий В.Д.
-    	Рефакторинг с 07.10.16 по 13.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
+    	Рефакторинг с 07.10.16 по 19.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
     </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -21,6 +21,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
 
@@ -49,11 +51,6 @@
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
 <!-  Бланк для скачивания конец  -->
 
-<!--  Вставка автоподписания ЭЦП начало -->
-	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
-<!--  Вставка автоподписания ЭЦП конец  -->
-
 
 		<activiti:formProperty id="sV" name="Галочка чи находитись ви в процесі адміністративного (судового) оскарження" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
@@ -70,6 +67,10 @@
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
 
+<!--  Вставка автоподписания ЭЦП начало -->
+	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
+<!--  Вставка автоподписания ЭЦП конец  -->
 
       </extensionElements>
     </startEvent>
