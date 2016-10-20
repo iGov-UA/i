@@ -698,7 +698,8 @@ public class ActionEventController {
 
                     if(bIncludeTaskInfo){
                                                                         
-                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" 
+                            + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                             
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
@@ -709,16 +710,25 @@ public class ActionEventController {
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                       
+                                
+                    sURL = sHost + "/service/action/task/getTaskData?nID_Task=" + oHistoryEvent_Service.getsID() 
+                            + "&sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    
+                    ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                    
+                    JSONObject osJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                    String testDate = osJSONObject.get("sDateTimeCreate") != null ? osJSONObject.get("sDateTimeCreate").toString() : "";
+                    
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "test");
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : testDate);
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "test");
+                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : testDate);
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
             oCSVWriter.close();
+            
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
         }
