@@ -18,14 +18,14 @@
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; приклад (49000, м.Дніпро, пр.Яворницького буд.100, кв.777)" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, для отримання послуги; послуга надається у відділенні відповідно до Вашого фактичного місця проживання" type="select" required="true" default="0"></activiti:formProperty>
-
         <activiti:formProperty id="asSelectWeapon_01" name="Тип зброї для придбання" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
           <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
           <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
           <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
         </activiti:formProperty>
+
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, для отримання послуги; послуга надається у відділенні відповідно до Вашого фактичного місця проживання" type="select" required="true" default="0"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectWeapon_01_01" name="Планується придбати наступну кількість одиниць зброї" type="enum" default="tf_01" required="true">
           <activiti:value id="tf_01" name="одну"></activiti:value>
@@ -85,7 +85,7 @@
         <activiti:formProperty id="fDoc_02" name="Медична довідка; (форма №127/о)" type="file" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_03" name="Довідка про вивчення матеріальної частини зброї, спеціальних засобів, правил поводження з ними та їх застосування" type="file" required="true" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="Info_08" name="Завантажити реквізити для сплати" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://igov.org.ua&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+<!--        <activiti:formProperty id="Info_08" name="Завантажити реквізити для сплати" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://igov.org.ua&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty> -->
         <activiti:formProperty id="fDoc_04" name="Квитанція про сплату вартості послуги; з відміткою банка (за наявності)" type="file" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="Info_07" name="Увага! Щоб замовити довідку про відсутність/наявність судимості" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://igov.org.ua/service/1/general&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
@@ -119,11 +119,10 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name=" e-mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Підтвердити, що громадянин отримав послугу"></activiti:value>
-          <activiti:value id="reject" name="Громадянин не з'явився для отримання послуги. Закрити заявку"></activiti:value>
-          <activiti:value id="reject2" name="Послуга не може бути надана. Закрити заявку"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні (до наданих документів)"></activiti:value>
+          <activiti:value id="reject" name="Є зауваження (до наданих документів)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Коментар щодо результату надання послуги " type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Коментар для заявника" type="textArea" required="true" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
