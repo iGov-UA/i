@@ -522,8 +522,10 @@ public class SubjectMessageController {
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
             
-            if(nID_SubjectMessageType==9){
+            LOG.info("nID_SubjectMessageType={}", nID_SubjectMessageType);
+            if(nID_SubjectMessageType.equals(Long.valueOf(9))){
                 //String sToken = Tool.getGeneratedToken();
+                LOG.info("Try send email! nID_SubjectMessageType={}", nID_SubjectMessageType);
                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
 
