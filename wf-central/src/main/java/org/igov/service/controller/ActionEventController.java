@@ -711,7 +711,7 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                 
-                    sURL = sHost + "/service/action/task/getTaskData?nID_Task=" + "&sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
                     
                     ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                     
@@ -720,7 +720,7 @@ public class ActionEventController {
                     
                     
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : testDate.toString());
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : testDate);
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
                             ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : " ");
                     
