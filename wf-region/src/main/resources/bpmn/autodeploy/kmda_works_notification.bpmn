@@ -55,6 +55,7 @@
         <activiti:formProperty id="form_signed" name="Підписати ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_req" name="Required_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_req.json')}"></activiti:formProperty> 
+        <activiti:formProperty id="marker_line" name="Lines_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_lines.json')}"></activiti:formProperty> 
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask_step3"></sequenceFlow>
@@ -108,8 +109,9 @@
         <activiti:formProperty id="sGenLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_line" name="Lines_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_lines.json')}"></activiti:formProperty> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -169,12 +171,11 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step8" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step8" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step8" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBossPermitComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_6" name="Show-hide-6" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_6hide.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask_step8" name="8. Перевірка повноти даних та приняття рішення">
@@ -228,7 +229,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBossPermitComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="sEnumDecisionOK" name="Надана повна інформація. Зареєструвати у реєстрі ДАБІ"></activiti:value>
@@ -247,8 +248,6 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_6" name="Show-hide-DocComments" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_6hide.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_8" name="Show-hide-8" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_8hide.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask_step8" targetRef="exclusivegateway2"></sequenceFlow>
@@ -304,7 +303,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBossPermitComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Прийняте рішення" type="enum" writable="false">
           <activiti:value id="sEnumDecisionOK" name="Надана повна інформація. Зареєструвати у реєстрі ДАБІ"></activiti:value>
@@ -314,8 +313,6 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_6" name="Show-hide-DocComments" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_6hide.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_8" name="Show-hide-BossComment" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_8hide.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask_step14" name="14. Підписання директором ДАБК" activiti:candidateGroups="kyiv_dabi_boss">
@@ -369,7 +366,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBossPermitComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Прийняте рішення" type="enum" writable="false">
           <activiti:value id="sEnumDecisionOK" name="Надана повна інформація. Зареєструвати у реєстрі ДАБІ"></activiti:value>
@@ -379,7 +376,6 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker_hide_8" name="Show-hide-8" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_8hide.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="usertask_step13" targetRef="exclusivegateway1"></sequenceFlow>
@@ -453,7 +449,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника відділу документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -514,7 +510,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника відділу документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -569,7 +565,7 @@
         <activiti:formProperty id="sGenPhone" name="Номер телефону підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Реєстрація вхідного документу:&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocComment" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocEmpComment" name="Коментар співробітника відділу документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_vis" name="Visible_markers" type="markers" default="${markerService.loadFromFile('KMDA/kmda_works_notification_main_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
