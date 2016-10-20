@@ -480,7 +480,7 @@ exports.postServiceMessage = function(req, res){
     'sBody': oData.sBody,
     'nID_SubjectMessageType' : 9,
     'sMail': oData.sMail,
-    'soParams': oData
+    'soParams': oData.soParams
   };
   var central = environment.activiti.activiti_central;
   var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
