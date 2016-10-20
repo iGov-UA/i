@@ -3,14 +3,14 @@
   <process id="common_zags_death" name="Попередній запис на прийом щодо державної реєстрації смерті" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        
-        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини" type="string" required="true"></activiti:formProperty> 
+        <activiti:formProperty id="sTable1" name="інфо; ;nRowsLimit=0" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;info_1&quot;,&quot;name&quot;:&quot;Зверніть увагу: Заява про державну реєстрацію смерті подається не пізніше трьох днів з дня настання смерті чи виявлення трупа, а в разі неможливості одержання лікарського свідоцтва про смерть, фельдшерської довідки про смерть - не пізніше п'яти днів. Державна реєстрація смерті проводиться за останнім місцем проживання померлого, за місцем настання смерті чи виявлення трупа або за місцем поховання&quot;,&quot;type&quot;:&quot;label&quot;,&quot;writible&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відповідний відділ ДРАЦС" type="select" default="0" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDeath" name="Дата смерті" type="date" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район де була зареєстрована померла людина" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації смерті?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDate1" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації смерті" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="saReasonDeathRegistration" name="Оберіть документ, який є підставою для державної реєстрації смерті" type="enum" required="true">
           <activiti:value id="sEnumMedical106" name="лікарське свідоцтво про смерть форми N 106/о"></activiti:value>
           <activiti:value id="sEnumMedical1061" name="фельдшерська довідка про смерть форми N 106-1/о"></activiti:value>
@@ -20,12 +20,12 @@
           <activiti:value id="sEnumRepression" name="повідомлення державного архіву або органів Служби безпеки України"></activiti:value>
           <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocReason" name="Завантажте відповідний документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
-       
+        <activiti:formProperty id="response" name="Ваша заявка прийнята" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
@@ -40,12 +40,11 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані автора звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини" type="string" writable="false"></activiti:formProperty> 
-        <activiti:formProperty id="sDateDeath" name="Дата смерті" type="date" writable="false"></activiti:formProperty>
-       
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані автора звернення; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPIB" name="Прізвище, ім'я та по батькові померлої людини; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDeath" name="Дата смерті; ;writable=false" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації смерті?" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saReasonDeathRegistration" name="Оберіть документ, який є підставою для державної реєстрації смерті" type="enum" writable="false">
           <activiti:value id="sEnumMedical106" name="лікарське свідоцтво про смерть форми N 106/о"></activiti:value>
@@ -57,7 +56,6 @@
           <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Причина закриття заявки; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="decide" name="результат" type="enum" required="true">
           <activiti:value id="accept" name="послуга надана"></activiti:value>
           <activiti:value id="reject" name="заявник не з'явився"></activiti:value>
