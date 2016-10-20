@@ -57,7 +57,7 @@
 
             if (itemWith_sID !== null) {
               var group = itemWith_sID.value;
-              itemWith_sID.writable = false;    // Hide obj with sID_Group
+              itemWith_sID.readable = false;    // Hide obj with sID_Group
 
               if (group !== null) {
                 item.type = "enum";
