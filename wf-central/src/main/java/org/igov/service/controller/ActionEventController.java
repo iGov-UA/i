@@ -597,7 +597,7 @@ public class ActionEventController {
 
         String[] headersMainField = {"sID_Order", "nID_Server",
             "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead",
-            "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClose", "nTask_ID"};
+            "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData", "sDateCreate", "sDateClose"};
         List<String> asHeader = new ArrayList<>();
         asHeader.addAll(Arrays.asList(headersMainField));
 
@@ -721,11 +721,11 @@ public class ActionEventController {
                     */
                     
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) :"");
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "Task_ID= " + oHistoryEvent_Service.getnID_Task().toString());
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) :"");
+                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "Task_ID= " + oHistoryEvent_Service.getnID_Task().toString());
                     
-                    asCell.add(oHistoryEvent_Service.getnID_Task().toString());
+                    //asCell.add(oHistoryEvent_Service.getnID_Task().toString());
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
