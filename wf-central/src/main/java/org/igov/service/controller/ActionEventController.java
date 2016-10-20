@@ -721,9 +721,9 @@ public class ActionEventController {
                     */
                     
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() + " | " + oHistoryEvent_Service.getsID() + " | " + oHistoryEvent_Service.getsID_Order());
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Region().toString() + " | " + oHistoryEvent_Service.getsID_Order());
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() + " | " + oHistoryEvent_Service.getsID() + " | " + oHistoryEvent_Service.getsID_Order());
+                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Region().toString() + " | " + oHistoryEvent_Service.getsID_Order());
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
