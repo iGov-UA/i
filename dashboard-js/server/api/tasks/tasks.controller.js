@@ -476,9 +476,9 @@ exports.setTaskQuestions = function (req, res) {
 exports.postServiceMessage = function(req, res){
   var oData = req.body;
   var oDateNew = {
-    'sID_Order': config.Back_Region.nID_Server_Back_Region + '-' + oData.nID_Process,
+    'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : environment.activiti.nID_Server,
+    'nID_SubjectMessageType' : 9,
     'sMail': oData.sMail,
     'soParams': oData.soParams
   };
