@@ -719,9 +719,9 @@ public class ActionEventController {
                     
                     
                     asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : " ");
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sURL);
                     asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : " ");
+                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sURL);
                     
                     //asCell.add(oHistoryEvent_Service.getnID_Task().toString());
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
