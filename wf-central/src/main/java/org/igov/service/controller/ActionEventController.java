@@ -680,36 +680,56 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getsBody());
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
+                   
+                    Integer nID_Server = oHistoryEvent_Service.getnID_Server();
+                    nID_Server = nID_Server == null ? 0 : nID_Server;
 
+                    nID_Server = generalConfig.getServerId(nID_Server);
+                    Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+                    if (!oOptionalServer.isPresent()) {
+                        throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+                    }
                     
+                    Server oServer = oOptionalServer.get();
+                    String sHost = oServer.getsURL();
+
+                    String sURL ="";
                     String sPhone = "";
+
                     if(bIncludeTaskInfo){
-                        Integer nID_Server = oHistoryEvent_Service.getnID_Server();
-                        nID_Server = nID_Server == null ? 0 : nID_Server;
-
-                        nID_Server = generalConfig.getServerId(nID_Server);
-                        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-                        if (!oOptionalServer.isPresent()) {
-                            throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
-                        }
-                        Server oServer = oOptionalServer.get();
-                        String sHost = oServer.getsURL();
-                        String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                                                                        
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" 
+                            + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-
+                            
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
+                                        
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "");
+                                
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    
+                    ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                    
+                    JSONObject osJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                    //String testDate = osJSONObject.get("sDateTimeCreate") != null ? osJSONObject.get("sDateTimeCreate").toString() : "";
+                    
+                    
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null 
+                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : " ");
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
+                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : " ");
+                    
+                    //asCell.add(oHistoryEvent_Service.getnID_Task().toString());
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
             oCSVWriter.close();
+            
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
         }
