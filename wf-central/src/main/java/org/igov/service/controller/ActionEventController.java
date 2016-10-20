@@ -713,9 +713,8 @@ public class ActionEventController {
                                 
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
                     
-                    ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                    
-                    JSONObject osJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                    //ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                                        //JSONObject osJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
                     //String testDate = osJSONObject.get("sDateTimeCreate") != null ? osJSONObject.get("sDateTimeCreate").toString() : "";
                     
                     
