@@ -24,9 +24,9 @@
           }
         }
 
-        function getGroup(id)  {
+        function getObjFromTaskForm(id)  {
           for (var i = 0; i < taskForm.length; i++) {
-            if (taskForm[i].id.includes(id)) return taskForm[i].value;
+            if (taskForm[i].id.includes(id)) return taskForm[i];
           }
           return null;
         }
@@ -43,22 +43,31 @@
           return aoNewUser;
         }
 
-        for(var i = 0; i < taskForm.length;i++) {
-          var item = taskForm[i];
-          if (item.id.includes("sLoginAsignee")) {
-            var asResult = getRegexContains(item.name, ';', "sSourceFieldID_sID_Group");
-            asResult = getRegexContains(asResult, ',', "sSourceFieldID_sID_Group");
-            var sID = asResult.split('=')[1];
-            var group = getGroup(sID);
-            if (group !== null) {
-              item.type = "enum";
-              user.getUsers(group).then(function (users) {
-                item.enumValues = convertUsersToEnum(users); }
-              );
+        fillingUsers();
+
+        function fillingUsers() {
+          var item = getObjFromTaskForm("sLoginAsignee");
+
+          if (item !== null){
+            var as = getRegexContains(item.name, ';', "sSourceFieldID_sID_Group");
+            as = getRegexContains(as, ',', "sSourceFieldID_sID_Group");
+            var sID = as.split('=')[1];
+
+            var itemWith_sID = getObjFromTaskForm(sID);
+
+            if (itemWith_sID !== null) {
+              var group = itemWith_sID.value;
+              itemWith_sID.writable = false;    // Hide obj with sID_Group
+
+              if (group !== null) {
+                item.type = "enum";
+                user.getUsers(group).then(function (users) {
+                  item.enumValues = convertUsersToEnum(users); }
+                );
+              }
             }
-            break;
           }
-        };
+        }
 
         activate();
 
