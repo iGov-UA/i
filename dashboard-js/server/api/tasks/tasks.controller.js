@@ -8,7 +8,6 @@ var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
-var config = require(__dirname + '/../../..' + '/process.json').env;
 var request = require('request');
 
 /*
@@ -491,8 +490,8 @@ exports.postServiceMessage = function(req, res){
   return request.post({
     'url': sURL,
     'auth': {
-      'username': config.Back_Central.sLogin_Back_Central,
-      'password': config.Back_Central.sPassword_Back_Central
+      'username': central.username,
+      'password': central.password
     },
     'qs': oDateNew
   }, callback);
