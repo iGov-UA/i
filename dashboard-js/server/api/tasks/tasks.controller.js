@@ -480,9 +480,10 @@ exports.postServiceMessage = function(req, res){
     'sBody': oData.sBody,
     'nID_SubjectMessageType' : 9,
     'sMail': oData.sMail,
-    'soParams': oData.soParams
+    'soParams': oData
   };
-  var sURL = config.Back_Central.sURL_Back_Central + '/subject/message/setServiceMessage';
+  var central = environment.activiti.activiti_central;
+  var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
   var callback = function(error, response, body) {
     res.send(body);
     res.end();
