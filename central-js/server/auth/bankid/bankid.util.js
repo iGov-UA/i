@@ -63,6 +63,7 @@ var baseURls = {
       info: '/ResourceService/checked/data',
       sign: '/ResourceService/checked/uploadFileForSignature',
       signFiles: '/ResourceService/checked/uploadFilesForSignature',
+      convertFileToPDF: '/ResourceService/checked/uploadFilesForConvert',
       claim: '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
     }
   }
@@ -78,6 +79,10 @@ module.exports.getInfoURL = function () {
 
 module.exports.getUploadFileForSignatureURL = function () {
   return getResourceURL(baseURls.resource.path.sign);
+};
+
+module.exports.getUploadFileForConvertURL = function (){
+  return getResourceURL(baseURls.resource.path.convertFileToPDF);
 };
 
 module.exports.getClientPdfClaim = function (codeValue) {
