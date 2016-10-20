@@ -193,15 +193,7 @@ var all = {
       port: config.getProperty('sURLBackCentralParts.port') || process.env.ACTIVITI_PORT,
       rest: config.getProperty('sURLBackCentralParts.suffix') || process.env.ACTIVITI_REST,
       username: config.getProperty('Back_Central.sLogin_Back_Central') || process.env.ACTIVITI_USER,
-      password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD,
-      session: {
-        //sessionIdle: process.env.ACTIVITI_SESSION_IDLE || 60 * 80, //sec show warning
-        sessionIdle: config.getProperty('BackSession_Central.nIdleMS_BackSession_Central') || 60 * 80, //sec show warning
-        //timeOut: process.env.ACTIVITI_SESSION_TIMEOUT || 60 * 20, //sec close session after warning
-        timeOut: config.getProperty('BackSession_Central.nTimeoutMS_BackSession_Central') || 60 * 20, //sec close session after warning
-        //interval: process.env.ACTIVITI_SESSION_INTERVAL || 60 * 10 //sec update session
-        interval: config.getProperty('BackSession_Central.nIntervalMS_BackSession_Central') || 60 * 10 //sec update session
-      }
+      password: config.getProperty('Back_Central.sPassword_Back_Central') || process.env.ACTIVITI_PASSWORD
     }
   },
 
