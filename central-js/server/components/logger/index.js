@@ -1,8 +1,9 @@
 var winston = require('winston')
   , uuid = require('node-uuid')
-  , dateFormat = require('dateformat');
+  , dateFormat = require('dateformat')
+  , config = require('./../../config/environment');
 
-var logger = new (winston.Logger)({
+var logger = config.debug ? new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({
       'timestamp': function () {
@@ -10,10 +11,14 @@ var logger = new (winston.Logger)({
       }
     })
   ]
+}) : new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)({})
+  ]
 });
 
 function createMetadata(module, metadata) {
-  if(metadata) {
+  if (metadata) {
     return {meta: metadata, module: module.id};
   } else {
     return {module: module.id};
@@ -38,10 +43,15 @@ module.exports.createLogger = function (module) {
       logger.log('debug', '[\*\] ' + '.....' + message, createMetadata(module, metadata));
     },
     request: function (req) {
-      if(req.method && req.originalUrl && req.headers && req.headers.accept && req.headers.accept.indexOf('application/json') > -1){
-        this.info('request', { reqid: req.reqid, m: req.method, originalUrl : req.originalUrl});
+      if (req.method && req.originalUrl && req.headers && req.headers.accept && req.headers.accept.indexOf('application/json') > -1) {
+        this.info('request', {reqid: req.reqid, m: req.method, originalUrl: req.originalUrl});
       } else {
-        this.warning('non-json request to API', { reqid: req.reqid, m: req.method, originalUrl : req.originalUrl, accept: req.headers.accept});
+        this.warning('non-json request to API', {
+          reqid: req.reqid,
+          m: req.method,
+          originalUrl: req.originalUrl,
+          accept: req.headers.accept
+        });
       }
     },
     warning: function (message, metadata) {
