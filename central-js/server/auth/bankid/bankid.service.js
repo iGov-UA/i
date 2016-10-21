@@ -399,3 +399,64 @@ module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
   return module.exports.getScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
 };
 
+module.exports.convertHtmlToPdf = function (accessToken, fileToUpload, callback) {
+
+  debugger;
+  async.waterfall([
+    function (callback) {
+      if(accessToken){
+        callback(null, accessToken);
+      } else {
+        // https://bankid.privatbank.ua/DataAccessService/das/authorize?response_type=code&agentCheck=true&bank=privat&client_id=9b0e5c63-9fcb-4b11-84ff-31fc2cea8801&redirect_uri=https://bankid.privatbank.ua/DataAccessService/acceptCode
+        debugger;
+        request.get( {
+          url: bankidUtil.getAuthorizationURL(),
+          qs: {
+            response_type: 'code',
+            agentCheck: true,
+            bank: 'privat',
+            client_id: '9b0e5c63-9fcb-4b11-84ff-31fc2cea8801',
+            redirect_uri: bankidUtil.getAcceptCodeURL()
+          }
+        }, callback)
+
+      }
+    },
+    function (accessToken, callback) {
+      debugger;
+      // вызов сервиса конвертации из БанкИД
+      var uploadURL = bankidUtil.getUploadFileForConvertURL();
+
+      var form = new FormData();
+      form.append('file', fileToUpload, {
+        contentType: 'text/html'
+      });
+
+      var requestOptionsForUploadContent = {
+        url: uploadURL,
+        headers: _.merge({
+          Authorization: bankidUtil.getAuth(accessToken),
+          fileType: 'pdf'
+        }, form.getHeaders()),
+        formData: {
+          file: fileToUpload
+        },
+        json: true
+      };
+
+      request.post(requestOptionsForUploadContent, function (error, response, body) {
+        if (!body) {
+          callback('Unable to convert a file. bankid.privatbank.ua return an empty response', null);
+        } else if (error || (error = body.error)) {
+          callback(error, null);
+        } else {
+          callback(null, body);
+        }
+      });
+    }
+  ], function (err, result) {
+    debugger;
+    callback(err, result);
+  })
+
+};
