@@ -521,13 +521,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         LOG_BIG.debug(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                       if (!generalConfig.isSelfTest()) {
+/*                       if (!generalConfig.isSelfTest()) {
                             String snID_Proccess_Feedback = bpHandler
-                                    .startFeedbackProcessNew(snID_Process);
+                                    .startFeedbackProcessNew(snID_Process);*/
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
-                        org.activiti.engine.impl.util.json.JSONObject historyEvent = new org.activiti.engine.impl.util.json.JSONObject(jsonHistoryEvent);
-                        	Integer nID_Server = historyEvent.getInt("nID_Server");
-                        	String sID_UA = historyEvent.getString("sID_UA");
+                        JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
+                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm ", ojsonHistoryEvent);
+                        	Integer nID_Server = (Integer)ojsonHistoryEvent.get("nID_Server");
+                        	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
                         	mParamforcountClaim.put("nID_Server", String.valueOf(nID_Server));
@@ -544,8 +545,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                 JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
                                 LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
                                 Long countClaim = (Long) oResponseJson.get("countClaim");
+                                LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
                                 if (countClaim.compareTo(50L)<0) {
-//                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
+                               String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                                     
                                     if(snID_Proccess_Feedback!=null) {
                                     mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
@@ -564,7 +566,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                             }
                         	
                         	
-                       } 
+                  //     } 
 //                       else {
 //                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
 //                        }
