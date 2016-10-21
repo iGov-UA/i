@@ -53,7 +53,8 @@ var baseURls = {
     base: getURL(),
     path: {
       token: '/DataAccessService/oauth/token',
-      auth: '/DataAccessService/das/authorize'
+      auth: '/DataAccessService/das/authorize',
+      accept: '/DataAccessService/acceptCode'
     }
   },
   resource: {
@@ -95,6 +96,10 @@ module.exports.getTokenURL = function () {
 
 module.exports.getAuthorizationURL = function () {
   return getURL(baseURls.access.path.auth);
+};
+
+module.exports.getAcceptCodeURL = function () {
+  return getURL(baseURls.access.path.accept);
 };
 
 module.exports.getAuth = function (accessToken) {
