@@ -710,8 +710,8 @@ public class ActionEventController {
                     //asCell.add("test_DateCreate");
                     //asCell.add("test_DateClose");
                     
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString());
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString());
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }

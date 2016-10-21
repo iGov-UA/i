@@ -64,7 +64,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long SubjectMessageType_CommentEscalation = 11L;
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
-    private static final String URI_COUNT_CLAIM_HISTORY = "/action/event/getCountClaimHistory";
+    private static final String URI_COUNT_CLAIM_HISTORY = "/wf/service/action/event/getCountClaimHistory";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -526,25 +526,23 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                     .startFeedbackProcessNew(snID_Process);*/
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
-                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm ", ojsonHistoryEvent);
-                        	String nID_Server = (String)ojsonHistoryEvent.get("nID_Server");
+                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm = {}", ojsonHistoryEvent);
+                        	Long nID_Service = (Long)ojsonHistoryEvent.get("nID_Service");
                         	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
-                        	mParamforcountClaim.put("nID_Server", String.valueOf(nID_Server));
+                        	mParamforcountClaim.put("nID_Service", String.valueOf(nID_Service));
                         	mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
                             String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
 
                             try {
                                 String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
-                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm ", sResponse);
+                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm = {}", sResponse);
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
-                                JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
-                                Long countClaim = (Long) oResponseJson.get("countClaim");
+                                Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
                                 if (countClaim.compareTo(50L)<0) {
                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
