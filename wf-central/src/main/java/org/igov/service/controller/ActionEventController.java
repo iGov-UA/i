@@ -581,7 +581,7 @@ public class ActionEventController {
             + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
             + "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
             + "\n```\n")
-    @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
+ @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
     public void getServiceHistoryReport(
             @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
@@ -680,40 +680,38 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getsBody());
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
-                   
-                    Integer nID_Server = oHistoryEvent_Service.getnID_Server();
-                    nID_Server = nID_Server == null ? 0 : nID_Server;
 
-                    nID_Server = generalConfig.getServerId(nID_Server);
-                    Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-                    if (!oOptionalServer.isPresent()) {
-                        throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
-                    }
                     
-                    Server oServer = oOptionalServer.get();
-                    String sHost = oServer.getsURL();
-
-                    String sURL ="";
                     String sPhone = "";
-
+                    
                     if(bIncludeTaskInfo){
-                                                                        
-                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        Integer nID_Server = oHistoryEvent_Service.getnID_Server();
+                        nID_Server = nID_Server == null ? 0 : nID_Server;
+
+                        nID_Server = generalConfig.getServerId(nID_Server);
+                        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+                        if (!oOptionalServer.isPresent()) {
+                            throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+                        }
+                        Server oServer = oOptionalServer.get();
+                        String sHost = oServer.getsURL();
+                        String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                            
+
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
-                                        
+                    
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                        
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "test");
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null 
-                            ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "test");
+                    //asCell.add("test_DateCreate");
+                    //asCell.add("test_DateClose");
+                    
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
@@ -723,6 +721,7 @@ public class ActionEventController {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
         }
     }
+    
 
     @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
     @RequestMapping(value = "/getActionProcessCount", method = RequestMethod.GET)

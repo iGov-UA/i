@@ -1005,6 +1005,18 @@ public class ActionFlowController {
 		return result.toString();
 	}
 
+	@ApiOperation(value = "Получение календаря рабочих дней оргиназиции по заданной услуге на ближайшие 15 дней, включая текущий", notes = "##### Пример:\n"
+		+ "https://alpha.test.region.igov.org.ua/wf/service/action/flow/DMS/getSlotFreeDays?nID_Service_Private=428\n\n")
+        @RequestMapping(value = "/DMS/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public
+	@ResponseBody
+	String getSlotFreeDays(	@ApiParam(value = "ID сервиса", required = true) 
+				@RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
+	) throws Exception  {
+            return cherg.getSlotFreeDays(nID_Service_Private);
+	}
+
+	
 	@ApiOperation(value = "Резервирование тайм слота.", notes = "##### Пример:\n"
 			+ "https://test.region.igov.org.ua/wf/service/action/flow/DMS/setSlotHold\n\n"
 			+ "nID_Service_Private - 428"
