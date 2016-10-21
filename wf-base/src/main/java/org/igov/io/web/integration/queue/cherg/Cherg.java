@@ -41,6 +41,7 @@ public class Cherg {
     private String urlFreeTime = "/freetime";
     private String urlSetReserve = "/set_reserve";
     private String urlConfirmReserve = "/confirm_reserve";
+    private String urlWorkdays = "/workdays";
     private String login;
     private String password;
     private String basicAuthHeader;
@@ -111,6 +112,48 @@ public class Cherg {
 
     }
 
+    public JSONArray getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+        if (nID_Service_Private == null) {
+            LOG.error("service_id=={}", nID_Service_Private);
+            throw new IllegalArgumentException("nID_Service_Private is null");
+        }
+
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+        LOG.debug("nID_Service_Private={}", nID_Service_Private);
+        mParam.add("service_id", nID_Service_Private.toString());
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlWorkdays)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlFreeTime,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser parser = new JSONParser();
+        JSONObject result = (JSONObject) parser.parse(sReturn);
+        if (!result.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", result.get("status-code"), result.get("status-detail"));
+            //skip all errors from queue management system and return just empty array for date
+            return new JSONArray();
+        }
+        JSONArray dates = (JSONArray) result.get("data");
+
+        LOG.info("Workdays result:{}", dates);
+        return dates;
+
+    }
+
+    
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
 
