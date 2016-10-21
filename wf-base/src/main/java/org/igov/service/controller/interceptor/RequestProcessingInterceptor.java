@@ -64,7 +64,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     private static final Long SubjectMessageType_CommentEscalation = 11L;
     private static final String URI_SET_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
-    private static final String URI_COUNT_CLAIM_HISTORY = "/action/event/getCountClaimHistory";
+    private static final String URI_COUNT_CLAIM_HISTORY = "/wf/service/action/event/getCountClaimHistory";
 
     @Autowired
     protected RuntimeService runtimeService;
@@ -542,9 +542,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
-                                JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+                               JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
                                 LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
                                 Long countClaim = (Long) oResponseJson.get("countClaim");
+                               // Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
                                 if (countClaim.compareTo(50L)<0) {
                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
