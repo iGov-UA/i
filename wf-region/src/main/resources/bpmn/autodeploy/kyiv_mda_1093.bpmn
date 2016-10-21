@@ -22,7 +22,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee" name="Відповідальний начальник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step10" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_step10" name="Відповідальний начальник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step10" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step10" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_insp_bosses"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -39,7 +39,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step9" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step9" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step9" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -53,7 +53,7 @@
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask16"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_insp_boss">
+    <userTask id="usertask3" name="10. Ознайомлення з документом начальника інсп. відділу та визначення відповідального співробітника">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -61,7 +61,7 @@
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAsignee" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAsignee_step11" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step11" name="Група виконавців наступного кроку" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea"></activiti:formProperty>
@@ -74,7 +74,7 @@
       
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
+            <activiti:expression><![CDATA[sLoginAsignee_step10]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         
@@ -99,7 +99,6 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника дозвільного відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asChoiceDecision" name="Рішення" type="enum" required="true">
@@ -129,7 +128,7 @@
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask4" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="usertask5" name="12. Процес перевірки" activiti:candidateGroups="kyiv_dabi_insp_empl">
+    <userTask id="usertask5" name="12. Процес перевірки">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -199,6 +198,13 @@
             <activiti:expression><![CDATA[${nFile1},${PrintForm_direct},${nOrderSchedule}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+          <activiti:field name="loginAssignee">
+            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway" default="flow14"></exclusiveGateway>
@@ -461,7 +467,7 @@
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow20" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка" activiti:candidateGroups="kyiv_dabi_insp_empl">
+    <userTask id="usertask8" name="11. Заповнення форми з вказуванням планова чи позапланова перевірка">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Співробітник сектору документообігу ДАБК" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
@@ -518,7 +524,7 @@
         
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
-            <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
+            <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
 
