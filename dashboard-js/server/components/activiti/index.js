@@ -4,7 +4,8 @@ var _ = require('lodash');
 var config = require('../../config/environment');
 var request = require('request');
 var url = require('url');
-
+var async = require('async');
+//var bankIdService = require('../../../../central-js/server/auth/bankid/bankid.service');
 var Buffer = require('buffer').Buffer;
 
 var authBase = 'Basic ' + new Buffer(
@@ -112,11 +113,29 @@ exports.filedownload = function(req, res, options) {
 };
 
 exports.filedownloadPDF = function(req, res, options){
-  var r = prepareRequest(req, options);
-  // todo сделать конвертацию HTML в PDF https://github.com/e-government-ua/i/issues/1382
-  req.pipe(r).on('response', function(response) {
-    response.headers['content-type'] = 'application/octet-stream';
-  }).pipe(res);
+  /*
+  async.waterfall([
+    function (callback) {
+      var r = prepareRequest(req, options);
+      debugger;
+      callback(null, req.pipe(r).on('response', function(response) {
+        response.headers['content-type'] = 'application/octet-stream';
+      }).pipe(res));
+    },
+    function (htmlFile, callback) {
+      debugger;
+      // вызов сервиса конвертации из БанкИД
+      bankIdService.convertHtmlToPdf(null, htmlFile, callback);
+    }
+  ], function (err, result) {
+    debugger;
+    req.on('response', function (response) {
+      response.headers['content-type'] = 'application/octet-stream';
+    }).pipe(result);
+
+    res.end(result);
+  })
+  */
 };
 
 //downloads the file with the specified content type
