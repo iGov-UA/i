@@ -401,14 +401,14 @@ module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
 
 module.exports.convertHtmlToPdf = function (accessToken, fileToUpload, callback) {
 
-  debugger;
+  //debugger;
   async.waterfall([
     function (callback) {
       if(accessToken){
         callback(null, accessToken);
       } else {
         // https://bankid.privatbank.ua/DataAccessService/das/authorize?response_type=code&agentCheck=true&bank=privat&client_id=9b0e5c63-9fcb-4b11-84ff-31fc2cea8801&redirect_uri=https://bankid.privatbank.ua/DataAccessService/acceptCode
-        debugger;
+        //debugger;
         request.get( {
           url: bankidUtil.getAuthorizationURL(),
           qs: {
@@ -423,7 +423,7 @@ module.exports.convertHtmlToPdf = function (accessToken, fileToUpload, callback)
       }
     },
     function (accessToken, callback) {
-      debugger;
+      //debugger;
       // вызов сервиса конвертации из БанкИД
       var uploadURL = bankidUtil.getUploadFileForConvertURL();
 
@@ -455,7 +455,7 @@ module.exports.convertHtmlToPdf = function (accessToken, fileToUpload, callback)
       });
     }
   ], function (err, result) {
-    debugger;
+    //debugger;
     callback(err, result);
   })
 
