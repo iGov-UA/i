@@ -112,7 +112,7 @@ public class Cherg {
 
     }
 
-    public JSONArray getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         if (nID_Service_Private == null) {
             LOG.error("service_id=={}", nID_Service_Private);
             throw new IllegalArgumentException("nID_Service_Private is null");
@@ -133,9 +133,9 @@ public class Cherg {
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
-                    urlBasePart + urlFreeTime,
+                    urlBasePart + urlWorkdays,
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
                     + oHttpEntityCover.nStatus());
         }
 
@@ -144,15 +144,57 @@ public class Cherg {
         if (!result.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", result.get("status-code"), result.get("status-detail"));
             //skip all errors from queue management system and return just empty array for date
-            return new JSONArray();
+            return "{\"aDate\":[]}";
         }
         JSONArray dates = (JSONArray) result.get("data");
+        LOG.debug("Workdays all days:{}", dates);
 
-        LOG.info("Workdays result:{}", dates);
-        return dates;
+        JSONArray retJSONArray = new JSONArray();
+        for(Object o:dates) {
+            JSONObject jo = (JSONObject) o;
+            String date = jo.get("date").toString();
+            String work_day = jo.get("work_day").toString();
+		
+            if ( work_day.equals("1")) {
+        	retJSONArray.add(date);
+            }
+        }
+	JSONObject retJSON = new JSONObject();
+	retJSON.put("aDate", retJSONArray);
+        LOG.info("Workdays only work days:{}", retJSON.toJSONString());
+        
+        return retJSON.toString();
 
     }
 
+    public static void main(String[] args) {
+	try {
+	    JSONParser parser = new JSONParser();
+	    JSONObject result;
+	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
+	    JSONArray dates = (JSONArray) result.get("data");
+
+	    JSONArray retJSONArray = new JSONArray();
+	    for(Object o:dates) {
+		JSONObject jo = (JSONObject) o;
+		String date = jo.get("date").toString();
+		String work_day = jo.get("work_day").toString();
+		
+		if ( work_day.equals("1")) {
+		    retJSONArray.add(date);
+		    System.out.println(date +" " +work_day);
+		}
+	    }
+	    JSONObject retJSON = new JSONObject();
+	    retJSON.put("aDate", retJSONArray);
+	    
+	    System.out.println(retJSON.toString());
+	    
+	    
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
     
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
