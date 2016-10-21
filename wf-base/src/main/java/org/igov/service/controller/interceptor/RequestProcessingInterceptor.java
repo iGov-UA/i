@@ -527,7 +527,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
                         LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm ", ojsonHistoryEvent);
-                        	String nID_Server = (String)ojsonHistoryEvent.get("nID_Server");
+                        	Long nID_Server = (Long)ojsonHistoryEvent.get("nID_Server");
                         	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
