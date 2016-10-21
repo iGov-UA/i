@@ -53,8 +53,7 @@ var baseURls = {
     base: getURL(),
     path: {
       token: '/DataAccessService/oauth/token',
-      auth: '/DataAccessService/das/authorize',
-      accept: '/DataAccessService/acceptCode'
+      auth: '/DataAccessService/das/authorize'
     }
   },
   resource: {
@@ -64,7 +63,6 @@ var baseURls = {
       info: '/ResourceService/checked/data',
       sign: '/ResourceService/checked/uploadFileForSignature',
       signFiles: '/ResourceService/checked/uploadFilesForSignature',
-      convertFileToPDF: '/ResourceService/checked/uploadFilesForConvert',
       claim: '/ResourceService/checked/claim/:codeValue/clientPdfClaim'
     }
   }
@@ -82,10 +80,6 @@ module.exports.getUploadFileForSignatureURL = function () {
   return getResourceURL(baseURls.resource.path.sign);
 };
 
-module.exports.getUploadFileForConvertURL = function (){
-  return getResourceURL(baseURls.resource.path.convertFileToPDF);
-};
-
 module.exports.getClientPdfClaim = function (codeValue) {
   return getResourceURL(baseURls.resource.path.claim.replace(/:codeValue/, codeValue));
 };
@@ -96,10 +90,6 @@ module.exports.getTokenURL = function () {
 
 module.exports.getAuthorizationURL = function () {
   return getURL(baseURls.access.path.auth);
-};
-
-module.exports.getAcceptCodeURL = function () {
-  return getURL(baseURls.access.path.accept);
 };
 
 module.exports.getAuth = function (accessToken) {
