@@ -542,12 +542,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
-                               /*JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn = {}", oResponseJson);
-                                Long countClaim = (Long) oResponseJson.get("countClaim");*/
                                 Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-                                if (countClaim.compareTo(50L)>0) {
+                                if (countClaim.compareTo(50L)<0) {
                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                                     
                                     if(snID_Proccess_Feedback!=null) {
