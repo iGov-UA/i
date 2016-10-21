@@ -64,19 +64,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sID_File_XML_SWinEdValue = getStringFromFieldExpression(this.sID_File_XML_SWinEd, execution);
         String resp = "[none]";
         String URL = "http://217.76.198.151/Websrvgate/gate.asmx";
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.set("Content-Type", "text/xml; charset=utf-8");
-        //headers.set("SOAPAction", "http://govgate/Send");
         try {
             LOG.info("sID_File_XML_SWinEdValue: " + sID_File_XML_SWinEdValue);
             byte[] oFile_XML_SWinEd = oBytesDataInmemoryStorage.getBytes(sID_File_XML_SWinEdValue);
             if (oFile_XML_SWinEd != null) {
                 String content = new String(oFile_XML_SWinEd);
                 resp += " content: " + content;
-                //String body = createBody(content);
-                //LOG.info("body: " + body);
-                //resp = new RestRequest().post(URL, "test",
-                //        null, StandardCharsets.UTF_8, String.class, headers);//
                 LOG.info("content: " + content);
                 resp = oHttpRequester.postInside(URL, null, createBody(content), "text/xml; charset=utf-8");
                 LOG.info("!!!response:" + resp);
@@ -86,8 +79,6 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
             execution.setVariable("result", resp);
         } catch (Exception ex) {
             LOG.error("!!! Error in SendDocument_SWinEd sID_File_XML_SWinEdValue=" + sID_File_XML_SWinEdValue, ex);
-            //resp = new RestRequest().post(URL, "testtest",
-            //        null, StandardCharsets.UTF_8, String.class, headers);
             execution.setVariable("result", resp);
         }
     }
@@ -152,10 +143,11 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 .append("<fileName>23013194700944F1301801100000000151220152301.xml</fileName>")
                 .append("<senderEMail>olga.kuzminova87@gmail.com</senderEMail>")
                 .append("<data>").append(base64_encode(content)).append("</data>")
+                //.append("<data>").append(content).append("</data>")
                 .append("</Send>")
                 .append("</soap:Body>")
                 .append("</soap:Envelope>").toString();
-        return result;
+        return result; //
     }
 
 }

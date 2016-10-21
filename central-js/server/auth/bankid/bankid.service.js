@@ -267,14 +267,25 @@ module.exports.syncWithSubject = function (accessToken, done) {
   });
 };
 
-module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback) {
+module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback, fdata) {
   var bankIDURLs = bankidUtil.getBaseURLs();
-  var params = {
-    headers: {
-      Authorization: bankidUtil.getAuth(accessToken),
-      acceptKeyUrl: acceptKeyUrl
-    }
-  };
+  var params = {};
+  if(fdata) {
+    params = {
+      headers: {
+        Authorization: bankidUtil.getAuth(accessToken),
+        acceptKeyUrl: acceptKeyUrl,
+        fiscalData: fdata
+      }
+    };
+  } else {
+    params = {
+      headers: {
+        Authorization: bankidUtil.getAuth(accessToken),
+        acceptKeyUrl: acceptKeyUrl
+      }
+    };
+  }
 
   console.log('[signFiles] : accessToken=', accessToken, 'acceptKeyUrl=', acceptKeyUrl, ' content=', JSON.stringify(content.map(function(contentObj) {
       return contentObj.name + ', ' + (contentObj.options ? JSON.stringify(contentObj.options) : '')

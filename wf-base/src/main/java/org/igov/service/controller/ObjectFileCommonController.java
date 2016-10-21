@@ -737,6 +737,7 @@ public class ObjectFileCommonController {
             //declarContent = declarContent.replaceAll(regex, replacement);
         }
         result.put("soPatternFilled", declarContent.replaceAll(System.getProperty("line.separator"), ""));
+        result.put("sFileName", "23013194700944F1301801100000000151220152301.xml");
         return result;
     }
     

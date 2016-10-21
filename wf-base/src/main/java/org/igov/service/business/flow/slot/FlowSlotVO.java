@@ -5,6 +5,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotTicket;
+import org.igov.model.flow.Flow_ServiceData;
 import org.igov.util.ToolDuration;
 
 /**
@@ -60,6 +61,10 @@ public class FlowSlotVO {
         DateTime oDateTimeNow = DateTime.now();
         return oFlowSlotTicket.getsDateEdit()
                 .compareTo(oDateTimeNow.minusMinutes(TICKET_WITHOUT_TASK_EXPIRATION_TIME_MINUTES)) >= 0;
+    }
+
+    public FlowSlotVO(Flow_ServiceData slot) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Long getnID() {

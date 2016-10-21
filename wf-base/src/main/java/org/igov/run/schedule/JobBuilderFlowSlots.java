@@ -62,49 +62,10 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
-
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
-        LOG.info(" oDateStart = {}", oDateStart);
-
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        for (Flow_ServiceData flow : aFlowServiceData) {
-            if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
-                LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
-                LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
-
-                checkAndBuildFlowSlots(flow, oDateStart);
-            }
-        }
-    }
-
-    private void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
-        //Maxline: TODO добавить исключения
-        Long nID_Flow_ServiceData = flow.getId();
-        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
-        Long nCountAutoGenerate = flow.getnCountAutoGenerate(); // nCountAutoGenerate данным параметром задаваем количество дней на которое генерируем
-        LOG.info("nCountAutoGenerate: " + nCountAutoGenerate);
-        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
-        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
-                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-
-        int nStartDay = 0;
-        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
-        DateTime dateEnd;
-        dateStart = oDateStart.plusDays(nStartDay);
-        int CountAutoGenerate = toIntExact(nCountAutoGenerate);
-        LOG.info("CountAutoGenerate: " + CountAutoGenerate);
-        dateEnd = oDateStart.plusDays(CountAutoGenerate);
-        LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
-        List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
-                dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
-        LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
-
-        nStartDay += DAYS_IN_MONTH;
-        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
-        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
-    }
-
-    /*@Deprecated
+        oFlowService.buildFlowSlots();
+        
+    } 
+ /*@Deprecated
     private void checkAndBuildFlowSlots_old(Flow_ServiceData flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
         Long nID_Flow_ServiceData = flow.getId();

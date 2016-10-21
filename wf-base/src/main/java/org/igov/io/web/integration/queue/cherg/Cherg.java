@@ -41,6 +41,7 @@ public class Cherg {
     private String urlFreeTime = "/freetime";
     private String urlSetReserve = "/set_reserve";
     private String urlConfirmReserve = "/confirm_reserve";
+    private String urlWorkdays = "/workdays";
     private String login;
     private String password;
     private String basicAuthHeader;
@@ -111,6 +112,98 @@ public class Cherg {
 
     }
 
+    public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
+        if (nID_Service_Private == null) {
+            LOG.error("service_id=={}", nID_Service_Private);
+            throw new IllegalArgumentException("nID_Service_Private is null");
+        }
+
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+        LOG.debug("nID_Service_Private={}", nID_Service_Private);
+        mParam.add("service_id", nID_Service_Private.toString());
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlWorkdays)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlWorkdays,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+        JSONArray oaJSONArray =  new JSONArray();
+        if (!oJSONObjectGot.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
+            //skip all errors from queue management system and return just empty array for date
+            //return "{\"aDate\":[]}";
+            //oaJSONArray = new JSONArray();
+        }else{
+            oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+            LOG.debug("Workdays all days:{}", oaJSONArray);
+        }
+
+        JSONArray oaJSONArrayReturn = new JSONArray();
+        for(Object o:oaJSONArray) {
+            JSONObject oJSONObject = (JSONObject) o;
+            String sDate = oJSONObject.get("date").toString();
+            String snDateType = oJSONObject.get("work_day").toString();
+            if ( snDateType.equals("1")) {
+        	oaJSONArrayReturn.add(sDate);
+            }
+        }
+        return oaJSONArrayReturn;
+    }
+    
+    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+                
+	JSONObject oJSONObjectReturn = new JSONObject();
+	oJSONObjectReturn.put("aDate", oaJSONArray);
+        LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());
+        
+        return oJSONObjectReturn.toString();
+
+    }
+
+    public static void main(String[] args) {
+	try {
+	    JSONParser parser = new JSONParser();
+	    JSONObject result;
+	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
+	    JSONArray dates = (JSONArray) result.get("data");
+
+	    JSONArray retJSONArray = new JSONArray();
+	    for(Object o:dates) {
+		JSONObject jo = (JSONObject) o;
+		String date = jo.get("date").toString();
+		String work_day = jo.get("work_day").toString();
+		
+		if ( work_day.equals("1")) {
+		    retJSONArray.add(date);
+		    System.out.println(date +" " +work_day);
+		}
+	    }
+	    JSONObject retJSON = new JSONObject();
+	    retJSON.put("aDate", retJSONArray);
+	    
+	    System.out.println(retJSON.toString());
+	    
+	    
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
 
