@@ -683,6 +683,7 @@ public class ActionEventController {
 
                     
                     String sPhone = "";
+                    
                     if(bIncludeTaskInfo){
                         Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                         nID_Server = nID_Server == null ? 0 : nID_Server;
@@ -700,15 +701,18 @@ public class ActionEventController {
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
+                    
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                       
+                    //asCell.add("test_DateCreate");
+                    //asCell.add("test_DateClose");
                     
-                    asCell.add("test_DateCreate");
-                    asCell.add("test_DateClose");
-                    //asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "");
-                    //asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "");
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
             }
