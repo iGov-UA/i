@@ -526,7 +526,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                                     .startFeedbackProcessNew(snID_Process);*/
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
-                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm ", ojsonHistoryEvent);
+                        LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm = {}", ojsonHistoryEvent);
                         	Long nID_Service = (Long)ojsonHistoryEvent.get("nID_Service");
                         	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
@@ -538,16 +538,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                             try {
                                 String sResponse = httpRequester.getInside(sURL, mParamforcountClaim);
-                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm ", sResponse);
+                                LOG.info("mParamforcountClaimmmmmmmmmmmmmmmmmmmm = {}", sResponse);
 
                                 LOG_BIG.debug("sResponse = {}", sResponse);
 
-                               JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
-                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn ", oResponseJson);
-                                Long countClaim = (Long) oResponseJson.get("countClaim");
-                               // Long countClaim = Long.valueOf(sResponse);
+                               /*JSONObject oResponseJson = (JSONObject) oJSONParser.parse(sResponse);
+                                LOG.info("oResponseJsonnnnnnnnnnnnnnnnnnn = {}", oResponseJson);
+                                Long countClaim = (Long) oResponseJson.get("countClaim");*/
+                                Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-                                if (countClaim.compareTo(50L)<0) {
+                                if (countClaim.compareTo(50L)>0) {
                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                                     
                                     if(snID_Proccess_Feedback!=null) {
