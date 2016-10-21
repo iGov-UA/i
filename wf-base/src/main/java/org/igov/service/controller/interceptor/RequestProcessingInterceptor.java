@@ -527,11 +527,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                         String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                         JSONObject ojsonHistoryEvent = (JSONObject) oJSONParser.parse(jsonHistoryEvent);
                         LOG.info("ojsonHistoryEventmmmmmmmmmmmmmmmmmmmm ", ojsonHistoryEvent);
-                        	Long nID_Server = (Long)ojsonHistoryEvent.get("nID_Server");
+                        	Long nID_Service = (Long)ojsonHistoryEvent.get("nID_Service");
                         	String sID_UA = (String)ojsonHistoryEvent.get("sID_UA");
                         	Map<String, String> mParamforcountClaim = new HashMap<>();
                         	mParamforcountClaim.put("sID_UA", sID_UA);
-                        	mParamforcountClaim.put("nID_Server", String.valueOf(nID_Server));
+                        	mParamforcountClaim.put("nID_Service", String.valueOf(nID_Service));
                         	mParamforcountClaim.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
 
                             String sURL = generalConfig.getSelfHostCentral() + URI_COUNT_CLAIM_HISTORY;
