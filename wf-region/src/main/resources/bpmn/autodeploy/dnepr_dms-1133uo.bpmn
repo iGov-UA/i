@@ -12,6 +12,7 @@
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Поштова адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон юридичної особи" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" required="true"></activiti:formProperty>
@@ -30,21 +31,26 @@
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" required="true">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я та по батькові (за наявності) дітей до 18 років" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Якщо у документі декілька сторінок об'єднайте у pdf-файл або zip архів, розмір не може перевищувати 5Мб"></activiti:formProperty>
+        <activiti:formProperty id="nVytjag" name="Витяг з Єдиного державного реєстру юридичних осіб та ФОП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocOs" name="Документ про призначення відповідального співробітника за оформллення документів іноземцям" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassOs" name="Паспортний документ керівника чи уповноваженої особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassInozem" name="Паспортного документа іноземця або особи без громадянства з особистими даними та переклад цієї сторінки українською мової; travel-документи біженців не приймаються" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Державна міграційна служба у Дніпропетровській області"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible" default="(056) 745-35-59"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible" default="м. Дніпро, вул. Короленко, буд.4, каб. 421"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
@@ -56,7 +62,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var src=execution.getVariable('date_of_visit')
@@ -132,7 +138,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dms_inozem_${sID_UA}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для отримання штампу про реєстрацію"></activiti:formProperty>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для подання документів"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -140,11 +146,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, для якої оформлюється запрошення"></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompAdress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompPlase" name="Адреса місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompFio" name="Дані керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яку плануєте запрошувати"></activiti:formProperty>
         <activiti:formProperty id="sPersonLastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonDOB" name="Дата народження;Формат - ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
@@ -159,26 +166,29 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDateFinish" name="Кінець періоду візитів" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою дыти до 18 років" type="enum" writable="false">
+        <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" writable="false">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPersonChild" name="Прізвища, ім'я та по батькові (за наявності) дітей до 18 років" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum">
+        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_inozem_FOFront.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_inozem_FOBack.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_inozem_UOFront.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_inozem_UOBack.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dms/zajava_inozem_UOFront.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dms/zajava_inozem_UOBack.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nSvidDeath}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nVytjag},${nDocOs},${nPassOs},${nPassInozem}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -255,12 +265,10 @@ execution.setVariable('sMaxPay', maxpay)
 										<ul>
 										<li>У будь-якому банку сплатити необхідні платежі і отримати квитанцію про сплату.</li>
 										<li>Прийти до підрозділу ДМС за адресою: ${sAddress} з необхідними документами.</li>
-										<li>Підписати необхідні документи.</li>
 										</ul>
 									</p>
 									<p>
-									<b>Реквізити для сплати адмінпослуги:</b><br>
-										<i>Сума: 171,38 грн. При необхідності термінового (до 10 днів) оформлення сума: 341,08 грн</i><br>
+									<b>Реквізити для сплати:</b><br>
 										<i>${sRecvizitiInozem}</i><br>
 										</p>
 									<p>
@@ -270,8 +278,13 @@ execution.setVariable('sMaxPay', maxpay)
 									<p>
 										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні клопотання:</b><br />
 										<ul>
-										<li>оригінал та копію паспорту того, хто подавав заяву;</li>
-										<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
+										<li>клопотання про оформлення запрошення, що знаходиться у додатках до листа (роздрукуйте на одному аркуші);</li>
+										<li>копію витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців;</li>
+										<li>копію розпорядчого документа (наказу, витягу з протоколу, доручення) про призначення працівників, які відповідають за оформлення документів іноземцям та особам без громадянства, засвідчену в установленому законодавством порядку;</li>
+										<li>паспортний документ (після пред’явлення повертається) та копію його сторінок з особистими даними керівника юридичної особи чи уповноваженої особи;</li>
+										<li>квитанції про сплату держмита та адміністративної послуги з мокрою печаткою банку;</li>
+										<li>копію сторінки паспортного документа іноземця або документа, що посвідчує особу без громадянства, з особистими даними особи, що запрошується, з перекладом українською мовою, засвідченим у встановленому порядку;</li>
+										<li>гарантійний лист, щодо фінансового забезпечення перебування іноземця, що знаходится у додатках до листа (роздрукуйте на фірмовому бланку підприємства);</li>
 										</ul>
 									</p>
 									<p>
@@ -294,7 +307,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -342,7 +355,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nSvidDeath}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nVytjag},${nDocOs},${nPassOs},${nPassInozem}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -447,9 +460,8 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="68.0" y="216.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="221.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="285.0" y="54.0"></omgdi:waypoint>

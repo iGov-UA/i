@@ -369,6 +369,13 @@ angular.module('dashboardJsApp')
           }
         );
       },
+      postServiceMessages: function (params) {
+        return simpleHttpPromise({
+          method: 'POST',
+          url: 'api/tasks/postServiceMessages',
+          data: params
+        })
+      },
       checkAttachmentSign: function(nID_Task, nID_Attach){
         return simpleHttpPromise({
             method: 'GET',
@@ -404,7 +411,11 @@ angular.module('dashboardJsApp')
             data.aMessage = JSON.parse(data.aMessage);
           angular.forEach(data.aMessage, function(message) {
             if (angular.isString(message.sData) && message.sData.length > 1) {
-              message.osData = JSON.parse(message.sData);
+              try{
+                message.osData = JSON.parse(message.sData);
+              } catch (e){
+                message.osData = {};
+              }
             }
           });
           return data;

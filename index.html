@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html><head><!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+--><title>TODO supply a title</title>
+
+
+    
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>
+        <div>
+<h2><img src="docs/img/common_0-head.jpg" width="1212" height="669"></h2>
+<h2>&nbsp;</h2>
+<h2>Открытая платформа iGov, для построения электронного правительства Украины!</h2>
+<p>Официальный сайт: <a href="https://igov.org.ua">https://igov.org.ua</a> и документация: <a href="https://github.com/e-government-ua/i/wiki">https://github.com/e-government-ua/i/wiki</a></p>
+<h2><img src="docs/img/main_1-techs.jpg" width="1151" height="635"></h2>
+<h2>&nbsp;</h2>
+<h2><strong>Общая схема связей модулей платформы:</strong></h2>
+<p><img src="https://www.gliffy.com/go/publish/image/10147201/L.png" alt="L.png (1800×1005)" width="1163" height="648"/></p>
+<p><strong>Схема связей своих сущностей БД:</strong></p>
+<p><img src="https://www.gliffy.com/go/publish/image/10147197/L.png" alt="L.png (1702×758)" width="1140" height="507"/></p>
+<p><strong>Схема связей Activiti-сущностей БД:</strong></p>
+<p><img src="docs/img/common_diagramm_1-sheme-db-activiti.jpg" width="1098" height="1084"></p>
+<p>&nbsp;</p>
+<p><strong>BPMN - Activiti - машина работы с Бизнес-Процессами:</strong></p>
+<p><strong>С визуальным дизайнером Бизнес-Процессов:</strong></p>
+<p><img src="https://forums.activiti.org/sites/activiti_forums/files/activiti-designer.png" alt="Картинки по запросу activiti designer"/></p>
+<p></p>
+<p>Который позволяет Бизнес-Аналитику описать любую схему жизненного цикла БП (как задач так и документов)</p>
+<p>Описания БП сохраняются в файлах с расширением BPMN и размещаются на сервере.</p>
+<p>Они позволяют использовать большой ассортимент компонентов, среди которых: Юзертаски, Системтаски, Скрипттаски, Таймеры, Разетвлители по условиями т.д.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><strong>Интерфейсы:</strong></h1>
+<h2>&nbsp;</h2>
+<h2>Центральный портал, с полным каталогом, для гражданина - позволяет подавать заявки гражданами, и передавать их в бэкофис, госслужащим.</h2>
+<ul>
+  <li>*.igov.org.ua и *.test.igov.org.ua</li>
+</ul>
+<p><strong></strong><img src="docs/img/central_main.jpg" width="1174" height="643"></p>
+<p>&nbsp;</p>
+<p><strong>Основная страница</strong> с каталогом дерева тегов и <strong>категориями</strong></p>
+<h2><img src="docs/img/central_tab-1-services.jpg" width="1109" height="877"></h2>
+<p>где <strong>в корневом теге (группа)</strong> отображаются все ассоциированные с ним теги и услуги:</p>
+<p><img src="docs/img/central_tab-1-services-tag-root.jpg" width="826" height="649"></p>
+<p>а <strong>в конечном теге (жизненной ситуации)</strong> - ее описание и асссоциированные услуги:</p>
+<p><img src="docs/img/central_tab-1-services-tag.jpg" width="944" height="692"></p>
+<p>А так-же есть возможность <strong>искать услуги</strong> по включению искомого текста как в название тега так и услуги:</p>
+<p><img src="docs/img/central_tab-1-services-find.jpg" width="817" height="643"></p>
+<p>И <strong>фильтровать в рамках областей и городов</strong>:</p>
+<p><img src="docs/img/central_tab-1-services-filter.jpg" width="937" height="449"></p>
+<p>а в выдаваемом результате список услуг, где слева отображается значек, с цветом, соответствующим активности услуги (зеленый - уже работает, желтый - скоро будет, серый - пока отсутствует)</p>
+<p>Зайдя в профиль услуги, нужно <strong>на шаге 1 выбрать место (область/город)</strong>, используя динамический поиск:</p>
+<p><img src="docs/img/central_tab-1-service-step-1.jpg" width="795" height="417"></p>
+А выбрав, <strong>на шаге 2 определиться с методом авторизации</strong>, кликнув на соответствующую кнопку:
+<h2><img src="docs/img/central_tab-1-service-step-2.jpg" width="771" height="282"></h2>
+<p>Например BankID, где можно выбрать любой банк, например ПриватБанк:</p>
+<p><img src="docs/img/central_tab-1-service-step-2-select-bank.jpg" width="767" height="463"></p>
+<p>И введя далее свой <strong>логин и пароль от Приват24</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-step-2-select-bank-auth.jpg" width="325" height="490"></p>
+<p>&nbsp;</p>
+<p>Затем подтвердить <strong>кодом из пришедшей СМС</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-step-2-select-bank-auth-sms.jpg" width="334" height="280"></p>
+<p>Что в результате приведет <strong>к шагу 3 - форме подачи услуги</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-form.jpg" width="1012" height="801"></p>
+<p><strong>Заполнив поля</strong> которой, в т.ч. <strong>с динамическим поиском</strong>:</p>
+<h2><img src="docs/img/central_tab-1-service-form-select.jpg" width="569" height="300"></h2>
+<p>И выбором удобного <strong>даты и времени в электронной очереди</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-form-select-eq.jpg" width="335" height="242"></p>
+<p>А возможно и другие поля (всевозможных типов):</p>
+<p>(картинки нет)</p>
+<p>(картинки нет)</p>
+<p>(картинки нет)</p>
+<p>&nbsp;</p>
+<p>В итоге <strong>&quot;Заказать услугу&quot;</strong>, нажав соответствующую кнопку внизу:</p>
+<p><img src="docs/img/central_tab-1-service-form-submit.jpg" width="851" height="671"></p>
+<p>А после завершения подачи - <strong>получим номер заявки</strong>, в заключительном диалоге:<br>
+  <em>(он так-же придет на почту с сообщением, если в форме был заполнен в т.ч. электронный адрес)</em></p>
+<p><img src="docs/img/central_tab-1-service-form-submited.jpg" width="850" height="424"></p>
+<p>Кроме того, в профиле услуги есть еще<br>
+  описание того <strong>как работает услуга</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-how.jpg" width="908" height="706"></p>
+<p><strong>Отзывы по услуге</strong> других граждан, воспользовавшихся ей:</p>
+<p><img src="docs/img/central_tab-1-service-feedback.jpg" width="840" height="470"></p>
+<p>И так-же <strong>статистика по этой услуге</strong> (в т.ч. скорость ее отработки и рейтинг оценки граждан, воспользовавшихся ей):</p>
+<p><img src="docs/img/central_tab-1-service-statistic.jpg" width="931" height="407"></p>
+<p>А еще, при подаче некоторых услуг, и наличию определенных прав, <strong>можно использовать режим референтности</strong>, подав ее от имени доверенного лица:</p>
+<p><img src="docs/img/central_tab-1-service-form-referent.jpg" width="896" height="693"></p>
+<p>И так-же, подавая услугу повторно - она будет автоматически <strong>&quot;подтягивать&quot; те-же данные</strong>, что Вы вводили при ее прошлом заполнении:</p>
+<p><img src="docs/img/central_tab-1-service-form-presets.jpg" width="892" height="708"></p>
+<p>Но это можно <strong>отменить, кликнув на ссылку &quot;Відмінити авто-заповнені дані&quot;</strong>:</p>
+<p><img src="docs/img/central_tab-1-service-form-presets-reset.jpg" width="893" height="704"></p>
+<p>&nbsp;</p>
+<p>Кроме подачи заявки на услугу, <strong>можно смотреть историю</strong> подачи и обработки заявок.</p>
+<p>Где если не авторизоваться - <strong>можно найти по номеру заявки</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-1-notauth.jpg" width="797" height="192"></p>
+<p> Увидев о ней <strong>общие сведения и ее текущий статус</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-1-notauth-found.jpg" width="1063" height="331"></p>
+<p>Но если авторизоваться, то <strong>видна вся своя история подачи заявок</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-2-auth.jpg" width="1014" height="590"></p>
+<p>Где так-же <strong>можно фильтровать ее по номеру заявки</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-2-auth-find.jpg" width="1022" height="300"></p>
+<p>А при нахождении <strong>видеть все подробности ее отработки</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-2-auth-found.jpg" width="1031" height="426"></p>
+<p>Где в том-же диалоге <strong>можно отправить коментарии/вопросы чиновнику или  файлы</strong>:</p>
+<p><img src="docs/img/central_tab-2-history-3-comments-exchange.jpg" width="938" height="637"></p>
+<p>И там-же <strong>можно отвечать на замечания чиновника</strong> (если он их прислал, о чем будет уведомление на почту со ссылкой в эту историю заявки):</p>
+<p>(картинки нет)</p>
+<p> и еще<strong> просматривать сообщения, которые были отправлены на почту</strong>:</p>
+<p>(картинки нет)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><strong>Региональный портал, дашбоард/админка, для чиновника - позволяет отрабатывать поступающие от граждан заявки.</strong></h2>
+<ul>
+  <li>*.region.igov.org.ua и *.test.region.igov.org.ua<br>
+  </li>
+</ul>
+<p><img src="docs/img/dashboard_main.jpg" width="1249" height="681"></p>
+<p>&nbsp;</p>
+<p><strong>Вход и авторизация</strong>, где нужно ввести логин и пароль госслужащего:</p>
+<p><img src="docs/img/dashboard_login-1.jpg" width="765" height="457"></p>
+<p><strong>Закладка &quot;Необроблені&quot;</strong>, со списком задач <strong>для отработки</strong> и выбранная одна заявка с права, с полями:</p>
+<p><a href="Перетащите к файлу, чтобы создать ссылку."><img src="docs/img/dashboard_tab-1-unassigned.jpg" width="1161" height="588"></a></p>
+<p>С возможностью поиска как по номеру заявки так и по наличию текста в полях заявки:</p>
+<p><img src="docs/img/dashboard_tab-1-unassigned-find.jpg" width="1186" height="330"></p>
+<p>При том, кроме поиска можно использовать множественные фильтры списка заявок:</p>
+<p>(картинки нет)</p>
+<p>При выборе заявки ее можно взять в работу, после чего она попадет в следующую закладку.</p>
+<p><strong>Закладка &quot;В роботі&quot;</strong>, со списком задач <strong>в работе</strong> и выбранная одна заявка с права, с полями:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned.jpg" width="1162" height="593"></p>
+<p>Там цветным уголком в вверхнем-правом углу отображается состояние заявки<br>
+  <em> (красный - получен ответ на посланное госслужащим замечание по заявке, желтый - пришел комментарий/вопрос от гражданина по заявке, серыый - послано госслужащим замечание по заявке)</em></p>
+<p>При выборе заявки ее можно отработать, распечатать(в разных шаблонах), внести и отправить замечания гражданину а так-же загрузить прикрепленные файлы-атачи или проверить на них ЭЦП.<br>
+</p>
+<p>Вывод на <strong>печать</strong> одной из принтформ заявки:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned_print.jpg" width="720" height="549"></p>
+<p><strong>Отправка замечаний гражданину</strong>, выбрав отдельные поля его заявки(внеся комментарий как по полю так и общий), с отправкой ему уведомления по почте, и возможностью внести уточнения в форму:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned_fix.jpg" width="716" height="465"></p>
+<p><strong>Просмотр итории диалога</strong> с гражданином по данной заявке:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned_messages.jpg" width="736" height="489"></p>
+<p>возможность <strong>загрузить файл</strong>, прикрепленный к заявке:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned_attach.jpg" width="372" height="203"></p>
+<p>или <strong>проверить ЭЦП</strong> на нем:</p>
+<p><img src="docs/img/dashboard_tab-2-assigned_attach_ecp.jpg" width="600" height="364"></p>
+<p><strong>Закладка &quot;Расписание&quot;</strong>, со списком задач по которым были зарезервированы тикеты Электронной Очереди:</p>
+<p><img src="docs/img/dashboard_tab-3-shedule.jpg" width="1147" height="305"></p>
+<p><strong>Закладка &quot;Всі&quot; (предназначена для руководителей)</strong>, со списком <strong>не отработанных</strong> задач (в т.ч. заявок взятых в работу ) и выбранная одна заявка с права, с полями <strong>только для чтения</strong>:</p>
+<p><img src="docs/img/dashboard_tab-4-all.jpg" width="1161" height="462"></p>
+<p>где можно открепить заявку, взятую ранее подчиненным (чтоб ее могли в работу вновь, другой сотрудник)</p>
+<p><strong>Закладка &quot;Історія&quot;</strong>, со списком <strong>отработанных</strong> задач и выбранная одна заявка с права, с полями <strong>только для чтения</strong></p>
+<p><img src="docs/img/dashboard_tab-5-history.jpg" width="1162" height="576"></p>
+<p><strong>Можно переключиться в режим инструментов (кликнув на значек с инструментами в верхнем-левом углу) и увидеть другие закладки:</strong></p>
+<p><strong>Закладка &quot;Користувачі&quot; (предназначена для администраторов)</strong>, со списком <strong>пользователей системы</strong>, и возможностью фильтрации его, для нахождения нужного:</p>
+<p><img src="docs/img/dashboard_tab-tool-1-users.jpg" width="1187" height="490"></p>
+<p> или добавлением нового:</p>
+<p><img src="docs/img/dashboard_tab-tool-1-users-add.jpg" width="852" height="569"></p>
+<p>&nbsp;</p>
+<p>а в интерфейсе редактирования пользователя, можно менять его данные (в т.ч. пароль):</p>
+<p><img src="docs/img/dashboard_tab-tool-1-users-edit.jpg" width="1186" height="703"></p>
+<p>и добавлять или убирать его из разных групп, так-же используя динамический поиск:</p>
+<p><img src="docs/img/dashboard_tab-tool-1-users-edit-group.jpg" width="600" height="249"></p>
+<p>&nbsp;</p>
+<p><strong>Закладка &quot;Групи&quot;</strong><strong> (предназначена для администраторов)</strong>, со списком <strong>груп системы</strong>, и возможностью фильтрации их, для нахождения нужной:</p>
+<p><img src="docs/img/dashboard_tab-tool-2-groups.jpg" width="1193" height="383"></p>
+<p>или добавлением новой, с возможностью тут-же включить в нее пользователя (так-же интерактивным поиском):</p>
+<p><img src="docs/img/dashboard_tab-tool-2-groups-add.jpg" width="1167" height="320"></p>
+<p>а в интерфейсе редактирования пользователя, можно менять его данные (в т.ч. перечень входящих в нее пользователей):</p>
+<p><img src="docs/img/dashboard_tab-tool-2-groups-edit.jpg" width="1179" height="402"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>Закладка &quot;Ескалації&quot; (предназначена для администраторов)</strong>, со списком <strong>эскалационных правил и функций</strong> по заявкам, нарушивших сроки исполнения, а так-же и возможностью фильтрации их, для нахождения нужной:</p>
+<p><img src="docs/img/dashboard_tab-tool-3-escalation.jpg" width="1072" height="539"></p>
+<p>В которой есть правила по каждой отдельной юзертаске (этапу выполнения заявки):</p>
+<p><img src="docs/img/dashboard_tab-tool-3-escalation-ext.jpg" width="818" height="354"></p>
+<p>и которое можно отредактировать, в т.ч. посмотреть какие БП попали под данное правило (интерактивным поиском):</p>
+<p><img src="docs/img/dashboard_tab-tool-3-escalation-ext-edit.jpg" width="1187" height="379"></p>
+<p>&nbsp;</p>
+<p>Так-же можно посмотреть, отредактировать и дополнить функции эскалации (отправка уведомления, порождение эскалационного процесса контроллирующему и т.д.)</p>
+<p><img src="docs/img/dashboard_tab-tool-3-escalation-functionst.jpg" width="1171" height="398"></p>
+<p>&nbsp;</p>
+<p><strong>Закладка &quot;Звіти&quot; (предназначена для администраторов и руководителей)</strong>, со возможность экспортирования <strong>отчетов по заявкам со всеми или частичными их данными</strong>, для дальнейшего анализа, например в Excel:</p>
+<p><img src="docs/img/dashboard_tab-tool-4-export.jpg" width="1120" height="347"></p>
+<p>&nbsp;</p>
+<p><strong>Закладка &quot;Розклад&quot; (предназначена для администраторов)</strong>, с возможностью настройки электронной очереди для департаментов в рамках тех или иных БП:</p>
+<p><img src="docs/img/dashboard_tab-tool-5-shedule.jpg" width="1181" height="202"></p>
+<p><strong>Закладка &quot;Розгортання&quot; (предназначена для администраторов)</strong>, для поиска по критериям и загрузки БП, а так-же операций по ним (так-же с динамическим поиском):</p>
+<p><img src="docs/img/dashboard_tab-tool-6-deploy.jpg" width="1171" height="644"></p>
+<p>&nbsp;</p>
+<h2><strong>Центральная и региональная админка для админов, активити-эксплорер, для технических целей.<br>
+  (позже будет закрыт и будет использовать ся только для сервисов).</strong></h2>
+<ul>
+  <li>*.igov.org.ua/wf и *.test.igov.org.ua/wf - центральная</li>
+  <li>*.region.igov.org.ua/wf и *.test.region.igov.org.ua/wf - региональная<br>
+  </li>
+</ul>
+<p>Страница авторизации через логин и пароль (системный или активити(тот-же что и в дашборде госслужащего)):</p>
+<p><img src="docs/img/region_back_1-login.jpg" width="982" height="449"></p>
+<p>а это основной интерфейс:</p>
+<p><img src="docs/img/region_back_2-main.jpg" width="1162" height="571"></p>
+<p>&nbsp;</p>
+<h1><strong>Технические системы платформы:</strong></h1>
+<ul>
+  <li>*.tech.igov.org.ua</li>
+</ul>
+<h2><strong>Системы мониторинга и контроля работы платформы:</strong></h2>
+<ul>
+  <li>visor-*.tech.igov.org.ua - тех-сервера - визоры</li>
+</ul>
+<p><strong>Zabbix - позволяет следить за абсолютно всеми системами и их состоянием </strong>(в т.ч. активностью, перегрузкой, срока годности сертификатов, успешности сборок и т.д.)<strong>:</strong></p>
+<p><img src="docs/img/visor_1-zabbix.jpg" width="1160" height="589"></p>
+<p>&nbsp;</p>
+<p>в т.ч. комплексные экраны <strong>мониторинга приложений(числа тредов, используемой памяти, процессора и сети) и их соединений к базам данных</strong>:</p>
+<p><img src="docs/img/visor_1-zabbix-1-prod-complex.jpg" width="1161" height="588"></p>
+<p>&nbsp;</p>
+<p>комплексные экраны <strong>мониторинга  баз данных</strong>:</p>
+<p><img src="docs/img/visor_1-zabbix-2-prod-db.jpg" width="1158" height="586"></p>
+<p>Существует два дублирующих сервера под такую систему.</p>
+<p>&nbsp;</p>
+<p><strong>Kibana - мониторинг всех логов системы</strong> (приложений регионального и центрального портала, фронтэнда и бэкэнда а так-же энжинса), с быстрым индексированным поиском:</p>
+<p><img src="docs/img/visor_2-kibana-1-logs.jpg" width="1187" height="591"></p>
+<p>&nbsp;</p>
+<p>с диаграммами <strong>скорости отработки всех сервисов</strong> и возможностью фильтрации за период и с другими критериями:</p>
+<p><img src="docs/img/visor_2-kibana-2-graphic-time.jpg" width="1186" height="602"></p>
+<p>&nbsp;</p>
+<p>а так-же диаграммами <strong>возвращающихся статусов отработки всех сервисов</strong> и так-же возможностью фильтрации за период и с другими критериями:</p>
+<p><img src="docs/img/visor_2-kibana-2-graphic-status.jpg" width="1189" height="410"></p>
+<p>Существует два дублирующих сервера под такую систему.</p>
+<p>&nbsp;</p>
+<p><strong>MSG - мониторинг всех ошибок вриложений</strong> (приложений регионального и центрального портала, фронтэнда и бэкэнда), с возможностью фильтрации</p>
+<p>в общем виде:</p>
+<p><img src="docs/img/visor_3-msg-1-graphic.jpg" width="1185" height="574"></p>
+<p>&nbsp;</p>
+<p>и в детальном виде по типу, с отдельными событиями (где так-же можно смотреть трейс ошибки и ее параметры):</p>
+<p><img src="docs/img/visor_3-msg-2-graphic-detail.jpg" width="1177" height="596"></p>
+<p>&nbsp;</p>
+<p><strong>Google Analytics - мониторинг всей активности</strong> и аналитики по ней</p>
+<p>в реальном времени:</p>
+<p><img src="docs/img/visor_4-ga-1-graphic-now.jpg" width="1188" height="504"></p>
+<p>и за прошлые периоды:</p>
+<p><img src="docs/img/visor_4-ga-2-graphic-period.jpg" width="1186" height="575"></p>
+<p>&nbsp;</p>
+<p><strong>Selenium - автоматические тесты полного цикла работы</strong> &quot;от интерфейса через бекенд, базу и транзитные сервисы, проверяя полную цепочку пула приложений по работе БП&quot;:</p>
+<p><strong>В виде графика:</strong></p>
+<p><img src="docs/img/visor_5-test-selenium-1-graphic.jpg" width="1182" height="663"></p>
+<p>&nbsp;</p>
+<p>И <strong>с подробными отчетами по каждому из тестов</strong> (с шагами и скринами, на которых происходит ошибка):</p>
+<p><img src="docs/img/visor_5-test-selenium-2-text-report.jpg" width="1179" height="595"></p>
+<p>Так-же, интегрированы юнит-тесты для фронта и бэка, запускаемые при каждой сборке.</p>
+<p>&nbsp;</p>
+<p><strong>Sonar Qube - тесты безопасности проекта и качества кода, указывающее на конкретные участки кода, требующие замены</strong>:</p>
+<p><strong>В общем виде:</strong></p>
+<p><img src="docs/img/visor_6-test-sonar-1-common-structure.jpg" width="1154" height="567"></p>
+<p><strong>В свожном виде:</strong></p>
+<p><img src="docs/img/visor_6-test-sonar-1-common.jpg" width="1155" height="570"></p>
+<p><strong>В детальном виде:</strong></p>
+<p><img src="docs/img/visor_6-test-sonar-2-detail.jpg" width="1152" height="569"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><strong>Системы непрерывной интеграции:</strong></h2>
+<ul>
+  <li>ci-*.tech.igov.org.ua</li>
+</ul>
+<p><strong>Jenkins - система непрерысной интеграции (каскадный авто-деплой приложений при комитах в GIT-репозиторий, запуск авто-тестов, и производных зависимых запусков)</strong>:</p>
+<ul>
+  <li>ci-jenkins.tech.igov.org.ua - основная система</li>
+  <li>ci-jenkins-backup.tech.igov.org.ua - дублирующая система</li>
+</ul>
+<p><img src="docs/img/ci_1-jenkins-new.jpg" width="1184" height="599"></p>
+<p>&nbsp;</p>
+<h2><strong>Системы хранилищ:</strong></h2>
+<ul>
+  <li>storage-*.tech.igov.org.ua</li>
+</ul>
+<p><strong>Nexus - репозиторий, хранящий библиотеки и компоненты</strong>:</p>
+<ul>
+  <li>storage-nexus.tech.igov.org.ua - основная система</li>
+  <li>storage-nexus-backup.tech.igov.org.ua - дублирующая система</li>
+</ul>
+<p><strong></strong><img src="docs/img/tech_storage_1-nexus.jpg" width="1178" height="320"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1>БУДУЩЕЕ ПРОЕКТА:</h1>
+<p><img src="docs/img/footer_future.jpg" width="1164" height="644"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1>СПАСИБО СПОНСОРАМ ПРОЕКТА !!!</h1>
+<p><img src="docs/img/footer_thanks.jpg" width="1158" height="641"></p>
+<p></p>
+        </div>
+    
+</body></html>

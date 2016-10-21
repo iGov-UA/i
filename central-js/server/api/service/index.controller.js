@@ -2,7 +2,6 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
-//var environmentConfig = require('../../config');
 
 var config = environmentConfig.activiti;
 var request = require('request');
@@ -93,7 +92,9 @@ module.exports.postServiceFeedback = function (req, res) {
       'sBody': data.sBody,
       'nID_Rate': data.nID_Rate,
       'nID_Service': req.params.nID,
-      'sAnswer': data.sAnswer || ''
+      'sAnswer': data.sAnswer || '',
+      'sPlace': data.sPlace,
+      'sEmployeeFIO': data.sEmployeeFIO
     }
   }, callback);
 };
@@ -184,6 +185,35 @@ module.exports.setService = function (req, res) {
     'json': true,
     'body': req.body
   }, callback);
+};
+
+module.exports.getPatternFilled = function(req, res){
+  var callback = function (error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  activiti.getServerRegionHost(req.body.nID_Server, regionHostCallback);
+
+  function regionHostCallback(data){
+    var regionHost = data,
+        url = regionHost + "/service/object/file/dfs/getPatternFilled";
+
+    request.post(url, {
+      auth: {
+        "username": config.username,
+        "password": config.password
+      },
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      qs: {
+        sID_Pattern: req.body.sID_Pattern
+      },
+      body: req.body.oData,
+      json: true
+    }, callback);
+  }
 };
 
 module.exports.removeServiceData = function (req, res) {

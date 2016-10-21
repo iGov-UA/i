@@ -20,6 +20,8 @@ angular.module('app')
           $scope.localityList = new LocalityListFactory();
           $scope.operators = [];
           $scope.check = false;
+          $scope.mainSearchView = false;
+          $scope.catalogCounts = {};
 
           // set defaults
           var defaultSettings = {
@@ -49,7 +51,7 @@ angular.module('app')
 
           function getIDPlaces() {
             var result;
-            if ($scope.bShowExtSearch && $scope.data.region !== null) {
+            if ($scope.bShowExtSearch && $scope.data.region !== null && $scope.data.region !== "") {
               var places = [$scope.data.city === null ? $scope.data.region : ''].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city);
 
               result = places.map(function(e) { return e.sID_UA; });
@@ -70,6 +72,23 @@ angular.module('app')
             }
             messageBusService.publish('catalog:update', ctlg);
           }
+          // получаем к-во услуг готовых/скоро/в работе
+          function getCounts (category) {
+            var countCategory = category && category.aService ? category : 'business';
+            if(countCategory === 'business') {
+              CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
+                $scope.catalogCounts = CatalogService.getCatalogCounts(res)
+              })
+            } else {
+              $scope.catalogCounts = CatalogService.getCatalogCounts(countCategory)
+            }
+          }
+          getCounts ();
+
+          function isFilterActive() {
+            $rootScope.mainSearchView = !!(($state.is('index') || $state.is('index.catalog')) && $scope.data.region);
+          }
+
           $scope.search = function() {
             if (sID_Order_RegExp.test($scope.sSearch)) {
               return null;
@@ -87,7 +106,7 @@ angular.module('app')
             } else if ($state.is("index.oldbusiness") || $state.is("index.subcategory")) {
               $scope.category = 'business';
             }
-            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID).then(function (result) {
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog).then(function (result) {
               if(!$state.is('index')
                   && !$state.is('index.catalog') && !$state.is("index.oldbusiness") && !$state.is("index.subcategory")) {
                 fullCatalog = result[0];
@@ -107,19 +126,54 @@ angular.module('app')
               if(result.length === 0) {
                 $rootScope.wasSearched = true;
               }
+              $rootScope.resultsAreLoading = false;
+              getCounts(fullCatalog);
             });
           };
           $scope.searching = function () {
             // проверка на минимальне к-во символов в поисковике (искать должно от 3 символов)
-            if($scope.sSearch.length >= 3) {
+            if($scope.sSearch.length >= 3 && $state.is("index.oldbusiness")) {
               // после реализации тегов в бизнесе - удалить.
+              $rootScope.busSpinner = true;
+              $scope.overallSearch();
+              $rootScope.mainSearchView = true;
+              $rootScope.valid = true;
+            } else if($scope.sSearch.length >= 3 && ($state.is("index") || $state.is("index.catalog"))) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainSearchView = true;
               $rootScope.busSpinner = true;
               $scope.search();
               $rootScope.valid = true;
-            } else if($rootScope.valid) {
+            }else if($rootScope.valid) {
+              $rootScope.resultsAreLoading = true;
               $rootScope.valid = false;
+              $rootScope.mainSearchView = false;
               $scope.search();
+            } else {
+              $rootScope.busSpinner = true;
+              $scope.search();
+              $rootScope.valid = true;
             }
+          };
+
+          // глобальный поиск по Гражд. и Бизн.
+          $scope.overallSearch = function () {
+            $rootScope.resultsAreLoading = true;
+            if (sID_Order_RegExp.test($scope.sSearch)) return null;
+            $rootScope.minSearchLength = $scope.sSearch.length < 3;
+            var bShowEmptyFolders = AdminService.isAdmin();
+            $scope.spinner = true;
+            messageBusService.publish('catalog:updatePending');
+            $scope.catalog = [];
+            return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, 'business').then(function (result) {
+              fullCatalog = result;
+              if ($scope.bShowExtSearch || $scope.getOrgan) {
+                $scope.filterByExtSearch();
+              } else {
+                updateCatalog(angular.copy(fullCatalog));
+              }
+              $rootScope.resultsAreLoading = false;
+            });
           };
           $scope.searchOrder = function () {
             if(sID_Order_Full_RegExp.test($scope.sSearch)) {
@@ -199,25 +253,31 @@ angular.module('app')
           $scope.onExtSearchClick = function() {
             $scope.bShowExtSearch = !$scope.bShowExtSearch;
             if ($scope.bShowExtSearch) {
-              $scope.search();
+              $scope.searching();
             }
           };
           $scope.clear = function() {
             restoreSettings(defaultSettings);
-            $scope.search();
+            if($rootScope.mainFilterCatalog) $rootScope.mainFilterCatalog = false;
+            $scope.searching();
           };
           $scope.loadRegionList = function(search) {
             return $scope.regionList.load(null, search);
           };
           $scope.onSelectRegionList = function($item) {
+            $rootScope.resultsAreLoading = true;
             $scope.data.region = $item;
             $scope.regionList.select($item);
             $scope.data.city = null;
             $scope.localityList.reset();
+            if($state.is('index') || $state.is('index.catalog')){
+              $rootScope.mainFilterCatalog = true;
+            }
             $scope.search();
             $scope.localityList.load(null, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
             });
+            isFilterActive()
           };
 
           $scope.loadLocalityList = function(search) {
@@ -225,9 +285,11 @@ angular.module('app')
           };
 
           $scope.onSelectLocalityList = function($item, $model, $label) {
+            $rootScope.resultsAreLoading = true;
             $scope.data.city = $item;
             $scope.localityList.select($item, $model, $label);
             $scope.search();
+            isFilterActive()
           };
           $scope.search();
 
@@ -266,6 +328,14 @@ angular.module('app')
               setTimeout(function () {
                 $(".igov-container a").highlight($scope.sSearch, "marked-string");
               }, 100)
+            }
+          });
+          $scope.$watch('data.region', function() {
+            if(!$scope.data.region) {
+              $rootScope.resultsAreLoading = true;
+              $rootScope.mainFilterCatalog = false;
+              isFilterActive();
+              $scope.searching();
             }
           });
           $scope.$on('$stateChangeSuccess', function(event, toState) {

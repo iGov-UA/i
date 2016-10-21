@@ -1,8 +1,15 @@
-angular.module('app').controller('ServiceFormController', function ($scope, service, regions, AdminService, ServiceService, TitleChangeService, CatalogService, $anchorScroll) {
+angular.module('app')
+.controller('ServiceFormController', function ($scope, service, regions, AdminService,
+                                               ServiceService, TitleChangeService, CatalogService,
+                                               $anchorScroll, $rootScope, feedback) {
   $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+
+  //TODO should be refactored after refactoring for single controller for app/service/index.html
+  $scope.feedback = feedback;
+
   var sServiceName = $scope.service.sName;
   var data = CatalogService.getServiceTags(sServiceName).then(function (res) {
     if (res.length !== 0) {
@@ -12,8 +19,12 @@ angular.module('app').controller('ServiceFormController', function ($scope, serv
       $scope.spinner = false;
     } else {
       CatalogService.getServiceBusiness(sServiceName).then(function (res) {
-        var scat = res[0].aSubcategory[0].sName;
-        TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        if(res.length !==0 && res[0].aSubcategory) {
+          var scat = res[0].aSubcategory[0].sName;
+          TitleChangeService.setTitle(sServiceName + ' / ' + scat + ' / Бізнес');
+        } else {
+          TitleChangeService.setTitle(sServiceName + ' / Бізнес');
+        }
         $scope.spinner = false;
       })
     }
@@ -145,11 +156,14 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   $scope.runComments = function () {
     angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
-  var situation = $scope.category.aServiceTag_Child[0].sName_UA;
-  var tag = $scope.category.oServiceTag_Root.sName_UA;
-  var title = situation + ' / ' + tag;
-  TitleChangeService.setTitle(title);
+  try {
+    var situation = $scope.category.aServiceTag_Child[0].sName_UA;
+    var tag = $scope.category.oServiceTag_Root.sName_UA;
+    var title = situation + ' / ' + tag;
+    TitleChangeService.setTitle(title);
+  } catch (e){
 
+  }
   // якорь для содержания "жизненной ситуации"
   $scope.gotoAnchor = function (x) {
     var newHash = 'anchor' + x;
@@ -189,204 +203,6 @@ angular.module('app').controller('ServiceGeneralController', function ($state, $
   }, {
     location: false
   });
-});
-
-angular.module('app').controller('ServiceFeedbackController', function (SimpleErrorsFactory, $state, $stateParams, $scope, service, ServiceService, FeedbackService, ErrorsFactory, $q, AdminService, UserService) {
-
-  $scope.nID = null;
-  $scope.sID_Token = null;
-  $scope.feedback = {
-    messageBody: '',
-    messageList: [],
-    allowLeaveFeedback: false,
-    feedbackError: false,
-    postFeedback: postFeedback,
-    rateFunction: rateFunction,
-    sendAnswer: sendAnswer,
-    answer: answer,
-    hideAnswer: hideAnswer,
-    rating: 3,
-    exist: false,
-    readonly: true,
-    isAdmin: false,
-    showAnswer: false,
-    relativeTime: relativeTime
-  };
-
-  activate();
-
-  function activate() {
-
-    if(!ServiceService.oService.nID){
-      SimpleErrorsFactory.push({
-        type: "denger",
-        oData: {sHead:'Послуга не існує!',
-          sBody:'Виберіть, будьласка, існуючу послугу.'}});
-      return;
-    }
-
-    UserService.isLoggedIn().then(function (result) {
-      if (result) {
-        UserService.fio().then(function (res) {
-          if (res.subjectID === 20049) {
-            $scope.feedback.isAdmin = true;
-          }
-        });
-      }
-    });
-    //TODO fix AdminServ isAdmin
-    //$scope.feedback.isAdmin = AdminService.isAdmin();
-
-    $scope.nID = $stateParams.nID;
-    $scope.sID_Token = $stateParams.sID_Token;
-    $scope.feedback.sSubjectOperatorName = service.sSubjectOperatorName;
-
-    if ($scope.nID && $scope.sID_Token) {
-      $scope.feedback.allowLeaveFeedback = true;
-    }
-    refreshList();
-  }
-
-  function refreshList() {
-    $q.all([FeedbackService.getFeedbackListForService(ServiceService.oService.nID),
-      FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)])
-      .then(function (response) {
-        var funcDesc = {sHead: "Завантаженя фідбеку для послуг", sFunc: "getFeedbackForService"};
-        ErrorsFactory.init(funcDesc, {asParam: ['nID: ' + ServiceService.oService.nID]});
-        if (ErrorsFactory.bSuccessResponse(response)) {
-        }
-
-        $scope.feedback.messageList = _.sortBy(response[0].data, function (o) {
-          return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
-        });
-
-        $scope.feedback.rating = response[1].data.nID_Rate || 5;
-        $scope.feedback.exist = !!response[1].data.oSubjectMessage;
-        $scope.feedback.messageBody = response[1].data.oSubjectMessage ? response[1].data.oSubjectMessage.sBody : null;
-
-        $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          return (typeof o.sBody) === 'string' ? !!o.sBody.trim() : false;
-        });
-
-        $scope.feedback.currentFeedback = angular.copy(response[1].data);
-
-      }, function (error) {
-
-        switch (error.message) {
-          case "Security Error":
-            pushError("Помилка безпеки!");
-            break;
-          case "Record Not Found":
-            pushError("Запис не знайдено!");
-            break;
-          case "Already exist":
-            pushError("Вiдгук вже залишено!");
-            break;
-          default :
-            $scope.feedback.feedbackError = true;
-            ErrorsFactory.logFail({sBody: "Невідома помилка!", sError: error.message});
-            break;
-        }
-      }).finally(function () {
-        $scope.loaded = true;
-      });
-  }
-
-  function rateFunction(rating) {
-    $scope.feedback.rating = rating;
-  }
-
-  function postFeedback() {
-    var sAuthorFIO = $scope.feedback.currentFeedback.sAuthorFIO,
-      sMail = $scope.feedback.currentFeedback.sMail,
-      sHead = $scope.feedback.currentFeedback.sHead;
-
-    if (!((typeof $scope.feedback.messageBody) === 'string' ? !!$scope.feedback.messageBody.trim() : false)) {
-      return;
-    }
-
-    var feedbackParams = {
-      'sToken': $scope.sID_Token,
-      'sBody': $scope.feedback.messageBody,
-      'sID_Source': 'iGov',
-      'nID': $scope.nID,
-      'sAuthorFIO': sAuthorFIO,
-      'sMail': sMail,
-      'sHead': sHead,
-      'nID_Rate': $scope.feedback.rating,
-      'nID_Service': ServiceService.oService.nID
-    };
-
-    FeedbackService.postFeedbackForService(feedbackParams).finally(function () {
-      refreshList();
-    });
-
-    $state.go('index.service.feedback', {
-      nID: null,
-      sID_Token: null
-    });
-  }
-
-  function sendAnswer(data) {
-    var sHead = '';
-
-    var feedbackParams = {
-      'sID_Token': $scope.sID_Token,
-      'sBody': data.sAnswer.sText,
-      'nID_SubjectMessageFeedback': data.nID,
-      'sAuthorFIO': data.sAnswer.sAuthorFIO,
-      'nID_Service': data.nID_Service,
-      'nID_Subject': $state.nID_Subject
-    };
-
-    FeedbackService.postFeedbackAnswerForService(feedbackParams).then(function () {
-      refreshList();
-    });
-    hideAnswer();
-  }
-
-  function answer(commentID) {
-    $scope.feedback.commentToShowAnswer = commentID;
-  }
-
-  function hideAnswer() {
-    $scope.feedback.commentToShowAnswer = -1;
-  }
-
-  function pushError(sErrorText){
-    $scope.messageError = true;
-    ErrorsFactory.logWarn({sBody:sErrorText});
-    /*ErrorsFactory.push({
-     type: "danger",
-     text:  sErrorText
-     });*/
-  }
-
-  function relativeTime(dateStr) {
-    if (!dateStr) {
-      return;
-    }
-
-    var result = '',
-        date = $.trim(dateStr),
-        parsedDate = new Date(date),
-        time = parsedDate.getHours()+ ':' + parsedDate.getMinutes(),
-        today = moment().startOf('day'),
-        releaseDate = moment(date),
-        diffDays = today.diff(releaseDate, 'days', true);
-
-    if(diffDays < 0){
-      result = 'сьогодні ' + time;
-    } else if(diffDays < 1) {
-      result = ' вчора ' + time;
-    } else if(Math.floor(diffDays) <= 4){
-      result = Math.floor(diffDays) + ' дні назад ' + time;
-    } else {
-      result = Math.floor(diffDays) + ' днів назад ' + time;
-    }
-
-    return result;
-  }
 });
 
 angular.module('app').controller('ServiceLegislationController', function ($state, $rootScope, $scope) {

@@ -15,7 +15,6 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.activiti.engine.impl.util.json.JSONObject;
-import static org.igov.service.business.action.task.core.AbstractModelTask.contentStringToByte;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.service.business.promin.ProminSession_Singleton;
 import org.springframework.http.ResponseEntity;
 
 @Component("GetDocument_UkrDoc")
@@ -42,6 +41,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
     @Autowired
     private TaskService taskService;
+    
+    @Autowired
+    private ProminSession_Singleton prominSession_Singleton;
 
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -49,9 +51,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
         String sID_Document = getStringFromFieldExpression(this.sID_Document, execution);
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
-
-        String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
-                generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
+        
+        String sessionId = prominSession_Singleton.getSid_Auth_UkrDoc_SED();
 
         String[] documentIDs = sID_Document.split(":");
         if (documentIDs.length > 1) {

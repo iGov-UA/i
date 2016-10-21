@@ -73,7 +73,7 @@ public class Cherg {
             throw new IllegalArgumentException("date or service_id is null");
         }
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         String dateFormatted = dateTimeFormatter.print(date);
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
         LOG.info("service_id={}, date={}", serviceId, dateFormatted);
@@ -125,7 +125,7 @@ public class Cherg {
         mParam.add("patronymic", patronymic);
 
         HttpHeaders oHttpHeaders = new HttpHeaders();
-        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", StandardCharsets.UTF_8));
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlSetReserve)

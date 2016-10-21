@@ -8,7 +8,6 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
       resolve: {
         // TODO make sure it works stable
         service: function($stateParams, ServiceService) {
-          // console.log('App.states: calling get service, $stateParams.id =', $stateParams.id);
           return ServiceService.get($stateParams.id);
         },
         regions: function(PlacesService, service) {
@@ -16,6 +15,23 @@ angular.module('app').config(function($stateProvider, statesRepositoryProvider) 
         },
         title: function (TitleChangeService) {
           TitleChangeService.defaultTitle();
+        },
+        //TODO should be removed after refactoring for single controller for app/service/index.html
+        feedback: function($q, $stateParams, FeedbackService){
+          var deferred = $q.defer();
+
+          FeedbackService.getFeedbackListForService($stateParams.id)
+          .then(function (response) {
+            var messageList = _.filter(response.data, function (o) {
+              var filters = o.sAuthorFIO.trim().match(/null/gi);
+
+              return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+                && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
+            });
+            deferred.resolve({visible: messageList.length});
+          });
+
+          return deferred.promise;
         }
       },
       views: {

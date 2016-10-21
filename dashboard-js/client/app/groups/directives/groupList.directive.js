@@ -3,7 +3,7 @@
  */
 angular.module('dashboardJsApp')
   .directive('groupList', function () {
-    var controller = function ($scope, $modal, $q) {
+    var controller = function ($scope, $modal, $q, Modal) {
 
       var inProgress = false;
 
@@ -131,7 +131,13 @@ angular.module('dashboardJsApp')
       };
 
       $scope.delete = function (group) {
-        deleteFunc(group.id).then(fillData);
+        deleteFunc(group.id).then(function(data){
+          if(data.code === '500'){
+            Modal.inform.error()(data.message);
+          }else{
+            fillData();
+          }
+        });
       };
 
       $scope.init = function () {

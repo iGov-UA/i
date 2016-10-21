@@ -88,66 +88,6 @@ public class ActionTaskCentralController {
                    // null, //sDateCreate
                   // null //sDateClosed
             );
-            
-            /*
-            String sReturnCentral = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sBody, null, null);
-            LOG.info("(sReturnCentral={})", sReturnCentral);
-            
-            StringBuilder osBody = new StringBuilder(sBody) ;
-            osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(saField, true)).append("<br/>");
-            
-            Long nID_SubjectMessageType = 4L;
-            SubjectMessage oSubjectMessage = subjectMessageService
-                    .createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                            sID_Order), sBody, nID_Subject, "", "", saField, nID_SubjectMessageType);
-            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);
-            */
-            
-            /*
-            String historyEvent = historyEventService.getHistoryEvent(sID_Order);
-            LOG.info("....ok! successfully get historyEvent_service! (event={})", historyEvent);
-
-            JSONObject fieldsJson = new JSONObject(historyEvent);
-
-            if(sToken!=null){
-                if (fieldsJson.has("sToken")) {
-                    String sTokenOriginal = fieldsJson.getString("sToken");
-                    if (sTokenOriginal.isEmpty() || !sTokenOriginal.equals(sToken)) {
-                        throw new CommonServiceException(
-                                ExceptionCommonController.BUSINESS_ERROR_CODE,
-                                "Token is wrong");
-                    }
-                }
-            }else{
-                HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
-                //nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-                //nID_Subject = oHistoryEvent_Service.getnID_Subject();
-                if(nID_Subject==null){
-                    LOG.warn("nID_Subject and sToken is absant! (sID_Order={},oHistoryEvent_Service.getnID_Subject()={})", sID_Order, oHistoryEvent_Service.getnID_Subject());
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "nID_Subject and sToken is absant!");
-                } else if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                    LOG.warn("nID_Subject is not owner of Order and sToken is absant! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                    //throw new Exception("nID_Subject is not Equal!");
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "nID_Subject is not owner of Order and sToken is absant!");
-                }
-            }
-            
-            String snID_Process = fieldsJson.get("nID_Task").toString();
-            */
-            
-            
-            //Long nID_Process = oHistoryEvent_Service.getsID_Order();
-            
-            /*sHead = sHead != null ? sHead : "На заявку "
-                    + fieldsJson.getString("sID_Order")
-                    + " дана відповідь громадянином";*/
-
-            
             String sHost = null;
             int dash_position = sID_Order.indexOf("-");
             int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
@@ -159,35 +99,24 @@ public class ActionTaskCentralController {
                 sHost = oOptionalServer.get().getsURL();
             }
             String sURL = sHost + "/service/action/task/setTaskAnswer";
+            String processId = String.valueOf(oHistoryEvent_Service.getnID_Task());
             LOG.info("sURL={}", sURL);
             Map<String, String> mParam = new HashMap<String, String>();
-            Long nID_Process = oHistoryEvent_Service.getnID_Task();
-            //mParam.put("nID_Order", snID_Process);
-            mParam.put("nID_Process", nID_Process+"");
+            mParam.put("nID_Process", processId);
             mParam.put("saField", saField);
-//            mParam.put("sBody", sBody);
-            LOG.info("mParam={}", mParam);
+            LOG.info(" mParam={} ", mParam);
             String sReturnRegion = httpRequester.getInside(sURL, mParam);
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
-            
-            /*
-            historyEvent = actionEventService.updateHistoryEvent_Service_Central(sID_Order, "[]", sHead, null, null,
-                    "Відповідь на запит по уточненню даних");
-            LOG.info("....ok! successfully get historyEvent_service! event={}", historyEvent);
-            */
-            
-            
-//            createSetTaskAnswerMessage(sID_Order, sBody, saField, historyEvent);
-    //private void createSetTaskAnswerMessage(String sID_Order, String sBody, String saField, String jsonHistoryEvent) {
-        
-            /*Long nID_SubjectMessageType = 5L;
-            SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), sBody, nID_Subject, "", "", soData, nID_SubjectMessageType);
-                oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
-                subjectMessagesDao.setMessage(oSubjectMessage);*/
-            
-            
+            String mergeUrl = sHost + "/service/action/task/mergeVariable";
+            Map<String, String> mergeParams = new HashMap<String, String>();
+            mergeParams.put("processInstanceId", processId);
+            mergeParams.put("key", "saTaskStatus");
+            mergeParams.put("insertValues", "GotAnswer");
+            mergeParams.put("removeValues", "WaitAnswer");
+            LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
+            httpRequester.getInside(mergeUrl, mergeParams);
+
         } catch (Exception e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,

@@ -90,6 +90,11 @@ public class GeneralConfig {
     private String sUser_Corezoid_Exchange;
     @Value("${general.Exchange.Corezoid.sSecretKey}")
     private String sSecretKey_Corezoid_Exchange;
+    
+    @Value("${general.Exchange.Corezoid.Gorsovet.sID_User}")
+    private String sUser_Corezoid_Gorsovet_Exchange;
+    @Value("${general.Exchange.Corezoid.Gorsovet.sSecretKey}")
+    private String sSecretKey_Corezoid_Gorsovet_Exchange;
 
     // MSG Properties
     @Value("${general.Monitor.MSG.sURL}")
@@ -121,6 +126,8 @@ public class GeneralConfig {
 
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
+    @Value("${general.LiqPay.bTest}")
+    private String sbTest_LiqPay;
 
     @Value("${general.queue.cherg.sURL}")
     private String queueManagementSystemAddress;
@@ -147,6 +154,9 @@ public class GeneralConfig {
     private String sSuffixDateMask_Pay_Yuzhny_FTP;
     @Value("${general.Pay.Yuzhny.FTP.nDaysOffset}")
     private String snDaysOffset_Pay_Yuzhny_FTP;
+    
+    @Value("${general.feedbackCountLimit}")
+    private String feedbackCountLimit;
    
     
     
@@ -154,7 +164,7 @@ public class GeneralConfig {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
-            //LOG.info("(sbTest={})", sbTest_Self);
+            //LOG.info("(sbTest_Self={})", sbTest_Self);
         } catch (Exception oException) {
             LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest_Self);
             LOG.debug("FAIL:", oException);
@@ -295,6 +305,18 @@ public class GeneralConfig {
     public String getURL_CheckOut_LiqPay() {
         return sURL_CheckOut_LiqPay;
     }
+    public boolean isTest_LiqPay() {
+        boolean b = true;
+        try {
+            b = (sbTest_LiqPay == null ? b : Boolean.valueOf(sbTest_LiqPay));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest_LiqPay={})", oException.getMessage(), sbTest_LiqPay);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
+    }
+    
 
     
     public Integer getServerId(Integer nID_Server) {
@@ -438,5 +460,29 @@ public class GeneralConfig {
 	public Integer getDaysOffset_FTP_Yuzhny_Pay() {
 		return Integer.valueOf(snDaysOffset_Pay_Yuzhny_FTP);
 	}
+	
+	public Long getFeedbackCountLimit() {
+		return Long.valueOf(feedbackCountLimit);
+	}
+	
+	 public boolean isFeedbackCountExpired(Long feedbackCount) {
+			return feedbackCount > getFeedbackCountLimit();
+	 }
+
+    public String getsUser_Corezoid_Gorsovet_Exchange() {
+        return sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsUser_Corezoid_Gorsovet_Exchange(String sUser_Corezoid_Gorsovet_Exchange) {
+        this.sUser_Corezoid_Gorsovet_Exchange = sUser_Corezoid_Gorsovet_Exchange;
+    }
+
+    public String getsSecretKey_Corezoid_Gorsovet_Exchange() {
+        return sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
+
+    public void setsSecretKey_Corezoid_Gorsovet_Exchange(String sSecretKey_Corezoid_Gorsovet_Exchange) {
+        this.sSecretKey_Corezoid_Gorsovet_Exchange = sSecretKey_Corezoid_Gorsovet_Exchange;
+    }
     
 }

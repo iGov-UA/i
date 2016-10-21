@@ -50,7 +50,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       sID_UA_Common : sID_UA_Common
     };
 
-    data = angular.extend(data, formData.getRequestObject());
+    data = angular.extend(data, formData.getRequestObject(), {contentToSign: formData.contentToSign});
     data = angular.extend(data, params);
 
     return data;

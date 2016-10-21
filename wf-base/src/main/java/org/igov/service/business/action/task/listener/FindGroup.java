@@ -44,15 +44,10 @@ public class FindGroup implements TaskListener {
 
         for (int i = 0; i < userGroup.size(); i++) {
             LOG.info("userGroup.get(i).getId(): " + userGroup.get(i).getId());
-
-
             if (userGroup.get(i).getId().contains(group_pattern)) {
-
                 aGroupPatternFound.add(userGroup.get(i));
-                LOG.info("aGroupPatternFound.size(): " + aGroupPatternFound.size());
-              
+                LOG.info("aGroupPatternFound.size(): " + aGroupPatternFound.size()); 
             }
-
         }
 
         //Проверка количеcтва элементов в коллекции aGroupPatternFound. Если отлично от единицы, то передать в переменную usertask2 none. Иначе название группы

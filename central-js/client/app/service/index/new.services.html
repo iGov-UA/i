@@ -18,8 +18,17 @@
   </div>
 
   <div class="row" ng-if="!mainSpinner">
+    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="mainSearchView">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs navi-citizens-business search-results">
+          <li>
+            <span>Результати пошуку:</span>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-    <div class="container" style="padding-left: 0; padding-right: 0;">
+    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="!mainSearchView">
       <div class="col-md-12">
         <ul class="nav nav-tabs navi-citizens-business">
           <li>
@@ -38,16 +47,17 @@
     </div>
 
     <div class="row subcategory">
-      <div ui-view="contentIn">
+      <div ui-view="contentIn" ng-if="!mainSearchView">
+
         <div class="row" ng-if="!spinner">
           <div class="container igov-container" style="margin-bottom: 40px; padding-left: 0; padding-right: 0" >
-            <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength">
+            <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength && !category.aService">
               <div class="col-sm-12 category-container">
                 <div class="col-sm-3" style="padding-right: 11.25px">
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
 	                <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
                 </div>
-                <div class="col-sm-9 text" style="padding-left: 11.25px">
+                <div class="col-sm-9 text">
                   <h3><a ui-sref="index.newsubcategory({'catID': 1, 'scatID': category.oServiceTag_Root.nID })" ng-click="catalogTab = 1">{{category.oServiceTag_Root.sName_UA}}</a></h3>
                   <ul>
                     <li style="margin-top: 5px" ng-repeat="subcategory in category.aServiceTag_Child | orderBy: 'nOrder'"><a ui-sref="index.situation({'catID': 1, 'scatID': category.oServiceTag_Root.nID, 'sitID': subcategory.nID})" ng-click="catalogTab = 1">{{subcategory.sName_UA}}</a></li>
@@ -56,24 +66,61 @@
               </div>
             </div>
 
-            <div style="margin-top: 20px">
-              <div class="col-sm-12 catalog-with-search-result" ng-if="!minSearchLength">
-                <ul>
-                  <li ng-repeat="service in catalog.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
-                    <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
           </div>
         </div>
-        <div class="row" ng-show="spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode">
+
+        <div class="row" ng-show="!resultsAreLoading && (spinner || minSearchLength && catalog.aNode || !minSearchLength && !catalog.aNode)">
           <div class="text-center">
             <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
           </div>
         </div>
       </div>
+
+      <div class="row" ng-if="mainSearchView && !resultsAreLoading">
+        <div class="container igov-container" style="margin-top: 20px">
+          <div class="col-sm-12 catalog-with-search-result">
+            <div ng-repeat="category in catalog" ng-if="!catalog.aService">
+              <div ng-if="catalog.length === 0">
+                <h4>На жаль, за даним запитом результатів не знайдено.</h4>
+              </div>
+              <ul ng-repeat="subcategory in category.aSubcategory">
+                <li ng-repeat="service in subcategory.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
+                  <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+                </li>
+              </ul>
+            </div>
+            <div ng-if="catalog.aService">
+              <div ng-if="catalog.aService.length === 0">
+                <h4>На жаль, за даним запитом результатів не знайдено.</h4>
+              </div>
+              <ul>
+                <li ng-repeat="service in catalog.aService | orderBy: ['-nStatus', 'nOrder', 'sName']" style="list-style:none;">
+                  <i class="icon-e-service-on"
+                     ng-if="service.nStatus === 2"
+                     title="Ця послуга доступна в електронній формі для одного, кількох або всіх регіонів">
+                  </i>
+                  <i class="icon-e-service-test"
+                     ng-if="service.nStatus === 1"
+                     title="Ця послуга буде доступна онлайн дуже скоро. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+                  </i>
+                  <i class="icon-e-service-off"
+                     ng-if="service.nStatus === 0"
+                     title="Ця послуга поки не доступна онлайн. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
+                  </i>
+                  <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-show="resultsAreLoading">
+        <div class="text-center">
+          <img class="text-center section-preloader" src="/assets/images/loading.gif" alt="Loading"/>
+        </div>
+      </div>
+
       </div>
     </div>
 

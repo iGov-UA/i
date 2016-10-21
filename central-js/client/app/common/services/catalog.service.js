@@ -3,7 +3,7 @@ angular.module('app')
 
   var servicesCache = {};
 
-  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation) {
+  this.getModeSpecificServices = function (asIDPlacesUA, sFind, bShowEmptyFolders, category, subcat, situation, filter) {
     var asIDPlaceUA = asIDPlacesUA && asIDPlacesUA.length > 0 ? asIDPlacesUA.reduce(function (ids, current, index) {
       return ids + ',' + current;
     }) : null;
@@ -20,7 +20,7 @@ angular.module('app')
         && !subcat && category !== 'business') {
       // пока есть параметр bNew ввожу доп проверку, после нужно будет убрать
       // пока не реализованы теги нового бизнеса, вернул в проверку старый.
-      if(sFind) {
+      if(sFind || filter) {
         var data = {
           asIDPlaceUA: asIDPlaceUA,
           sFind: sFind || null,
@@ -81,6 +81,34 @@ angular.module('app')
           return response.data;
         });
     }
+  };
+
+  this.getCatalogCounts = function(catalog) {
+    var catalogCounts = {'0': 0, '1': 0, '2': 0};
+    if (catalog === undefined) {
+      catalog = servicesCache;
+    }
+
+    if(catalog.aService) {
+      angular.forEach(catalog.aService, function(aServiceItem) {
+        if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+          catalogCounts[aServiceItem.nStatus] = 0;
+        }
+        ++catalogCounts[aServiceItem.nStatus];
+      });
+    } else {
+      angular.forEach(catalog, function(category) {
+        angular.forEach(category.aSubcategory, function(subItem) {
+          angular.forEach(subItem.aService, function(aServiceItem) {
+            if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
+              catalogCounts[aServiceItem.nStatus] = 0;
+            }
+            ++catalogCounts[aServiceItem.nStatus];
+          });
+        });
+      });
+    }
+    return catalogCounts;
   };
 
   this.getServiceTags = function (sFind) {
@@ -155,7 +183,26 @@ angular.module('app')
           operators.push(category);
         }
       });
-    }else {
+    }else if(!catalog.aService && !catalog.aServiceTag_Child) {
+      angular.forEach(catalog, function (category) {
+        if(category.aSubcategory) {
+          angular.forEach(category.aSubcategory, function (subcategory) {
+            angular.forEach(subcategory.aService, function (service) {
+              var found = false;
+              for (var i = 0; i < operators.length; ++i) {
+                if (operators[i].sSubjectOperatorName === service.sSubjectOperatorName) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found && service.sSubjectOperatorName != "") {
+                operators.push(service);
+              }
+            })
+          })
+        }
+      })
+    } else {
       angular.forEach(catalog[0], function(category) {
         var found = false;
         for (var i = 0; i < operators.length; ++i) {
@@ -303,21 +350,4 @@ angular.module('app')
 //   });
 // };
 
-// this.getCatalogCounts = function(catalog) {
-//   var catalogCounts = {'0': 0, '1': 0, '2': 0};
-//   if (catalog === undefined) {
-//     catalog = servicesCache;
-//   }
-//
-//   angular.forEach(catalog, function(category) {
-//     angular.forEach(category.aSubcategory, function(subItem) {
-//       angular.forEach(subItem.aService, function(aServiceItem) {
-//         if (typeof (catalogCounts[aServiceItem.nStatus]) == 'undefined') {
-//           catalogCounts[aServiceItem.nStatus] = 0;
-//         }
-//         ++catalogCounts[aServiceItem.nStatus];
-//       });
-//     });
-//   });
-//   return catalogCounts;
-// };
+

@@ -2,7 +2,16 @@
 describe('Controller: TasksCtrl', function() {
   var scope, tasks, processes, taskDeferred, processesDeferred;
 
-  beforeEach(module('dashboardJsApp'));
+  beforeEach(module('dashboardJsApp', function($provide) {
+    $provide.service('tasksStateModel', function() {
+      return {};
+    });
+
+    $provide.service('stateModel', function() {
+      return {};
+    });
+  }));
+
   beforeEach(inject(function($controller, $rootScope, $q) {
     scope = $rootScope.$new();
     mockTasksService($q);
@@ -30,6 +39,18 @@ describe('Controller: TasksCtrl', function() {
   it('parses task counters', function() {
     whenCountsReceived();
     thenCountsParsed();
+  });
+
+  it('check task status', function() {
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: ' status1'}]}, 'status1')).toBeTruthy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1 '}]}, 'status1')).toBeTruthy();
+    expect(scope.hasTaskStatus({variables: [{name: 'otherVar', value: ''}, {name: 'saTaskStatus', value: 'status1 status2'}]}, 'status1')).toBeTruthy();
+
+    expect(scope.hasTaskStatus({variables: [{name: 'someVar', value: 'status3'}]}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: []}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: ''}]}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1'}]}, 'status3')).toBeFalsy();
+    expect(scope.hasTaskStatus({variables: [{name: 'saTaskStatus', value: 'status1 status2 status4'}]}, 'status3')).toBeFalsy();
   });
 
   function thenLoadCounts () {

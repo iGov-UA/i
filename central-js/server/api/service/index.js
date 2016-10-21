@@ -11,6 +11,7 @@ router.post('/:nID([0-9]+)/feedbackAnswer', controller.postServiceFeedbackAnswer
 router.get('/:nID([0-9]+)/statistics', controller.getServiceStatistics);
 router.get('/getServiceHistoryReport', controller.getServiceHistoryReport);
 router.post('/', controller.setService);
+router.post('/getPatternFilled', controller.getPatternFilled);
 router.delete('/', controller.removeServiceData);
 
 module.exports = router;

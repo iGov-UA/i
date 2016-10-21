@@ -1,15 +1,18 @@
 package org.igov.io.mail;
 
+import java.util.List;
+import java.util.Map;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 
 /**
  * User: goodg_000
@@ -54,7 +57,7 @@ public class NotificationPatterns {
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
-                    +"<br>У разі необхідності Ви можете спрямувати питання та пропозиції скориставшись формою за <a href=\"https://docs.google.com/forms/d/1ueU6PQa-OSA2Tsisxx2RbRWRJ9rLsFlPBlHsr7W-4gE/viewform\" target=\"_blank\">посиланням</a>"
+                    +"<br>У разі необхідності Ви можете спрямувати питання та пропозиції скориставшись формою за <a href=\"https://docs.google.com/forms/u/0/d/1d2ZttyUR9DBqSInCXsx_llvg8xp8ecjTgHVJnTtb2HM/viewform?edit_requested=true\" target=\"_blank\">посиланням</a>"
                     ;
             
             /*
@@ -128,7 +131,7 @@ public class NotificationPatterns {
     //String sHead, String sBody, String sMailTo
     public void sendTaskEmployeeQuestionEmail(String sHead, String sCommentary, String sMailTo, String sToken,
             Long nID_Process, String saField, String soParams)
-            throws EmailException {
+            throws EmailException, Exception {
         try {
             sHead = sHead == null ? "Просимо уточнити дані по Вашій заявці на iGov" : sHead;
             String sClientFIO = null;
@@ -166,7 +169,8 @@ public class NotificationPatterns {
                     + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "") + " потребує уточнення деяких даних.";
 
             StringBuilder osBody = new StringBuilder(sText);
-            osBody.append("<br>").append("<br>").append(createTable_TaskProperties_Notification(saField, false));
+            List<Map<String,String>> amReturn = amFieldMessageQuestion(saField, false);
+            osBody.append("<br>").append("<br>").append(createTable_TaskProperties(amReturn, false, true));//saField
             osBody.append("<br>").append("Примітка:").append("<br>");
             osBody.append(sCommentary).append("<br>");
             osBody.append("<br/>").append("Щоб уточнити дані, Вам потрібно <a href=\"" + sURL

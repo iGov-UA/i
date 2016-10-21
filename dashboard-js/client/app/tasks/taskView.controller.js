@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks', 'user',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope',
+      '$state', 'stateModel', 'ValidationService', 'FieldMotionService', '$rootScope', 'lunaService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel, ValidationService, FieldMotionService, $rootScope) {
+                $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope, lunaService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -179,6 +179,7 @@
         $scope.tabHistoryAppeal = 'appeal';
         $scope.nID_Process = oTask.processInstanceId;
         $scope.markers = ValidationService.getValidationMarkers();
+        $scope.bHasEmail = false;
 
         $scope.validateForm = function(form) {
           var bValid = true;
@@ -315,18 +316,16 @@
           var sClientFIO = null;
           var sClientName = null;
           var sClientSurname = null;
-          var bCheckGeneralComment = false;
 
           angular.forEach($scope.taskForm, function (item) {
             if (angular.isDefined($scope.clarifyFields[item.id]) && $scope.clarifyFields[item.id].clarify)
               aFields.push({
-                sID: item.id,
-                sName: $scope.sFieldLabel(item.name),
-                sType: item.type,
-                sValue: item.value,
-                sValueNew: item.value,
-                sNotify: $scope.clarifyFields[item.id].text,
-                sGeneralComment: $scope.clarifyModel.sBody
+                sID: item.id !== null ? item.id : "",
+                sName: $scope.sFieldLabel(item.name) !== null ? $scope.sFieldLabel(item.name) : "",
+                sType: item.type !== null ? item.type : "",
+                sValue: item.value !== null ? item.value : "",
+                sValueNew: item.value !== null ? item.value : "",
+                sNotify: $scope.clarifyFields[item.id].text !== null ? $scope.clarifyFields[item.id].text : ""
               });
 
             if (item.id === 'email') {
@@ -342,15 +341,6 @@
             }
           });
 
-          if(aFields.length === 0){
-            bCheckGeneralComment = true;
-          }
-          if(bCheckGeneralComment && $scope.clarifyModel.sBody !== ''){
-            aFields.push({
-              sType: 'string',
-              sGeneralComment: $scope.clarifyModel.sBody
-            });
-          }
           if ($scope.clarifyModel.sBody.trim().length === 0 && aFields.length === 0) {
             Modal.inform.warning()('Треба ввести коментар або обрати поле/ля');
             return;
@@ -369,12 +359,29 @@
 
           oData.saField = JSON.stringify(aFields);
           oData.soParams = JSON.stringify(soParams);
-          tasks.setTaskQuestions(oData).then(function () {
-            $scope.clarify = false;
-            Modal.inform.success(function () {
-            })('Зауваження відправлено успішно');
-          });
+          if(oData.saField === "[]") {
+            oData.nID_Process = oData.nID_Process + lunaService.getLunaValue(oData.nID_Process);
+            tasks.postServiceMessages(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Коментар відправлено успішно');
+            });
+          } else {
+            tasks.setTaskQuestions(oData).then(function () {
+              $scope.clarify = false;
+              Modal.inform.success(function () {
+              })('Зауваження відправлено успішно');
+            });
+          }
         };
+
+        (function isTaskHasEmail() {
+          for(var i=0; i<$scope.taskData.aField.length; i++){
+            if($scope.taskData.aField[i].sID === "email"){
+              $scope.bHasEmail = true;
+            }
+          }
+        })();
 
         $scope.checkSignState = {inProcess: false, show: false, signInfo: null, attachmentName: null};
 
@@ -579,12 +586,11 @@
         };
 
         $scope.nID_FlowSlotTicket_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf(":");
-          var nTo = sValue.indexOf(",");
-          var s = sValue.substring(nAt + 1, nTo);
           var nID_FlowSlotTicket = 0;
           try {
-            nID_FlowSlotTicket = s;
+            var nAt = sValue.indexOf(":");
+            var nTo = sValue.indexOf(",");
+            nID_FlowSlotTicket = sValue.substring(nAt + 1, nTo);;
           } catch (_) {
             nID_FlowSlotTicket = 1;
           }
@@ -592,12 +598,11 @@
         };
 
         $scope.sDate_FieldQueueData = function (sValue) {
-          var nAt = sValue.indexOf("sDate");
-          var nTo = sValue.indexOf("}");
-          var s = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           var sDate = "Дата назначена!";
           try {
-            sDate = s;
+            var nAt = sValue.indexOf("sDate");
+            var nTo = sValue.indexOf("}");
+            sDate = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
           } catch (_) {
             sDate = "Дата назначена!";
           }
@@ -729,6 +734,10 @@
           }
         });
 
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
+        };
+
         $scope.isTableAttachment = function (item) {
           return item.indexOf('[table]') > -1;
         };
@@ -767,10 +776,11 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment.length > 0)
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
           angular.forEach($scope.taskData.aAttachment, function (attach) {
             tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
               ++itemsProcessed;
@@ -779,6 +789,12 @@
                 table.name = attach.description;
                 table.id = attach.id;
                 table.content = JSON.parse(res);
+                for(var i=0; i<table.content.length; i++) {
+                  if(typeof table.content[i] === "string") {
+                    table.idName = table.content[i];
+                    delete table.content[i];
+                  }
+                }
                 $scope.taskData.aTable.push(table);
               } catch (e) {
 

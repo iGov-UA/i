@@ -280,5 +280,82 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="issue-1385-AutogenerationFlowSlots" author="HavrylinSerhii">
+        <addColumn tableName="Flow_ServiceData">
+            <column name="nCountAutoGenerate" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1405-DocumentStep" author="taaraora">
+        <createTable tableName="DocumentStep">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey_Step" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="snID_Process_Activiti" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStep_nOrder_snID_Process_Activiti_unique"
+                             tableName="DocumentStep"
+                             columnNames="nOrder, snID_Process_Activiti"/>
+
+        <createTable tableName="DocumentStepSubjectRight">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_DocumentStep" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_DocumentStep_DocumentStepSubjectRight"
+                             referencedTableName="DocumentStep" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sKey_GroupPostfix" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bWrite" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDate" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStepSubjectRight_sKey_GroupPostfix_nID_DocumentStep_unique"
+                             tableName="DocumentStepSubjectRight"
+                             columnNames="sKey_GroupPostfix, nID_DocumentStep"/>
+
+        <createTable tableName="DocumentStepSubjectRightField">
+            <column name="nID_DocumentStepSubjectRight" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_DocumentStepSubjectRightField_DocumentStepSubjectRight"
+                             referencedTableName="DocumentStepSubjectRight"
+                             referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sMask_FieldID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bWrite" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="DocumentStepSubjectRightField_nID_DocumentStepSubjectRight_sMask_FieldID_unique"
+                             tableName="DocumentStepSubjectRightField"
+                             columnNames="nID_DocumentStepSubjectRight, sMask_FieldID"/>
+
+    </changeSet>
 
 </databaseChangeLog>
