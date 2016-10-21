@@ -35,6 +35,8 @@
           <activiti:value id="accept" name="запросити людину для отримання довідки про оформлення спадщини"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateVisit" name="Вкажіть дату і час - коли прийти громадянину за довідкою, у разі потреби - додаткові відомості щодо візиту" type="string"></activiti:formProperty>
+      
         <activiti:formProperty id="comment" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -121,6 +123,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</strong><br /><br />
 Довідка про про оформлення спадщини готова.
+Вам призначено дату і час візиту для отримання довідки - ${sDateVisit}.<br />
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто.<br />
 <br />
 При собі треба мати:<br />
