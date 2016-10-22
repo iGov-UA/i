@@ -306,7 +306,7 @@ public class ObjectFileCommonController {
 		            Attachment.class);
 		}
 		
-		if(sFileName!=null&&!sFileName.endsWith(".xml")&&!sFileName.endsWith(".xml")){
+		if(sFileName!=null&&!sFileName.endsWith(".xml")&&!sFileName.endsWith(".XML")){
                     int nTo = sFileName.lastIndexOf(".");
                     if (nTo >= 0) {
                         sFileName = "attach_" + id + "."
