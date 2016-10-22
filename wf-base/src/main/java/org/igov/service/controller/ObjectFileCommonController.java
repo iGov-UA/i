@@ -44,7 +44,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -737,8 +736,13 @@ public class ObjectFileCommonController {
             //declarContent = declarContent.replaceAll(regex, replacement);
         }
         result.put("soPatternFilled", declarContent.replaceAll(System.getProperty("line.separator"), ""));
-        result.put("sFileName", "23013194700944F1301801100000000151220152301.xml");
+        result.put("sFileName", buildFileName());
         return result;
+    }
+    
+    
+    private String buildFileName() {
+        return "23013194700944F1301801100000000151220152301.xml";
     }
     
 }
