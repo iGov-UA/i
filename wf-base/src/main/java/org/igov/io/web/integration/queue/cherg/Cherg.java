@@ -112,7 +112,7 @@ public class Cherg {
 
     }
 
-    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+    public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
         if (nID_Service_Private == null) {
             LOG.error("service_id=={}", nID_Service_Private);
             throw new IllegalArgumentException("nID_Service_Private is null");
@@ -139,31 +139,39 @@ public class Cherg {
                     + oHttpEntityCover.nStatus());
         }
 
-        JSONParser parser = new JSONParser();
-        JSONObject result = (JSONObject) parser.parse(sReturn);
-        if (!result.get("status-code").equals("0")) {
-            LOG.error("code=={}, detail=={}", result.get("status-code"), result.get("status-detail"));
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+        JSONArray oaJSONArray =  new JSONArray();
+        if (!oJSONObjectGot.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
             //skip all errors from queue management system and return just empty array for date
-            return "{\"aDate\":[]}";
+            //return "{\"aDate\":[]}";
+            //oaJSONArray = new JSONArray();
+        }else{
+            oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+            LOG.debug("Workdays all days:{}", oaJSONArray);
         }
-        JSONArray dates = (JSONArray) result.get("data");
-        LOG.debug("Workdays all days:{}", dates);
 
-        JSONArray retJSONArray = new JSONArray();
-        for(Object o:dates) {
-            JSONObject jo = (JSONObject) o;
-            String date = jo.get("date").toString();
-            String work_day = jo.get("work_day").toString();
-		
-            if ( work_day.equals("1")) {
-        	retJSONArray.add(date);
+        JSONArray oaJSONArrayReturn = new JSONArray();
+        for(Object o:oaJSONArray) {
+            JSONObject oJSONObject = (JSONObject) o;
+            String sDate = oJSONObject.get("date").toString();
+            String snDateType = oJSONObject.get("work_day").toString();
+            if ( snDateType.equals("1")) {
+        	oaJSONArrayReturn.add(sDate);
             }
         }
-	JSONObject retJSON = new JSONObject();
-	retJSON.put("aDate", retJSONArray);
-        LOG.info("Workdays only work days:{}", retJSON.toJSONString());
+        return oaJSONArrayReturn;
+    }
+    
+    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
+        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+                
+	JSONObject oJSONObjectReturn = new JSONObject();
+	oJSONObjectReturn.put("aDate", oaJSONArray);
+        LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());
         
-        return retJSON.toString();
+        return oJSONObjectReturn.toString();
 
     }
 
