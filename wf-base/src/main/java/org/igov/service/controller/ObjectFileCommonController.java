@@ -306,12 +306,13 @@ public class ObjectFileCommonController {
 		            Attachment.class);
 		}
 		
-		
-		int nTo = sFileName.lastIndexOf(".");
-		if (nTo >= 0) {
-		    sFileName = "attach_" + id + "."
-		            + sFileName.substring(nTo + 1);
-		}
+		if(sFileName!=null&&!sFileName.endsWith(".xml")&&!sFileName.endsWith(".xml")){
+                    int nTo = sFileName.lastIndexOf(".");
+                    if (nTo >= 0) {
+                        sFileName = "attach_" + id + "."
+                                + sFileName.substring(nTo + 1);
+                    }
+                }
 		
 		// Вычитывем из потока массив байтов контента и помещаем параметры
 		// контента в header
