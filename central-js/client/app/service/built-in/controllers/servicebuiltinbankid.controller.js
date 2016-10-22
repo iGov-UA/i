@@ -680,10 +680,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
             if (pars[key].required != dataRequired) {
               pars[key].required = dataRequired;
               if (pars[key] instanceof SignFactory){
+                $scope.sign.checked = dataRequired;
                 $scope.isSignNeededRequired = dataRequired;
-                if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
-                  $scope.sign.checked = dataRequired;
-                }
               }
             }
           }
