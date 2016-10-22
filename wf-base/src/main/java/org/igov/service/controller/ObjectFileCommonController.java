@@ -750,7 +750,7 @@ public class ObjectFileCommonController {
                     .append(data.get("PERIOD_TYPE").trim())
                     .append(data.get("PERIOD_MONTH").trim())
                     .append(data.get("PERIOD_YEAR").trim())
-                    .append(data.get("C_STI_ORIG").trim()).toString();
+                    .append(data.get("C_STI_ORIG").trim()).append(".xml").toString();
         } catch (Exception ex) {
             LOG.error("buildFileName error: ", ex);
         }
