@@ -6,7 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Податковий номер;3578965412 реєстраційний номер облікової картки платника податків;writable=true,sID_Field_SWinEd=HTIN" type="string" default="3578965412" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий номер;3578965412 реєстраційний номер облікової картки платника податків;writable=true,sID_Field_SWinEd=HTIN" type="string" default="3578965412"></activiti:formProperty>
         <activiti:formProperty id="sCode" name="Код  територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HKSTI" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameDFS" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса; ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="olga.kuzminova87@gmail.com"></activiti:formProperty>
@@ -58,20 +58,20 @@
         <activiti:formProperty id="date_today" name="Дата подання заяви;Дата формування запиту;writable=true,sID_Field_SWinEd=HFILL" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
             <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
+          <activiti:field name="sEmail">
+            <activiti:expression>${email}</activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
