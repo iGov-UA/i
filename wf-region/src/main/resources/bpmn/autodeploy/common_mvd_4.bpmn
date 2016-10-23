@@ -45,6 +45,8 @@
           <activiti:value id="tf_01" name="1"></activiti:value>
           <activiti:value id="tf_02" name="2"></activiti:value>
           <activiti:value id="tf_03" name="3"></activiti:value>
+          <activiti:value id="tf_04" name="4"></activiti:value>
+          <activiti:value id="tf_05" name="5"></activiti:value>
         </activiti:formProperty>
 
         <activiti:formProperty id="Info_06" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
@@ -77,6 +79,26 @@
         <activiti:formProperty id="sNumDozv_03" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dDateDozv_03" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
 
+        <activiti:formProperty id="Info_09" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="asSelectWeapon_03_04" name="Тип зброї" type="enum" default=" " required="true">
+          <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
+          <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumDozv_04" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDateDozv_04" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="Info_10" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="asSelectWeapon_03_05" name="Тип зброї" type="enum" default=" " required="true">
+          <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
+          <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumDozv_05" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDateDozv_05" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="Info_04" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
         <activiti:formProperty id="Info_05" name="Необхідний пакет документів для отримання послуги" type="label" default=" "></activiti:formProperty>
@@ -99,8 +121,10 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nUser" name="Users" type="string" default=" "></activiti:formProperty>
+		
 <!--         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty> -->
 <!--         <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_1.json')}"></activiti:formProperty> -->
+
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
