@@ -37,9 +37,14 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
     return deferred.promise;
   };
 
-  this.getFeedbackListForService = function (serviceId) {
+  this.getFeedbackListForService = function (serviceId, nRowsSkip, nRowsMax) {
     var deferred = $q.defer();
-    $http.get('./api/service/' + serviceId + '/feedback').then(function (data) {
+    $http.get('./api/service/' + serviceId + '/feedback', {
+      params: {
+        nRowsSkip: nRowsSkip,
+        nRowsMax: nRowsMax
+      }
+    }).then(function (data) {
       if (data.code === 'SYSTEM_ERR' || data.code === 'BUSINESS_ERR') {
         deferred.reject(data);
       } else {

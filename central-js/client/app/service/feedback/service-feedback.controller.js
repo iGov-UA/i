@@ -68,29 +68,47 @@
       refresh();
     }
 
-    function refresh() {
+    $scope.loadMoreFeedbackMessagesAvailable = false;
 
-      FeedbackService.getFeedbackListForService(ServiceService.oService.nID)
-      .then(function (response) {
-        $scope.feedback.messageList = _.sortBy(response.data, function (o) {
-          return o.hasOwnProperty('oSubjectMessage') ? -Date.parse(o.oSubjectMessage.sDate) : -o.nID;
-        });
+    var nRowsMax = 20;
 
-        $scope.feedback.messageList = _.filter($scope.feedback.messageList, function (o) {
-          var filters = o.sAuthorFIO.trim().match(/null/gi);
+    $scope.messagesLoadingProgress = false;
 
-          return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
-            && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
-        });
+    function loadNextMessages() {
+      $scope.messagesLoadingProgress = true;
+      FeedbackService.getFeedbackListForService(ServiceService.oService.nID, $scope.feedback.messageList.length, nRowsMax)
+        .then(function (response) {
+          var newMessages = response.data;
 
-        $scope.feedback.messageList.forEach(function(item){
-          var sMail = item.sMail ? item.sMail.trim().match(/null/gi) : []
-            , sPlace = item.sPlace ? item.sPlace.trim().match(/null/gi) : [];
+          newMessages.forEach(function(item){
+            var sMail = item.sMail ? item.sMail.trim().match(/null/gi) : []
+              , sPlace = item.sPlace ? item.sPlace.trim().match(/null/gi) : [];
 
-          item.sMail = Array.isArray(sMail) && sMail[0] ? '' : item.sMail;
-          item.sPlace = Array.isArray(sPlace) && sPlace[0] ? '' : item.sPlace;
-        });
+            item.sMail = Array.isArray(sMail) && sMail[0] ? '' : item.sMail;
+            item.sPlace = Array.isArray(sPlace) && sPlace[0] ? '' : item.sPlace;
+          });
+
+          $scope.loadMoreFeedbackMessagesAvailable = newMessages.length >= nRowsMax;
+
+          newMessages = _.filter(newMessages, function (o) {
+            var filters = o.sAuthorFIO.trim().match(/null/gi);
+
+            return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
+              && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
+          });
+
+          $scope.feedback.messageList = $scope.feedback.messageList.concat(newMessages);
+        }).finally(function () {
+          $scope.messagesLoadingProgress = false;
       });
+    };
+
+    $scope.loadMoreFeedbackMessages = function () {
+      loadNextMessages();
+    };
+
+    function refresh() {
+      loadNextMessages();
 
       if ($scope.nID && $scope.sID_Token) {
         FeedbackService.getFeedbackForService(ServiceService.oService.nID, $scope.nID, $scope.sID_Token)
