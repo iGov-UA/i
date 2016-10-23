@@ -61,7 +61,7 @@ module.exports.getServiceFeedback = function (req, res) {
       'sID_Token': data.sID_Token || 123,
       'nID_Service': req.params.nID,
       'nID': data.sID_Order,
-      'nRowsSkip': data.nRowsSkip,
+      'nID__LessThen_Filter': data.nID__LessThen_Filter,
       'nRowsMax': data.nRowsMax
     }
   }, callback);

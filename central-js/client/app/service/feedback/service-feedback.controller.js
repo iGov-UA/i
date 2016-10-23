@@ -70,13 +70,15 @@
 
     $scope.loadMoreFeedbackMessagesAvailable = false;
 
-    var nRowsMax = 20;
-
     $scope.messagesLoadingProgress = false;
 
     function loadNextMessages() {
       $scope.messagesLoadingProgress = true;
-      FeedbackService.getFeedbackListForService(ServiceService.oService.nID, $scope.feedback.messageList.length, nRowsMax)
+      var nRowsMax = 20;
+      var nID__LessThen_Filter;
+      if ($scope.feedback.messageList.length)
+        nID__LessThen_Filter = $scope.feedback.messageList[$scope.feedback.messageList.length - 1].nID;
+      FeedbackService.getFeedbackListForService(ServiceService.oService.nID, nRowsMax, nID__LessThen_Filter)
         .then(function (response) {
           var newMessages = response.data;
 

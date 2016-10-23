@@ -37,11 +37,11 @@ angular.module('app').service('FeedbackService', function ($http, $q) {
     return deferred.promise;
   };
 
-  this.getFeedbackListForService = function (serviceId, nRowsSkip, nRowsMax) {
+  this.getFeedbackListForService = function (serviceId, nRowsMax, nID__LessThen_Filter) {
     var deferred = $q.defer();
     $http.get('./api/service/' + serviceId + '/feedback', {
       params: {
-        nRowsSkip: nRowsSkip,
+        nID__LessThen_Filter: nID__LessThen_Filter,
         nRowsMax: nRowsMax
       }
     }).then(function (data) {
