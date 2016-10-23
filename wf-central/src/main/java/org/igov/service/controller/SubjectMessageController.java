@@ -734,9 +734,13 @@ public class SubjectMessageController {
     public ResponseEntity<String> getFeedbackExternal(
             @ApiParam(value = "ID отзыва", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "Строка-токен для доступа к записи", required = false) @RequestParam(value = "sID_Token", required = false) String sID_Token,
+
+            @ApiParam(value = "фильтр, при задаче которого будет выдаваться список, в котором nID записей будут менее чем этот", required = false) @RequestParam(value = "nID__LessThen_Filter", required = false) Long nID__LessThen_Filter,
+            @ApiParam(value = "фильтр, при задаче которого будет лимитироваться указанное число отдаваемых строк", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "20") Integer nRowsMax,
+
             @ApiParam(value = "ID сервиса", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service)
             throws CommonServiceException {
-
+        
         LOG.info("getFeedbackExternal started for the nID: {}, sID_Token: {}", nID, sID_Token);
         if(nID!=null){
             SubjectMessageFeedback feedback = oSubjectMessageService.getSubjectMessageFeedbackById(nID);
@@ -756,7 +760,10 @@ public class SubjectMessageController {
         }else if(nID_Service!=null){
                 LOG.info("getFeedbackExternal started for the nID_Service: {} ", nID_Service);
             List<SubjectMessageFeedback> feedbackList =
-                    oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
+                    //oSubjectMessageService.getAllSubjectMessageFeedbackBynID_Service(nID_Service); // return list of feedbacks by nID_Service
+                    oSubjectMessageService.getAllSubjectMessageFeedback_Filtered(nID_Service, nID__LessThen_Filter, nRowsMax); // return list of feedbacks by nID_Service
+                    //getAllSubjectMessageFeedbackBynID_Service(Long nID_service, Integer nID__LessThen_Filter, Integer nRowsMax)
+            
             for (SubjectMessageFeedback messageFeedback : feedbackList) {
                 messageFeedback.setsID_Token(null);
             }
