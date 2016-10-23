@@ -46,28 +46,25 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
     @Override
     public List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax) {//nRowsSkip
         Assert.notNull(nID_service, "Specify value");//sFieldValue
-        if(nRowsMax==null||nRowsMax>1000){
-            nRowsMax=null;
+        if (nRowsMax == null || nRowsMax > 1000 || nRowsMax <= 0){
+            nRowsMax = null;
         }
 
         Criteria oCriteria = createCriteria();
-        oCriteria.setMaxResults(nRowsMax);//100
-        
-        Criterion oCriterion = Restrictions.eq("nID_Service", nID_service);
-        oCriteria.add(oCriterion);
+
+        if (nRowsMax != null) {
+            oCriteria.setMaxResults(nRowsMax);//100
+        }
+
+        oCriteria.add(Restrictions.eq("nID_Service", nID_service));
 
         if(nID__LessThen_Filter!=null && nID__LessThen_Filter!=0){
-            oCriterion = Restrictions.lt("nID", nID__LessThen_Filter);
-            oCriteria.add(oCriterion);
+            oCriteria.add(Restrictions.lt("id", nID__LessThen_Filter));
         }
         
-        oCriterion = Restrictions.isNotNull("sBody");//, sFieldValue
-        oCriteria.add(oCriterion);
-
-        oCriterion = Restrictions.isNotNull("sAuthorFIO");//, sFieldValue
-        oCriteria.add(oCriterion);
-        
-        oCriteria.addOrder(Order.desc("nID"));
+        oCriteria.add(Restrictions.isNotNull("sBody"));
+        oCriteria.add(Restrictions.isNotNull("sAuthorFIO"));
+        oCriteria.addOrder(Order.desc("id"));
         
         //List<SubjectMessageFeedback> a = oCriteria.list();
         return oCriteria.list();
