@@ -708,7 +708,8 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     
-                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order() 
+                            + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
                     
                     String sDateTimeCreate = "";
                     
