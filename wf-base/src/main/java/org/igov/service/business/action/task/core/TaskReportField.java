@@ -63,7 +63,11 @@ public enum TaskReportField {
      ASSIGNEE("5", "${sLoginAssignee}") {
         @Override
         public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-            return currentRow.replace(this.getPattern(), curTask.getAssignee());
+           if (curTask.getAssignee() != null) {
+                return currentRow.replace(this.getPattern(), curTask.getAssignee());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
         }
 
 		@Override

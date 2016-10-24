@@ -13,15 +13,12 @@
 <form name="form" novalidate style="margin-top: 30px" ng-class="{'padding-bottom-280': inUnassigned()}">
   <div ng-repeat="item in taskForm" class="task-form-property" ng-if="isFieldVisible(item)">
 
-          <span ng-if="['string', 'long'].indexOf(item.type) > -1 && item.value" class="col-sm-12" style="margin-bottom: 10px">
-            <span class="col-sm-6 task-form-title">
-              <field-title></field-title>
-            </span>
-            <span class="col-sm-6">
+          <span ng-if="['string', 'long'].indexOf(item.type) > -1 && item.value" style="margin-bottom: 10px">
+            <span>
               <simple-field></simple-field>
             </span>
           </span>
-          <span ng-if="['date'].indexOf(item.type) > -1">
+    <span ng-if="['date'].indexOf(item.type) > -1">
             <field-title></field-title>
             <date-field></date-field>
           </span>
@@ -36,16 +33,16 @@
 
     <marker-field></marker-field>
 
-          <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
+    <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
             <field-title></field-title>
           </span>
 
-          <span ng-if="['label'].indexOf(item.type) > -1">
+    <span ng-if="['label'].indexOf(item.type) > -1">
             <field-title></field-title>
             <label>{{item.value}}</label>
           </span>
 
-          <span ng-if="['queueData'].indexOf(item.type) > -1">
+    <span ng-if="['queueData'].indexOf(item.type) > -1">
             <field-title></field-title>
             <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
           </span>
@@ -61,26 +58,45 @@
     </div>
   </div>
 
-  <div ng-show="taskData.aAttachment && !inUnassigned()">
-    <p ng-repeat="item in taskData.aAttachment">
-      Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
-               target="_blank"><b>{{item.description}}</b> ({{item.name}})</a>
-      <button type="button" class="btn btn-success"
-              ng-disabled="checkSignState.inProcess"
-              ng-click="checkAttachmentSign(taskId, item.id, item.description)"
-              ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
-    </p>
+  <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0">
+    <div class="addition-hr">
+      <hr class="hr-divider side-left"><span>Додатки</span><hr class="hr-divider side-right">
+    </div>
+
+    <div>
+      <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
+        <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
+          <p>{{item.description}}</p>
+          <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
+             target="_blank"
+             ng-if="!isTableAttachment(item.description)"
+             class="btn btn-info">Завантажити
+          </a>
+          <a ng-click="openTableAttachment(item.id)"
+             ng-if="isTableAttachment(item.description)"
+             class="btn btn-info">Переглянути
+          </a>
+          <button
+            class="btn btn-info"
+            ng-disabled="checkSignState.inProcess"
+            ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+            ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
+          </button>
+        </div>
+        <button style="position:relative;"
+                ng-if="item.description !== ' '"
+                type="button"
+                class="btn btn-link attach-btn dropdown-toggle"
+                data-toggle="dropdown"
+                ng-model="some"
+                title="{{item.description}}">
+          <!--ng-click="openModalWindow($event)">-->
+          {{item.description | cut : true : 25}}
+        </button>
+      </div>
+    </div>
   </div>
 
-
-  <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all' || selectedTask.processDefinitionId.indexOf('system') == 0" style="padding-top:5px;">
-    <button ng-click="print(form)" class="btn btn-success">Роздрукувати</button>
-    <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
-    </select>
-  </div>
-
-  <div ng-if="!clarify" style="padding-top:5px;">
-    <submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>
-  </div>
-
-  </form>
+</form>
+<table-modal></table-modal>
+<sign-info-content-dialog></sign-info-content-dialog>
