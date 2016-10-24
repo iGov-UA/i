@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dfs_dovidka_nodebts" name="ДФС - Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів" isExecutable="true">
-    <documentation>Рефакторинг 27.04.16 Ставицкий В.Д.</documentation>
+    <documentation>
+    	Рефакторинг 27.04.16 Ставицкий В.Д.
+    	Рефакторинг с 07.10.16 по 19.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
+    </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
@@ -12,29 +15,45 @@
           <activiti:value id="fiz" name="по собі, як фізичній особі"></activiti:value>
           <activiti:value id="ur" name="по підприємству, як його представник"></activiti:value>
         </activiti:formProperty>
-      
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
 
-
-        <activiti:formProperty id="edrpou" name="Вкажіть код ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Вкажіть код ЄДРПОУ; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameDoc" name="Укажіть назву, номер та дату прийнятт нормативно-правового акту, відповідно до вимог якого необхідно надати довідку;Наприклад: Закон України від 25.12.2015 № 922-VIII «Про публічні закупівлі»" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування підприємства (установи, організації), до якого (якої) буде подано довідку;Наприклад: веб-порталу уповноваженого органу з питань закупівель" type="textArea" required="true"></activiti:formProperty>
 
+		<activiti:formProperty id="asLawCourt" name="Чи знаходитись ви в процесі адміністративного (судового) оскарження суми грошового зобов’язання" default="no" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+
+<!--  Вариант результата начало ->
+		<activiti:formProperty id="asTypeRef" name="Довідку прошу видати в" default="paper" type="enum" required="true">
+          <activiti:value id="paper" name="паперовому вигляді"></activiti:value>
+          <activiti:value id="el" name="електронному вигляді"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B-f8gnAShc39MXpxS3NzeFdHT1U/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
+<!-  Бланк для скачивания конец  -->
+
+
+		<activiti:formProperty id="sV" name="Галочка чи находитись ви в процесі адміністративного (судового) оскарження" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адрес" type="invisible" default=" "></activiti:formProperty>
+
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -44,6 +63,12 @@
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
+
+<!--  Вставка автоподписания ЭЦП начало -->
+	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
+<!--  Вставка автоподписания ЭЦП конец  -->
+
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -62,8 +87,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове  звернення. Довідка  про відсутність заборгованості з податків, 
-          зборів, платежів, що контролюються органами доходів і зборів]]></activiti:expression>
+          <activiti:expression><![CDATA[Нове  звернення. Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
@@ -124,14 +148,9 @@
           <activiti:value id="ur" name="по підприємству, як його представник"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="fio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>        
-        <activiti:formProperty id="bankIdAddressFactual" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>    
                 
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -140,6 +159,14 @@
         
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
 
+        <activiti:formProperty id="sNameDoc" name="Нормативно-правовий акт, відповідно до вимог якого необхідно надати довідку; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Найменування підприємства (установи, організації), до якого (якої) буде подано довідку; ;writable=false" type="textArea"></activiti:formProperty>
+
+		<activiti:formProperty id="asLawCourt" name="Чи знаходитись ви в процесі адміністративного (судового) оскарження суми грошового зобов’язання" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+
         <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
@@ -147,11 +174,15 @@
         <activiti:formProperty id="comment_1" name="Укажіть причину відмови" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_print.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_dovidka_nodebts.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${zapit}</activiti:expression>
+            <activiti:expression>${form_signed},${zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

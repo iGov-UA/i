@@ -20,38 +20,31 @@
 				"sClient" : "subekt", 
 				"sClient_2" : "sID_Public_SubjectOrganJoin"
 			}, 
-			"sCondition" : "[sClient] == 'fiz' || [sClient_2] != '0'"
-		}, 
-		"ShowFieldsOnCondition_inv01" : {
-			"aField_ID" : ["sNameOrgan", "sMailClerk", "sPhoneOrgan", "sWorkTime", "sAddress", "nCodeTaxOrgan", "nEGRPOU", "markersStart", "sV", "sAvtor", "sInn", "form_signed", "PrintFormAutoSign_1"], 
-			"asID_Field" : {
-				
-			}, 
-			"sCondition" : "false"
+			"sCondition" : "[sClient] == 'fiz' && [sClient_2] != '0'"
 		}, 
 		"ValuesFieldsOnCondition_1" : {
-			"aField_ID" : ["sInn", "sAvtor", "sAddressFactualUr"], 
-			"asID_Field_sValue" : ["[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", " "], 
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field_sValue" : ["[bankIdAddressFactual]"], 
 			"asID_Field" : {
-				"sClient" : "subekt"
+				"sClient" : "sID_Public_SubjectOrganJoin"
 			}, 
-			"sCondition" : "[sClient] == 'fiz'"
+			"sCondition" : "[sClient] == '0'"
 		}, 
 		"ValuesFieldsOnCondition_2" : {
-			"aField_ID" : ["sInn", "sAvtor", "sAddressFactual"], 
-			"asID_Field_sValue" : ["[edrpou]", "[sNameUr]", " "], 
+			"aField_ID" : ["sInn", "sAvtor", "sAdresECP"], 
+			"asID_Field_sValue" : ["[edrpou]", "[sNameUr]", "[sAddressFactualUr]"], 
 			"asID_Field" : {
 				"sClient" : "subekt"
 			}, 
 			"sCondition" : "[sClient] == 'ur'"
 		}, 
 		"ValuesFieldsOnCondition_3" : {
-			"aField_ID" : ["sV"], 
-			"asID_Field_sValue" : ["V"], 
+			"aField_ID" : ["sInn", "sAvtor", "sAdresECP"], 
+			"asID_Field_sValue" : ["[bankIdinn]", "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[sAddressFactual]"], 
 			"asID_Field" : {
-				"sClient" : "asLawCourt"
+				"sClient" : "subekt"
 			}, 
-			"sCondition" : "[sClient] == 'yes'"
+			"sCondition" : "[sClient] == 'fiz'"
 		}, 
 		"ValuesFieldsOnCondition_4" : {
 			"aField_ID" : ["sV"], 
@@ -62,12 +55,19 @@
 			"sCondition" : "[sClient] == 'no'"
 		}, 
 		"ValuesFieldsOnCondition_5" : {
-			"aField_ID" : ["sAddressFactual"], 
-			"asID_Field_sValue" : ["[bankIdAddressFactual]"], 
+			"aField_ID" : ["sV"], 
+			"asID_Field_sValue" : ["V"], 
 			"asID_Field" : {
-				"sClient" : "sID_Public_SubjectOrganJoin"
+				"sClient" : "asLawCourt"
 			}, 
-			"sCondition" : "[sClient] == '0'"
+			"sCondition" : "[sClient] == 'yes'"
+		}, 
+		"ShowFieldsOnCondition_inv01" : {
+			"aField_ID" : ["sNameOrgan", "sMailClerk", "sPhoneOrgan", "sWorkTime", "sAddress", "nCodeTaxOrgan", "nEGRPOU", "markersStart", "sV", "sAvtor", "sInn", "bankIdAddressFactual", "form_signed", "PrintFormAutoSign_1"], 
+			"asID_Field" : {
+				
+			}, 
+			"sCondition" : "false"
 		}
 	}
 }

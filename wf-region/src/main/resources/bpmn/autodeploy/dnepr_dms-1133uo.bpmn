@@ -52,9 +52,9 @@
         <activiti:formProperty id="sRecvizitiInozem" name="Реквізити для адмінпослуги" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="string" default="&lt;del&gt;одноразового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="string" default="&lt;del&gt;дворазового в’їзду&lt;/del&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="string" default="&lt;del&gt;багаторазового в’їзду&lt;/del&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sVizitOne" name="одноразовий візит" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVizitTwo" name="дворазовий візит" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVizitMany" name="багаторазовий візит" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/inozem.json')}"></activiti:formProperty>
       </extensionElements>
@@ -228,7 +228,7 @@ execution.setVariable('sMaxPay', maxpay)
 										При необхідності оформлення запрошення іноземцям та особам без громадянства на отримання візових документів для в’їзду в Україну Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p>
 									<p>
-										Коментар Державного службовця:<br />
+										Коментар Державного службовця:<br>
 											<b><i>${sDecisionComment}</i></b>
 									</p>
 									<p>
@@ -279,13 +279,9 @@ execution.setVariable('sMaxPay', maxpay)
 										</ul>
 									</p>
 									<p>
-										<b>Вартість послуги:</b><i>${sSum}</i>${sSumText}
+										<b>Вартість послуги:</b><i>${sSum}</i>(${sSumText})<br>
 										<b>Реквізити для сплати:</b><i>${sRecvizitiInozem}</i>
 										</p>
-									<p>
-										<b>Деталі зустрічі:</b><br>
-										День та час - ${date_of_visit}
-									</p>
 									<p>
 										<b>Необхідні документи, які треба принести до підрозділу ДМС при поданні клопотання:</b><br />
 										<ul>
@@ -354,7 +350,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="nDay" name="Кількість днів візиту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Мета візиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInozemAdress" name="Адреса проживання іноземця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою дыти до 18 років" type="enum" writable="false">
+        <activiti:formProperty id="asChild" name="Чи запрошуються разом з особою діти до 18 років" type="enum" writable="false">
           <activiti:value id="sChildYes" name="так"></activiti:value>
           <activiti:value id="sChildNo" name="ні"></activiti:value>
         </activiti:formProperty>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Надання довідки про доходи фізичних осіб</title>
+    <title>Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів</title>
 
     <style type="text/css">
 
@@ -297,6 +297,9 @@
       .line3 { line-height: 3;}
 
       /*отступы по горизонтали*/
+      .pg-10 { padding: 0 10px;}
+      .pg-15 { padding: 0 15px;}
+      .pg-20 { padding: 0 20px;}
       .pg-25 { padding: 0 25px;}
       .pg-50 { padding: 0 50px;}
       .pg-75 { padding: 0 75px;}
@@ -344,20 +347,17 @@
       <div class="whoBlock ml-8">
         До органу доходів і зборів
 
-        <div class="under_multifield w100p ta-j">
+        <div class="under_multifield w100p ta-j line1">
           <u>[sNameOrgan]</u>
         </div>
         <div class="ta-c smalltext line1">
           (назва, номер та дата прийняття нормативно-правового акта)
         </div>
-
-        <br>
-
         <div class="layout">
-          <div class="pg-25">
+          <div>
             від 
           </div>
-          <div class="pg-25">
+          <div class="pg-15">
             <table>
               <tr id="trINN">
                 <td>&#160;</td>
@@ -378,8 +378,6 @@
           (код за ЄДРПОУ або реєстраційний <br>
           номер облікової картки платника податків*)
         </div>
-
-        <br/>
         <div class="under_multifield w100p ta-j">
           <u>
             <span id="spanFisName">[clFIO]</span>            
@@ -390,11 +388,10 @@
           (найменування платника податків/прізвище, <br>          
           ім’я, по батькові фізичної особи)
         </div>
-        <br>
         <div class="under_multifield w100p ta-j">
           <u>Поштова адреса:
             <span id="spanAdressFactual">[sAddressFactual]</span>
-            <span id="spanAdressFactualUr">[sAddressFactualUr]</span>            
+            <span id="spanAdressFactualUr">[sAddressFactualUr]</span>  
           </u>
         </div>
 
@@ -415,8 +412,7 @@
       </div>
       <div class="under_multifield w100p ta-j">
         <u>[sNameDoc]</u>
-      </div>  
-
+      </div>
 
       <div class="ta-j">
         для надання до
@@ -437,7 +433,6 @@
         <span class="check_box"><span id="spanLawCourt">&#10004;</span><span id="spanLawCourtNo">&#160;</span></span>        
         Додатково повідомляю, що станом на день звернення триває процес адміністративного (судового) оскарження суми грошового зобов’язання (у разі необхідності зробити відповідну позначку „&#10004;”).
       </div>
-      <br/>
       <div class="layout w100p">
         <div class="w30p">
           <div class="under_field notb w100p">
@@ -464,7 +459,6 @@
           </div>
         </div>
       </div>
-      <br/><br/>
       <div class="smalltext">
         ____________________________________________<br>
         * Або серія та номер паспорта (для фізичних осіб, які через свої релігійні переконання
@@ -480,6 +474,15 @@
 
       if("[subekt]"=="по собі, як фізичній особі"){
         inn = String("[bankIdinn]");
+        
+
+        //**** Скрипт Фамилия инициалы ****	    
+        var spanFIO = document.getElementById("spanFIO");
+        var clFIO = String("[clFIO]").split(' ');
+        if(clFIO.length == 3){
+          spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
+        }
+        
       } else if("[subekt]"=="по підприємству, як його представник"){
         inn = String("[edrpou]");
       } 
@@ -497,12 +500,6 @@
       document.getElementById("spanTypePaper").className = "u";
 
 
-      //**** Скрипт Фамилия инициалы ****	    
-      var spanFIO = document.getElementById("spanFIO");
-      var clFIO = String("[clFIO]").split(' ');
-      if(clFIO.length == 3){
-        spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
-      }
     </script>
   </body>
 </html>

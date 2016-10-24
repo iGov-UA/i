@@ -3,7 +3,7 @@
   <process id="dnepr_dfs_dovidka_nodebts" name="ДФС - Довідка  про відсутність заборгованості з податків, зборів, платежів, що контролюються органами доходів і зборів" isExecutable="true">
     <documentation>
     	Рефакторинг 27.04.16 Ставицкий В.Д.
-    	Рефакторинг с 07.10.16 по 13.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
+    	Рефакторинг с 07.10.16 по 19.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы 
     </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -21,12 +21,14 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="edrpou" name="Вкажіть код ЄДРПОУ; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Найменування підприємства" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Юридична адреса підприємства" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Укажіть назву, номер та дату прийнятт нормативно-правового акту, відповідно до вимог якого необхідно надати довідку;Наприклад: Закон України від 25.12.2015 № 922-VIII «Про публічні закупівлі»" type="textArea" required="true"></activiti:formProperty>
@@ -42,22 +44,16 @@
           <activiti:value id="paper" name="паперовому вигляді"></activiti:value>
           <activiti:value id="el" name="електронному вигляді"></activiti:value>
         </activiti:formProperty>
-<!-  Вариант результата конец  -->  
-
-<!--  Бланк для скачивания начало ->
         <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B-f8gnAShc39MXpxS3NzeFdHT1U/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
 <!-  Бланк для скачивания конец  -->
-
-<!--  Вставка автоподписания ЭЦП начало -->
-	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
-<!--  Вставка автоподписания ЭЦП конец  -->
 
 
 		<activiti:formProperty id="sV" name="Галочка чи находитись ви в процесі адміністративного (судового) оскарження" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адрес" type="invisible" default=" "></activiti:formProperty>
+
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -68,6 +64,10 @@
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
 
+<!--  Вставка автоподписания ЭЦП начало -->
+	    <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/dfs_dovidka_nodebts_ecp.html"></activiti:formProperty>
+<!--  Вставка автоподписания ЭЦП конец  -->
 
       </extensionElements>
     </startEvent>
@@ -174,6 +174,7 @@
         <activiti:formProperty id="comment_1" name="Укажіть причину відмови" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_user.json')}"></activiti:formProperty>
+
         <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_print.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_dovidka_nodebts.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
