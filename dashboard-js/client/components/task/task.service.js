@@ -365,6 +365,13 @@ angular.module('dashboardJsApp')
           }
         );
       },
+      postServiceMessages: function (params) {
+        return simpleHttpPromise({
+          method: 'POST',
+          url: 'api/tasks/postServiceMessages',
+          data: params
+        })
+      },
       checkAttachmentSign: function(nID_Task, nID_Attach){
         return simpleHttpPromise({
             method: 'GET',

@@ -974,14 +974,14 @@ public class ActionFlowController {
 	@ResponseBody
 	String getSlots(
 			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
-			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
+			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "30") @RequestParam(value = "nDays", required = false, defaultValue = "30") int nDays
 	) throws Exception {
-		if (nDays > 7) {
-			nDays = 7;
+		if (nDays > 60) {
+			nDays = 60;
 		}
 		DateTime oDate = DateTime.now();
 		JSONObject result = new JSONObject();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-d");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
 
 		JSONArray slots = null;
 		for (int i = 0; i < nDays; i++) {
@@ -1023,6 +1023,12 @@ public class ActionFlowController {
 			@ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
 	) throws Exception {
 		JSONObject result;
+
+		//this date parsing and formatting fixes problem where we need to zero pad day of month or hour
+		//basically it changes "2016-10-6 9:30:0" into "2016-10-06 09:30:00"
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd HH:mm:ss");
+		DateTime dateTime = DateTime.parse(sDateTime, DateTimeFormat.forPattern("y-MM-dd HH:mm:ss"));
+		sDateTime = dateTimeFormatter.print(dateTime);
 
 		result = cherg.setReserve(sID_Service_Private,
 				sDateTime,

@@ -43,8 +43,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.*;
+import org.igov.io.mail.NotificationPatterns;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.util.Tool;
+import static org.igov.util.Tool.sO;
 @Controller
 @Api(tags = { "SubjectMessageController -- Сообщения субьектов" })
 @RequestMapping(value = "/subject/message")
@@ -74,6 +77,9 @@ public class SubjectMessageController {
     @Autowired
     private SubjectMessageFeedbackDao subjectMessageFeedbackDao;
 
+    @Autowired
+    private NotificationPatterns oNotificationPatterns;
+    
     @ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
             + "\n```json\n"
@@ -419,6 +425,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "строка-массива параметров", required = false) @RequestParam(value = "soParams", required = false) String soParams,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "строка-Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
             @ApiParam(value = "строка-Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
@@ -514,6 +521,13 @@ public class SubjectMessageController {
             LOG.info("Set message id={}, ID_HistoryEvent_Service={}", messageID, oSubjectMessage.getnID_HistoryEvent_Service());
 
             LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
+            
+            LOG.info("nID_SubjectMessageType={}", nID_SubjectMessageType);
+            if(nID_SubjectMessageType.equals(Long.valueOf(9))){
+                //String sToken = Tool.getGeneratedToken();
+                LOG.info("Try send email! nID_SubjectMessageType={}", nID_SubjectMessageType);
+                oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
+            }
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
