@@ -3,7 +3,7 @@
   <process id="loda_invest_1" name="Подача greenfields та brownfields" isExecutable="true">
     <startEvent id="startevent1" name="Start">
         <extensionElements>
-
+        <activiti:formProperty id="datetest" name="test data" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -252,6 +252,8 @@ ${sNameOrgan}<br>
      <!-- ЮЗЕРТАСКА НАЧАЛО -->
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="loda_invest">
          <extensionElements>
+             
+             <activiti:formProperty id="datetest" name="test data; ;writable=false" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sinputDoc" name="Номер вхідного документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         
@@ -288,7 +290,7 @@ ${sNameOrgan}<br>
                
         <activiti:formProperty id="sPreviousUse" name="Попереднє використання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCharacteristics" name="Характеристика підприємства; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nEmployees" name="Кількість працюючих осіб; ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="nWorkforce" name="Наявні трудові ресурси (тис. осіб); ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="asDistrict" name="Оберіть район, в якому знаходиться об'єкт" type="enum" writable="false">
