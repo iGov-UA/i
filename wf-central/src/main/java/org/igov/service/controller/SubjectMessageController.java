@@ -637,7 +637,7 @@ public class SubjectMessageController {
                     feedback.setoSubjectMessageFeedbackAnswers(answers);
                     subjectMessageFeedbackDao.update(feedback);
                 }*/
-
+                subjectMessageFeedbackDao.setsID_Order(sID_Order);
                 LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
                         sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
@@ -719,6 +719,7 @@ public class SubjectMessageController {
                 aSubjectMessageFeedbackAnswer.add(oSubjectMessageFeedbackAnswer);
                 oSubjectMessageFeedback.setoSubjectMessageFeedbackAnswers(aSubjectMessageFeedbackAnswer);
                 subjectMessageFeedbackDao.update(oSubjectMessageFeedback);
+                                
             }
             LOG.info("successfully saved answer to feedback (nID_SubjectMessageFeedback={})", nID_SubjectMessageFeedback);
             oJSONObject.put("nID", oSubjectMessageFeedbackAnswer.getId());

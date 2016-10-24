@@ -1,6 +1,7 @@
 package org.igov.model.subject.message;
 
 import com.google.common.base.Optional;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -39,4 +40,16 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
         getSession().update(subjectMessageFeedback);
         return subjectMessageFeedback;
     }
+
+    @Override
+    public List<SubjectMessageFeedback> findByOrder(String sID_Order) {
+        return findAllBy("sID_Order", sID_Order); 
+    }
+
+    @Override
+    public String setsID_Order(String sID_Order) {
+        return toString();
+    }
+
+    
 }
