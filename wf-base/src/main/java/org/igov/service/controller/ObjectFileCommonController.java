@@ -709,12 +709,54 @@ public class ObjectFileCommonController {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
 
-    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Заполнение указанного шаблона(по его ИД ищется файл в подпапке проекта) указанными параметрами, и его отдача.\n<br>"
+            + "Пример запроса: https://alpha.test.region.igov.org.ua/wf/service/object/file/dfs/getPatternFilled?sID_Pattern=F1301801"
+            + "в теле запроса передавать JSON-обьект в виде строки, например:<br>"
+            + "{<br>"
+            + "{\n" +
+"	\"HLNAME\":\"БІЛЯВЦЕВ\"\n" +
+"	,\"HPNAME\":\"ВОЛОДИМИР\"\n" +
+"	,\"HFNAME\":\"ВОЛОДИМИРОВИЧ\"\n" +
+"	,\"HTIN\":\"2943209693\"\n" +
+"	,\"HKSTI\":\"2301\"\n" +
+"	,\"HSTI\":\"2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ\"\n" +
+"	,\"HEMAIL\":\"olga.kuzminova87@gmail.com\"\n" +
+"	,\"HCOUNTRY\":\"Украіна\"\n" +
+"	,\"HCITY\":\"Дніпро\"\n" +
+"	,\"HSTREET\":\"Красный камень\"\n" +
+"	,\"HBUILD\":\"5\"\n" +
+"	,\"R01G01\":\"22\"\n" +
+"	,\"R01G01\":\"22\"\n" +
+"	,\"R01G02\":\"22\"\n" +
+"	,\"R02G01\":\"22\"\n" +
+"	,\"R02G02\":\"22\"\n" +
+"	,\"C_REG\":\"23\"\n" +
+"	,\"C_RAJ\":\"01\"\n" +
+"	,\"TIN\":\"3578965412\"\n" +
+"	,\"C_DOC\":\"F13\"\n" +
+"	,\"C_DOC_SUB\":\"018\"\n" +
+"	,\"C_DOC_VER\":\"01\"\n" +
+"	,\"C_DOC_STAN\":\"1\"\n" +
+"	,\"C_DOC_TYPE\":\"00\"\n" +
+"	,\"C_DOC_CNT\":\"0000001\"\n" +
+"	,\"PERIOD_TYPE\":\"1\"\n" +
+"	,\"PERIOD_MONTH\":\"12\"\n" +
+"	,\"PERIOD_YEAR\":\"2015\"\n" +
+"	,\"C_STI_ORIG\":\"2301\"\n" +
+"\n" +
+")<br>"
+            + "<br>"
+            + "В ответ получим заполненный шаблон. например:"
+            + "<br>"
+            + "{\n" +
+"  \"soPatternFilled\": \"<?xml version=\\\"1.0\\\" encoding=\\\"windows-1251\\\"?><DECLAR xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"F1301801.xsd\\\"><DECLARHEAD><TIN>3578965412</TIN><C_DOC>F13</C_DOC><C_DOC_SUB>018</C_DOC_SUB><C_DOC_VER>01</C_DOC_VER><C_DOC_TYPE>00</C_DOC_TYPE><C_DOC_CNT>0000001</C_DOC_CNT><C_REG>23</C_REG><C_RAJ>01</C_RAJ><PERIOD_MONTH>12</PERIOD_MONTH><PERIOD_TYPE>1</PERIOD_TYPE><PERIOD_YEAR>2015</PERIOD_YEAR><C_STI_ORIG>2301</C_STI_ORIG><C_DOC_STAN>1</C_DOC_STAN><D_FILL>24102016</D_FILL><SOFTWARE xsi:nil=\\\"true\\\"></SOFTWARE></DECLARHEAD><DECLARBODY><HLNAME>БІЛЯВЦЕВ</HLNAME><HPNAME>ВОЛОДИМИР</HPNAME><HFNAME>ВОЛОДИМИРОВИЧ</HFNAME><HTIN>2943209693</HTIN><HKSTI>2301</HKSTI><HSTI>2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ</HSTI><HEMAIL>olga.kuzminova87@gmail.com</HEMAIL><HCOUNTRY>Украіна</HCOUNTRY><HREG xsi:nil=\\\"true\\\"></HREG><HRAJ xsi:nil=\\\"true\\\"></HRAJ><HCITY>Дніпро</HCITY><HSTREET>Красный камень</HSTREET><HBUILD>5</HBUILD><HSHOT xsi:nil=\\\"true\\\"></HSHOT><HCORP xsi:nil=\\\"true\\\"></HCORP><HAPT xsi:nil=\\\"true\\\"></HAPT><HPASS xsi:nil=\\\"true\\\"></HPASS><HPASSDATE xsi:nil=\\\"true\\\"></HPASSDATE><HPASSISS xsi:nil=\\\"true\\\"></HPASSISS><R01G01>22</R01G01><R01G02>22</R01G02><R02G01>22</R02G01><R02G02>22</R02G02><HFILL>24102016</HFILL></DECLARBODY></DECLAR>\",\n" +
+"  \"sFileName\": \"23013578965412F1301801100000000111220152301.xml\"\n" +
+"}")
     @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
     Map<String, String> getPatternFilled(
             @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> mField,
-            @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
+            @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(value = "sID_Pattern", required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
 
         Map<String, String> mReturn = new HashMap<>();
