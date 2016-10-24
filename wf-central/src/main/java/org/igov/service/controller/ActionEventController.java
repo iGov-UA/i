@@ -681,20 +681,22 @@ public class ActionEventController {
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
 
+                    //wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order
                     
-                    String sPhone = "";
-                    
-                    if(bIncludeTaskInfo){
-                        Integer nID_Server = oHistoryEvent_Service.getnID_Server();
-                        nID_Server = nID_Server == null ? 0 : nID_Server;
+                    Integer nID_Server = oHistoryEvent_Service.getnID_Server();
+                    nID_Server = nID_Server == null ? 0 : nID_Server;
 
-                        nID_Server = generalConfig.getServerId(nID_Server);
-                        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-                        if (!oOptionalServer.isPresent()) {
-                            throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
-                        }
-                        Server oServer = oOptionalServer.get();
-                        String sHost = oServer.getsURL();
+                    nID_Server = generalConfig.getServerId(nID_Server);
+                    Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+                    if (!oOptionalServer.isPresent()) {
+                        throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+                    }
+                    Server oServer = oOptionalServer.get();
+                    String sHost = oServer.getsURL();
+ 
+                    String sPhone = "";
+
+                    if(bIncludeTaskInfo){
                         String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
