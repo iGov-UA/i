@@ -643,7 +643,7 @@ public class ActionEventController {
                     LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service); 
 //                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                     String sID_Order = historyEventServiceDao.findAll().get(0).getsID_Order();
-                    LOG.info("sID_Order: "+sID_Order);
+                    LOG.info("sID_Order: "+sID_Order); 
                     List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findByOrder(sID_Order);
                     LOG.info("!!!aSubjectMessage: " + aSubjectMessage);
                     LOG.info("!!!Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
@@ -670,12 +670,12 @@ public class ActionEventController {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback = "";
-                    if (oSubjectMessageFeedback.getnID_Service() != null) {
+//                    if (oSubjectMessageFeedback.getoSubjectMessage().) != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                         LOG.info("sTextFeedback" + sTextFeedback);
-                    } else {
+//                    } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-                    }
+//                    }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
