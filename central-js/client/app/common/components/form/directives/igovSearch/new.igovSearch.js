@@ -73,10 +73,15 @@ angular.module('app')
             messageBusService.publish('catalog:update', ctlg);
           }
           // получаем к-во услуг готовых/скоро/в работе
-          function getCounts () {
-            CatalogService.getModeSpecificServices(null, "", false, 'business').then(function (res) {
-              $scope.catalogCounts = CatalogService.getCatalogCounts(res)
-            })
+          function getCounts (category) {
+            var countCategory = category && category.aService ? category : 'business';
+            if(countCategory === 'business') {
+              CatalogService.getModeSpecificServices(null, "", false, countCategory).then(function (res) {
+                $scope.catalogCounts = CatalogService.getCatalogCounts(res)
+              })
+            } else {
+              $scope.catalogCounts = CatalogService.getCatalogCounts(countCategory)
+            }
           }
           getCounts ();
 
@@ -122,6 +127,7 @@ angular.module('app')
                 $rootScope.wasSearched = true;
               }
               $rootScope.resultsAreLoading = false;
+              getCounts(fullCatalog);
             });
           };
           $scope.searching = function () {

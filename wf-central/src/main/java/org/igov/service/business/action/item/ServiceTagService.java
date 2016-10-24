@@ -152,10 +152,7 @@ public class ServiceTagService {
             boolean placeFound = false;
             for (ServiceData serviceData : service.getServiceDataList()) {
                 final Place place = serviceData.getoPlace();
-                if (place == null) {
-                    continue;
-                }
-                if (placesSet.contains(place.getsID_UA())) {
+                if (place == null || placesSet.contains(place.getsID_UA())) {
                     placeFound = true;
                     break;
                 }

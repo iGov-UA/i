@@ -1,30 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_mvk-1165" name="Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dnepr_mvk-1165" name="Отримання довідки про склад сім'ї" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Inozem" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="yes" name="кур'єрська доставка"></activiti:value>
-          <activiti:value id="no" name="заказний лист"></activiti:value>
-          <activiti:value id="no1" name="звичайний лист"></activiti:value>
+        <activiti:formProperty id="sRegistrationAddress" name="Місце реєстрації або проживання;Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sAND" name="АНД"></activiti:value>
+          <activiti:value id="sIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sNovok" name="Новокодацький"></activiti:value>
+          <activiti:value id="sSamar" name="Самарський"></activiti:value>
+          <activiti:value id="sSobor" name="Соборний"></activiti:value>
+          <activiti:value id="sCentr" name="Центральний"></activiti:value>
+          <activiti:value id="sChech" name="Чечелівський"></activiti:value>
+          <activiti:value id="sShev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asAND" name="Оберіть підрозділ АНД району до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sAND1" name="вул. Щербини, 50"></activiti:value>
+          <activiti:value id="sAND2" name="вул. С.Ковалевської, 59а"></activiti:value>
+          <activiti:value id="sAND3" name="вул. Малиновського, 34"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asInd" name="Оберіть підрозділ Індустріального району до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sInd1" name="пр. Калнишевського (вул. Косіора), 11"></activiti:value>
+          <activiti:value id="sInd2" name="вул. Осіння, 9б"></activiti:value>
+          <activiti:value id="sInd3" name="пр. Слобожанський (ім. Газети &quot;Правда&quot;), 34"></activiti:value>
+          <activiti:value id="sInd4" name="вул. Байкальська, 84"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asChech" name="Оберіть підрозділ Чечелівського району до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sChech1" name="пр. Б.Хмельницького (вул. Героїв Сталінграда), 14"></activiti:value>
+          <activiti:value id="sChech2" name="вул. Театральна, 5"></activiti:value>
+          <activiti:value id="sChech3" name="вул. Шмідта, 22"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asShev" name="Оберіть підрозділ Шевченківського району до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sShev1" name="пр. Б.Хмельницького (вул. Героїв Сталінграда), 14"></activiti:value>
+          <activiti:value id="sShev2" name="вул. Запорізьке шосе, 68"></activiti:value>
+          <activiti:value id="sShev3" name="вул. В.Мономаха (Московська), 10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultType" name="Оберіть варіант отримання результату" type="enum" required="true">
+          <activiti:value id="sMyself" name="особисто"></activiti:value>
+          <activiti:value id="sPost" name="поштовим відправленням (послуга платна)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" required="true">
+          <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
+          <activiti:value id="sPrior" name="пріоритетний простий лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="пріоритетний рекомендований лист"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name="Вартість послуги Укрпошти" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('dms/forma_3Dn.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Заявка прийнята" activiti:candidateGroups="dnepr_mvk_test">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent1" name="ПІБ1" type="string" default="${lastName_UA4} ${firstName_UA4} ${middleName_UA4}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="parent2" name="ПІБ2" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Місце реєстрації або проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Inozem" name="Тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="yes" name="кур'єрська доставка"></activiti:value>
           <activiti:value id="no" name="заказний лист"></activiti:value>
@@ -43,13 +80,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Ви отримали послугу "Оформлення паспорта громадянина України особам, які досягли 16-річного віку у формі ID-картки".
+                              		Ви отримали послугу "Отримання довідки про склад сім'ї".
                               		</p>
                               		<p>
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
