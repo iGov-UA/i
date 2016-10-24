@@ -17,16 +17,21 @@
             $scope.taskForm.isInProcess = false;
           }
         };
-        function getRegexContains(str, splitBy, regex) {
+        function getRegexContains(str, splitBy, part) {
           var as = str.split(splitBy);
           for (var i = 0; i < as.length; i++) {
-            if (as[i].includes(regex)) return as[i];
+            if (as[i].includes(part)) {
+              return as[i];
+            }
           }
+          return null;
         }
 
-        function getObjFromTaskForm(id)  {
+        function getObjFromTaskFormById(id) {
           for (var i = 0; i < taskForm.length; i++) {
-            if (taskForm[i].id.includes(id)) return taskForm[i];
+            if (taskForm[i].id.includes(id)) {
+              return taskForm[i];
+            }
           }
           return null;
         }
@@ -43,29 +48,48 @@
           return aoNewUser;
         }
 
-        fillingUsers();
+        function getFromTaskFormObjWithIdGroupNext() {
+          var item = getObjFromTaskFormById("sLoginAsignee");
 
-        function fillingUsers() {
-          var item = getObjFromTaskForm("sLoginAsignee");
-
-          if (item !== null){
+          if (item !== null) {
             var as = getRegexContains(item.name, ';', "sSourceFieldID_sID_Group");
             as = getRegexContains(as, ',', "sSourceFieldID_sID_Group");
             var sID = as.split('=')[1];
 
-            var itemWith_sID = getObjFromTaskForm(sID);
+            return getObjFromTaskFormById(sID);
+          }
+          return null;
+        }
+
+        fillingUsers();
+
+        function fillingUsers() {
+          if (taskData.sLoginAssigned != null) {
+            var itemWith_sID = getFromTaskFormObjWithIdGroupNext();
 
             if (itemWith_sID !== null) {
               var group = itemWith_sID.value;
-              itemWith_sID.readable = false;    // Hide obj with sID_Group
-
               if (group !== null) {
+                var item = getObjFromTaskFormById("sLoginAsignee");
                 item.type = "enum";
                 user.getUsers(group).then(function (users) {
-                  item.enumValues = convertUsersToEnum(users); }
-                );
+                  if (users) {
+                    item.enumValues = convertUsersToEnum(users);
+                    item.value = item.enumValues[0].id;
+                    console.log($scope.taskForm);
+                  }
+                });
               }
             }
+          }
+        }
+
+        hiddenObjWithGroupNext();
+
+        function hiddenObjWithGroupNext() {
+          var itemWith_sID = getFromTaskFormObjWithIdGroupNext();
+          if (itemWith_sID !== null && itemWith_sID.readable) {
+            itemWith_sID.readable = false;
           }
         }
 
@@ -94,13 +118,13 @@
             if(!param || !typeof param === 'string') return null;
 
             var input = param.trim(),
-                finalArray,
-                result = {};
+              finalArray,
+              result = {};
 
             var checkboxExp = input.split(',').filter(function(item){
               return (item && typeof item === 'string' ? item.trim() : '')
-                      .split('=')[0]
-                      .trim() === 'sID_CheckboxTrue';
+                  .split('=')[0]
+                  .trim() === 'sID_CheckboxTrue';
             })[0];
 
             if(!checkboxExp) return null;
@@ -110,7 +134,7 @@
             if(!finalArray || !finalArray[1]) return null;
 
             var indexes = finalArray[1].trim().match(/\d+/ig),
-                index;
+              index;
 
             if(Array.isArray(indexes)){
               index = isNaN(+indexes[0]) || +indexes[0];;
@@ -125,12 +149,12 @@
 
           function bindEnumToCheckbox(param){
             if(!param || !param.id || !param.enumValues ||
-                param.sID_CheckboxTrue === null ||
-                param.sID_CheckboxTrue === undefined) return;
+              param.sID_CheckboxTrue === null ||
+              param.sID_CheckboxTrue === undefined) return;
 
             var checkbox = {},
-                trueValues,
-                falseValues;
+              trueValues,
+              falseValues;
 
             if(isNaN(+param.sID_CheckboxTrue)){
               trueValues = param.enumValues.filter(function(o){return o.id === param.sID_CheckboxTrue});
@@ -143,13 +167,13 @@
               falseValues = param.enumValues.filter(function(o, i){return i !== param.sID_CheckboxTrue});
               checkbox[param.id] = {
                 trueValue: param.enumValues[param.sID_CheckboxTrue] ?
-                    param.enumValues[param.sID_CheckboxTrue].id : null,
+                  param.enumValues[param.sID_CheckboxTrue].id : null,
                 falseValue: falseValues[0] ? falseValues[0].id : null
               };
             }
 
             angular.extend(param.self, {
-                checkbox: checkbox
+              checkbox: checkbox
             });
           }
         }
@@ -201,7 +225,7 @@
         var isItemFormPropertyDisabled = function (oItemFormProperty){
           if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
-          return true;
+            return true;
 
           var sID_Field = oItemFormProperty.id;
           if (sID_Field === null) {
@@ -621,7 +645,7 @@
 
         $scope.getMessageFileUrl = function (oMessage, oFile) {
           if(oMessage && oFile)
-          return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
+            return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
         };
 
         $scope.getCurrentUserName = function () {
@@ -781,27 +805,27 @@
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
           if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
-          angular.forEach($scope.taskData.aAttachment, function (attach) {
-            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
-              ++itemsProcessed;
-              try {
-                var table = {};
-                table.name = attach.description;
-                table.id = attach.id;
-                table.content = JSON.parse(res);
-                for(var i=0; i<table.content.length; i++) {
-                  if(typeof table.content[i] === "string") {
-                    table.idName = table.content[i];
-                    delete table.content[i];
+            angular.forEach($scope.taskData.aAttachment, function (attach) {
+              tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
+                ++itemsProcessed;
+                try {
+                  var table = {};
+                  table.name = attach.description;
+                  table.id = attach.id;
+                  table.content = JSON.parse(res);
+                  for(var i=0; i<table.content.length; i++) {
+                    if(typeof table.content[i] === "string") {
+                      table.idName = table.content[i];
+                      delete table.content[i];
+                    }
                   }
-                }
-                $scope.taskData.aTable.push(table);
-              } catch (e) {
+                  $scope.taskData.aTable.push(table);
+                } catch (e) {
 
-              }
-              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
-            })
-          });
+                }
+                if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
+              })
+            });
         };
         $scope.getListOfTables();
       }
