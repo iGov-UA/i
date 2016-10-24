@@ -703,20 +703,10 @@ public class ActionEventController {
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
                     
-                    if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
-                        sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    //if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
                         
-                        //if (oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL) != null){
-                        //}
-                        
-                        try {
-                            ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                        }
-                        catch (Exception e)
-                        {
-                            
-                        }
-                    }
+                    ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                                         
                     asCell.add(sPhone);
                     
