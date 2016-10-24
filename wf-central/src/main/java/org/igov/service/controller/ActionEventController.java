@@ -680,8 +680,6 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getsBody());
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
-
-                    //wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order
                     
                     Integer nID_Server = oHistoryEvent_Service.getnID_Server();
                     nID_Server = nID_Server == null ? 0 : nID_Server;
@@ -695,14 +693,22 @@ public class ActionEventController {
                     String sHost = oServer.getsURL();
  
                     String sPhone = "";
-
+                    String sURL = "";
+                    
                     if(bIncludeTaskInfo){
-                        String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
+                    
+                    if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null)
+                    {
+                        sURL = sHost + "/service/action/task/getTaskData?sID_Order=sID_Order" + oHistoryEvent_Service.getsID_Order();
+                        ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                    }
+                    
                     
                     asCell.add(sPhone);
                     
