@@ -7,6 +7,9 @@ var userService = require('../user/user.service');
 var authService = require('../../auth/activiti/basic');
 var async = require('async');
 var tasksService = require('./tasks.service');
+var environment = require('../../config/environment');
+var request = require('request');
+
 /*
 var nodeLocalStorage = require('node-localstorage').LocalStorage;
 var localStorage = new nodeLocalStorage('./scratch');
@@ -115,7 +118,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'unassigned') {
       query.candidateUser = user.id;
       query.unassigned = true;
-      query.includeProcessVariables = true;
+      query.includeProcessVariables_ = true;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.taskAssignee = user.id;
@@ -467,6 +470,33 @@ exports.setTaskQuestions = function (req, res) {
     res.send(result);
   });
 };
+
+// отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
+exports.postServiceMessage = function(req, res){
+  var oData = req.body;
+  var oDateNew = {
+    'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
+    'sBody': oData.sBody,
+    'nID_SubjectMessageType' : 9,
+    'sMail': oData.sMail,
+    'soParams': oData.soParams
+  };
+  var central = environment.activiti_central;
+  var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
+  var callback = function(error, response, body) {
+    res.send(body);
+    res.end();
+  };
+  return request.post({
+    'url': sURL,
+    'auth': {
+      'username': central.username,
+      'password': central.password
+    },
+    'qs': oDateNew
+  }, callback);
+};
+
 
 exports.checkAttachmentSign = function (req, res) {
   var nID_Task = req.params.taskId;
