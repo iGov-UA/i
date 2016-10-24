@@ -20,7 +20,9 @@ public class ActionProcessCountUtils {
 	public static Integer callSetActionProcessCount(HttpRequester httpRequester, GeneralConfig generalConfig, String sID_BP, Long nID_Service){
     	Map<String, String> mParam = new HashMap<String, String>();
     	mParam.put("sID_BP", sID_BP);
-    	mParam.put("nID_Service", nID_Service.toString());
+        if(nID_Service!=null){
+            mParam.put("nID_Service", nID_Service.toString());
+        }
     	try {
 			String soResponse = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI_SET_ACTION_PROCESS_COUNT, mParam);
 			LOG.info("Received response for updating ActionProcessCount {}", soResponse);
