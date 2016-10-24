@@ -4,10 +4,10 @@
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sWarning0" name="Зверніть увагу" type="label" default="Для оформлення закордонного паспорту для дитини існує окрема &lt;a href=&quot;https://igov.org.ua/service/177/general&quot;&gt;послуга&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asHave_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
@@ -24,6 +24,8 @@
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
       </extensionElements>
@@ -88,7 +90,6 @@ execution.setVariable('sTicketCode', tickCode)
 										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
 										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li>
 										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
-										${sDocZagran}
 									</ul>
 								</p>
 								<p>	
@@ -109,8 +110,9 @@ execution.setVariable('sTicketCode', tickCode)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
       <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
