@@ -437,7 +437,7 @@
               <div class="w300">
               </div>
               <div>
-                <table class="w200">
+                <table>
                   <tr id="trINN">
                     <td>&#160;</td>
                     <td>&#160;</td>
@@ -457,11 +457,11 @@
             <table class="w300 pg-25" align="right">
               <col class="w10p"/>
               <tr>
-                <td id="tdSubektUr"></td>
+                <td id="tdSubektUr" class="ta-c"></td>
                 <td>Юридична особа</td>
               </tr>
               <tr>
-                <td id="tdSubektFiz"></td>
+                <td id="tdSubektFiz" class="ta-c"></td>
                 <td>Фізична особа — підприємець</td>
               </tr>
               <tr class="nb">
@@ -475,7 +475,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="ta-c">
 			<br />
             [sAvtor]
             <br/>
@@ -489,34 +489,42 @@
         </tr>
       </table>
 
-      <br/><br/>
+      <br/>
       <div class="ta-j pl-paragraph">
         Згідно п.9 статі 299 глави 1 розділу XIV Податкового кодексу України прошу надати витяг з реєстру платників єдиного податку.
-
       </div>
-     
-      <br/><br/>      
-      <br/><br/>
-      <div>
-        <div class="under_field w30p">
-          <u>          
+      <br/>
+      <div class="layout w100p">
+        <div class="w30p">
+          <div class="under_field notb w100p">
+          <u>
+          	<span id="spanFIOBottom">&#160;</span>          
           </u>
           <span>(ПІБ)</span>
+          </div>
         </div>
-        <div class="notunder_field w5p"></div>
-        <div class="under_field w20p">
-          <u>
-          </u>
-          <span>(підпис)</span>
+        <div class="w5p"></div>
+
+        <div class="w20p">
+          <div class="under_field w100p">
+            <u>          
+              &#160;
+            </u>
+            <span>(підпис)</span>
+          </div>
         </div>
-        <div class="notunder_field w5p"></div>
-        <div class="under_field notb w30p">
-          <u>          
-            [sDateStart]
+        <div class="w5p"></div>
+        <div class="w30p">
+          <div class="under_field w100p">
+          <u>         
+              
+              &#160;
           </u>
           <span>(дата)</span>
+          </div>
         </div>
-      </div><br/>
+      </div>
+      <br><br>
       <div class="smalltext">
         ____________________________________________<br />
         * Для фізичних oci6, які через свої релігійні переконання відмовились від прийняття реєстраційного номера облікової картки платника податків та повідомили про це контролюючий орган i мають відмітку у паспорті.
@@ -533,6 +541,14 @@
       if("[subekt]"=="по собі, як фізичній особі"){
         inn = String("[bankIdinn]");
         document.getElementById("tdSubektFiz").innerHTML ="&#10004;";	  
+        
+        //**** Скрипт Фамилия инициалы ****	    
+        var spanFIOBottom = document.getElementById("spanFIOBottom");
+        var clFIO = String("[clFIO]").split(' ');
+        if(clFIO.length == 3){
+        	spanFIOBottom.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
+        }
+        
       } else if("[subekt]"=="по підприємству, як його представник"){
         inn = String("[edrpou]");
         document.getElementById("tdSubektUr").innerHTML ="&#10004;";	
@@ -546,8 +562,6 @@
     	  }
     	  cells[i].className = "ta-c w20";
       }
-
-
     </script>
   </body>
 </html>
