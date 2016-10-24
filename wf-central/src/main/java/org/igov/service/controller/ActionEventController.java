@@ -703,27 +703,28 @@ public class ActionEventController {
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
                     
-                    //if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
-                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
-                    
-                    try{
-                        ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                    }
-                    catch (Exception e)
-                    {
-                        
-                    }
-                    
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                       
-                    //asCell.add("test_DateCreate");
-                    //asCell.add("test_DateClose");
                     
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sURL);
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sURL);
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
+                    
+                    String sDateTimeCreate = "";
+                    
+                    try{
+                        
+                        ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                        JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                        sDateTimeCreate = oJSONObject.get("sDateTimeCreate") != null ? oJSONObject.get("sDateTimeCreate").toString() : "";
+                    }
+                    catch (Exception e)
+                    {
+                        //Если заявка не найдена - тут можно проставлять статус
+                    }
+                                                           
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sDateTimeCreate);
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sDateTimeCreate);
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
