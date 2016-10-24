@@ -706,7 +706,7 @@ public class ActionEventController {
                     //if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
                         
-                    ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                    //ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                                         
                     asCell.add(sPhone);
                     
@@ -716,8 +716,8 @@ public class ActionEventController {
                     //asCell.add("test_DateCreate");
                     //asCell.add("test_DateClose");
                     
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sURL);
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sURL);
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
