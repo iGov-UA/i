@@ -146,6 +146,8 @@
           <activiti:value id="both" name="у дитини є батько та матір, які визнають батьківство"></activiti:value>
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
+          <activiti:value id="fatherWithHusband" name="визнання батьківства попереднього чоловіка матері дитини (зі згодою теперешнього чоловіка)"></activiti:value>
+          <activiti:value id="oneYearOld" name="державна реєстрація народження дитини, яка досягла одного року і більше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextMother_1" name=" " type="label" default="Відомості про матір:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері; ;writable=false" type="string"></activiti:formProperty>
@@ -209,7 +211,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_birth_1.html]" type="invisible" default="(Додаток 2)заява про визнання батьківства до народження дитини" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/common_zags_birth_2.html]" type="invisible" default="(Додаток 1)заява про про визнання батьківства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_birth_3.html]" type="invisible" default="(Додаток 3)заява про державну реєстрацію народження відповідно до частини першої статті 135" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_birth_4.html]" type="invisible" default="(Додаток 5)спільна заява попереднього чоловіка матері дитини та чоловіка у повторному шлюбі про визнання батьківства" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_birth_4.html]" type="invisible" default="(Додаток 5)спільна заява про визнання батьківства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/common_zags_birth_5.html]" type="invisible" default="(Додаток 6)заява про державну реєстрацію народження дитини, яка досягла одного року і більше" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -305,7 +307,7 @@ var month=src.substr(5,2)
 var day=src.substr(8,2)
 var hour=src.substr(11,2)
 var minutes=src.substr(14,2)
-var time=day+'.'+month+'.'+year+' к '+hour+':'+minutes
+var time=day+'.'+month+'.'+year+' о '+hour+':'+minutes
 execution.setVariable('sNotification_day', time)</script>
     </scriptTask>
     <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
