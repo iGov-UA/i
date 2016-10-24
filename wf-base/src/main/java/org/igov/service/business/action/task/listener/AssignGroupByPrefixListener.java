@@ -59,13 +59,15 @@ public class AssignGroupByPrefixListener implements TaskListener {
         String sEmploeesGroup = oEmployeesGroup.getId().replace(chief, employee);
         LOG.info("sEmploeesGroup: " + sEmploeesGroup );
         
+        /*        
         long nCountOfEmployeesGroup = ownerGroup.stream()
                 .filter(group -> group.getId().equals(sEmploeesGroup)).count();
         
         if (nCountOfEmployeesGroup != 1) {
             LOG.warn("Number emloyees groups for user is " + nCountOfEmployeesGroup);
-            throw new ActivitiIllegalArgumentException("Групи підлеглих для для співробітника як керівника не існує, або їх декілька");
-        }
+            throw new ActivitiIllegalArgumentException("Групи підлеглих для співробітника як керівника не існує, або їх декілька");
+        } 
+        */
         
         execution.setVariable(resultField_Group, sEmploeesGroup);       
 

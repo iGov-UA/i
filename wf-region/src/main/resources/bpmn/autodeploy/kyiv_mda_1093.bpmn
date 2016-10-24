@@ -22,8 +22,8 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
-        <!--activiti:formProperty id="sLoginAsignee_step10" name="Відповідальний начальник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step10" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step10" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_insp_bosses"></activiti:formProperty!-->
+        <activiti:formProperty id="sLoginAsignee_step10" name="Відповідальний начальник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step10" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step10" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_insp_bosses"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -39,8 +39,8 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
-        <!--activiti:formProperty id="sLoginAsignee_step9" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step9" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step9" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty!-->
+        <activiti:formProperty id="sLoginAsignee_step9" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step9" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step9" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -61,8 +61,8 @@
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectReference" name="Посилання на картку об’єкта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар заступника начальника Управління контролю за будівництвом" type="textArea" writable="false"></activiti:formProperty>
-        <!--activiti:formProperty id="sLoginAsignee_step11" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_step11" name="Група виконавців наступного кроку" type="string"></activiti:formProperty!-->
+        <activiti:formProperty id="sLoginAsignee_step11" name="Відповідальний співробітник;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step11" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_step11" name="Група виконавців наступного кроку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossInspectionDepartment" name="Коментар начальника Інспекційного відділу" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -71,7 +71,7 @@
           </activiti:field>
         </activiti:taskListener>
       
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step10]]></activiti:expression>
           </activiti:field>
@@ -87,7 +87,7 @@
           <activiti:field name="resultField_Group">
             <activiti:expression><![CDATA[sID_Group_step11]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
@@ -118,11 +118,11 @@
             <activiti:expression><![CDATA[true]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step9]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="usertask4"></sequenceFlow>
@@ -187,10 +187,10 @@
           <activiti:value id="sEnumSecondResultGenerate" name="Сформувати результат перевірки"></activiti:value>
           <activiti:value id="sEnumSecondResultClose" name="Закриття перевірки"></activiti:value>
         </activiti:formProperty>
-        <!--activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2_req" name="requiredFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_2_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3_req" name="requiredFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3_required.json')}"></activiti:formProperty!-->
+        <activiti:formProperty id="markers3_req" name="requiredFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_3_required.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -198,11 +198,11 @@
           </activiti:field>
         </activiti:taskListener>
 
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->
+        </activiti:taskListener>
         
       </extensionElements>
     </userTask>
@@ -521,11 +521,11 @@
           </activiti:field>
         </activiti:executionListener>
         
-        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener!-->
+        </activiti:taskListener>
 
       </extensionElements>
     </userTask>
