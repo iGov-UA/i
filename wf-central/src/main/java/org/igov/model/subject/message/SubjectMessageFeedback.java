@@ -60,7 +60,7 @@ public class SubjectMessageFeedback extends AbstractEntity {
     @Column(name = "sID_Order", nullable = true)
     private String sID_Order;
 
-    @JsonProperty(value = "sAnswer")
+    @JsonProperty(value = "sAnswer") 
     @Column(name = "sAnswer", nullable = true)
     private String sAnswer;
 

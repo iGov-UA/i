@@ -657,7 +657,7 @@ public class ActionEventController {
                     List<String> asCell = new LinkedList<>();
                     LOG.info("asCellSize" + asCell.size());
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
+                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : ""); 
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
