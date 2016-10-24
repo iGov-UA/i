@@ -87,7 +87,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -98,7 +98,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask7" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="JKP_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" writable="false"></activiti:formProperty>

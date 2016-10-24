@@ -72,7 +72,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -83,7 +83,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка заяви" activiti:candidateGroups="OSBB_test">
+    <userTask id="usertask1" name="Перевірка заяви" activiti:candidateGroups="JKP_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sDate_Registr" name="Дата державної реєстрації ОСББ; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
@@ -188,7 +188,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Видача документів" activiti:candidateGroups="OSBB_test">
+    <userTask id="usertask2" name="Видача документів" activiti:candidateGroups="JKP_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sDate_Registr" name="Дата державної реєстрації ОСББ; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
