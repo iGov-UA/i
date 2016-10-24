@@ -640,12 +640,13 @@ public class ActionEventController {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
-                    LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
+                    LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service); 
 //                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                     String sID_Order = historyEventServiceDao.findAll().get(0).getsID_Order();
+                    LOG.info("sID_Order: "+sID_Order);
                     List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findByOrder(sID_Order);
-                    LOG.info("aSubjectMessage: " + aSubjectMessage);
-                    LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
+                    LOG.info("!!!aSubjectMessage: " + aSubjectMessage);
+                    LOG.info("!!!Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
 //                Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
                 for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
                     /*if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
@@ -655,7 +656,7 @@ public class ActionEventController {
 
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     List<String> asCell = new LinkedList<>();
-                    LOG.info("asCellSize" + asCell.size());
+                    LOG.info("!!!asCellSize " + asCell.size());
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : ""); 
                     // nID_Server
