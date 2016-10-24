@@ -71,7 +71,7 @@
                 </div>
               </div>
             </div>
-            <form name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
+            <form novalidate name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
 
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
@@ -90,7 +90,25 @@
                              ng-required="true"
                              class="form-control">
 
-                        <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
+                        <input ng-switch-when="long"
+                               type="number"
+                               name="{{oField.sID}}"
+                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                               string-to-number
+                               ng-model="oField.sValueNew"
+                               ng-required="true"
+                               class="form-control">
+
+                        <input ng-switch-when="double"
+                               type="number"
+                               name="{{oField.sID}}"
+                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                               string-to-number
+                               ng-model="oField.sValueNew"
+                               ng-required="true"
+                               class="form-control">
+
+                        <p ng-switch-when="date" class="input-group ng-scope datepicker-central" style="width:150px;">
                             <input
                                    type="text"
                                    name="{{oField.sID}}"
