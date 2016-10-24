@@ -22,20 +22,20 @@
             <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
           </span>
         <div class="col-sm-1" style="padding-right: 0;">
-            <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
-              <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
-            </div>
+          <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
+            <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+          </div>
         </div>
-          <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
-            <div ng-if="isFormPropertyDisabled(item)">
+        <div class="col-sm-4" style="padding-left: 0; padding-right: 0;">
+          <div ng-if="isFormPropertyDisabled(item)">
                 <span class="task-form-written-right-sight"
                       name="{{item.id}}"
                       ng-readonly="isFormPropertyDisabled(item)"
                       ng-required="{{item.required}}">{{item.value}}
                 </span>
-            </div>
-
           </div>
+
+        </div>
 
         <div class="col-sm-4" style="padding-right: 0">
           <div ng-if="clarifyFields[item.id].clarify">
@@ -121,14 +121,14 @@
           </div>
           <div class="row" style="margin-right: 0">
             <div class="col-sm-offset-3 col-sm-6" style="margin-top: 10px; margin-bottom: 20px">
-              <button type="button" style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</button>
-              <button type="button" style="margin: 0" class="btn btn-link attach-btn" ng-click="clarifyToggle()">Скасувати</button>
+              <a style="background: #337ACF;outline: none;border-color: #337ACF;" class="btn btn-info" ng-click="clarifySend()">Відправити зауваження</a>
+              <a style="margin: 0" class="btn btn-link attach-btn" ng-click="clarifyToggle()">Скасувати</a>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    </div>
+  </div>
 
 </form>
