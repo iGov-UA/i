@@ -703,10 +703,12 @@ public class ActionEventController {
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
                     
-                    if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null)
-                    {
+                    if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
                         sURL = sHost + "/service/action/task/getTaskData?sID_Order=sID_Order" + oHistoryEvent_Service.getsID_Order();
-                        //ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                        
+                        if (oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL) != null){
+                            ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                        }
                     }
                     
                     
