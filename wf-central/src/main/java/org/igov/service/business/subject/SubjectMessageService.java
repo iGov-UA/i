@@ -350,7 +350,12 @@ public class SubjectMessageService {
     public List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service){
         return subjectMessageFeedbackDao.getAllSubjectMessageFeedbackBynID_Service(nID_service);
     }
+    
+    public List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax){
+        return subjectMessageFeedbackDao.getAllSubjectMessageFeedback_Filtered(nID_service, nID__LessThen_Filter, nRowsMax);
+    }
 
+    
     //при параметре nID_Subject == null
     private SubjectContact syncMail(String sMail, Subject oSubject)  {
         
