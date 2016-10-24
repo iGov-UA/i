@@ -234,14 +234,15 @@ ${sNameOrgan},<br>
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
-          <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
-          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
+        <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
+          <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="invisible" default="Auto"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>

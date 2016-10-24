@@ -214,19 +214,16 @@ ${sNameOrgan},<br>
           <activiti:value id="sLost" name="втраченого"></activiti:value>
           <activiti:value id="sStolen" name="викраденого"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asBiometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
-          <activiti:value id="sBiomNo" name="ні"></activiti:value>
-          <activiti:value id="sBiomYes" name="так"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
+        <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="invisible" default="Auto"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask2_green" cancelActivity="true">
       <timerEventDefinition>
         <timeDate>${sEndDay}</timeDate>
       </timerEventDefinition>
