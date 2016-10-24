@@ -600,6 +600,7 @@ public class SubjectMessageController {
         //String sURL_Redirect = null;
         JSONObject oJSONObject = new JSONObject();
         Boolean bExist = false;
+        LOG.info("sID_Order: "+sID_Order);
         if(sID_Order!=null){
             Map<String,Object> m = mInitOrderMessageFeedback(sID_Order, Integer.valueOf(""+nID_Rate));
             //sURL_Redirect = m.get("sURL_Redirect");
@@ -637,8 +638,9 @@ public class SubjectMessageController {
                     feedback.setoSubjectMessageFeedbackAnswers(answers);
                     subjectMessageFeedbackDao.update(feedback);
                 }*/
-                subjectMessageFeedbackDao.setsID_Order(sID_Order);
-                LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {} ",
+                String ID_Order=subjectMessageFeedbackDao.setsID_Order(sID_Order);
+                LOG.info("ID_Order: "+ID_Order);
+                LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
                         sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
                 responseMessage = String.format("%s/service/%d/feedback?nID=%d&sID_Token=%s",

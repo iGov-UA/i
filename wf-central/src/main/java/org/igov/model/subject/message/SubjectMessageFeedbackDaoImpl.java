@@ -5,10 +5,13 @@ import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import org.igov.service.controller.ActionEventController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, SubjectMessageFeedback> implements SubjectMessageFeedbackDao {
-
+private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.class);
     protected SubjectMessageFeedbackDaoImpl() {
         super(SubjectMessageFeedback.class); 
     }
@@ -41,11 +44,13 @@ public class SubjectMessageFeedbackDaoImpl extends GenericEntityDao<Long, Subjec
 
     @Override
     public List<SubjectMessageFeedback> findByOrder(String sID_Order) {
+    List<SubjectMessageFeedback> findAll = findAllBy("sID_Order", sID_Order);
+    LOG.info("sID_Order: "+sID_Order);
         return findAllBy("sID_Order", sID_Order); 
     }
 
     @Override
     public String setsID_Order(String sID_Order) {
-        return toString();
+       return toString();
     }
 }

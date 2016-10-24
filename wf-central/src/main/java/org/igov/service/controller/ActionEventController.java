@@ -672,7 +672,7 @@ public class ActionEventController {
                     String sTextFeedback = "";
 //                    if (oSubjectMessageFeedback.getoSubjectMessage().) != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        LOG.info("sTextFeedback" + sTextFeedback);
+                        LOG.info("sTextFeedback " + sTextFeedback);
 //                    } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
 //                    }
