@@ -4,38 +4,31 @@
     <title>Надання витягу з реєстру платників єдиного податку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
+
     <style type="text/css">
 
-      body div.PrintFormClaim {
+      section.PrintFormClaim {        
         font-size: 14pt;
         font-family: "Times New Roman";
-        padding: 1cm 1.5cm 1cm 2.5cm;
-        width: 21cm;
-        min-height: 100%;
-        height: 100%;
+        width: 17cm;
       }
 
-      div.PrintFormClaim div {  
+      section.PrintFormClaim div {  
         margin-top: 6pt;
       }
 
-      div.PrintFormClaim u{
+      section.PrintFormClaim u{
         padding: 0 10px;
       }
 
       /* Подчеркивание с отступами не подходит для  */
-      div.PrintFormClaim em{
+      section.PrintFormClaim em{
         padding: 0 15px;
         font-style: normal;
         border-bottom: 1px  solid  black;  
       } /* Отменяем подчеркивание у ссылки */
 
-
       .whomBlock {
-        text-align: juice;
-      }
-
-      .whoBlock {
         text-align: juice;
       }
 
@@ -48,37 +41,36 @@
       }
 
       .smallText {
-        font-size: 10pt;  
+        font-size: 12pt;  
         line-height: 1.1;
       }
 
-      div.PrintFormClaim table {
+      section.PrintFormClaim table {
         align-self: center;
       }
 
-      div.PrintFormClaim td.bb {
+      section.PrintFormClaim td.bb {
         border: 0px solid black;
         border-bottom: 1px solid black;
       }
 
-      div.PrintFormClaim td.notb {
+      section.PrintFormClaim td.notb {
         border: 0px solid black;
       }
 
-      div.PrintFormClaim td {
+      section.PrintFormClaim td {
         border: 1px solid black;
         text-align:justify;
       }
 
-      div.PrintFormClaim table {
+      section.PrintFormClaim table {
         align-self: center;
         border-collapse: collapse; /* Отображать двойные линии как одинарные */
       }
 
-      div.PrintFormClaim th {
+      section.PrintFormClaim th {
         border: 1px solid black;
       }
-
 
       .under_multifield{ /* Мой кейс, многострочный текст*/
         border-bottom: 1px solid black;
@@ -100,7 +92,6 @@
         position: relative;
         bottom: -1px;  
         line-height: 125%;
-
       }
 
       .under_field { /* Блок с подписью */
@@ -110,11 +101,6 @@
         display: inline-block;
         clear: both;
       }
-
-      .under_field.notb { /*без подчеркивания*/
-        border-bottom: 0px solid black;
-      }
-
 
       .under_field>b { /*если не надо подчеркивать*/
         padding: 0 10px 0 0;
@@ -218,8 +204,6 @@
 
       .clear {clear: both;}
 
-
-
       /* организация колонок */
       .layout {
         overflow: hidden;
@@ -229,24 +213,27 @@
         float: left;
       }
 
-      .notunder_field { /* Блок с без линии */
-        margin: 0 0 15px 0;
-        position: relative;
-        display: inline-block;
-        clear: both;
-      }
-
-
       /* выравнивание текста */
-      div.PrintFormClaim .ta-l { text-align: left;}
-      div.PrintFormClaim .ta-j { text-align: justify;}
-      div.PrintFormClaim .ta-r { text-align: right;}
-      div.PrintFormClaim .ta-c { text-align: center;}
+      section.PrintFormClaim .ta-l { text-align: left;}
+      section.PrintFormClaim .ta-j { 
+        text-align: justify;
+      }
+      section.PrintFormClaim .ta-j-w { 
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
+      section.PrintFormClaim .ta-r { text-align: right;}
+      section.PrintFormClaim .ta-c { text-align: center;}
 
       /* ширина в процентах */            
       .w1p {width: 1%;}      
       .w4p {width: 4%;}      
-      .w5p {width: 5%;}   
+      .w5p {width: 5%;}      
+      .w8p {width: 8%;}   
       .w10p { width: 10%;}
       .w20p { width: 20%;}
       .w30p { width: 30%;}
@@ -261,6 +248,7 @@
       .w100p { width: 100%;}
 
       /* ширина */
+      .w20 {	width: 20px;}
       .w50 {	width: 50px;}
       .w100 {	width: 100px;}
       .w150 {	width: 150px;}
@@ -273,8 +261,11 @@
       .w500 {	width: 500px;}
 
       /* отступ  */
-
       .pl-paragraph { text-indent: 1cm;}
+      .pl-paragraph>div,
+      .pl-paragraph>span  
+      { text-indent: initial;} 
+
       .pl-25 { padding-left: 25px;}
       .pl-50 { padding-left: 50px;}
       .pl-75 { padding-left: 75px;}
@@ -308,6 +299,8 @@
 
       /*отступы по горизонтали*/
       .pg-10 { padding: 0 10px;}
+      .pg-15 { padding: 0 15px;}
+      .pg-20 { padding: 0 20px;}
       .pg-25 { padding: 0 25px;}
       .pg-50 { padding: 0 50px;}
       .pg-75 { padding: 0 75px;}
@@ -324,10 +317,33 @@
 
       .test{ border: 1px solid red;}
 
+      /* свойства для печати*/
+      @media print {
+        @page {
+          margin: 1cm 1.5cm 1cm 2.5cm;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        a[href^="http://"]:after, a[href^="ftp://"]:after {
+          content: " (" attr(href) ")";
+          color: blue;
+        }
+
+        section {page-break-after: avoid;}
+        h1 {page-break-after: avoid;}
+        p {page-break-inside: avoid; orphans:3; widows:2;}
+        ul, img {page-break-inside: avoid;}
+      }      
     </style>
+
+
   </head>
   <body>
-    <div class="PrintFormClaim">
+    <section lang="uk" class="PrintFormClaim">
 
       <div class="layout">
         <div class="w200 smalltext">
@@ -392,13 +408,12 @@
             1
           </td>
           <td class="b">
-            Найменування контролюючого органу,
-            до якого подається <br/> запит
+            Найменування контролюючого органу, до якого подається <br/> запит
           </td>
         </tr>
         <tr>
           <td>
-            &#160;
+            [sNameOrgan]
           </td>
         </tr>
       </table>
@@ -419,10 +434,10 @@
               картки або серія та номер паспорта*  
             </div>
             <div class="layout">
-              <div class="w300">
+              <div class="w200">
               </div>
               <div>
-                <table class="w200">
+                <table>
                   <tr id="trINN">
                     <td>&#160;</td>
                     <td>&#160;</td>
@@ -442,15 +457,15 @@
             <table class="w300 pg-25" align="right">
               <col class="w10p"/>
               <tr>
-                <td>&#160;</td>
+                <td id="tdSubektUr" class="ta-c"></td>
                 <td>Юридична особа</td>
               </tr>
               <tr>
-                <td>&#160;</td>
+                <td id="tdSubektFiz" class="ta-c"></td>
                 <td>Фізична особа — підприємець</td>
               </tr>
               <tr class="nb">
-                <td colspan="2" class="notb ta-c smalltext">Необхідне позначити знаком "V" або "Х"</td>
+                <td colspan="2" class="notb ta-c smalltext">Необхідне позначити знаком "&#10004;" або "Х"</td>
               </tr>
             </table>
             <br/>
@@ -460,8 +475,9 @@
           </td>
         </tr>
         <tr>
-          <td>
-            &#160;
+          <td class="ta-c">
+			<br />
+            [sAvtor]
             <br/>
             <br/>
           </td>
@@ -473,42 +489,79 @@
         </tr>
       </table>
 
-      <br/><br/>
+      <br/>
       <div class="ta-j pl-paragraph">
         Згідно п.9 статі 299 глави 1 розділу XIV Податкового кодексу України прошу надати витяг з реєстру платників єдиного податку.
-
       </div>
-     
-      <br/><br/>      
-      <br/><br/>
-      <div>
-        <div class="under_field w30p">
-          <u>          
-            <span id="spanAdressFactual">[sAddressFactual]</span>
+      <br/>
+      <div class="layout w100p">
+        <div class="w30p">
+          <div class="under_field notb w100p">
+          <u>
+          	<span id="spanFIOBottom">&#160;</span>          
           </u>
           <span>(ПІБ)</span>
+          </div>
         </div>
-        <div class="notunder_field w5p"></div>
-        <div class="under_field w20p">
-          <u>          
-            <span></span>
+        <div class="w5p"></div>
+
+        <div class="w20p">
+          <div class="under_field w100p">
+            <u>          
+              &#160;
+            </u>
+            <span>(підпис)</span>
+          </div>
+        </div>
+        <div class="w5p"></div>
+        <div class="w30p">
+          <div class="under_field w100p">
+          <u>         
+              
+              &#160;
           </u>
-          <span>(підпис)</span>
-        </div>
-        <div class="notunder_field w5p"></div>
-        <div class="under_field notb w30p">
-          «___» _______________року
           <span>(дата)</span>
+          </div>
         </div>
-      </div><br/>
+      </div>
+      <br><br>
       <div class="smalltext">
         ____________________________________________<br />
         * Для фізичних oci6, які через свої релігійні переконання відмовились від прийняття реєстраційного номера облікової картки платника податків та повідомили про це контролюючий орган i мають відмітку у паспорті.
 
       </div>
 
+    </section>
+    
+    
+	<script>
+      //**** Скрипт для заполнения ИНН/ЕДГРПОУ ****
+      var inn; 
 
+      if("[subekt]"=="по собі, як фізичній особі"){
+        inn = String("[bankIdinn]");
+        document.getElementById("tdSubektFiz").innerHTML ="&#10004;";	  
+        
+        //**** Скрипт Фамилия инициалы ****	    
+        var spanFIOBottom = document.getElementById("spanFIOBottom");
+        var clFIO = String("[clFIO]").split(' ');
+        if(clFIO.length == 3){
+        	spanFIOBottom.innerHTML = clFIO[0] + " " + clFIO[1][0] + "." + clFIO[2][0] + ".";
+        }
+        
+      } else if("[subekt]"=="по підприємству, як його представник"){
+        inn = String("[edrpou]");
+        document.getElementById("tdSubektUr").innerHTML ="&#10004;";	
+      } 
 
-    </div>
+      var cells = document.getElementById("trINN").children;
+
+      for(var i=0; i<cells.length; ++i){
+    	  if(i<inn.length){
+    		  cells[i].innerHTML =inn[i];	  
+    	  }
+    	  cells[i].className = "ta-c w20";
+      }
+    </script>
   </body>
 </html>

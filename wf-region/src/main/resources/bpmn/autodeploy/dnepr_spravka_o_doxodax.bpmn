@@ -15,7 +15,7 @@
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира) чи не співпада з адресою реєстрації" type="textArea" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
@@ -65,7 +65,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Довідка про доходи фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Довідка про доходи фізичних осіб. Реєстрація]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -91,7 +91,6 @@
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="dnepr_nalog">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -113,6 +112,8 @@
 
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу" type="invisible"></activiti:formProperty>    
 
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення фіскальної служби" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
@@ -135,7 +136,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] peredano na obrobky. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nFileDecision},${PrintForm_1}]]></activiti:expression>
@@ -144,7 +145,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Довідка про доходи фізичних осіб]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Довідка про доходи фізичних осіб. Обробка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -163,7 +164,8 @@
 			</p>
 			<ol>
 				<li>оригінал паспорта громадянина України;</li>
-				<li>роздруковану та підписану, прикріплену до цього листа, заяву на отримання довідки про доходи.</li>				
+				<li>роздруковану та підписану, прикріплену до цього листа, заяву на отримання довідки про доходи.
+				</li>								
 			</ol>
 			<p>
 				Ви можете ознайомитися з законодавством, за яким надається послуга, 

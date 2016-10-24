@@ -21,6 +21,8 @@
           <activiti:value id="both" name="у дитини є батько та матір, які визнають батьківство"></activiti:value>
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
+          <activiti:value id="fatherWithHusband" name="визнання батьківства попереднього чоловіка матері дитини (зі згодою теперешнього чоловіка)"></activiti:value>
+          <activiti:value id="oneYearOld" name="державна реєстрація народження дитини, яка досягла одного року і більше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextMother" name=" " type="label" default="&lt;b&gt;Відомості про матір&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері" type="string"></activiti:formProperty>
@@ -46,7 +48,21 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibNoFather" name="Яке власне ім'я та по батькові батька вписати до актового запису" type="string"></activiti:formProperty>
+        
+        
+
+        <activiti:formProperty id="sTextHusband" name=" " type="label" default="&lt;b&gt;Відомості про чоловіка&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA4" name="Прізвище чоловіка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA4" name="Ім'я чоловіка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA4" name="По батькові чоловіка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceHusband" name="Місце проживання чоловіка;(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saNameDocHusband" name="Назва документа, що посвідчує особу чоловіка" type="enum">
+          <activiti:value id="pasport" name="паспорт"></activiti:value>
+          <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPassportHusband" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу чоловіка" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="sTextChild" name=" " type="label" default="&lt;b&gt;Відомості про дитину&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини" type="string"></activiti:formProperty>
@@ -56,8 +72,12 @@
           <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини" type="date"></activiti:formProperty>
+        <activiti:formProperty id="placeBirth" name="Місце народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="docOfBirth" name="Якими документами підтверджується факт народження дитини;назва документа, яким органом та коли виданий" type="string"></activiti:formProperty>
+        <activiti:formProperty id="reasonNoRegistration" name="Причина несвоєчасної державної реєстрації народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDocPassportFather" name="Копія паспорту батька" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocPassportMother" name="Копія паспорту матері" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocPassportHusband" name="Копія паспорту чоловіка" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocMedical" name="Медичне свідоцтво про народження (форма № 103\о);видається закладами охорони здоров’я, де приймаються пологи" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocPregnancy" name="Довідка про вагітність;видається закладами охорони здоров’я" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka" type="invisible"></activiti:formProperty>
@@ -70,6 +90,8 @@
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_birth_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -124,6 +146,8 @@
           <activiti:value id="both" name="у дитини є батько та матір, які визнають батьківство"></activiti:value>
           <activiti:value id="noFather" name="у дитини немає батька (або чоловіка, який вважає себе батьком дитини)"></activiti:value>
           <activiti:value id="noBornYet" name="дитина ще не народилась, батько та мати хочуть визнати батьківство до народження"></activiti:value>
+          <activiti:value id="fatherWithHusband" name="визнання батьківства попереднього чоловіка матері дитини (зі згодою теперешнього чоловіка)"></activiti:value>
+          <activiti:value id="oneYearOld" name="державна реєстрація народження дитини, яка досягла одного року і більше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextMother_1" name=" " type="label" default="Відомості про матір:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище матері; ;writable=false" type="string"></activiti:formProperty>
@@ -149,7 +173,17 @@
           <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPassportFather" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу батька; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibNoFather" name="Яке Прізвище, Ім'я, По батькові батька вписати до актового запису?; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPibNoFather" name="Яке Ім'я, По батькові батька вписати до актового запису?; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTextHusband_1" name=" " type="label" default="Відомості про чоловіка:"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA4" name="Прізвище чоловіка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA4" name="Ім'я чоловіка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA4" name="По батькові чоловіка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceHusband" name="Місце проживання чоловіка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saNameDocHusband" name="Назва документа, що посвідчує особу чоловіка; ;writable=false" type="enum">
+          <activiti:value id="pasport" name="паспорт"></activiti:value>
+          <activiti:value id="pasportdoc" name="паспортний документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPassportHusband" name="серія, номер, яким органом і коли виданий документ, що посвідчує особу чоловіка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextChild_1" name=" " type="label" default="Відомості про дитину:"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
@@ -159,6 +193,9 @@
           <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="placeBirth" name="Місце народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="docOfBirth" name="Документ, яким підтверджується факт народження дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="reasonNoRegistration" name="Причина несвоєчасної державної реєстрації народження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Послуга надана"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
@@ -171,13 +208,15 @@
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_birth_1.html]" type="invisible" default="заява про визнання батьківства до народження дитини" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/common_zags_birth_2.html]" type="invisible" default="заява про про визнання батьківства" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_birth_3.html]" type="invisible" default="заява про державну реєстрацію народження відповідно до частини першої статті 135" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_birth_1.html]" type="invisible" default="(Додаток 2)заява про визнання батьківства до народження дитини" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/common_zags_birth_2.html]" type="invisible" default="(Додаток 1)заява про про визнання батьківства" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_birth_3.html]" type="invisible" default="(Додаток 3)заява про державну реєстрацію народження відповідно до частини першої статті 135" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_birth_4.html]" type="invisible" default="(Додаток 5)спільна заява про визнання батьківства" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/common_zags_birth_5.html]" type="invisible" default="(Додаток 6)заява про державну реєстрацію народження дитини, яка досягла одного року і більше" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocMarriage},${nDocPassportFather},${nDocPassportMother},${nDocMedical},${nDocPregnancy}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nDocMarriage},${nDocPassportFather},${nDocPassportMother},${nDocMedical},${nDocPregnancy},${nDocPassportHusband}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -268,7 +307,7 @@ var month=src.substr(5,2)
 var day=src.substr(8,2)
 var hour=src.substr(11,2)
 var minutes=src.substr(14,2)
-var time=day+'.'+month+'.'+year+' к '+hour+':'+minutes
+var time=day+'.'+month+'.'+year+' о '+hour+':'+minutes
 execution.setVariable('sNotification_day', time)</script>
     </scriptTask>
     <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>

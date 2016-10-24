@@ -4,10 +4,11 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
 
-		<activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_00.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers00" name="extended_marker00" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_00.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers01" name="extended_marker01" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_01.json')}"></activiti:formProperty>
 
 <!--        <activiti:formProperty id="InfoStart00" name="За допомогою даної послуги можливо надати документи для попереднього перегляду держслужбовцем" type="label" default="(за результатом розгляду документів Вам буде повідомлено про наявні зауваження до оформлення та змісту наданих документів)"></activiti:formProperty> -->
-        <activiti:formProperty id="InfoStart01" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Зверніть увагу &lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;a href=&quot;https://igov.org.ua/subcategory/1/5/situation/27&quot; target=&quot;_blank&quot;&gt;Що потрібно знати.&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="InfoStart01" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Зверніть увагу на посилання&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;a href=&quot;https://igov.org.ua/subcategory/1/5/situation/27&quot; target=&quot;_blank&quot;&gt;Що потрібно знати для отримання послуги.&lt;/a&gt;"></activiti:formProperty>
 		
 		<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -16,16 +17,27 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть Ваш контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; приклад (49000, м.Дніпро, пр.Яворницького буд.100, кв.777)" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectWeapon_04" name="Адреса моєї реєстрації (з паспорту) співпадає з адресою постійного місцеперебування" type="enum" default="tf_01" required="true">
+          <activiti:value id="tf_01" name="Так"></activiti:value>
+          <activiti:value id="tf_02" name="Ні"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sAdress1" name="Вкажіть Вашу повну поштову адресу реєстрації (з паспорту), для оформлення заяви; приклад (49000, м.Дніпро, пр.Яворницького буд.100, кв.777)" type="string" required="true" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="Info_11" name="УВАГА" type="label" default="Зазначена адреса буде вважатися місцем де планується зберігати придбану зброю."></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Вкажіть Вашу повну поштову адресу постійного місцеперебування, для оформлення заяви; приклад (49000, м.Дніпро, пр.Яворницького буд.100, кв.777)" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_12" name="УВАГА" type="label" default="необхідно додатково надати документ, підтверджуючий фактичне місце проживання (договір оренди житлового приміщення, свідоцтво про право власності на житлове приміщення тощо)."></activiti:formProperty>
+        <activiti:formProperty id="fDoc_06" name="Документ на користування приміщенням" type="file" required="true" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="asSelectWeapon_01" name="Тип зброї для придбання" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
-          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
           <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
           <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, для отримання послуги; послуга надається у відділенні відповідно до Вашого фактичного місця проживання" type="select" required="true" default="0"></activiti:formProperty>
+<!--        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, для отримання послуги; послуга надається у відділенні відповідно до Вашого фактичного місця проживання" type="select" required="true" default="0"></activiti:formProperty> -->
 
         <activiti:formProperty id="asSelectWeapon_01_01" name="Планується придбати наступну кількість одиниць зброї" type="enum" default="tf_01" required="true">
           <activiti:value id="tf_01" name="одну"></activiti:value>
@@ -45,12 +57,14 @@
           <activiti:value id="tf_01" name="1"></activiti:value>
           <activiti:value id="tf_02" name="2"></activiti:value>
           <activiti:value id="tf_03" name="3"></activiti:value>
+          <activiti:value id="tf_04" name="4"></activiti:value>
+          <activiti:value id="tf_05" name="5"></activiti:value>
         </activiti:formProperty>
 
         <activiti:formProperty id="Info_06" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="asSelectWeapon_03_01" name="Тип зброї" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
-          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
           <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
           <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
         </activiti:formProperty>
@@ -60,7 +74,7 @@
         <activiti:formProperty id="Info_02" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="asSelectWeapon_03_02" name="Тип зброї" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
-          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
           <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
           <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
         </activiti:formProperty>
@@ -70,12 +84,32 @@
         <activiti:formProperty id="Info_03" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
         <activiti:formProperty id="asSelectWeapon_03_03" name="Тип зброї" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
-          <activiti:value id="tf_02" name="Мисливська гладкоствольна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
           <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
           <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumDozv_03" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dDateDozv_03" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="Info_09" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="asSelectWeapon_03_04" name="Тип зброї" type="enum" default=" " required="true">
+          <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
+          <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
+          <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumDozv_04" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDateDozv_04" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="Info_10" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="asSelectWeapon_03_05" name="Тип зброї" type="enum" default=" " required="true">
+          <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
+          <activiti:value id="tf_02" name="Мисливська гладкоствольна/пневматична зброя"></activiti:value>
+          <activiti:value id="tf_03" name="Пристрій травматичної дії"></activiti:value>
+          <activiti:value id="tf_04" name="Газовий пістолет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumDozv_05" name="Номер дозвілу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDateDozv_05" name="Cтрок дії дозвілу до" type="date" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="Info_04" name="======================================" type="label" default="======================================"></activiti:formProperty>
 
@@ -99,8 +133,10 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nUser" name="Users" type="string" default=" "></activiti:formProperty>
+		
 <!--         <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty> -->
 <!--         <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_1.json')}"></activiti:formProperty> -->
+
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>

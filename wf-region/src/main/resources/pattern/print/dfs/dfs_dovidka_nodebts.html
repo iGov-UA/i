@@ -479,6 +479,15 @@
 
       if("[subekt]"=="по собі, як фізичній особі"){
         inn = String("[bankIdinn]");
+        
+
+        //**** Скрипт Фамилия инициалы ****	    
+        var spanFIO = document.getElementById("spanFIO");
+        var clFIO = String("[clFIO]").split(' ');
+        if(clFIO.length == 3){
+          spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
+        }
+        
       } else if("[subekt]"=="по підприємству, як його представник"){
         inn = String("[edrpou]");
       } 
@@ -496,12 +505,6 @@
       document.getElementById("spanTypePaper").className = "u";
 
 
-      //**** Скрипт Фамилия инициалы ****	    
-      var spanFIO = document.getElementById("spanFIO");
-      var clFIO = String("[clFIO]").split(' ');
-      if(clFIO.length == 3){
-        spanFIO.innerHTML = clFIO[1][0] + "." + clFIO[2][0] + ". " + clFIO[0];
-      }
     </script>
   </body>
 </html>
