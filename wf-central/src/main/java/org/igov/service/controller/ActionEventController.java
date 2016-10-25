@@ -734,7 +734,7 @@ public class ActionEventController {
                                 oHistoryEvent_Service.setsDateClose(sDateClose);
                             }
                             
-                            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);//.updateHistoryEvent_Service(oHistoryEvent_Service);
+                            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                         }
                     }
                     
@@ -743,8 +743,8 @@ public class ActionEventController {
                         //Если заявка не найдена - тут можно проставлять статус
                     }
                                                            
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "");
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
