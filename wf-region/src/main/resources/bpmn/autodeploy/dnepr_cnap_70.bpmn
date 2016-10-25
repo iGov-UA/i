@@ -43,14 +43,14 @@
         <activiti:formProperty id="doverennost" name="Копія довіреннності" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubektConfidant&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubektConfidant&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumConfidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо Дніпро, треба додатково обрати орган" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;saSubectOrgan&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'lev' || [sClient] =='prav'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_" name="шапка у принтформу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka_70" name="шапка у принтформу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -99,9 +99,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_70_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_70_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -157,8 +155,8 @@
         <activiti:formProperty id="markers22" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у наданні листа'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_70_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_70_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_70_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_70_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -263,7 +261,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Видача листа про прийняття рішення щодо можливості/неможливості видачі дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами суб`єкта господарювання (2 і 3 група)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${rishen}",${PrintForm_1},${PrintForm_2}]]></activiti:expression>
+          <activiti:expression><![CDATA["${rishen}",${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -307,10 +305,7 @@ if(execution.getVariable('sDocErdpou') != null){
 per4 = "&lt;li&gt;Копія довідки ЄДРПОУ або копія виписки з ЄДР юридичних та фізичних осіб підприємців.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocVikidi') != null){
-per5 = "&lt;li&gt;Документи, у яких обґрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин 
-в атмосферне повітря стаціонарними джерелами у повному обсязі з ситуаційним та генеральним планами,
- розрахунками розсіювання забруднюючих речовин у атмосферному повітрі та ін., виконані відповідно з вимогами наказу Міністерства 
- охорони навколишнього природного середовища України від 09.03.2006 №108.&lt;/li&gt;"
+per5 = "&lt;li&gt;Документи, у яких обґрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами у повному обсязі з ситуаційним та генеральним планами, розрахунками розсіювання забруднюючих речовин у атмосферному повітрі та ін., виконані відповідно з вимогами наказу Міністерства охорони навколишнього природного середовища України від 09.03.2006 №108.&lt;/li&gt;"
 }
 res = '&lt;ol&gt;'+per1+per2+per4+per5+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per3+per4+per5+'&lt;/ol&gt;'
