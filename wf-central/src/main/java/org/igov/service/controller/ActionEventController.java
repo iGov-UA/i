@@ -712,27 +712,34 @@ public class ActionEventController {
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order() 
                             + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
                     
-                    String sDateCreate = "";
-                    String sDateClose = "";
+                    DateTime sDateCreate = null;
+                    DateTime sDateClose = null;
                     
                     try{
                         
                         ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
                         JSONObject opJSONObject = (JSONObject) oJSONObject.get("oProcess");
-                        sDateCreate = opJSONObject.get("sDateCreate") != null ? opJSONObject.get("sDateCreate").toString() : "";
-                        sDateClose = opJSONObject.get("sDateClose") != null ? opJSONObject.get("sDateClose").toString() : "";
-                        //oJSONObject = (JSONObject) new JSONParser().parse((String) oJSONObject.get("oProcess"));
-                        //sDateTimeCreate = oJSONObject.get("sDateCreate") != null ? oJSONObject.get("sDateCreate").toString() : "";
-                        //sDateTimeCreate = oJSONObject.get("sDateTimeCreate") != null ? oJSONObject.get("sDateTimeCreate").toString() : "";
+                        sDateCreate = (DateTime) opJSONObject.get("sDateCreate");
+                        sDateClose = (DateTime) opJSONObject.get("sDateClose");
+                        
+                        if (sDateCreate != null)
+                        {
+                            oHistoryEvent_Service.setsDateCreate(sDateCreate);
+                            if (sDateClose != null)
+                            {
+                                oHistoryEvent_Service.setsDateClose(sDateClose);
+                            }
+                        }
                     }
+                    
                     catch (Exception e)
                     {
                         //Если заявка не найдена - тут можно проставлять статус
                     }
                                                            
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sDateCreate);
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sDateClose);
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
