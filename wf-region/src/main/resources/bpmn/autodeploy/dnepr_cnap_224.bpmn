@@ -6,19 +6,18 @@
       <extensionElements>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (95 грн.), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1f0pF_HR0BJ9TEzTyQAqfwyOOQBoxtQkj2Cr5gE0iIO8/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" default="ur" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернння подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
@@ -34,7 +33,7 @@
         <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" required="true">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -69,99 +68,7 @@
         <activiti:formProperty id="instructor_license_term" name="Термін дії свідоцтва" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Інформація про небезпечний вантаж" type="table" default="${markerService.loadFromFile('table/cnap/dnepr_cnap_224_table.json')}"></activiti:formProperty>
-   <!-- <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" default="one" required="true">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="dangerous_name" name="Транспортна назва вантажу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="packing_group" name="Група пакування" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_oon" name="№ речовини за переліком ООН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous" name="Номери зразків знаків небезпеки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo" name="Маса небезпечного вантажу (т.)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous" name="Попередній номер погодження  виданого УДАІ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_2" name="Транспортна назва (2 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_2" name="Група пакування (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_2" name="Ідентифікаційний номер безпеки (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_2" name="№ речовини за переліком ООН (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_2" name="Номери зразків знаків небезпеки (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_2" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_2" name="Маса небезпечного вантажу (т.)(2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_2" name="Попередній номер погодження  виданого УДАІ (2 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_3" name="Транспортна назва (3 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_3" name="Група пакування (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_3" name="Ідентифікаційний номер безпеки (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_3" name="№ речовини за переліком ООН (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_3" name="Номери зразків знаків небезпеки (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_3" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_3" name="Маса небезпечного вантажу (т.)(3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_3" name="Попередній номер погодження  виданого УДАІ (3 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_4" name="Транспортна назва (4 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_4" name="Група пакування (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_4" name="Ідентифікаційний номер безпеки (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_4" name="№ речовини за переліком ООН (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_4" name="Номери зразків знаків небезпеки (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_4" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_4" name="Маса небезпечного вантажу (т.)(4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_4" name="Попередній номер погодження  виданого УДАІ (4 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_5" name="Транспортна назва (5 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_5" name="Група пакування (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_5" name="Ідентифікаційний номер безпеки (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_5" name="№ речовини за переліком ООН (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_5" name="Номери зразків знаків небезпеки (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_5" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_5" name="Маса небезпечного вантажу (т.)(5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_5" name="Попередній номер погодження  виданого УДАІ (5 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_6" name="Транспортна назва (6 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_6" name="Група пакування (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_6" name="Ідентифікаційний номер безпеки (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_6" name="№ речовини за переліком ООН (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_6" name="Номери зразків знаків небезпеки (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_6" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_6" name="Маса небезпечного вантажу (т.)(6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_6" name="Попередній номер погодження  виданого УДАІ (6 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_7" name="Транспортна назва (7 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_7" name="Група пакування (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_7" name="Ідентифікаційний номер безпеки (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_7" name="№ речовини за переліком ООН (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_7" name="Номери зразків знаків небезпеки (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_7" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_7" name="Маса небезпечного вантажу (т.)(7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_7" name="Попередній номер погодження  виданого УДАІ (7 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_8" name="Транспортна назва (8 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_8" name="Група пакування (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_8" name="Ідентифікаційний номер безпеки (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_8" name="№ речовини за переліком ООН (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_8" name="Номери зразків знаків небезпеки (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_8" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_8" name="Маса небезпечного вантажу (т.)(8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_8" name="Попередній номер погодження  виданого УДАІ (8 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_9" name="Транспортна назва (9 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_9" name="Група пакування (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_9" name="Ідентифікаційний номер безпеки (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_9" name="№ речовини за переліком ООН (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_9" name="Номери зразків знаків небезпеки (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_9" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_9" name="Маса небезпечного вантажу (т.)(9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_9" name="Попередній номер погодження  виданого УДАІ (9 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_10" name="Транспортна назва (10 вантажу)" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="packing_group_10" name="Група пакування (10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_10" name="Ідентифікаційний номер безпеки (10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_oon_10" name="№ речовини за переліком ООН (10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_10" name="Номери зразків знаків небезпеки (10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_10" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_10" name="Маса небезпечного вантажу (т.)(10 вантажу)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_10" name="Попередній номер погодження  виданого УДАІ (10 вантажу)" type="string" default=" "></activiti:formProperty>
-     --><activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="strah_adres" name="Адреса страхового товариства" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="strah_from" name="Термін дії страхового полісу або договору з" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="strah_till" name="Термін дії страхового полісу або договору по" type="date" required="true"></activiti:formProperty>
@@ -182,19 +89,11 @@
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Волинській"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="маркер якщо 2 водія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;pib_driver_2&quot;,&quot;driver_license_number_2&quot;,&quot;driver_license_term_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;driver_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
-   <!-- <activiti:formProperty id="markers12" name="маркер якщо 2 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="маркер якщо 3 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'three'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="маркер якщо 4 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'four'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="маркер якщо 5 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'five'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="маркер якщо 6 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'six'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="маркер якщо 7 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;,&quot;dangerous_name_7&quot;,&quot;packing_group_7&quot;,&quot;dangerous_inn_7&quot;,&quot;number_oon_7&quot;,&quot;number_dangerous_7&quot;,&quot;first_dangerous_7&quot;,&quot;dangerous_cargo_7&quot;,&quot;dangerous_previous_7&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'seven'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="маркер якщо 8 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;,&quot;dangerous_name_7&quot;,&quot;packing_group_7&quot;,&quot;dangerous_inn_7&quot;,&quot;number_oon_7&quot;,&quot;number_dangerous_7&quot;,&quot;first_dangerous_7&quot;,&quot;dangerous_cargo_7&quot;,&quot;dangerous_previous_7&quot;,&quot;dangerous_name_8&quot;,&quot;packing_group_8&quot;,&quot;dangerous_inn_8&quot;,&quot;number_oon_8&quot;,&quot;number_dangerous_8&quot;,&quot;first_dangerous_8&quot;,&quot;dangerous_cargo_8&quot;,&quot;dangerous_previous_8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers19" name="маркер якщо 9 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;,&quot;dangerous_name_7&quot;,&quot;packing_group_7&quot;,&quot;dangerous_inn_7&quot;,&quot;number_oon_7&quot;,&quot;number_dangerous_7&quot;,&quot;first_dangerous_7&quot;,&quot;dangerous_cargo_7&quot;,&quot;dangerous_previous_7&quot;,&quot;dangerous_name_8&quot;,&quot;packing_group_8&quot;,&quot;dangerous_inn_8&quot;,&quot;number_oon_8&quot;,&quot;number_dangerous_8&quot;,&quot;first_dangerous_8&quot;,&quot;dangerous_cargo_8&quot;,&quot;dangerous_previous_8&quot;,&quot;dangerous_name_9&quot;,&quot;packing_group_9&quot;,&quot;dangerous_inn_9&quot;,&quot;number_oon_9&quot;,&quot;number_dangerous_9&quot;,&quot;first_dangerous_9&quot;,&quot;dangerous_cargo_9&quot;,&quot;dangerous_previous_9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers20" name="маркер якщо 10 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;,&quot;dangerous_name_7&quot;,&quot;packing_group_7&quot;,&quot;dangerous_inn_7&quot;,&quot;number_oon_7&quot;,&quot;number_dangerous_7&quot;,&quot;first_dangerous_7&quot;,&quot;dangerous_cargo_7&quot;,&quot;dangerous_previous_7&quot;,&quot;dangerous_name_8&quot;,&quot;packing_group_8&quot;,&quot;dangerous_inn_8&quot;,&quot;number_oon_8&quot;,&quot;number_dangerous_8&quot;,&quot;first_dangerous_8&quot;,&quot;dangerous_cargo_8&quot;,&quot;dangerous_previous_8&quot;,&quot;dangerous_name_9&quot;,&quot;packing_group_9&quot;,&quot;dangerous_inn_9&quot;,&quot;number_oon_9&quot;,&quot;number_dangerous_9&quot;,&quot;first_dangerous_9&quot;,&quot;dangerous_cargo_9&quot;,&quot;dangerous_previous_9&quot;,&quot;dangerous_name_10&quot;,&quot;packing_group_10&quot;,&quot;dangerous_inn_10&quot;,&quot;number_oon_10&quot;,&quot;number_dangerous_10&quot;,&quot;first_dangerous_10&quot;,&quot;dangerous_cargo_10&quot;,&quot;dangerous_previous_10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'&quot;}}}"></activiti:formProperty>
-    --> </extensionElements>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -211,16 +110,15 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернння подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -231,7 +129,7 @@
         <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -257,7 +155,7 @@
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
@@ -265,100 +163,7 @@
         <activiti:formProperty id="instructor_license_number" name="№ свідоцтва відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="instructor_license_term" name="Термін дії свідоцтва" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
-        <!-- <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="dangerous_name" name="Транспортна назва вантажу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group" name="Група пакування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn" name="Ідентифікаційний номер безпеки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon" name="№ речовини за переліком ООН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous" name="Номери зразків знаків небезпеки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo" name="Маса небезпечного вантажу (т.)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous" name="Попередній номер погодження  виданого УДАІ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oplata_number" name="№ платіжного доручення (квитанції)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_2" name="Транспортна назва (2 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_2" name="Група пакування (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_2" name="Ідентифікаційний номер безпеки (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_2" name="№ речовини за переліком ООН (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_2" name="Номери зразків знаків небезпеки (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_2" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_2" name="Маса небезпечного вантажу (т.)(2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_2" name="Попередній номер погодження  виданого УДАІ (2 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_3" name="Транспортна назва (3 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_3" name="Група пакування (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_3" name="Ідентифікаційний номер безпеки (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_3" name="№ речовини за переліком ООН (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_3" name="Номери зразків знаків небезпеки (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_3" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_3" name="Маса небезпечного вантажу (т.)(3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_3" name="Попередній номер погодження  виданого УДАІ (3 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_4" name="Транспортна назва (4 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_4" name="Група пакування (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_4" name="Ідентифікаційний номер безпеки (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_4" name="№ речовини за переліком ООН (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_4" name="Номери зразків знаків небезпеки (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_4" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_4" name="Маса небезпечного вантажу (т.)(4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_4" name="Попередній номер погодження  виданого УДАІ (4 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_5" name="Транспортна назва (5 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_5" name="Група пакування (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_5" name="Ідентифікаційний номер безпеки (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_5" name="№ речовини за переліком ООН (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_5" name="Номери зразків знаків небезпеки (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_5" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_5" name="Маса небезпечного вантажу (т.)(5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_5" name="Попередній номер погодження  виданого УДАІ (5 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_6" name="Транспортна назва (6 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_6" name="Група пакування (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_6" name="Ідентифікаційний номер безпеки (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_6" name="№ речовини за переліком ООН (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_6" name="Номери зразків знаків небезпеки (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_6" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_6" name="Маса небезпечного вантажу (т.)(6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_6" name="Попередній номер погодження  виданого УДАІ (6 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_7" name="Транспортна назва (7 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_7" name="Група пакування (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_7" name="Ідентифікаційний номер безпеки (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_7" name="№ речовини за переліком ООН (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_7" name="Номери зразків знаків небезпеки (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_7" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_7" name="Маса небезпечного вантажу (т.)(7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_7" name="Попередній номер погодження  виданого УДАІ (7 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_8" name="Транспортна назва (8 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_8" name="Група пакування (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_8" name="Ідентифікаційний номер безпеки (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_8" name="№ речовини за переліком ООН (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_8" name="Номери зразків знаків небезпеки (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_8" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_8" name="Маса небезпечного вантажу (т.)(8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_8" name="Попередній номер погодження  виданого УДАІ (8 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_9" name="Транспортна назва (9 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_9" name="Група пакування (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_9" name="Ідентифікаційний номер безпеки (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_9" name="№ речовини за переліком ООН (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_9" name="Номери зразків знаків небезпеки (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_9" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_9" name="Маса небезпечного вантажу (т.)(9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_9" name="Попередній номер погодження  виданого УДАІ (9 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_name_10" name="Транспортна назва (10 вантажу)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="packing_group_10" name="Група пакування (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_inn_10" name="Ідентифікаційний номер безпеки (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_oon_10" name="№ речовини за переліком ООН (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_dangerous_10" name="Номери зразків знаків небезпеки (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="first_dangerous_10" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_cargo_10" name="Маса небезпечного вантажу (т.)(10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_previous_10" name="Попередній номер погодження  виданого УДАІ (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-     --><activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_adres" name="Адреса страхового товариства" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_from" name="Термін дії страхового полісу або договору з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_till" name="Термін дії страхового полісу або договору по" type="date" writable="false"></activiti:formProperty>
@@ -374,12 +179,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_224_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_2_1_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_1_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${dopusk},${dopnv},${insurance},${instruction},${pidgotovka},${dodatkovo},${oplata},${sTable1}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport}, ${dopusk},${dopnv},${insurance},${instruction},${pidgotovka},${dodatkovo},${oplata},${sTable1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -393,16 +198,15 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса прописки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="subekt_2" name="Звернння подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -413,7 +217,7 @@
         <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юрідичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -439,7 +243,7 @@
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
@@ -447,7 +251,7 @@
         <activiti:formProperty id="instructor_license_number" name="№ свідоцтва відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="instructor_license_term" name="Термін дії свідоцтва" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" writable="false">
+   <!-- <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
@@ -539,7 +343,7 @@
         <activiti:formProperty id="first_dangerous_10" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (10 вантажу)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo_10" name="Маса небезпечного вантажу (т.)(10 вантажу)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_previous_10" name="Попередній номер погодження  виданого УДАІ (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
+ -->    <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_adres" name="Адреса страхового товариства" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_from" name="Термін дії страхового полісу або договору з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_till" name="Термін дії страхового полісу або договору по" type="date" writable="false"></activiti:formProperty>
@@ -557,17 +361,23 @@
         <activiti:formProperty id="rishen_number" name="№ погодження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen_date" name="дата погодження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dnepr_cnap_224_4_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_224_4_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_224_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_224_4_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_224_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_4_1_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_1_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport}, ${dopusk},${dopnv},${insurance},${instruction},${pidgotovka},${dodatkovo},${oplata},${sTable1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -576,43 +386,43 @@
           <activiti:string><![CDATA[Нове  звернення. Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний колего!</b><br /><br />
+У черзі на обробку зареєстровано нове звернення.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
+          <activiti:expression><![CDATA[${opis}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо погодження дорожнього перевезення небезпечного вантажу передано на розгляд в Управління Державтоінспекції ГУМВС України в ${shapka} області і буде опрацьовано протягом 5 робочих днів.&lt;/h3&gt;&lt;br /&gt;&lt;br /&gt;
-Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
-До листа додається опис наданих Вами документів.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення щодо погодження дорожнього перевезення небезпечного вантажу передано на розгляд в Управління Державтоінспекції ГУМВС України в ${shapka} області і буде опрацьовано протягом 5 робочих днів.</h3><br /><br />
+Реєстраційний номер заяви: ${reestr_numb};<br />
+До листа додається опис наданих Вами документів.<br />
+<br />
+Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -622,22 +432,22 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо погодження дорожнього перевезення небезпечного вантажу відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-${comment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо погодження дорожнього перевезення небезпечного вантажу відхилено через недостатню або неправильну інформацію.<br />
+${comment_1}<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -647,45 +457,45 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Погодження дорожнього перевезення небезпечного вантажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}",${PrintForm_1},${PrintForm_4}</activiti:expression>
+          <activiti:expression><![CDATA["${rishen}",${PrintForm_1},${PrintForm_4}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дорожнє перевезення небезпечного вантажу enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Номер рішення ${rishen_number} &lt;br /&gt;
-${rishen_date}&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Дві заяви, що знаходяться у додатку до листа (завантажте і роздрукуйте), засвідчені особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Копію свідоцтва про допущення транспортного засобу до перевезення небезпечних вантажів.&lt;br /&gt;
-5. Копію ДОПНВ - свідоцтва про підготовку водіїв транспортних засобів, що перевозять небезпечні вантажі.&lt;br /&gt;
-6. Копію чинного договору обов’язкового страхування відповідальності суб’єктів перевезення небезпечних вантажів на випадок негативних наслідків під час перевезення небезпечних вантажів.&lt;br /&gt;
-7. Письмові інструкції у разі аварії чи надзвичайної ситуації.&lt;br /&gt;
-8. Копію свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.&lt;br /&gt;
-9. У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу.&lt;br /&gt;
-10. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дорожнє перевезення небезпечного вантажу enum{[decision_2]}.<br />  <br />  
+Копія рішення знаходиться у додатку до листа.<br />
+Номер рішення ${rishen_number} <br />
+${rishen_date}<br />
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br /><br />
+При собі треба мати:<br />
+1. Документ, що посвідчує особу.<br />
+2. Для уповоноваженої особи - довіренність.<br />
+3. Дві заяви, що знаходяться у додатку до листа (завантажте і роздрукуйте), засвідчені особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.<br />
+4. Копію свідоцтва про допущення транспортного засобу до перевезення небезпечних вантажів.<br />
+5. Копію ДОПНВ - свідоцтва про підготовку водіїв транспортних засобів, що перевозять небезпечні вантажі.<br />
+6. Копію чинного договору обов’язкового страхування відповідальності суб’єктів перевезення небезпечних вантажів на випадок негативних наслідків під час перевезення небезпечних вантажів.<br />
+7. Письмові інструкції у разі аварії чи надзвичайної ситуації.<br />
+8. Копію свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів.<br />
+9. У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу.<br />
+10. Платіжний документ (квитанція) про оплату вартості послуги.<br /><br />
+${sPhoneOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
- <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
@@ -748,100 +558,95 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="71.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="98.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="149.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="71.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="222.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="71.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="222.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="221.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="223.0" y="-10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="223.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="157.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="119.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="171.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="558.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="222.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="175.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="186.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="488.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="249.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="538.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="538.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="177.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="160.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="296.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="189.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="296.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="249.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="558.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="135.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="45.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="275.0" y="45.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

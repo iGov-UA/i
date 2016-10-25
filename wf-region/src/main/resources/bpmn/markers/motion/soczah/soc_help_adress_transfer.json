@@ -1,0 +1,41 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_sh1" : {
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field" : {
+				"sClient" : "asAdress"
+			}, 
+			"sCondition" : "[sClient] == 'no'"
+		}, 
+		"ShowFieldsOnCondition_sh2" : {
+			"aField_ID" : ["nPostOffice"], 
+			"asID_Field" : {
+				"sClient" : "asTransferType"
+			}, 
+			"sCondition" : "[sClient] == 'post'"
+		}, 
+		"ShowFieldsOnCondition_sh3" : {
+			"aField_ID" : ["sBankName", "mfo", "edrpou", "sBankAccount"], 
+			"asID_Field" : {
+				"sClient" : "asTransferType"
+			}, 
+			"sCondition" : "[sClient] == 'bank'"
+		}, 
+		"ValuesFieldsOnCondition_sh1" : {
+			"aField_ID" : ["sAddressRegistered"], 
+			"asID_Field_sValue" : ["[bankIdAddressFactual]"], 
+			"asID_Field" : {
+				"sClient" : "sID_Public_SubjectOrganJoin"
+			}, 
+			"sCondition" : "[sClient] == '0'"
+		}, 
+		"ValuesFieldsOnCondition_sh2" : {
+			"aField_ID" : ["sAddressFactual"], 
+			"asID_Field_sValue" : ["[sAddressRegistered]"], 
+			"asID_Field" : {
+				"sClient" : "asAdress"
+			}, 
+			"sCondition" : "[sClient] == 'yes'"
+		}
+	}
+}
