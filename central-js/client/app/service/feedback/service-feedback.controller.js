@@ -82,6 +82,14 @@
           return ((typeof o.sBody) === 'string' ? !!o.sBody.trim() : false)
             && !(Array.isArray(filters) && filters[0] ? filters[0].trim() === 'null' : false);
         });
+
+        $scope.feedback.messageList.forEach(function(item){
+          var sMail = item.sMail ? item.sMail.trim().match(/null/gi) : []
+            , sPlace = item.sPlace ? item.sPlace.trim().match(/null/gi) : [];
+
+          item.sMail = Array.isArray(sMail) && sMail[0] ? '' : item.sMail;
+          item.sPlace = Array.isArray(sPlace) && sPlace[0] ? '' : item.sPlace;
+        });
       });
 
       if ($scope.nID && $scope.sID_Token) {

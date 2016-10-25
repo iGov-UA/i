@@ -329,7 +329,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @Override
     public Long getClaimCountHistory(String sID_UA, Long nID_Service, Long nID_StatusType) {
-        LOG.info(String.format("Start get getClaimHistory with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
+        LOG.info(String.format("Start get getClaimCountHistory with parameters nID_StatusType = %s, nID_Service = %s, sID_UA = %s", nID_StatusType, nID_Service, sID_UA));
 
         Long countClaim = 0L;
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);

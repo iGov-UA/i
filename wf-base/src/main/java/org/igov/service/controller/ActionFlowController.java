@@ -988,21 +988,32 @@ public class ActionFlowController {
 			@ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
 			@ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
 	) throws Exception {
+		JSONObject oJSONObjectReturn = new JSONObject();
+		DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
+		DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
+
+		JSONArray oaSlot = null;
+                
+                JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+                for(Object o:oaJSONArray) {
+                    //JSONObject oJSONObject = (JSONObject) o;
+                    String sDate = o.toString();
+                    DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
+                    oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
+                    oJSONObjectReturn.put(oDateTimeFormatter.print(oDateReady), oaSlot);
+                }
+                
+		/*DateTime oDate = DateTime.now();
 		if (nDays > 7) {
 			nDays = 7;
 		}
-		DateTime oDate = DateTime.now();
-		JSONObject result = new JSONObject();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
-
-		JSONArray slots = null;
 		for (int i = 0; i < nDays; i++) {
-			slots = cherg.getFreeTime(oDate, nID_Service_Private);
-			result.put(dateTimeFormatter.print(oDate), slots);
+			oaSlot = cherg.getFreeTime(oDate, nID_Service_Private);
+			oJSONObjectReturn.put(oDateTimeFormatter.print(oDate), oaSlot);
 			oDate = oDate.plusDays(1);
-		}
+		}*/
 
-		return result.toString();
+		return oJSONObjectReturn.toString();
 	}
 
 	@ApiOperation(value = "Получение календаря рабочих дней органазиции по заданной услуге на ближайшие 15 дней, включая текущий", notes = "##### Пример:\n"

@@ -44,8 +44,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,12 +59,11 @@ import static org.igov.util.Tool.sTextTranslit;
 /**
  * @author BW
  */
-
 @Controller
-@Api(tags = { "ObjectFileCommonController -- Обьекты файлов общие" })
+@Api(tags = {"ObjectFileCommonController -- Обьекты файлов общие"})
 @RequestMapping(value = "/object/file")
 public class ObjectFileCommonController {
-    
+
     public static final String PATTERN_DEFAULT_CONTENT_TYPE = "text/plain";
     private static final Logger LOG = LoggerFactory.getLogger(ObjectFileCommonController.class);
     @Autowired
@@ -92,8 +92,7 @@ public class ObjectFileCommonController {
     @ApiOperation(value = "PutAttachmentsToRedis", notes = "#####  Укладываем в редис multipartFileToByteArray\n")
     @RequestMapping(value = "/upload_file_to_redis", method = RequestMethod.POST)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     String putAttachmentsToRedis(
             @RequestParam(required = true, value = "file") MultipartFile file)
             throws FileServiceIOException {
@@ -113,8 +112,7 @@ public class ObjectFileCommonController {
     @ApiOperation(value = "GetAttachmentsFromRedis", notes = "#####  ObjectFileCommonController: описания нет\n")
     @RequestMapping(value = "/download_file_from_redis", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     byte[] getAttachmentsFromRedis(
             @RequestParam("key") String key) throws FileServiceIOException {
         byte[] upload = null;
@@ -131,8 +129,7 @@ public class ObjectFileCommonController {
     @ApiOperation(value = "GetAttachmentsFromRedisBytes", notes = "#####  ObjectFileCommonController: описания нет\n")
     @RequestMapping(value = "/download_file_from_redis_bytes", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     byte[] getAttachmentsFromRedisBytes(
             @RequestParam("key") String key) throws FileServiceIOException {
         byte[] upload = null;
@@ -221,8 +218,7 @@ public class ObjectFileCommonController {
             + "\n```\n")
     @RequestMapping(value = "/check_file_from_redis_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     String checkAttachmentsFromRedisSign(
             @ApiParam(value = "строка-ключ по которому можно получить файл из хранилища Redis", required = true) @RequestParam("sID_File_Redis") String sID_File_Redis)
             throws FileServiceIOException {
@@ -235,7 +231,7 @@ public class ObjectFileCommonController {
             if (aByteFile == null) {
                 throw new ActivitiObjectNotFoundException(
                         "File with sID_File_Redis '" + sID_File_Redis
-                                + "' not found.");
+                        + "' not found.");
             }
             try {
                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
@@ -272,8 +268,7 @@ public class ObjectFileCommonController {
             + "https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
     @RequestMapping(value = "/download_file_from_db", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     byte[] getAttachmentFromDb(
             @ApiParam(value = "строка-ИД задачи", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "строка-ID прикрепленного файла", required = false) @RequestParam(required = false, value = "attachmentId") String attachmentId,
@@ -299,76 +294,75 @@ public class ObjectFileCommonController {
         String type = attachmentRequested.getType();
 
         String id = attachmentRequested.getId();
-		InputStream attachmentStream = taskService
-		        .getAttachmentContent(id);
-		if (attachmentStream == null) {
-		    throw new ActivitiObjectNotFoundException("Attachment with ID '"
-		            + id + "' doesn't have content associated with it.",
-		            Attachment.class);
-		}
-		
-		
-		int nTo = sFileName.lastIndexOf(".");
-		if (nTo >= 0) {
-		    sFileName = "attach_" + id + "."
-		            + sFileName.substring(nTo + 1);
-		}
-		
-		// Вычитывем из потока массив байтов контента и помещаем параметры
-		// контента в header
-		VariableMultipartFile multipartFile = new VariableMultipartFile(
-		        attachmentStream, description,
-		        sFileName, type);
-		httpResponse.setHeader("Content-disposition", "attachment; filename="
-		        + sFileName);
-		httpResponse.setHeader("Content-Type", "application/octet-stream");
-		
-		httpResponse.setContentLength(multipartFile.getBytes().length);
-		
-		return multipartFile.getBytes();
+        InputStream attachmentStream = taskService
+                .getAttachmentContent(id);
+        if (attachmentStream == null) {
+            throw new ActivitiObjectNotFoundException("Attachment with ID '"
+                    + id + "' doesn't have content associated with it.",
+                    Attachment.class);
+        }
+
+        if (sFileName != null && !sFileName.toLowerCase().endsWith(".xml")) {
+            int nTo = sFileName.lastIndexOf(".");
+            if (nTo >= 0) {
+                sFileName = "attach_" + id + "."
+                        + sFileName.substring(nTo + 1);
+            }
+        }
+
+        // Вычитывем из потока массив байтов контента и помещаем параметры
+        // контента в header
+        VariableMultipartFile multipartFile = new VariableMultipartFile(
+                attachmentStream, description,
+                sFileName, type);
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + sFileName);
+        httpResponse.setHeader("Content-Type", "application/octet-stream");
+
+        httpResponse.setContentLength(multipartFile.getBytes().length);
+
+        return multipartFile.getBytes();
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
             + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
     @RequestMapping(value = "/download_file_from_storage_static", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     byte[] getAttachmentByID(
-    		@ApiParam(value = "sId", required = true) @RequestParam(required = true, value = "sId") String nId,
+            @ApiParam(value = "sId", required = true) @RequestParam(required = true, value = "sId") String nId,
             @ApiParam(value = "sFileName", required = true) @RequestParam(value = "sFileName") String sFileName,
             @ApiParam(value = "sType", required = true) @RequestParam(value = "sType") String sType,
             HttpServletResponse httpResponse) throws IOException {
-		InputStream attachmentStream = ((org.igov.service.conf.TaskServiceImpl)taskService)
-		        .getAttachmentContentByMongoID(nId);
-		if (attachmentStream == null) {
-		    throw new ActivitiObjectNotFoundException("Attachment with ID '"
-		            + nId + "' doesn't have content associated with it.",
-		            Attachment.class);
-		}
-		
-		
-		int nTo = sFileName.lastIndexOf(".");
-		if (nTo >= 0) {
-		    sFileName = "attach_" + nId + "."
-		            + sFileName.substring(nTo + 1);
-		}
-		
-		// Вычитывем из потока массив байтов контента и помещаем параметры
-		// контента в header
-		VariableMultipartFile multipartFile = new VariableMultipartFile(
-		        attachmentStream, sFileName,
-		        sFileName, sType);
-		httpResponse.setHeader("Content-disposition", "attachment; filename="
-		        + sFileName);
-		httpResponse.setHeader("Content-Type", "application/octet-stream");
-		
-		httpResponse.setContentLength(multipartFile.getBytes().length);
-		
-		return multipartFile.getBytes();
+        InputStream attachmentStream = ((org.igov.service.conf.TaskServiceImpl) taskService)
+                .getAttachmentContentByMongoID(nId);
+        if (attachmentStream == null) {
+            throw new ActivitiObjectNotFoundException("Attachment with ID '"
+                    + nId + "' doesn't have content associated with it.",
+                    Attachment.class);
+        }
+
+        int nTo = sFileName.lastIndexOf(".");
+        if (nTo >= 0) {
+            sFileName = "attach_" + nId + "."
+                    + sFileName.substring(nTo + 1);
+        }
+
+        // Вычитывем из потока массив байтов контента и помещаем параметры
+        // контента в header
+        VariableMultipartFile multipartFile = new VariableMultipartFile(
+                attachmentStream, sFileName,
+                sFileName, sType);
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + sFileName);
+        httpResponse.setHeader("Content-Type", "application/octet-stream");
+
+        httpResponse.setContentLength(multipartFile.getBytes().length);
+
+        return multipartFile.getBytes();
     }
-    
-	@ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "##### Примеры:\n"
+
+    @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "##### Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
             + "Ответ:\n"
             + "\n```json\n"
@@ -428,8 +422,7 @@ public class ObjectFileCommonController {
             + "\n```\n")
     @RequestMapping(value = "/check_attachment_sign", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     String checkAttachSign(
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "nID_Task") String taskId,
             @ApiParam(value = "строка-ИД атачмента приложеного к таске", required = true) @RequestParam(value = "nID_Attach") String attachmentId)
@@ -477,8 +470,7 @@ public class ObjectFileCommonController {
     @ApiOperation(value = "Сервис для получения Attachment из execution", notes = "")
     @RequestMapping(value = "/download_file_from_db_execution", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     byte[] getAttachmentFromDbExecution(
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam("taskId") String taskId,
             HttpServletResponse httpResponse) throws IOException {
@@ -520,9 +512,9 @@ public class ObjectFileCommonController {
                 .getByteToStringContent());
     }
 
-    @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes =
-            "#####  Примеры: \n"
-                    + "http://test.igov.org.ua/wf/service/object/file/upload_file_as_attachment?taskId=68&description=ololo\n"
+    @ApiOperation(value = "Аплоад(upload) и прикрепление файла в виде атачмента к таске Activiti", notes
+            = "#####  Примеры: \n"
+            + "http://test.igov.org.ua/wf/service/object/file/upload_file_as_attachment?taskId=68&description=ololo\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -544,8 +536,7 @@ public class ObjectFileCommonController {
             + "\n```\n")
     @RequestMapping(value = "/upload_file_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     AttachmentEntityI putAttachmentsToExecution(//ResponseEntity
             @ApiParam(value = "ИД-номер таски", required = true) @RequestParam(value = "taskId") String taskId,
             @ApiParam(value = "файл html. в html это имя элемента input типа file - <input name=\"file\" type=\"file\" />. в HTTP заголовках - Content-Disposition: form-data; name=\"file\" ...", required = true) @RequestParam("file") MultipartFile file,
@@ -586,9 +577,9 @@ public class ObjectFileCommonController {
         return oAttachmentCover.apply(oAttachment);
     }
 
-    @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes =
-            "#####Пример: "
-                    + "http://localhost:8080/wf/service/object/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n"
+    @ApiOperation(value = "Аплоад(upload) и прикрепление текстового файла в виде атачмента к таске Activiti", notes
+            = "#####Пример: "
+            + "http://localhost:8080/wf/service/object/file/upload_content_as_attachment?nTaskId=24&sDescription=someText&sFileName=FlyWithMe.html\n"
             + "\n```json\n"
             + "Ответ без ошибок:\n"
             + "{\n"
@@ -610,8 +601,7 @@ public class ObjectFileCommonController {
             + "\n```\n")
     @RequestMapping(value = "/upload_content_as_attachment", method = RequestMethod.POST, produces = "application/json")
     @Transactional
-    public
-    @ResponseBody
+    public @ResponseBody
     AttachmentEntityI putTextAttachmentsToExecution(
             @ApiParam(value = "строка-Логин пользователя", required = true) @RequestParam(value = "nTaskId") String taskId,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
@@ -644,7 +634,7 @@ public class ObjectFileCommonController {
         LOG.debug("description: {}", description);
 
         Attachment attachment = taskService.createAttachment(sContentType + ";"
-                        + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
+                + oActionTaskService.getFileExtention(sFileName), taskId, processInstanceId,
                 sFilename, description,
                 new ByteArrayInputStream(sData.getBytes(Charsets.UTF_8)));
 
@@ -653,8 +643,8 @@ public class ObjectFileCommonController {
         return oAttachmentCover.apply(attachment);
     }
 
-    @ApiOperation(value = "Работа с файлами-шаблонами", notes =
-            "#####  возвращает содержимое указанного файла с указанным типом контента (если он задан).\n"
+    @ApiOperation(value = "Работа с файлами-шаблонами", notes
+            = "#####  возвращает содержимое указанного файла с указанным типом контента (если он задан).\n"
             + "Если указанный путь неверен и файл не найден -- вернется соответствующая ошибка.\n\n"
             + "Примеры:\n\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/getPatternFile?sPathFile=print//subsidy_zayava.html\n\n"
@@ -688,15 +678,15 @@ public class ObjectFileCommonController {
         }
     }
 
-    @ApiOperation(value = "moveAttachsToMongo", notes =
-            "#####  ObjectFileCommonController: Перенос атачментов задач активити в mongo DB  \n"
-                    + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
-                    + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
-                    + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
-    	    + "nStartFrom - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
-    	    + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFrom. \n"
-    	    + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
-    	    + "nProcessId - обрабатывать задачу с заданным айдишником\n"
+    @ApiOperation(value = "moveAttachsToMongo", notes
+            = "#####  ObjectFileCommonController: Перенос атачментов задач активити в mongo DB  \n"
+            + "пробегается по всем активным задачам и переносит их атачменты в mongo DB (если они еще не там) \n"
+            + "и в самом объекте атачмента меняет айдишники атачментов на новые\n"
+            + "Метод содержит необязательные параметры, которые определяют какие задачи обрабатывать\n"
+            + "nStartFrom - порядковый номер задачи в списке всех задач, с которого начинать обработку\n"
+            + "nChunkSize - количество задач, которые обрабатывать начиная или с первой или со значения nStartFrom. \n"
+            + "Задачи выюираются по 10 из базы, поэтому лучше делать значени nChunkSize кратным 10\n"
+            + "nProcessId - обрабатывать задачу с заданным айдишником\n"
             + "Примеры:\n\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/moveAttachsToMongo\n"
             + "Перенести все атачменты задач в Монго ДБ\n\n"
@@ -706,15 +696,14 @@ public class ObjectFileCommonController {
             + "Перенести аттачменты процесса с 0 по 10 в монго")
     @RequestMapping(value = "/moveAttachsToMongo", method = RequestMethod.GET)
     @Transactional
-    public
-    @ResponseBody
-    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер процесса с которого начинать обработку аттачментов", required = false) 
-    	@RequestParam(value = "nStartFrom", required = false) String nStartFrom,
+    public @ResponseBody
+    String moveAttachsToMongo(@ApiParam(value = "Порядковый номер процесса с которого начинать обработку аттачментов", required = false)
+            @RequestParam(value = "nStartFrom", required = false) String nStartFrom,
             @ApiParam(value = "строка-размер блока для выборки процесса на обработку", required = false) @RequestParam(value = "nChunkSize", required = false) String nChunkSize,
             @ApiParam(value = "строка-ИД конкретного процесса", required = false) @RequestParam(value = "nProcessId", required = false) String nProcessId) {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
-    
+
     @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
     @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
@@ -722,7 +711,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
             @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
-        
+
         Map<String, String> result = new HashMap<>();
         LOG.info("data: " + data);
         File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
@@ -731,14 +720,56 @@ public class ObjectFileCommonController {
         String regex, replacement;
         for (Map.Entry<String, String> entry : data.entrySet()) {
             regex = "<" + entry.getKey().trim().toUpperCase() + ">";
-            //replacement = regex + URLEncoder.encode(entry.getValue(), "UTF-8"); //<![CDATA[текст]]>
             replacement = regex + entry.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
                     .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
-            //declarContent = declarContent.replaceAll(regex, replacement);
+            declarContent = declarContent.replaceAll(regex, replacement);
         }
+        declarContent = fillDateToday(declarContent);
+        LOG.info("declarContent: " + declarContent);
         result.put("soPatternFilled", declarContent.replaceAll(System.getProperty("line.separator"), ""));
-        result.put("sFileName", "23013194700944F1301801100000000151220152301.xml");
+        result.put("sFileName", buildFileName(data));
         return result;
     }
-    
+
+    //C_REG(2) + C_RAJ(2)+ TIN(10) + C_DOC(3) + C_DOC_SUB(3) + C_DOC_VER(2) + C_DOC_STAN(1) + C_DOC_TYPE(2, для нового 00) + C_DOC_CNT(7, 0000001) + 
+    //+ PERIOD_TYPE(1, 1 - місяць, 2 - квартал, 3 - півріччя, 4 - дев’ять місяців, 5 - рік) 
+    //+ PERIOD_MONTH(2) + PERIOD_YEAR(4)
+    //+ C_STI_ORIG(4, містять код територіального органу отримувача, до якого подається оригінал документа. если оригинал, то = C_REG(2) + C_RAJ(2))
+    private String buildFileName(Map<String, String> data) {
+        String result = "23013194700944F1301801100000000111220152301.xml"; //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
+        try {
+            result = new StringBuilder(data.get("C_REG").trim())
+                    .append(data.get("C_RAJ").trim())
+                    .append(data.get("TIN").trim())
+                    .append(data.get("C_DOC").trim())
+                    .append(data.get("C_DOC_SUB").trim())
+                    .append(data.get("C_DOC_VER").trim())
+                    .append(data.get("C_DOC_STAN").trim())
+                    .append(data.get("C_DOC_TYPE").trim())
+                    .append(data.get("C_DOC_CNT").trim())
+                    .append(data.get("PERIOD_TYPE").trim())
+                    .append(data.get("PERIOD_MONTH").trim())
+                    .append(data.get("PERIOD_YEAR").trim())
+                    .append(data.get("C_STI_ORIG").trim()).append(".xml").toString();
+        } catch (Exception ex) {
+            LOG.error("buildFileName error: ", ex);
+        }
+        LOG.info("buildFileName result: " + result);
+        return result;
+    }
+
+    private String fillDateToday(String declarContent) {
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+        Date today = new Date();
+        String sDateToday = sdf.format(today).trim();
+        String regex = "<D_FILL>";
+        String replacement = regex + sDateToday;
+        declarContent = declarContent.replaceAll(regex, replacement);
+        regex = "<HFILL>";
+        replacement = regex + sDateToday;
+        declarContent = declarContent.replaceAll(regex, replacement);
+        return declarContent;
+        //D_FILL=HFILL=01012016
+    }
+
 }
