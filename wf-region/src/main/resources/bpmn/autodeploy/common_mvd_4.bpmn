@@ -275,7 +275,7 @@ ${sNameOrgan}&lt;br/&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" name="${asDecisionMain == 'acceptMain'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain == 'acceptMain'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення громадянина про успішне подання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -357,7 +357,7 @@ ${sNameOrgan}&lt;br/&gt;
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow18" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow19" name="${asDecisionMain == 'rejectMain'}" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject' || decide == 'reject2'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain == 'rejectMain'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
   </process>
