@@ -210,6 +210,52 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    
+    <serviceTask id="servicetask10" name="Повідомлення громадянина про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Призначення державної допомоги у зв'язку з вагітністю та пологами.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
+				щодо призначення державної допомоги у зв'язку з вагітністю та пологами.
+			</p>
+			<p>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+			</p><br>
+			<br>
+			Якщо у Вас э якісь додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]>
+		  </activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow44" sourceRef="servicetask10" targetRef="usertask1"></sequenceFlow>    
+    
     <serviceTask id="servicetask6" name="повідомлення громадянина про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -494,50 +540,6 @@
     <sequenceFlow id="flow42" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <serviceTask id="servicetask10" name="Повідомлення громадянина про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Призначення державної допомоги у зв'язку з вагітністю та пологами.]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, 
-				щодо призначення державної допомоги у зв'язку з вагітністю та пологами.
-			</p>
-			<p>
-				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
-			</p><br>
-			<br>
-			Якщо у Вас э якісь додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br>
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow44" sourceRef="servicetask10" targetRef="usertask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Громадянин</text>
     </textAnnotation>
