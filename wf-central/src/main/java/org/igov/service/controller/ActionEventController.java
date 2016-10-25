@@ -730,8 +730,9 @@ public class ActionEventController {
                             if (sDateClose != null)
                             {
                                 oHistoryEvent_Service.setsDateClose(sDateClose);
-                                historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+                                //oHistoryEvent_Service.setnID_StatusType();
                             }
+                            historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                         }
                     }
                     
