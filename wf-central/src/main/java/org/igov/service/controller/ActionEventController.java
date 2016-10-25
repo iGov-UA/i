@@ -583,7 +583,7 @@ public class ActionEventController {
             + "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
             + "\n```\n")
  @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
-    public void getServiceHistoryReport(
+   public void getServiceHistoryReport(
             @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
             @ApiParam(value = "строка, указывающая на тип даты, по которой идет выгрузка данных", required = false) @RequestParam(value = "sID_FilterDateType", required = false, defaultValue = "Edit") String sID_FilterDateType,
@@ -640,25 +640,21 @@ public class ActionEventController {
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
-                    LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service); 
-//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-                    String sID_Order = historyEventServiceDao.findAll().get(0).getsID_Order();
-                    LOG.info("sID_Order: "+sID_Order); 
-                    List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findByOrder(sID_Order);
-                    LOG.info("!!!aSubjectMessage: " + aSubjectMessage);
-                    LOG.info("!!!Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
-//                Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
-                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessage) {
-                    /*if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
+                LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
+                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                //List<SubjectMessage> aSubjectMessage = subjectMessageFeedbackDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
+                Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
+                for (SubjectMessage oSubjectMessage : aSubjectMessage) {
+                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
                         mSubjectMessage.put(oSubjectMessage.getnID_HistoryEvent_Service(), oSubjectMessage);
-                    }*/
-//                }
+                    }
+                }
 
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     List<String> asCell = new LinkedList<>();
-                    LOG.info("!!!asCellSize " + asCell.size());
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : ""); 
+                    asCell.add(oHistoryEvent_Service.getsID_Order());
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
@@ -670,12 +666,11 @@ public class ActionEventController {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     String sTextFeedback = "";
-//                    if (oSubjectMessageFeedback.getoSubjectMessage().) != null) {
-                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        LOG.info("sTextFeedback " + sTextFeedback);
-//                    } else {
+                    if (mSubjectMessage.get(oHistoryEvent_Service.getId()) != null) {
+                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
+                    } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
-//                    }
+                    }
                     // sTextFeedback
                     asCell.add(sTextFeedback);
                     // sUserTaskName
@@ -686,22 +681,23 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getsBody());
                     // nTimeMinutes
                     asCell.add(oHistoryEvent_Service.getnTimeMinutes() != null ? oHistoryEvent_Service.getnTimeMinutes().toString() : "");
-
                     
+                    Integer nID_Server = oHistoryEvent_Service.getnID_Server();
+                    nID_Server = nID_Server == null ? 0 : nID_Server;
+
+                    nID_Server = generalConfig.getServerId(nID_Server);
+                    Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+                    if (!oOptionalServer.isPresent()) {
+                        throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+                    }
+                    Server oServer = oOptionalServer.get();
+                    String sHost = oServer.getsURL();
+ 
                     String sPhone = "";
+                    String sURL = "";
                     
                     if(bIncludeTaskInfo){
-                        Integer nID_Server = oHistoryEvent_Service.getnID_Server();
-                        nID_Server = nID_Server == null ? 0 : nID_Server;
-
-                        nID_Server = generalConfig.getServerId(nID_Server);
-                        Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-                        if (!oOptionalServer.isPresent()) {
-                            throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
-                        }
-                        Server oServer = oOptionalServer.get();
-                        String sHost = oServer.getsURL();
-                        String sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
+                        sURL = sHost + "/service/action/task/getProcessVariableValue?nID_Process=" + oHistoryEvent_Service.getnID_Task() + "&sVariableName=phone";
                         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
@@ -712,32 +708,36 @@ public class ActionEventController {
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                       
-                    //asCell.add("test_DateCreate");
-                    //asCell.add("test_DateClose");
                     
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order() 
+                            + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
+                    
+                    String sDateTimeCreate = "";
+                    
+                    try{
+                        
+                        ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                        JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                        //oJSONObject = (JSONObject) new JSONParser().parse((String) oJSONObject.get("oProcess"));
+                        //sDateTimeCreate = oJSONObject.get("sDateCreate") != null ? oJSONObject.get("sDateCreate").toString() : "";
+                        sDateTimeCreate = oJSONObject.get("sDateTimeCreate") != null ? oJSONObject.get("sDateTimeCreate").toString() : "";
+                    }
+                    catch (Exception e)
+                    {
+                        //Если заявка не найдена - тут можно проставлять статус
+                    }
+                                                           
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : sDateTimeCreate);
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : sDateTimeCreate);
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
-                
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
             }
             oCSVWriter.close();
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
         }
-    }
+}
     
 
     @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
