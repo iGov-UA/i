@@ -994,7 +994,7 @@ public class ActionFlowController {
 
 		JSONArray oaSlot = null;
                 
-                JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+                JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private, false);
                 for(Object o:oaJSONArray) {
                     //JSONObject oJSONObject = (JSONObject) o;
                     String sDate = o.toString();
@@ -1030,9 +1030,10 @@ public class ActionFlowController {
 	public
 	@ResponseBody
 	String getSlotFreeDays(	@ApiParam(value = "ID сервиса", required = true)  
-				@RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
+				@RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
+				@RequestParam(value = "bAll", required = false, defaultValue = "false" ) boolean bAll
 	) throws Exception  {
-            return cherg.getSlotFreeDays(nID_Service_Private);
+            return cherg.getSlotFreeDays(nID_Service_Private, bAll);
 	}
 
 	

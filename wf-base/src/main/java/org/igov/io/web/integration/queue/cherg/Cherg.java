@@ -112,7 +112,7 @@ public class Cherg {
 
     }
 
-    public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
+    public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private, boolean bAll) throws Exception {
         if (nID_Service_Private == null) {
             LOG.error("service_id=={}", nID_Service_Private);
             throw new IllegalArgumentException("nID_Service_Private is null");
@@ -157,15 +157,19 @@ public class Cherg {
             JSONObject oJSONObject = (JSONObject) o;
             String sDate = oJSONObject.get("date").toString();
             String snDateType = oJSONObject.get("work_day").toString();
-            if ( snDateType.equals("1")) {
+            if ( bAll ) {
         	oaJSONArrayReturn.add(sDate);
+            } else {
+        	if ( snDateType.equals("1")) {
+        	    oaJSONArrayReturn.add(sDate);
+        	}
             }
         }
         return oaJSONArrayReturn;
     }
     
-    public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
-        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+    public String getSlotFreeDays(Integer nID_Service_Private, boolean bAll) throws Exception {
+        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private, bAll);
                 
 	JSONObject oJSONObjectReturn = new JSONObject();
 	oJSONObjectReturn.put("aDate", oaJSONArray);
