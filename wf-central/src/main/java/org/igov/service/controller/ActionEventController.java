@@ -720,6 +720,7 @@ public class ActionEventController {
                         ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
                         JSONObject opJSONObject = (JSONObject) oJSONObject.get("oProcess");
+                        
                         sDateCreate = (DateTime) opJSONObject.get("sDateCreate");
                         sDateClose = (DateTime) opJSONObject.get("sDateClose");
                         
@@ -729,6 +730,7 @@ public class ActionEventController {
                             if (sDateClose != null)
                             {
                                 oHistoryEvent_Service.setsDateClose(sDateClose);
+                                historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
                             }
                         }
                     }
