@@ -11,7 +11,8 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Місце реєстрації; Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWarning1" name="Зверніть увагу" type="label" default="За довідкою може звернутись лише особа, яка зареєстрована за цією адерсою!"></activiti:formProperty>
-        <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true">
+        <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true" default="sNo">
+          <activiti:value id="sNo" name=" "></activiti:value>
           <activiti:value id="sAND" name="АНД"></activiti:value>
           <activiti:value id="sIndust" name="Індустріальний"></activiti:value>
           <activiti:value id="sSamar" name="Самарський"></activiti:value>
@@ -87,31 +88,34 @@ var adres = '';
 var workTime = '';
 var type = '';
 switch (distr){
-case (sAND):
+case 'sAND':
 type = and;
 break;
-case (sIndust):
+case 'sIndust':
 type = indust;
 break;
-case (sSamar):
-adres = 'вул. А.Барто, 19';
+case 'sSamar':
+adres = "вул. А.Барто, 19";
 workTime = "понеділок, четвер з 15:00 до 18:00&lt;br&gt; вівторок, п'ятниця з 8:00 до 12:00";
 break;
-case (sSobor):
-adres = 'пр. Героїв, 20';
+case 'sSobor':
+adres = "пр. Героїв, 20";
 workTime = "понеділок, вівторок, четвер з 8:00 до 17:00&lt;br&gt; п'ятниця з 8:00 до 15:45";
 break;
-case (sCentr):
-adres = 'пр. Поля (пр. Кірова), 22';
+case 'sCentr':
+adres = "пр. Поля (пр. Кірова), 22";
 workTime = "понеділок, вівторок, четвер з 8:00 до 17:00&lt;br&gt;вівторок, п'ятниця з 8:00 до 15:45";
 break;
-case (sChech):
+case 'sChech':
 type = сhech;
 break;
-case (sShev):
+case 'sShev':
 type = shev;
 break;
-if (distr == 'sAND')
+default:
+    alert('Странный результат, очень странный');
+    break;
+}
 execution.setVariable('sAddress', adres);
 execution.setVariable('sWorkDay', workTime);
 </script>
