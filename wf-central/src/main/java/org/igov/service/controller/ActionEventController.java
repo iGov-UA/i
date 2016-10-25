@@ -724,14 +724,14 @@ public class ActionEventController {
                         sDateCreate = (DateTime) opJSONObject.get("sDateCreate");
                         sDateClose = (DateTime) opJSONObject.get("sDateClose");
                         
-                        if (sDateCreate != null)
-                        {
+                        if (sDateCreate != null){
                             oHistoryEvent_Service.setsDateCreate(sDateCreate);
                             
-                            if (sDateClose != null)
-                            {
+                            if (sDateClose != null){
+                                if (oHistoryEvent_Service.getnID_StatusType() != 8L){
+                                    oHistoryEvent_Service.setnID_StatusType(8L);
+                                }
                                 oHistoryEvent_Service.setsDateClose(sDateClose);
-                                //oHistoryEvent_Service.setnID_StatusType();
                             }
                             
                             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);//.updateHistoryEvent_Service(oHistoryEvent_Service);
