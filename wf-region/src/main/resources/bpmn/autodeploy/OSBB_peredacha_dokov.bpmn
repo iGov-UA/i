@@ -3,6 +3,7 @@
   <process id="OSBB_peredacha_dokov" name="ОСББ - передача документів від попереднього балансоутримувача об'єднанню співвласників" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sTextDe_Pracue" name="Увага!" type="label" default="Послуга працює у всіх районах Дніпра крім Індустріального"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний вам КЖЕП" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpouOSBB" name="Номер ЄДРПОУ" type="string" required="true"></activiti:formProperty>
@@ -23,6 +24,7 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMyPhone" name="Телефон контролю" type="invisible" default="+380993527640"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Передача документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="передачі документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
       </extensionElements>
@@ -96,7 +98,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -106,7 +108,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -200,7 +202,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="accept2" name="Документи передано"></activiti:value>
           <activiti:value id="reject2" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -249,17 +251,48 @@ ${sNameOrgan}.&lt;br /&gt;
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow14" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Контроль" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sNameOrgan}, Контроль Передача Документів</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Подана заявка від ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
+Подано в ${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${sMyPhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Kontrol OSBB nove zvernennya [sID_Order]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask3" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_OSBB_peredacha_dokov">
     <bpmndi:BPMNPlane bpmnElement="OSBB_peredacha_dokov" id="BPMNPlane_OSBB_peredacha_dokov">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="68.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="210.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="294.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="294.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="60.0"></omgdc:Bounds>
@@ -294,12 +327,15 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="291.0" y="223.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="155.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="315.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
@@ -307,7 +343,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="510.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="562.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="118.0"></omgdi:waypoint>
         <omgdi:waypoint x="562.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
@@ -318,7 +354,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="542.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="455.0" y="240.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="455.0" y="213.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="455.0" y="213.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -359,8 +395,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="326.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="309.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="309.0" y="134.0"></omgdi:waypoint>
         <omgdi:waypoint x="308.0" y="223.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="615.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
