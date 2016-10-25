@@ -289,11 +289,24 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="issue-1405-DocumentStep" author="taaraora" >
-        <validCheckSum>7:9df0323d9372f539cb7e89a111c141f9</validCheckSum>
+    <changeSet id="issue-1405-DocumentStep-drop" author="taaraora">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="DocumentStepSubjectRightField"/>
+            </and>
+            <and>
+                <tableExists tableName="DocumentStepSubjectRight"/>
+            </and>
+            <and>
+                <tableExists tableName="DocumentStep"/>
+            </and>
+        </preConditions>
         <dropTable tableName="DocumentStepSubjectRightField" cascadeConstraints="true"></dropTable>
         <dropTable tableName="DocumentStepSubjectRight" cascadeConstraints="true"></dropTable>
         <dropTable tableName="DocumentStep" cascadeConstraints="true"></dropTable>
+    </changeSet>
+    <changeSet id="issue-1405-DocumentStep" author="taaraora">
+        <validCheckSum>7:02a56943d9b0eb178ebf572db650f66a</validCheckSum>
         <createTable tableName="DocumentStep">
             <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
                 <constraints primaryKey="true" nullable="false"/>
