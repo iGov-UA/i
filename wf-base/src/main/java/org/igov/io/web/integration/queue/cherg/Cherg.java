@@ -149,7 +149,7 @@ public class Cherg {
             //oaJSONArray = new JSONArray();
         }else{
             oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
-            LOG.debug("Workdays all days:{}", oaJSONArray);
+            LOG.info("Workdays all days:{}", oaJSONArray);
         }
 
         JSONArray oaJSONArrayReturn = new JSONArray();
@@ -175,35 +175,6 @@ public class Cherg {
 
     }
 
-    public static void main(String[] args) {
-	try {
-	    JSONParser parser = new JSONParser();
-	    JSONObject result;
-	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
-	    JSONArray dates = (JSONArray) result.get("data");
-
-	    JSONArray retJSONArray = new JSONArray();
-	    for(Object o:dates) {
-		JSONObject jo = (JSONObject) o;
-		String date = jo.get("date").toString();
-		String work_day = jo.get("work_day").toString();
-		
-		if ( work_day.equals("1")) {
-		    retJSONArray.add(date);
-		    System.out.println(date +" " +work_day);
-		}
-	    }
-	    JSONObject retJSON = new JSONObject();
-	    retJSON.put("aDate", retJSONArray);
-	    
-	    System.out.println(retJSON.toString());
-	    
-	    
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
-    
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
 
