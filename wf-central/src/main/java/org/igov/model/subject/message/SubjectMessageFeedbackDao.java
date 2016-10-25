@@ -12,6 +12,8 @@ public interface SubjectMessageFeedbackDao extends EntityDao<Long, SubjectMessag
 
     List<SubjectMessageFeedback> getAllSubjectMessageFeedbackBynID_Service(Long nID_service);
 
+    List<SubjectMessageFeedback> getAllSubjectMessageFeedback_Filtered(Long nID_service, Long nID__LessThen_Filter, Integer nRowsMax);
+    
     SubjectMessageFeedback update(SubjectMessageFeedback subjectMessageFeedback);
     
     String setsID_Order(String sID_Order); 

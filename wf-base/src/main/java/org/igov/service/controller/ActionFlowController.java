@@ -1016,20 +1016,12 @@ public class ActionFlowController {
 		return oJSONObjectReturn.toString();
 	}
 
-	@ApiOperation(value = "Получение календаря рабочих дней органазиции по заданной услуге на ближайшие 15 дней, включая текущий", notes = "##### Пример:\n"
-		+ "https://alpha.test.region.igov.org.ua/wf/service/action/flow/DMS/getSlotFreeDays?nID_Service_Private=428\n\n"
-		+ "Ответ:\n"
-		+ "\n```json\n"
-		+ "{\n"
-		+ "  \"aDate\": [\"2016-10-21\", \"2016-10-24\", \"2016-10-25\", \"2016-10-26\", \"2016-10-27\", \"2016-10-28\", \"2016-10-31\", \"2016-11-01\", \"2016-11-02\", \"2016-11-03\", \"2016-11-04\"]\n"
-		+ "}\n"		
-		+ "\n```\n"
-		+ "\nПримечание: в случае если день рабочий, но все временные слоты заняты, то день не возвращается"
-		)
-        @RequestMapping(value = "/DMS/getSlotFreeDays", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	@ApiOperation(value = "Получение календаря рабочих дней оргиназиции по заданной услуге на ближайшие 15 дней, включая текущий", notes = "##### Пример:\n"
+		+ "https://alpha.test.region.igov.org.ua/wf/service/action/flow/DMS/getSlotFreeDays?nID_Service_Private=428\n\n")
+        @RequestMapping(value = "/DMS/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public
 	@ResponseBody
-	String getSlotFreeDays(	@ApiParam(value = "ID сервиса", required = true)  
+	String getSlotFreeDays(	@ApiParam(value = "ID сервиса", required = true) 
 				@RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
 	) throws Exception  {
             return cherg.getSlotFreeDays(nID_Service_Private);

@@ -653,8 +653,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
             FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
         if($scope.data.formData.params[property.id] instanceof SignFactory){
-          $scope.sign.checked = b;
           $scope.isSignNeededRequired = b;
+          if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
+            $scope.sign.checked = b;
+          }
         }
         return b;
       };

@@ -53,7 +53,9 @@ import java.util.Map;
 import org.igov.io.fs.FileSystemData;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.io.web.HttpRequester;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.service.controller.interceptor.ActionProcessCountUtils;
 import static org.igov.util.Tool.sTextTranslit;
 
 /**
@@ -83,6 +85,9 @@ public class ObjectFileCommonController {
     //@Autowired
     //private BankIDConfig bankIDConfig;
 
+    @Autowired
+    HttpRequester httpRequester;
+    
     @Autowired
     private ActionTaskService oActionTaskService;
 
@@ -704,53 +709,109 @@ public class ObjectFileCommonController {
         return oObjectFileService.moveAttachsToMongo(nStartFrom, nChunkSize, nProcessId);
     }
 
-    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Контроллер сохранения заполненного шаблона в базу\n")
+    @ApiOperation(value = "/dfs/getPatternFilled", notes = "##### Заполнение указанного шаблона(по его ИД ищется файл в подпапке проекта) указанными параметрами, и его отдача.\n<br>"
+            + "Пример запроса: https://alpha.test.region.igov.org.ua/wf/service/object/file/dfs/getPatternFilled?sID_Pattern=F1301801"
+            + "в теле запроса передавать JSON-обьект в виде строки, например:<br>"
+            + "{<br>"
+            + "{\n" +
+"	\"HLNAME\":\"БІЛЯВЦЕВ\"\n" +
+"	,\"HPNAME\":\"ВОЛОДИМИР\"\n" +
+"	,\"HFNAME\":\"ВОЛОДИМИРОВИЧ\"\n" +
+"	,\"HTIN\":\"2943209693\"\n" +
+"	,\"HKSTI\":\"2301\"\n" +
+"	,\"HSTI\":\"2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ\"\n" +
+"	,\"HEMAIL\":\"olga.kuzminova87@gmail.com\"\n" +
+"	,\"HCOUNTRY\":\"Украіна\"\n" +
+"	,\"HCITY\":\"Дніпро\"\n" +
+"	,\"HSTREET\":\"Красный камень\"\n" +
+"	,\"HBUILD\":\"5\"\n" +
+"	,\"R01G01\":\"22\"\n" +
+"	,\"R01G01\":\"22\"\n" +
+"	,\"R01G02\":\"22\"\n" +
+"	,\"R02G01\":\"22\"\n" +
+"	,\"R02G02\":\"22\"\n" +
+"	,\"C_REG\":\"23\"\n" +
+"	,\"C_RAJ\":\"01\"\n" +
+"	,\"TIN\":\"3578965412\"\n" +
+"	,\"C_DOC\":\"F13\"\n" +
+"	,\"C_DOC_SUB\":\"018\"\n" +
+"	,\"C_DOC_VER\":\"01\"\n" +
+"	,\"C_DOC_STAN\":\"1\"\n" +
+"	,\"C_DOC_TYPE\":\"00\"\n" +
+"	,\"C_DOC_CNT\":\"0000001\"\n" +
+"	,\"PERIOD_TYPE\":\"1\"\n" +
+"	,\"PERIOD_MONTH\":\"12\"\n" +
+"	,\"PERIOD_YEAR\":\"2015\"\n" +
+"	,\"C_STI_ORIG\":\"2301\"\n" +
+"\n" +
+")<br>"
+            + "<br>"
+            + "В ответ получим заполненный шаблон. например:"
+            + "<br>"
+            + "{\n" +
+"  \"soPatternFilled\": \"<?xml version=\\\"1.0\\\" encoding=\\\"windows-1251\\\"?><DECLAR xmlns:xsi=\\\"http://www.w3.org/2001/XMLSchema-instance\\\" xsi:noNamespaceSchemaLocation=\\\"F1301801.xsd\\\"><DECLARHEAD><TIN>3578965412</TIN><C_DOC>F13</C_DOC><C_DOC_SUB>018</C_DOC_SUB><C_DOC_VER>01</C_DOC_VER><C_DOC_TYPE>00</C_DOC_TYPE><C_DOC_CNT>0000001</C_DOC_CNT><C_REG>23</C_REG><C_RAJ>01</C_RAJ><PERIOD_MONTH>12</PERIOD_MONTH><PERIOD_TYPE>1</PERIOD_TYPE><PERIOD_YEAR>2015</PERIOD_YEAR><C_STI_ORIG>2301</C_STI_ORIG><C_DOC_STAN>1</C_DOC_STAN><D_FILL>24102016</D_FILL><SOFTWARE xsi:nil=\\\"true\\\"></SOFTWARE></DECLARHEAD><DECLARBODY><HLNAME>БІЛЯВЦЕВ</HLNAME><HPNAME>ВОЛОДИМИР</HPNAME><HFNAME>ВОЛОДИМИРОВИЧ</HFNAME><HTIN>2943209693</HTIN><HKSTI>2301</HKSTI><HSTI>2650 ДПІ У ГОЛОСІЇВСЬКОМУ Р-НІ ГУ МІНДОХОДІВ У М.КИЄВІ</HSTI><HEMAIL>olga.kuzminova87@gmail.com</HEMAIL><HCOUNTRY>Украіна</HCOUNTRY><HREG xsi:nil=\\\"true\\\"></HREG><HRAJ xsi:nil=\\\"true\\\"></HRAJ><HCITY>Дніпро</HCITY><HSTREET>Красный камень</HSTREET><HBUILD>5</HBUILD><HSHOT xsi:nil=\\\"true\\\"></HSHOT><HCORP xsi:nil=\\\"true\\\"></HCORP><HAPT xsi:nil=\\\"true\\\"></HAPT><HPASS xsi:nil=\\\"true\\\"></HPASS><HPASSDATE xsi:nil=\\\"true\\\"></HPASSDATE><HPASSISS xsi:nil=\\\"true\\\"></HPASSISS><R01G01>22</R01G01><R01G02>22</R01G02><R02G01>22</R02G01><R02G02>22</R02G02><HFILL>24102016</HFILL></DECLARBODY></DECLAR>\",\n" +
+"  \"sFileName\": \"23013578965412F1301801100000000111220152301.xml\"\n" +
+"}")
     @RequestMapping(value = {"/dfs/getPatternFilled"}, method = RequestMethod.POST, headers = {"Accept=application/json"})
     public @ResponseBody
     Map<String, String> getPatternFilled(
-            @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> data,
-            @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(required = true) String sID_Pattern,
+            @ApiParam(value = "Список алиасов и значений из формы в json формате", required = false) @RequestBody(required = false) Map<String, String> mField,
+            @ApiParam(value = "Ид файла-шаблона", required = true) @RequestParam(value = "sID_Pattern", required = true) String sID_Pattern,
             HttpServletResponse httpResponse) throws Exception {
 
-        Map<String, String> result = new HashMap<>();
-        LOG.info("data: " + data);
-        File file = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
-        String declarContent = Files.toString(file, Charset.defaultCharset());
-        LOG.info("Created document with customer info: {}", declarContent);
-        String regex, replacement;
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            regex = "<" + entry.getKey().trim().toUpperCase() + ">";
-            replacement = regex + entry.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
-                    .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
-            declarContent = declarContent.replaceAll(regex, replacement);
+        Map<String, String> mReturn = new HashMap<>();
+        
+        //mField.get("C_DOC_CNT").trim()
+        Integer nCountYear = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, "AlienBP_"+sID_Pattern, null);//Long.valueOf(snID_Service)
+        String snCountYear = nCountYear+"";
+        LOG.info("snCountYear(before)=",snCountYear);
+        if(nCountYear!=null&&nCountYear>0){
+            Integer nDigits=7;
+            if(snCountYear.length()<nDigits){
+                snCountYear="0000000".substring(0,nDigits-snCountYear.length())+snCountYear;
+                LOG.info("snCountYear(after)=",snCountYear);
+            }
+            mField.put("C_DOC_CNT", snCountYear);
         }
-        declarContent = fillDateToday(declarContent);
-        LOG.info("declarContent: " + declarContent);
-        result.put("soPatternFilled", declarContent.replaceAll(System.getProperty("line.separator"), ""));
-        result.put("sFileName", buildFileName(data));
-        return result;
+        
+        LOG.info("mField: " + mField);
+        File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
+        String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
+        LOG.info("Created document with customer info: {}", sContentReturn);
+        String sRegex, sReplacement;
+        for (Map.Entry<String, String> oField : mField.entrySet()) {
+            sRegex = "<" + oField.getKey().trim().toUpperCase() + ">";
+            sReplacement = sRegex + oField.getValue().replaceAll(">", "&gt;").replaceAll("<", "&lt;")
+                    .replaceAll("\"", "&quot;").replaceAll("'", "&apos;").replaceAll("&", "&amp;");
+            sContentReturn = sContentReturn.replaceAll(sRegex, sReplacement);
+        }
+        sContentReturn = fillDateToday(sContentReturn);
+        LOG.info("sContentReturn: " + sContentReturn);
+        mReturn.put("soPatternFilled", sContentReturn.replaceAll(System.getProperty("line.separator"), ""));
+        mReturn.put("sFileName", buildFileName(mField));
+        return mReturn;
     }
 
     //C_REG(2) + C_RAJ(2)+ TIN(10) + C_DOC(3) + C_DOC_SUB(3) + C_DOC_VER(2) + C_DOC_STAN(1) + C_DOC_TYPE(2, для нового 00) + C_DOC_CNT(7, 0000001) + 
     //+ PERIOD_TYPE(1, 1 - місяць, 2 - квартал, 3 - півріччя, 4 - дев’ять місяців, 5 - рік) 
     //+ PERIOD_MONTH(2) + PERIOD_YEAR(4)
     //+ C_STI_ORIG(4, містять код територіального органу отримувача, до якого подається оригінал документа. если оригинал, то = C_REG(2) + C_RAJ(2))
-    private String buildFileName(Map<String, String> data) {
+    private String buildFileName(Map<String, String> mField) {
         String result = "23013194700944F1301801100000000111220152301.xml"; //2301 3194700944 F1301801 1 00 0000001 1 12 2015 2301.xml
         try {
-            result = new StringBuilder(data.get("C_REG").trim())
-                    .append(data.get("C_RAJ").trim())
-                    .append(data.get("TIN").trim())
-                    .append(data.get("C_DOC").trim())
-                    .append(data.get("C_DOC_SUB").trim())
-                    .append(data.get("C_DOC_VER").trim())
-                    .append(data.get("C_DOC_STAN").trim())
-                    .append(data.get("C_DOC_TYPE").trim())
-                    .append(data.get("C_DOC_CNT").trim())
-                    .append(data.get("PERIOD_TYPE").trim())
-                    .append(data.get("PERIOD_MONTH").trim())
-                    .append(data.get("PERIOD_YEAR").trim())
-                    .append(data.get("C_STI_ORIG").trim()).append(".xml").toString();
+            result = new StringBuilder(mField.get("C_REG").trim())
+                    .append(mField.get("C_RAJ").trim())
+                    .append(mField.get("TIN").trim())
+                    .append(mField.get("C_DOC").trim())
+                    .append(mField.get("C_DOC_SUB").trim())
+                    .append(mField.get("C_DOC_VER").trim())
+                    .append(mField.get("C_DOC_STAN").trim())
+                    .append(mField.get("C_DOC_TYPE").trim())
+                    .append(mField.get("C_DOC_CNT").trim())
+                    .append(mField.get("PERIOD_TYPE").trim())
+                    .append(mField.get("PERIOD_MONTH").trim())
+                    .append(mField.get("PERIOD_YEAR").trim())
+                    .append(mField.get("C_STI_ORIG").trim()).append(".xml").toString();
         } catch (Exception ex) {
             LOG.error("buildFileName error: ", ex);
         }
