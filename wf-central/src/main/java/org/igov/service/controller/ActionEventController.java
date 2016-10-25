@@ -715,14 +715,16 @@ public class ActionEventController {
                     DateTime sDateCreate = null;
                     DateTime sDateClose = null;
                     
+                    DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        
                     try{
                         
                         ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
                         JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
                         JSONObject opJSONObject = (JSONObject) oJSONObject.get("oProcess");
                         
-                        sDateCreate = (DateTime) opJSONObject.get("sDateCreate");
-                        sDateClose = (DateTime) opJSONObject.get("sDateClose");
+                        sDateCreate = uDateFormat.parseDateTime((String) opJSONObject.get("sDateCreate"));
+                        sDateClose = uDateFormat.parseDateTime((String) opJSONObject.get("sDateClose"));
                         
                         if (sDateCreate != null){
                             oHistoryEvent_Service.setsDateCreate(sDateCreate);
