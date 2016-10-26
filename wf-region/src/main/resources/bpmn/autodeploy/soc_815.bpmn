@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="soc_815" name="Довідка про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям" isExecutable="true">
-    <documentation>Створення БП. 
-Аналітик: Ставицький В.Д, 
-07.06.16
-https://github.com/e-government-ua/iBP/issues/815</documentation>
+    <documentation>
+https://github.com/e-government-ua/iBP/issues/815
+Створення БП. Аналітик: Ставицький В.Д., 07.06.16
+Рефакторинг: поля с адресом, обновление стилей принтформы, маркера на дашборд, аналітик: Ставицький В.Д., 26.10.16
+	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="info" name=" " type="label" default="&lt;font color='#ff0000'&gt;&lt;b&gt;Увага!&lt;/b&gt;&lt;/font&gt; Результатом цієї послуги є &lt;b&gt;надання довідки&lt;/b&gt;, а не отримання допомоги"></activiti:formProperty>
@@ -14,28 +15,30 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" required="true">
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistered" name="Адреса реєстрації;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
-		
-
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>     
+       
+       
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="sNameServise" name="Назва послуги" type="invisible" default="Довідка про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"></activiti:formProperty>
         <activiti:formProperty id="sNameGovServise" name="Назва послуги" type="invisible" default="надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям"></activiti:formProperty>
         
-        <activiti:formProperty id="markerAdressStart" name="Отображение адреса" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Отображение адреса" type="markers" default="${markerService.loadFromFile('soczah/soc_815_start.json')}"></activiti:formProperty>
         
       </extensionElements>
     </startEvent>
@@ -83,7 +86,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення. ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov. ${sNameServise}. Реєстрація]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -103,26 +106,23 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
+        <activiti:formProperty id="sAddressRegistered" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>                             
+                
+                
+        <activiti:formProperty id="asDecision" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="Довідка створена, запросити громадянина для отримання"></activiti:value>
           <activiti:value id="reject" name="Відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
         
-        <activiti:formProperty id="markerAdressPrint" name="Отображение адреса" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
-        
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/soc_815_user.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/minsoc/soc_815_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -130,7 +130,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="повідомлення громадянина про можливість отримання довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -150,7 +150,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення. ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov. ${sNameServise}. Результат]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -160,7 +160,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
 			</p>
 			<p>
 		    	Коментар чиновника:<br>
-				<b><i>${comment_1}</i></b>
+				<b><i>${sComment}</i></b>
 		    </p>
 			<br>
 			Довідка створена і Ви можете отримати результат за наступними контактами<br>
@@ -168,7 +168,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br>
 			<p>
-				Для отримання довідки при собі потрібно мати паспорт.
+				Для отримання довідки при собі потрібно мати паспорт та вказати номер заявки № [sID_Order].
 			</p>
 			<br><br>	
 			[pattern/mail/_common_signature_start.html]
@@ -181,7 +181,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -201,7 +201,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення. ${sNameServise}]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov. ${sNameServise}. Результат]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -212,7 +212,7 @@ https://github.com/e-government-ua/iBP/issues/815</documentation>
 			</p>
 			<p>
 		    	Причина в наступному:<br>
-				<b><i>${comment_1}</i></b>
+				<b><i>${sComment}</i></b>
 		    </p>
 			<p>
 				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>

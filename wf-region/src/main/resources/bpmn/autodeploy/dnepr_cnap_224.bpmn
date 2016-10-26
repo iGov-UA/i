@@ -155,7 +155,7 @@
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
@@ -178,6 +178,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_2_1_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_1_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
@@ -243,7 +244,7 @@
         <activiti:formProperty id="pib_sender" name="Прізвище ім'я та по батькові відправника (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_sender" name="Адреса реєстрації відправника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_sender" name="Телефон відправника " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_recipient" name="Прізвище ім'я та по батькові одержувача (або найменування юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_recipient" name="Адреса реєстрації одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone_recipient" name="Телефон одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_instructor" name="Прізвище ім'я та по батькові відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
@@ -251,7 +252,7 @@
         <activiti:formProperty id="instructor_license_number" name="№ свідоцтва відповідального за інструктаж" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="instructor_license_term" name="Термін дії свідоцтва" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" writable="false">
+   <!-- <activiti:formProperty id="dangerous_count" name="Кількість позицій небезпечного вантажу" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
           <activiti:value id="three" name="3"></activiti:value>
@@ -343,7 +344,7 @@
         <activiti:formProperty id="first_dangerous_10" name="У випадку вантажів 1-го класу небезпеки - підклас та група сумісності (10 вантажу)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_cargo_10" name="Маса небезпечного вантажу (т.)(10 вантажу)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dangerous_previous_10" name="Попередній номер погодження  виданого УДАІ (10 вантажу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
+ -->    <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_adres" name="Адреса страхового товариства" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_from" name="Термін дії страхового полісу або договору з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strah_till" name="Термін дії страхового полісу або договору по" type="date" writable="false"></activiti:formProperty>
@@ -366,6 +367,12 @@
         <activiti:formProperty id="sBody_4" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_4_1_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_224_1_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport}, ${dopusk},${dopnv},${insurance},${instruction},${pidgotovka},${dodatkovo},${oplata},${sTable1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -393,7 +400,7 @@
     <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>

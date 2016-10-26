@@ -14,12 +14,12 @@
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
                 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistered" name="Адреса реєстрації;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistered" name="Адреса реєстрації;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string" required="true"></activiti:formProperty>     
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>     
         
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -67,7 +67,7 @@
         
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка документів і вхідних данних" activiti:candidateGroups="upszn${nArea}">
+    <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -101,7 +101,7 @@
 
         <activiti:formProperty id="asDecision1" name="Перевірка данних" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
-          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громаднину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="accept_but" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dVisit" name="Внесіть дату та час візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
@@ -138,8 +138,6 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        
-        
         
         <activiti:formProperty id="asLand" name="Чи маєте Ви земельні ділянки або частки паю?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
