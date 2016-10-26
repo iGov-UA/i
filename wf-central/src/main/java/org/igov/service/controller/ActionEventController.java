@@ -744,8 +744,8 @@ public class ActionEventController {
                         //Если заявка не найдена - тут можно проставлять статус
                     }
                                                            
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : sDateCreate.toString());
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : sDateClose.toString());
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : sDateCreate != null ? sDateCreate.toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : sDateClose != null ? sDateClose.toString() : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
