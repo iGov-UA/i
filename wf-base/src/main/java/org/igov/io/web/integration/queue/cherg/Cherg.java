@@ -149,7 +149,7 @@ public class Cherg {
             //oaJSONArray = new JSONArray();
         }else{
             oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
-            LOG.debug("Workdays all days:{}", oaJSONArray);
+            LOG.info("Workdays all days:{}", oaJSONArray);
         }
 
         JSONArray oaJSONArrayReturn = new JSONArray();
