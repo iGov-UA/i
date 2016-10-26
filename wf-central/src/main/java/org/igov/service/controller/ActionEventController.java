@@ -642,8 +642,9 @@ public class ActionEventController {
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
 //                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-                List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findByOrder(sDateTo);
-                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
+//                String sID_Order = subjectMessageFeedbackDao.findAll().get(0).getsID_Order();
+                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder("sID_Order");
+                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
                 Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
 //                for (SubjectMessage oSubjectMessage : aSubjectMessage) {
 //                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
