@@ -31,8 +31,8 @@ public class AssignUserToTaskListener implements TaskListener{
         DelegateExecution execution = delegateTask.getExecution();
         String loginAssignee = getStringFromFieldExpression(this.loginAssignee, execution);
         LOG.info("Variable " + "_" + loginAssignee + "_ include task owner");
-        //String sTaskOwner = runtimeService.getVariable(execution.getProcessInstanceId(), loginAssignee).toString();
-        String sTaskOwner = (String) execution.getVariable(loginAssignee);
+        String sTaskOwner = runtimeService.getVariable(execution.getProcessInstanceId(), loginAssignee).toString();
+        //String sTaskOwner = (String) execution.getVariable(loginAssignee);
         LOG.info("Task owner is " + sTaskOwner);
         delegateTask.setAssignee(sTaskOwner);      
         
