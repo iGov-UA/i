@@ -1,19 +1,20 @@
 {
   "motion": 
     {
-    "ShowFieldsOnCondition_ProjectDev": 
+    "ShowFieldsOnCondition_Person": 
       {"aField_ID":
-        ["sDesignerName","sResponsiblePerson","sApprovalPerson","sApprovalDate",
-         "sAdminDoc","sAdminDocDate","sKeyIndicators","sTotalNonResidentialArea"], 
-       "asID_Field": {"sCondit":"asIsProjectDeveloped"},
-       "sCondition": "[sCondit] == 'sEnumDeveloped'||[sCondit] == 'Так'"
+        ["sPersonLastName","sPersonFirstName","sPersonMiddleName",
+         "sPersonAddress","sPersonPassport","sPersonINN"], 
+       "asID_Field": {"sCondit":"asApplicantType"},
+       "sCondition": "[sCondit] == 'sEnumAppPerson'||[sCondit] == 'фізична особа'"
       },
                 
-    "ShowFieldsOnCondition_TechSupervision": 
-      {"aField_ID": 	["sTechSupervisorName","sTechSupervisorPhone","sTechSupervisorSertif"], 
-       "asID_Field": 	{"sCondit":"asIsTechSupervision"},
-       "sCondition": 	"[sCondit] == 'sEnumTechYes'||[sCondit] == 'Так'"
+    "ShowFieldsOnCondition_Legal": 
+      {"aField_ID":  ["sLegalForm","sLegalName","sLegalAddress","sLegalEDRPOU"], 
+       "asID_Field": {"sCondit":"asApplicantType"},
+       "sCondition": "[sCondit] == 'sEnumAppLegal'||[sCondit] == 'юридична особа'"
       },
+      
     "ShowFieldsOnCondition_OwnershipDoc": 
       {"aField_ID": 	["sOwnershipDoc"], 
        "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
@@ -24,6 +25,7 @@
        "asID_Field": 	{"sCondit":"asConstructionOnBasis"},
        "sCondition": 	"[sCondit] == 'sEnumSuperficies'||[sCondit] == 'Договір суперфіцію'"
       },
+      
     "ShowFieldsOnCondition_ContrPers": 
       {"aField_ID": 	["sGenPersonName","sGenPersonPassport","sGenPersonAddress","sGenPersonINN"], 
        "asID_Field": 	{"sCondit":"asGeneralContractor"},
@@ -43,6 +45,6 @@
       {"aField_ID": 	["sRejectionReason"], 
        "asID_Field": 	{"sCondit":"asDecision"},
        "sCondition": 	"[sCondit] == 'sEnumDecisionReturn'||[sCondit] == 'Відправити на доопрацювання. Підготувати інформаційний лист'"
-      }        
+      }         
     }
 }
