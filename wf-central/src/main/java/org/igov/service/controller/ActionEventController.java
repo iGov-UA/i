@@ -726,13 +726,13 @@ public class ActionEventController {
                         sDateClose = (DateTime) opJSONObject.get("sDateClose");
                         
                         if (sDateCreate != null){
-                            //oHistoryEvent_Service.setsDateCreate(sDateCreate);
+                            oHistoryEvent_Service.setsDateCreate(sDateCreate);
                             
                             if (sDateClose != null){
-                              /*  if (oHistoryEvent_Service.getnID_StatusType() != 8L){
+                                if (oHistoryEvent_Service.getnID_StatusType() != 8L){
                                     oHistoryEvent_Service.setnID_StatusType(8L);
-                                } */
-                                //oHistoryEvent_Service.setsDateClose(sDateClose);
+                                }
+                                oHistoryEvent_Service.setsDateClose(sDateClose);
                             }
                 
                             //historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
@@ -744,8 +744,8 @@ public class ActionEventController {
                         //Если заявка не найдена - тут можно проставлять статус
                     }
                                                            
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : sDateCreate != null ? sDateCreate.toString() : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : sDateClose != null ? sDateClose.toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : "");
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
