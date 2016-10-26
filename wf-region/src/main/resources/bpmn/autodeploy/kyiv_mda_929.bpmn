@@ -27,6 +27,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="RequiredFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
@@ -221,9 +222,9 @@
           <activiti:value id="sEnumObjectOwner" name="Документ, що посвідчує право власності чи користування земельною ділянкою"></activiti:value>
           <activiti:value id="sEnumSuperfic" name="Договір суперфіцію"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjectOwnerNumber" name="Дата, серія та номер документу, що посвідчує право власності чи користування земельною ділянкою" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectOwnerSuperfic" name="Дата, номер договору суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectOwnerNumber" name="Дата, серія та номер документу, що посвідчує право власності чи користування земельною ділянкою" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectOwnerSuperfic" name="Дата, номер договору суперфіцію" type="string"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLabel_12" name=" " type="label" default="---- Інформація про підрядника ----"></activiti:formProperty>
         <activiti:formProperty id="asContractorEntity" name="Генеральний підрядник" type="enum">
           <activiti:value id="sEnumContractorCompany" name="юридична особа"></activiti:value>
@@ -254,35 +255,35 @@
           <activiti:value id="sEnumHouseAptcType_7" name="Семикімнатна"></activiti:value>
           <activiti:value id="sEnumHouseAptcType_8" name="Восьмикімнатна і більше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_1" name=" " type="label" default="&lt;b&gt;------ Однокімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_1" name=" " type="label" default="------ Однокімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_1" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_1" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_1" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_2" name=" " type="label" default="&lt;b&gt;------ Двокімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_2" name=" " type="label" default="------ Двокімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_2" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_2" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_2" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_3" name=" " type="label" default="&lt;b&gt;------ Трикімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_3" name=" " type="label" default="------ Трикімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_3" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_3" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_3" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_4" name=" " type="label" default="&lt;b&gt;------ Чотирикімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_4" name=" " type="label" default="------ Чотирикімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_4" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_4" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_4" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_5" name=" " type="label" default="&lt;b&gt;------ П’ятикімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_5" name=" " type="label" default="------ П’ятикімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_5" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_5" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_5" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_6" name=" " type="label" default="&lt;b&gt;------ Шестикімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_6" name=" " type="label" default="------ Шестикімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_6" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_6" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_6" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_7" name=" " type="label" default="&lt;b&gt;------ Семикімнатна ------&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_7" name=" " type="label" default="------ Семикімнатна ------"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_7" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_7" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_7" name="Житлова площа" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_14_8" name=" " type="label" default="&lt;b&gt;---- Восьмикімнатна і більше ----&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_14_8" name=" " type="label" default="---- Восьмикімнатна і більше ----"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeQuantity_8" name="Кількість квартир" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeTotalArea_8" name="Загальна площа" type="long"></activiti:formProperty>
         <activiti:formProperty id="sObjectHouseAptTypeLiveArea_8" name="Житлова площа" type="long"></activiti:formProperty>
@@ -305,7 +306,9 @@
         <activiti:formProperty id="sID_numberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers3" name="hideShowFields3" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="RequiredFields4" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_4.json')}"></activiti:formProperty>
+      <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
