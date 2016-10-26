@@ -446,6 +446,95 @@
           }
         };
 
+
+        function getIdByName(item, asName) {
+          var asId = new Array();
+          for(var i = 0;i<asName.length;i++){
+            asId.push(item[asName[i]]);
+          }
+          return asId;
+        }
+
+        function getValueById(id) {
+          for(var i = 0; i < taskForm.length;i++) {
+            var item = taskForm[i];
+            if (item.id.includes(id)) {
+              return item.value;
+            }
+          }
+          return null;
+        }
+
+        function getAllNamesFields (item){
+          if (item == null) return null;
+
+          var variables = "";
+          for (var name in item) {
+              variables += name + ",";
+          }
+          var as = variables.split(",");
+          var result = new Array();
+
+          for(var i = 0; i < as.length;i++) {
+            if (as[i] != "") {
+              result.push(as[i]);
+            }
+          }
+
+          return result;
+        }
+
+        function getVariablesValue(asId){
+          if (asId == null) return null;
+          var asVariablesValue = new Array(asId.length);
+          for(var i = 0; i < asId.length; i++) {
+            var result = getValueById(asId[i]);
+            if (!isNaN(result)) {
+              asVariablesValue[i] = parseInt(result);
+            } else {
+              asVariablesValue[i] = result;
+            }
+          }
+          return asVariablesValue;
+        }
+
+        function executeFormula(item) {
+          var sFormula  = item['sFormula'];
+          var sResultName = item['sID_Field_Target'];
+          var asVariablesName = getAllNamesFields(item['asID_Field_Alias']);
+          var asVariablesId = getIdByName(item['asID_Field_Alias'], asVariablesName);
+          var asVariablesValue = getVariablesValue(asVariablesId);
+
+          function getVal(index) {
+            return asVariablesValue[index];
+          }
+
+          for(var i=0; i < asVariablesName.length; i++) {
+              sFormula = sFormula.replace(asVariablesName[i], "getVal(" + i + ")");
+          }
+
+          $scope[sResultName] = eval(sFormula);
+          console.log($scope[sResultName]);
+          console.log(eval(sFormula));
+        }
+
+
+
+        function runCalculation() {
+          $scope['a'] = 1;
+          console.log($scope.a);
+          var item = getObjFromTaskFormById("marker");
+          if (item !== null) {
+            var oMotion = JSON.parse(item.value)['motion']; // Generate obj from json(item.value)
+            var asNameField = getAllNamesFields(oMotion); //Generate array fields name
+
+            for (var i = 0; i < asNameField.length; i++) {
+              executeFormula(oMotion[asNameField[i]]);
+
+            }
+          }
+        }
+
         $scope.hasUnPopulatedFields = function () {
           if ($scope.selectedTask && $scope.taskForm) {
             var unpopulated = $scope.taskForm.filter(function (item) {
