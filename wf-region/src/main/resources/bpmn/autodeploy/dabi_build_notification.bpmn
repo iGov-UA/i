@@ -166,7 +166,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step6"></sequenceFlow>
-    <userTask id="usertask_step6" name="6. Перевірка повноти даних та приняття рішення">
+    <userTask id="usertask_step6" name="6. Перевірка повноти даних та приняття рішення" activiti:candidateGroups="kyiv_dabi_permit_empl">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
@@ -262,11 +262,11 @@
             <activiti:expression><![CDATA[${nBuildNotif}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${assignUser}">
+        <!--activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:taskListener!-->
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask_step6" targetRef="exclusivegateway1"></sequenceFlow>
