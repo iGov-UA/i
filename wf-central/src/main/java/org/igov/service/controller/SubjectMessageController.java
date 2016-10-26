@@ -639,7 +639,7 @@ public class SubjectMessageController {
                     subjectMessageFeedbackDao.update(feedback);
                 }*/
                 subjectMessageFeedbackDao.setsID_Order(sID_Order);
-//                LOG.info("ID_Order: "+ID_Order);
+                LOG.info("setsID_Order: "+subjectMessageFeedbackDao.setsID_Order(sID_Order));
                 LOG.info("successfully saved feedback for the sID_Source: {}, nID_Service: {}, nID: {}, sID_Token: {}, sID_Order: {}",
                         sID_Source, nID_Service, oSubjectMessageFeedback.getId(), oSubjectMessageFeedback.getsID_Token());
 
