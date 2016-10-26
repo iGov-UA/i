@@ -361,7 +361,7 @@ public abstract class AbstractModelTask {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
                             } catch (Exception ex) {
-                                LOG.error("sID_Field: " + sID_Field, ex);
+                                LOG.error("sID_Field:{} sKeyRedis:{} " + sID_Field, sKeyRedis, ex);
                                 throw new ActivitiException(ex.getMessage(), ex);
                             }
                             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
