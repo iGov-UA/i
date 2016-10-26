@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -640,20 +641,20 @@ public class ActionEventController {
                     anID_HistoryEvent_Service.add(oHistoryEvent_Service.getId());
                 }
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
-                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
-                //List<SubjectMessage> aSubjectMessage = subjectMessageFeedbackDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                List<SubjectMessageFeedback> aSubjectMessage = subjectMessageFeedbackDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessage.size());
                 Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
-                for (SubjectMessage oSubjectMessage : aSubjectMessage) {
-                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
-                        mSubjectMessage.put(oSubjectMessage.getnID_HistoryEvent_Service(), oSubjectMessage);
-                    }
-                }
+//                for (SubjectMessage oSubjectMessage : aSubjectMessage) {
+//                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
+//                        mSubjectMessage.put(oSubjectMessage.getnID_HistoryEvent_Service(), oSubjectMessage);
+//                    }
+//                }
 
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
-                    asCell.add(oHistoryEvent_Service.getsID_Order());
+                    asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
                     // nID_Server
                     asCell.add(oHistoryEvent_Service.getnID_Server() != null ? oHistoryEvent_Service.getnID_Server().toString() : "");
                     // nID_Service
@@ -664,9 +665,10 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
+                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
                     String sTextFeedback = "";
                     if (mSubjectMessage.get(oHistoryEvent_Service.getId()) != null) {
-                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
+                        sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
