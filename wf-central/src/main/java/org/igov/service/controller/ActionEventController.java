@@ -703,31 +703,49 @@ public class ActionEventController {
                         sPhone = oJSONObject.get("phone") != null ? oJSONObject.get("phone").toString() : "";
                     }
                     
-                    if(oHistoryEvent_Service.getsDateCreate() == null || oHistoryEvent_Service.getsDateClose() == null){
-                        sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order();
-                        
-                        //if (oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL) != null){
-                        //}
-                        
-                        try {
-                            ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-                        }
-                        catch (Exception e)
-                        {
-                            
-                        }
-                    }
-                                        
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                       
-                    //asCell.add("test_DateCreate");
-                    //asCell.add("test_DateClose");
                     
-                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? sdf.format(oHistoryEvent_Service.getsDateCreate().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
-                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? sdf.format(oHistoryEvent_Service.getsDateClose().toDate()) : oHistoryEvent_Service.getnID_Task().toString() != null ? oHistoryEvent_Service.getnID_Task().toString() : "");
+                    sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order() 
+                            + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
+                    
+                    DateTime sDateCreate = null;
+                    DateTime sDateClose = null;
+                    
+                    DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        
+                    try{
+                        
+                        ResponseEntity<String> oResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+                        JSONObject oJSONObject = (JSONObject) new JSONParser().parse(oResponseEntityReturn.getBody());
+                        JSONObject opJSONObject = (JSONObject) oJSONObject.get("oProcess");
+                        
+                        sDateCreate = uDateFormat.parseDateTime((String) opJSONObject.get("sDateCreate"));
+                        sDateClose = uDateFormat.parseDateTime((String) opJSONObject.get("sDateClose"));
+                        
+                        if (sDateCreate != null){
+                            oHistoryEvent_Service.setsDateCreate(sDateCreate);
+                            
+                            if (sDateClose != null){
+                                if (oHistoryEvent_Service.getnID_StatusType() != 8L){
+                                    oHistoryEvent_Service.setnID_StatusType(8L);
+                                }
+                                oHistoryEvent_Service.setsDateClose(sDateClose);
+                            }
+                
+                            //historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+                        }
+                    }
+                    
+                    catch (Exception e)
+                    {
+                        //Если заявка не найдена - тут можно проставлять статус
+                    }
+                                                           
+                    asCell.add(oHistoryEvent_Service.getsDateCreate() != null ? oHistoryEvent_Service.getsDateCreate().toString() : sDateCreate.toString());
+                    asCell.add(oHistoryEvent_Service.getsDateClose() != null ? oHistoryEvent_Service.getsDateClose().toString() : sDateClose.toString());
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
@@ -736,7 +754,7 @@ public class ActionEventController {
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
         }
-    }
+}
     
 
     @ApiOperation(value = "getActionProcessCount", notes = "getActionProcessCount")
