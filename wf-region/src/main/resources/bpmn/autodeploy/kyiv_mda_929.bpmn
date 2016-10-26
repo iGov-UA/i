@@ -3,7 +3,7 @@
   <process id="kyiv_mda_929" name="Декларація про початок виконання будівельних робіт" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;--- Інформація про об’єкт ---&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt; Інформація про об’єкт &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
@@ -11,7 +11,7 @@
           <activiti:value id="sEnumCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sEnumIndividual" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt;--- Інформація про замовника ---&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt; Інформація про замовника &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -61,7 +61,7 @@
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="boundarytimer1" targetRef="parallelgateway1"></sequenceFlow>
     <userTask id="usertask2" name="3. Ознайомлення з документом директора ДАБК" activiti:candidateGroups="kyiv_dabi_boss">
       <extensionElements>
         <activiti:formProperty id="sLabel_3" name=" " type="label" default="---- Інформація про об’єкт ----"></activiti:formProperty>
@@ -494,6 +494,11 @@
     <sequenceFlow id="flow20" sourceRef="usertask3" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="usertask6" targetRef="usertask9"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kyiv_mda_929">
     <bpmndi:BPMNPlane bpmnElement="kyiv_mda_929" id="BPMNPlane_kyiv_mda_929">
@@ -502,6 +507,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="211.0" x="350.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="510.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="435.0" y="240.0"></omgdc:Bounds>
@@ -535,7 +543,7 @@
         <omgdi:waypoint x="455.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="455.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="455.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
