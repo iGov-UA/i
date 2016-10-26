@@ -11,8 +11,11 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Місце реєстрації; Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWarning1" name="Зверніть увагу" type="label" default="За довідкою може звернутись лише особа, яка зареєстрована за цією адерсою!"></activiti:formProperty>
-        <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true" default="sNo">
-          <activiti:value id="sNo" name=" "></activiti:value>
+        <activiti:formProperty id="asResultType" name="Оберіть варіант отримання результату" type="enum" required="true">
+          <activiti:value id="sMyself" name="особисто"></activiti:value>
+          <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true">
           <activiti:value id="sAND" name="АНД"></activiti:value>
           <activiti:value id="sIndust" name="Індустріальний"></activiti:value>
           <activiti:value id="sSamar" name="Самарський"></activiti:value>
@@ -21,6 +24,12 @@
           <activiti:value id="sChech" name="Чечелівський"></activiti:value>
           <activiti:value id="sShev" name="Шевченківський"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asDistrict1" name="Оберіть район до якого належить Ваш будинок" type="enum" required="true">
+          <activiti:value id="sSobor" name="Соборний"></activiti:value>
+          <activiti:value id="sChech" name="Чечелівський"></activiti:value>
+          <activiti:value id="sShev" name="Шевченківський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWarning2" name="Зверніть увагу" type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYSklpUS1lUlNyQkRxUWlZZjh0T051YlZNUFRR&quot; target=&quot;_blank&quot;&gt;перелік доступних будинків&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="asAND" name="Оберіть підрозділ АНД району до якого належить Ваш будинок" type="enum" required="true">
           <activiti:value id="sAND1" name="вул. Щербини, 50"></activiti:value>
           <activiti:value id="sAND2" name="вул. С.Ковалевської, 59а"></activiti:value>
@@ -41,10 +50,6 @@
           <activiti:value id="sShev1" name="пр. Б.Хмельницького (вул. Героїв Сталінграда), 14"></activiti:value>
           <activiti:value id="sShev2" name="вул. Запорізьке шосе, 68"></activiti:value>
           <activiti:value id="sShev3" name="вул. В.Мономаха (Московська), 10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asResultType" name="Оберіть варіант отримання результату" type="enum" required="true">
-          <activiti:value id="sMyself" name="особисто"></activiti:value>
-          <activiti:value id="sPost" name="поштовим відправленням (послуга сплачується онлайн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; Індекс, Місто, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" required="true">
@@ -115,6 +120,9 @@ break;
 default:
     alert('Странный результат, очень странный');
     break;
+}
+if (type == 'and'){
+
 }
 execution.setVariable('sAddress', adres);
 execution.setVariable('sWorkDay', workTime);
