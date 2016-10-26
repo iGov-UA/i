@@ -2528,5 +2528,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         deleteProccess.closeProcess(sID_Process_Def);
     }
+    
+    //get current values of Variables
+    @RequestMapping(value = "/getCurrentVar", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity getCurrentVar(
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task)
+            throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
+        Map<String, Object> response = new HashMap<>();
+        TaskFormData data = formService.getTaskFormData(nID_Task.toString());
 
+        if (data != null) {
+            LOG.info("Found TaskFormData for task {}.", nID_Task);
+            for (FormProperty property : data.getFormProperties()) {
+                response.put(property.getId(), property.getValue());
+            }
+        } else {
+            LOG.info("Not found TaskFormData for task {}. Skipping from processing.", nID_Task);
+        }
+        return JsonRestUtils.toJsonResponse(response);
+    }
 }
