@@ -693,25 +693,32 @@
           })
         };
 
+        // при наличии полей типа "table" загружаем их с редиса и наполняем массив aTable.
         $scope.getListOfTables = function () {
           var itemsProcessed = 0;
           $scope.taskData.aTable = [];
-          if($scope.taskData.aAttachment.length > 0)
-          angular.forEach($scope.taskData.aAttachment, function (attach) {
-            tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
-              ++itemsProcessed;
-              try {
-                var table = {};
-                table.name = attach.description;
-                table.id = attach.id;
-                table.content = JSON.parse(res);
-                $scope.taskData.aTable.push(table);
-              } catch (e) {
+          if($scope.taskData.aAttachment && $scope.taskData.aAttachment.length > 0)
+            angular.forEach($scope.taskData.aAttachment, function (attach) {
+              tasks.getTableAttachment(attach.taskId, attach.id).then(function (res) {
+                ++itemsProcessed;
+                try {
+                  var table = {};
+                  table.name = attach.description;
+                  table.id = attach.id;
+                  table.content = JSON.parse(res);
+                  for(var i=0; i<table.content.length; i++) {
+                    if(typeof table.content[i] === "string") {
+                      table.idName = table.content[i];
+                      delete table.content[i];
+                    }
+                  }
+                  $scope.taskData.aTable.push(table);
+                } catch (e) {
 
-              }
-              if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
-            })
-          });
+                }
+                if(itemsProcessed === $scope.taskData.aAttachment.length) fixFieldsForTable();
+              })
+            });
         };
         $scope.getListOfTables();
       }
