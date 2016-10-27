@@ -719,7 +719,7 @@ public class ActionEventController {
                     DateTime sDateCreate = oHistoryEvent_Service.getsDateCreate();
                     DateTime sDateClose = oHistoryEvent_Service.getsDateClose();
                     
-                    DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat uDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         
                     if (sDateCreate == null || sDateClose == null)
                     {
@@ -751,8 +751,8 @@ public class ActionEventController {
                         }
                     }
                                                            
-                    asCell.add(sDateCreate != null ? oHistoryEvent_Service.getsDateCreate().toString() : "");
-                    asCell.add(sDateClose != null ? oHistoryEvent_Service.getsDateClose().toString() : "");
+                    asCell.add(sDateCreate != null ? uDateFormat.format(sDateCreate) : "");
+                    asCell.add(sDateClose != null ? uDateFormat.format(sDateClose) : "");
                     
                     oCSVWriter.writeNext(asCell.toArray(new String[asCell.size()]));
                 }
