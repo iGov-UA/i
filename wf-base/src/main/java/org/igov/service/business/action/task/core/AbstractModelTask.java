@@ -424,12 +424,12 @@ public abstract class AbstractModelTask {
 
                         } else {
                                 try {
-                                        LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
-                                        Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                                        aAttachment.add(oAttachment);
-                                } catch (Exception e){
-                                        LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
-                                    new Log(this.getClass(), LOG)//this.getClass()
+                                    LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
+                                    Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
+                                    aAttachment.add(oAttachment);
+                                } catch (Exception oException){
+                                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+                                    new Log(oException, LOG)//this.getClass()
                                             ._Case("Activiti_AttachRedisFail")
                                             ._Status(Log.LogStatus.ERROR)
                                             ._Head("Can't create Attachment for Task")
