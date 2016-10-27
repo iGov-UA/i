@@ -227,7 +227,7 @@
 <article lang="uk" class="article-block">
     <h1 class="topic">Пільгові категорії населення</h1>
 
-    <h1>Пульги</h1>
+    <h1>Пільги</h1>
 
     <div>
         <p>
@@ -236,40 +236,40 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="highlight">
-
                     <div id="categor">
-                        <div class="row" id="level1">
-                            <div class="col-md-5">
+                    	<br>
+                        <div class="row" id="level1" style="display:none;">
+                            <div class="col-md-4">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <select class="form-control" onchange="l1()">
                                     <option></option>
                                 </select>
                             </div>
                         </div>
-                        <div class="row" id="level2">
-                            <div class="col-md-5">
+                        <div class="row" id="level2" style="display:none;">
+                            <div class="col-md-4">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <select class="form-control" onchange="l2()">
                                     <option></option>
                                 </select>
                             </div>
                         </div>
-                        <div class="row" id="level3">
-                            <div class="col-md-5">
+                        <div class="row" id="level3" style="display:none;">
+                            <div class="col-md-4">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <select class="form-control" onchange="l3()">
                                     <option></option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <br />
-                    <hr />
+                    
                     <!--  Інформаційний блок  -->
                     <div id="socHelpBlock" style="display:none;"></div>
+                    <br>
                 </div>
             </div>
         </div>
@@ -304,10 +304,10 @@
 
         //есть ли льготы
         if (mas._socHelp.length > 0) {
-            document.getElementById("socHelpBlock").innerHTML = "<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas);
+            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas) +"\n<br>\n";
             document.getElementById("socHelpBlock").style.display = "block";
         } else {
-            document.getElementById("socHelpBlock").innerHTML = "<h2>Пільги відсутні</h2>\n";
+            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<h2>Пільги відсутні</h2>\n<br>\n";
             document.getElementById("socHelpBlock").style.display = "block";
         }
 
@@ -355,7 +355,7 @@
     }
     //создание таблицы для результата
     function createTable(param) {
-        var table = "<table>\n";
+        var table = "<table class='w100p'>\n";
         table += "<tr>\n";
         table += "<th>" + "№ п/п" + "</th>\n";
         table += "<th>" + "Пільга" + "</th>\n";
@@ -363,7 +363,7 @@
         table += "</tr>\n";
         for (var i = 0; i < param._socHelp.length; i++) {
             table += "<tr>\n";
-            table += "<td>" + (i + 1) + "</td>\n";
+            table += "<td class='ta-c'>" + (i + 1) + "</td>\n";
             table += "<td>" + param._socHelp[i].categoryHelp._name + "</td>\n";
             table += "<td>" + param._socHelp[i].description + "</td>\n";
             table += "</tr>\n";
@@ -540,8 +540,10 @@
     // *******************************************************************
     // *****************     Добавляем льготы       **********************
     // *******************************************************************
-    SocialCategory.Sub("Народні депутати").AddHelp({ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Постійно" });
-    SocialCategory.Sub("Народні депутати - пенсіонери").AddHelp({ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+    SocialCategory.Sub("Народні депутати").AddHelp(
+    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Постійно" });
+    SocialCategory.Sub("Народні депутати - пенсіонери").AddHelp(
+    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
 
     SocialCategory.Sub("Учасники бойових дій").AddHelp(
         { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "75%" },
