@@ -154,7 +154,7 @@
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sResponsibleEmployee" name="Відповідальний виконавець" type="string" default="Для відображення потрібна доробка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string" default="Для відображення потрібна доробка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker5_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -166,7 +166,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step6"></sequenceFlow>
-    <userTask id="usertask_step6" name="6. Перевірка повноти даних та приняття рішення">
+    <userTask id="usertask_step6" name="6. Перевірка повноти даних та приняття рішення" activiti:candidateGroups="kyiv_dabi_permit_empl">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
@@ -380,6 +380,7 @@
     </boundaryEvent>
     <userTask id="usertask_step_6.1" name="6.1 Повідомлення про невиконання завдання" activiti:candidateGroups="kyiv_dabi_permit_doc_boss">
       <extensionElements>
+        <activiti:formProperty id="sAssigneeName" name="ПІБ відповідального виконавця" type="string" default="Для відображення потрібне доопрацювання" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumAppLegal" name="юридична особа"></activiti:value>
@@ -390,7 +391,6 @@
         <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAssigneeName" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
