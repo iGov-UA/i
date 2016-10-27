@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.igov.io.Log;
 import org.igov.service.business.action.task.form.TableFormType;
 
 public abstract class AbstractModelTask {
@@ -325,7 +326,6 @@ public abstract class AbstractModelTask {
         LOG.info("(asFieldValue={})", asFieldValue.toString());
         List<String> asFieldName = getListCastomFieldName(oFormData);
         LOG.info("(asFieldName={})", asFieldName.toString());
-        
         //List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
 
         if (!asFieldValue.isEmpty()) {
@@ -334,6 +334,9 @@ public abstract class AbstractModelTask {
                 LOG.info("(sKeyRedis={})", sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
                         .equals(sKeyRedis.trim())) {
+                    
+                    
+                    
                     if (sKeyRedis.length() > 15) {
                         if (!asFieldName.isEmpty() && n < asFieldName.size()) {
                             
@@ -360,9 +363,26 @@ public abstract class AbstractModelTask {
                             try {
                                 aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
                                 oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                            } catch (Exception ex) {
-                                LOG.error("sID_Field:{} sKeyRedis:{} " + sID_Field, sKeyRedis, ex);
-                                throw new ActivitiException(ex.getMessage(), ex);
+                            } catch (Exception oException) {
+                                LOG.error("sID_Field: " + sID_Field, oException); //TODO: Need remove becouse of new Log(
+                                new Log(oException, LOG)//this.getClass()
+                                        ._Case("Activiti_AttachRedisFail")
+                                        ._Status(Log.LogStatus.ERROR)
+                                        ._Head("Can't get content from Redis for attachment")
+                                        ._Body(oException.getMessage())
+                                        //._Exception(oException)
+                                        ._Param("n", n)
+                                        ._Param("sID_Field", sID_Field)
+                                        ._Param("sKeyRedis", sKeyRedis)
+                                        ._Param("sDescription", sDescription)
+//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                                        ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                                        ._Param("oTask.getId()", oTask.getId())
+                                        ._Param("oTask.getName()", oTask.getName())
+                                        .save()
+                                        ;
+                                throw new ActivitiException(oException.getMessage(), oException);
                             }
                             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
                             if (oAttachment != null) {
@@ -377,7 +397,24 @@ public abstract class AbstractModelTask {
                                 LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
                                         sID_Field);
                             } else {
-                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
+                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove becouse of new Log(
+                                new Log(this.getClass(), LOG)//this.getClass()
+                                        ._Case("Activiti_AttachRedisFail")
+                                        ._Status(Log.LogStatus.ERROR)
+                                        ._Head("Can't create Attachment for Task")
+                                        ._Body("oAttachment == null")
+                                        //._Exception(oException)
+                                        ._Param("n", n)
+                                        ._Param("sID_Field", sID_Field)
+                                        ._Param("sKeyRedis", sKeyRedis)
+                                        ._Param("sDescription", sDescription)
+//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                                        ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                                        ._Param("oTask.getId()", oTask.getId())
+                                        ._Param("oTask.getName()", oTask.getName())
+                                        .save()
+                                        ;
                             }
 
                         } else {
@@ -390,6 +427,23 @@ public abstract class AbstractModelTask {
                                     aAttachment.add(oAttachment);
                             } catch (Exception e){
                                     LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+                                new Log(this.getClass(), LOG)//this.getClass()
+                                        ._Case("Activiti_AttachRedisFail")
+                                        ._Status(Log.LogStatus.ERROR)
+                                        ._Head("Can't create Attachment for Task")
+                                        ._Body("oAttachment == null")
+                                        //._Exception(oException)
+                                        ._Param("n", n)
+//                                        ._Param("sID_Field", sID_Field)
+                                        ._Param("sKeyRedis", sKeyRedis)
+//                                        ._Param("sDescription", sDescription)
+//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                                        ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                                        ._Param("oTask.getId()", oTask.getId())
+                                        ._Param("oTask.getName()", oTask.getName())
+                                        .save()
+                                        ;
                             }
 
                     }
