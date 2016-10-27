@@ -196,7 +196,7 @@
                       <th ng-repeat="item in property.aRow[0].aField" ng-style="{'width' : item.nWidth}">
                         <span>{{item.sFieldLabel || item.name}}</span>
                         <span style="display: block; text-align: center" class="s-field-notes"
-                             ng-if="item.sFieldNotes!=null">
+                              ng-if="item.sFieldNotes!=null">
                           {{item.sFieldNotes}}
                         </span>
                       </th>
@@ -218,6 +218,7 @@
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-required="item.required"
                                  ng-model="item.default"
+                                 ng-disabled="!isFieldWritable(item.writable)"
                                  type="text">
                           <input class="inputs-in-table"
                                  ng-if='item.hasOwnProperty("value")'
@@ -225,6 +226,7 @@
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-required="item.required"
                                  ng-model="item.value"
+                                 ng-disabled="!isFieldWritable(item.writable)"
                                  type="text">
                         </div>
 
@@ -234,6 +236,7 @@
                                   ng-model="item.value"
                                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                   ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.a"
+                                  ng-disabled="!isFieldWritable(item.writable)"
                                   class="inputs-in-table">
                           </select>
                         </div>
@@ -245,6 +248,7 @@
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-model="item.default"
                                  class="inputs-in-table"
+                                 ng-disabled="!isFieldWritable(item.writable)"
                                  type="number">
                           <input name="{{item.id + rowIndex}}"
                                  ng-if="item.hasOwnProperty('value')"
@@ -252,6 +256,7 @@
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-model="item.value"
                                  class="inputs-in-table"
+                                 ng-disabled="!isFieldWritable(item.writable)"
                                  type="number">
                         </div>
 
@@ -269,6 +274,7 @@
                                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                    close-text="Close"
                                    class="form-control"
+                                   ng-disabled="!isFieldWritable(item.writable)"
                                    value="item.props.value | fixDateFormat">
                             <span class="input-group-btn">
                               <button type="button"
@@ -382,6 +388,7 @@
                                           activiti-form="activitiForm"
                                           ng-required="item.required"
                                           form-data="data.formData"
+                                          ng-disabled="!isFieldWritable(item.writable)"
                                           name="item.id"></dropdown-organ>
 
                           <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
@@ -394,6 +401,7 @@
                                      autocomplete-name="item.autocompleteName"
                                      form-data="data.formData"
                                      reach-infinity="requestMoreItems($select.items)"
+                                     ng-disabled="!isFieldWritable(item.writable)"
                                      on-select="onSelectDataList($item, tableName, rowIndex)">
 
                             <ui-select-match>
