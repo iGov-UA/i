@@ -220,6 +220,8 @@
     }
 </style>
 
+<script type="text/javascript" src="http://mybootstrap.ru/wp-content/themes/clear-theme/js/bootstrap-typeahead.js"></script>
+
 <article lang="uk" class="article-block">
     <h1 class="topic">Пільгові категорії населення</h1>
 
@@ -229,11 +231,14 @@
         <p>
             Оберіть цікаву для вас категорію, щоб дізнатись які вони мають пільги.
         </p>
+        <h2>
+            Варіант 1. Вибір
+        </h2>
         <div class="row">
             <div class="col-md-12">
                 <div class="highlight">
                     <div id="categor">
-                    	<br>
+                        <br>
                         <div class="row" id="level1" style="display:none;">
                             <div class="col-md-4">
                             </div>
@@ -262,20 +267,59 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!--  Інформаційний блок  -->
                     <div id="socHelpBlock" style="display:none;"></div>
                     <br>
                 </div>
             </div>
         </div>
-    </div>
+        <h2>
+            Варіант 2. Пошук
+        </h2>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="highlight">
+                    <div id="find">
+                        <br>
+                        <div class="row" id="findLevel1">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" onfocus = "fl2(this)" type="text" data-provide="typeahead" data-items="10" data-source="" />
+                            </div>
+                        </div>
+                    </div>
 
+                    <!--  Інформаційний блок  -->
+                    <div id="socHelpBlockFind" style="display:none;"></div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
 </article>
+
 
 
 <!--  Функции для работы с формой  -->
 <script>
+    //обработчик второго выпадающего списка
+    function fl2(elem) {
+        var mas = SocialCategory.Sub(elem.value);
+
+        if (mas._name != " ") {
+            //есть ли льготы
+            if (mas._socHelp.length > 0) {
+                document.getElementById("socHelpBlockFind").innerHTML = "<br><hr>\n<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas) + "\n<br>\n";
+                document.getElementById("socHelpBlockFind").style.display = "block";
+            } else {
+                document.getElementById("socHelpBlockFind").innerHTML = "<br><hr>\n<h2>Пільги відсутні</h2>\n<br>\n";
+                document.getElementById("socHelpBlockFind").style.display = "block";
+            }
+        }
+    }
+
     //обработчик первого выпадающего списка
     function l1() {
         var mas = SocialGroups.Sub(getSelected("level1"));
@@ -300,7 +344,7 @@
 
         //есть ли льготы
         if (mas._socHelp.length > 0) {
-            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas) +"\n<br>\n";
+            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas) + "\n<br>\n";
             document.getElementById("socHelpBlock").style.display = "block";
         } else {
             document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<h2>Пільги відсутні</h2>\n<br>\n";
@@ -334,6 +378,24 @@
         }
     }
 
+
+    //Заполнение автозначений
+    function fillingInput(idBlock, param) {
+        var values = "[";
+
+        document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
+        var select = document.getElementById(idBlock).children[1].children[0];
+
+        for (var i = 0; i < param._subCategories.length; i++) {
+            values += '"' + param._subCategories[i]._name + '"';
+            if ((param._subCategories.length - 1) != i) values += ", ";                
+        }
+        values += "]";
+
+        select.setAttribute("data-source", values)
+    }
+        
+
     //получение объекта селект
     function getSelected(idBlock) {
         var select = document.getElementById(idBlock).children[1].children[0];
@@ -351,7 +413,7 @@
     }
     //создание таблицы для результата
     function createTable(param) {
-        var table = "<table style='width:100%;'>\n";
+        var table = "<table class='col-md-12'>\n";
         table += "<tr>\n";
         table += "<th>" + "№<br>п/п" + "</th>\n";
         table += "<th>" + "Пільга" + "</th>\n";
@@ -372,6 +434,11 @@
     function init() {
         fillingSelect("level1", SocialGroups);
         document.getElementById("level1").style.display = "block";
+
+        //заполнение для поиска
+        fillingInput("findLevel1", SocialCategory);
+        document.getElementById("findLevel1").style.display = "block";
+
         document.getElementById("level2").style.display = "none";
         document.getElementById("level3").style.display = "none";
         document.getElementById("socHelpBlock").style.display = "none";
@@ -431,7 +498,7 @@
                         new Category("Соціально не захищені"),
                         new Category("Повязані з війною"));
 
-    var SocialCategory = new Category("Категорія");
+    var SocialCategory = new Category("Введіть категорію");
     SocialCategory.Add(new Category("Народні депутати"),
                         new Category("Народні депутати - пенсіонери"),
                         new Category("Судді"),
@@ -538,9 +605,9 @@
     // *****************     Добавляем льготы       **********************
     // *******************************************************************
     SocialCategory.Sub("Народні депутати").AddHelp(
-    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Постійно" });
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Постійно" });
     SocialCategory.Sub("Народні депутати - пенсіонери").AddHelp(
-    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
 
     SocialCategory.Sub("Учасники бойових дій").AddHelp(
         { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "75%" },
