@@ -721,8 +721,7 @@ public class ActionEventController {
                     
                     DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         
-                    if ((sDateCreate == null || sDateClose == null)&&(oHistoryEvent_Service.getnID_StatusType() 
-                            != HistoryEvent_Service_StatusType.ABSENT.getnID()))
+                    if ((sDateCreate == null || sDateClose == null)&&(!Objects.equals(oHistoryEvent_Service.getnID_StatusType(), HistoryEvent_Service_StatusType.ABSENT.getnID())))
                     {
                         try{
 
