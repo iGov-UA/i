@@ -115,12 +115,25 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
     } else {
       this.mode = 'local';
+      //this.mode = 'kyiv';
     }
 
   };
 
   this.isCentral = function () {
     return this.mode === 'local' || this.mode === 'igov';
+  };
+
+  this.isKyivCity = function () {
+    return this.mode === 'kyiv';
+  };
+
+  this.getPageTitle = function () {
+    if (this.mode === 'kyiv'){
+      return 'Портал державних послуг'
+    } else {
+      return 'iGov – Портал державних послуг'
+    }
   };
 
   var getHeader = function (mode) {
@@ -242,6 +255,14 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.isCentral = function () {
     return selfProvider.isCentral();
+  };
+
+  StatesRepository.prototype.isKyivCity = function () {
+    return selfProvider.isKyivCity();
+  };
+
+  StatesRepository.prototype.getPageTitle = function () {
+    return selfProvider.getPageTitle();
   };
 
   this.$get = [function StatesRepositoryFactory() {

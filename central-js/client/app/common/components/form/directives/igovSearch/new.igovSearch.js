@@ -23,6 +23,10 @@ angular.module('app')
           $scope.mainSearchView = false;
           $scope.catalogCounts = {};
 
+          $rootScope.oMainPageParams = {
+            sTitle : statesRepository.getPageTitle()
+          };
+
           // set defaults
           var defaultSettings = {
             sSearch: '',
