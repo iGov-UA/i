@@ -368,10 +368,9 @@
     //Заполнение селект блока
     function fillingSelect(idBlock, param) {
         clearSelect(idBlock);
-        document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
+        document.getElementById(idBlock).children[0].innerHTML = param._name + ":<br/><br/>";
 
         var select = document.getElementById(idBlock).children[1].children[0];
-
         for (var i = 0; i < param._subCategories.length; i++) {
             select.options[i + 1] = new Option(param._subCategories[i]._name, i + 1);
         }
@@ -391,17 +390,16 @@
 
     //Заполнение автозначений
     function fillingInput(idBlock, param) {
+        document.getElementById(idBlock).children[0].innerHTML = param._name + ":<br/><br/>";
+
         var values = "[";
-
-        document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
-        var select = document.getElementById(idBlock).children[1].children[0];
-
         for (var i = 0; i < param._subCategories.length; i++) {
             values += '"' + param._subCategories[i]._name + '"';
             if ((param._subCategories.length - 1) != i) values += ", ";                
         }
         values += "]";
 
+        var select = document.getElementById(idBlock).children[1].children[0];
         select.setAttribute("data-source", values)
     }
         
@@ -423,9 +421,9 @@
     }
     //создание таблицы для результата
     function createTable(param) {
-        var table = "<table class='col-md-12'>\n";
+        var table = "<table style='width: 100%;'>\n";
         table += "<tr>\n";
-        table += "<th>" + "№<br>п/п" + "</th>\n";
+        table += "<th style='width: 47px;'>" + "№<br>п/п" + "</th>\n";
         table += "<th>" + "Пільга" + "</th>\n";
         table += "<th>" + "Примітка" + "</th>\n";
         table += "</tr>\n";
