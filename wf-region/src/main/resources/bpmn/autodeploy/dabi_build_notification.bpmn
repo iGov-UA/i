@@ -252,14 +252,14 @@
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_valid.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nBuildNotif}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nBuildNotif}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
