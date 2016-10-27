@@ -151,7 +151,7 @@
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string" variable="sLoginAsignee" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string" expression="${sLoginAsignee}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker5_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -388,7 +388,7 @@
         <timeDuration>PT10M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask_step_6.2" name="6.2 Повідомлення про невиконання завдання">
+    <userTask id="usertask_step_6.2" name="6.2 Повідомлення про невиконання завдання" activiti:candidateGroups="kyiv_dabi_permit_empl">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
           <activiti:value id="sEnumAppPerson" name="фізична особа"></activiti:value>
