@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory, TableService,
-              ErrorsFactory) {
+              ErrorsFactory, SignFactory) {
 
       'use strict';
 
@@ -590,8 +590,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
 
       $scope.isFieldVisible = function (property) {
-        return property.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(property.id) ?
-                FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
+        var bVisible = property.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(property.id) ?
+            FieldMotionService.isFieldVisible(property.id, $scope.data.formData.params) : true);
+        if($scope.data.formData.params[property.id] instanceof SignFactory){
+          $scope.isSignNeeded = bVisible;
+        }
+        return bVisible;
       };
 
       $scope.isFieldRequired = function (property) {
@@ -599,18 +603,39 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           return true;
         }
         var b = FieldMotionService.FieldMentioned.inRequired(property.id) ?
-            FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
+          FieldMotionService.isFieldRequired(property.id, $scope.data.formData.params) : property.required;
+        if($scope.data.formData.params[property.id] instanceof SignFactory){
+          $scope.isSignNeededRequired = b;
+          if(!($scope.isSignNeeded && !$scope.isSignNeededRequired)){
+            $scope.sign.checked = b;
+          }
+        }
         return b;
       };
 
       $scope.$watch('data.formData.params', watchToSetDefaultValues, true);
       function watchToSetDefaultValues() {
-        var calcFields = FieldMotionService.getCalcFieldsIds();
+        //var calcFields = FieldMotionService.getCalcFieldsIds();
+        var calcFields = FieldMotionService.getTargetFieldsIds('Values');
         var pars = $scope.data.formData.params;
         calcFields.forEach(function (key) {
           if (_.has(pars, key)) {
             var data = FieldMotionService.calcFieldValue(key, pars, $scope.activitiForm.formProperties);
             if (data.value && data.differentTriggered) pars[key].value = data.value;
+          }
+        });
+
+        var requiredCalcFields = FieldMotionService.getTargetFieldsIds('Required');
+        requiredCalcFields.forEach(function (key) {
+          if (_.has(pars, key)) {
+            var dataRequired = FieldMotionService.isFieldRequired(key, pars);
+            if (pars[key].required != dataRequired) {
+              pars[key].required = dataRequired;
+              if (pars[key] instanceof SignFactory){
+                $scope.sign.checked = dataRequired;
+                $scope.isSignNeededRequired = dataRequired;
+              }
+            }
           }
         });
       }
