@@ -14,6 +14,8 @@ import org.igov.service.business.action.task.core.AbstractModelTask;
 import java.util.LinkedList;
 import java.util.List;
 import java.text.MessageFormat;
+import org.igov.io.GeneralConfig;
+import org.igov.io.Log;
 
 /**
  * @author askosyr
@@ -27,32 +29,53 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
 
     private Expression aFieldInheritedAttachmentID;
 
+    @Autowired
+    GeneralConfig generalConfig;
+    
     @Override
-    public void notify(DelegateTask task) {
+    public void notify(DelegateTask oTask) {
 
-        DelegateExecution execution = task.getExecution();
+        DelegateExecution oExecution = oTask.getExecution();
 
         LOG.info("notify");
 
+        List<Attachment> asID_Attachment_ToAdd = null;
         try {
 
-            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, execution);
-            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", task.getId(), sInheritedAttachmentsIds);
+            String sInheritedAttachmentsIds = getStringFromFieldExpression(this.aFieldInheritedAttachmentID, oExecution);
+            LOG.info("(task.getId()={},sInheritedAttachmentsIds(1)={})", oTask.getId(), sInheritedAttachmentsIds);
 
             if (sInheritedAttachmentsIds == null || "".equals(sInheritedAttachmentsIds.trim())) {
                 LOG.error("aFieldInheritedAttachmentID field is not specified!");
                 return;
             }
 
-            List<Attachment> attachments = getAttachmentsFromParentTasks(execution);
+            List<Attachment> attachments = getAttachmentsFromParentTasks(oExecution);
 
-            List<Attachment> attachmentsToAdd = getInheritedAttachmentIdsFromTask(attachments,
+            asID_Attachment_ToAdd = getInheritedAttachmentIdsFromTask(attachments,
                     sInheritedAttachmentsIds);
 
-            addAttachmentsToCurrentTask(attachmentsToAdd, task);
+            addAttachmentsToCurrentTask(asID_Attachment_ToAdd, oTask);
         } catch (Exception oException) {
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
+            new Log(oException, LOG)//this.getClass()
+                    ._Case("Activiti_AttachRedisKeyFail")
+                    ._Status(Log.LogStatus.ERROR)
+                    ._Head("Invalid Redis Key of Attachment")
+                    ._Body(oException.getMessage())
+                    //._Exception(oException)
+//                    ._Param("n", n)
+//                    ._Param("sID_Field", sID_Field)
+                    ._Param("asID_Attachment_ToAdd", asID_Attachment_ToAdd)
+//                    ._Param("sDescription", sDescription)
+                    ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                    //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                    ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                    ._Param("oTask.getId()", oTask.getId())
+                    ._Param("oTask.getName()", oTask.getName())
+                    .save()
+                    ;
         }
 
     }

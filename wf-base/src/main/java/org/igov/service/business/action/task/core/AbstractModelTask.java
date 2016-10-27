@@ -430,10 +430,10 @@ public abstract class AbstractModelTask {
                                 } catch (Exception oException){
                                     LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
                                     new Log(oException, LOG)//this.getClass()
-                                            ._Case("Activiti_AttachRedisFail")
+                                            ._Case("Activiti_AttachRedisKeyFail")
                                             ._Status(Log.LogStatus.ERROR)
-                                            ._Head("Can't create Attachment for Task")
-                                            ._Body("oAttachment == null")
+                                            ._Head("Invalid Redis Key of Attachment")
+                                            ._Body(oException.getMessage())
                                             //._Exception(oException)
                                             ._Param("n", n)
                                             ._Param("sID_Field", sID_Field)
