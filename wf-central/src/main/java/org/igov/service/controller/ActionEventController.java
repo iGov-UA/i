@@ -711,7 +711,7 @@ public class ActionEventController {
                     asCell.add(sPhone);
                     
                     asCell.add(oHistoryEvent_Service.getnID_ServiceData() != null ? oHistoryEvent_Service.getnID_ServiceData().toString() : "");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     
                     sURL = sHost + "/service/action/task/getTaskData?sID_Order=" + oHistoryEvent_Service.getsID_Order() 
                             + "&bIncludeGroups=false&bIncludeStartForm=false&bIncludeAttachments=false&bIncludeMessages=false";
@@ -747,7 +747,7 @@ public class ActionEventController {
                         }
                         catch (Exception ex)
                         {
-                            //Если заявка не найдена - тут можно проставлять статус
+                            LOG.error("Error occurred while finding of task", ex.getMessage());
                         }
                     }
                                                            
