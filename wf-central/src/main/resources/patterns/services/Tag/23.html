@@ -1,0 +1,656 @@
+﻿<style>
+    .article-block {
+        font-family: Open Sans, Arial, sans-serif;
+        color: #333333;
+    }
+
+        .article-block li {
+            margin: 10px 0;
+        }
+
+        .article-block ol,
+        .article-block ul {
+            margin-bottom: 36px;
+        }
+
+            .article-block .content-art ol,
+            .article-block .content-art ul,
+            .article-block ol ul,
+            .article-block ol ol,
+            .article-block ul ul,
+            .article-block ul ol {
+                margin-bottom: 12px;
+            }
+
+        .article-block table ol,
+        .article-block table ul {
+            margin: 0 0 0 25px;
+            padding: 0;
+        }
+
+        .article-block table li {
+            padding: 5px 0 0 0;
+            margin: 0;
+        }
+
+
+        .article-block .notmarker > li {
+            list-style-type: none; /* Убираем маркеры */
+        }
+
+        .article-block sup {
+            color: #428bca;
+            font-size: 10.8333px;
+        }
+
+        .article-block a {
+            color: #428bca;
+        }
+
+        .article-block h1,
+        .article-block .ind-section {
+            margin-top: 46px;
+        }
+
+            .article-block h1.topic {
+                margin-top: 12px;
+            }
+
+        .article-block h2 {
+            margin-top: 36px;
+        }
+
+        .article-block h3 {
+            margin-top: 24px;
+        }
+
+        .article-block h1 > sup {
+            color: #428bca;
+            font-size: 15.8333px;
+        }
+
+        .article-block table {
+            border-spacing: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            border-collapse: separate;
+        }
+
+        .article-block th {
+            background: #eeeeee;
+            text-align: center;
+        }
+
+        .article-block td,
+        .article-block th {
+            padding: 16px 10px;
+            vertical-align: central;
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+        .article-block .tableNotHead tr:first-child > td,
+        .article-block tr:first-child > th {
+            border-top: none;
+        }
+
+            .article-block td:first-child,
+            .article-block tr:first-child > th:first-child {
+                border-left: none;
+            }
+            /* из-за background */
+            .article-block tr:first-child > th:first-child {
+                border-top-left-radius: 5px;
+            }
+
+            .article-block tr:first-child > th:last-child {
+                border-top-right-radius: 5px;
+            }
+
+        .article-block tr > td.small-text,
+        .article-block .small-text {
+            font-size: 10pt;
+        }
+
+
+        .article-block tr > td.va-c,
+        .article-block .va-c {
+            vertical-align: central;
+        }
+
+        .article-block tr > td.va-b,
+        .article-block .va-b {
+            vertical-align: bottom;
+        }
+
+        .article-block tr > td.va-t,
+        .article-block .va-t {
+            vertical-align: top;
+        }
+
+
+        .article-block tr > td.ta-c,
+        .article-block .ta-c {
+            text-align: center;
+        }
+
+        .article-block tr > td.ta-l,
+        .article-block .ta-l {
+            text-align: left;
+        }
+
+        .article-block tr > td.ta-r,
+        .article-block .ta-r {
+            text-align: right;
+        }
+
+        .article-block tr > td.ta-j,
+        .article-block p,
+        .article-block li,
+        .article-block .ta-j {
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+
+        .article-block .attention-block {
+            margin: 20px;
+            padding: 20px;
+            border-left: 3px solid #eee;
+        }
+
+            .article-block .attention-block h4 {
+                margin-top: 0;
+                margin-bottom: 5px;
+            }
+
+            .article-block .attention-block p:last-child {
+                margin-bottom: 0;
+            }
+
+        .article-block .attention-block-info {
+            background-color: #f4f8fa;
+            border-color: #5bc0de;
+        }
+
+            .article-block .attention-block-info h4 {
+                color: #5bc0de;
+            }
+
+        .article-block .attention {
+            padding: 16px 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+
+        .article-block .note {
+            color: #999;
+        }
+
+        .article-block .b {
+            font-weight: bold;
+        }
+
+        .article-block .notb {
+            font-weight: 100;
+        }
+
+    .formula em,
+    .variables em,
+    .variable {
+        font-weight: bold;
+    }
+
+    .article-block .formula table {
+        border-spacing: 0;
+        border: 0;
+        border-radius: 0px;
+        border-collapse: separate;
+        margin: auto;
+        padding: 0;
+    }
+
+    .article-block .formula tr,
+    .article-block .formula td {
+        vertical-align: central;
+        margin: 0;
+        padding: 3px 5px;
+        border: 0;
+    }
+</style>
+
+
+<article lang="uk" class="article-block">
+    <h1 class="topic">Пільгові категорії населення</h1>
+
+    <h1>Пільги</h1>
+
+    <div>
+        <p>
+            Оберіть цікаву для вас категорію, щоб дізнатись які вони мають пільги.
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="highlight">
+                    <div id="categor">
+                    	<br>
+                        <div class="row" id="level1" style="display:none;">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control" onchange="l1()">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="level2" style="display:none;">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control" onchange="l2()">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="level3" style="display:none;">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control" onchange="l3()">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--  Інформаційний блок  -->
+                    <div id="socHelpBlock" style="display:none;"></div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</article>
+
+
+<!--  Функции для работы с формой  -->
+<script>
+    //обработчик первого выпадающего списка
+    function l1() {
+        var mas = SocialGroups.Sub(getSelected("level1"));
+
+        fillingSelect("level2", mas);
+
+        document.getElementById("level2").style.display = "block";
+        document.getElementById("level3").style.display = "none";
+        document.getElementById("socHelpBlock").style.display = "none";
+    }
+    //обработчик второго выпадающего списка
+    function l2() {
+        var mas = SocialGroups.Sub(getSelected("level1")).Sub(getSelected("level2"));
+
+        //если есть 3-й уровень
+        if (mas._subCategories.length > 10) {
+            fillingSelect("level3", mas);
+            document.getElementById("level3").style.display = "block";
+        } else {
+            document.getElementById("level3").style.display = "none";
+        }
+
+        //есть ли льготы
+        if (mas._socHelp.length > 0) {
+            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<b>Варіант 1</b><br>\n" + createList(mas) + "\n<br><br>\n<b>Варіант 2</b><br>\n" + createTable(mas) +"\n<br>\n";
+            document.getElementById("socHelpBlock").style.display = "block";
+        } else {
+            document.getElementById("socHelpBlock").innerHTML = "<br><hr>\n<h2>Пільги відсутні</h2>\n<br>\n";
+            document.getElementById("socHelpBlock").style.display = "block";
+        }
+
+    }
+    //обработчик третьего выпадающего списка
+    function l3() { }
+
+    //Заполнение селект блока
+    function fillingSelect(idBlock, param) {
+        clearSelect(idBlock);
+        document.getElementById(idBlock).children[0].innerHTML = param._name + "<br/><br/>";
+
+        var select = document.getElementById(idBlock).children[1].children[0];
+
+        for (var i = 0; i < param._subCategories.length; i++) {
+            select.options[i + 1] = new Option(param._subCategories[i]._name, i + 1);
+        }
+    }
+
+    //очистка селекта
+    function clearSelect(idBlock) {
+        document.getElementById(idBlock).children[0].innerHTML = "";
+
+        var select = document.getElementById(idBlock).children[1].children[0];
+
+        for (var i = select.options.length; i > 0 ; i--) {
+            select.remove(i);
+        }
+    }
+
+    //получение объекта селект
+    function getSelected(idBlock) {
+        var select = document.getElementById(idBlock).children[1].children[0];
+        return select.options[select.selectedIndex].text;
+    }
+
+    //созание листа для результата
+    function createList(param) {
+        var list = "<ol>\n";
+        for (var i = 0; i < param._socHelp.length; i++) {
+            list += "<li>" + param._socHelp[i].categoryHelp._name + " (" + param._socHelp[i].description + ")</li>\n";
+        }
+        list += "</ol>\n";
+        return list;
+    }
+    //создание таблицы для результата
+    function createTable(param) {
+        var table = "<table class='w100p'>\n";
+        table += "<tr>\n";
+        table += "<th>" + "№ п/п" + "</th>\n";
+        table += "<th>" + "Пільга" + "</th>\n";
+        table += "<th>" + "Примітка" + "</th>\n";
+        table += "</tr>\n";
+        for (var i = 0; i < param._socHelp.length; i++) {
+            table += "<tr>\n";
+            table += "<td class='ta-c'>" + (i + 1) + "</td>\n";
+            table += "<td>" + param._socHelp[i].categoryHelp._name + "</td>\n";
+            table += "<td>" + param._socHelp[i].description + "</td>\n";
+            table += "</tr>\n";
+        }
+        table += "</table>\n";
+        return table;
+    }
+
+    //инициализация
+    function init() {
+        fillingSelect("level1", SocialGroups);
+        document.getElementById("level2").style.display = "none";
+        document.getElementById("level3").style.display = "none";
+        document.getElementById("socHelpBlock").style.display = "none";
+    }
+</script>
+
+<!-- Класс категория  -->
+<script>
+    function Category(name) {
+        this._name = name;
+        this._subCategories = new Array();
+        this._socHelp = new Array()
+        this._elem = null;
+
+        this.Add = function () {
+            for (var i = 0; i < arguments.length; i++) {
+                this._subCategories.push(arguments[i]);
+            }
+        }
+
+        this.AddHelp = function () {
+            for (var i = 0; i < arguments.length; i++) {
+                this._socHelp.push(arguments[i]);
+            }
+        }
+
+        this.Sub = function (name) {
+            for (var i = 0; i < this._subCategories.length; i++) {
+                if (name == this._subCategories[i]._name) {
+                    return this._subCategories[i];
+                }
+            }
+            return new Category(" ");
+        }
+
+        this.SubHelp = function (name) {
+            for (var i = 0; i < this._subCategories.length; i++) {
+                if (name == this._socHelp[i]._name) {
+                    return this._socHelp[i];
+                }
+            }
+            return new Category(" ");
+        }
+
+    }
+</script>
+
+<!--  Инициализация  -->
+<script>
+    // *******************************************************************
+    // *****************    Социальные группы       **********************
+    // *******************************************************************
+    var SocialGroups = new Category("Соціальні групи");
+    SocialGroups.Add(new Category("Державні службовці"),
+                        new Category("Постраждалі категорії"),
+                        new Category("Категорія з заслугами"),
+                        new Category("Соціально не захищені"),
+                        new Category("Повязані з війною"));
+
+    var SocialCategory = new Category("Категорія");
+    SocialCategory.Add(new Category("Народні депутати"),
+                        new Category("Народні депутати - пенсіонери"),
+                        new Category("Судді"),
+                        new Category("Прокурори"),
+                        new Category("Держслужбовці"),
+                        new Category("Члени ЦВК"),
+                        new Category("Працівники поліції"),
+                        new Category("Пожежники"),
+                        new Category("Працівники служби цивільної оборони"),
+                        new Category("Працівники служби спецзвязку"),
+                        new Category("Медичні і фармакологічні працівники"),
+                        new Category("Медики, педагоги. працівники музеїв у селах"),
+                        new Category("Жертви нацистських переслідувань"),
+                        new Category("Жертви політичних репресій"),
+                        new Category("Чорнобильці"),
+                        new Category("Ветерани праці"),
+                        new Category("Особи з особливими заслугами перед Батьківщиною"),
+                        new Category("Особи з особливими трудовими заслугами перед батькіівщиною"),
+                        new Category("Інваліди"),
+                        new Category("Багатодітні сімї (3 і більше дітей)"),
+                        new Category("Учасники бойових дій"),
+                        new Category("Інваліди війни"),
+                        new Category("Учасники війни"),
+                        new Category("Ветерани воєнної служби"),
+                        new Category("Діти війни"));
+
+    // *****************    Державні службовці      **********************
+    SocialGroups.Sub("Державні службовці").Add(SocialCategory.Sub("Народні депутати"),
+                                                SocialCategory.Sub("Народні депутати - пенсіонери"),
+                                                SocialCategory.Sub("Судді"),
+                                                SocialCategory.Sub("Прокурори"),
+                                                SocialCategory.Sub("Держслужбовці"),
+                                                SocialCategory.Sub("Члени ЦВК"),
+                                                SocialCategory.Sub("Працівники поліції"),
+                                                SocialCategory.Sub("Пожежники"),
+                                                SocialCategory.Sub("Працівники служби цивільної оборони"),
+                                                SocialCategory.Sub("Працівники служби спецзвязку"),
+                                                SocialCategory.Sub("Медичні і фармакологічні працівники"),
+                                                SocialCategory.Sub("Медики, педагоги. працівники музеїв у селах"));
+
+    // *****************    Постраждалі категорії   **********************
+    SocialGroups.Sub("Постраждалі категорії").Add(
+                                                    SocialCategory.Sub("Жертви нацистських переслідувань"),
+                                                    SocialCategory.Sub("Жертви політичних репресій"),
+                                                    SocialCategory.Sub("Чорнобильці"));
+
+    // *****************    Категорія з заслугами   **********************
+    SocialGroups.Sub("Категорія з заслугами").Add(
+                                                    SocialCategory.Sub("Ветерани праці"),
+                                                    SocialCategory.Sub("Особи з особливими заслугами перед Батьківщиною"),
+                                                    SocialCategory.Sub("Особи з особливими трудовими заслугами перед батькіівщиною"));
+
+    // *****************    Соціально не захищені   **********************
+    SocialGroups.Sub("Соціально не захищені").Add(
+                                                SocialCategory.Sub("Інваліди"),
+                                                SocialCategory.Sub("Багатодітні сімї (3 і більше дітей)"));
+
+    SocialGroups.Sub("Соціально не захищені").Sub("Багатодітні сімї (3 і більше дітей)").Add(
+        new Category("від 3 до 5 дітей"),
+        new Category("від 5 до 8 дітей"),
+        new Category("більше 8 дітей"));
+
+
+    // *****************    Повязані з війною       **********************
+    SocialGroups.Sub("Повязані з війною").Add(
+                                                SocialCategory.Sub("Учасники бойових дій"),
+                                                SocialCategory.Sub("Інваліди війни"),
+                                                SocialCategory.Sub("Учасники війни"),
+                                                SocialCategory.Sub("Ветерани воєнної служби"),
+                                                SocialCategory.Sub("Діти війни"));
+
+
+    // *******************************************************************
+    // *****************    Социальные помощи       **********************
+    // *******************************************************************
+    var SocHelp = new Category("Загальні");
+
+    SocHelp.Add(new Category("Знижки по квартплаті та оплаті комунальних послуг, телефону"),
+                new Category("Безкоштовні ліки за рецептом лікаря"),
+                new Category("Безкоштовне позачергове протезування зубів з недороцінних металів"),
+                new Category("Першочергове обслуговування в лікарнях, санаторіях і аптеках"),
+                new Category("Безкоштовні путівки або компенсація лікування"),
+                new Category("Щорічне обслуговування, диспансеризація, лікування в спецстаціонарах"),
+                new Category("Переваги при скороченні на роботі"),
+                new Category("Позачергове забезпечення житловою площею"),
+                new Category("Безвідсотковий кредит на будівництво будинку"),
+                new Category("Встановлення телефону поза чергою"),
+                new Category("Пільги по відпустках"),
+                new Category("Пільги по навчанню"),
+                new Category("Місце для дітей в дитячому садку поза чергою"),
+                new Category("Пільги по сплаті податків і зборів"),
+                new Category("Пенсійні пільги"),
+                new Category("Особлива меддопомога"),
+                new Category("Першочергове виділення земельної ділянки"),
+                new Category("Позачергове безкоштовне забезпечення автомобілем"),
+                new Category("Безкоштовне обслуговування в спецлікарнях після виходу на пенсію"),
+                new Category("100% оплата лікарняного незалежно від стажу роботи"),
+                new Category("Виплата лікарняних 4 місяці підряд або 5 місяців в рік"),
+                new Category("Безкоштовний проїзд по Україні"),
+                new Category("Безкоштовний проїзд по області"));
+
+
+    // *******************************************************************
+    // *****************     Добавляем льготы       **********************
+    // *******************************************************************
+    SocialCategory.Sub("Народні депутати").AddHelp(
+    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Постійно" });
+    SocialCategory.Sub("Народні депутати - пенсіонери").AddHelp(
+    	{ categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+
+    SocialCategory.Sub("Учасники бойових дій").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "75%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+
+    SocialCategory.Sub("Інваліди війни").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "100%" },
+        { categoryHelp: SocHelp.Sub("Встановлення телефону поза чергою"), description: "Безкоштовно" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "І,ІІ групи - 1 раз в рік в обидві сторони, ІІІ група - 50% знижка 1 раз в рік в обидві сторони або безкоштовний проїзд 1 раз в 2 роки" });
+
+    SocialCategory.Sub("Учасники війни").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "50% знижка 1 раз в рік, або безкоштовний проїзд 1 раз в два роки" });
+
+    SocialCategory.Sub("Ветерани воєнної служби").AddHelp(
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "позачергове право, без компенсації" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони для лікування, нове місце роботи" });
+
+    SocialCategory.Sub("Ветерани праці").AddHelp(
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "позачергове право" });
+
+    SocialCategory.Sub("Діти війни").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "25%" },
+        { categoryHelp: SocHelp.Sub("Особлива меддопомога"), description: "в госпіталях для інвалідів війни" });
+
+    SocialCategory.Sub("Особи з особливими заслугами перед Батьківщиною").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "100%" },
+        { categoryHelp: SocHelp.Sub("Першочергове обслуговування в лікарнях, санаторіях і аптеках"), description: "також члени сімї" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+
+    SocialCategory.Sub("Особи з особливими трудовими заслугами перед батькіівщиною").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "100%" },
+        { categoryHelp: SocHelp.Sub("Першочергове обслуговування в лікарнях, санаторіях і аптеках"), description: "також члени сімї" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+
+    SocialCategory.Sub("Жертви нацистських переслідувань").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "75%, інваліди та вязні контаборів 100%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні ліки за рецептом лікаря"), description: "25%" },
+        { categoryHelp: SocHelp.Sub("Позачергове безкоштовне забезпечення автомобілем"), description: "Інваліди" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "Для інвалідів І,ІІ груп - 50% знижка 1 раз в рік, або безкоштовно 1 раз в 2 роки, решта 50% раз в два роки" });
+
+    SocialCategory.Sub("Жертви політичних репресій").AddHelp(
+        { categoryHelp: SocHelp.Sub("Безкоштовні ліки за рецептом лікаря"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "без компенсацій" },
+        { categoryHelp: SocHelp.Sub("Безвідсотковий кредит на будівництво будинку"), description: "в сільській місцевості" },
+        { categoryHelp: SocHelp.Sub("Пенсійні пільги"), description: "тільки інваліди" },
+        { categoryHelp: SocHelp.Sub("Позачергове безкоштовне забезпечення автомобілем"), description: "Інваліди" });
+
+    SocialCategory.Sub("Інваліди").AddHelp(
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "при наявності показів" },
+        { categoryHelp: SocHelp.Sub("Позачергове безкоштовне забезпечення автомобілем"), description: "інваліди І групи" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "50% знижка  з 1 жовтня до 15 травня для інвалідів І групи, дітей-інвалідів, супроводжуючих" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по області"), description: "в метро І і ІІ групи по зору" });
+
+    SocialCategory.Sub("Чорнобильці").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "1-2 кат. 50% знижка, 3-4кат. 50% знижка на паливо" },
+        { categoryHelp: SocHelp.Sub("Безкоштовне позачергове протезування зубів з недороцінних металів"), description: "для 4кат. знижка" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "для 3-4 кат. компенсація 70%" },
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "1-2 кат." },
+        { categoryHelp: SocHelp.Sub("Встановлення телефону поза чергою"), description: "1-2 кат. за 50%" },
+        { categoryHelp: SocHelp.Sub("Пільги по сплаті податків і зборів"), description: "1-2 кат. звільнені" },
+        { categoryHelp: SocHelp.Sub("Позачергове безкоштовне забезпечення автомобілем"), description: "інваліди 1-2 кат." },
+        { categoryHelp: SocHelp.Sub("Безкоштовне обслуговування в спецлікарнях після виходу на пенсію"), description: "безкоштовно, позачергово" },
+        { categoryHelp: SocHelp.Sub("Виплата лікарняних 4 місяці підряд або 5 місяців в рік"), description: "Інваліди" },
+        { categoryHelp: SocHelp.Sub("Безкоштовний проїзд по Україні"), description: "1 раз в рік в обидві сторони" });
+
+    SocialCategory.Sub("Судді").AddHelp(
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "службове житло" });
+
+    SocialCategory.Sub("Прокурори").AddHelp(
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "службове житло" });
+
+    SocialCategory.Sub("Працівники поліції").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%, в сільській місцевості 100%" });
+
+    SocialCategory.Sub("Пожежники").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "службове житло" });
+
+    SocialCategory.Sub("Працівники служби цивільної оборони").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "без компенсації" },
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "службове житло" },
+        { categoryHelp: SocHelp.Sub("Першочергове виділення земельної ділянки"), description: "безкоштовно" });
+
+    SocialCategory.Sub("Працівники служби спецзвязку").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "без компенсації" },
+        { categoryHelp: SocHelp.Sub("Позачергове забезпечення житловою площею"), description: "після закінчення служби" });
+
+    SocialCategory.Sub("Медичні і фармакологічні працівники").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "в сільській місцевості 100%" },
+        { categoryHelp: SocHelp.Sub("Безвідсотковий кредит на будівництво будинку"), description: "в сільській місцевості" });
+
+    SocialCategory.Sub("Медики, педагоги. працівники музеїв у селах").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "100%" });
+
+    SocialCategory.Sub("Багатодітні сімї (3 і більше дітей)").AddHelp(
+        { categoryHelp: SocHelp.Sub("Знижки по квартплаті та оплаті комунальних послуг, телефону"), description: "50%" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні ліки за рецептом лікаря"), description: "діти" },
+        { categoryHelp: SocHelp.Sub("Безкоштовне позачергове протезування зубів з недороцінних металів"), description: "діти" },
+        { categoryHelp: SocHelp.Sub("Першочергове обслуговування в лікарнях, санаторіях і аптеках"), description: "діти" },
+        { categoryHelp: SocHelp.Sub("Безкоштовні путівки або компенсація лікування"), description: "діти (першочергове право)" },
+        { categoryHelp: SocHelp.Sub("Щорічне обслуговування, диспансеризація, лікування в спецстаціонарах"), description: "діти" },
+        { categoryHelp: SocHelp.Sub("Пільги по навчанню"), description: "більше 5 дітей" },
+        { categoryHelp: SocHelp.Sub("Пенсійні пільги"), description: "матір (більше 8 дітей)" });
+
+    //Инициализация
+    init();
+</script>

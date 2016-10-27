@@ -49,6 +49,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param form - форма, яку треба валідувати за маркерами валідації. Обов'язковий параметр.
    * @param {object} markers - маркери валідації. Необов'язковий параметр. Якщо він відсутній, то спрацюють маркери за замовчуванням, див. _resolveValidationMarkers
    * @param {boolean} immediateValidation - необов'язковий, вказує, чи треба проводити першу валідацію одразу після призначення валідаторів.
+   * @param {object} data - необов'язковий, але необхідний, якщо значення, які необхідно провалыдувати, не передаються засобами сервісу штатного валідатора в параметрах modelValue та viewValue
    * @param {boolean} newRow - необов'язковий, використовується для валідації таблицi при додаваннi нового рядка
    */
   self.validateByMarkers = function (form, markers, immediateValidation, data, newRow) {
