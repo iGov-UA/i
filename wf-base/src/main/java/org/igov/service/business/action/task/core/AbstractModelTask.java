@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.service.business.action.task.form.TableFormType;
 
@@ -39,6 +40,10 @@ public abstract class AbstractModelTask {
     private static Logger LOG = LoggerFactory
             .getLogger(AbstractModelTask.class);
 
+    @Autowired
+    GeneralConfig generalConfig;
+
+    
     @Autowired
     protected FlowSlotDao flowSlotDao;
     @Autowired
@@ -335,27 +340,27 @@ public abstract class AbstractModelTask {
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
                         .equals(sKeyRedis.trim())) {
                     
+                    if (!asFieldName.isEmpty() && n < asFieldName.size()) {
+
+                        String sID_Field = asFieldID.get(n);
+                        LOG.info("(sID_Field={})", sID_Field);
+
+                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
+                        String sDescription = asFieldName.get(n);
+                        if(sDescription!=null&&sDescription.contains(";")){
+                            //LOG.info("BEFORE:(sDescription={})", sDescription);
+                            sDescription=sDescription.split(";")[0];
+                        }
+                        if(sDescription==null){
+                            sDescription="";
+                        }
+                        if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
+                            sDescription = sDescription+"[table]";
+                        }
+                        LOG.info("(sDescription={})", sDescription);
                     
                     
-                    if (sKeyRedis.length() > 15) {
-                        if (!asFieldName.isEmpty() && n < asFieldName.size()) {
-                            
-                            String sID_Field = asFieldID.get(n);
-                            LOG.info("(sID_Field={})", sID_Field);
-                            
-                            //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                            String sDescription = asFieldName.get(n);
-                            if(sDescription!=null&&sDescription.contains(";")){
-                                //LOG.info("BEFORE:(sDescription={})", sDescription);
-                                sDescription=sDescription.split(";")[0];
-                            }
-                            if(sDescription==null){
-                                sDescription="";
-                            }
-                            if(getField(oFormData, sID_Field).getType() instanceof TableFormType){
-                                sDescription = sDescription+"[table]";
-                            }
-                            LOG.info("(sDescription={})", sDescription);
+                        if (sKeyRedis.length() > 15) {
                             
                             //получение контента файла из временного хранилища
                             byte[] aByteFile;
@@ -375,7 +380,7 @@ public abstract class AbstractModelTask {
                                         ._Param("sID_Field", sID_Field)
                                         ._Param("sKeyRedis", sKeyRedis)
                                         ._Param("sDescription", sDescription)
-//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
                                         //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                                         ._Param("oTask.getId()", oTask.getId())
@@ -408,7 +413,7 @@ public abstract class AbstractModelTask {
                                         ._Param("sID_Field", sID_Field)
                                         ._Param("sKeyRedis", sKeyRedis)
                                         ._Param("sDescription", sDescription)
-//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
                                         //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                                         ._Param("oTask.getId()", oTask.getId())
@@ -418,34 +423,34 @@ public abstract class AbstractModelTask {
                             }
 
                         } else {
-                            LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+                                try {
+                                        LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
+                                        Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
+                                        aAttachment.add(oAttachment);
+                                } catch (Exception e){
+                                        LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+                                    new Log(this.getClass(), LOG)//this.getClass()
+                                            ._Case("Activiti_AttachRedisFail")
+                                            ._Status(Log.LogStatus.ERROR)
+                                            ._Head("Can't create Attachment for Task")
+                                            ._Body("oAttachment == null")
+                                            //._Exception(oException)
+                                            ._Param("n", n)
+                                            ._Param("sID_Field", sID_Field)
+                                            ._Param("sKeyRedis", sKeyRedis)
+                                            ._Param("sDescription", sDescription)
+                                            ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
+                                            //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
+                                            ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
+                                            ._Param("oTask.getId()", oTask.getId())
+                                            ._Param("oTask.getName()", oTask.getName())
+                                            .save()
+                                            ;
+                                }
+
                         }
                     } else {
-                            try {
-                                    LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
-                                    Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                                    aAttachment.add(oAttachment);
-                            } catch (Exception e){
-                                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
-                                new Log(this.getClass(), LOG)//this.getClass()
-                                        ._Case("Activiti_AttachRedisFail")
-                                        ._Status(Log.LogStatus.ERROR)
-                                        ._Head("Can't create Attachment for Task")
-                                        ._Body("oAttachment == null")
-                                        //._Exception(oException)
-                                        ._Param("n", n)
-//                                        ._Param("sID_Field", sID_Field)
-                                        ._Param("sKeyRedis", sKeyRedis)
-//                                        ._Param("sDescription", sDescription)
-//                                        ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
-                                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
-                                        ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
-                                        ._Param("oTask.getId()", oTask.getId())
-                                        ._Param("oTask.getName()", oTask.getName())
-                                        .save()
-                                        ;
-                            }
-
+                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
                     }
                 }
                 n++;
