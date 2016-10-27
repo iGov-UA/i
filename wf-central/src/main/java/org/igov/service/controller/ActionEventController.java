@@ -721,7 +721,8 @@ public class ActionEventController {
                     
                     DateTimeFormatter uDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         
-                    if (sDateCreate == null || sDateClose == null)
+                    if ((sDateCreate == null || sDateClose == null)&&(oHistoryEvent_Service.getnID_StatusType() 
+                            != HistoryEvent_Service_StatusType.ABSENT.getnID()))
                     {
                         try{
 
@@ -747,7 +748,7 @@ public class ActionEventController {
                         }
                         catch (Exception ex)
                         {
-                            LOG.error("Error occurred while finding of task", ex.getMessage());
+                            oHistoryEvent_Service.setnID_StatusType(HistoryEvent_Service_StatusType.ABSENT.getnID());
                         }
                     }
                                                            
