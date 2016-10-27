@@ -16,7 +16,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="AssignedTask">
       <extensionElements>
-        <activiti:formProperty id="sFieldSecond" name="Перевірка виводу другого поля" type="string" expression="${sLoginAsignee}"></activiti:formProperty>
+        <activiti:formProperty id="sFieldSecond" name="Перевірка виводу другого поля" type="string" default="${sLoginAsignee}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression>sLoginAsignee</activiti:expression>
@@ -26,7 +26,7 @@
     </userTask>
     <userTask id="usertask3" name="Parallel" activiti:candidateGroups="kyiv_dabi_permit_boss">
       <extensionElements>
-        <activiti:formProperty id="assignedUser" name="name" type="string" expression="${sLoginAsignee}"></activiti:formProperty>
+        <activiti:formProperty id="assignedUser" name="name" type="string" default="${sLoginAsignee}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
