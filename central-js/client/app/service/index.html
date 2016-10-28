@@ -11,6 +11,7 @@
                 </li>
                 <li ui-sref-active="active"
                     ng-if="service.sInfo.trim() || (false && bAdmin)"
+                    ng-hide="bHideTab"
                     role="presentation">
                   <a ui-sref="index.service.instruction({id: service.nID})">Як працює</a>
                 </li>
@@ -27,11 +28,13 @@
                 </li>
                 <li ui-sref-active="active"
                     ng-if="service.sFAQ.trim() || (false && bAdmin)"
+                    ng-hide="bHideTab"
                     role="presentation">
                     <a ui-sref="index.service.questions({id: service.nID})">Поширенні питання</a>
                 </li>
                 <li ui-sref-active="active"
                     style="display: none;"
+                    ng-hide="bHideTab"
                     role="presentation">
                     <a ui-sref="index.service.discussion({id: service.nID})">Обговорення</a>
                 </li>
