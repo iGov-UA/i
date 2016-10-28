@@ -81,6 +81,11 @@ angular.module('app')
       }
     };
 
+    $scope.isSubdomain = function () {
+      var idPlaces = statesRepository.getIDPlaces();
+      return idPlaces.length > 0
+    };
+
     $scope.$on('$stateChangeStart', function(event, toState) {
       $scope.spinner = true;
       if(toState.name === 'index') {
