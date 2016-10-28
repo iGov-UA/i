@@ -1,91 +1,4 @@
-﻿<script>
-    function ParseUaID(id) {
-
-
-        var result = {};
-        var daysOfMouth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        //sex
-        result.sex = (id.substr(8, 1) % 2) ? 'Чоловіча' : 'Жіноча';
-
-        //birthdate
-        var days = id.substr(0, 5);
-        var year = 1900;
-        var day = 01;
-        var month = 01;
-        while (days > 0) {
-            var daysInYear = ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0)) ? 366 : 365;
-            if (days > daysInYear) {
-                days -= daysInYear;
-                year++;
-            }
-            else {
-                //break;
-                if (daysInYear == 366) {
-                    daysOfMouth[1] = 29;
-                }
-                for (var i = 0; i < 12; i++) {
-                    if (days > daysOfMouth[i]) {
-                        days -= daysOfMouth[i];
-                        month++;
-                    } else {
-                        day = days;
-                        days = 0;
-                        break;
-                    }
-                }
-            }
-        }
-        result.year = year;
-        result.month = month;
-        result.day = day;
-
-        //control Sum
-        var validMas = [-1, 5, 7, 9, 4, 6, 10, 5, 7];
-        var sumValid = 0;
-        for (var i = 0; i < 9; i++) {
-            sumValid += Number(id[i]) * validMas[i];
-        }
-        result.valid = (Number(id[9]) == (sumValid % 11) % 10);
-
-        return result;
-    }
-
-    function cl() {
-        var myInn = document.getElementById("inn").value;
-
-        if (myInn.length == 10) {
-
-            var res1 = ParseUaID(myInn);
-
-            document.getElementById("birthDay").innerHTML = res1.day + "." + res1.month + "." + res1.year;
-            document.getElementById("sex").innerHTML = res1.sex;
-
-            if (res1.valid) {
-                document.getElementById("validRow").className = "alert alert-success";
-                document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
-
-                document.getElementById("rBirthDay").style.display = 'block';
-                document.getElementById("rSex").style.display = 'block';
-                document.getElementById("rInfo").style.display = 'block';
-            } else {
-                document.getElementById("validRow").className = "alert alert-danger";
-                document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
-
-                document.getElementById("rBirthDay").style.display = 'none';
-                document.getElementById("rSex").style.display = 'none';
-                document.getElementById("rInfo").style.display = 'none';
-            }
-
-            document.getElementById("resFin").style.display = 'block';
-            //document.getElementById("resFin").innerHTML = "sdfgdfgsdfg";
-        } else {
-            document.getElementById("resFin").style.display = 'none';
-        }
-    }
-</script>
-
-<style>
+﻿<style>
 .article-block {
     font-family: Open Sans, Arial, sans-serif;
     color: #333333;
@@ -529,12 +442,9 @@
 <p>&nbsp;</p>
 
 <script>
-    var myInn = document.getElementById("inn");
-    myInn.onkeyup = myInn.oninput = cl;
-    myInn.onpropertychange = function () {
-        if (event.propertyName == "value") cl();
-    }
-    myInn.oncut = function () {
-        setTimeout(cl, 0);
-    };
+function g(){var a=document.getElementById("inn").value;if(10==a.length){var l,d,h;d=[31,28,31,30,31,30,31,31,30,31,30,31];l=a.substr(8,1)%2?"\u0427\u043e\u043b\u043e\u0432\u0456\u0447\u0430":"\u0416\u0456\u043d\u043e\u0447\u0430";for(var c=a.substr(0,5),e=1900,f=h=1;0<c;){var b=0==e%4&&0!=e%100||0==e%400?366:365;if(c>b)c-=b,e++;else for(366==b&&(d[1]=29),b=0;12>b;b++)if(c>d[b])c-=d[b],f++;else{h=c;c=0;break}}d=f;c=[-1,5,7,9,4,6,10,5,7];for(b=f=0;9>b;b++)f+=Number(a[b])*c[b];a=Number(a[9])==f%11%
+10;document.getElementById("birthDay").innerHTML=(10>h?"0":"")+h+"."+(10>d?"0":"")+d+"."+e;document.getElementById("sex").innerHTML=l;a?(document.getElementById("validRow").className="alert alert-success",document.getElementById("validRow").innerHTML="\u0412\u0430\u0448 \u0406\u041f\u041d \u0432\u0456\u0434\u043f\u043e\u0432\u0456\u0434\u0430\u0454 \u0432\u0438\u043c\u043e\u0433\u0430\u043c",document.getElementById("rBirthDay").style.display="block",document.getElementById("rSex").style.display="block",
+document.getElementById("rInfo").style.display="block"):(document.getElementById("validRow").className="alert alert-danger",document.getElementById("validRow").innerHTML="\u041f\u043e\u043c\u0438\u043b\u043a\u0430! \u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0442\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u0456\u0441\u0442\u044c \u0432\u0432\u043e\u0434\u0443",document.getElementById("rBirthDay").style.display="none",document.getElementById("rSex").style.display="none",document.getElementById("rInfo").style.display=
+"none");document.getElementById("resFin").style.display="block"}else document.getElementById("resFin").style.display="none"}var k=document.getElementById("inn");k.onkeyup=k.oninput=g;k.a=function(){"value"==event.propertyName&&g()};k.oncut=function(){setTimeout(g,0)};
+k.onkeypress=function(a){a=a||event;if(!(a.ctrlKey||a.altKey||a.metaKey)&&(a=null==a.which?32>a.keyCode?null:String.fromCharCode(a.keyCode):0!=a.which&&0!=a.charCode?32>a.which?null:String.fromCharCode(a.which):null,null!=a&&("0">a||"9"<a)))return!1};
 </script>
