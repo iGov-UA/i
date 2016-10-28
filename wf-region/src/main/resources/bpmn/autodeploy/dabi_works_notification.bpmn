@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dabi_build_notification" name="ДАБІ Повідомлення про початок будівельних робіт" isExecutable="true">
+  <process id="dabi_works_notification" name="ДАБІ Повідомлення про початок підготовчих робіт" isExecutable="true">
     <startEvent id="startevent_step1" name="1. Реєстрація вхідного документу, внесення інформації до облікової системи, сканування документу">
       <extensionElements>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" required="true">
@@ -24,9 +24,9 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nWorksNotif" name="Повідомлення про виконання підготовчих робіт" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker1_required" name="Required_marker" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_req.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker1_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_valid.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker1_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker1_required" name="Required_marker" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker1_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_valid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <parallelGateway id="parallelgateway1" name="Exclusive Gateway"></parallelGateway>
@@ -53,7 +53,7 @@
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker2_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker2_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -84,7 +84,7 @@
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker3_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker3_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -118,7 +118,7 @@
         <activiti:formProperty id="sLoginAsignee" name="Відповідальний виконавець;sSelectType=UserByGroup,sSourceFieldID_sID_Group=sID_Group_step6" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_step6" name="Група виконавців" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="marker4_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker4_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notificationn_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -153,7 +153,7 @@
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string" expression="${sLoginAsignee}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker5_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker5_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -220,10 +220,10 @@
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker6_applicant_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker6_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_st6_req.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker6_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_valid.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_applicant_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_st6_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_st6_req.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_valid.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
@@ -296,7 +296,7 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -323,7 +323,7 @@
         <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="boundarytimer1" targetRef="usertask_step_6.1"></sequenceFlow>
@@ -344,7 +344,7 @@
         <activiti:formProperty id="sLegalName" name="Найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
@@ -416,7 +416,7 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_notification_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notification_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksNotif}]]></activiti:expression>
@@ -496,8 +496,8 @@
     </boundaryEvent>
     <sequenceFlow id="flow41" sourceRef="boundarytimer3" targetRef="parallelgateway1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dabi_build_notification">
-    <bpmndi:BPMNPlane bpmnElement="dabi_build_notification" id="BPMNPlane_dabi_build_notification">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dabi_works_notification">
+    <bpmndi:BPMNPlane bpmnElement="dabi_works_notification" id="BPMNPlane_dabi_works_notification">
       <bpmndi:BPMNShape bpmnElement="startevent_step1" id="BPMNShape_startevent_step1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="202.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
