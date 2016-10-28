@@ -1,11 +1,18 @@
 angular.module('app')
 .controller('ServiceFormController', function ($scope, service, regions, AdminService,
                                                ServiceService, TitleChangeService, CatalogService,
-                                               $anchorScroll, $rootScope, feedback) {
+                                               $anchorScroll, $rootScope, feedback, statesRepository) {
   $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
   $scope.bAdmin = AdminService.isAdmin();
+
+  if(statesRepository.isKyivCity()){
+    $scope.bHideTab = true;
+    debugger;
+  } else {
+    $scope.bHideTab = false;
+  }
 
   //TODO should be refactored after refactoring for single controller for app/service/index.html
   $scope.feedback = feedback;
