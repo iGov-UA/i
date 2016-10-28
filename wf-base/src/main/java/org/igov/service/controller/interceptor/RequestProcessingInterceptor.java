@@ -544,7 +544,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
                                 Long countClaim = Long.valueOf(sResponse);
                                 LOG.info("countClaimmmmmmmmmmmmmmmm ", countClaim);
-                                if (countClaim.compareTo(50L)<0) {
+                                if (countClaim.compareTo(50L)>0) {
                                String snID_Proccess_Feedback = feedBackService.runFeedBack(snID_Process);
                                     
                                     if(snID_Proccess_Feedback!=null) {

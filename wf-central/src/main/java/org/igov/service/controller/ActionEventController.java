@@ -589,7 +589,7 @@ public class ActionEventController {
             @ApiParam(value = "строка, указывающая на тип даты, по которой идет выгрузка данных", required = false) @RequestParam(value = "sID_FilterDateType", required = false, defaultValue = "Edit") String sID_FilterDateType,
             @ApiParam(value = "загрузка данных из заявок", required = false) @RequestParam(value = "bIncludeTaskInfo", required = false, defaultValue = "false") Boolean bIncludeTaskInfo,
             @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
-            HttpServletResponse oHttpServletResponse, SubjectMessageFeedback subjectMessageFeedback) {
+            HttpServletResponse oHttpServletResponse) {
         LOG.info("{Enter into function}");
         DateTimeFormatter oDateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime oDateAt = oDateFormat.parseDateTime(sDateAt);
@@ -667,7 +667,7 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    SubjectMessageFeedback oSubjectMessageFeedback = subjectMessageFeedbackDao.update(subjectMessageFeedback);
+                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
                     LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
                     LOG.info("oSubjectMessageFeedback.getnID_Service(): " + oSubjectMessageFeedback.getnID_Service());
