@@ -9,7 +9,6 @@ angular.module('app')
 
   if(statesRepository.isKyivCity()){
     $scope.bHideTab = true;
-    debugger;
   } else {
     $scope.bHideTab = false;
   }
@@ -103,7 +102,7 @@ angular.module('app').controller('OldBusinessController', function ($scope, Admi
   $anchorScroll();
 });
 
-angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
+angular.module('app').controller('SituationController', function ($scope, AdminService, ServiceService, chosenCategory, messageBusService, statesRepository, $rootScope, $sce, $anchorScroll, TitleChangeService, $location) {
   $scope.category = chosenCategory;
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -130,7 +129,11 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
     $scope.category = $scope.catalog;
   }
   $scope.trustAsHtml = function (string) {
-    return $sce.trustAsHtml(string);
+    if(statesRepository.isKyivCity()){
+      return $sce.trustAsHtml(string.replace(new RegExp('igov.org.ua', 'g'), 'es.kievcity.gov.ua').replace(/\b[Ii][Gg][Oo][Vv]\b/g, 'KievCity'));
+    } else {
+      return $sce.trustAsHtml(string);
+    }
   };
   $scope.$on('$stateChangeStart', function (event, toState) {
     if (toState.resolve) {
