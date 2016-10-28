@@ -5,8 +5,10 @@ import org.igov.service.business.action.event.HistoryEventService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
+import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -67,6 +73,8 @@ public class BpServiceHandler {
     SubjectCover subjectCover;
     @Autowired
     private HttpRequester httpRequester;
+    @Autowired
+    private RuntimeService runtimeService;
     
     /**
      * Текущее количество генерируемых заявок
@@ -143,7 +151,7 @@ public class BpServiceHandler {
         String feedbackProcessId = null;
             
             Map<String, Object> variables = new HashMap<>();
-            variables.put("nID_Proccess_Feedback", snID_Process);
+           // variables.put("nID_Proccess_Feedback", snID_Process); И этот параметр мы ж вроде получаем после старта процесса по фидбеку. Потому при старте никак его не сможем передавать
             
 
             Integer nID_Server = generalConfig.getSelfServerId();
@@ -159,31 +167,38 @@ public class BpServiceHandler {
             
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
-            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+        //    Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+            Map<String, Object> processVariables = runtimeService.getVariables(tasks.get(0).getProcessInstanceId());
+            
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
-            variables.put("bankIdfirstName", processVariables.get("bankIdfirstName"));
-            variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName"));
-            variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
-            variables.put("phone", "" + processVariables.get("phone"));
-            variables.put("email", processVariables.get("email"));
-            variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
+            variables.put("bankIdfirstName", processVariables.get("bankIdfirstName") != null ? String.valueOf(processVariables.get("bankIdfirstName")) : null);
+            variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName") != null ? String.valueOf(processVariables.get("bankIdmiddleName")) : null);
+            variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
+            variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
+            variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
             variables.put("Place", getPlaceByProcess(snID_Process));
-            variables.put("clfio", processVariables.get("clfio"));
-            variables.put("region", processVariables.get("region"));
-            variables.put("info", processVariables.get("info"));
-            variables.put("nasPunkt", processVariables.get("nasPunkt"));
-            variables.put("sDate_BP", processVariables.get("sDate_BP"));
-            variables.put("sBody", processVariables.get("sBody"));
+          //  variables.put("clfio", processVariables.get("clfio")); TODO: под вопросом так как есть bankIdfirstName,bankIdmiddleName,bankIdlastName
+            //  variables.put("region", processVariables.get("region")); TODO: под вопросом так как есть Place
+            //  variables.put("info", processVariables.get("info"));TODO: не понятно что передавать
+            //  variables.put("nasPunkt", processVariables.get("nasPunkt"));TODO: под вопросом так как есть Place
+            HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(tasks.get(0).getProcessInstanceId()).singleResult();
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            variables.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
+          //  variables.put("sBody", processVariables.get("sBody"));TODO: не понятно что передавать
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
-            variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
-            variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
+          //  variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); TODO: эти поля ж вроде волонтер заполняет. их тоже вроде как при старте процесса нечем заполнять
+          //  variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));TODO: эти поля ж вроде волонтер заполняет. их тоже вроде как при старте процесса нечем заполнять
             Set<String> organ = new TreeSet<>();
+            Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables
             for (HistoricTaskInstance task : tasks) {
                 organ.addAll(getCandidateGroups(oHistoricTaskInstance.getProcessDefinitionId(), task.getId(), processVariables));
+                sLoginAssigned.add(task.getAssignee());
             }
             LOG.info("get organ:(organ={})", organ);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
+            variables.put("sLoginAssigned", sLoginAssigned.isEmpty()?"":sLoginAssigned);
             for (HistoricTaskInstance task : tasks) {
                 setSubjectParams(task.getId(), oHistoricTaskInstance.getProcessDefinitionId(), variables, processVariables);
             }

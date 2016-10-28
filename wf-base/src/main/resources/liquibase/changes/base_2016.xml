@@ -289,7 +289,8 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="issue-1405-DocumentStep" author="taaraora">
+    <changeSet id="issue-1405-DocumentStep-fixed" author="taaraora" runOnChange="true">
+        <validCheckSum>7:02a56943d9b0eb178ebf572db650f66a</validCheckSum>
         <createTable tableName="DocumentStep">
             <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
                 <constraints primaryKey="true" nullable="false"/>
@@ -297,7 +298,7 @@
             <column name="sKey_Step" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="nOrder" type="NUMERIC">
+            <column name="nOrder" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="snID_Process_Activiti" type="varchar(30)">
@@ -321,7 +322,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="sName" type="varchar(30)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="bWrite" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
@@ -329,7 +330,7 @@
             <column name="sLogin" type="varchar(30)">
                 <constraints nullable="true"/>
             </column>
-            <column name="sDate" type="varchar(30)">
+            <column name="sDate" type="timestamp">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -339,6 +340,9 @@
                              columnNames="sKey_GroupPostfix, nID_DocumentStep"/>
 
         <createTable tableName="DocumentStepSubjectRightField">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="nID_DocumentStepSubjectRight" type="bigint">
                 <constraints nullable="false" foreignKeyName="FK_DocumentStepSubjectRightField_DocumentStepSubjectRight"
                              referencedTableName="DocumentStepSubjectRight"
@@ -354,8 +358,7 @@
 
         <addUniqueConstraint constraintName="DocumentStepSubjectRightField_nID_DocumentStepSubjectRight_sMask_FieldID_unique"
                              tableName="DocumentStepSubjectRightField"
-                             columnNames="nID_DocumentStepSubjectRight, sMask_FieldID"/>
-
+                             columnNames="nID_DocumentStepSubjectRight, sMask_FieldID, bWrite"/>
     </changeSet>
 
 </databaseChangeLog>
