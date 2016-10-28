@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,27 +141,33 @@ public class Cherg {
         }
 
         JSONParser oJSONParser = new JSONParser();
-        JSONObject oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
-        JSONArray oaJSONArray =  new JSONArray();
-        if (!oJSONObjectGot.get("status-code").equals("0")) {
-            LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
-            //skip all errors from queue management system and return just empty array for date
-            //return "{\"aDate\":[]}";
-            //oaJSONArray = new JSONArray();
-        }else{
-            oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
-            LOG.info("Workdays all days:{}", oaJSONArray);
-        }
-
+        JSONObject oJSONObjectGot;
         JSONArray oaJSONArrayReturn = new JSONArray();
-        for(Object o:oaJSONArray) {
-            JSONObject oJSONObject = (JSONObject) o;
-            String sDate = oJSONObject.get("date").toString();
-            String snDateType = oJSONObject.get("work_day").toString();
-            if ( snDateType.equals("1")) {
-        	oaJSONArrayReturn.add(sDate);
-            }
-        }
+	try {
+	    oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+	
+	    JSONArray oaJSONArray =  new JSONArray();
+	    if (!oJSONObjectGot.get("status-code").equals("0")) {
+	       LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
+	    }else{
+	       oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+	       LOG.info("Workdays all days:{}", oaJSONArray);
+	    }
+
+	    for(Object o:oaJSONArray) {
+	       JSONObject oJSONObject = (JSONObject) o;
+	       String sDate = oJSONObject.get("date").toString();
+	       String snDateType = oJSONObject.get("work_day").toString();
+	       if ( snDateType.equals("1")) {
+		   oaJSONArrayReturn.add(sDate);
+	       }
+	    }
+	    
+	} catch (ParseException e) {
+            LOG.error("Error parsing response = {}", sReturn);
+	    e.printStackTrace();
+	}
+
         return oaJSONArrayReturn;
     }
     
@@ -175,34 +182,34 @@ public class Cherg {
 
     }
 
-    public static void main(String[] args) {
-	try {
-	    JSONParser parser = new JSONParser();
-	    JSONObject result;
-	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
-	    JSONArray dates = (JSONArray) result.get("data");
-
-	    JSONArray retJSONArray = new JSONArray();
-	    for(Object o:dates) {
-		JSONObject jo = (JSONObject) o;
-		String date = jo.get("date").toString();
-		String work_day = jo.get("work_day").toString();
-		
-		if ( work_day.equals("1")) {
-		    retJSONArray.add(date);
-		    System.out.println(date +" " +work_day);
-		}
-	    }
-	    JSONObject retJSON = new JSONObject();
-	    retJSON.put("aDate", retJSONArray);
-	    
-	    System.out.println(retJSON.toString());
-	    
-	    
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
+//    public static void main(String[] args) {
+//	try {
+//	    JSONParser parser = new JSONParser();
+//	    JSONObject result;
+//	    result = (JSONObject) parser.parse("{\"data\":[{    \"date\": \"2016-10-21\",    \"work_day\": 1  },  {    \"date\": \"2016-10-22\",    \"work_day\": 1  },]}");
+//	    JSONArray dates = (JSONArray) result.get("data");
+//
+//	    JSONArray retJSONArray = new JSONArray();
+//	    for(Object o:dates) {
+//		JSONObject jo = (JSONObject) o;
+//		String date = jo.get("date").toString();
+//		String work_day = jo.get("work_day").toString();
+//		
+//		if ( work_day.equals("1")) {
+//		    retJSONArray.add(date);
+//		    System.out.println(date +" " +work_day);
+//		}
+//	    }
+//	    JSONObject retJSON = new JSONObject();
+//	    retJSON.put("aDate", retJSONArray);
+//	    
+//	    System.out.println(retJSON.toString());
+//	    
+//	    
+//	} catch (Exception e) {
+//	    e.printStackTrace();
+//	}
+//    }
     
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
