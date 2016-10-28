@@ -1,6 +1,6 @@
 <div class="row" ng-if="!spinner && !resultsAreLoading">
   <div class="container igov-container" style="padding-left: 0; padding-right: 0">
-    <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength && !catalog.aNode && !category.aService">
+    <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="category.aService && isSubdomain() || minSearchLength && !catalog.aNode && !category.aService">
       <div class="col-sm-12 category-container">
         <div class="col-sm-3" style="padding-right: 11.25px">
           <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
@@ -17,7 +17,7 @@
 
     <div>
       <div class="col-sm-12 catalog-with-search-result" style="margin-top: 30px">
-        <div ng-repeat="category in catalog" ng-if="category.aService">
+        <div ng-repeat="category in catalog" ng-if="category.aService && !isSubdomain()">
           <ul>
             <li ng-repeat="service in category.aService | orderBy: 'nOrder'" style="list-style-type:square; color: #dddddd">
               <a ui-sref="index.service.general({'id': service.nID })">{{service.sName}}</a>

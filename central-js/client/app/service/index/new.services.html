@@ -51,7 +51,7 @@
 
         <div class="row" ng-if="!spinner">
           <div class="container igov-container" style="margin-bottom: 40px; padding-left: 0; padding-right: 0" >
-            <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="minSearchLength && !category.aService">
+            <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="category.aService && isSubdomain() || minSearchLength && !category.aService">
               <div class="col-sm-12 category-container">
                 <div class="col-sm-3" style="padding-right: 11.25px">
                   <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
