@@ -138,6 +138,9 @@ public class Cherg {
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
             throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
                     + oHttpEntityCover.nStatus());
+        } else if ( sReturn == null ) {
+            throw new Exception("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
         }
 
         JSONParser oJSONParser = new JSONParser();
