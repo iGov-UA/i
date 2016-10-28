@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
@@ -166,13 +167,19 @@ public class BpServiceHandler {
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
             Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+            
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             StartFormData startFormData = formService.getStartFormData(tasks.get(0).getProcessDefinitionId());
-            variables.put("bankIdfirstName", variables.get("bankIdfirstName") != null ? String.valueOf(variables.get("bankIdfirstName")) : null);
-            variables.put("bankIdmiddleName", variables.get("bankIdmiddleName") != null ? String.valueOf(variables.get("bankIdmiddleName")) : null);
-            variables.put("bankIdlastName", variables.get("bankIdlastName") != null ? String.valueOf(variables.get("bankIdlastName")) : null);
-            variables.put("phone", "" + variables.get("phone") != null ? String.valueOf(variables.get("phone")) : null);
-            variables.put("email", variables.get("email") != null ? String.valueOf(variables.get("email")) : null);
+            for(FormProperty formProperty:startFormData.getFormProperties()) {
+            	if (formProperty.getId().equals("bankIdfirstName")){
+            		variables.put("bankIdfirstName", formProperty.getValue() != null ? formProperty.getValue() : null);
+            		variables.put("bankIdmiddleName", formProperty.getValue() != null ? formProperty.getValue() : null);
+            	}
+            }
+            
+            variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
+            variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
+            variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
             variables.put("Place", getPlaceByProcess(snID_Process));
           //  variables.put("clfio", processVariables.get("clfio")); TODO: под вопросом так как есть bankIdfirstName,bankIdmiddleName,bankIdlastName
             //  variables.put("region", processVariables.get("region")); TODO: под вопросом так как есть Place
