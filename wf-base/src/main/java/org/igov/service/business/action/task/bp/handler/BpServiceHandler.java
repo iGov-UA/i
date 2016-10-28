@@ -62,8 +62,6 @@ public class BpServiceHandler {
     @Autowired
     private HistoryService historyService;
     @Autowired
-    private PlaceService placeService;
-    @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private HistoryEventService historyEventService;
@@ -73,8 +71,6 @@ public class BpServiceHandler {
     SubjectCover subjectCover;
     @Autowired
     private HttpRequester httpRequester;
-    @Autowired
-    private RuntimeService runtimeService;
     
     /**
      * Текущее количество генерируемых заявок
@@ -167,16 +163,20 @@ public class BpServiceHandler {
             
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
-        //    Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
-            Map<String, Object> processVariables = runtimeService.getVariables(tasks.get(0).getProcessInstanceId());
+            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
             
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
             variables.put("bankIdfirstName", processVariables.get("bankIdfirstName") != null ? String.valueOf(processVariables.get("bankIdfirstName")) : null);
             variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName") != null ? String.valueOf(processVariables.get("bankIdmiddleName")) : null);
             variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
+            LOG.info(String.format(" >> bankIdfirstName [%s] bankIdmiddleName: %s bankIdlastName: %s", processVariables.get("bankIdfirstName"), processVariables.get("bankIdmiddleName"),processVariables.get("bankIdlastName")));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
+            LOG.info("phone: [%s]", processVariables.get("phone"));
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
+            LOG.info("email: [%s]", processVariables.get("email"));
             variables.put("Place", getPlaceByProcess(snID_Process));
+            
+            LOG.info("Place: [%s]", getPlaceByProcess(snID_Process));
           //  variables.put("clfio", processVariables.get("clfio")); TODO: под вопросом так как есть bankIdfirstName,bankIdmiddleName,bankIdlastName
             //  variables.put("region", processVariables.get("region")); TODO: под вопросом так как есть Place
             //  variables.put("info", processVariables.get("info"));TODO: не понятно что передавать
