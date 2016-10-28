@@ -142,7 +142,7 @@ public class Cherg {
 
         JSONParser oJSONParser = new JSONParser();
         JSONObject oJSONObjectGot;
-        JSONArray oaJSONArrayReturn = new JSONArray();
+        JSONArray oaJSONArrayReturn = null;
 	try {
 	    oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
 	
@@ -154,6 +154,7 @@ public class Cherg {
 	       LOG.info("Workdays all days:{}", oaJSONArray);
 	    }
 
+	    oaJSONArrayReturn = new JSONArray();
 	    for(Object o:oaJSONArray) {
 	       JSONObject oJSONObject = (JSONObject) o;
 	       String sDate = oJSONObject.get("date").toString();
@@ -164,8 +165,7 @@ public class Cherg {
 	    }
 	    
 	} catch (ParseException e) {
-            LOG.error("Error parsing response = {}", sReturn);
-	    e.printStackTrace();
+            LOG.error("Error parsing response = {}", sReturn, e);
 	}
 
         return oaJSONArrayReturn;
@@ -173,6 +173,10 @@ public class Cherg {
     
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+        
+        if (oaJSONArray == null ) {
+            throw new Exception("");            
+        }
                 
 	JSONObject oJSONObjectReturn = new JSONObject();
 	oJSONObjectReturn.put("aDate", oaJSONArray);
