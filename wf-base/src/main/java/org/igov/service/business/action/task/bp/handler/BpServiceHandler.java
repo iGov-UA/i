@@ -8,6 +8,7 @@ import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +74,7 @@ public class BpServiceHandler {
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
-    private FormService formService;
+    private RuntimeService runtimeService;
     
     /**
      * Текущее количество генерируемых заявок
@@ -166,17 +167,12 @@ public class BpServiceHandler {
             
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
-            Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+        //    Map<String, Object> processVariables = oHistoricTaskInstance.getProcessVariables();
+            Map<String, Object> processVariables = runtimeService.getVariables(tasks.get(0).getProcessInstanceId());
             
             variables.put("nID_Protected", "" + ToolLuna.getProtectedNumber(Long.valueOf(snID_Process)));
-            StartFormData startFormData = formService.getStartFormData(tasks.get(0).getProcessDefinitionId());
-            for(FormProperty formProperty:startFormData.getFormProperties()) {
-            	if (formProperty.getId().equals("bankIdfirstName")){
-            		variables.put("bankIdfirstName", formProperty.getValue() != null ? formProperty.getValue() : null);
-            		variables.put("bankIdmiddleName", formProperty.getValue() != null ? formProperty.getValue() : null);
-            	}
-            }
-            
+            variables.put("bankIdfirstName", processVariables.get("bankIdfirstName") != null ? String.valueOf(processVariables.get("bankIdfirstName")) : null);
+            variables.put("bankIdmiddleName", processVariables.get("bankIdmiddleName") != null ? String.valueOf(processVariables.get("bankIdmiddleName")) : null);
             variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
