@@ -668,7 +668,7 @@ public class ActionEventController {
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
 //                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
-                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback); 
                     LOG.info("oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.get(0).getnID_Service());
                     String sTextFeedback = "";
                     LOG.info("oSubjectMessageFeedback.getnID_Service(): " + oSubjectMessageFeedback.get(0).getoSubjectMessage());
