@@ -1,5 +1,5 @@
 angular.module('app').service('TitleChangeService', function (statesRepository, $rootScope) {
-  
+
   var title = '';
   if(statesRepository.isKyivCity){
     title = 'Портал державних послуг';

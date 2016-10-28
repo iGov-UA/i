@@ -114,8 +114,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       }
 
     } else {
-      //this.mode = 'local';
-      this.mode = 'kyiv';
+      this.mode = 'local';
+      //this.mode = 'kyiv';
     }
 
   };
@@ -164,6 +164,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         footer: {
           templateUrl: getFooter(this.mode),
           controller: 'FooterController'
+        }
+      },
+      resolve: {
+        title: function () {
+          var title = selfProvider.isKyivCity() ? '' : 'iGov – ';
+          $('title').html(title + 'Портал державних послуг');
         }
       }
     };
