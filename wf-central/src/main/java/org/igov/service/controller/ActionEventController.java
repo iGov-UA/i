@@ -634,7 +634,7 @@ public class ActionEventController {
             } else {
                 throw new IllegalArgumentException("Check the sID_FilterDateType parameter, must be Edit, Create or Close");
             }
-
+                LOG.info("aHistoryEvent_Service.size()" + aHistoryEvent_Service.size());
             if (aHistoryEvent_Service.size() > 0) {
                 List<Long> anID_HistoryEvent_Service = new LinkedList<>();
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
@@ -662,16 +662,18 @@ public class ActionEventController {
                     // nID_Service
                     asCell.add(oHistoryEvent_Service.getnID_Service() != null ? oHistoryEvent_Service.getnID_Service().toString() : "");
                     // sID_Place
-                    asCell.add(oHistoryEvent_Service.getsID_UA());
+                    asCell.add(oHistoryEvent_Service.getsID_UA()); 
                     // nID_Subject
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
+                    SubjectMessageFeedback oSubjectMessageFeedback = subjectMessageFeedbackDao.update((SubjectMessageFeedback) aSubjectMessageFeedback);
+                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     String sTextFeedback = "";
+                    LOG.info("oSubjectMessageFeedback.getnID_Service(): " + oSubjectMessageFeedback.getnID_Service());
                     if (oSubjectMessageFeedback.getnID_Service() != null) {
                         sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
-                        LOG.info("sTextFeedback: "+sTextFeedback);
+                        LOG.info("sTextFeedback: " + sTextFeedback);
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
