@@ -53,31 +53,35 @@
 
     function cl() {
         var myInn = document.getElementById("inn").value;
-        var res1 = ParseUaID(myInn);
 
-        document.getElementById("birthDay").innerHTML = res1.day + "." + res1.month + "." + res1.year;
-        document.getElementById("sex").innerHTML = res1.sex;
+        if (myInn.length == 10) {
 
-        if (res1.valid) {
-            document.getElementById("validRow").className = "alert alert-success";
-            document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
+            var res1 = ParseUaID(myInn);
 
-            document.getElementById("rBirthDay").style.visibility = 'visible';
-            document.getElementById("rSex").style.visibility = 'visible';
-            document.getElementById("rInfo").style.visibility = 'visible';
+            document.getElementById("birthDay").innerHTML = res1.day + "." + res1.month + "." + res1.year;
+            document.getElementById("sex").innerHTML = res1.sex;
 
+            if (res1.valid) {
+                document.getElementById("validRow").className = "alert alert-success";
+                document.getElementById("validRow").innerHTML = "Ваш ІПН відповідає вимогам";
+
+                document.getElementById("rBirthDay").style.display = 'block';
+                document.getElementById("rSex").style.display = 'block';
+                document.getElementById("rInfo").style.display = 'block';
+            } else {
+                document.getElementById("validRow").className = "alert alert-danger";
+                document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
+
+                document.getElementById("rBirthDay").style.display = 'none';
+                document.getElementById("rSex").style.display = 'none';
+                document.getElementById("rInfo").style.display = 'none';
+            }
+
+            document.getElementById("resFin").style.display = 'block';
+            //document.getElementById("resFin").innerHTML = "sdfgdfgsdfg";
         } else {
-
-            document.getElementById("validRow").className = "alert alert-danger";
-            document.getElementById("validRow").innerHTML = "Помилка! Перевірте правильність вводу";
-
-            document.getElementById("rBirthDay").style.visibility = 'hidden';
-            document.getElementById("rSex").style.visibility = 'hidden';
-            document.getElementById("rInfo").style.visibility = 'hidden';
+            document.getElementById("resFin").style.display = 'none';
         }
-
-        document.getElementById("resFin").style.visibility = 'visible';
-
     }
 </script>
 
@@ -427,7 +431,7 @@
     </p>
     <h1 id="anchor3">3. Як відновити загублену (пошкоджену) картку платника податків ІПН</h1>
     <p>
-        Щоб відновити втрачену або пошкоджену карточку платника податків, потрібно звернутися в найближчої податкової за місцем прописки або за місцем отримання доходів і написати заяву з проханням про видачу такого дубліката.
+        Щоб відновити втрачену або пошкоджену карточку платника податків, потрібно звернутися до найближчої податкової за місцем прописки або за місцем отримання доходів і написати заяву з проханням про видачу такого дубліката.
     </p>
     <p>
         Дублікат картки видається безкоштовно і єдина відмінність від оригіналу - на новій картці буде стояти відмітка «ДУБЛІКАТ»
@@ -464,63 +468,55 @@
     <p>
         Якщо ви вже маєте ідентифікаційний номер, Ви можете його перевірити на відповідність:
     </p>
+    
     <div class="row">
         <div class="col-md-12">
             <div class="highlight">
+                <br />
                 <div class="row">
                     <div class="col-md-5">
                         Ваш ідентифікаційний персональний номер:
                     </div>
                     <div class="col-md-5">
                         <input id="inn" name="inn" type="text" placeholder="Введіть свій ІПН для перевірки" class="form-control">
-                    </div>
-                </div>
-                <div class="row accordion-group">
-                    <div class="accordion-heading">
-                        <div class="col-md-5">
-                        </div>
-                        <div class="col-md-3">
-                            <br>
-                            <button class="btn btn-info" onclick="cl()">
-                                Перевірити ІПН
-                            </button>
-                        </div>
-                        <div class="col-md-4">
-                        </div>
+                        <br />
                     </div>
                 </div>
 
-                <hr />
-                <div id="resFin" style="visibility:hidden">
-                    <div id="validRow">
 
-                    </div>
+                <div id="resFin" style="display: none;" class="row">
+                    <div class="col-md-12">
+                        <div id="validRow"></div>
 
-                    <div class="row" id="rBirthDay">
-                        <div class="col-md-5">
-                            День			народження:
+                        <div class="row" id="rBirthDay">
+                            <div class="col-md-5">
+                                День народження:
+                            </div>
+                            <div class="col-md-5" id="birthDay">
+                            </div>
                         </div>
-                        <div class="col-md-5" id="birthDay">
-                        </div>
-                    </div>
 
-                    <div class="row" id="rSex">
-                        <div class="col-md-5">
-                            Стать:
+                        <div class="row" id="rSex">
+                            <div class="col-md-5">
+                                Стать:
+                            </div>
+                            <div class="col-md-5" id="sex">
+                            </div>
                         </div>
-                        <div class="col-md-5" id="sex">
-                        </div>
-                    </div>
-
-                    <div class="row" id="rInfo">
-                        <div class="alert alert-info">
-                            Зверніть увагу на дату народження та стать, якщо вони не співпадають, зверніться до найближчої фіскальної служби для з'ясування правильності наданого Вам персонального номеру
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12" id="rInfo">
+                                <div class="alert alert-info">
+                                    Зверніть увагу на дату народження та стать, якщо вони не збігаються,
+                                    зверніться до найближчої фіскальної служби для з'ясування правильності наданого Вам персонального номеру.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>  
     
     <h1 id="anchor7">Посилання на законодавство</h1>
     <ol>
@@ -531,3 +527,14 @@
 </article>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+
+<script>
+    var myInn = document.getElementById("inn");
+    myInn.onkeyup = myInn.oninput = cl;
+    myInn.onpropertychange = function () {
+        if (event.propertyName == "value") cl();
+    }
+    myInn.oncut = function () {
+        setTimeout(cl, 0);
+    };
+</script>
