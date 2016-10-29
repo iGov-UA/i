@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import org.igov.io.GeneralConfig;
 
 @Controller
 @Api(tags = { "SubjectMessageCommonController -- Сообщения субьектов" })
@@ -20,6 +21,9 @@ public class SubjectMessageCommonController {
 
     @Autowired
     private ManagerSMS_New managerSMS;
+    
+    @Autowired
+    GeneralConfig generalConfig;
 
     /**
      * Колбек для сервиса отправки СМС
