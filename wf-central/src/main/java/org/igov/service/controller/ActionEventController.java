@@ -661,6 +661,8 @@ public class ActionEventController {
                     LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
 //                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
                         mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
+                        LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service() );
+                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
 //                        }
                     }
                     List<String> asCell = new LinkedList<>();
