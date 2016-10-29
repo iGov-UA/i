@@ -30,7 +30,6 @@ angular.module('app').controller('PlaceController',
 
     if(statesRepository.isKyivCity()){
       $scope.bHideTab = true;
-      debugger;
     } else {
       $scope.bHideTab = false;
     }
