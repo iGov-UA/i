@@ -6,9 +6,6 @@ angular.module('app').service('TitleChangeService', function (statesRepository, 
   } else {
     title = 'iGov – Портал державних послуг';
   }
-  $rootScope.oMainPageParams = {
-    sTitle : title
-  };
 
   return {
     title: function() {
