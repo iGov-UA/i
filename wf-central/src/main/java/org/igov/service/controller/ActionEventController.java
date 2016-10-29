@@ -645,7 +645,16 @@ public class ActionEventController {
 //                String sID_Order = subjectMessageFeedbackDao.findAll().get(0).getsID_Order();
 //                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
 //                HistoryEvent_Service oHistoryEvent_Service = new HistoryEvent_Service();
-                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
+//                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
+//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
+//                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
+//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
+//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
+//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
+//                        }
+//                    }
+                for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
+                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
                 Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
                 for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
@@ -653,7 +662,6 @@ public class ActionEventController {
                         mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
                         }
                     }
-                for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
