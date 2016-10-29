@@ -88,6 +88,7 @@ private static final Logger LOG = LoggerFactory.getLogger(ActionEventController.
 
     @Override
     public String setsID_Order(String sID_Order) {
+        LOG.info("!!!sID_Order: "+sID_Order);
        return sID_Order;
     }
 }

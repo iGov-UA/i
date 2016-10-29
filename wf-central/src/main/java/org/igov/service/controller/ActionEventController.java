@@ -643,14 +643,15 @@ public class ActionEventController {
                 LOG.info("Looking history event services by IDs " + anID_HistoryEvent_Service);
 //                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
 //                String sID_Order = subjectMessageFeedbackDao.findAll().get(0).getsID_Order();
-//                List<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(aHistoryEvent_Service.get(0).getsID_Order());
-//                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", oSubjectMessageFeedback.size());
-//                Map<Long, SubjectMessage> mSubjectMessage = new HashMap<>();
-//                for (SubjectMessage oSubjectMessage : aSubjectMessage) {
-//                    if (oSubjectMessage.getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessage.put(oSubjectMessage.getnID_HistoryEvent_Service(), oSubjectMessage);
-//                    }
-//                }
+//                List<SubjectMessage> aSubjectMessage = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", anID_HistoryEvent_Service);
+                List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(sDateTo);
+                LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
+                Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
+                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
+                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
+                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
+                    }
+                }
 
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
                     List<String> asCell = new LinkedList<>();
@@ -667,16 +668,12 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnID_Subject() != null ? oHistoryEvent_Service.getnID_Subject().toString() : "");
                     // nRate
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
-//                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
-                    List<SubjectMessageFeedback> oSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
-                    LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", oSubjectMessageFeedback.size());
-                    LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback); 
-                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage(): " + oSubjectMessageFeedback.get(0).getnID_Service());
+                    SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
                     String sTextFeedback = "";
-                    LOG.info("oSubjectMessageFeedback.getnID_Service(): " + oSubjectMessageFeedback.get(0).getoSubjectMessage());
-                    if (oSubjectMessageFeedback.get(0).getnID_Service() != null) {
-                        sTextFeedback = oSubjectMessageFeedback.get(0).getoSubjectMessage().getBody();
-                        LOG.info("sTextFeedback: " + sTextFeedback);
+                    if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
+//                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
+                            sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
+                            LOG.info("sTextFeedback" + sTextFeedback);
                     } else {
                         LOG.error("Unable to find feedabck for history event with ID {}", oHistoryEvent_Service.getId());
                     }
