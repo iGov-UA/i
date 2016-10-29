@@ -38,7 +38,7 @@ angular.module('app')
   $anchorScroll();
 });
 
-angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, TitleChangeService) {
+angular.module('app').controller('NewIndexController', function ($scope, AdminService, catalogContent, messageBusService, $rootScope, $anchorScroll, statesRepository, TitleChangeService) {
   var subscriptions = [];
   messageBusService.subscribe('catalog:update', function (data) {
     $scope.mainSpinner = false;
@@ -47,6 +47,8 @@ angular.module('app').controller('NewIndexController', function ($scope, AdminSe
     $scope.spinner = false;
     $rootScope.rand = (Math.random() * 10).toFixed(2);
   }, false);
+
+  $scope.isKyivCity = !!statesRepository.isKyivCity();
 
   $scope.$on('$destroy', function () {
     subscriptions.forEach(function (item) {

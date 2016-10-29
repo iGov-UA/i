@@ -16,6 +16,7 @@ angular.module('app')
     $scope.bAdmin = AdminService.isAdmin();
     $scope.recalcCounts = true;
     $scope.mainSpinner = true;
+    $scope.isKyivCity = !!statesRepository.isKyivCity();
 
     /*$scope.isCatalogCategoryShowAll = function(nID){
         return statesRepository.isSearch(nID);

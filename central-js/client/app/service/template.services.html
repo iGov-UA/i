@@ -3,7 +3,8 @@
     <div class="col-sm-4" ng-repeat="category in catalog | orderBy: 'oServiceTag_Root.nOrder'" ng-if="category.aService && isSubdomain() || minSearchLength && !catalog.aNode && !category.aService">
       <div class="col-sm-12 category-container">
         <div class="col-sm-3" style="padding-right: 11.25px">
-          <img ng-if="!category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
+          <img ng-if="!category.oServiceTag_Root.sLinkImage && !isKyivCity" style="margin-top: 25px" src="https://alpha.test.igov.org.ua/wf/VAADIN/themes/activiti/img/services/igov.noimg.png" alt="img">
+          <img ng-if="!category.oServiceTag_Root.sLinkImage && isKyivCity" style="margin-top: 25px" src="http://new.kievcity.gov.ua/logo.png" alt="img">
           <img ng-if="category.oServiceTag_Root.sLinkImage" style="margin-top: 25px" ng-src="{{category.oServiceTag_Root.sLinkImage}}" alt="img">
         </div>
         <div class="col-sm-9 text">
