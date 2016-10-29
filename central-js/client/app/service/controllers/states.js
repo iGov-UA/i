@@ -132,7 +132,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   }
   $scope.trustAsHtml = function (string) {
     if(statesRepository.isKyivCity()){
-      return $sce.trustAsHtml(string.replace(new RegExp('igov.org.ua', 'g'), 'es.kievcity.gov.ua').replace(/\b[Ii][Gg][Oo][Vv]\b/g, 'KievCity'));
+      return $sce.trustAsHtml(string.replace(new RegExp('igov.org.ua', 'g'), 'es.kievcity.gov.ua').replace(new RegExp('iGov.org.ua', 'g'), 'es.KievCity.gov.ua').replace(new RegExp('iGOV.org.ua', 'g'), 'es.KievCity.gov.ua').replace(/\b[Ii][Gg][Oo][Vv]\b/g, 'KievCity'));
     } else {
       return $sce.trustAsHtml(string);
     }
