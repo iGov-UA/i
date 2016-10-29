@@ -658,9 +658,10 @@ public class ActionEventController {
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback.size());
                 Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
                 for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
+                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
+//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
                         mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-                        }
+//                        }
                     }
                     List<String> asCell = new LinkedList<>();
                     // sID_Order
@@ -678,6 +679,7 @@ public class ActionEventController {
                     asCell.add(oHistoryEvent_Service.getnRate() != null ? oHistoryEvent_Service.getnRate().toString() : "");
                     SubjectMessageFeedback oSubjectMessageFeedback = new SubjectMessageFeedback();
                     String sTextFeedback = "";
+                    LOG.info("oHistoryEvent_Service.getId(): " + mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()));
                     if (mSubjectMessageFeedback.get(oHistoryEvent_Service.getId()) != null) {
 //                        sTextFeedback = mSubjectMessage.get(oHistoryEvent_Service.getId()).getBody();
                             sTextFeedback = oSubjectMessageFeedback.getoSubjectMessage().getBody();
