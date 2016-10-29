@@ -654,7 +654,7 @@ public class ActionEventController {
 //                        }
 //                    }
                 for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) { 
-                    Optional<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
+                    List<SubjectMessageFeedback> aSubjectMessageFeedback = subjectMessageFeedbackDao.findByOrder(oHistoryEvent_Service.getsID_Order());
                 LOG.info("getsID_Order()", oHistoryEvent_Service.getsID_Order());    
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback);
                 Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
