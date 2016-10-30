@@ -31,6 +31,7 @@ angular.module('app')
           };
 
           scope.isVisible = function () {
+            if (this.$root.profile.isKyivCity) return false;
             //return location.host() === 'localhost' || location.host() === 'test.igov.org.ua';
             return getCookie('bServerTest') === 'true';
           };

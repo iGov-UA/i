@@ -73,7 +73,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
 
     if (domen.split(':')[0] !== 'localhost') {
-      if (domen.indexOf('kievcity') >= 0) {
+      if (domen.indexOf('kievcity') >= 0 || domen.indexOf('kiev.test.') >= 0 || domen.indexOf('test.kiev.') >= 0) {
         //https://es.kievcity.gov.ua
         this.mode = 'kyiv';
         //this.mode = modes.kyiv;
@@ -123,6 +123,10 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     return this.mode === 'local' || this.mode === 'igov';
   };
 
+  this.isKyivCity = function () {
+    return this.mode === 'kyiv';
+  };
+
   var getHeader = function (mode) {
     var hdr;
     if (!!modes[mode]) {
@@ -160,6 +164,12 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
           templateUrl: getFooter(this.mode),
           controller: 'FooterController'
         }
+      },
+      resolve: {
+        title: function () {
+          var title = selfProvider.isKyivCity() ? '' : 'iGov – ';
+          $('title').html(title + 'Портал державних послуг');
+        }
       }
     };
   };
@@ -178,9 +188,9 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.getOrgan = function () {
     if (!!modes[this.mode]) {
-        if(modes[this.mode].asOrgan.length>0){
-            return modes[this.mode].asOrgan[0];
-        }
+      if(modes[this.mode].asOrgan.length>0){
+        return modes[this.mode].asOrgan[0];
+      }
     }
     return "";
   };
@@ -204,7 +214,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     if (!!modes[this.mode] && nID) {
       angular.forEach(modes[this.mode].anID_CatalogCategoryShowAll, function (nID_CatalogCategoryShowAll) {
         if (nID_CatalogCategoryShowAll === nID) {
-            bAll=true;
+          bAll=true;
         }
         //return bAll;
       });
@@ -242,6 +252,10 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
 
   StatesRepository.prototype.isCentral = function () {
     return selfProvider.isCentral();
+  };
+
+  StatesRepository.prototype.isKyivCity = function () {
+    return selfProvider.isKyivCity();
   };
 
   this.$get = [function StatesRepositoryFactory() {
