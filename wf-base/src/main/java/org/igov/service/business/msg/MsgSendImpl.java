@@ -351,7 +351,11 @@ public class MsgSendImpl implements IMsgSend {
 
         mAttribute.entrySet().stream().forEach((o) -> {
             //this.asParam.add(o.getKey() + ": " + (o.getValue()==null?"NULL":o.getValue())+"");
-	    addAttr(mAttrs, "_"+o.getKey(), (o.getValue()==null?"NULL":o.getValue())+"");
+            String sValue = o.getValue()==null?"NULL":o.getValue()+"";
+            if(sValue.length()>30){
+                sValue=sValue.substring(sValue.length()-30);
+            }
+	    addAttr(mAttrs, "_"+o.getKey(), sValue);
         });
         
 	/*if (asParam != null) {
