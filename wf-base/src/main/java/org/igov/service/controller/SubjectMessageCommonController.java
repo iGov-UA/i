@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpRequester;
 
 @Controller
 @Api(tags = { "SubjectMessageCommonController -- Сообщения субьектов" })
@@ -24,6 +25,9 @@ public class SubjectMessageCommonController {
     
     @Autowired
     GeneralConfig generalConfig;
+    
+    @Autowired
+    private HttpRequester oHttpRequester;
 
     /**
      * Колбек для сервиса отправки СМС
@@ -39,5 +43,33 @@ public class SubjectMessageCommonController {
 
 	return "";
     }
+
+    /**
+     * Колбек для сервиса отправки СМС
+     * 
+     * @param soData_JSON
+     */
+    @RequestMapping(value = "/sentSms", method = {RequestMethod.POST,
+	    RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String sentSms(String number, String message) throws Exception {
+	
+        String resp = "[none]";
+        String URL = "https://api.life.com.ua./ip2sms/";
+        
+        if (number.startsWith("+38063")||number.startsWith("+38093"))
+        {
+            String body = new StringBuilder("<message")
+                    .append("<service id='single' source='iGov'/>")
+                    .append("<to>").append(number).append("</to>")
+                    .append("<body content-type=\"text-plain\">").append(message).append("</body>")
+                    .append("<message>").toString();
+            
+            resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8");
+        }
+        
+	return resp;
+    }
+    
+    
 
 }
