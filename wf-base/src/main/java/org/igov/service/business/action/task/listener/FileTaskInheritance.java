@@ -61,9 +61,9 @@ public class FileTaskInheritance extends AbstractModelTask implements TaskListen
             LOG.error("FAIL: {}", oException.getMessage());
             LOG.trace("FAIL:", oException);
             new Log(oException, LOG)//this.getClass()
-                    ._Case("Activiti_AttachRedisKeyFail")
+                    ._Case("Activiti_AttachInheritFail")
                     ._Status(Log.LogStatus.ERROR)
-                    ._Head("Invalid Redis Key of Attachment")
+                    ._Head("Invalid Inherit of Attachment")
                     ._Body(oException.getMessage())
                     //._Exception(oException)
 //                    ._Param("n", n)
