@@ -56,8 +56,7 @@
         <activiti:formProperty id="sPostAddress" name="Адреса, на яку надіслати листа; Індекс, Місто, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypeMail" name="Оберіть тип поштового відправлення" type="enum" required="true">
           <activiti:value id="sRek" name="рекомендований лист"></activiti:value>
-          <activiti:value id="sPrior" name="пріоритетний простий лист"></activiti:value>
-          <activiti:value id="sRekPrior" name="пріоритетний рекомендований лист"></activiti:value>
+          <activiti:value id="sRekPrior" name="рекомендований лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWarning0" name="Вартість послуги Укрпошти" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asWhere" name="Оберіть для чого Вам потрібна довідка" type="enum" required="true">
@@ -73,7 +72,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="5.10"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="16.09"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
       </extensionElements>
@@ -81,29 +80,28 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var src = execution.getVariable('asTypeMail');
-var sum = 5.10;
-if (src == 'sRekPrior') {
-	sum =  8.76;
-}
-else {
-	sum =  5.50;
+var typeMail = execution.getVariable('asTypeMail');
+var sum = 16.09;
+if (typeMail === 'sRekPrior') {
+	sum =  36.45;
 }
 execution.setVariable('sSum', sum);
 var distr = '';
-if (execution.getVariable('asDistrict')!="sNo"){
-distr = execution.getVariable('asDistrict');}
-if (execution.getVariable('asDistrict1')!="sNo1"){
-distr = execution.getVariable('asDistrict1');}
+if (execution.getVariable('asDistrict') !== "sNo") {
+distr = execution.getVariable('asDistrict');
+}
+if (execution.getVariable('asDistrict1') !== "sNo1") {
+distr = execution.getVariable('asDistrict1');
+}
 var adres = '';
 var workTime = '';
 var type = '';
 switch (distr){
 case 'sAND':
-type = and;
+type = 'and';
 break;
 case 'sIndust':
-type = indust;
+type = 'indust';
 break;
 case 'sSamar':
 adres = "вул. А.Барто, 19";
@@ -118,17 +116,78 @@ adres = "пр. Поля (пр. Кірова), 22";
 workTime = "понеділок, вівторок, четвер з 8:00 до 17:00&lt;br&gt;вівторок, п'ятниця з 8:00 до 15:45";
 break;
 case 'sChech':
-type = сhech;
+type = 'сhech';
 break;
 case 'sShev':
-type = shev;
+type = 'shev';
 break;
 default:
     alert('Странный результат, очень странный');
     break;
 }
-if (type == 'and'){
-
+var sAND = execution.getVariable('asAND');
+var sIndust = execution.getVariable('asInd');
+var sChech = execution.getVariable('asChech');
+var sShev = execution.getVariable('asShev');
+if (type === 'and'){
+	if ( sAND === 'sAND1') {
+		adres = "вул. Щербини, 50";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+	else if (sAND === 'sAND2') {
+		adres = "вул. С.Ковалевської, 59а";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+	else {
+		adres = "вул. Малиновського, 34";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+}
+if (type === 'indust'){
+	if ( sIndust === 'sInd1') {
+		adres = "пр. Калнишевського (вул. Косіора), 11";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+	else if ( sIndust === 'sInd2') {
+		adres = "вул. Осіння, 9б";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+	else if ( sIndust === 'sInd3') {
+		adres = 'пр. Слобожанський (ім. Газети "Правда"), 34';
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+	else {
+		adres = "вул. Байкальська, 84";
+		workTime = "понеділок, четвер з 8:00 до 11:00 та з 14:00 до 17:00 &lt;br&gt; вівторок, п'ятниця з 8:00 до 11:00";
+	}
+}
+if (type === 'сhech'){
+	if (sChech === 'sChech1') {
+		adres = "пр. Б.Хмельницького (вул. Героїв Сталінграда), 14";
+		workTime = "понеділок, вівторок, четвер з 8:00 до 17:00 &lt;br&gt; п'ятниця з 8:00 до 15:45";
+	}
+	else if (sChech === 'sChech2') {
+		adres = "вул. Театральна, 5";
+		workTime = "понеділок, вівторок, четвер з 9:00 до 12:00 та з 14:00 до 17:00";
+	}
+	else {
+		adres = "вул. Шмідта, 22";
+		workTime = "понеділок з 10:00 до 12:00 та з 15:00 до 17:00 &lt;br&gt; вівторок, середа, четвер з 8:00 до 10:00";
+	}
+}
+if (type === 'shev'){
+	if (sShev === 'sShev1') {
+		adres = "пр. Б.Хмельницького (вул. Героїв Сталінграда), 14";
+		workTime = "понеділок, вівторок, четвер з 8:00 до 17:00 &lt;br&gt; п'ятниця з 8:00 до 15:45";
+	}
+	else if (sShev === 'sShev2') {
+		adres = "вул. Запорізьке шосе, 68";
+		workTime = "понеділок, вівторок, четвер з 8:00 до 11:00 та з 15:00 до 17:00 &lt;br&gt;  п'ятниця з 8:00 до 11:00 та з 15:00 до 15:45";
+	}
+	else {
+		adres = "вул. Малиновського, 34";
+		workTime = "понеділок, вівторок, четвер з 8:00 до 11:00 та з 15:00 до 17:00 &lt;br&gt;  п'ятниця з 8:00 до 11:00 та з 15:00 до 15:45";
+	}
 }
 execution.setVariable('sAddress', adres);
 execution.setVariable('sWorkDay', workTime);
@@ -264,7 +323,8 @@ execution.setVariable('sWorkDay', workTime);
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Довідки про склад сім'ї була надіслана Вам за адресою ${sPostAddress}.<br> 
+                              		Довідки про склад сім'ї була надіслана Вам за адресою:<br>
+                              		${sPostAddress}.<br> 
                               		Тип відправлення - enum{[asTypeMail]}.
                               		</p>
                               		<p>
