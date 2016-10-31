@@ -84,7 +84,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask7" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Bux_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
@@ -191,6 +191,37 @@ ${sNameOrgan}.&lt;br /&gt;
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Контроль" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>${sNameOrgan}, Контроль Передача Документів</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Подана заявка від ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;звернення щодо ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
+Подано в ${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${sMyPhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Kontrol OSBB nove zvernennya [sID_Order]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_OSBB_zvit_kaznach">
     <bpmndi:BPMNPlane bpmnElement="OSBB_zvit_kaznach" id="BPMNPlane_OSBB_zvit_kaznach">
@@ -227,6 +258,9 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="275.0" y="520.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="292.0" y="-15.0"></omgdi:waypoint>
         <omgdi:waypoint x="293.0" y="10.0"></omgdi:waypoint>
@@ -240,8 +274,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="292.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="292.0" y="145.0"></omgdi:waypoint>
-        <omgdi:waypoint x="292.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="292.0" y="225.0"></omgdi:waypoint>
@@ -272,6 +306,10 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="162.0" y="475.0"></omgdi:waypoint>
         <omgdi:waypoint x="292.0" y="520.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="345.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="422.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
