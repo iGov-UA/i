@@ -106,11 +106,14 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", getPlaceByProcess(snID_Process));
-            variables.put("clfio", processVariables.get("clfio"));
+            variables.put("clfio", processVariables.get("bankIdfirstName") + " "+processVariables.get("bankIdmiddleName"+ " "+processVariables.get("bankIdlastName")));
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
             variables.put("nasPunkt", processVariables.get("nasPunkt"));
-            variables.put("sDate_BP", processVariables.get("sDate_BP"));
+            HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(sID_task).singleResult();
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            variables.put("sDate_BP", formatter.format(processInstance.getStartTime().getTime()));
             variables.put("sBody", processVariables.get("sBody"));
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly"));
