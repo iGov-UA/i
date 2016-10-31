@@ -658,14 +658,14 @@ public class ActionEventController {
                 LOG.info("getsID_Order()", oHistoryEvent_Service.getsID_Order());    
                 LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", aSubjectMessageFeedback);
                 Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
-//                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
-//                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
-////                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
-//                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service() );
-//                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
+                for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
+                    LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
+//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
+                        mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
+                        LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(): " + oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service() );
+                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
 ////                        }
-//                    }
+                    }
                     List<String> asCell = new LinkedList<>(); 
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
