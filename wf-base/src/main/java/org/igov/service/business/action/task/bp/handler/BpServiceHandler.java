@@ -157,9 +157,12 @@ public class BpServiceHandler {
                     .createHistoricTaskInstanceQuery()
                     .processInstanceId(snID_Process)
                     .list();
+            LOG.info("get tasks for bp:(tasks={})", tasks);
             
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(tasks.get(0).getId()).singleResult();
+            
+            LOG.info("get oHistoricTaskInstance for bp:(oHistoricTaskInstance={})", oHistoricTaskInstance);
             
             variables.put("processName", oHistoricTaskInstance.getProcessDefinitionId());
             
