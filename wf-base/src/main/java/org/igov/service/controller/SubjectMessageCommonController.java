@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import org.igov.io.GeneralConfig;
@@ -68,10 +69,10 @@ public class SubjectMessageCommonController {
             String body = new StringBuilder("<message>")
                     .append("<service id='single' source='iGov'/>")
                     .append("<to>").append(number).append("</to>")
-                    .append("<body content-type=\"text/plain\">").append(message).append("</body>")
+                    .append("<body content-type=\"text/plain\">").append(URLEncoder.encode(message, "UTF-8")).append("</body>")
                     .append("</message>").toString();
             
-            //resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
+            resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
         //}
         
 	return body;
