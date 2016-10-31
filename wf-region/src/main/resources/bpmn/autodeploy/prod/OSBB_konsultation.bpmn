@@ -82,7 +82,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk_Konsalt}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -93,7 +93,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask8" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Kons_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Bux_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="asZayavnik" name="Інформація про заявника" type="enum" writable="false">
           <activiti:value id="sEnamInitiativ" name="Член ініціативної групи"></activiti:value>
@@ -111,12 +111,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tKommentGrom" name="Суть звернення; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Надати відповідь"></activiti:value>
-          <activiti:value id="acceptFile" name="Надати відповідь з прикріпленим файлом"></activiti:value>
-          <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
+        <activiti:formProperty id="as_Vubir" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnamAccept" name="Надати відповідь"></activiti:value>
+          <activiti:value id="sEnamAcceptFile" name="Надати відповідь з прикріпленим файлом"></activiti:value>
+          <activiti:value id="sEnamReject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment" name="Введіть в це поле відповідь на запит, в разі відмови вкажіть причину" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment" name="Введіть в це поле відповідь на запит, в разі відмови вкажіть причину" type="textArea" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="sDocVidpovid" name="Завантажте файл відповіді" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/OSBB/KonsultVid.json')}"></activiti:formProperty>
@@ -170,8 +170,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow7" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    <sequenceFlow id="flow7" name="as_Vubir == 'sEnamAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${as_Vubir == 'sEnamAccept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -208,8 +208,8 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow9" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    <sequenceFlow id="flow9" name="as_Vubir == 'sEnamReject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${as_Vubir == 'sEnamReject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow11" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
@@ -252,8 +252,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow13" name="${decide == 'acceptFile'}" sourceRef="exclusivegateway1" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptFile'}]]></conditionExpression>
+    <sequenceFlow id="flow13" name="as_Vubir == 'sEnamAcceptFile'}" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${as_Vubir == 'sEnamAcceptFile'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask8" name="Контроль" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
