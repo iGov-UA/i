@@ -666,7 +666,7 @@ public class ActionEventController {
 //                        LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
 ////                        }
 //                    }
-                    List<String> asCell = new LinkedList<>();
+                    List<String> asCell = new LinkedList<>(); 
                     // sID_Order
                     asCell.add(oHistoryEvent_Service.getsID_Order() != null ? oHistoryEvent_Service.getsID_Order() : "");
                     LOG.info("getsID_Order(): "+oHistoryEvent_Service.getsID_Order());
