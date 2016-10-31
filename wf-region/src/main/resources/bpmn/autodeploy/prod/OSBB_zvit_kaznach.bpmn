@@ -22,6 +22,7 @@
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMyPhone" name="Телефон контролю" type="invisible" default="+380993527640"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Звіт за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="звіту за використання казначейських коштів (форма №2, форма №7)"></activiti:formProperty>
       </extensionElements>
@@ -74,7 +75,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -85,7 +86,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask7" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Bux_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
       <extensionElements>
         <activiti:formProperty id="sNameOSBB" name="Назва ОСББ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpouOSBB" name="Номер ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
@@ -130,8 +131,6 @@ ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
