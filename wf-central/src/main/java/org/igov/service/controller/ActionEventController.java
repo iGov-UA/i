@@ -660,9 +660,9 @@ public class ActionEventController {
                     Map<Long, SubjectMessageFeedback> mSubjectMessageFeedback = new HashMap<>();
                     for (SubjectMessageFeedback oSubjectMessageFeedback : aSubjectMessageFeedback) {
                     LOG.info("oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId(): " + oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId());
-//                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
+                    if (oSubjectMessageFeedback.getoSubjectMessage().getSubjectMessageType().getId() == 2) {
                         mSubjectMessageFeedback.put(oSubjectMessageFeedback.getoSubjectMessage().getnID_HistoryEvent_Service(), oSubjectMessageFeedback);
-//                        }
+                        }
                         LOG.info("oSubjectMessageFeedback: " + oSubjectMessageFeedback);
                     }
                     List<String> asCell = new LinkedList<>();
