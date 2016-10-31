@@ -193,7 +193,7 @@
         <activiti:formProperty id="sContractorEDRPOU" name="Код згідно з ЄДРПОУ підрядної організації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApprovedPerson" name="ПІБ особи, яка затвердила проект" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApprovedPersonPosition" name="Посада особи, яка затвердила проект" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sApprovalDate" name="Дата затвердження проекту або назва, номер та дата видачі розпорядчого документу" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sApprovalDate" name="Дата затвердження проекту або назва, номер та дата видачі розпорядчого документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRespSupervisorName" name="ПІБ відповідальної особи проектувальника, що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTechSupervisorName" name="ПІБ особи, яка здійснює технічний нагляд;Наприклад, Іванов Петро Васильович" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTechSupervisorSertif" name="Серія та номер кваліфікаційного сертифікату особи, яка здійснює технічний нагляд" type="string"></activiti:formProperty>
@@ -226,7 +226,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_NumberDABI" name="Реєстраційний номер з реєстру ДАБІ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker6_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_valid.json')}"></activiti:formProperty>
@@ -309,8 +309,7 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker6_applicant_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_st6_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksDeclaration}]]></activiti:expression>
@@ -437,8 +436,7 @@
         <activiti:formProperty id="sRejectionReason" name="Причина відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker6_applicant_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_vis.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_st6_vis.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_declaration_vis.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nWorksDeclaration}]]></activiti:expression>
