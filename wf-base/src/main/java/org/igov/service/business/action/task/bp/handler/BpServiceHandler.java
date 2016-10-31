@@ -118,6 +118,7 @@ public class BpServiceHandler {
             Set<String> organ = getCandidateGroups(processName, sID_task, processVariables);
             variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
             setSubjectParams(sID_task, processName, variables, processVariables);
+            LOG.info(String.format(" >> start process [%s] with params: %s", PROCESS_FEEDBACK, variables));
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
@@ -174,12 +175,12 @@ public class BpServiceHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName") != null ? String.valueOf(processVariables.get("bankIdlastName")) : null);
             LOG.info(String.format(" >> bankIdfirstName [%s] bankIdmiddleName: %s bankIdlastName: %s", processVariables.get("bankIdfirstName"), processVariables.get("bankIdmiddleName"),processVariables.get("bankIdlastName")));
             variables.put("phone", "" + processVariables.get("phone") != null ? String.valueOf(processVariables.get("phone")) : null);
-            LOG.info("phone: [%s]", processVariables.get("phone"));
+            LOG.info("phone: (phone={})", processVariables.get("phone"));
             variables.put("email", processVariables.get("email") != null ? String.valueOf(processVariables.get("email")) : null);
-            LOG.info("email: [%s]", processVariables.get("email"));
+            LOG.info("email: (email={}) ", processVariables.get("email"));
             variables.put("Place", getPlaceByProcess(snID_Process));
             
-            LOG.info("Place: [%s]", getPlaceByProcess(snID_Process));
+            LOG.info("Place: (Place={})", getPlaceByProcess(snID_Process));
           //  variables.put("clfio", processVariables.get("clfio")); TODO: под вопросом так как есть bankIdfirstName,bankIdmiddleName,bankIdlastName
             //  variables.put("region", processVariables.get("region")); TODO: под вопросом так как есть Place
             //  variables.put("info", processVariables.get("info"));TODO: не понятно что передавать
