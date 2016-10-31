@@ -87,19 +87,21 @@ if (typeMail === 'sRekPrior') {
 }
 execution.setVariable('sSum', sum);
 var distr = '';
-if (execution.getVariable('asDistrict') !== "sNo"){
-distr = execution.getVariable('asDistrict');}
-if (execution.getVariable('asDistrict1') !== "sNo1"){
-distr = execution.getVariable('asDistrict1');}
+if (execution.getVariable('asDistrict') !== "sNo") {
+distr = execution.getVariable('asDistrict');
+}
+if (execution.getVariable('asDistrict1') !== "sNo1") {
+distr = execution.getVariable('asDistrict1');
+}
 var adres = '';
 var workTime = '';
 var type = '';
 switch (distr){
 case 'sAND':
-type = and;
+type = 'and';
 break;
 case 'sIndust':
-type = indust;
+type = 'indust';
 break;
 case 'sSamar':
 adres = "вул. А.Барто, 19";
@@ -114,10 +116,10 @@ adres = "пр. Поля (пр. Кірова), 22";
 workTime = "понеділок, вівторок, четвер з 8:00 до 17:00&lt;br&gt;вівторок, п'ятниця з 8:00 до 15:45";
 break;
 case 'sChech':
-type = сhech;
+type = 'сhech';
 break;
 case 'sShev':
-type = shev;
+type = 'shev';
 break;
 default:
     alert('Странный результат, очень странный');
@@ -321,7 +323,8 @@ execution.setVariable('sWorkDay', workTime);
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                              		Довідки про склад сім'ї була надіслана Вам за адресою ${sPostAddress}.<br> 
+                              		Довідки про склад сім'ї була надіслана Вам за адресою:<br>
+                              		${sPostAddress}.<br> 
                               		Тип відправлення - enum{[asTypeMail]}.
                               		</p>
                               		<p>
