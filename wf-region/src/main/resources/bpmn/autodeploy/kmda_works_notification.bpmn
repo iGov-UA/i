@@ -20,7 +20,7 @@
         <activiti:formProperty id="sLegalEDRPOU" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_2" name=" " type="label" default="________Об'єкт будівництва________"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="_____Об'єкт будівництва_____"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypeOfConstruction" name="Вид будівництва" type="enum" required="true">
@@ -38,7 +38,7 @@
         <activiti:formProperty id="sOwnershipDoc" name="Дата, серія та номер документу, що посвідчує право власності чи користування земельною ділянкою" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSuperficiesDoc" name="Дата та номер договору суперфіцію" type="string"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_3" name=" " type="label" default="_________Генеральний підрядник_________"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_3" name=" " type="label" default="______Генеральний підрядник______"></activiti:formProperty>
         <activiti:formProperty id="asGeneralContractor" name="Генеральний підрядник;у разі, коли будівельні роботи виконуються без залучення субпідрядників – підрядник" type="enum" required="true">
           <activiti:value id="sEnumPerson" name="Фізична особа"></activiti:value>
           <activiti:value id="sEnumLegalEntity" name="Юридична особа"></activiti:value>
@@ -650,12 +650,11 @@
     <sequenceFlow id="flow30" sourceRef="boundarytimer1" targetRef="usertask_step8.1_red"></sequenceFlow>
     <userTask id="usertask_step8.2_red" name="8.2 Повідомлення про невиконане завдання">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="true" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" readable="true" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" readable="true" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectName" name="Найменування об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAssigneeName" name="ПІБ відповідального виконавця" type="string" variable="sLoginAsignee" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignUser}">
           <activiti:field name="loginAssignee">
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
@@ -690,7 +689,7 @@
     <sequenceFlow id="flow32" sourceRef="servicetask_step3.3" targetRef="parallelgateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow33" sourceRef="parallelgateway3" targetRef="usertask_step13"></sequenceFlow>
-    <userTask id="usertask_step13.1" name="13.1 Ознайомлення директором ДАБК">
+    <userTask id="usertask_step13.1" name="13.1 Ознайомлення директором ДАБК" activiti:candidateGroups="kyiv_dabi_dir">
       <extensionElements>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="__________Замовник__________"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
@@ -755,7 +754,7 @@
     </userTask>
     <sequenceFlow id="flow34" sourceRef="parallelgateway3" targetRef="usertask_step13.1"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
-    <userTask id="usertask_step14.1" name="Ознайомлення заступником директора ДАБК">
+    <userTask id="usertask_step14.1" name="Ознайомлення заступником директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy">
       <extensionElements>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="__________Замовник__________"></activiti:formProperty>
         <activiti:formProperty id="asApplicantType" name="Замовник" type="enum" writable="false">
