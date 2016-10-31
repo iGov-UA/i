@@ -61,11 +61,11 @@ public class SubjectMessageCommonController {
         
         //if (number.startsWith("+38063")||number.startsWith("+38093"))
         //{
-            String body = new StringBuilder("<message")
+            String body = new StringBuilder("<message>")
                     .append("<service id='single' source='iGov'/>")
                     .append("<to>").append(number).append("</to>")
                     .append("<body content-type=\"text-plain\">").append(message).append("</body>")
-                    .append("<message>").toString();
+                    .append("</message>").toString();
             
             resp = oHttpRequester.postInside(URL, null, body, "text/xml; charset=utf-8", "trywWDjcF27368908", "Vf2k8ip1xvzgscqoo");
         //}
